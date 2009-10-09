@@ -1,8 +1,8 @@
 open Asm
 
 (* for register coalescing *)
-(* [XXX] Call¤¬¤¢¤Ã¤¿¤é¡¢¤½¤³¤«¤éÀè¤ÏÌµ°ÕÌ£¤È¤¤¤¦¤«µÕ¸ú²Ì¤Ê¤Î¤ÇÄÉ¤ï¤Ê¤¤¡£
-         ¤½¤Î¤¿¤á¤Ë¡ÖCall¤¬¤¢¤Ã¤¿¤«¤É¤¦¤«¡×¤òÊÖ¤êÃÍ¤ÎÂè1Í×ÁÇ¤Ë´Ş¤á¤ë¡£ *)
+(* [XXX] CallãŒã‚ã£ãŸã‚‰ã€ãã“ã‹ã‚‰å…ˆã¯ç„¡æ„å‘³ã¨ã„ã†ã‹é€†åŠ¹æœãªã®ã§è¿½ã‚ãªã„ã€‚
+         ãã®ãŸã‚ã«ã€ŒCallãŒã‚ã£ãŸã‹ã©ã†ã‹ã€ã‚’è¿”ã‚Šå€¤ã®ç¬¬1è¦ç´ ã«å«ã‚ã‚‹ã€‚ *)
 let rec target' src (dest, t) = function
   | Mov(x) when x = src && is_reg dest ->
       assert (t <> Type.Unit);
@@ -37,7 +37,7 @@ and target_args src all n = function (* auxiliary function for Call *)
   | y :: ys when src = y -> all.(n) :: target_args src all (n + 1) ys
   | _ :: ys -> target_args src all (n + 1) ys
 
-type alloc_result = (* alloc¤Ë¤ª¤¤¤Æspilling¤¬¤¢¤Ã¤¿¤«¤É¤¦¤«¤òÉ½¤¹¥Ç¡¼¥¿·¿ *)
+type alloc_result = (* allocã«ãŠã„ã¦spillingãŒã‚ã£ãŸã‹ã©ã†ã‹ã‚’è¡¨ã™ãƒ‡ãƒ¼ã‚¿å‹ *)
   | Alloc of Id.t (* allocated register *)
   | Spill of Id.t (* spilled variable *)
 let rec alloc dest cont regenv x t =
@@ -53,7 +53,7 @@ let rec alloc dest cont regenv x t =
   let free = fv cont in
   try
     let (c, prefer) = target x dest cont in
-    let live = (* À¸¤­¤Æ¤¤¤ë¥ì¥¸¥¹¥¿ *)
+    let live = (* ç”Ÿãã¦ã„ã‚‹ãƒ¬ã‚¸ã‚¹ã‚¿ *)
       List.fold_left
         (fun live y ->
 	  if is_reg y then S.add y live else
@@ -61,7 +61,7 @@ let rec alloc dest cont regenv x t =
           with Not_found -> live)
         S.empty
         free in
-    let r = (* ¤½¤¦¤Ç¤Ê¤¤¥ì¥¸¥¹¥¿¤òÃµ¤¹ *)
+    let r = (* ãã†ã§ãªã„ãƒ¬ã‚¸ã‚¹ã‚¿ã‚’æ¢ã™ *)
       List.find
         (fun r -> not (S.mem r live))
         (prefer @ all) in
@@ -69,7 +69,7 @@ let rec alloc dest cont regenv x t =
     Alloc(r)
   with Not_found ->
     Format.eprintf "register allocation failed for %s@." x;
-    let y = (* ·¿¤Î¹ç¤¦¥ì¥¸¥¹¥¿ÊÑ¿ô¤òÃµ¤¹ *)
+    let y = (* å‹ã®åˆã†ãƒ¬ã‚¸ã‚¹ã‚¿å¤‰æ•°ã‚’æ¢ã™ *)
       List.find
         (fun y ->
 	  not (is_reg y) &&
@@ -84,7 +84,7 @@ let add x r regenv =
   if is_reg x then (assert (x = r); regenv) else
   M.add x r regenv
 
-type g_result = (* g¤äg'¤Ë¤ª¤¤¤Æspilling¤¬¤¢¤Ã¤¿¤«¤É¤¦¤«¤òÉ½¤¹¥Ç¡¼¥¿·¿ (caml2html: regalloc_result) *)
+type g_result = (* gã‚„g'ã«ãŠã„ã¦spillingãŒã‚ã£ãŸã‹ã©ã†ã‹ã‚’è¡¨ã™ãƒ‡ãƒ¼ã‚¿å‹ (caml2html: regalloc_result) *)
   | NoSpill of t * Id.t M.t (* new regenv *)
   | ToSpill of t * Id.t list (* spilled variables *)
 
@@ -112,7 +112,7 @@ let insert_forget xs exp t =
     | _ -> Mov(a) in
   ToSpill(Let((a, t), exp, forget_list xs (Ans(m))), xs)
 
-let rec g dest cont regenv = function (* Ì¿ÎáÎó¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ (caml2html: regalloc_g) *)
+let rec g dest cont regenv = function (* å‘½ä»¤åˆ—ã®ãƒ¬ã‚¸ã‚¹ã‚¿å‰²ã‚Šå½“ã¦ (caml2html: regalloc_g) *)
   | Ans(exp) -> g'_and_restore dest cont regenv exp
   | Let((x, t) as xt, exp, e) ->
       assert (not (M.mem x regenv));
@@ -139,12 +139,12 @@ let rec g dest cont regenv = function (* Ì¿ÎáÎó¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ (caml2html: re
 	  | [] -> g dest cont regenv x_forgotten
 	  | ys_left -> ToSpill(x_forgotten, ys_left))
       | NoSpill(e1', regenv1) -> NoSpill(e1', regenv1))
-and g'_and_restore dest cont regenv exp = (* »ÈÍÑ¤µ¤ì¤ëÊÑ¿ô¤ò¥¹¥¿¥Ã¥¯¤«¤é¥ì¥¸¥¹¥¿¤ØRestore (caml2html: regalloc_unspill) *)
+and g'_and_restore dest cont regenv exp = (* ä½¿ç”¨ã•ã‚Œã‚‹å¤‰æ•°ã‚’ã‚¹ã‚¿ãƒƒã‚¯ã‹ã‚‰ãƒ¬ã‚¸ã‚¹ã‚¿ã¸Restore (caml2html: regalloc_unspill) *)
   try g' dest cont regenv exp
   with NoReg(x, t) ->
     ((* Format.eprintf "restoring %s@." x; *)
      g dest cont regenv (Let((x, t), Restore(x), Ans(exp))))
-and g' dest cont regenv = function (* ³ÆÌ¿Îá¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ (caml2html: regalloc_gprime) *)
+and g' dest cont regenv = function (* å„å‘½ä»¤ã®ãƒ¬ã‚¸ã‚¹ã‚¿å‰²ã‚Šå½“ã¦ (caml2html: regalloc_gprime) *)
   | Nop | Set _ | SetL _ | Comment _ | Restore _ as exp -> NoSpill(Ans(exp), regenv)
   | Mov(x) -> NoSpill(Ans(Mov(find x Type.Int regenv)), regenv)
   | Neg(x) -> NoSpill(Ans(Neg(find x Type.Int regenv)), regenv)
@@ -172,10 +172,10 @@ and g' dest cont regenv = function (* ³ÆÌ¿Îá¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ (caml2html: regal
       assert (not (is_reg x));
       try NoSpill(Ans(Save(M.find x regenv, x)), regenv)
       with Not_found -> NoSpill(Ans(Nop), regenv) (* must have already been saved *)
-and g'_if dest cont regenv exp constr e1 e2 = (* if¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ (caml2html: regalloc_if) *)
+and g'_if dest cont regenv exp constr e1 e2 = (* ifã®ãƒ¬ã‚¸ã‚¹ã‚¿å‰²ã‚Šå½“ã¦ (caml2html: regalloc_if) *)
   let (e1', regenv1) = g_repeat dest cont regenv e1 in
   let (e2', regenv2) = g_repeat dest cont regenv e2 in
-  let regenv' = (* Î¾Êı¤Ë¶¦ÄÌ¤Î¥ì¥¸¥¹¥¿ÊÑ¿ô¤À¤±ÍøÍÑ *)
+  let regenv' = (* ä¸¡æ–¹ã«å…±é€šã®ãƒ¬ã‚¸ã‚¹ã‚¿å¤‰æ•°ã ã‘åˆ©ç”¨ *)
     List.fold_left
       (fun regenv' x ->
         try
@@ -192,10 +192,10 @@ and g'_if dest cont regenv exp constr e1 e2 = (* if¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ (caml2html
       (fun x -> not (is_reg x) && x <> fst dest && not (M.mem x regenv'))
       (fv cont)
   with [] -> NoSpill(Ans(constr e1' e2'), regenv')
-  | xs -> insert_forget xs exp (snd dest) (* ¤½¤¦¤Ç¤Ê¤¤ÊÑ¿ô¤ÏÊ¬´ô°ÊÁ°¤Ë¥»¡¼¥Ö *)
-and g'_call dest cont regenv exp constr ys zs = (* ´Ø¿ô¸Æ¤Ó½Ğ¤·¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ (caml2html: regalloc_call) *)
+  | xs -> insert_forget xs exp (snd dest) (* ãã†ã§ãªã„å¤‰æ•°ã¯åˆ†å²ä»¥å‰ã«ã‚»ãƒ¼ãƒ– *)
+and g'_call dest cont regenv exp constr ys zs = (* é–¢æ•°å‘¼ã³å‡ºã—ã®ãƒ¬ã‚¸ã‚¹ã‚¿å‰²ã‚Šå½“ã¦ (caml2html: regalloc_call) *)
   match
-    List.filter (* ¥»¡¼¥Ö¤¹¤Ù¤­¥ì¥¸¥¹¥¿ÊÑ¿ô¤òÃµ¤¹ *)
+    List.filter (* ã‚»ãƒ¼ãƒ–ã™ã¹ããƒ¬ã‚¸ã‚¹ã‚¿å¤‰æ•°ã‚’æ¢ã™ *)
       (fun x -> not (is_reg x) && x <> fst dest)
       (fv cont)
   with [] -> NoSpill(Ans(constr
@@ -203,7 +203,7 @@ and g'_call dest cont regenv exp constr ys zs = (* ´Ø¿ô¸Æ¤Ó½Ğ¤·¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤
 			   (List.map (fun z -> find z Type.Float regenv) zs)),
 		     M.empty)
   | xs -> insert_forget xs exp (snd dest)
-and g_repeat dest cont regenv e = (* Spill¤¬¤Ê¤¯¤Ê¤ë¤Ş¤Çg¤ò·«¤êÊÖ¤¹ (caml2html: regalloc_repeat) *)
+and g_repeat dest cont regenv e = (* SpillãŒãªããªã‚‹ã¾ã§gã‚’ç¹°ã‚Šè¿”ã™ (caml2html: regalloc_repeat) *)
     match g dest cont regenv e with
     | NoSpill(e', regenv') -> (e', regenv')
     | ToSpill(e, xs) ->
@@ -213,7 +213,7 @@ and g_repeat dest cont regenv e = (* Spill¤¬¤Ê¤¯¤Ê¤ë¤Ş¤Çg¤ò·«¤êÊÖ¤¹ (caml2html: 
 	     e
 	     xs)
 
-let h { name = Id.L(x); args = ys; fargs = zs; body = e; ret = t } = (* ´Ø¿ô¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ (caml2html: regalloc_h) *)
+let h { name = Id.L(x); args = ys; fargs = zs; body = e; ret = t } = (* é–¢æ•°ã®ãƒ¬ã‚¸ã‚¹ã‚¿å‰²ã‚Šå½“ã¦ (caml2html: regalloc_h) *)
   let regenv = M.add x reg_cl M.empty in
   let (i, arg_regs, regenv) =
     List.fold_left
@@ -243,7 +243,7 @@ let h { name = Id.L(x); args = ys; fargs = zs; body = e; ret = t } = (* ´Ø¿ô¤Î¥ì
   let (e', regenv') = g_repeat (a, t) (Ans(Mov(a))) regenv e in
   { name = Id.L(x); args = arg_regs; fargs = farg_regs; body = e'; ret = t }
 
-let f (Prog(data, fundefs, e)) = (* ¥×¥í¥°¥é¥àÁ´ÂÎ¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ (caml2html: regalloc_f) *)
+let f (Prog(data, fundefs, e)) = (* ãƒ—ãƒ­ã‚°ãƒ©ãƒ å…¨ä½“ã®ãƒ¬ã‚¸ã‚¹ã‚¿å‰²ã‚Šå½“ã¦ (caml2html: regalloc_f) *)
   Format.eprintf "register allocation: may take some time (up to a few minutes, depending on the size of functions)@.";
   let fundefs' = List.map h fundefs in
   let e', regenv' = g_repeat (Id.gentmp Type.Unit, Type.Unit) (Ans(Nop)) M.empty e in

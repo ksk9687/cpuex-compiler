@@ -1,7 +1,7 @@
 # Sumii's Makefile for Min-Caml (for GNU Make)
 # 
-# ack.ml¤Ê¤É¤Î¥Æ¥¹¥È¥×¥í¥°¥é¥à¤òtest/¤ËÍÑ°Õ¤·¤Æmake do_test¤ò¼Â¹Ô¤¹¤ë¤È¡¢
-# min-caml¤Èocaml¤Ç¥³¥ó¥Ñ¥¤¥ë¡¦¼Â¹Ô¤·¤¿·ë²Ì¤ò¼«Æ°¤ÇÈæ³Ó¤·¤Ş¤¹¡£
+# ack.mlãªã©ã®ãƒ†ã‚¹ãƒˆãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’test/ã«ç”¨æ„ã—ã¦make do_testã‚’å®Ÿè¡Œã™ã‚‹ã¨ã€
+# min-camlã¨ocamlã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ãƒ»å®Ÿè¡Œã—ãŸçµæœã‚’è‡ªå‹•ã§æ¯”è¼ƒã—ã¾ã™ã€‚
 
 RESULT = min-caml
 NCSUFFIX = .opt
@@ -11,7 +11,7 @@ CFLAGS = -g -O2 -Wall
 default: top native-code
 clean:: nobackup
 
-# ¢­¤â¤·¼ÂÁõ¤ò²şÂ¤¤·¤¿¤é¡¢¤½¤ì¤Ë¹ç¤ï¤»¤ÆÊÑ¤¨¤ë
+# â†“ã‚‚ã—å®Ÿè£…ã‚’æ”¹é€ ã—ãŸã‚‰ã€ãã‚Œã«åˆã‚ã›ã¦å¤‰ãˆã‚‹
 SOURCES = float.c type.ml id.ml m.ml s.ml \
 syntax.ml parser.mly lexer.mll typing.mli typing.ml kNormal.mli kNormal.ml \
 alpha.mli alpha.ml beta.mli beta.ml assoc.mli assoc.ml \

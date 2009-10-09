@@ -1,4 +1,4 @@
-type t = (* MinCaml¤Î·¿¤òÉ½¸½¤¹¤ë¥Ç¡¼¥¿·¿ (caml2html: type_t) *)
+type t = (* MinCamlã®åž‹ã‚’è¡¨ç¾ã™ã‚‹ãƒ‡ãƒ¼ã‚¿åž‹ (caml2html: type_t) *)
   | Unit
   | Bool
   | Int
@@ -8,9 +8,9 @@ type t = (* MinCaml¤Î·¿¤òÉ½¸½¤¹¤ë¥Ç¡¼¥¿·¿ (caml2html: type_t) *)
   | Array of t
   | Var of t option ref
 
-let gentyp () = Var(ref None) (* ¿·¤·¤¤·¿ÊÑ¿ô¤òºî¤ë *)
+let gentyp () = Var(ref None) (* æ–°ã—ã„åž‹å¤‰æ•°ã‚’ä½œã‚‹ *)
 
-let rec string_of_t = function (* Type.t¤òÊ¸»úÎó¤ËÊÑ´¹ *)
+let rec string_of_t = function (* Type.tã‚’æ–‡å­—åˆ—ã«å¤‰æ› *)
   | Unit -> "Unit"
   | Bool -> "Bool"
   | Int -> "Int"

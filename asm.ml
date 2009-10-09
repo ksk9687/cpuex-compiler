@@ -1,11 +1,11 @@
 (* ksk assembly with a few virtual instructions *)
 
 type id_or_imm = V of Id.t | C of int
-type t = (* Ì¿Îá¤ÎÎó (caml2html: sparcasm_t) *)
+type t = (* å‘½ä»¤ã®åˆ— (caml2html: sparcasm_t) *)
   | Ans of exp
   | Let of (Id.t * Type.t) * exp * t
-  | Forget of Id.t * t (* Spill¤µ¤ì¤¿ÊÑ¿ô¤ò¡¢¼«Í³ÊÑ¿ô¤Î·×»»¤«¤é½ü³°¤¹¤ë¤¿¤á¤Î²¾ÁÛÌ¿Îá (caml2html: sparcasm_forget) *)
-and exp = (* °ì¤Ä°ì¤Ä¤ÎÌ¿Îá¤ËÂĞ±ş¤¹¤ë¼° (caml2html: sparcasm_exp) *)
+  | Forget of Id.t * t (* Spillã•ã‚ŒãŸå¤‰æ•°ã‚’ã€è‡ªç”±å¤‰æ•°ã®è¨ˆç®—ã‹ã‚‰é™¤å¤–ã™ã‚‹ãŸã‚ã®ä»®æƒ³å‘½ä»¤ (caml2html: sparcasm_forget) *)
+and exp = (* ä¸€ã¤ä¸€ã¤ã®å‘½ä»¤ã«å¯¾å¿œã™ã‚‹å¼ (caml2html: sparcasm_exp) *)
   | Nop
   | Set of int
   | SetL of Id.l
@@ -27,16 +27,16 @@ and exp = (* °ì¤Ä°ì¤Ä¤ÎÌ¿Îá¤ËÂĞ±ş¤¹¤ë¼° (caml2html: sparcasm_exp) *)
   (* virtual instructions *)
   | IfEq of Id.t * id_or_imm * t * t
   | IfLE of Id.t * id_or_imm * t * t
-  | IfGE of Id.t * id_or_imm * t * t (* º¸±¦ÂĞ¾Î¤Ç¤Ï¤Ê¤¤¤Î¤ÇÉ¬Í× *)
+  | IfGE of Id.t * id_or_imm * t * t (* å·¦å³å¯¾ç§°ã§ã¯ãªã„ã®ã§å¿…è¦ *)
   | IfFEq of Id.t * Id.t * t * t
   | IfFLE of Id.t * Id.t * t * t
   (* closure address, integer arguments, and float arguments *)
   | CallCls of Id.t * Id.t list * Id.t list
   | CallDir of Id.l * Id.t list * Id.t list
-  | Save of Id.t * Id.t (* ¥ì¥¸¥¹¥¿ÊÑ¿ô¤ÎÃÍ¤ò¥¹¥¿¥Ã¥¯ÊÑ¿ô¤ØÊİÂ¸ (caml2html: sparcasm_save) *)
-  | Restore of Id.t (* ¥¹¥¿¥Ã¥¯ÊÑ¿ô¤«¤éÃÍ¤òÉü¸µ (caml2html: sparcasm_restore) *)
+  | Save of Id.t * Id.t (* ãƒ¬ã‚¸ã‚¹ã‚¿å¤‰æ•°ã®å€¤ã‚’ã‚¹ã‚¿ãƒƒã‚¯å¤‰æ•°ã¸ä¿å­˜ (caml2html: sparcasm_save) *)
+  | Restore of Id.t (* ã‚¹ã‚¿ãƒƒã‚¯å¤‰æ•°ã‹ã‚‰å€¤ã‚’å¾©å…ƒ (caml2html: sparcasm_restore) *)
 type fundef = { name : Id.l; args : Id.t list; fargs : Id.t list; body : t; ret : Type.t }
-(* ¥×¥í¥°¥é¥àÁ´ÂÎ = ÉâÆ°¾®¿ôÄê¿ô¥Æ¡¼¥Ö¥ë + ¥È¥Ã¥×¥ì¥Ù¥ë´Ø¿ô + ¥á¥¤¥ó¤Î¼° (caml2html: sparcasm_prog) *)
+(* ãƒ—ãƒ­ã‚°ãƒ©ãƒ å…¨ä½“ = æµ®å‹•å°æ•°å®šæ•°ãƒ†ãƒ¼ãƒ–ãƒ« + ãƒˆãƒƒãƒ—ãƒ¬ãƒ™ãƒ«é–¢æ•° + ãƒ¡ã‚¤ãƒ³ã®å¼ (caml2html: sparcasm_prog) *)
 type prog = Prog of (Id.l * float) list * fundef list * t
 
 let flet(x, e1, e2) = Let((x, Type.Float), e1, e2)
@@ -46,7 +46,7 @@ let regs = Array.init 12 (fun i -> Printf.sprintf "$r%d" (i + 2))
 let fregs = Array.init 13 (fun i -> Printf.sprintf "$r%d" (i + 16))
 let allregs = Array.to_list regs
 let allfregs = Array.to_list fregs
-(* ¤³¤¤¤Ä¤é¤âregAlloc¤Î¥ì¥¸¥¹¥¿³ä¤êÅö¤Æ¤Ç»È¤ï¤ì¤ë¡©¡© *)
+(* ã“ã„ã¤ã‚‰ã‚‚regAllocã®ãƒ¬ã‚¸ã‚¹ã‚¿å‰²ã‚Šå½“ã¦ã§ä½¿ã‚ã‚Œã‚‹ï¼Ÿï¼Ÿ *)
 let reg_cl = regs.(Array.length regs - 1) (* closure address (caml2html: sparcasm_regcl) *)
 let reg_sw = regs.(Array.length regs - 2) (* temporary for swap *)
 let reg_fsw = fregs.(Array.length fregs - 1) (* temporary for swap *)
@@ -82,9 +82,9 @@ and fv cont = function
   | Let((x, t), exp, e) ->
       let cont' = remove_and_uniq (S.singleton x) (fv cont e) in
       fv_exp cont' exp
-  | Forget(x, e) -> remove_and_uniq (S.singleton x) (fv cont e) (* Spill¤µ¤ì¤¿ÊÑ¿ô¤Ï¡¢¼«Í³ÊÑ¿ô¤Î·×»»¤«¤é½ü³° (caml2html: sparcasm_exclude) *)
+  | Forget(x, e) -> remove_and_uniq (S.singleton x) (fv cont e) (* Spillã•ã‚ŒãŸå¤‰æ•°ã¯ã€è‡ªç”±å¤‰æ•°ã®è¨ˆç®—ã‹ã‚‰é™¤å¤– (caml2html: sparcasm_exclude) *)
     (* (if y = z then (forget x; ...) else (forget x; ...)); x + x
-       ¤Î¤è¤¦¤Ê¾ì¹ç¤Î¤¿¤á¤Ë¡¢·ÑÂ³¤Î¼«Í³ÊÑ¿ôcont¤ò°ú¿ô¤È¤¹¤ë *)
+       ã®ã‚ˆã†ãªå ´åˆã®ãŸã‚ã«ã€ç¶™ç¶šã®è‡ªç”±å¤‰æ•°contã‚’å¼•æ•°ã¨ã™ã‚‹ *)
 let fv e = remove_and_uniq S.empty (fv [] e)
 
 let rec concat e1 xt e2 =

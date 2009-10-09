@@ -1,4 +1,4 @@
-type t = (* MinCaml¤Î¹½Ê¸¤òÉ½¸½¤¹¤ë¥Ç¡¼¥¿·¿ (caml2html: syntax_t) *)
+type t = (* MinCamlã®æ§‹æ–‡ã‚’è¡¨ç¾ã™ã‚‹ãƒ‡ãƒ¼ã‚¿å‹ (caml2html: syntax_t) *)
   | Unit
   | Bool of bool
   | Int of int
@@ -90,5 +90,5 @@ and string_fundef indent {name = (i,t); args = list; body = b} =
   ^ indent ^ "  Body\n"
   ^ (string_t (indent ^ "    ") b)
 
-let rec string t = (* Syntax.t¤ò½ĞÎÏ *)
+let rec string t = (* Syntax.tã‚’å‡ºåŠ› *)
   print_string (string_t "" t);;
