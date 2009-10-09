@@ -4,8 +4,10 @@ type t = (* K正規化後の式 (caml2html: knormal_t) *)
   | Unit
   | Int of int
   | Float of float
+  | Neg of Id.t
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
+  | FNeg of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
@@ -26,6 +28,7 @@ and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 
 let rec fv = function (* 式に出現する（自由な）変数 (caml2html: knormal_fv) *)
   | Unit | Int(_) | Float(_) | ExtArray(_) -> S.empty
+  | Neg(x) | FNeg(x) -> S.singleton x
   | Add(x, y) | Sub(x, y) | FAdd(x, y) | FSub(x, y) | FMul(x, y) | FDiv(x, y) | Get(x, y) -> S.of_list [x; y]
   | IfEq(x, y, e1, e2) | IfLE(x, y, e1, e2) -> S.add x (S.add y (S.union (fv e1) (fv e2)))
   | Let((x, t), e1, e2) -> S.union (fv e1) (S.remove x (fv e2))
@@ -54,8 +57,7 @@ let rec g env = function (* K正規化ルーチン本体 (caml2html: knormal_g) *)
   | Syntax.Not(e) -> g env (Syntax.If(e, Syntax.Bool(false), Syntax.Bool(true)))
   | Syntax.Neg(e) ->
       insert_let (g env e)
-	(fun x -> insert_let (g env (Syntax.Int 0))
-	    (fun y -> Sub(y,x), Type.Int))
+	(fun x -> Neg(x), Type.Int)
   | Syntax.Add(e1, e2) -> (* 足し算のK正規化 (caml2html: knormal_add) *)
       insert_let (g env e1)
 	(fun x -> insert_let (g env e2)
@@ -66,8 +68,7 @@ let rec g env = function (* K正規化ルーチン本体 (caml2html: knormal_g) *)
 	    (fun y -> Sub(x, y), Type.Int))
   | Syntax.FNeg(e) ->
       insert_let (g env e)
-	(fun x -> insert_let (g env (Syntax.Float 0.))
-	    (fun y -> FSub(x, y), Type.Float))
+	(fun x -> FNeg(x), Type.Float)
   | Syntax.FAdd(e1, e2) ->
       insert_let (g env e1)
 	(fun x -> insert_let (g env e2)
@@ -177,18 +178,17 @@ let rec g env = function (* K正規化ルーチン本体 (caml2html: knormal_g) *)
 
 let f e = fst (g M.empty e)
 
-
-(* report1 *)
-(* debug *)
-
+(* report1 debug *)
 let rec string_t indent knormal =
   let indent = indent ^ "  " in
   match knormal with
     | Unit -> indent ^ "Unit\n"
     | Int (i) -> indent ^ "Int(" ^ (string_of_int i) ^ ")\n"
     | Float (f) -> indent ^ "Float(" ^ (string_of_float f) ^ ")\n"
+		| Neg (i) -> indent ^ "- " ^ i ^ "\n"
     | Add (i,j) -> indent ^ i ^ " + " ^ j ^ "\n"
     | Sub (i,j) -> indent ^ i ^ " - " ^ j ^ "\n"
+		| FNeg (i) -> indent ^ "- " ^ i ^ "\n"
     | FAdd (i,j) -> indent ^ i ^ " +. " ^ j ^ "\n"
     | FSub (i,j) -> indent ^ i ^ " -. " ^ j ^ "\n"
     | FMul (i,j) -> indent ^ i ^ " *. " ^ j ^ "\n"

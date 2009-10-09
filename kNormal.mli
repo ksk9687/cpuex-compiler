@@ -2,8 +2,10 @@ type t =
   | Unit
   | Int of int
   | Float of float
+  | Neg of Id.t
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
+  | FNeg of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t

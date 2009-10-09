@@ -12,7 +12,7 @@ let lexbuf outchan l = (* バッファをコンパイルしてチャンネルへ出力する (caml2htm
   Typing.extenv := M.empty;
   Emit.f outchan
     (RegAlloc.f
-       (Simm13.f
+       (Simm.f
 	  (Virtual.f
 	     (Closure.f
 		(iter !limit
@@ -22,9 +22,6 @@ let lexbuf outchan l = (* バッファをコンパイルしてチャンネルへ出力する (caml2htm
 			    (Parser.exp Lexer.token l)))))))))
 
 let string s = lexbuf stdout (Lexing.from_string s) (* 文字列をコンパイルして標準出力に表示する (caml2html: main_string) *)
-
-
-
 
 let file f = (* ファイルをコンパイルしてファイルに出力する (caml2html: main_file) *)
   let inchan = open_in (f ^ ".ml") in
@@ -46,8 +43,6 @@ let () = (* ここからコンパイラの実行が開始される (caml2html: main_entry) *)
   List.iter
     (fun f -> ignore (file f))
     !files
-
-
 
 (* report1 debug *)
 let test_k_lexbuf l =

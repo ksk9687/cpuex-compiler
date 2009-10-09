@@ -22,7 +22,9 @@ let rec string_of_t = function (* Type.tを文字列に変換 *)
   | Tuple (head :: rest) ->
       (List.fold_left (fun x y -> x ^ " " ^ (string_of_t y)) (string_of_t head) rest)
   | Array (t) -> (string_of_t t) ^ " Array"
-  | Var (top) ->
-      match !top with
-	| None -> "None"
-	| Some t -> string_of_t t
+  | Var (top) -> (
+      match !top with 
+			| None -> "None"
+			| Some t -> string_of_t t
+			)
+	| _ -> assert false

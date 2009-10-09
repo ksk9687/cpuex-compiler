@@ -92,5 +92,3 @@ and string_fundef indent {name = (i,t); args = list; body = b} =
 
 let rec string t = (* Syntax.t╓Р╫пно *)
   print_string (string_t "" t);;
-
-
