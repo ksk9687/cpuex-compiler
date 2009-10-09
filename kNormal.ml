@@ -4,10 +4,8 @@ type t = (* K正規化後の式 (caml2html: knormal_t) *)
   | Unit
   | Int of int
   | Float of float
-  | Neg of Id.t
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
-  | FNeg of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
@@ -28,7 +26,6 @@ and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 
 let rec fv = function (* 式に出現する（自由な）変数 (caml2html: knormal_fv) *)
   | Unit | Int(_) | Float(_) | ExtArray(_) -> S.empty
-  | Neg(x) | FNeg(x) -> S.singleton x
   | Add(x, y) | Sub(x, y) | FAdd(x, y) | FSub(x, y) | FMul(x, y) | FDiv(x, y) | Get(x, y) -> S.of_list [x; y]
   | IfEq(x, y, e1, e2) | IfLE(x, y, e1, e2) -> S.add x (S.add y (S.union (fv e1) (fv e2)))
   | Let((x, t), e1, e2) -> S.union (fv e1) (S.remove x (fv e2))
@@ -57,7 +54,8 @@ let rec g env = function (* K正規化ルーチン本体 (caml2html: knormal_g) *)
   | Syntax.Not(e) -> g env (Syntax.If(e, Syntax.Bool(false), Syntax.Bool(true)))
   | Syntax.Neg(e) ->
       insert_let (g env e)
-	(fun x -> Neg(x), Type.Int)
+	(fun x -> insert_let (g env (Syntax.Int 0))
+	    (fun y -> Sub(y,x), Type.Int))
   | Syntax.Add(e1, e2) -> (* 足し算のK正規化 (caml2html: knormal_add) *)
       insert_let (g env e1)
 	(fun x -> insert_let (g env e2)
@@ -68,7 +66,8 @@ let rec g env = function (* K正規化ルーチン本体 (caml2html: knormal_g) *)
 	    (fun y -> Sub(x, y), Type.Int))
   | Syntax.FNeg(e) ->
       insert_let (g env e)
-	(fun x -> FNeg(x), Type.Float)
+	(fun x -> insert_let (g env (Syntax.Float 0.))
+	    (fun y -> FSub(x, y), Type.Float))
   | Syntax.FAdd(e1, e2) ->
       insert_let (g env e1)
 	(fun x -> insert_let (g env e2)
@@ -177,3 +176,68 @@ let rec g env = function (* K正規化ルーチン本体 (caml2html: knormal_g) *)
 		(fun z -> Put(x, y, z), Type.Unit)))
 
 let f e = fst (g M.empty e)
+
+
+(* report1 *)
+(* debug *)
+
+let rec string_t indent knormal =
+  let indent = indent ^ "  " in
+  match knormal with
+    | Unit -> indent ^ "Unit\n"
+    | Int (i) -> indent ^ "Int(" ^ (string_of_int i) ^ ")\n"
+    | Float (f) -> indent ^ "Float(" ^ (string_of_float f) ^ ")\n"
+    | Add (i,j) -> indent ^ i ^ " + " ^ j ^ "\n"
+    | Sub (i,j) -> indent ^ i ^ " - " ^ j ^ "\n"
+    | FAdd (i,j) -> indent ^ i ^ " +. " ^ j ^ "\n"
+    | FSub (i,j) -> indent ^ i ^ " -. " ^ j ^ "\n"
+    | FMul (i,j) -> indent ^ i ^ " *. " ^ j ^ "\n"
+    | FDiv (i,j) -> indent ^ i ^ " /. " ^ j ^ "\n"
+    | IfEq (i,j,t,u) ->
+	indent ^ "If " ^ i ^ "=" ^ j ^ "\n"
+	^ (string_t indent t) ^ (string_t indent u)
+    | IfLE (i,j,t,u) ->
+	indent ^ "If " ^ i ^ "<=" ^ j ^ "\n"
+	^ (string_t indent t) ^ (string_t indent u)
+    | Let ((i,t),u,v) ->
+	indent ^ "Let\n  " ^ indent ^ i ^ " : " ^ (Type.string_of_t t) ^ "\n"
+	^ (string_t indent u) ^ indent ^ "In\n" ^ (string_t indent v)
+    | Var (i) -> indent ^ "Var(" ^ i ^ ")\n"
+    | App (i, list) ->
+	indent ^ i ^ "("
+	^ (List.fold_left (fun x y -> x ^ " " ^ y) "" list)
+	^ " )\n"
+    | Tuple (list) ->
+	indent ^ "Tuple("
+	^ (List.fold_left (fun x y -> x ^ " " ^ y) "" list)
+	^ " )\n"
+    | LetTuple (list, i, t) ->
+	indent ^ "Let\n" ^ indent ^ "  Tuple\n"
+	^ (List.fold_left (fun x (i,y) -> x ^ indent ^ "    " ^ i ^ " : " ^ (Type.string_of_t y) ^"\n") "" list)
+	^ indent ^ "  " ^ i ^ "\n"
+	^ indent ^ "In\n"  ^ (string_t indent t)
+    | Get (i,j) ->
+	indent ^ i ^ ".(" ^ j ^ ")\n"
+    | Put (i,j,k) ->
+	indent ^ i ^ ".(" ^ j ^ ") <- " ^ k ^ "\n"
+    | ExtArray (i) -> indent ^ "ExtArray(" ^ i ^ ")\n"
+    | ExtFunApp (i, list) ->
+	indent ^ i ^ "("
+	^ (List.fold_left (fun x y -> x ^ " " ^ y) "" list)
+	^ " )\n"
+    | LetRec (fundef, t) ->
+	indent ^ "LetRec\n" 
+	^ (string_fundef indent fundef)
+	^ indent ^ "In\n" ^ string_t indent t
+
+and string_fundef indent {name = (i,t); args = list; body = b} =
+  let indent = indent ^ "  " in
+  indent ^ "Fun\n"
+  ^ indent ^ "  Name\n" ^ indent ^ "    " ^ i ^ " : " ^ (Type.string_of_t t) ^ "\n"
+  ^ indent ^ "  Args\n"
+  ^ List.fold_left (fun x (i,y) -> x ^ indent ^ "    " ^ i ^ " : " ^ (Type.string_of_t y) ^"\n") "" list
+  ^ indent ^ "  Body\n"
+  ^ (string_t (indent ^ "  ") b)
+
+let string t = (* KNormal.tを出力する *)
+  print_string (string_t "" t)
