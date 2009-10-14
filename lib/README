@@ -1,17 +1,27 @@
 ライブラリについて
 
-20091014 by ageha
+20091014-2 by ageha
 
 /*----------------------------------------------------------------------
- lib_float.s
+ lib.s
 ----------------------------------------------------------------------*/
 
 浮動小数点数に対するライブラリ。
 
+ * fless
+ * fispos
+ * fisneg
+ * fhalf
+ * fsqr
+ * fabs
+ * fneg
+ * floor (要改造)
  * int_to_float
  * float_to_int
- * floor
-
+ * read_int
+ * read_float
+ * write_int
+ * write_float
 
 ----
  * 実装メモ
