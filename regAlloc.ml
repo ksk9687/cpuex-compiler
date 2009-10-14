@@ -150,6 +150,8 @@ and g' dest cont regenv = function (* 各命令のレジスタ割り当て (caml
   | Neg(x) -> NoSpill(Ans(Neg(find x Type.Int regenv)), regenv)
   | Add(x, y') -> NoSpill(Ans(Add(find x Type.Int regenv, find' y' regenv)), regenv)
   | Sub(x, y') -> NoSpill(Ans(Sub(find x Type.Int regenv, find' y' regenv)), regenv)
+  | SLL(x, y') -> NoSpill(Ans(SLL(find x Type.Int regenv, find' y' regenv)), regenv)
+  | SRL(x, y') -> NoSpill(Ans(SRL(find x Type.Int regenv, find' y' regenv)), regenv)
   | Ld(x, y') -> NoSpill(Ans(Ld(find x Type.Int regenv, find' y' regenv)), regenv)
   | St(x, y, z') -> NoSpill(Ans(St(find x Type.Int regenv, find y Type.Int regenv, find' z' regenv)), regenv)
   | FMov(x) -> NoSpill(Ans(FMov(find x Type.Float regenv)), regenv)
