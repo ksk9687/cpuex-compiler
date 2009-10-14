@@ -44,7 +44,8 @@ let () = (* ここからコンパイラの実行が開始される (caml2html: m
     (fun f -> ignore (file f))
     !files
 
-(* report1 debug *)
+(* report1 *)
+(*
 let test_k_lexbuf l =
   Id.counter := 0;
   Typing.extenv := M.empty;
@@ -61,3 +62,4 @@ let test_s_lexbuf l =
 			 (Typing.f
 			    (Parser.exp Lexer.token l))
 let test_s s = Syntax.string (test_s_lexbuf (Lexing.from_string s))
+*)

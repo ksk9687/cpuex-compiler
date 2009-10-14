@@ -1,16 +1,25 @@
 {
 (* lexerが利用する変数、関数、型などの定義 *)
+open Lexing
 open Parser
 open Type
+let lnum = ref 0
+let newline lexbuf =
+  lnum := !lnum + 1
 }
 
 (* 正規表現の略記 *)
-let space = [' ' '\t' '\n' '\r']
+let space = [' ' '\t']
+let nl = ['\n' '\r']
 let digit = ['0'-'9']
 let lower = ['a'-'z']
 let upper = ['A'-'Z']
 
 rule token = parse
+
+| nl
+    { newline lexbuf; token lexbuf}
+
 | space+
     { token lexbuf }
 | "(*"
@@ -34,6 +43,10 @@ rule token = parse
     { MINUS }
 | '+' (* +.より後回しにしなくても良い? 最長一致? *)
     { PLUS }
+| "*"
+    { AST }
+| "/"
+    { SLASH }
 | "-."
     { MINUS_DOT }
 | "+."
@@ -84,8 +97,9 @@ rule token = parse
     { IDENT(Lexing.lexeme lexbuf) }
 | _
     { failwith
-	(Printf.sprintf "unknown token %s near characters %d-%d"
+	(Printf.sprintf "unknown token %s near line %d characters %d-%d"
 	   (Lexing.lexeme lexbuf)
+	   !lnum
 	   (Lexing.lexeme_start lexbuf)
 	   (Lexing.lexeme_end lexbuf)) }
 and comment = parse

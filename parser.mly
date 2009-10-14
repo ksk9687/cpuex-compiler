@@ -1,7 +1,12 @@
 %{
 (* parserが利用する変数、関数、型などの定義 *)
 open Syntax
+open Lexing
 let addtyp x = (x, Type.gentyp ())
+let rec log2 x =
+  if x = 1 then 0
+  else if x mod 2 != 0 then assert false
+  else (log2 (x/2)) + 1
 %}
 
 /* 字句を表すデータ型の定義 (caml2html: parser_token) */
@@ -11,6 +16,8 @@ let addtyp x = (x, Type.gentyp ())
 %token NOT
 %token MINUS
 %token PLUS
+%token AST
+%token SLASH
 %token MINUS_DOT
 %token PLUS_DOT
 %token AST_DOT
@@ -45,7 +52,7 @@ let addtyp x = (x, Type.gentyp ())
 %left COMMA
 %left EQUAL LESS_GREATER LESS GREATER LESS_EQUAL GREATER_EQUAL
 %left PLUS MINUS PLUS_DOT MINUS_DOT
-%left AST_DOT SLASH_DOT
+%left AST SLASH AST_DOT SLASH_DOT
 %right prec_unary_minus
 %left prec_app
 %left DOT
@@ -87,6 +94,10 @@ exp: /* 一般の式 (caml2html: parser_exp) */
     { Add($1, $3) }
 | exp MINUS exp
     { Sub($1, $3) }
+| exp AST log2_x
+    { SLL($1, $3) }
+| exp SLASH log2_x
+    { SLR($1, $3) }
 | exp EQUAL exp
     { Eq($1, $3) }
 | exp LESS_GREATER exp
@@ -135,9 +146,12 @@ exp: /* 一般の式 (caml2html: parser_exp) */
     { Array($2, $3) }
 | error
     { failwith
-	(Printf.sprintf "parse error near characters %d-%d"
-	   (Parsing.symbol_start ())
-	   (Parsing.symbol_end ())) }
+	(Printf.sprintf "parse error from l:%d c:%d to l:%d c:%d"
+	   (Parsing.symbol_start_pos ()).pos_lnum 
+	   (Parsing.symbol_start_pos ()).pos_cnum 
+	   (Parsing.symbol_end_pos ()).pos_lnum 
+	   (Parsing.symbol_end_pos ()).pos_cnum 
+	)}
 
 fundef:
 | IDENT formal_args EQUAL exp
@@ -168,3 +182,8 @@ pat:
     { $1 @ [addtyp $3] }
 | IDENT COMMA IDENT
     { [addtyp $1; addtyp $3] }
+
+log2_x:
+| INT
+    {Int(log2 $1)}
+    

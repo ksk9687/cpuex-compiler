@@ -5,6 +5,8 @@ type t =
   | Neg of Id.t
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
+  | SLL of Id.t * Id.t
+  | SLR of Id.t * Id.t
   | FNeg of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
@@ -24,6 +26,9 @@ type t =
   | ExtFunApp of Id.t * Id.t list
 and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 
-val string : t -> unit
 val fv : t -> S.t
 val f : Syntax.t -> t
+
+(*
+val string : t -> unit
+*)

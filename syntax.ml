@@ -7,6 +7,8 @@ type t = (* MinCamlの構文を表現するデータ型 (caml2html: syntax_t) *)
   | Neg of t
   | Add of t * t
   | Sub of t * t
+  | SLL of t * t
+  | SLR of t * t
   | FNeg of t
   | FAdd of t * t
   | FSub of t * t
@@ -26,6 +28,7 @@ type t = (* MinCamlの構文を表現するデータ型 (caml2html: syntax_t) *)
   | Put of t * t * t
 and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 
+(*
 let rec string_t indent = function
   | Unit -> "Unit"
   | Bool (b)   -> indent ^ "Bool(" ^ (string_of_bool b) ^ ")\n"
@@ -92,3 +95,4 @@ and string_fundef indent {name = (i,t); args = list; body = b} =
 
 let rec string t = (* Syntax.tを出力 *)
   print_string (string_t "" t);;
+*)
