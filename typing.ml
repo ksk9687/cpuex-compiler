@@ -28,7 +28,7 @@ let rec deref_term = function
   | Add(e1, e2) -> Add(deref_term e1, deref_term e2)
   | Sub(e1, e2) -> Sub(deref_term e1, deref_term e2)
   | SLL(e1, e2) -> SLL(deref_term e1, deref_term e2)
-  | SLR(e1, e2) -> SLR(deref_term e1, deref_term e2)
+  | SRL(e1, e2) -> SRL(deref_term e1, deref_term e2)
   | Eq(e1, e2) -> Eq(deref_term e1, deref_term e2)
   | LE(e1, e2) -> LE(deref_term e1, deref_term e2)
   | FNeg(e) -> FNeg(deref_term e)
@@ -95,7 +95,7 @@ let rec g env e = (* 型推論ルーチン (caml2html: typing_g) *)
     | Neg(e) ->
 	unify Type.Int (g env e);
 	Type.Int
-    | Add(e1, e2) | Sub(e1, e2) | SLL(e1,e2) | SLR(e1, e2) ->
+    | Add(e1, e2) | Sub(e1, e2) | SLL(e1,e2) | SRL(e1, e2) ->
 	  (* 足し算（と引き算とシフト演算）の型推論 (caml2html: typing_add) *)
 	unify Type.Int (g env e1);
 	unify Type.Int (g env e2);

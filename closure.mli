@@ -7,7 +7,7 @@ type t =
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
   | SLL of Id.t * Id.t
-  | SLR of Id.t * Id.t
+  | SRL of Id.t * Id.t
   | FNeg of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t

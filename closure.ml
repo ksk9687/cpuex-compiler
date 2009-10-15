@@ -7,7 +7,7 @@ type t = (* クロージャ変換後の式 (caml2html: closure_t) *)
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
   | SLL of Id.t * Id.t
-  | SLR of Id.t * Id.t
+  | SRL of Id.t * Id.t
   | FNeg of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
@@ -34,7 +34,7 @@ type prog = Prog of fundef list * t
 let rec fv = function
   | Unit | Int(_) | Float(_) | ExtArray(_) -> S.empty
   | Neg(x) | FNeg(x) -> S.singleton x
-  | Add(x, y) | Sub(x, y) | SLL(x, y) | SLR(x, y) | FAdd(x, y) | FSub(x, y) | FMul(x, y) | FDiv(x, y) | Get(x, y) -> S.of_list [x; y]
+  | Add(x, y) | Sub(x, y) | SLL(x, y) | SRL(x, y) | FAdd(x, y) | FSub(x, y) | FMul(x, y) | FDiv(x, y) | Get(x, y) -> S.of_list [x; y]
   | IfEq(x, y, e1, e2)| IfLE(x, y, e1, e2) -> S.add x (S.add y (S.union (fv e1) (fv e2)))
   | Let((x, t), e1, e2) -> S.union (fv e1) (S.remove x (fv e2))
   | Var(x) -> S.singleton x
@@ -54,7 +54,7 @@ let rec g env known = function (* クロージャ変換ルーチン本体 (caml2
   | KNormal.Add(x, y) -> Add(x, y)
   | KNormal.Sub(x, y) -> Sub(x, y)
   | KNormal.SLL(x, y) -> SLL(x, y)
-  | KNormal.SLR(x, y) -> SLR(x, y)
+  | KNormal.SRL(x, y) -> SRL(x, y)
   | KNormal.FNeg(x) -> FNeg(x)
   | KNormal.FAdd(x, y) -> FAdd(x, y)
   | KNormal.FSub(x, y) -> FSub(x, y)

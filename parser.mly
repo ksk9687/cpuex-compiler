@@ -97,7 +97,7 @@ exp: /* 一般の式 (caml2html: parser_exp) */
 | exp AST log2_x
     { SLL($1, $3) }
 | exp SLASH log2_x
-    { SLR($1, $3) }
+    { SRL($1, $3) }
 | exp EQUAL exp
     { Eq($1, $3) }
 | exp LESS_GREATER exp
