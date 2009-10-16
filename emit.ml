@@ -124,10 +124,10 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
 			g' oc (NonTail(reg_asm), Set(y));
 			g' oc (Tail, IfGE(x, V(reg_asm), e1, e2))
   | Tail, IfFEq(x, y, e1, e2) ->
-      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fcmp" x y reg_asm;
       g'_tail_if oc e1 e2 "be" "bne"
   | Tail, IfFLE(x, y, e1, e2) ->
-      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fcmp" x y reg_asm;
       g'_tail_if oc e1 e2 "ble" "bg"
   | NonTail(z), IfEq(x, V(y), e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
