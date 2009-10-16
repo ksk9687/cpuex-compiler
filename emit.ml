@@ -123,8 +123,12 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | Tail, IfGE(x, C(y), e1, e2) ->
 			g' oc (NonTail(reg_asm), Set(y));
 			g' oc (Tail, IfGE(x, V(reg_asm), e1, e2))
-  | Tail, IfFEq(x, y, e1, e2) -> g' oc (Tail, IfEq(x, V(y), e1, e2))
-  | Tail, IfFLE(x, y, e1, e2) -> g' oc (Tail, IfLE(x, V(y), e1, e2))
+  | Tail, IfFEq(x, y, e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
+      g'_tail_if oc e1 e2 "be" "bne"
+  | Tail, IfFLE(x, y, e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
+      g'_tail_if oc e1 e2 "ble" "bg"
   | NonTail(z), IfEq(x, V(y), e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
       g'_non_tail_if oc (NonTail(z)) e1 e2 "be" "bne"
@@ -143,8 +147,12 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | NonTail(z), IfGE(x, C(y), e1, e2) ->
 			g' oc (NonTail(reg_asm), Set(y));
 			g' oc (NonTail(z), IfGE(x, V(reg_asm), e1, e2))
-  | NonTail(z), IfFEq(x, y, e1, e2) -> g' oc (NonTail(z), IfEq(x, V(y), e1, e2))
-  | NonTail(z), IfFLE(x, y, e1, e2) -> g' oc (NonTail(z), IfLE(x, V(y), e1, e2))
+  | NonTail(z), IfFEq(x, y, e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fcmp" x y reg_asm;
+      g'_non_tail_if oc (NonTail(z)) e1 e2 "be" "bne"
+  | NonTail(z), IfFLE(x, y, e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fcmp" x y reg_asm;
+      g'_non_tail_if oc (NonTail(z)) e1 e2 "ble" "bg"
   (* 関数呼び出しの仮想命令の実装 (caml2html: emit_call) *)
   | Tail, CallCls(x, ys, zs) -> (* 末尾呼び出し (caml2html: emit_tailcall) *)
       g'_args oc [(x, reg_cl)] ys zs;

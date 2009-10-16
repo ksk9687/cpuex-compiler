@@ -162,6 +162,6 @@ let f e =
 *)
 (*  (try unify Type.Unit (g M.empty e)
   with Unify _ -> failwith "top level does not have type unit"); *)
-  g M.empty e;
+  ignore(g M.empty e);
   extenv := M.map deref_typ !extenv;
   deref_term e
