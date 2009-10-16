@@ -148,7 +148,7 @@ exp: /* 一般の式 (caml2html: parser_exp) */
     { Array($2, $3) }
 | error
     { failwith
-	(Printf.sprintf "parse error from l:%d c:%d to l:%d c:%d"
+	(Printf.sprintf "parse error from l:%d c:%d to l:%d c:%d "
 	   (Parsing.symbol_start_pos ()).pos_lnum 
 	   (Parsing.symbol_start_pos ()).pos_cnum 
 	   (Parsing.symbol_end_pos ()).pos_lnum 

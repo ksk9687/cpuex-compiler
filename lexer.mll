@@ -4,10 +4,7 @@ open Lexing
 open Parser
 open Type
 let lnum = ref 0
-let newline lexbuf =
-  lnum := !lnum + 1
 }
-
 (* 正規表現の略記 *)
 let space = [' ' '\t']
 let nl = ['\n' '\r']
@@ -18,7 +15,7 @@ let upper = ['A'-'Z']
 rule token = parse
 
 | nl
-    { newline lexbuf; token lexbuf}
+    { token lexbuf}
 
 | space+
     { token lexbuf }
