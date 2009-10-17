@@ -1,4 +1,24 @@
-#定数テーブル
+######################################################################
+#
+# 		↓　ここから lib_asm.s
+#
+######################################################################
+
+.define $mi $i2
+.define $mfhx $i3
+.define $mf $f2
+.define $cond $i4
+
+.define $q $i5
+.define $r $i6
+.define $temp $i7
+
+.define $rf $f6
+.define $tempf $f7
+
+######################################################################
+# * 算術関数用定数テーブル
+######################################################################
 min_caml_atan_table:
 	.float 0.785398163397448279
 	.float 0.463647609000806094
@@ -77,53 +97,17 @@ min_caml_rsqrt_table:
 	.float 5.9604644775390625e-08
 	.float 4.21468485108940281e-08
 
-
-
-######################################################################
-# lib - 浮動小数点ライブラリ-20091014-2版
-#
-# * fless
-# * fispos
-# * fisneg
-# * fhalf
-# * fsqr
-# * fabs
-# * fneg
-# * sqrt
-# * floor (要改造)
-# * int_to_float
-# * float_to_int
-# * read_int
-# * read_float
-# * write_int
-# * write_float
-#
-######################################################################
-
-.define $mi $i2
-.define $mfhx $i3
-.define $mf $f2
-.define $cond $i4
-
-.define $q $i5
-.define $r $i6
-.define $temp $i7
-
-.define $rf $f6
-.define $tempf $f7
-
-
 ######################################################################
 # * fless
 # fless($f1, $f2) := ($f1 < $f2) ? 1 : 0
 ######################################################################
 min_caml_fless:
-	fcmp $f1 $f2 $cond
-	bge $cond FLESS_RET
-	li $i1 1
+	fcmp $f1, $f2, $cond
+	bge $cond, FLESS_RET
+	li 1, $i1
 	ret
 FLESS_RET:
-	li $i1 0
+	li 0, $i1
 	ret
 
 
@@ -132,12 +116,12 @@ FLESS_RET:
 # fispos($f1) := ($f1 > 0) ? 1 : 0
 ######################################################################
 min_caml_fispos:
-	fcmp $f1 $fzero $cond
-	bg $cond FISPOS_RET
-	li $i1 0
+	fcmp $f1, $fzero, $cond
+	bg $cond, FISPOS_RET
+	li 0, $i1
 	ret
 FISPOS_RET:
-	li $i1 1
+	li 1, $i1
 	ret
 
 
@@ -146,12 +130,12 @@ FISPOS_RET:
 # fisneg($f1) := ($f1 < 0) ? 1 : 0
 ######################################################################
 min_caml_fisneg:
-	fcmp $f1 $fzero $cond
-	bl $cond FISNEG_RET
-	li $i1 0
+	fcmp $f1, $fzero, $cond
+	bl $cond, FISNEG_RET
+	li 0, $i1
 	ret
 FISNEG_RET:
-	li $i1 1
+	li 1, $i1
 	ret
 
 
@@ -160,12 +144,12 @@ FISNEG_RET:
 # fiszero($f1) := ($f1 == 0) ? 1 : 0
 ######################################################################
 min_caml_fiszero:
-	fcmp $f1 $fzero $cond
-	be $cond FISZERO_RET
-	li $i1 0
+	fcmp $f1, $fzero, $cond
+	be $cond, FISZERO_RET
+	li 0, $i1
 	ret
 FISZERO_RET:
-	li $i1 1
+	li 1, $i1
 	ret
 
 
@@ -174,8 +158,8 @@ FISZERO_RET:
 # fhalf($f1) := $f1 / 2.0
 ######################################################################
 min_caml_fhalf:
-	load $zero $f2 FHALF_DAT
-	fmul $f1 $f2 $f1
+	load FHALF_DAT($zero), $f2
+	fmul $f1, $f2, $f1
 	ret
 FHALF_DAT:
 	.float 0.5
@@ -186,7 +170,7 @@ FHALF_DAT:
 # fsqr($f1) := $f1 * $f1
 ######################################################################
 min_caml_fsqr:
-	fmul $f1 $f1 $f1
+	fmul $f1, $f1, $f1
 	ret
 
 
@@ -194,11 +178,11 @@ min_caml_fsqr:
 # * fabs
 ######################################################################
 min_caml_fabs:
-	fcmp $f1 $fzero $cond
-	ble $cond FABS_NEG
+	fcmp $f1, $fzero, $cond
+	ble $cond, FABS_NEG
 	ret
 FABS_NEG:
-	fsub $fzero $f1 $f1
+	fneg $f1, $f1
 	ret
 
 
@@ -206,7 +190,7 @@ FABS_NEG:
 # * fneg
 ######################################################################
 min_caml_fneg:
-	fsub $fzero $f1 $f1
+	fneg $f1, $f1
 	ret
 
 
@@ -383,3 +367,10 @@ CREATE_FLOAT_ARRAY_LOOP:
 	b CREATE_FLOAT_ARRAY_LOOP
 CREATE_FLOAT_ARRAY_END:
 	ret
+
+
+######################################################################
+#
+# 		↑　ここまで lib_asm.s
+#
+######################################################################

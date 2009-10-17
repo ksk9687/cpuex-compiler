@@ -186,9 +186,9 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
 			g' oc (NonTail(reg_sp), Sub(reg_sp, C(ss)));
 			g' oc (NonTail(reg_ra), Ld(reg_sp, C(ss - 1)));
       if List.mem a allregs && a <> regs.(0) then
-				g' oc (NonTail(regs.(0)), Mov(a))
+				g' oc (NonTail(a), Mov(regs.(0)))
       else if List.mem a allfregs && a <> fregs.(0) then
-				g' oc (NonTail(fregs.(0)), FMov(a))
+				g' oc (NonTail(a), FMov(fregs.(0)))
 and g'_tail_if oc e1 e2 b bn =
   let b_else = Id.genid (b ^ "_else") in
   Printf.fprintf oc "\t%-8s%s, %s\n" bn reg_asm b_else;
