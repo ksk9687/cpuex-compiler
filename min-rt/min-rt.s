@@ -119,1507 +119,128 @@
 # 		↑　ここまで macro.s
 #
 ######################################################################
-	li      25, $i1
-	li      l.14551, $i2
-	load    0($i2), $f1
-	store   $f1, 0($sp)
-	li      l.14553, $i2
-	load    0($i2), $f2
-	store   $f2, 1($sp)
-	li      l.14555, $i2
-	load    0($i2), $f3
-	store   $f3, 2($sp)
-	mov     $hp, $i2
-	store   $i2, 3($sp)
-	add     $hp, 2, $hp
-	li      cordic_sin.2737, $i3
-	store   $i3, 0($i2)
-	store   $i1, 1($i2)
-	mov     $hp, $i3
-	store   $i3, 4($sp)
-	add     $hp, 2, $hp
-	li      cordic_cos.2739, $i4
-	store   $i4, 0($i3)
-	store   $i1, 1($i3)
-	mov     $hp, $i4
-	store   $i4, 5($sp)
-	add     $hp, 2, $hp
-	li      cordic_atan.2741, $i5
-	store   $i5, 0($i4)
-	store   $i1, 1($i4)
-	mov     $hp, $i1
-	store   $i1, 6($sp)
-	add     $hp, 5, $hp
-	li      sin.2743, $i4
-	store   $i4, 0($i1)
-	store   $f3, 4($i1)
-	store   $f2, 3($i1)
-	store   $f1, 2($i1)
-	store   $i2, 1($i1)
-	mov     $hp, $i1
-	store   $i1, 7($sp)
-	add     $hp, 5, $hp
-	li      cos.2745, $i2
-	store   $i2, 0($i1)
-	store   $f3, 4($i1)
-	store   $f2, 3($i1)
-	store   $f1, 2($i1)
-	store   $i3, 1($i1)
-	li      1, $i1
-	li      0, $i2
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
-	jal     min_caml_create_array
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	store   $i1, 8($sp)
-	li      0, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 9($sp)
-	add     $sp, 10, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	li      60, $i2
-	li      0, $i3
-	li      0, $i4
-	li      0, $i5
-	li      0, $i6
-	li      0, $i7
-	mov     $hp, $i8
-	add     $hp, 11, $hp
-	store   $i1, 10($i8)
-	store   $i1, 9($i8)
-	store   $i1, 8($i8)
-	store   $i1, 7($i8)
-	store   $i7, 6($i8)
-	store   $i1, 5($i8)
-	store   $i1, 4($i8)
-	store   $i6, 3($i8)
-	store   $i5, 2($i8)
-	store   $i4, 1($i8)
-	store   $i3, 0($i8)
-	mov     $i8, $i1
-	mov     $i2, $i10
-	mov     $i1, $i2
-	mov     $i10, $i1
-	store   $ra, 9($sp)
-	add     $sp, 10, $sp
-	jal     min_caml_create_array
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	store   $i1, 9($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 10($sp)
-	add     $sp, 11, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	store   $i1, 10($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	store   $i1, 11($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	store   $i1, 12($sp)
-	li      1, $i1
-	li      l.14284, $i2
-	load    0($i2), $f1
-	store   $ra, 13($sp)
-	add     $sp, 14, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	store   $i1, 13($sp)
-	li      50, $i1
-	store   $i1, 14($sp)
-	li      1, $i1
-	li      -1, $i2
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     min_caml_create_array
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	mov     $i1, $i2
-	load    14($sp), $i1
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     min_caml_create_array
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	store   $i1, 15($sp)
-	li      1, $i2
-	store   $i2, 16($sp)
-	li      1, $i2
-	load    0($i1), $i1
-	mov     $i2, $i10
-	mov     $i1, $i2
-	mov     $i10, $i1
-	store   $ra, 17($sp)
-	add     $sp, 18, $sp
-	jal     min_caml_create_array
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	mov     $i1, $i2
-	load    16($sp), $i1
-	store   $ra, 17($sp)
-	add     $sp, 18, $sp
-	jal     min_caml_create_array
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	store   $i1, 17($sp)
-	li      1, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 18($sp)
-	add     $sp, 19, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-	store   $i1, 18($sp)
-	li      1, $i1
-	li      0, $i2
-	store   $ra, 19($sp)
-	add     $sp, 20, $sp
-	jal     min_caml_create_array
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	store   $i1, 19($sp)
-	li      1, $i1
-	li      l.14248, $i2
-	load    0($i2), $f1
-	store   $ra, 20($sp)
-	add     $sp, 21, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	store   $i1, 20($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 21($sp)
-	add     $sp, 22, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 22, $sp
-	load    21($sp), $ra
-	store   $i1, 21($sp)
-	li      1, $i1
-	li      0, $i2
-	store   $ra, 22($sp)
-	add     $sp, 23, $sp
-	jal     min_caml_create_array
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	store   $i1, 22($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 23($sp)
-	add     $sp, 24, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 24, $sp
-	load    23($sp), $ra
-	store   $i1, 23($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 24($sp)
-	add     $sp, 25, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	store   $i1, 24($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 25($sp)
-	add     $sp, 26, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	store   $i1, 25($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 26($sp)
-	add     $sp, 27, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 27, $sp
-	load    26($sp), $ra
-	store   $i1, 26($sp)
-	li      2, $i1
-	li      0, $i2
-	store   $ra, 27($sp)
-	add     $sp, 28, $sp
-	jal     min_caml_create_array
-	sub     $sp, 28, $sp
-	load    27($sp), $ra
-	store   $i1, 27($sp)
-	li      2, $i1
-	li      0, $i2
-	store   $ra, 28($sp)
-	add     $sp, 29, $sp
-	jal     min_caml_create_array
-	sub     $sp, 29, $sp
-	load    28($sp), $ra
-	store   $i1, 28($sp)
-	li      1, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 29($sp)
-	add     $sp, 30, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 30, $sp
-	load    29($sp), $ra
-	store   $i1, 29($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 30($sp)
-	add     $sp, 31, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 31, $sp
-	load    30($sp), $ra
-	store   $i1, 30($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 31($sp)
-	add     $sp, 32, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 32, $sp
-	load    31($sp), $ra
-	store   $i1, 31($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 32($sp)
-	add     $sp, 33, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 33, $sp
-	load    32($sp), $ra
-	store   $i1, 32($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 33($sp)
-	add     $sp, 34, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 34, $sp
-	load    33($sp), $ra
-	store   $i1, 33($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 34($sp)
-	add     $sp, 35, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 35, $sp
-	load    34($sp), $ra
-	store   $i1, 34($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 35($sp)
-	add     $sp, 36, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 36, $sp
-	load    35($sp), $ra
-	store   $i1, 35($sp)
-	li      0, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 36($sp)
-	add     $sp, 37, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 37, $sp
-	load    36($sp), $ra
-	mov     $i1, $i2
-	store   $i2, 36($sp)
-	li      0, $i1
-	store   $ra, 37($sp)
-	add     $sp, 38, $sp
-	jal     min_caml_create_array
-	sub     $sp, 38, $sp
-	load    37($sp), $ra
-	li      0, $i2
-	mov     $hp, $i3
-	add     $hp, 2, $hp
-	store   $i1, 1($i3)
-	load    36($sp), $i1
-	store   $i1, 0($i3)
-	mov     $i3, $i1
-	mov     $i2, $i10
-	mov     $i1, $i2
-	mov     $i10, $i1
-	store   $ra, 37($sp)
-	add     $sp, 38, $sp
-	jal     min_caml_create_array
-	sub     $sp, 38, $sp
-	load    37($sp), $ra
-	mov     $i1, $i2
-	li      5, $i1
-	store   $ra, 37($sp)
-	add     $sp, 38, $sp
-	jal     min_caml_create_array
-	sub     $sp, 38, $sp
-	load    37($sp), $ra
-	store   $i1, 37($sp)
-	li      0, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 38($sp)
-	add     $sp, 39, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 39, $sp
-	load    38($sp), $ra
-	store   $i1, 38($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 39($sp)
-	add     $sp, 40, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 40, $sp
-	load    39($sp), $ra
-	store   $i1, 39($sp)
-	li      60, $i1
-	load    38($sp), $i2
-	store   $ra, 40($sp)
-	add     $sp, 41, $sp
-	jal     min_caml_create_array
-	sub     $sp, 41, $sp
-	load    40($sp), $ra
-	store   $i1, 40($sp)
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    39($sp), $i1
-	store   $i1, 0($i2)
-	mov     $i2, $i1
-	store   $i1, 41($sp)
-	li      0, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 42($sp)
-	add     $sp, 43, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 43, $sp
-	load    42($sp), $ra
-	mov     $i1, $i2
-	store   $i2, 42($sp)
-	li      0, $i1
-	store   $ra, 43($sp)
-	add     $sp, 44, $sp
-	jal     min_caml_create_array
-	sub     $sp, 44, $sp
-	load    43($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    42($sp), $i1
-	store   $i1, 0($i2)
-	mov     $i2, $i1
-	li      180, $i2
-	li      0, $i3
-	li      l.14001, $i4
-	load    0($i4), $f1
-	mov     $hp, $i4
-	add     $hp, 3, $hp
-	store   $f1, 2($i4)
-	store   $i1, 1($i4)
-	store   $i3, 0($i4)
-	mov     $i4, $i1
-	mov     $i2, $i10
-	mov     $i1, $i2
-	mov     $i10, $i1
-	store   $ra, 43($sp)
-	add     $sp, 44, $sp
-	jal     min_caml_create_array
-	sub     $sp, 44, $sp
-	load    43($sp), $ra
-	store   $i1, 43($sp)
-	li      1, $i1
-	li      0, $i2
-	store   $ra, 44($sp)
-	add     $sp, 45, $sp
-	jal     min_caml_create_array
-	sub     $sp, 45, $sp
-	load    44($sp), $ra
-	store   $i1, 44($sp)
-	mov     $hp, $i1
-	store   $i1, 45($sp)
-	add     $hp, 13, $hp
-	li      read_screen_settings.2917, $i2
-	store   $i2, 0($i1)
-	load    11($sp), $i2
-	store   $i2, 12($i1)
-	load    6($sp), $i2
-	store   $i2, 11($i1)
-	load    34($sp), $i3
-	store   $i3, 10($i1)
-	load    33($sp), $i3
-	store   $i3, 9($i1)
-	load    32($sp), $i3
-	store   $i3, 8($i1)
-	load    10($sp), $i3
-	store   $i3, 7($i1)
-	load    2($sp), $f1
-	store   $f1, 6($i1)
-	load    1($sp), $f2
-	store   $f2, 5($i1)
-	load    0($sp), $f3
-	store   $f3, 4($i1)
-	load    7($sp), $i3
-	store   $i3, 3($i1)
-	load    3($sp), $i4
-	store   $i4, 2($i1)
-	load    4($sp), $i5
-	store   $i5, 1($i1)
-	mov     $hp, $i1
-	store   $i1, 46($sp)
-	add     $hp, 10, $hp
-	li      read_light.2919, $i6
-	store   $i6, 0($i1)
-	store   $i2, 9($i1)
-	store   $f1, 8($i1)
-	store   $f2, 7($i1)
-	store   $f3, 6($i1)
-	load    12($sp), $i6
-	store   $i6, 5($i1)
-	store   $i3, 4($i1)
-	store   $i4, 3($i1)
-	store   $i5, 2($i1)
-	load    13($sp), $i7
-	store   $i7, 1($i1)
-	mov     $hp, $i1
-	add     $hp, 8, $hp
-	li      rotate_quadratic_matrix.2921, $i7
-	store   $i7, 0($i1)
-	store   $i2, 7($i1)
-	store   $f1, 6($i1)
-	store   $f2, 5($i1)
-	store   $f3, 4($i1)
-	store   $i3, 3($i1)
-	store   $i4, 2($i1)
-	store   $i5, 1($i1)
-	mov     $hp, $i2
-	store   $i2, 47($sp)
-	add     $hp, 3, $hp
-	li      read_nth_object.2924, $i3
-	store   $i3, 0($i2)
-	store   $i1, 2($i2)
-	load    9($sp), $i1
-	store   $i1, 1($i2)
-	mov     $hp, $i3
-	store   $i3, 48($sp)
-	add     $hp, 3, $hp
-	li      read_object.2926, $i4
-	store   $i4, 0($i3)
-	store   $i2, 2($i3)
-	load    8($sp), $i2
-	store   $i2, 1($i3)
-	mov     $hp, $i2
-	store   $i2, 49($sp)
-	add     $hp, 2, $hp
-	li      read_and_network.2934, $i3
-	store   $i3, 0($i2)
-	load    15($sp), $i3
-	store   $i3, 1($i2)
-	mov     $hp, $i2
-	store   $i2, 50($sp)
-	add     $hp, 2, $hp
-	li      solver_rect_surface.2938, $i4
-	store   $i4, 0($i2)
-	load    18($sp), $i4
-	store   $i4, 1($i2)
-	mov     $hp, $i5
-	store   $i5, 51($sp)
-	add     $hp, 2, $hp
-	li      solver_surface.2953, $i7
-	store   $i7, 0($i5)
-	store   $i4, 1($i5)
-	mov     $hp, $i5
-	store   $i5, 52($sp)
-	add     $hp, 2, $hp
-	li      solver_second.2972, $i7
-	store   $i7, 0($i5)
-	store   $i4, 1($i5)
-	mov     $hp, $i7
-	store   $i7, 53($sp)
-	add     $hp, 5, $hp
-	li      solver.2978, $i8
-	store   $i8, 0($i7)
-	store   $i5, 4($i7)
-	store   $i2, 3($i7)
-	store   $i4, 2($i7)
-	store   $i1, 1($i7)
-	mov     $hp, $i2
-	store   $i2, 54($sp)
-	add     $hp, 2, $hp
-	li      solver_rect_fast.2982, $i5
-	store   $i5, 0($i2)
-	store   $i4, 1($i2)
-	mov     $hp, $i5
-	add     $hp, 2, $hp
-	li      solver_second_fast.2995, $i7
-	store   $i7, 0($i5)
-	store   $i4, 1($i5)
-	mov     $hp, $i7
-	store   $i7, 55($sp)
-	add     $hp, 2, $hp
-	li      solver_second_fast2.3012, $i8
-	store   $i8, 0($i7)
-	store   $i4, 1($i7)
-	mov     $hp, $i8
-	store   $i8, 56($sp)
-	add     $hp, 5, $hp
-	li      solver_fast2.3019, $i9
-	store   $i9, 0($i8)
-	store   $i7, 4($i8)
-	store   $i2, 3($i8)
-	store   $i4, 2($i8)
-	store   $i1, 1($i8)
-	mov     $hp, $i7
-	store   $i7, 57($sp)
-	add     $hp, 2, $hp
-	li      iter_setup_dirvec_constants.3031, $i8
-	store   $i8, 0($i7)
-	store   $i1, 1($i7)
-	mov     $hp, $i7
-	store   $i7, 58($sp)
-	add     $hp, 2, $hp
-	li      setup_startp_constants.3036, $i8
-	store   $i8, 0($i7)
-	store   $i1, 1($i7)
-	mov     $hp, $i7
-	store   $i7, 59($sp)
-	add     $hp, 2, $hp
-	li      check_all_inside.3061, $i8
-	store   $i8, 0($i7)
-	store   $i1, 1($i7)
-	mov     $hp, $i8
-	add     $hp, 10, $hp
-	li      shadow_check_and_group.3067, $i9
-	store   $i9, 0($i8)
-	load    39($sp), $i9
-	store   $i9, 9($i8)
-	store   $i5, 8($i8)
-	store   $i2, 7($i8)
-	store   $i4, 6($i8)
-	store   $i1, 5($i8)
-	store   $i6, 4($i8)
-	load    21($sp), $i6
-	store   $i6, 3($i8)
-	load    40($sp), $i10
-	store   $i10, 2($i8)
-	store   $i7, 1($i8)
-	mov     $hp, $i7
-	add     $hp, 3, $hp
-	li      shadow_check_one_or_group.3070, $i11
-	store   $i11, 0($i7)
-	store   $i8, 2($i7)
-	store   $i3, 1($i7)
-	mov     $hp, $i3
-	store   $i3, 60($sp)
-	add     $hp, 11, $hp
-	li      shadow_check_one_or_matrix.3073, $i11
-	store   $i11, 0($i3)
-	store   $i9, 10($i3)
-	store   $i5, 9($i3)
-	store   $i2, 8($i3)
-	store   $i4, 7($i3)
-	store   $i7, 6($i3)
-	store   $i8, 5($i3)
-	store   $i1, 4($i3)
-	store   $i6, 3($i3)
-	store   $i10, 2($i3)
-	load    15($sp), $i2
-	store   $i2, 1($i3)
-	mov     $hp, $i3
-	add     $hp, 12, $hp
-	li      solve_each_element.3076, $i5
-	store   $i5, 0($i3)
-	load    20($sp), $i5
-	store   $i5, 11($i3)
-	load    30($sp), $i7
-	store   $i7, 10($i3)
-	load    51($sp), $i8
-	store   $i8, 9($i3)
-	load    52($sp), $i9
-	store   $i9, 8($i3)
-	load    50($sp), $i10
-	store   $i10, 7($i3)
-	store   $i4, 6($i3)
-	store   $i1, 5($i3)
-	load    19($sp), $i11
-	store   $i11, 4($i3)
-	store   $i6, 3($i3)
-	load    22($sp), $i6
-	store   $i6, 2($i3)
-	load    59($sp), $i6
-	store   $i6, 1($i3)
-	mov     $hp, $i6
-	add     $hp, 3, $hp
-	li      solve_one_or_network.3080, $i11
-	store   $i11, 0($i6)
-	store   $i3, 2($i6)
-	store   $i2, 1($i6)
-	mov     $hp, $i2
-	store   $i2, 61($sp)
-	add     $hp, 12, $hp
-	li      trace_or_matrix.3084, $i11
-	store   $i11, 0($i2)
-	store   $i5, 11($i2)
-	store   $i7, 10($i2)
-	store   $i8, 9($i2)
-	store   $i9, 8($i2)
-	store   $i10, 7($i2)
-	store   $i4, 6($i2)
-	load    53($sp), $i7
-	store   $i7, 5($i2)
-	store   $i6, 4($i2)
-	store   $i3, 3($i2)
-	store   $i1, 2($i2)
-	load    15($sp), $i3
-	store   $i3, 1($i2)
-	mov     $hp, $i2
-	add     $hp, 11, $hp
-	li      solve_each_element_fast.3090, $i6
-	store   $i6, 0($i2)
-	store   $i5, 10($i2)
-	load    31($sp), $i6
-	store   $i6, 9($i2)
-	load    55($sp), $i6
-	store   $i6, 8($i2)
-	load    54($sp), $i7
-	store   $i7, 7($i2)
-	store   $i4, 6($i2)
-	store   $i1, 5($i2)
-	load    19($sp), $i8
-	store   $i8, 4($i2)
-	load    21($sp), $i8
-	store   $i8, 3($i2)
-	load    22($sp), $i9
-	store   $i9, 2($i2)
-	load    59($sp), $i9
-	store   $i9, 1($i2)
-	mov     $hp, $i9
-	add     $hp, 3, $hp
-	li      solve_one_or_network_fast.3094, $i10
-	store   $i10, 0($i9)
-	store   $i2, 2($i9)
-	store   $i3, 1($i9)
-	mov     $hp, $i10
-	store   $i10, 62($sp)
-	add     $hp, 10, $hp
-	li      trace_or_matrix_fast.3098, $i11
-	store   $i11, 0($i10)
-	store   $i5, 9($i10)
-	store   $i6, 8($i10)
-	store   $i7, 7($i10)
-	load    56($sp), $i6
-	store   $i6, 6($i10)
-	store   $i4, 5($i10)
-	store   $i9, 4($i10)
-	store   $i2, 3($i10)
-	store   $i1, 2($i10)
-	store   $i3, 1($i10)
-	mov     $hp, $i7
-	store   $i7, 63($sp)
-	add     $hp, 9, $hp
-	li      judge_intersection_fast.3102, $i11
-	store   $i11, 0($i7)
-	store   $i10, 8($i7)
-	store   $i5, 7($i7)
-	store   $i6, 6($i7)
-	store   $i4, 5($i7)
-	store   $i9, 4($i7)
-	store   $i2, 3($i7)
-	load    17($sp), $i2
-	store   $i2, 2($i7)
-	store   $i3, 1($i7)
-	mov     $hp, $i3
-	store   $i3, 64($sp)
-	add     $hp, 3, $hp
-	li      get_nvector_second.3108, $i4
-	store   $i4, 0($i3)
-	load    23($sp), $i4
-	store   $i4, 2($i3)
-	store   $i8, 1($i3)
-	mov     $hp, $i6
-	store   $i6, 65($sp)
-	add     $hp, 4, $hp
-	li      get_nvector.3110, $i7
-	store   $i7, 0($i6)
-	store   $i4, 3($i6)
-	load    19($sp), $i7
-	store   $i7, 2($i6)
-	store   $i3, 1($i6)
-	mov     $hp, $i3
-	add     $hp, 10, $hp
-	li      utexture.3113, $i6
-	store   $i6, 0($i3)
-	load    24($sp), $i6
-	store   $i6, 9($i3)
-	load    6($sp), $i8
-	store   $i8, 8($i3)
-	store   $f1, 7($i3)
-	store   $f2, 6($i3)
-	store   $f3, 5($i3)
-	load    7($sp), $i8
-	store   $i8, 4($i3)
-	load    3($sp), $i8
-	store   $i8, 3($i3)
-	load    4($sp), $i8
-	store   $i8, 2($i3)
-	load    5($sp), $i8
-	store   $i8, 1($i3)
-	mov     $hp, $i8
-	add     $hp, 11, $hp
-	li      trace_reflections.3120, $i9
-	store   $i9, 0($i8)
-	store   $i10, 10($i8)
-	store   $i5, 9($i8)
-	store   $i6, 8($i8)
-	load    60($sp), $i9
-	store   $i9, 7($i8)
-	load    26($sp), $i10
-	store   $i10, 6($i8)
-	load    43($sp), $i11
-	store   $i11, 5($i8)
-	store   $i2, 4($i8)
-	store   $i4, 3($i8)
-	store   $i7, 2($i8)
-	load    22($sp), $i7
-	store   $i7, 1($i8)
-	mov     $hp, $i7
-	store   $i7, 66($sp)
-	add     $hp, 22, $hp
-	li      trace_ray.3125, $i11
-	store   $i11, 0($i7)
-	store   $i3, 21($i7)
-	store   $i8, 20($i7)
-	load    61($sp), $i8
-	store   $i8, 19($i7)
-	store   $i5, 18($i7)
-	store   $i6, 17($i7)
-	load    31($sp), $i8
-	store   $i8, 16($i7)
-	load    30($sp), $i8
-	store   $i8, 15($i7)
-	store   $i9, 14($i7)
-	load    58($sp), $i8
-	store   $i8, 13($i7)
-	store   $i10, 12($i7)
-	store   $i2, 11($i7)
-	store   $i1, 10($i7)
-	store   $i4, 9($i7)
-	load    44($sp), $i8
-	store   $i8, 8($i7)
-	load    8($sp), $i8
-	store   $i8, 7($i7)
-	load    12($sp), $i8
-	store   $i8, 6($i7)
-	load    19($sp), $i10
-	store   $i10, 5($i7)
-	load    21($sp), $i11
-	store   $i11, 4($i7)
-	load    22($sp), $i11
-	store   $i11, 3($i7)
-	load    64($sp), $i11
-	store   $i11, 2($i7)
-	load    13($sp), $i11
-	store   $i11, 1($i7)
-	mov     $hp, $i7
-	add     $hp, 15, $hp
-	li      trace_diffuse_ray.3131, $i11
-	store   $i11, 0($i7)
-	store   $i3, 14($i7)
-	load    62($sp), $i11
-	store   $i11, 13($i7)
-	store   $i5, 12($i7)
-	store   $i6, 11($i7)
-	store   $i9, 10($i7)
-	store   $i2, 9($i7)
-	store   $i1, 8($i7)
-	store   $i4, 7($i7)
-	store   $i8, 6($i7)
-	store   $i10, 5($i7)
-	load    21($sp), $i5
-	store   $i5, 4($i7)
-	load    22($sp), $i10
-	store   $i10, 3($i7)
-	load    64($sp), $i10
-	store   $i10, 2($i7)
-	load    25($sp), $i10
-	store   $i10, 1($i7)
-	mov     $hp, $i10
-	store   $i10, 67($sp)
-	add     $hp, 14, $hp
-	li      iter_trace_diffuse_rays.3134, $i11
-	store   $i11, 0($i10)
-	store   $i3, 13($i10)
-	store   $i7, 12($i10)
-	store   $i6, 11($i10)
-	store   $i9, 10($i10)
-	store   $i2, 9($i10)
-	store   $i1, 8($i10)
-	store   $i4, 7($i10)
-	store   $i8, 6($i10)
-	load    63($sp), $i1
-	store   $i1, 5($i10)
-	store   $i5, 4($i10)
-	load    22($sp), $i1
-	store   $i1, 3($i10)
-	load    65($sp), $i1
-	store   $i1, 2($i10)
-	load    25($sp), $i1
-	store   $i1, 1($i10)
-	mov     $hp, $i2
-	add     $hp, 6, $hp
-	li      trace_diffuse_ray_80percent.3143, $i3
-	store   $i3, 0($i2)
-	load    31($sp), $i3
-	store   $i3, 5($i2)
-	load    58($sp), $i4
-	store   $i4, 4($i2)
-	load    8($sp), $i5
-	store   $i5, 3($i2)
-	store   $i10, 2($i2)
-	load    37($sp), $i6
-	store   $i6, 1($i2)
-	mov     $hp, $i8
-	store   $i8, 68($sp)
-	add     $hp, 9, $hp
-	li      calc_diffuse_using_1point.3147, $i9
-	store   $i9, 0($i8)
-	store   $i7, 8($i8)
-	store   $i3, 7($i8)
-	store   $i4, 6($i8)
-	load    26($sp), $i9
-	store   $i9, 5($i8)
-	store   $i5, 4($i8)
-	store   $i10, 3($i8)
-	store   $i6, 2($i8)
-	store   $i1, 1($i8)
-	mov     $hp, $i6
-	store   $i6, 69($sp)
-	add     $hp, 3, $hp
-	li      calc_diffuse_using_5points.3150, $i10
-	store   $i10, 0($i6)
-	store   $i9, 2($i6)
-	store   $i1, 1($i6)
-	mov     $hp, $i10
-	store   $i10, 70($sp)
-	add     $hp, 5, $hp
-	li      do_without_neighbors.3156, $i11
-	store   $i11, 0($i10)
-	store   $i2, 4($i10)
-	store   $i9, 3($i10)
-	store   $i1, 2($i10)
-	store   $i8, 1($i10)
-	mov     $hp, $i2
-	store   $i2, 71($sp)
-	add     $hp, 4, $hp
-	li      try_exploit_neighbors.3172, $i11
-	store   $i11, 0($i2)
-	store   $i10, 3($i2)
-	store   $i6, 2($i2)
-	store   $i8, 1($i2)
-	mov     $hp, $i2
-	store   $i2, 72($sp)
-	add     $hp, 2, $hp
-	li      write_rgb.3183, $i6
-	store   $i6, 0($i2)
-	store   $i9, 1($i2)
-	mov     $hp, $i2
-	add     $hp, 8, $hp
-	li      pretrace_diffuse_rays.3185, $i6
-	store   $i6, 0($i2)
-	store   $i7, 7($i2)
-	store   $i3, 6($i2)
-	store   $i4, 5($i2)
-	store   $i5, 4($i2)
-	load    67($sp), $i6
-	store   $i6, 3($i2)
-	load    37($sp), $i8
-	store   $i8, 2($i2)
-	store   $i1, 1($i2)
-	mov     $hp, $i10
-	add     $hp, 17, $hp
-	li      pretrace_pixels.3188, $i11
-	store   $i11, 0($i10)
-	load    11($sp), $i11
-	store   $i11, 16($i10)
-	load    66($sp), $i11
-	store   $i11, 15($i10)
-	store   $i7, 14($i10)
-	store   $i3, 13($i10)
-	load    30($sp), $i3
-	store   $i3, 12($i10)
-	store   $i4, 11($i10)
-	load    32($sp), $i3
-	store   $i3, 10($i10)
-	load    29($sp), $i3
-	store   $i3, 9($i10)
-	store   $i9, 8($i10)
-	load    35($sp), $i4
-	store   $i4, 7($i10)
-	store   $i2, 6($i10)
-	store   $i5, 5($i10)
-	store   $i6, 4($i10)
-	load    28($sp), $i2
-	store   $i2, 3($i10)
-	store   $i8, 2($i10)
-	store   $i1, 1($i10)
-	mov     $hp, $i1
-	store   $i1, 73($sp)
-	add     $hp, 7, $hp
-	li      pretrace_line.3195, $i4
-	store   $i4, 0($i1)
-	load    34($sp), $i4
-	store   $i4, 6($i1)
-	load    33($sp), $i4
-	store   $i4, 5($i1)
-	store   $i3, 4($i1)
-	store   $i10, 3($i1)
-	load    27($sp), $i3
-	store   $i3, 2($i1)
-	store   $i2, 1($i1)
-	mov     $hp, $i2
-	add     $hp, 8, $hp
-	li      scan_pixel.3199, $i4
-	store   $i4, 0($i2)
-	load    72($sp), $i4
-	store   $i4, 7($i2)
-	load    71($sp), $i6
-	store   $i6, 6($i2)
-	store   $i9, 5($i2)
-	store   $i3, 4($i2)
-	load    70($sp), $i7
-	store   $i7, 3($i2)
-	load    69($sp), $i10
-	store   $i10, 2($i2)
-	load    68($sp), $i10
-	store   $i10, 1($i2)
-	mov     $hp, $i10
-	add     $hp, 8, $hp
-	li      scan_line.3205, $i11
-	store   $i11, 0($i10)
-	store   $i4, 7($i10)
-	store   $i6, 6($i10)
-	store   $i2, 5($i10)
-	store   $i9, 4($i10)
-	store   $i1, 3($i10)
-	store   $i3, 2($i10)
-	store   $i7, 1($i10)
-	mov     $hp, $i1
-	add     $hp, 10, $hp
-	li      calc_dirvec.3225, $i3
-	store   $i3, 0($i1)
-	load    6($sp), $i3
-	store   $i3, 9($i1)
-	store   $f1, 8($i1)
-	store   $f2, 7($i1)
-	store   $f3, 6($i1)
-	store   $i8, 5($i1)
-	load    7($sp), $i3
-	store   $i3, 4($i1)
-	load    3($sp), $i3
-	store   $i3, 3($i1)
-	load    4($sp), $i3
-	store   $i3, 2($i1)
-	load    5($sp), $i3
-	store   $i3, 1($i1)
-	mov     $hp, $i3
-	add     $hp, 2, $hp
-	li      calc_dirvecs.3233, $i4
-	store   $i4, 0($i3)
-	store   $i1, 1($i3)
-	mov     $hp, $i1
-	store   $i1, 74($sp)
-	add     $hp, 2, $hp
-	li      calc_dirvec_rows.3238, $i4
-	store   $i4, 0($i1)
-	store   $i3, 1($i1)
-	mov     $hp, $i1
-	add     $hp, 2, $hp
-	li      create_dirvec_elements.3244, $i3
-	store   $i3, 0($i1)
-	store   $i5, 1($i1)
-	mov     $hp, $i3
-	store   $i3, 75($sp)
-	add     $hp, 4, $hp
-	li      create_dirvecs.3247, $i4
-	store   $i4, 0($i3)
-	store   $i5, 3($i3)
-	store   $i8, 2($i3)
-	store   $i1, 1($i3)
-	mov     $hp, $i1
-	store   $i1, 76($sp)
-	add     $hp, 4, $hp
-	li      init_dirvec_constants.3249, $i3
-	store   $i3, 0($i1)
-	load    9($sp), $i3
-	store   $i3, 3($i1)
-	store   $i5, 2($i1)
-	load    57($sp), $i4
-	store   $i4, 1($i1)
-	mov     $hp, $i6
-	store   $i6, 77($sp)
-	add     $hp, 6, $hp
-	li      init_vecset_constants.3252, $i7
-	store   $i7, 0($i6)
-	store   $i3, 5($i6)
-	store   $i5, 4($i6)
-	store   $i4, 3($i6)
-	store   $i1, 2($i6)
-	store   $i8, 1($i6)
-	mov     $hp, $i1
-	add     $hp, 7, $hp
-	li      setup_rect_reflection.3263, $i6
-	store   $i6, 0($i1)
-	load    43($sp), $i6
-	store   $i6, 6($i1)
-	store   $i3, 5($i1)
-	load    44($sp), $i7
-	store   $i7, 4($i1)
-	store   $i5, 3($i1)
-	load    12($sp), $i8
-	store   $i8, 2($i1)
-	store   $i4, 1($i1)
-	mov     $hp, $i9
-	add     $hp, 7, $hp
-	li      setup_surface_reflection.3266, $i11
-	store   $i11, 0($i9)
-	store   $i6, 6($i9)
-	store   $i3, 5($i9)
-	store   $i7, 4($i9)
-	store   $i5, 3($i9)
-	store   $i8, 2($i9)
-	store   $i4, 1($i9)
-	mov     $hp, $i11
-	add     $hp, 26, $hp
-	li      rt.3271, $i6
-	store   $i6, 0($i11)
-	load    39($sp), $i6
-	store   $i6, 25($i11)
-	store   $i9, 24($i11)
-	store   $i1, 23($i11)
-	store   $i2, 22($i11)
-	load    29($sp), $i1
-	store   $i1, 21($i11)
-	store   $i10, 20($i11)
-	load    45($sp), $i1
-	store   $i1, 19($i11)
-	load    48($sp), $i1
-	store   $i1, 18($i11)
-	load    47($sp), $i1
-	store   $i1, 17($i11)
-	load    46($sp), $i1
-	store   $i1, 16($i11)
-	load    49($sp), $i1
-	store   $i1, 15($i11)
-	load    73($sp), $i1
-	store   $i1, 14($i11)
-	load    17($sp), $i1
-	store   $i1, 13($i11)
-	store   $i3, 12($i11)
-	store   $i5, 11($i11)
-	load    41($sp), $i1
-	store   $i1, 10($i11)
-	store   $i8, 9($i11)
-	store   $i4, 8($i11)
-	load    77($sp), $i1
-	store   $i1, 7($i11)
-	load    76($sp), $i1
-	store   $i1, 6($i11)
-	load    27($sp), $i1
-	store   $i1, 5($i11)
-	load    28($sp), $i1
-	store   $i1, 4($i11)
-	load    37($sp), $i1
-	store   $i1, 3($i11)
-	load    75($sp), $i1
-	store   $i1, 2($i11)
-	load    74($sp), $i1
-	store   $i1, 1($i11)
 	li      128, $i1
 	li      128, $i2
-	store   $ra, 78($sp)
-	load    0($i11), $i10
-	li      cls.24164, $ra
-	add     $sp, 79, $sp
-	jr      $i10
-cls.24164:
-	sub     $sp, 79, $sp
-	load    78($sp), $ra
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     rt.3351
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
 	li      0, $i12
 	halt
-cordic_rec.6623:
-	load    2($i11), $i2
-	load    1($i11), $f5
-	cmp     $i1, $i2, $i12
-	bne     $i12, be_else.24165
-	mov     $f2, $f1
-	ret
-be_else.24165:
-	fcmp    $f5, $f3, $i12
-	bg      $i12, ble_else.24166
-	add     $i1, 1, $i3
-	fmul    $f4, $f2, $f6
-	fadd    $f1, $f6, $f6
-	fmul    $f4, $f1, $f1
-	fsub    $f2, $f1, $f1
-	li      min_caml_atan_table, $i4
-	add     $i4, $i1, $i12
-	load    0($i12), $f2
-	fsub    $f3, $f2, $f2
-	li      l.13994, $i1
-	load    0($i1), $f3
-	fmul    $f4, $f3, $f3
-	cmp     $i3, $i2, $i12
-	bne     $i12, be_else.24167
-	ret
-be_else.24167:
-	fcmp    $f5, $f2, $i12
-	bg      $i12, ble_else.24168
-	add     $i3, 1, $i1
-	fmul    $f3, $f1, $f4
-	fadd    $f6, $f4, $f4
-	fmul    $f3, $f6, $f5
-	fsub    $f1, $f5, $f1
-	li      min_caml_atan_table, $i2
-	add     $i2, $i3, $i12
-	load    0($i12), $f5
-	fsub    $f2, $f5, $f2
-	li      l.13994, $i2
-	load    0($i2), $f5
-	fmul    $f3, $f5, $f3
-	mov     $f4, $f14
-	mov     $f3, $f4
-	mov     $f2, $f3
-	mov     $f1, $f2
-	mov     $f14, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24168:
-	add     $i3, 1, $i1
-	fmul    $f3, $f1, $f4
-	fsub    $f6, $f4, $f4
-	fmul    $f3, $f6, $f5
-	fadd    $f1, $f5, $f1
-	li      min_caml_atan_table, $i2
-	add     $i2, $i3, $i12
-	load    0($i12), $f5
-	fadd    $f2, $f5, $f2
-	li      l.13994, $i2
-	load    0($i2), $f5
-	fmul    $f3, $f5, $f3
-	mov     $f4, $f14
-	mov     $f3, $f4
-	mov     $f2, $f3
-	mov     $f1, $f2
-	mov     $f14, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24166:
-	add     $i1, 1, $i3
-	fmul    $f4, $f2, $f6
-	fsub    $f1, $f6, $f6
-	fmul    $f4, $f1, $f1
-	fadd    $f2, $f1, $f1
-	li      min_caml_atan_table, $i4
-	add     $i4, $i1, $i12
-	load    0($i12), $f2
-	fadd    $f3, $f2, $f2
-	li      l.13994, $i1
-	load    0($i1), $f3
-	fmul    $f4, $f3, $f3
-	cmp     $i3, $i2, $i12
-	bne     $i12, be_else.24169
-	ret
-be_else.24169:
-	fcmp    $f5, $f2, $i12
-	bg      $i12, ble_else.24170
-	add     $i3, 1, $i1
-	fmul    $f3, $f1, $f4
-	fadd    $f6, $f4, $f4
-	fmul    $f3, $f6, $f5
-	fsub    $f1, $f5, $f1
-	li      min_caml_atan_table, $i2
-	add     $i2, $i3, $i12
-	load    0($i12), $f5
-	fsub    $f2, $f5, $f2
-	li      l.13994, $i2
-	load    0($i2), $f5
-	fmul    $f3, $f5, $f3
-	mov     $f4, $f14
-	mov     $f3, $f4
-	mov     $f2, $f3
-	mov     $f1, $f2
-	mov     $f14, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24170:
-	add     $i3, 1, $i1
-	fmul    $f3, $f1, $f4
-	fsub    $f6, $f4, $f4
-	fmul    $f3, $f6, $f5
-	fadd    $f1, $f5, $f1
-	li      min_caml_atan_table, $i2
-	add     $i2, $i3, $i12
-	load    0($i12), $f5
-	fadd    $f2, $f5, $f2
-	li      l.13994, $i2
-	load    0($i2), $f5
-	fmul    $f3, $f5, $f3
-	mov     $f4, $f14
-	mov     $f3, $f4
-	mov     $f2, $f3
-	mov     $f1, $f2
-	mov     $f14, $f1
-	load    0($i11), $i10
-	jr      $i10
-cordic_sin.2737:
-	load    1($i11), $i1
-	mov     $hp, $i11
-	add     $hp, 3, $hp
-	li      cordic_rec.6623, $i2
-	store   $i2, 0($i11)
-	store   $i1, 2($i11)
-	store   $f1, 1($i11)
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24171
-	li      1, $i1
-	li      l.14003, $i2
-	load    0($i2), $f1
-	li      l.14008, $i2
-	load    0($i2), $f3
-	li      min_caml_atan_table, $i2
-	load    0($i2), $f4
-	fsub    $f2, $f4, $f2
-	li      l.13994, $i2
-	load    0($i2), $f4
-	mov     $f3, $f14
-	mov     $f2, $f3
-	mov     $f14, $f2
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24171:
-	li      1, $i1
-	li      l.14003, $i2
-	load    0($i2), $f1
-	li      l.14003, $i2
-	load    0($i2), $f3
-	li      min_caml_atan_table, $i2
-	load    0($i2), $f4
-	fadd    $f2, $f4, $f2
-	li      l.13994, $i2
-	load    0($i2), $f4
-	mov     $f3, $f14
-	mov     $f2, $f3
-	mov     $f14, $f2
-	load    0($i11), $i10
-	jr      $i10
-cordic_rec.6591:
-	load    2($i11), $i2
-	load    1($i11), $f5
-	cmp     $i1, $i2, $i12
-	bne     $i12, be_else.24172
-	ret
-be_else.24172:
-	fcmp    $f5, $f3, $i12
-	bg      $i12, ble_else.24173
-	add     $i1, 1, $i3
-	fmul    $f4, $f2, $f6
-	fadd    $f1, $f6, $f6
-	fmul    $f4, $f1, $f1
-	fsub    $f2, $f1, $f1
-	li      min_caml_atan_table, $i4
-	add     $i4, $i1, $i12
-	load    0($i12), $f2
-	fsub    $f3, $f2, $f2
-	li      l.13994, $i1
-	load    0($i1), $f3
-	fmul    $f4, $f3, $f3
-	cmp     $i3, $i2, $i12
-	bne     $i12, be_else.24174
-	mov     $f6, $f1
-	ret
-be_else.24174:
-	fcmp    $f5, $f2, $i12
-	bg      $i12, ble_else.24175
-	add     $i3, 1, $i1
-	fmul    $f3, $f1, $f4
-	fadd    $f6, $f4, $f4
-	fmul    $f3, $f6, $f5
-	fsub    $f1, $f5, $f1
-	li      min_caml_atan_table, $i2
-	add     $i2, $i3, $i12
-	load    0($i12), $f5
-	fsub    $f2, $f5, $f2
-	li      l.13994, $i2
-	load    0($i2), $f5
-	fmul    $f3, $f5, $f3
-	mov     $f4, $f14
-	mov     $f3, $f4
-	mov     $f2, $f3
-	mov     $f1, $f2
-	mov     $f14, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24175:
-	add     $i3, 1, $i1
-	fmul    $f3, $f1, $f4
-	fsub    $f6, $f4, $f4
-	fmul    $f3, $f6, $f5
-	fadd    $f1, $f5, $f1
-	li      min_caml_atan_table, $i2
-	add     $i2, $i3, $i12
-	load    0($i12), $f5
-	fadd    $f2, $f5, $f2
-	li      l.13994, $i2
-	load    0($i2), $f5
-	fmul    $f3, $f5, $f3
-	mov     $f4, $f14
-	mov     $f3, $f4
-	mov     $f2, $f3
-	mov     $f1, $f2
-	mov     $f14, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24173:
-	add     $i1, 1, $i3
-	fmul    $f4, $f2, $f6
-	fsub    $f1, $f6, $f6
-	fmul    $f4, $f1, $f1
-	fadd    $f2, $f1, $f1
-	li      min_caml_atan_table, $i4
-	add     $i4, $i1, $i12
-	load    0($i12), $f2
-	fadd    $f3, $f2, $f2
-	li      l.13994, $i1
-	load    0($i1), $f3
-	fmul    $f4, $f3, $f3
-	cmp     $i3, $i2, $i12
-	bne     $i12, be_else.24176
-	mov     $f6, $f1
-	ret
-be_else.24176:
-	fcmp    $f5, $f2, $i12
-	bg      $i12, ble_else.24177
-	add     $i3, 1, $i1
-	fmul    $f3, $f1, $f4
-	fadd    $f6, $f4, $f4
-	fmul    $f3, $f6, $f5
-	fsub    $f1, $f5, $f1
-	li      min_caml_atan_table, $i2
-	add     $i2, $i3, $i12
-	load    0($i12), $f5
-	fsub    $f2, $f5, $f2
-	li      l.13994, $i2
-	load    0($i2), $f5
-	fmul    $f3, $f5, $f3
-	mov     $f4, $f14
-	mov     $f3, $f4
-	mov     $f2, $f3
-	mov     $f1, $f2
-	mov     $f14, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24177:
-	add     $i3, 1, $i1
-	fmul    $f3, $f1, $f4
-	fsub    $f6, $f4, $f4
-	fmul    $f3, $f6, $f5
-	fadd    $f1, $f5, $f1
-	li      min_caml_atan_table, $i2
-	add     $i2, $i3, $i12
-	load    0($i12), $f5
-	fadd    $f2, $f5, $f2
-	li      l.13994, $i2
-	load    0($i2), $f5
-	fmul    $f3, $f5, $f3
-	mov     $f4, $f14
-	mov     $f3, $f4
-	mov     $f2, $f3
-	mov     $f1, $f2
-	mov     $f14, $f1
-	load    0($i11), $i10
-	jr      $i10
-cordic_cos.2739:
-	load    1($i11), $i1
-	mov     $hp, $i11
-	add     $hp, 3, $hp
-	li      cordic_rec.6591, $i2
-	store   $i2, 0($i11)
-	store   $i1, 2($i11)
-	store   $f1, 1($i11)
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24178
-	li      1, $i1
-	li      l.14003, $i2
-	load    0($i2), $f1
-	li      l.14008, $i2
-	load    0($i2), $f3
-	li      min_caml_atan_table, $i2
-	load    0($i2), $f4
-	fsub    $f2, $f4, $f2
-	li      l.13994, $i2
-	load    0($i2), $f4
-	mov     $f3, $f14
-	mov     $f2, $f3
-	mov     $f14, $f2
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24178:
-	li      1, $i1
-	li      l.14003, $i2
-	load    0($i2), $f1
-	li      l.14003, $i2
-	load    0($i2), $f3
-	li      min_caml_atan_table, $i2
-	load    0($i2), $f4
-	fadd    $f2, $f4, $f2
-	li      l.13994, $i2
-	load    0($i2), $f4
-	mov     $f3, $f14
-	mov     $f2, $f3
-	mov     $f14, $f2
-	load    0($i11), $i10
-	jr      $i10
-cordic_rec.6558:
-	load    1($i11), $i2
-	cmp     $i1, $i2, $i12
-	bne     $i12, be_else.24179
+cordic_rec.6797:
+	li      25, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.17912
 	mov     $f3, $f1
 	ret
-be_else.24179:
-	li      l.14001, $i2
+be_else.17912:
+	fcmp    $f1, $f4, $i12
+	bg      $i12, ble_else.17913
+	add     $i1, 1, $i2
+	fmul    $f5, $f3, $f6
+	fadd    $f2, $f6, $f6
+	fmul    $f5, $f2, $f2
+	fsub    $f3, $f2, $f3
+	li      min_caml_atan_table, $i3
+	add     $i3, $i1, $i12
+	load    0($i12), $f2
+	fsub    $f4, $f2, $f4
+	li      l.13293, $i1
+	load    0($i1), $f2
+	fmul    $f5, $f2, $f5
+	mov     $i2, $i1
+	mov     $f6, $f2
+	b       cordic_rec.6797
+ble_else.17913:
+	add     $i1, 1, $i2
+	fmul    $f5, $f3, $f6
+	fsub    $f2, $f6, $f6
+	fmul    $f5, $f2, $f2
+	fadd    $f3, $f2, $f3
+	li      min_caml_atan_table, $i3
+	add     $i3, $i1, $i12
+	load    0($i12), $f2
+	fadd    $f4, $f2, $f4
+	li      l.13293, $i1
+	load    0($i1), $f2
+	fmul    $f5, $f2, $f5
+	mov     $i2, $i1
+	mov     $f6, $f2
+	b       cordic_rec.6797
+cordic_sin.2851:
+	li      0, $i1
+	li      l.13296, $i2
+	load    0($i2), $f2
+	li      l.13298, $i2
+	load    0($i2), $f3
+	li      l.13298, $i2
+	load    0($i2), $f4
+	li      l.13301, $i2
+	load    0($i2), $f5
+	b       cordic_rec.6797
+cordic_rec.6762:
+	li      25, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.17914
+	mov     $f2, $f1
+	ret
+be_else.17914:
+	fcmp    $f1, $f4, $i12
+	bg      $i12, ble_else.17915
+	add     $i1, 1, $i2
+	fmul    $f5, $f3, $f6
+	fadd    $f2, $f6, $f6
+	fmul    $f5, $f2, $f2
+	fsub    $f3, $f2, $f3
+	li      min_caml_atan_table, $i3
+	add     $i3, $i1, $i12
+	load    0($i12), $f2
+	fsub    $f4, $f2, $f4
+	li      l.13293, $i1
+	load    0($i1), $f2
+	fmul    $f5, $f2, $f5
+	mov     $i2, $i1
+	mov     $f6, $f2
+	b       cordic_rec.6762
+ble_else.17915:
+	add     $i1, 1, $i2
+	fmul    $f5, $f3, $f6
+	fsub    $f2, $f6, $f6
+	fmul    $f5, $f2, $f2
+	fadd    $f3, $f2, $f3
+	li      min_caml_atan_table, $i3
+	add     $i3, $i1, $i12
+	load    0($i12), $f2
+	fadd    $f4, $f2, $f4
+	li      l.13293, $i1
+	load    0($i1), $f2
+	fmul    $f5, $f2, $f5
+	mov     $i2, $i1
+	mov     $f6, $f2
+	b       cordic_rec.6762
+cordic_cos.2853:
+	li      0, $i1
+	li      l.13296, $i2
+	load    0($i2), $f2
+	li      l.13298, $i2
+	load    0($i2), $f3
+	li      l.13298, $i2
+	load    0($i2), $f4
+	li      l.13301, $i2
+	load    0($i2), $f5
+	b       cordic_rec.6762
+cordic_rec.6728:
+	li      25, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.17916
+	mov     $f3, $f1
+	ret
+be_else.17916:
+	li      l.13298, $i2
 	load    0($i2), $f5
 	fcmp    $f2, $f5, $i12
-	bg      $i12, ble_else.24180
+	bg      $i12, ble_else.17917
 	add     $i1, 1, $i2
 	fmul    $f4, $f2, $f5
 	fsub    $f1, $f5, $f5
@@ -1629,14 +250,13 @@ be_else.24179:
 	add     $i3, $i1, $i12
 	load    0($i12), $f1
 	fsub    $f3, $f1, $f3
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f1
 	fmul    $f4, $f1, $f4
 	mov     $i2, $i1
 	mov     $f5, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24180:
+	b       cordic_rec.6728
+ble_else.17917:
 	add     $i1, 1, $i2
 	fmul    $f4, $f2, $f5
 	fadd    $f1, $f5, $f5
@@ -1646,629 +266,627 @@ ble_else.24180:
 	add     $i3, $i1, $i12
 	load    0($i12), $f1
 	fadd    $f3, $f1, $f3
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f1
 	fmul    $f4, $f1, $f4
 	mov     $i2, $i1
 	mov     $f5, $f1
-	load    0($i11), $i10
-	jr      $i10
-cordic_atan.2741:
-	load    1($i11), $i1
-	mov     $hp, $i11
-	add     $hp, 2, $hp
-	li      cordic_rec.6558, $i2
-	store   $i2, 0($i11)
-	store   $i1, 1($i11)
+	b       cordic_rec.6728
+cordic_atan.2855:
 	li      0, $i1
-	li      l.14035, $i2
+	li      l.13301, $i2
 	load    0($i2), $f2
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f3
-	li      l.14035, $i2
+	li      l.13301, $i2
 	load    0($i2), $f4
 	mov     $f2, $f14
 	mov     $f1, $f2
 	mov     $f14, $f1
-	load    0($i11), $i10
-	jr      $i10
-sin.2743:
-	load    4($i11), $f2
-	load    3($i11), $f3
-	load    2($i11), $f4
-	load    1($i11), $i1
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f1, $i12
-	bg      $i12, ble_else.24181
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24182
-	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24183
-	fcmp    $f3, $f1, $i12
-	bg      $i12, ble_else.24184
-	fsub    $f1, $f3, $f1
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f1, $i12
-	bg      $i12, ble_else.24185
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24186
-	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24187
-	fcmp    $f3, $f1, $i12
-	bg      $i12, ble_else.24188
-	fsub    $f1, $f3, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24188:
-	fsub    $f3, $f1, $f1
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24189, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24189:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-	ret
-ble_else.24187:
-	fsub    $f4, $f1, $f1
-	mov     $i1, $i11
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24186:
-	mov     $i1, $i11
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24185:
-	fneg    $f1, $f1
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24190, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24190:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-	ret
-ble_else.24184:
-	fsub    $f3, $f1, $f1
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f1, $i12
-	bg      $i12, ble_else.24191
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24193
-	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24195
-	fcmp    $f3, $f1, $i12
-	bg      $i12, ble_else.24197
-	fsub    $f1, $f3, $f1
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24199, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24199:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	b       ble_cont.24198
-ble_else.24197:
-	fsub    $f3, $f1, $f1
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24200, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24200:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24198:
-	b       ble_cont.24196
-ble_else.24195:
-	fsub    $f4, $f1, $f1
-	mov     $i1, $i11
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24201, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24201:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-ble_cont.24196:
-	b       ble_cont.24194
-ble_else.24193:
-	mov     $i1, $i11
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24202, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24202:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-ble_cont.24194:
-	b       ble_cont.24192
-ble_else.24191:
-	fneg    $f1, $f1
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24203, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24203:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24192:
-	fneg    $f1, $f1
-	ret
-ble_else.24183:
-	fsub    $f4, $f1, $f1
-	mov     $i1, $i11
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24182:
-	mov     $i1, $i11
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24181:
-	fneg    $f1, $f1
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f1, $i12
-	bg      $i12, ble_else.24204
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24206
-	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24208
-	fcmp    $f3, $f1, $i12
-	bg      $i12, ble_else.24210
-	fsub    $f1, $f3, $f1
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24212, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24212:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	b       ble_cont.24211
-ble_else.24210:
-	fsub    $f3, $f1, $f1
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24213, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24213:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24211:
-	b       ble_cont.24209
-ble_else.24208:
-	fsub    $f4, $f1, $f1
-	mov     $i1, $i11
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24214, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24214:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-ble_cont.24209:
-	b       ble_cont.24207
-ble_else.24206:
-	mov     $i1, $i11
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24215, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24215:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-ble_cont.24207:
-	b       ble_cont.24205
-ble_else.24204:
-	fneg    $f1, $f1
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24216, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24216:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24205:
-	fneg    $f1, $f1
-	ret
-cos.2745:
-	load    4($i11), $f2
-	load    3($i11), $f3
-	load    2($i11), $f4
-	load    1($i11), $i1
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f1, $i12
-	bg      $i12, ble_else.24217
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24218
-	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24219
-	fcmp    $f3, $f1, $i12
-	bg      $i12, ble_else.24220
-	fsub    $f1, $f3, $f1
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f1, $i12
-	bg      $i12, ble_else.24221
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24222
-	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24223
-	fcmp    $f3, $f1, $i12
-	bg      $i12, ble_else.24224
-	fsub    $f1, $f3, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24224:
-	fsub    $f3, $f1, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24223:
-	fsub    $f4, $f1, $f1
-	mov     $i1, $i11
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24225, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24225:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-	ret
-ble_else.24222:
-	mov     $i1, $i11
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24221:
-	fneg    $f1, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24220:
-	fsub    $f3, $f1, $f1
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f1, $i12
-	bg      $i12, ble_else.24226
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24227
-	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24228
-	fcmp    $f3, $f1, $i12
-	bg      $i12, ble_else.24229
-	fsub    $f1, $f3, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24229:
-	fsub    $f3, $f1, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24228:
-	fsub    $f4, $f1, $f1
-	mov     $i1, $i11
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24230, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24230:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-	ret
-ble_else.24227:
-	mov     $i1, $i11
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24226:
-	fneg    $f1, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24219:
-	fsub    $f4, $f1, $f1
-	mov     $i1, $i11
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24231, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24231:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-	ret
-ble_else.24218:
-	mov     $i1, $i11
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24217:
-	fneg    $f1, $f1
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f1, $i12
-	bg      $i12, ble_else.24232
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24233
-	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24234
-	fcmp    $f3, $f1, $i12
-	bg      $i12, ble_else.24235
-	fsub    $f1, $f3, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24235:
-	fsub    $f3, $f1, $f1
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24234:
-	fsub    $f4, $f1, $f1
-	mov     $i1, $i11
-	store   $ra, 0($sp)
-	load    0($i11), $i10
-	li      cls.24236, $ra
-	add     $sp, 1, $sp
-	jr      $i10
-cls.24236:
-	sub     $sp, 1, $sp
-	load    0($sp), $ra
-	fneg    $f1, $f1
-	ret
-ble_else.24233:
-	mov     $i1, $i11
-	load    0($i11), $i10
-	jr      $i10
-ble_else.24232:
-	fneg    $f1, $f1
-	load    0($i11), $i10
-	jr      $i10
-get_sqrt_init_rec.6532.10574:
-	li      49, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24237
-	li      min_caml_rsqrt_table, $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $f1
-	ret
-be_else.24237:
-	li      l.14050, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24238
-	li      l.14050, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	add     $i1, 1, $i1
-	li      49, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24239
-	li      min_caml_rsqrt_table, $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $f1
-	ret
-be_else.24239:
-	li      l.14050, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24240
-	li      l.14050, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	add     $i1, 1, $i1
-	li      49, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24241
-	li      min_caml_rsqrt_table, $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $f1
-	ret
-be_else.24241:
-	li      l.14050, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24242
-	li      l.14050, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	add     $i1, 1, $i1
-	li      49, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24243
-	li      min_caml_rsqrt_table, $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $f1
-	ret
-be_else.24243:
-	li      l.14050, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24244
-	li      l.14050, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	add     $i1, 1, $i1
-	b       get_sqrt_init_rec.6532.10574
-ble_else.24244:
-	li      min_caml_rsqrt_table, $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $f1
-	ret
-ble_else.24242:
-	li      min_caml_rsqrt_table, $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $f1
-	ret
-ble_else.24240:
-	li      min_caml_rsqrt_table, $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $f1
-	ret
-ble_else.24238:
-	li      min_caml_rsqrt_table, $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $f1
-	ret
-sqrt.2751:
-	li      l.14035, $i1
+	b       cordic_rec.6728
+sin.2857:
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24245
+	bg      $i12, ble_else.17918
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17919
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17920
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17921
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17922
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17923
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17924
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17925
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	b       sin.2857
+ble_else.17925:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     sin.2857
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+	ret
+ble_else.17924:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	b       cordic_sin.2851
+ble_else.17923:
+	b       cordic_sin.2851
+ble_else.17922:
+	fneg    $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     sin.2857
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+	ret
+ble_else.17921:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17926
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17928
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17930
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17932
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     sin.2857
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	b       ble_cont.17933
+ble_else.17932:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     sin.2857
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+ble_cont.17933:
+	b       ble_cont.17931
+ble_else.17930:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+ble_cont.17931:
+	b       ble_cont.17929
+ble_else.17928:
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+ble_cont.17929:
+	b       ble_cont.17927
+ble_else.17926:
+	fneg    $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     sin.2857
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+ble_cont.17927:
+	fneg    $f1, $f1
+	ret
+ble_else.17920:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	b       cordic_sin.2851
+ble_else.17919:
+	b       cordic_sin.2851
+ble_else.17918:
+	fneg    $f1, $f1
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17934
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17936
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17938
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17940
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     sin.2857
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	b       ble_cont.17941
+ble_else.17940:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     sin.2857
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+ble_cont.17941:
+	b       ble_cont.17939
+ble_else.17938:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+ble_cont.17939:
+	b       ble_cont.17937
+ble_else.17936:
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+ble_cont.17937:
+	b       ble_cont.17935
+ble_else.17934:
+	fneg    $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     sin.2857
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+ble_cont.17935:
+	fneg    $f1, $f1
+	ret
+cos.2859:
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17942
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17943
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17944
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17945
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17946
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17947
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17948
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17949
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	b       cos.2859
+ble_else.17949:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	b       cos.2859
+ble_else.17948:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+	ret
+ble_else.17947:
+	b       cordic_cos.2853
+ble_else.17946:
+	fneg    $f1, $f1
+	b       cos.2859
+ble_else.17945:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17950
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17951
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17952
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17953
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	b       cos.2859
+ble_else.17953:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	b       cos.2859
+ble_else.17952:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+	ret
+ble_else.17951:
+	b       cordic_cos.2853
+ble_else.17950:
+	fneg    $f1, $f1
+	b       cos.2859
+ble_else.17944:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+	ret
+ble_else.17943:
+	b       cordic_cos.2853
+ble_else.17942:
+	fneg    $f1, $f1
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17954
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17955
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17956
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17957
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	b       cos.2859
+ble_else.17957:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	b       cos.2859
+ble_else.17956:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	fneg    $f1, $f1
+	ret
+ble_else.17955:
+	b       cordic_cos.2853
+ble_else.17954:
+	fneg    $f1, $f1
+	b       cos.2859
+get_sqrt_init_rec.6691.10569:
+	li      49, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.17958
+	li      min_caml_rsqrt_table, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $f1
+	ret
+be_else.17958:
+	li      l.13374, $i2
+	load    0($i2), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17959
+	li      l.13374, $i2
+	load    0($i2), $f2
+	finv    $f2, $f15
+	fmul    $f1, $f15, $f1
+	add     $i1, 1, $i1
+	li      49, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.17960
+	li      min_caml_rsqrt_table, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $f1
+	ret
+be_else.17960:
+	li      l.13374, $i2
+	load    0($i2), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17961
+	li      l.13374, $i2
+	load    0($i2), $f2
+	finv    $f2, $f15
+	fmul    $f1, $f15, $f1
+	add     $i1, 1, $i1
+	li      49, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.17962
+	li      min_caml_rsqrt_table, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $f1
+	ret
+be_else.17962:
+	li      l.13374, $i2
+	load    0($i2), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17963
+	li      l.13374, $i2
+	load    0($i2), $f2
+	finv    $f2, $f15
+	fmul    $f1, $f15, $f1
+	add     $i1, 1, $i1
+	li      49, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.17964
+	li      min_caml_rsqrt_table, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $f1
+	ret
+be_else.17964:
+	li      l.13374, $i2
+	load    0($i2), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17965
+	li      l.13374, $i2
+	load    0($i2), $f2
+	finv    $f2, $f15
+	fmul    $f1, $f15, $f1
+	add     $i1, 1, $i1
+	b       get_sqrt_init_rec.6691.10569
+ble_else.17965:
+	li      min_caml_rsqrt_table, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $f1
+	ret
+ble_else.17963:
+	li      min_caml_rsqrt_table, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $f1
+	ret
+ble_else.17961:
+	li      min_caml_rsqrt_table, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $f1
+	ret
+ble_else.17959:
+	li      min_caml_rsqrt_table, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $f1
+	ret
+sqrt.2865:
+	li      l.13301, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17966
 	store   $f1, 0($sp)
-	li      l.14050, $i1
+	li      l.13374, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24246
-	li      l.14050, $i1
+	bg      $i12, ble_else.17967
+	li      l.13374, $i1
 	load    0($i1), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	li      l.14050, $i1
+	li      l.13374, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24248
-	li      l.14050, $i1
+	bg      $i12, ble_else.17969
+	li      l.13374, $i1
 	load    0($i1), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	li      l.14050, $i1
+	li      l.13374, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24250
-	li      l.14050, $i1
+	bg      $i12, ble_else.17971
+	li      l.13374, $i1
 	load    0($i1), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
 	li      3, $i1
 	store   $ra, 1($sp)
 	add     $sp, 2, $sp
-	jal     get_sqrt_init_rec.6532.10574
+	jal     get_sqrt_init_rec.6691.10569
 	sub     $sp, 2, $sp
 	load    1($sp), $ra
-	b       ble_cont.24251
-ble_else.24250:
+	b       ble_cont.17972
+ble_else.17971:
 	li      min_caml_rsqrt_table, $i1
 	load    2($i1), $f1
-ble_cont.24251:
-	b       ble_cont.24249
-ble_else.24248:
+ble_cont.17972:
+	b       ble_cont.17970
+ble_else.17969:
 	li      min_caml_rsqrt_table, $i1
 	load    1($i1), $f1
-ble_cont.24249:
-	b       ble_cont.24247
-ble_else.24246:
+ble_cont.17970:
+	b       ble_cont.17968
+ble_else.17967:
 	li      min_caml_rsqrt_table, $i1
 	load    0($i1), $f1
-ble_cont.24247:
-	li      l.13994, $i1
+ble_cont.17968:
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	load    0($sp), $f4
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	li      l.14077, $i1
+	li      l.13401, $i1
 	load    0($i1), $f3
 	fmul    $f4, $f1, $f5
 	fmul    $f5, $f1, $f1
@@ -2276,69 +894,69 @@ ble_cont.24247:
 	fmul    $f2, $f1, $f1
 	fmul    $f1, $f4, $f1
 	ret
-ble_else.24245:
-	li      l.13994, $i1
+ble_else.17966:
+	li      l.13293, $i1
 	load    0($i1), $f2
 	finv    $f1, $f15
 	fmul    $f1, $f15, $f3
 	fadd    $f1, $f3, $f3
 	fmul    $f2, $f3, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f4
 	fadd    $f2, $f4, $f2
 	fmul    $f3, $f2, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f4
 	fadd    $f2, $f4, $f2
 	fmul    $f3, $f2, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f4
 	fadd    $f2, $f4, $f2
 	fmul    $f3, $f2, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f4
 	fadd    $f2, $f4, $f2
 	fmul    $f3, $f2, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f4
 	fadd    $f2, $f4, $f2
 	fmul    $f3, $f2, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f4
 	fadd    $f2, $f4, $f2
 	fmul    $f3, $f2, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f4
 	fadd    $f2, $f4, $f2
 	fmul    $f3, $f2, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f4
 	fadd    $f2, $f4, $f2
 	fmul    $f3, $f2, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
 	fadd    $f2, $f1, $f1
 	fmul    $f3, $f1, $f1
 	ret
-vecunit_sgn.2816:
+vecunit_sgn.2896:
 	store   $i1, 0($sp)
 	store   $i2, 1($sp)
 	load    0($i1), $f1
@@ -2351,41 +969,41 @@ vecunit_sgn.2816:
 	fadd    $f1, $f2, $f1
 	store   $ra, 2($sp)
 	add     $sp, 3, $sp
-	jal     sqrt.2751
+	jal     sqrt.2865
 	sub     $sp, 3, $sp
 	load    2($sp), $ra
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24252
+	bne     $i12, be_else.17973
 	li      1, $i1
-	b       be_cont.24253
-be_else.24252:
+	b       be_cont.17974
+be_else.17973:
 	li      0, $i1
-be_cont.24253:
+be_cont.17974:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24254
+	bne     $i12, be_else.17975
 	load    1($sp), $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24256
-	li      l.14035, $i1
+	bne     $i12, be_else.17977
+	li      l.13301, $i1
 	load    0($i1), $f2
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f1
-	b       be_cont.24257
-be_else.24256:
-	li      l.14099, $i1
+	b       be_cont.17978
+be_else.17977:
+	li      l.13423, $i1
 	load    0($i1), $f2
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f1
-be_cont.24257:
-	b       be_cont.24255
-be_else.24254:
-	li      l.14035, $i1
+be_cont.17978:
+	b       be_cont.17976
+be_else.17975:
+	li      l.13301, $i1
 	load    0($i1), $f1
-be_cont.24255:
+be_cont.17976:
 	load    0($sp), $i1
 	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
@@ -2397,7 +1015,7 @@ be_cont.24255:
 	fmul    $f2, $f1, $f1
 	store   $f1, 2($i1)
 	ret
-vecaccumv.2840:
+vecaccumv.2920:
 	load    0($i1), $f1
 	load    0($i2), $f2
 	load    0($i3), $f3
@@ -2417,1288 +1035,1103 @@ vecaccumv.2840:
 	fadd    $f1, $f2, $f1
 	store   $f1, 2($i1)
 	ret
-read_screen_settings.2917:
-	load    12($i11), $i1
+read_screen_settings.2997:
+	li      min_caml_screen, $i1
 	store   $i1, 0($sp)
-	load    11($i11), $i1
-	store   $i1, 1($sp)
-	load    10($i11), $i1
-	store   $i1, 2($sp)
-	load    9($i11), $i1
-	store   $i1, 3($sp)
-	load    8($i11), $i1
-	store   $i1, 4($sp)
-	load    7($i11), $i1
-	store   $i1, 5($sp)
-	load    6($i11), $f1
-	store   $f1, 6($sp)
-	load    5($i11), $f1
-	store   $f1, 7($sp)
-	load    4($i11), $f1
-	store   $f1, 8($sp)
-	load    3($i11), $i1
-	store   $i1, 9($sp)
-	load    2($i11), $i1
-	store   $i1, 10($sp)
-	load    1($i11), $i1
-	store   $i1, 11($sp)
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
 	jal     min_caml_read_float
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	load    5($sp), $i1
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	load    0($sp), $i1
 	store   $f1, 0($i1)
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
+	li      min_caml_screen, $i1
+	store   $i1, 1($sp)
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
 	jal     min_caml_read_float
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	load    5($sp), $i1
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	load    1($sp), $i1
 	store   $f1, 1($i1)
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
+	li      min_caml_screen, $i1
+	store   $i1, 2($sp)
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
 	jal     min_caml_read_float
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	load    5($sp), $i1
-	store   $f1, 2($i1)
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
-	jal     min_caml_read_float
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	li      l.14102, $i1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f1
-	store   $f1, 12($sp)
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24260
-	load    6($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24262
-	load    8($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24264
-	load    7($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24266
-	fsub    $f1, $f2, $f1
-	load    9($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24268, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24268:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	b       ble_cont.24267
-ble_else.24266:
-	fsub    $f2, $f1, $f1
-	load    9($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24269, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24269:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-ble_cont.24267:
-	b       ble_cont.24265
-ble_else.24264:
-	fsub    $f2, $f1, $f1
-	load    11($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24270, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24270:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24265:
-	b       ble_cont.24263
-ble_else.24262:
-	load    11($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24271, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24271:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-ble_cont.24263:
-	b       ble_cont.24261
-ble_else.24260:
-	fneg    $f1, $f1
-	load    9($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24272, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24272:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-ble_cont.24261:
-	store   $f1, 13($sp)
-	li      l.14001, $i1
-	load    0($i1), $f1
-	load    12($sp), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24273
-	load    6($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24275
-	load    8($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24277
-	load    7($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24279
-	fsub    $f2, $f1, $f1
-	load    1($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24281, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24281:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	b       ble_cont.24280
-ble_else.24279:
-	fsub    $f1, $f2, $f1
-	load    1($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24282, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24282:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24280:
-	b       ble_cont.24278
-ble_else.24277:
-	fsub    $f1, $f2, $f1
-	load    10($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24283, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24283:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-ble_cont.24278:
-	b       ble_cont.24276
-ble_else.24275:
-	load    10($sp), $i11
-	mov     $f2, $f1
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24284, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24284:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-ble_cont.24276:
-	b       ble_cont.24274
-ble_else.24273:
-	fneg    $f2, $f1
-	load    1($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24285, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24285:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24274:
-	store   $f1, 14($sp)
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     min_caml_read_float
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	li      l.14102, $i1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f1
-	store   $f1, 15($sp)
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24286
-	load    6($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24288
-	load    8($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24290
-	load    7($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24292
-	fsub    $f1, $f2, $f1
-	load    9($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.24294, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.24294:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	b       ble_cont.24293
-ble_else.24292:
-	fsub    $f2, $f1, $f1
-	load    9($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.24295, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.24295:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-ble_cont.24293:
-	b       ble_cont.24291
-ble_else.24290:
-	fsub    $f2, $f1, $f1
-	load    11($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.24296, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.24296:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24291:
-	b       ble_cont.24289
-ble_else.24288:
-	load    11($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.24297, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.24297:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-ble_cont.24289:
-	b       ble_cont.24287
-ble_else.24286:
-	fneg    $f1, $f1
-	load    9($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.24298, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.24298:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-ble_cont.24287:
-	store   $f1, 16($sp)
-	li      l.14001, $i1
-	load    0($i1), $f1
-	load    15($sp), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24299
-	load    6($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24301
-	load    8($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24303
-	load    7($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24305
-	fsub    $f2, $f1, $f1
-	load    1($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.24307, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.24307:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	b       ble_cont.24306
-ble_else.24305:
-	fsub    $f1, $f2, $f1
-	load    1($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.24308, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.24308:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24306:
-	b       ble_cont.24304
-ble_else.24303:
-	fsub    $f1, $f2, $f1
-	load    10($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.24309, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.24309:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-ble_cont.24304:
-	b       ble_cont.24302
-ble_else.24301:
-	load    10($sp), $i11
-	mov     $f2, $f1
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.24310, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.24310:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-ble_cont.24302:
-	b       ble_cont.24300
-ble_else.24299:
-	fneg    $f2, $f1
-	load    1($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.24311, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.24311:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24300:
-	load    13($sp), $f2
-	fmul    $f2, $f1, $f3
-	li      l.14109, $i1
-	load    0($i1), $f4
-	fmul    $f3, $f4, $f3
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
 	load    2($sp), $i1
+	store   $f1, 2($i1)
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     min_caml_read_float
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      l.13426, $i1
+	load    0($i1), $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, 3($sp)
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17981
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17983
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17985
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17987
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cos.2859
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	b       ble_cont.17988
+ble_else.17987:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cos.2859
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+ble_cont.17988:
+	b       ble_cont.17986
+ble_else.17985:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	fneg    $f1, $f1
+ble_cont.17986:
+	b       ble_cont.17984
+ble_else.17983:
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+ble_cont.17984:
+	b       ble_cont.17982
+ble_else.17981:
+	fneg    $f1, $f1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cos.2859
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+ble_cont.17982:
+	store   $f1, 4($sp)
+	li      l.13298, $i1
+	load    0($i1), $f1
+	load    3($sp), $f2
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.17989
+	li      l.13317, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.17991
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.17993
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.17995
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f2, $f1, $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sin.2857
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	b       ble_cont.17996
+ble_else.17995:
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sin.2857
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	fneg    $f1, $f1
+ble_cont.17996:
+	b       ble_cont.17994
+ble_else.17993:
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+ble_cont.17994:
+	b       ble_cont.17992
+ble_else.17991:
+	mov     $f2, $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+ble_cont.17992:
+	b       ble_cont.17990
+ble_else.17989:
+	fneg    $f2, $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sin.2857
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	fneg    $f1, $f1
+ble_cont.17990:
+	store   $f1, 5($sp)
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     min_caml_read_float
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	li      l.13426, $i1
+	load    0($i1), $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, 6($sp)
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17997
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.17999
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18001
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18003
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     cos.2859
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	b       ble_cont.18004
+ble_else.18003:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     cos.2859
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+ble_cont.18004:
+	b       ble_cont.18002
+ble_else.18001:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18002:
+	b       ble_cont.18000
+ble_else.17999:
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+ble_cont.18000:
+	b       ble_cont.17998
+ble_else.17997:
+	fneg    $f1, $f1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     cos.2859
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+ble_cont.17998:
+	store   $f1, 7($sp)
+	li      l.13298, $i1
+	load    0($i1), $f1
+	load    6($sp), $f2
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18005
+	li      l.13317, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18007
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18009
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18011
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f2, $f1, $f1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     sin.2857
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	b       ble_cont.18012
+ble_else.18011:
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     sin.2857
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18012:
+	b       ble_cont.18010
+ble_else.18009:
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+ble_cont.18010:
+	b       ble_cont.18008
+ble_else.18007:
+	mov     $f2, $f1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+ble_cont.18008:
+	b       ble_cont.18006
+ble_else.18005:
+	fneg    $f2, $f1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     sin.2857
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18006:
+	li      min_caml_screenz_dir, $i1
+	load    4($sp), $f2
+	fmul    $f2, $f1, $f3
+	li      l.13457, $i2
+	load    0($i2), $f4
+	fmul    $f3, $f4, $f3
 	store   $f3, 0($i1)
-	li      l.14111, $i2
+	li      min_caml_screenz_dir, $i1
+	li      l.13459, $i2
 	load    0($i2), $f3
-	load    14($sp), $f4
+	load    5($sp), $f4
 	fmul    $f4, $f3, $f3
 	store   $f3, 1($i1)
-	load    16($sp), $f3
+	li      min_caml_screenz_dir, $i1
+	load    7($sp), $f3
 	fmul    $f2, $f3, $f5
-	li      l.14109, $i2
+	li      l.13457, $i2
 	load    0($i2), $f6
 	fmul    $f5, $f6, $f5
 	store   $f5, 2($i1)
-	load    4($sp), $i2
-	store   $f3, 0($i2)
-	li      l.14001, $i3
-	load    0($i3), $f5
-	store   $f5, 1($i2)
+	li      min_caml_screenx_dir, $i1
+	store   $f3, 0($i1)
+	li      min_caml_screenx_dir, $i1
+	li      l.13298, $i2
+	load    0($i2), $f5
+	store   $f5, 1($i1)
+	li      min_caml_screenx_dir, $i1
 	fneg    $f1, $f5
-	store   $f5, 2($i2)
+	store   $f5, 2($i1)
+	li      min_caml_screeny_dir, $i1
 	fneg    $f4, $f5
 	fmul    $f5, $f1, $f1
-	load    3($sp), $i2
-	store   $f1, 0($i2)
+	store   $f1, 0($i1)
+	li      min_caml_screeny_dir, $i1
 	fneg    $f2, $f1
-	store   $f1, 1($i2)
+	store   $f1, 1($i1)
+	li      min_caml_screeny_dir, $i1
 	fneg    $f4, $f1
 	fmul    $f1, $f3, $f1
-	store   $f1, 2($i2)
-	load    5($sp), $i2
-	load    0($i2), $f1
-	load    0($i1), $f2
-	fsub    $f1, $f2, $f1
-	load    0($sp), $i3
-	store   $f1, 0($i3)
-	load    1($i2), $f1
-	load    1($i1), $f2
-	fsub    $f1, $f2, $f1
-	store   $f1, 1($i3)
-	load    2($i2), $f1
-	load    2($i1), $f2
-	fsub    $f1, $f2, $f1
-	store   $f1, 2($i3)
-	ret
-read_light.2919:
-	load    9($i11), $i1
-	store   $i1, 0($sp)
-	load    8($i11), $f1
-	store   $f1, 1($sp)
-	load    7($i11), $f1
-	store   $f1, 2($sp)
-	load    6($i11), $f1
-	store   $f1, 3($sp)
-	load    5($i11), $i1
-	store   $i1, 4($sp)
-	load    4($i11), $i1
-	store   $i1, 5($sp)
-	load    3($i11), $i1
-	store   $i1, 6($sp)
-	load    2($i11), $i1
-	store   $i1, 7($sp)
-	load    1($i11), $i1
-	store   $i1, 8($sp)
-	store   $ra, 9($sp)
-	add     $sp, 10, $sp
-	jal     min_caml_read_int
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	store   $ra, 9($sp)
-	add     $sp, 10, $sp
-	jal     min_caml_read_float
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	li      l.14102, $i1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f1
-	store   $f1, 9($sp)
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24313
-	load    1($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24315
-	load    3($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24317
-	load    2($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24319
-	fsub    $f1, $f2, $f1
-	load    0($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24321, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24321:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	b       ble_cont.24320
-ble_else.24319:
-	fsub    $f2, $f1, $f1
-	load    0($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24322, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24322:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24320:
-	b       ble_cont.24318
-ble_else.24317:
-	fsub    $f2, $f1, $f1
-	load    6($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24323, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24323:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-ble_cont.24318:
-	b       ble_cont.24316
-ble_else.24315:
-	load    6($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24324, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24324:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-ble_cont.24316:
-	b       ble_cont.24314
-ble_else.24313:
-	fneg    $f1, $f1
-	load    0($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24325, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24325:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24314:
-	fneg    $f1, $f1
-	load    4($sp), $i1
-	store   $f1, 1($i1)
-	store   $ra, 10($sp)
-	add     $sp, 11, $sp
-	jal     min_caml_read_float
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	li      l.14102, $i1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f1
-	store   $f1, 10($sp)
-	li      l.14001, $i1
-	load    0($i1), $f1
-	load    9($sp), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24326
-	load    1($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24328
-	load    3($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24330
-	load    2($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24332
-	fsub    $f2, $f1, $f1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24334, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24334:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	b       ble_cont.24333
-ble_else.24332:
-	fsub    $f1, $f2, $f1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24335, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24335:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-ble_cont.24333:
-	b       ble_cont.24331
-ble_else.24330:
-	fsub    $f1, $f2, $f1
-	load    7($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24336, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24336:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24331:
-	b       ble_cont.24329
-ble_else.24328:
-	load    7($sp), $i11
-	mov     $f2, $f1
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24337, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24337:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-ble_cont.24329:
-	b       ble_cont.24327
-ble_else.24326:
-	fneg    $f2, $f1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24338, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24338:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-ble_cont.24327:
-	store   $f1, 11($sp)
-	li      l.14001, $i1
-	load    0($i1), $f1
-	load    10($sp), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24339
-	load    1($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24341
-	load    3($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24343
-	load    2($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24345
-	fsub    $f2, $f1, $f1
-	load    0($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24347, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24347:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	b       ble_cont.24346
-ble_else.24345:
-	fsub    $f1, $f2, $f1
-	load    0($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24348, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24348:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24346:
-	b       ble_cont.24344
-ble_else.24343:
-	fsub    $f1, $f2, $f1
-	load    6($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24349, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24349:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.24344:
-	b       ble_cont.24342
-ble_else.24341:
-	load    6($sp), $i11
-	mov     $f2, $f1
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24350, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24350:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.24342:
-	b       ble_cont.24340
-ble_else.24339:
-	fneg    $f2, $f1
-	load    0($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24351, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24351:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24340:
-	load    11($sp), $f2
-	fmul    $f2, $f1, $f1
-	load    4($sp), $i1
-	store   $f1, 0($i1)
-	li      l.14001, $i1
-	load    0($i1), $f1
-	load    10($sp), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24352
-	load    1($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24354
-	load    3($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24356
-	load    2($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24358
-	fsub    $f2, $f1, $f1
-	load    5($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24360, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24360:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	b       ble_cont.24359
-ble_else.24358:
-	fsub    $f1, $f2, $f1
-	load    5($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24361, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24361:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.24359:
-	b       ble_cont.24357
-ble_else.24356:
-	fsub    $f1, $f2, $f1
-	load    7($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24362, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24362:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	fneg    $f1, $f1
-ble_cont.24357:
-	b       ble_cont.24355
-ble_else.24354:
-	load    7($sp), $i11
-	mov     $f2, $f1
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24363, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24363:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.24355:
-	b       ble_cont.24353
-ble_else.24352:
-	fneg    $f2, $f1
-	load    5($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24364, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24364:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.24353:
-	load    11($sp), $f2
-	fmul    $f2, $f1, $f1
-	load    4($sp), $i1
 	store   $f1, 2($i1)
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
+	li      min_caml_viewpoint, $i1
+	li      min_caml_screen, $i2
+	load    0($i2), $f1
+	li      min_caml_screenz_dir, $i2
+	load    0($i2), $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, 0($i1)
+	li      min_caml_viewpoint, $i1
+	li      min_caml_screen, $i2
+	load    1($i2), $f1
+	li      min_caml_screenz_dir, $i2
+	load    1($i2), $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, 1($i1)
+	li      min_caml_viewpoint, $i1
+	li      min_caml_screen, $i2
+	load    2($i2), $f1
+	li      min_caml_screenz_dir, $i2
+	load    2($i2), $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, 2($i1)
+	ret
+read_light.2999:
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
+	jal     min_caml_read_int
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
 	jal     min_caml_read_float
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	load    8($sp), $i1
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	li      l.13426, $i1
+	load    0($i1), $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, 0($sp)
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18014
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18016
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18018
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18020
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     sin.2857
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	b       ble_cont.18021
+ble_else.18020:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     sin.2857
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18021:
+	b       ble_cont.18019
+ble_else.18018:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+ble_cont.18019:
+	b       ble_cont.18017
+ble_else.18016:
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+ble_cont.18017:
+	b       ble_cont.18015
+ble_else.18014:
+	fneg    $f1, $f1
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     sin.2857
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18015:
+	li      min_caml_light, $i1
+	fneg    $f1, $f1
+	store   $f1, 1($i1)
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     min_caml_read_float
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	li      l.13426, $i1
+	load    0($i1), $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, 1($sp)
+	li      l.13298, $i1
+	load    0($i1), $f1
+	load    0($sp), $f2
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18022
+	li      l.13317, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18024
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18026
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18028
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f2, $f1, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cos.2859
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	b       ble_cont.18029
+ble_else.18028:
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cos.2859
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+ble_cont.18029:
+	b       ble_cont.18027
+ble_else.18026:
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18027:
+	b       ble_cont.18025
+ble_else.18024:
+	mov     $f2, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+ble_cont.18025:
+	b       ble_cont.18023
+ble_else.18022:
+	fneg    $f2, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cos.2859
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+ble_cont.18023:
+	store   $f1, 2($sp)
+	li      l.13298, $i1
+	load    0($i1), $f1
+	load    1($sp), $f2
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18030
+	li      l.13317, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18032
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18034
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18036
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f2, $f1, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     sin.2857
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	b       ble_cont.18037
+ble_else.18036:
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     sin.2857
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18037:
+	b       ble_cont.18035
+ble_else.18034:
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+ble_cont.18035:
+	b       ble_cont.18033
+ble_else.18032:
+	mov     $f2, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+ble_cont.18033:
+	b       ble_cont.18031
+ble_else.18030:
+	fneg    $f2, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     sin.2857
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18031:
+	li      min_caml_light, $i1
+	load    2($sp), $f2
+	fmul    $f2, $f1, $f1
+	store   $f1, 0($i1)
+	li      l.13298, $i1
+	load    0($i1), $f1
+	load    1($sp), $f2
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18038
+	li      l.13317, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18040
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18042
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18044
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f2, $f1, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     cos.2859
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	b       ble_cont.18045
+ble_else.18044:
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     cos.2859
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+ble_cont.18045:
+	b       ble_cont.18043
+ble_else.18042:
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18043:
+	b       ble_cont.18041
+ble_else.18040:
+	mov     $f2, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+ble_cont.18041:
+	b       ble_cont.18039
+ble_else.18038:
+	fneg    $f2, $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     cos.2859
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+ble_cont.18039:
+	li      min_caml_light, $i1
+	load    2($sp), $f2
+	fmul    $f2, $f1, $f1
+	store   $f1, 2($i1)
+	li      min_caml_beam, $i1
+	store   $i1, 3($sp)
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     min_caml_read_float
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
 	store   $f1, 0($i1)
 	ret
-rotate_quadratic_matrix.2921:
+rotate_quadratic_matrix.3001:
 	store   $i1, 0($sp)
 	store   $i2, 1($sp)
-	load    7($i11), $i1
-	store   $i1, 2($sp)
-	load    6($i11), $f1
-	store   $f1, 3($sp)
-	load    5($i11), $f2
-	store   $f2, 4($sp)
-	load    4($i11), $f3
-	store   $f3, 5($sp)
-	load    3($i11), $i1
-	store   $i1, 6($sp)
-	load    2($i11), $i3
-	store   $i3, 7($sp)
-	load    1($i11), $i11
-	store   $i11, 8($sp)
-	load    0($i2), $f4
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f4, $i12
-	bg      $i12, ble_else.24366
-	fcmp    $f1, $f4, $i12
-	bg      $i12, ble_else.24368
-	fcmp    $f3, $f4, $i12
-	bg      $i12, ble_else.24370
-	fcmp    $f2, $f4, $i12
-	bg      $i12, ble_else.24372
-	fsub    $f4, $f2, $f1
-	mov     $i1, $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.24374, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.24374:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	b       ble_cont.24373
-ble_else.24372:
-	fsub    $f2, $f4, $f1
-	mov     $i1, $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.24375, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.24375:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-ble_cont.24373:
-	b       ble_cont.24371
-ble_else.24370:
-	fsub    $f3, $f4, $f1
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.24376, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.24376:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
+	load    0($i2), $f1
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18047
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18049
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18051
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18053
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cos.2859
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	b       ble_cont.18054
+ble_else.18053:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cos.2859
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+ble_cont.18054:
+	b       ble_cont.18052
+ble_else.18051:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
 	fneg    $f1, $f1
-ble_cont.24371:
-	b       ble_cont.24369
-ble_else.24368:
-	mov     $f4, $f1
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.24377, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.24377:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-ble_cont.24369:
-	b       ble_cont.24367
-ble_else.24366:
-	fneg    $f4, $f1
-	mov     $i1, $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.24378, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.24378:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-ble_cont.24367:
-	store   $f1, 9($sp)
+ble_cont.18052:
+	b       ble_cont.18050
+ble_else.18049:
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+ble_cont.18050:
+	b       ble_cont.18048
+ble_else.18047:
+	fneg    $f1, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cos.2859
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+ble_cont.18048:
+	store   $f1, 2($sp)
 	load    1($sp), $i1
 	load    0($i1), $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24379
-	load    3($sp), $f2
+	bg      $i12, ble_else.18055
+	li      l.13317, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24381
-	load    5($sp), $f2
+	bg      $i12, ble_else.18057
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24383
-	load    4($sp), $f2
+	bg      $i12, ble_else.18059
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24385
+	bg      $i12, ble_else.18061
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f1, $f2, $f1
-	load    2($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24387, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24387:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	b       ble_cont.24386
-ble_else.24385:
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     sin.2857
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	b       ble_cont.18062
+ble_else.18061:
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    2($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24388, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24388:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     sin.2857
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
 	fneg    $f1, $f1
-ble_cont.24386:
-	b       ble_cont.24384
-ble_else.24383:
+ble_cont.18062:
+	b       ble_cont.18060
+ble_else.18059:
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    7($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24389, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24389:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-ble_cont.24384:
-	b       ble_cont.24382
-ble_else.24381:
-	load    7($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24390, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24390:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-ble_cont.24382:
-	b       ble_cont.24380
-ble_else.24379:
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+ble_cont.18060:
+	b       ble_cont.18058
+ble_else.18057:
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+ble_cont.18058:
+	b       ble_cont.18056
+ble_else.18055:
 	fneg    $f1, $f1
-	load    2($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24391, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24391:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     sin.2857
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
 	fneg    $f1, $f1
-ble_cont.24380:
-	store   $f1, 10($sp)
+ble_cont.18056:
+	store   $f1, 3($sp)
 	load    1($sp), $i1
 	load    1($i1), $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24392
-	load    3($sp), $f2
+	bg      $i12, ble_else.18063
+	li      l.13317, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24394
-	load    5($sp), $f2
+	bg      $i12, ble_else.18065
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24396
-	load    4($sp), $f2
+	bg      $i12, ble_else.18067
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24398
+	bg      $i12, ble_else.18069
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f1, $f2, $f1
-	load    6($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24400, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24400:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	b       ble_cont.24399
-ble_else.24398:
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cos.2859
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	b       ble_cont.18070
+ble_else.18069:
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    6($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24401, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24401:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-ble_cont.24399:
-	b       ble_cont.24397
-ble_else.24396:
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cos.2859
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+ble_cont.18070:
+	b       ble_cont.18068
+ble_else.18067:
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    8($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24402, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24402:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
 	fneg    $f1, $f1
-ble_cont.24397:
-	b       ble_cont.24395
-ble_else.24394:
-	load    8($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24403, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24403:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-ble_cont.24395:
-	b       ble_cont.24393
-ble_else.24392:
+ble_cont.18068:
+	b       ble_cont.18066
+ble_else.18065:
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+ble_cont.18066:
+	b       ble_cont.18064
+ble_else.18063:
 	fneg    $f1, $f1
-	load    6($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24404, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24404:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-ble_cont.24393:
-	store   $f1, 11($sp)
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     cos.2859
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+ble_cont.18064:
+	store   $f1, 4($sp)
 	load    1($sp), $i1
 	load    1($i1), $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24405
-	load    3($sp), $f2
+	bg      $i12, ble_else.18071
+	li      l.13317, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24407
-	load    5($sp), $f2
+	bg      $i12, ble_else.18073
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24409
-	load    4($sp), $f2
+	bg      $i12, ble_else.18075
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24411
+	bg      $i12, ble_else.18077
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f1, $f2, $f1
-	load    2($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24413, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24413:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	b       ble_cont.24412
-ble_else.24411:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sin.2857
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	b       ble_cont.18078
+ble_else.18077:
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    2($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24414, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24414:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sin.2857
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
 	fneg    $f1, $f1
-ble_cont.24412:
-	b       ble_cont.24410
-ble_else.24409:
+ble_cont.18078:
+	b       ble_cont.18076
+ble_else.18075:
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    7($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24415, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24415:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.24410:
-	b       ble_cont.24408
-ble_else.24407:
-	load    7($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24416, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24416:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.24408:
-	b       ble_cont.24406
-ble_else.24405:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+ble_cont.18076:
+	b       ble_cont.18074
+ble_else.18073:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+ble_cont.18074:
+	b       ble_cont.18072
+ble_else.18071:
 	fneg    $f1, $f1
-	load    2($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.24417, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.24417:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sin.2857
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
 	fneg    $f1, $f1
-ble_cont.24406:
-	store   $f1, 12($sp)
+ble_cont.18072:
+	store   $f1, 5($sp)
 	load    1($sp), $i1
 	load    2($i1), $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24418
-	load    3($sp), $f2
+	bg      $i12, ble_else.18079
+	li      l.13317, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24420
-	load    5($sp), $f2
+	bg      $i12, ble_else.18081
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24422
-	load    4($sp), $f2
+	bg      $i12, ble_else.18083
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24424
+	bg      $i12, ble_else.18085
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f1, $f2, $f1
-	load    6($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24426, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24426:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	b       ble_cont.24425
-ble_else.24424:
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cos.2859
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	b       ble_cont.18086
+ble_else.18085:
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    6($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24427, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24427:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-ble_cont.24425:
-	b       ble_cont.24423
-ble_else.24422:
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cos.2859
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+ble_cont.18086:
+	b       ble_cont.18084
+ble_else.18083:
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    8($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24428, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24428:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
 	fneg    $f1, $f1
-ble_cont.24423:
-	b       ble_cont.24421
-ble_else.24420:
-	load    8($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24429, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24429:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-ble_cont.24421:
-	b       ble_cont.24419
-ble_else.24418:
+ble_cont.18084:
+	b       ble_cont.18082
+ble_else.18081:
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+ble_cont.18082:
+	b       ble_cont.18080
+ble_else.18079:
 	fneg    $f1, $f1
-	load    6($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24430, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24430:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-ble_cont.24419:
-	store   $f1, 13($sp)
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cos.2859
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+ble_cont.18080:
+	store   $f1, 6($sp)
 	load    1($sp), $i1
 	load    2($i1), $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24431
-	load    3($sp), $f2
+	bg      $i12, ble_else.18087
+	li      l.13317, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24433
-	load    5($sp), $f2
+	bg      $i12, ble_else.18089
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24435
-	load    4($sp), $f2
+	bg      $i12, ble_else.18091
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24437
+	bg      $i12, ble_else.18093
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f1, $f2, $f1
-	load    2($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24439, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24439:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	b       ble_cont.24438
-ble_else.24437:
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     sin.2857
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	b       ble_cont.18094
+ble_else.18093:
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    2($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24440, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24440:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     sin.2857
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
 	fneg    $f1, $f1
-ble_cont.24438:
-	b       ble_cont.24436
-ble_else.24435:
+ble_cont.18094:
+	b       ble_cont.18092
+ble_else.18091:
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fsub    $f2, $f1, $f1
-	load    7($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24441, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24441:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-ble_cont.24436:
-	b       ble_cont.24434
-ble_else.24433:
-	load    7($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24442, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24442:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-ble_cont.24434:
-	b       ble_cont.24432
-ble_else.24431:
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+ble_cont.18092:
+	b       ble_cont.18090
+ble_else.18089:
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+ble_cont.18090:
+	b       ble_cont.18088
+ble_else.18087:
 	fneg    $f1, $f1
-	load    2($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24443, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24443:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     sin.2857
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
 	fneg    $f1, $f1
-ble_cont.24432:
-	load    13($sp), $f2
-	load    11($sp), $f3
+ble_cont.18088:
+	load    6($sp), $f2
+	load    4($sp), $f3
 	fmul    $f3, $f2, $f4
-	load    12($sp), $f5
-	load    10($sp), $f6
+	load    5($sp), $f5
+	load    3($sp), $f6
 	fmul    $f6, $f5, $f7
 	fmul    $f7, $f2, $f7
-	load    9($sp), $f8
+	load    2($sp), $f8
 	fmul    $f8, $f1, $f9
 	fsub    $f7, $f9, $f7
 	fmul    $f8, $f5, $f9
@@ -3710,7 +2143,7 @@ ble_cont.24432:
 	fmul    $f11, $f1, $f11
 	fmul    $f8, $f2, $f12
 	fadd    $f11, $f12, $f11
-	store   $f11, 14($sp)
+	store   $f11, 7($sp)
 	fmul    $f8, $f5, $f12
 	fmul    $f12, $f1, $f1
 	fmul    $f6, $f2, $f2
@@ -3749,7 +2182,7 @@ ble_cont.24432:
 	fmul    $f12, $f14, $f14
 	fadd    $f13, $f14, $f13
 	store   $f13, 2($i1)
-	li      l.14050, $i1
+	li      l.13374, $i1
 	load    0($i1), $f13
 	fmul    $f6, $f7, $f14
 	fmul    $f14, $f9, $f14
@@ -3762,7 +2195,7 @@ ble_cont.24432:
 	fmul    $f13, $f11, $f11
 	load    1($sp), $i1
 	store   $f11, 0($i1)
-	li      l.14050, $i2
+	li      l.13374, $i2
 	load    0($i2), $f11
 	fmul    $f6, $f4, $f13
 	fmul    $f13, $f9, $f9
@@ -3774,12 +2207,12 @@ ble_cont.24432:
 	fadd    $f1, $f3, $f1
 	fmul    $f11, $f1, $f1
 	store   $f1, 1($i1)
-	li      l.14050, $i2
+	li      l.13374, $i2
 	load    0($i2), $f1
 	fmul    $f6, $f4, $f3
 	fmul    $f3, $f7, $f3
 	fmul    $f8, $f10, $f4
-	load    14($sp), $f6
+	load    7($sp), $f6
 	fmul    $f4, $f6, $f4
 	fadd    $f3, $f4, $f3
 	fmul    $f12, $f2, $f2
@@ -3788,23 +2221,31 @@ ble_cont.24432:
 	fmul    $f1, $f2, $f1
 	store   $f1, 2($i1)
 	ret
-read_nth_object.2924:
+read_nth_object.3004:
 	store   $i1, 0($sp)
-	load    2($i11), $i1
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     min_caml_read_int
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	li      -1, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18096
+	li      0, $i1
+	ret
+be_else.18096:
 	store   $i1, 1($sp)
-	load    1($i11), $i1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     min_caml_read_int
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
 	store   $i1, 2($sp)
 	store   $ra, 3($sp)
 	add     $sp, 4, $sp
 	jal     min_caml_read_int
 	sub     $sp, 4, $sp
 	load    3($sp), $ra
-	li      -1, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24445
-	li      0, $i1
-	ret
-be_else.24445:
 	store   $i1, 3($sp)
 	store   $ra, 4($sp)
 	add     $sp, 5, $sp
@@ -3812,50 +2253,83 @@ be_else.24445:
 	sub     $sp, 5, $sp
 	load    4($sp), $ra
 	store   $i1, 4($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
 	store   $ra, 5($sp)
 	add     $sp, 6, $sp
-	jal     min_caml_read_int
+	jal     min_caml_create_float_array
 	sub     $sp, 6, $sp
 	load    5($sp), $ra
 	store   $i1, 5($sp)
 	store   $ra, 6($sp)
 	add     $sp, 7, $sp
-	jal     min_caml_read_int
+	jal     min_caml_read_float
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    5($sp), $i1
+	store   $f1, 0($i1)
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     min_caml_read_float
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    5($sp), $i1
+	store   $f1, 1($i1)
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     min_caml_read_float
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    5($sp), $i1
+	store   $f1, 2($i1)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     min_caml_create_float_array
 	sub     $sp, 7, $sp
 	load    6($sp), $ra
 	store   $i1, 6($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
 	store   $ra, 7($sp)
 	add     $sp, 8, $sp
-	jal     min_caml_create_float_array
+	jal     min_caml_read_float
 	sub     $sp, 8, $sp
 	load    7($sp), $ra
-	store   $i1, 7($sp)
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
-	jal     min_caml_read_float
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	load    7($sp), $i1
+	load    6($sp), $i1
 	store   $f1, 0($i1)
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
 	jal     min_caml_read_float
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	load    7($sp), $i1
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	load    6($sp), $i1
 	store   $f1, 1($i1)
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
 	jal     min_caml_read_float
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	load    7($sp), $i1
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	load    6($sp), $i1
 	store   $f1, 2($i1)
-	li      3, $i1
-	li      l.14001, $i2
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     min_caml_read_float
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18097
+	li      0, $i1
+	b       ble_cont.18098
+ble_else.18097:
+	li      1, $i1
+ble_cont.18098:
+	store   $i1, 7($sp)
+	li      2, $i1
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 8($sp)
 	add     $sp, 9, $sp
@@ -3877,30 +2351,38 @@ be_else.24445:
 	load    9($sp), $ra
 	load    8($sp), $i1
 	store   $f1, 1($i1)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
 	store   $ra, 9($sp)
 	add     $sp, 10, $sp
-	jal     min_caml_read_float
+	jal     min_caml_create_float_array
 	sub     $sp, 10, $sp
 	load    9($sp), $ra
-	load    8($sp), $i1
-	store   $f1, 2($i1)
-	store   $ra, 9($sp)
-	add     $sp, 10, $sp
-	jal     min_caml_read_float
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24446
-	li      0, $i1
-	b       ble_cont.24447
-ble_else.24446:
-	li      1, $i1
-ble_cont.24447:
 	store   $i1, 9($sp)
-	li      2, $i1
-	li      l.14001, $i2
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     min_caml_read_float
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	load    9($sp), $i1
+	store   $f1, 0($i1)
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     min_caml_read_float
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	load    9($sp), $i1
+	store   $f1, 1($i1)
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     min_caml_read_float
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	load    9($sp), $i1
+	store   $f1, 2($i1)
+	li      3, $i1
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 10($sp)
 	add     $sp, 11, $sp
@@ -3908,471 +2390,391 @@ ble_cont.24447:
 	sub     $sp, 11, $sp
 	load    10($sp), $ra
 	store   $i1, 10($sp)
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     min_caml_read_float
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	load    10($sp), $i1
-	store   $f1, 0($i1)
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     min_caml_read_float
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	load    10($sp), $i1
-	store   $f1, 1($i1)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	store   $i1, 11($sp)
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
-	jal     min_caml_read_float
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	load    11($sp), $i1
-	store   $f1, 0($i1)
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
-	jal     min_caml_read_float
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	load    11($sp), $i1
-	store   $f1, 1($i1)
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
-	jal     min_caml_read_float
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	load    11($sp), $i1
-	store   $f1, 2($i1)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	store   $i1, 12($sp)
-	load    6($sp), $i2
+	load    4($sp), $i2
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24448
-	b       be_cont.24449
-be_else.24448:
-	store   $ra, 13($sp)
-	add     $sp, 14, $sp
+	bne     $i12, be_else.18099
+	b       be_cont.18100
+be_else.18099:
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
 	jal     min_caml_read_float
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	li      l.14102, $i1
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	li      l.13426, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    12($sp), $i1
+	load    10($sp), $i1
 	store   $f1, 0($i1)
-	store   $ra, 13($sp)
-	add     $sp, 14, $sp
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
 	jal     min_caml_read_float
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	li      l.14102, $i1
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	li      l.13426, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    12($sp), $i1
+	load    10($sp), $i1
 	store   $f1, 1($i1)
-	store   $ra, 13($sp)
-	add     $sp, 14, $sp
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
 	jal     min_caml_read_float
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	li      l.14102, $i1
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	li      l.13426, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    12($sp), $i1
+	load    10($sp), $i1
 	store   $f1, 2($i1)
-be_cont.24449:
-	load    4($sp), $i1
+be_cont.18100:
+	load    2($sp), $i1
 	li      2, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24450
+	bne     $i12, be_else.18101
 	li      1, $i1
-	b       be_cont.24451
-be_else.24450:
-	load    9($sp), $i1
-be_cont.24451:
-	store   $i1, 13($sp)
+	b       be_cont.18102
+be_else.18101:
+	load    7($sp), $i1
+be_cont.18102:
+	store   $i1, 11($sp)
 	li      4, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
 	jal     min_caml_create_float_array
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
 	mov     $hp, $i2
 	add     $hp, 11, $hp
 	store   $i1, 10($i2)
-	load    12($sp), $i1
-	store   $i1, 9($i2)
-	load    11($sp), $i1
-	store   $i1, 8($i2)
 	load    10($sp), $i1
-	store   $i1, 7($i2)
-	load    13($sp), $i1
-	store   $i1, 6($i2)
+	store   $i1, 9($i2)
+	load    9($sp), $i1
+	store   $i1, 8($i2)
 	load    8($sp), $i1
+	store   $i1, 7($i2)
+	load    11($sp), $i1
+	store   $i1, 6($i2)
+	load    6($sp), $i1
 	store   $i1, 5($i2)
-	load    7($sp), $i1
+	load    5($sp), $i1
 	store   $i1, 4($i2)
-	load    6($sp), $i3
-	store   $i3, 3($i2)
-	load    5($sp), $i3
-	store   $i3, 2($i2)
 	load    4($sp), $i3
+	store   $i3, 3($i2)
+	load    3($sp), $i3
+	store   $i3, 2($i2)
+	load    2($sp), $i3
 	store   $i3, 1($i2)
-	load    3($sp), $i4
+	load    1($sp), $i4
 	store   $i4, 0($i2)
-	load    0($sp), $i4
-	load    2($sp), $i5
-	add     $i5, $i4, $i12
+	li      min_caml_objects, $i4
+	load    0($sp), $i5
+	add     $i4, $i5, $i12
 	store   $i2, 0($i12)
 	li      3, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24452
+	bne     $i12, be_else.18103
 	load    0($i1), $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24454
+	bne     $i12, be_else.18105
 	li      1, $i2
-	b       be_cont.24455
-be_else.24454:
+	b       be_cont.18106
+be_else.18105:
 	li      0, $i2
-be_cont.24455:
+be_cont.18106:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24456
-	li      l.14001, $i2
+	bne     $i12, be_else.18107
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24458
+	bne     $i12, be_else.18109
 	li      1, $i2
-	b       be_cont.24459
-be_else.24458:
+	b       be_cont.18110
+be_else.18109:
 	li      0, $i2
-be_cont.24459:
+be_cont.18110:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24460
-	li      l.14001, $i2
+	bne     $i12, be_else.18111
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24462
+	bg      $i12, ble_else.18113
 	li      0, $i2
-	b       ble_cont.24463
-ble_else.24462:
+	b       ble_cont.18114
+ble_else.18113:
 	li      1, $i2
-ble_cont.24463:
+ble_cont.18114:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24464
-	li      l.14099, $i2
+	bne     $i12, be_else.18115
+	li      l.13423, $i2
 	load    0($i2), $f2
-	b       be_cont.24465
-be_else.24464:
-	li      l.14035, $i2
+	b       be_cont.18116
+be_else.18115:
+	li      l.13301, $i2
 	load    0($i2), $f2
-be_cont.24465:
-	b       be_cont.24461
-be_else.24460:
-	li      l.14001, $i2
+be_cont.18116:
+	b       be_cont.18112
+be_else.18111:
+	li      l.13298, $i2
 	load    0($i2), $f2
-be_cont.24461:
+be_cont.18112:
 	fmul    $f1, $f1, $f1
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f1
-	b       be_cont.24457
-be_else.24456:
-	li      l.14001, $i2
+	b       be_cont.18108
+be_else.18107:
+	li      l.13298, $i2
 	load    0($i2), $f1
-be_cont.24457:
+be_cont.18108:
 	store   $f1, 0($i1)
 	load    1($i1), $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24466
+	bne     $i12, be_else.18117
 	li      1, $i2
-	b       be_cont.24467
-be_else.24466:
+	b       be_cont.18118
+be_else.18117:
 	li      0, $i2
-be_cont.24467:
+be_cont.18118:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24468
-	li      l.14001, $i2
+	bne     $i12, be_else.18119
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24470
+	bne     $i12, be_else.18121
 	li      1, $i2
-	b       be_cont.24471
-be_else.24470:
+	b       be_cont.18122
+be_else.18121:
 	li      0, $i2
-be_cont.24471:
+be_cont.18122:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24472
-	li      l.14001, $i2
+	bne     $i12, be_else.18123
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24474
+	bg      $i12, ble_else.18125
 	li      0, $i2
-	b       ble_cont.24475
-ble_else.24474:
+	b       ble_cont.18126
+ble_else.18125:
 	li      1, $i2
-ble_cont.24475:
+ble_cont.18126:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24476
-	li      l.14099, $i2
+	bne     $i12, be_else.18127
+	li      l.13423, $i2
 	load    0($i2), $f2
-	b       be_cont.24477
-be_else.24476:
-	li      l.14035, $i2
+	b       be_cont.18128
+be_else.18127:
+	li      l.13301, $i2
 	load    0($i2), $f2
-be_cont.24477:
-	b       be_cont.24473
-be_else.24472:
-	li      l.14001, $i2
+be_cont.18128:
+	b       be_cont.18124
+be_else.18123:
+	li      l.13298, $i2
 	load    0($i2), $f2
-be_cont.24473:
+be_cont.18124:
 	fmul    $f1, $f1, $f1
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f1
-	b       be_cont.24469
-be_else.24468:
-	li      l.14001, $i2
+	b       be_cont.18120
+be_else.18119:
+	li      l.13298, $i2
 	load    0($i2), $f1
-be_cont.24469:
+be_cont.18120:
 	store   $f1, 1($i1)
 	load    2($i1), $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24478
+	bne     $i12, be_else.18129
 	li      1, $i2
-	b       be_cont.24479
-be_else.24478:
+	b       be_cont.18130
+be_else.18129:
 	li      0, $i2
-be_cont.24479:
+be_cont.18130:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24480
-	li      l.14001, $i2
+	bne     $i12, be_else.18131
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24482
+	bne     $i12, be_else.18133
 	li      1, $i2
-	b       be_cont.24483
-be_else.24482:
+	b       be_cont.18134
+be_else.18133:
 	li      0, $i2
-be_cont.24483:
+be_cont.18134:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24484
-	li      l.14001, $i2
+	bne     $i12, be_else.18135
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24486
+	bg      $i12, ble_else.18137
 	li      0, $i2
-	b       ble_cont.24487
-ble_else.24486:
+	b       ble_cont.18138
+ble_else.18137:
 	li      1, $i2
-ble_cont.24487:
+ble_cont.18138:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24488
-	li      l.14099, $i2
+	bne     $i12, be_else.18139
+	li      l.13423, $i2
 	load    0($i2), $f2
-	b       be_cont.24489
-be_else.24488:
-	li      l.14035, $i2
+	b       be_cont.18140
+be_else.18139:
+	li      l.13301, $i2
 	load    0($i2), $f2
-be_cont.24489:
-	b       be_cont.24485
-be_else.24484:
-	li      l.14001, $i2
+be_cont.18140:
+	b       be_cont.18136
+be_else.18135:
+	li      l.13298, $i2
 	load    0($i2), $f2
-be_cont.24485:
+be_cont.18136:
 	fmul    $f1, $f1, $f1
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f1
-	b       be_cont.24481
-be_else.24480:
-	li      l.14001, $i2
+	b       be_cont.18132
+be_else.18131:
+	li      l.13298, $i2
 	load    0($i2), $f1
-be_cont.24481:
+be_cont.18132:
 	store   $f1, 2($i1)
-	b       be_cont.24453
-be_else.24452:
+	b       be_cont.18104
+be_else.18103:
 	li      2, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24490
-	load    9($sp), $i2
+	bne     $i12, be_else.18141
+	load    7($sp), $i2
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24492
+	bne     $i12, be_else.18143
 	li      1, $i2
-	b       be_cont.24493
-be_else.24492:
+	b       be_cont.18144
+be_else.18143:
 	li      0, $i2
-be_cont.24493:
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
-	jal     vecunit_sgn.2816
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	b       be_cont.24491
-be_else.24490:
-be_cont.24491:
-be_cont.24453:
-	load    6($sp), $i1
+be_cont.18144:
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
+	jal     vecunit_sgn.2896
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
+	b       be_cont.18142
+be_else.18141:
+be_cont.18142:
+be_cont.18104:
+	load    4($sp), $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24494
-	b       be_cont.24495
-be_else.24494:
-	load    7($sp), $i1
-	load    12($sp), $i2
-	load    1($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.24496, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.24496:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-be_cont.24495:
+	bne     $i12, be_else.18145
+	b       be_cont.18146
+be_else.18145:
+	load    5($sp), $i1
+	load    10($sp), $i2
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
+	jal     rotate_quadratic_matrix.3001
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
+be_cont.18146:
 	li      1, $i1
 	ret
-read_object.2926:
-	load    2($i11), $i2
-	load    1($i11), $i3
+read_object.3006:
 	li      60, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.24497
+	bl      $i12, bge_else.18147
 	ret
-bge_else.24497:
-	store   $i11, 0($sp)
-	store   $i2, 1($sp)
-	store   $i3, 2($sp)
+bge_else.18147:
+	store   $i1, 0($sp)
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     read_nth_object.3004
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18149
+	li      min_caml_n_objects, $i1
+	load    0($sp), $i2
+	store   $i2, 0($i1)
+	ret
+be_else.18149:
+	load    0($sp), $i1
+	add     $i1, 1, $i1
+	li      60, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.18151
+	ret
+bge_else.18151:
+	store   $i1, 1($sp)
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     read_nth_object.3004
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18153
+	li      min_caml_n_objects, $i1
+	load    1($sp), $i2
+	store   $i2, 0($i1)
+	ret
+be_else.18153:
+	load    1($sp), $i1
+	add     $i1, 1, $i1
+	li      60, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.18155
+	ret
+bge_else.18155:
+	store   $i1, 2($sp)
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     read_nth_object.3004
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18157
+	li      min_caml_n_objects, $i1
+	load    2($sp), $i2
+	store   $i2, 0($i1)
+	ret
+be_else.18157:
+	load    2($sp), $i1
+	add     $i1, 1, $i1
+	li      60, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.18159
+	ret
+bge_else.18159:
 	store   $i1, 3($sp)
-	mov     $i2, $i11
 	store   $ra, 4($sp)
-	load    0($i11), $i10
-	li      cls.24499, $ra
 	add     $sp, 5, $sp
-	jr      $i10
-cls.24499:
+	jal     read_nth_object.3004
 	sub     $sp, 5, $sp
 	load    4($sp), $ra
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24500
-	load    2($sp), $i1
+	bne     $i12, be_else.18161
+	li      min_caml_n_objects, $i1
 	load    3($sp), $i2
 	store   $i2, 0($i1)
 	ret
-be_else.24500:
+be_else.18161:
 	load    3($sp), $i1
 	add     $i1, 1, $i1
-	li      60, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.24502
-	ret
-bge_else.24502:
-	store   $i1, 4($sp)
-	load    1($sp), $i11
-	store   $ra, 5($sp)
-	load    0($i11), $i10
-	li      cls.24504, $ra
-	add     $sp, 6, $sp
-	jr      $i10
-cls.24504:
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24505
-	load    2($sp), $i1
-	load    4($sp), $i2
-	store   $i2, 0($i1)
-	ret
-be_else.24505:
-	load    4($sp), $i1
-	add     $i1, 1, $i1
-	li      60, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.24507
-	ret
-bge_else.24507:
-	store   $i1, 5($sp)
-	load    1($sp), $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.24509, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.24509:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24510
-	load    2($sp), $i1
-	load    5($sp), $i2
-	store   $i2, 0($i1)
-	ret
-be_else.24510:
-	load    5($sp), $i1
-	add     $i1, 1, $i1
-	li      60, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.24512
-	ret
-bge_else.24512:
-	store   $i1, 6($sp)
-	load    1($sp), $i11
-	store   $ra, 7($sp)
-	load    0($i11), $i10
-	li      cls.24514, $ra
-	add     $sp, 8, $sp
-	jr      $i10
-cls.24514:
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24515
-	load    2($sp), $i1
-	load    6($sp), $i2
-	store   $i2, 0($i1)
-	ret
-be_else.24515:
-	load    6($sp), $i1
-	add     $i1, 1, $i1
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-read_net_item.2930:
+	b       read_object.3006
+read_net_item.3010:
 	store   $i1, 0($sp)
 	store   $ra, 1($sp)
 	add     $sp, 2, $sp
@@ -4381,12 +2783,12 @@ read_net_item.2930:
 	load    1($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24517
+	bne     $i12, be_else.18163
 	load    0($sp), $i1
 	add     $i1, 1, $i1
 	li      -1, $i2
 	b       min_caml_create_array
-be_else.24517:
+be_else.18163:
 	store   $i1, 1($sp)
 	load    0($sp), $i1
 	add     $i1, 1, $i1
@@ -4398,7 +2800,7 @@ be_else.24517:
 	load    3($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24518
+	bne     $i12, be_else.18164
 	load    2($sp), $i1
 	add     $i1, 1, $i1
 	li      -1, $i2
@@ -4407,8 +2809,8 @@ be_else.24517:
 	jal     min_caml_create_array
 	sub     $sp, 4, $sp
 	load    3($sp), $ra
-	b       be_cont.24519
-be_else.24518:
+	b       be_cont.18165
+be_else.18164:
 	store   $i1, 3($sp)
 	load    2($sp), $i1
 	add     $i1, 1, $i1
@@ -4420,7 +2822,7 @@ be_else.24518:
 	load    5($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24520
+	bne     $i12, be_else.18166
 	load    4($sp), $i1
 	add     $i1, 1, $i1
 	li      -1, $i2
@@ -4429,8 +2831,8 @@ be_else.24518:
 	jal     min_caml_create_array
 	sub     $sp, 6, $sp
 	load    5($sp), $ra
-	b       be_cont.24521
-be_else.24520:
+	b       be_cont.18167
+be_else.18166:
 	store   $i1, 5($sp)
 	load    4($sp), $i1
 	add     $i1, 1, $i1
@@ -4442,7 +2844,7 @@ be_else.24520:
 	load    7($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24522
+	bne     $i12, be_else.18168
 	load    6($sp), $i1
 	add     $i1, 1, $i1
 	li      -1, $i2
@@ -4451,37 +2853,37 @@ be_else.24520:
 	jal     min_caml_create_array
 	sub     $sp, 8, $sp
 	load    7($sp), $ra
-	b       be_cont.24523
-be_else.24522:
+	b       be_cont.18169
+be_else.18168:
 	store   $i1, 7($sp)
 	load    6($sp), $i1
 	add     $i1, 1, $i1
 	store   $ra, 8($sp)
 	add     $sp, 9, $sp
-	jal     read_net_item.2930
+	jal     read_net_item.3010
 	sub     $sp, 9, $sp
 	load    8($sp), $ra
 	load    6($sp), $i2
 	load    7($sp), $i3
 	add     $i1, $i2, $i12
 	store   $i3, 0($i12)
-be_cont.24523:
+be_cont.18169:
 	load    4($sp), $i2
 	load    5($sp), $i3
 	add     $i1, $i2, $i12
 	store   $i3, 0($i12)
-be_cont.24521:
+be_cont.18167:
 	load    2($sp), $i2
 	load    3($sp), $i3
 	add     $i1, $i2, $i12
 	store   $i3, 0($i12)
-be_cont.24519:
+be_cont.18165:
 	load    0($sp), $i2
 	load    1($sp), $i3
 	add     $i1, $i2, $i12
 	store   $i3, 0($i12)
 	ret
-read_or_network.2932:
+read_or_network.3012:
 	store   $i1, 0($sp)
 	store   $ra, 1($sp)
 	add     $sp, 2, $sp
@@ -4490,7 +2892,7 @@ read_or_network.2932:
 	load    1($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24524
+	bne     $i12, be_else.18170
 	li      1, $i1
 	li      -1, $i2
 	store   $ra, 1($sp)
@@ -4498,8 +2900,8 @@ read_or_network.2932:
 	jal     min_caml_create_array
 	sub     $sp, 2, $sp
 	load    1($sp), $ra
-	b       be_cont.24525
-be_else.24524:
+	b       be_cont.18171
+be_else.18170:
 	store   $i1, 1($sp)
 	store   $ra, 2($sp)
 	add     $sp, 3, $sp
@@ -4508,7 +2910,7 @@ be_else.24524:
 	load    2($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24526
+	bne     $i12, be_else.18172
 	li      2, $i1
 	li      -1, $i2
 	store   $ra, 2($sp)
@@ -4516,8 +2918,8 @@ be_else.24524:
 	jal     min_caml_create_array
 	sub     $sp, 3, $sp
 	load    2($sp), $ra
-	b       be_cont.24527
-be_else.24526:
+	b       be_cont.18173
+be_else.18172:
 	store   $i1, 2($sp)
 	store   $ra, 3($sp)
 	add     $sp, 4, $sp
@@ -4526,7 +2928,7 @@ be_else.24526:
 	load    3($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24528
+	bne     $i12, be_else.18174
 	li      3, $i1
 	li      -1, $i2
 	store   $ra, 3($sp)
@@ -4534,33 +2936,33 @@ be_else.24526:
 	jal     min_caml_create_array
 	sub     $sp, 4, $sp
 	load    3($sp), $ra
-	b       be_cont.24529
-be_else.24528:
+	b       be_cont.18175
+be_else.18174:
 	store   $i1, 3($sp)
 	li      3, $i1
 	store   $ra, 4($sp)
 	add     $sp, 5, $sp
-	jal     read_net_item.2930
+	jal     read_net_item.3010
 	sub     $sp, 5, $sp
 	load    4($sp), $ra
 	load    3($sp), $i2
 	store   $i2, 2($i1)
-be_cont.24529:
+be_cont.18175:
 	load    2($sp), $i2
 	store   $i2, 1($i1)
-be_cont.24527:
+be_cont.18173:
 	load    1($sp), $i2
 	store   $i2, 0($i1)
-be_cont.24525:
+be_cont.18171:
 	mov     $i1, $i2
 	load    0($i2), $i1
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24530
+	bne     $i12, be_else.18176
 	load    0($sp), $i1
 	add     $i1, 1, $i1
 	b       min_caml_create_array
-be_else.24530:
+be_else.18176:
 	store   $i2, 4($sp)
 	load    0($sp), $i1
 	add     $i1, 1, $i1
@@ -4572,7 +2974,7 @@ be_else.24530:
 	load    6($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24531
+	bne     $i12, be_else.18177
 	li      1, $i1
 	li      -1, $i2
 	store   $ra, 6($sp)
@@ -4580,8 +2982,8 @@ be_else.24530:
 	jal     min_caml_create_array
 	sub     $sp, 7, $sp
 	load    6($sp), $ra
-	b       be_cont.24532
-be_else.24531:
+	b       be_cont.18178
+be_else.18177:
 	store   $i1, 6($sp)
 	store   $ra, 7($sp)
 	add     $sp, 8, $sp
@@ -4590,7 +2992,7 @@ be_else.24531:
 	load    7($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24533
+	bne     $i12, be_else.18179
 	li      2, $i1
 	li      -1, $i2
 	store   $ra, 7($sp)
@@ -4598,26 +3000,26 @@ be_else.24531:
 	jal     min_caml_create_array
 	sub     $sp, 8, $sp
 	load    7($sp), $ra
-	b       be_cont.24534
-be_else.24533:
+	b       be_cont.18180
+be_else.18179:
 	store   $i1, 7($sp)
 	li      2, $i1
 	store   $ra, 8($sp)
 	add     $sp, 9, $sp
-	jal     read_net_item.2930
+	jal     read_net_item.3010
 	sub     $sp, 9, $sp
 	load    8($sp), $ra
 	load    7($sp), $i2
 	store   $i2, 1($i1)
-be_cont.24534:
+be_cont.18180:
 	load    6($sp), $i2
 	store   $i2, 0($i1)
-be_cont.24532:
+be_cont.18178:
 	mov     $i1, $i2
 	load    0($i2), $i1
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24535
+	bne     $i12, be_else.18181
 	load    5($sp), $i1
 	add     $i1, 1, $i1
 	store   $ra, 8($sp)
@@ -4625,30 +3027,63 @@ be_cont.24532:
 	jal     min_caml_create_array
 	sub     $sp, 9, $sp
 	load    8($sp), $ra
-	b       be_cont.24536
-be_else.24535:
+	b       be_cont.18182
+be_else.18181:
 	store   $i2, 8($sp)
 	load    5($sp), $i1
 	add     $i1, 1, $i1
 	store   $ra, 9($sp)
 	add     $sp, 10, $sp
-	jal     read_or_network.2932
+	jal     read_or_network.3012
 	sub     $sp, 10, $sp
 	load    9($sp), $ra
 	load    5($sp), $i2
 	load    8($sp), $i3
 	add     $i1, $i2, $i12
 	store   $i3, 0($i12)
-be_cont.24536:
+be_cont.18182:
 	load    0($sp), $i2
 	load    4($sp), $i3
 	add     $i1, $i2, $i12
 	store   $i3, 0($i12)
 	ret
-read_and_network.2934:
-	store   $i11, 0($sp)
+read_and_network.3014:
+	store   $i1, 0($sp)
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     min_caml_read_int
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	li      -1, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18183
+	li      1, $i1
+	li      -1, $i2
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     min_caml_create_array
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	b       be_cont.18184
+be_else.18183:
 	store   $i1, 1($sp)
-	load    1($i11), $i1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     min_caml_read_int
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	li      -1, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18185
+	li      2, $i1
+	li      -1, $i2
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     min_caml_create_array
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	b       be_cont.18186
+be_else.18185:
 	store   $i1, 2($sp)
 	store   $ra, 3($sp)
 	add     $sp, 4, $sp
@@ -4657,34 +3092,43 @@ read_and_network.2934:
 	load    3($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24537
-	li      1, $i1
+	bne     $i12, be_else.18187
+	li      3, $i1
 	li      -1, $i2
 	store   $ra, 3($sp)
 	add     $sp, 4, $sp
 	jal     min_caml_create_array
 	sub     $sp, 4, $sp
 	load    3($sp), $ra
-	b       be_cont.24538
-be_else.24537:
+	b       be_cont.18188
+be_else.18187:
 	store   $i1, 3($sp)
+	li      3, $i1
 	store   $ra, 4($sp)
 	add     $sp, 5, $sp
-	jal     min_caml_read_int
+	jal     read_net_item.3010
 	sub     $sp, 5, $sp
 	load    4($sp), $ra
+	load    3($sp), $i2
+	store   $i2, 2($i1)
+be_cont.18188:
+	load    2($sp), $i2
+	store   $i2, 1($i1)
+be_cont.18186:
+	load    1($sp), $i2
+	store   $i2, 0($i1)
+be_cont.18184:
+	load    0($i1), $i2
 	li      -1, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24539
-	li      2, $i1
-	li      -1, $i2
-	store   $ra, 4($sp)
-	add     $sp, 5, $sp
-	jal     min_caml_create_array
-	sub     $sp, 5, $sp
-	load    4($sp), $ra
-	b       be_cont.24540
-be_else.24539:
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18189
+	ret
+be_else.18189:
+	li      min_caml_and_net, $i2
+	load    0($sp), $i3
+	add     $i2, $i3, $i12
+	store   $i1, 0($i12)
+	add     $i3, 1, $i1
 	store   $i1, 4($sp)
 	store   $ra, 5($sp)
 	add     $sp, 6, $sp
@@ -4693,159 +3137,111 @@ be_else.24539:
 	load    5($sp), $ra
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24541
-	li      3, $i1
+	bne     $i12, be_else.18191
+	li      1, $i1
 	li      -1, $i2
 	store   $ra, 5($sp)
 	add     $sp, 6, $sp
 	jal     min_caml_create_array
 	sub     $sp, 6, $sp
 	load    5($sp), $ra
-	b       be_cont.24542
-be_else.24541:
+	b       be_cont.18192
+be_else.18191:
 	store   $i1, 5($sp)
-	li      3, $i1
 	store   $ra, 6($sp)
 	add     $sp, 7, $sp
-	jal     read_net_item.2930
+	jal     min_caml_read_int
 	sub     $sp, 7, $sp
 	load    6($sp), $ra
-	load    5($sp), $i2
-	store   $i2, 2($i1)
-be_cont.24542:
-	load    4($sp), $i2
-	store   $i2, 1($i1)
-be_cont.24540:
-	load    3($sp), $i2
-	store   $i2, 0($i1)
-be_cont.24538:
-	load    0($i1), $i2
 	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24543
-	ret
-be_else.24543:
-	load    1($sp), $i2
-	load    2($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	add     $i2, 1, $i1
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18193
+	li      2, $i1
+	li      -1, $i2
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     min_caml_create_array
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	b       be_cont.18194
+be_else.18193:
 	store   $i1, 6($sp)
+	li      2, $i1
 	store   $ra, 7($sp)
 	add     $sp, 8, $sp
-	jal     min_caml_read_int
+	jal     read_net_item.3010
 	sub     $sp, 8, $sp
 	load    7($sp), $ra
-	li      -1, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24545
-	li      1, $i1
-	li      -1, $i2
-	store   $ra, 7($sp)
-	add     $sp, 8, $sp
-	jal     min_caml_create_array
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	b       be_cont.24546
-be_else.24545:
-	store   $i1, 7($sp)
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
-	jal     min_caml_read_int
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	li      -1, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24547
-	li      2, $i1
-	li      -1, $i2
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
-	jal     min_caml_create_array
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	b       be_cont.24548
-be_else.24547:
-	store   $i1, 8($sp)
-	li      2, $i1
-	store   $ra, 9($sp)
-	add     $sp, 10, $sp
-	jal     read_net_item.2930
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	load    8($sp), $i2
+	load    6($sp), $i2
 	store   $i2, 1($i1)
-be_cont.24548:
-	load    7($sp), $i2
+be_cont.18194:
+	load    5($sp), $i2
 	store   $i2, 0($i1)
-be_cont.24546:
+be_cont.18192:
 	load    0($i1), $i2
 	li      -1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24549
+	bne     $i12, be_else.18195
 	ret
-be_else.24549:
-	load    6($sp), $i2
-	load    2($sp), $i3
-	add     $i3, $i2, $i12
+be_else.18195:
+	li      min_caml_and_net, $i2
+	load    4($sp), $i3
+	add     $i2, $i3, $i12
 	store   $i1, 0($i12)
-	add     $i2, 1, $i1
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-solver_rect_surface.2938:
-	load    1($i11), $i6
+	add     $i3, 1, $i1
+	b       read_and_network.3014
+solver_rect_surface.3018:
 	add     $i2, $i3, $i12
 	load    0($i12), $f4
-	li      l.14001, $i7
-	load    0($i7), $f5
+	li      l.13298, $i6
+	load    0($i6), $f5
 	fcmp    $f4, $f5, $i12
-	bne     $i12, be_else.24551
-	li      1, $i7
-	b       be_cont.24552
-be_else.24551:
-	li      0, $i7
-be_cont.24552:
+	bne     $i12, be_else.18197
+	li      1, $i6
+	b       be_cont.18198
+be_else.18197:
+	li      0, $i6
+be_cont.18198:
 	li      0, $i12
-	cmp     $i7, $i12, $i12
-	bne     $i12, be_else.24553
-	load    4($i1), $i7
+	cmp     $i6, $i12, $i12
+	bne     $i12, be_else.18199
+	load    4($i1), $i6
 	load    6($i1), $i1
 	add     $i2, $i3, $i12
 	load    0($i12), $f4
-	li      l.14001, $i8
-	load    0($i8), $f5
+	li      l.13298, $i7
+	load    0($i7), $f5
 	fcmp    $f5, $f4, $i12
-	bg      $i12, ble_else.24554
-	li      0, $i8
-	b       ble_cont.24555
-ble_else.24554:
-	li      1, $i8
-ble_cont.24555:
+	bg      $i12, ble_else.18200
+	li      0, $i7
+	b       ble_cont.18201
+ble_else.18200:
+	li      1, $i7
+ble_cont.18201:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24556
-	mov     $i8, $i1
-	b       be_cont.24557
-be_else.24556:
+	bne     $i12, be_else.18202
+	mov     $i7, $i1
+	b       be_cont.18203
+be_else.18202:
 	li      0, $i12
-	cmp     $i8, $i12, $i12
-	bne     $i12, be_else.24558
+	cmp     $i7, $i12, $i12
+	bne     $i12, be_else.18204
 	li      1, $i1
-	b       be_cont.24559
-be_else.24558:
+	b       be_cont.18205
+be_else.18204:
 	li      0, $i1
-be_cont.24559:
-be_cont.24557:
-	add     $i7, $i3, $i12
+be_cont.18205:
+be_cont.18203:
+	add     $i6, $i3, $i12
 	load    0($i12), $f4
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24560
+	bne     $i12, be_else.18206
 	fneg    $f4, $f4
-	b       be_cont.24561
-be_else.24560:
-be_cont.24561:
+	b       be_cont.18207
+be_else.18206:
+be_cont.18207:
 	fsub    $f4, $f1, $f1
 	add     $i2, $i3, $i12
 	load    0($i12), $f4
@@ -4855,64 +3251,64 @@ be_cont.24561:
 	load    0($i12), $f4
 	fmul    $f1, $f4, $f4
 	fadd    $f4, $f2, $f2
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f4
 	fcmp    $f4, $f2, $i12
-	bg      $i12, ble_else.24562
-	b       ble_cont.24563
-ble_else.24562:
+	bg      $i12, ble_else.18208
+	b       ble_cont.18209
+ble_else.18208:
 	fneg    $f2, $f2
-ble_cont.24563:
-	add     $i7, $i4, $i12
+ble_cont.18209:
+	add     $i6, $i4, $i12
 	load    0($i12), $f4
 	fcmp    $f4, $f2, $i12
-	bg      $i12, ble_else.24564
+	bg      $i12, ble_else.18210
 	li      0, $i1
-	b       ble_cont.24565
-ble_else.24564:
+	b       ble_cont.18211
+ble_else.18210:
 	li      1, $i1
-ble_cont.24565:
+ble_cont.18211:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24566
+	bne     $i12, be_else.18212
 	li      0, $i1
 	ret
-be_else.24566:
+be_else.18212:
 	add     $i2, $i5, $i12
 	load    0($i12), $f2
 	fmul    $f1, $f2, $f2
 	fadd    $f2, $f3, $f2
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f3
 	fcmp    $f3, $f2, $i12
-	bg      $i12, ble_else.24567
-	b       ble_cont.24568
-ble_else.24567:
+	bg      $i12, ble_else.18213
+	b       ble_cont.18214
+ble_else.18213:
 	fneg    $f2, $f2
-ble_cont.24568:
-	add     $i7, $i5, $i12
+ble_cont.18214:
+	add     $i6, $i5, $i12
 	load    0($i12), $f3
 	fcmp    $f3, $f2, $i12
-	bg      $i12, ble_else.24569
+	bg      $i12, ble_else.18215
 	li      0, $i1
-	b       ble_cont.24570
-ble_else.24569:
+	b       ble_cont.18216
+ble_else.18215:
 	li      1, $i1
-ble_cont.24570:
+ble_cont.18216:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24571
+	bne     $i12, be_else.18217
 	li      0, $i1
 	ret
-be_else.24571:
-	store   $f1, 0($i6)
+be_else.18217:
+	li      min_caml_solver_dist, $i1
+	store   $f1, 0($i1)
 	li      1, $i1
 	ret
-be_else.24553:
+be_else.18199:
 	li      0, $i1
 	ret
-solver_surface.2953:
-	load    1($i11), $i3
+solver_surface.3033:
 	load    4($i1), $i1
 	load    0($i2), $f4
 	load    0($i1), $f5
@@ -4925,21 +3321,22 @@ solver_surface.2953:
 	load    2($i1), $f6
 	fmul    $f5, $f6, $f5
 	fadd    $f4, $f5, $f4
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f5
 	fcmp    $f4, $f5, $i12
-	bg      $i12, ble_else.24572
+	bg      $i12, ble_else.18218
 	li      0, $i2
-	b       ble_cont.24573
-ble_else.24572:
+	b       ble_cont.18219
+ble_else.18218:
 	li      1, $i2
-ble_cont.24573:
+ble_cont.18219:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24574
+	bne     $i12, be_else.18220
 	li      0, $i1
 	ret
-be_else.24574:
+be_else.18220:
+	li      min_caml_solver_dist, $i2
 	load    0($i1), $f5
 	fmul    $f5, $f1, $f1
 	load    1($i1), $f5
@@ -4951,10 +3348,10 @@ be_else.24574:
 	fneg    $f1, $f1
 	finv    $f4, $f15
 	fmul    $f1, $f15, $f1
-	store   $f1, 0($i3)
+	store   $f1, 0($i2)
 	li      1, $i1
 	ret
-quadratic.2959:
+quadratic.3039:
 	fmul    $f1, $f1, $f4
 	load    4($i1), $i2
 	load    0($i2), $f5
@@ -4972,10 +3369,10 @@ quadratic.2959:
 	load    3($i1), $i2
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24575
+	bne     $i12, be_else.18221
 	mov     $f4, $f1
 	ret
-be_else.24575:
+be_else.18221:
 	fmul    $f2, $f3, $f5
 	load    9($i1), $i2
 	load    0($i2), $f6
@@ -4992,7 +3389,7 @@ be_else.24575:
 	fmul    $f1, $f2, $f1
 	fadd    $f3, $f1, $f1
 	ret
-bilinear.2964:
+bilinear.3044:
 	fmul    $f1, $f4, $f7
 	load    4($i1), $i2
 	load    0($i2), $f8
@@ -5010,10 +3407,10 @@ bilinear.2964:
 	load    3($i1), $i2
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24576
+	bne     $i12, be_else.18222
 	mov     $f7, $f1
 	ret
-be_else.24576:
+be_else.18222:
 	fmul    $f3, $f5, $f8
 	fmul    $f2, $f6, $f9
 	fadd    $f8, $f9, $f8
@@ -5034,41 +3431,39 @@ be_else.24576:
 	load    2($i1), $f2
 	fmul    $f1, $f2, $f1
 	fadd    $f3, $f1, $f1
-	li      l.14050, $i1
+	li      l.13374, $i1
 	load    0($i1), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
 	fadd    $f7, $f1, $f1
 	ret
-solver_second.2972:
+solver_second.3052:
 	store   $f3, 0($sp)
 	store   $f2, 1($sp)
 	store   $f1, 2($sp)
 	store   $i1, 3($sp)
 	store   $i2, 4($sp)
-	load    1($i11), $i3
-	store   $i3, 5($sp)
 	load    0($i2), $f1
 	load    1($i2), $f2
 	load    2($i2), $f3
-	store   $ra, 6($sp)
-	add     $sp, 7, $sp
-	jal     quadratic.2959
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	li      l.14001, $i1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     quadratic.3039
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24577
+	bne     $i12, be_else.18223
 	li      1, $i1
-	b       be_cont.24578
-be_else.24577:
+	b       be_cont.18224
+be_else.18223:
 	li      0, $i1
-be_cont.24578:
+be_cont.18224:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24579
-	store   $f1, 6($sp)
+	bne     $i12, be_else.18225
+	store   $f1, 5($sp)
 	load    4($sp), $i1
 	load    0($i1), $f1
 	load    1($i1), $f2
@@ -5077,225 +3472,79 @@ be_cont.24578:
 	load    1($sp), $f5
 	load    0($sp), $f6
 	load    3($sp), $i1
-	store   $ra, 7($sp)
-	add     $sp, 8, $sp
-	jal     bilinear.2964
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	store   $f1, 7($sp)
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     bilinear.3044
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	store   $f1, 6($sp)
 	load    2($sp), $f1
 	load    1($sp), $f2
 	load    0($sp), $f3
 	load    3($sp), $i1
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
-	jal     quadratic.2959
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     quadratic.3039
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
 	load    3($sp), $i1
 	load    1($i1), $i2
 	li      3, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24580
-	li      l.14035, $i2
+	bne     $i12, be_else.18226
+	li      l.13301, $i2
 	load    0($i2), $f2
 	fsub    $f1, $f2, $f1
-	b       be_cont.24581
-be_else.24580:
-be_cont.24581:
-	load    7($sp), $f2
+	b       be_cont.18227
+be_else.18226:
+be_cont.18227:
+	load    6($sp), $f2
 	fmul    $f2, $f2, $f3
-	load    6($sp), $f4
+	load    5($sp), $f4
 	fmul    $f4, $f1, $f1
 	fsub    $f3, $f1, $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f3
 	fcmp    $f1, $f3, $i12
-	bg      $i12, ble_else.24582
+	bg      $i12, ble_else.18228
 	li      0, $i2
-	b       ble_cont.24583
-ble_else.24582:
+	b       ble_cont.18229
+ble_else.18228:
 	li      1, $i2
-ble_cont.24583:
+ble_cont.18229:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24584
+	bne     $i12, be_else.18230
 	li      0, $i1
 	ret
-be_else.24584:
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
-	jal     sqrt.2751
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
+be_else.18230:
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     sqrt.2865
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
 	load    3($sp), $i1
 	load    6($i1), $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24585
+	bne     $i12, be_else.18231
 	fneg    $f1, $f1
-	b       be_cont.24586
-be_else.24585:
-be_cont.24586:
-	load    7($sp), $f2
-	fsub    $f1, $f2, $f1
+	b       be_cont.18232
+be_else.18231:
+be_cont.18232:
+	li      min_caml_solver_dist, $i1
 	load    6($sp), $f2
+	fsub    $f1, $f2, $f1
+	load    5($sp), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	load    5($sp), $i1
 	store   $f1, 0($i1)
 	li      1, $i1
 	ret
-be_else.24579:
+be_else.18225:
 	li      0, $i1
 	ret
-solver.2978:
-	load    4($i11), $i4
-	load    3($i11), $i5
-	load    2($i11), $i6
-	load    1($i11), $i7
-	add     $i7, $i1, $i12
-	load    0($i12), $i1
-	load    0($i3), $f1
-	load    5($i1), $i7
-	load    0($i7), $f2
-	fsub    $f1, $f2, $f1
-	load    1($i3), $f2
-	load    5($i1), $i7
-	load    1($i7), $f3
-	fsub    $f2, $f3, $f2
-	load    2($i3), $f3
-	load    5($i1), $i3
-	load    2($i3), $f4
-	fsub    $f3, $f4, $f3
-	load    1($i1), $i3
-	li      1, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24587
-	store   $f1, 0($sp)
-	store   $f3, 1($sp)
-	store   $f2, 2($sp)
-	store   $i2, 3($sp)
-	store   $i1, 4($sp)
-	store   $i5, 5($sp)
-	li      0, $i3
-	li      1, $i4
-	li      2, $i6
-	mov     $i5, $i11
-	mov     $i6, $i5
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.24588, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.24588:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24589
-	li      1, $i3
-	li      2, $i4
-	li      0, $i5
-	load    2($sp), $f1
-	load    1($sp), $f2
-	load    0($sp), $f3
-	load    4($sp), $i1
-	load    3($sp), $i2
-	load    5($sp), $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.24590, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.24590:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24591
-	li      2, $i3
-	li      0, $i4
-	li      1, $i5
-	load    1($sp), $f1
-	load    0($sp), $f2
-	load    2($sp), $f3
-	load    4($sp), $i1
-	load    3($sp), $i2
-	load    5($sp), $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.24592, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.24592:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24593
-	li      0, $i1
-	ret
-be_else.24593:
-	li      3, $i1
-	ret
-be_else.24591:
-	li      2, $i1
-	ret
-be_else.24589:
-	li      1, $i1
-	ret
-be_else.24587:
-	li      2, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24594
-	load    4($i1), $i1
-	load    0($i2), $f4
-	load    0($i1), $f5
-	fmul    $f4, $f5, $f4
-	load    1($i2), $f5
-	load    1($i1), $f6
-	fmul    $f5, $f6, $f5
-	fadd    $f4, $f5, $f4
-	load    2($i2), $f5
-	load    2($i1), $f6
-	fmul    $f5, $f6, $f5
-	fadd    $f4, $f5, $f4
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f4, $f5, $i12
-	bg      $i12, ble_else.24595
-	li      0, $i2
-	b       ble_cont.24596
-ble_else.24595:
-	li      1, $i2
-ble_cont.24596:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24597
-	li      0, $i1
-	ret
-be_else.24597:
-	load    0($i1), $f5
-	fmul    $f5, $f1, $f1
-	load    1($i1), $f5
-	fmul    $f5, $f2, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i1), $f2
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	fneg    $f1, $f1
-	finv    $f4, $f15
-	fmul    $f1, $f15, $f1
-	store   $f1, 0($i6)
-	li      1, $i1
-	ret
-be_else.24594:
-	mov     $i4, $i11
-	load    0($i11), $i10
-	jr      $i10
-solver_rect_fast.2982:
-	load    1($i11), $i4
+solver_rect_fast.3062:
 	load    0($i3), $f4
 	fsub    $f4, $f1, $f4
 	load    1($i3), $f5
@@ -5303,78 +3552,78 @@ solver_rect_fast.2982:
 	load    1($i2), $f5
 	fmul    $f4, $f5, $f5
 	fadd    $f5, $f2, $f5
-	li      l.14001, $i5
-	load    0($i5), $f6
+	li      l.13298, $i4
+	load    0($i4), $f6
 	fcmp    $f6, $f5, $i12
-	bg      $i12, ble_else.24598
-	b       ble_cont.24599
-ble_else.24598:
+	bg      $i12, ble_else.18233
+	b       ble_cont.18234
+ble_else.18233:
 	fneg    $f5, $f5
-ble_cont.24599:
-	load    4($i1), $i5
-	load    1($i5), $f6
+ble_cont.18234:
+	load    4($i1), $i4
+	load    1($i4), $f6
 	fcmp    $f6, $f5, $i12
-	bg      $i12, ble_else.24600
-	li      0, $i5
-	b       ble_cont.24601
-ble_else.24600:
-	li      1, $i5
-ble_cont.24601:
+	bg      $i12, ble_else.18235
+	li      0, $i4
+	b       ble_cont.18236
+ble_else.18235:
+	li      1, $i4
+ble_cont.18236:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24602
-	li      0, $i5
-	b       be_cont.24603
-be_else.24602:
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18237
+	li      0, $i4
+	b       be_cont.18238
+be_else.18237:
 	load    2($i2), $f5
 	fmul    $f4, $f5, $f5
 	fadd    $f5, $f3, $f5
-	li      l.14001, $i5
-	load    0($i5), $f6
+	li      l.13298, $i4
+	load    0($i4), $f6
 	fcmp    $f6, $f5, $i12
-	bg      $i12, ble_else.24604
-	b       ble_cont.24605
-ble_else.24604:
+	bg      $i12, ble_else.18239
+	b       ble_cont.18240
+ble_else.18239:
 	fneg    $f5, $f5
-ble_cont.24605:
-	load    4($i1), $i5
-	load    2($i5), $f6
+ble_cont.18240:
+	load    4($i1), $i4
+	load    2($i4), $f6
 	fcmp    $f6, $f5, $i12
-	bg      $i12, ble_else.24606
-	li      0, $i5
-	b       ble_cont.24607
-ble_else.24606:
-	li      1, $i5
-ble_cont.24607:
+	bg      $i12, ble_else.18241
+	li      0, $i4
+	b       ble_cont.18242
+ble_else.18241:
+	li      1, $i4
+ble_cont.18242:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24608
-	li      0, $i5
-	b       be_cont.24609
-be_else.24608:
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18243
+	li      0, $i4
+	b       be_cont.18244
+be_else.18243:
 	load    1($i3), $f5
-	li      l.14001, $i5
-	load    0($i5), $f6
+	li      l.13298, $i4
+	load    0($i4), $f6
 	fcmp    $f5, $f6, $i12
-	bne     $i12, be_else.24610
-	li      1, $i5
-	b       be_cont.24611
-be_else.24610:
-	li      0, $i5
-be_cont.24611:
+	bne     $i12, be_else.18245
+	li      1, $i4
+	b       be_cont.18246
+be_else.18245:
+	li      0, $i4
+be_cont.18246:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24612
-	li      1, $i5
-	b       be_cont.24613
-be_else.24612:
-	li      0, $i5
-be_cont.24613:
-be_cont.24609:
-be_cont.24603:
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18247
+	li      1, $i4
+	b       be_cont.18248
+be_else.18247:
+	li      0, $i4
+be_cont.18248:
+be_cont.18244:
+be_cont.18238:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24614
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18249
 	load    2($i3), $f4
 	fsub    $f4, $f2, $f4
 	load    3($i3), $f5
@@ -5382,78 +3631,78 @@ be_cont.24603:
 	load    0($i2), $f5
 	fmul    $f4, $f5, $f5
 	fadd    $f5, $f1, $f5
-	li      l.14001, $i5
-	load    0($i5), $f6
+	li      l.13298, $i4
+	load    0($i4), $f6
 	fcmp    $f6, $f5, $i12
-	bg      $i12, ble_else.24615
-	b       ble_cont.24616
-ble_else.24615:
+	bg      $i12, ble_else.18250
+	b       ble_cont.18251
+ble_else.18250:
 	fneg    $f5, $f5
-ble_cont.24616:
-	load    4($i1), $i5
-	load    0($i5), $f6
+ble_cont.18251:
+	load    4($i1), $i4
+	load    0($i4), $f6
 	fcmp    $f6, $f5, $i12
-	bg      $i12, ble_else.24617
-	li      0, $i5
-	b       ble_cont.24618
-ble_else.24617:
-	li      1, $i5
-ble_cont.24618:
+	bg      $i12, ble_else.18252
+	li      0, $i4
+	b       ble_cont.18253
+ble_else.18252:
+	li      1, $i4
+ble_cont.18253:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24619
-	li      0, $i5
-	b       be_cont.24620
-be_else.24619:
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18254
+	li      0, $i4
+	b       be_cont.18255
+be_else.18254:
 	load    2($i2), $f5
 	fmul    $f4, $f5, $f5
 	fadd    $f5, $f3, $f5
-	li      l.14001, $i5
-	load    0($i5), $f6
+	li      l.13298, $i4
+	load    0($i4), $f6
 	fcmp    $f6, $f5, $i12
-	bg      $i12, ble_else.24621
-	b       ble_cont.24622
-ble_else.24621:
+	bg      $i12, ble_else.18256
+	b       ble_cont.18257
+ble_else.18256:
 	fneg    $f5, $f5
-ble_cont.24622:
-	load    4($i1), $i5
-	load    2($i5), $f6
+ble_cont.18257:
+	load    4($i1), $i4
+	load    2($i4), $f6
 	fcmp    $f6, $f5, $i12
-	bg      $i12, ble_else.24623
-	li      0, $i5
-	b       ble_cont.24624
-ble_else.24623:
-	li      1, $i5
-ble_cont.24624:
+	bg      $i12, ble_else.18258
+	li      0, $i4
+	b       ble_cont.18259
+ble_else.18258:
+	li      1, $i4
+ble_cont.18259:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24625
-	li      0, $i5
-	b       be_cont.24626
-be_else.24625:
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18260
+	li      0, $i4
+	b       be_cont.18261
+be_else.18260:
 	load    3($i3), $f5
-	li      l.14001, $i5
-	load    0($i5), $f6
+	li      l.13298, $i4
+	load    0($i4), $f6
 	fcmp    $f5, $f6, $i12
-	bne     $i12, be_else.24627
-	li      1, $i5
-	b       be_cont.24628
-be_else.24627:
-	li      0, $i5
-be_cont.24628:
+	bne     $i12, be_else.18262
+	li      1, $i4
+	b       be_cont.18263
+be_else.18262:
+	li      0, $i4
+be_cont.18263:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24629
-	li      1, $i5
-	b       be_cont.24630
-be_else.24629:
-	li      0, $i5
-be_cont.24630:
-be_cont.24626:
-be_cont.24620:
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18264
+	li      1, $i4
+	b       be_cont.18265
+be_else.18264:
+	li      0, $i4
+be_cont.18265:
+be_cont.18261:
+be_cont.18255:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24631
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18266
 	load    4($i3), $f4
 	fsub    $f4, $f3, $f3
 	load    5($i3), $f4
@@ -5461,111 +3710,112 @@ be_cont.24620:
 	load    0($i2), $f4
 	fmul    $f3, $f4, $f4
 	fadd    $f4, $f1, $f1
-	li      l.14001, $i5
-	load    0($i5), $f4
+	li      l.13298, $i4
+	load    0($i4), $f4
 	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24632
-	b       ble_cont.24633
-ble_else.24632:
+	bg      $i12, ble_else.18267
+	b       ble_cont.18268
+ble_else.18267:
 	fneg    $f1, $f1
-ble_cont.24633:
-	load    4($i1), $i5
-	load    0($i5), $f4
+ble_cont.18268:
+	load    4($i1), $i4
+	load    0($i4), $f4
 	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24634
-	li      0, $i5
-	b       ble_cont.24635
-ble_else.24634:
-	li      1, $i5
-ble_cont.24635:
+	bg      $i12, ble_else.18269
+	li      0, $i4
+	b       ble_cont.18270
+ble_else.18269:
+	li      1, $i4
+ble_cont.18270:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24636
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18271
 	li      0, $i1
-	b       be_cont.24637
-be_else.24636:
+	b       be_cont.18272
+be_else.18271:
 	load    1($i2), $f1
 	fmul    $f3, $f1, $f1
 	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24638
-	b       ble_cont.24639
-ble_else.24638:
+	bg      $i12, ble_else.18273
+	b       ble_cont.18274
+ble_else.18273:
 	fneg    $f1, $f1
-ble_cont.24639:
+ble_cont.18274:
 	load    4($i1), $i1
 	load    1($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24640
+	bg      $i12, ble_else.18275
 	li      0, $i1
-	b       ble_cont.24641
-ble_else.24640:
+	b       ble_cont.18276
+ble_else.18275:
 	li      1, $i1
-ble_cont.24641:
+ble_cont.18276:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24642
+	bne     $i12, be_else.18277
 	li      0, $i1
-	b       be_cont.24643
-be_else.24642:
+	b       be_cont.18278
+be_else.18277:
 	load    5($i3), $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24644
+	bne     $i12, be_else.18279
 	li      1, $i1
-	b       be_cont.24645
-be_else.24644:
+	b       be_cont.18280
+be_else.18279:
 	li      0, $i1
-be_cont.24645:
+be_cont.18280:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24646
+	bne     $i12, be_else.18281
 	li      1, $i1
-	b       be_cont.24647
-be_else.24646:
+	b       be_cont.18282
+be_else.18281:
 	li      0, $i1
-be_cont.24647:
-be_cont.24643:
-be_cont.24637:
+be_cont.18282:
+be_cont.18278:
+be_cont.18272:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24648
+	bne     $i12, be_else.18283
 	li      0, $i1
 	ret
-be_else.24648:
-	store   $f3, 0($i4)
+be_else.18283:
+	li      min_caml_solver_dist, $i1
+	store   $f3, 0($i1)
 	li      3, $i1
 	ret
-be_else.24631:
-	store   $f4, 0($i4)
+be_else.18266:
+	li      min_caml_solver_dist, $i1
+	store   $f4, 0($i1)
 	li      2, $i1
 	ret
-be_else.24614:
-	store   $f4, 0($i4)
+be_else.18249:
+	li      min_caml_solver_dist, $i1
+	store   $f4, 0($i1)
 	li      1, $i1
 	ret
-solver_second_fast.2995:
-	load    1($i11), $i3
+solver_second_fast.3075:
 	load    0($i2), $f4
-	li      l.14001, $i4
-	load    0($i4), $f5
+	li      l.13298, $i3
+	load    0($i3), $f5
 	fcmp    $f4, $f5, $i12
-	bne     $i12, be_else.24649
-	li      1, $i4
-	b       be_cont.24650
-be_else.24649:
-	li      0, $i4
-be_cont.24650:
+	bne     $i12, be_else.18284
+	li      1, $i3
+	b       be_cont.18285
+be_else.18284:
+	li      0, $i3
+be_cont.18285:
 	li      0, $i12
-	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24651
-	store   $i3, 0($sp)
-	store   $i2, 1($sp)
-	store   $f4, 2($sp)
-	store   $i1, 3($sp)
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18286
+	store   $i2, 0($sp)
+	store   $f4, 1($sp)
+	store   $i1, 2($sp)
 	load    1($i2), $f4
 	fmul    $f4, $f1, $f4
 	load    2($i2), $f5
@@ -5574,94 +3824,97 @@ be_cont.24650:
 	load    3($i2), $f5
 	fmul    $f5, $f3, $f5
 	fadd    $f4, $f5, $f4
-	store   $f4, 4($sp)
-	store   $ra, 5($sp)
-	add     $sp, 6, $sp
-	jal     quadratic.2959
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	load    3($sp), $i1
+	store   $f4, 3($sp)
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     quadratic.3039
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    2($sp), $i1
 	load    1($i1), $i2
 	li      3, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24652
-	li      l.14035, $i2
+	bne     $i12, be_else.18287
+	li      l.13301, $i2
 	load    0($i2), $f2
 	fsub    $f1, $f2, $f1
-	b       be_cont.24653
-be_else.24652:
-be_cont.24653:
-	load    4($sp), $f2
+	b       be_cont.18288
+be_else.18287:
+be_cont.18288:
+	load    3($sp), $f2
 	fmul    $f2, $f2, $f3
-	load    2($sp), $f4
+	load    1($sp), $f4
 	fmul    $f4, $f1, $f1
 	fsub    $f3, $f1, $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f3
 	fcmp    $f1, $f3, $i12
-	bg      $i12, ble_else.24654
+	bg      $i12, ble_else.18289
 	li      0, $i2
-	b       ble_cont.24655
-ble_else.24654:
+	b       ble_cont.18290
+ble_else.18289:
 	li      1, $i2
-ble_cont.24655:
+ble_cont.18290:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24656
+	bne     $i12, be_else.18291
 	li      0, $i1
 	ret
-be_else.24656:
+be_else.18291:
 	load    6($i1), $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24657
+	bne     $i12, be_else.18292
+	li      min_caml_solver_dist, $i1
+	store   $i1, 4($sp)
 	store   $ra, 5($sp)
 	add     $sp, 6, $sp
-	jal     sqrt.2751
+	jal     sqrt.2865
 	sub     $sp, 6, $sp
 	load    5($sp), $ra
-	load    4($sp), $f2
+	load    3($sp), $f2
 	fsub    $f2, $f1, $f1
-	load    1($sp), $i1
+	load    0($sp), $i1
 	load    4($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    0($sp), $i1
+	load    4($sp), $i1
 	store   $f1, 0($i1)
-	b       be_cont.24658
-be_else.24657:
-	store   $ra, 5($sp)
-	add     $sp, 6, $sp
-	jal     sqrt.2751
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	load    4($sp), $f2
+	b       be_cont.18293
+be_else.18292:
+	li      min_caml_solver_dist, $i1
+	store   $i1, 5($sp)
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     sqrt.2865
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    3($sp), $f2
 	fadd    $f2, $f1, $f1
-	load    1($sp), $i1
+	load    0($sp), $i1
 	load    4($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    0($sp), $i1
+	load    5($sp), $i1
 	store   $f1, 0($i1)
-be_cont.24658:
+be_cont.18293:
 	li      1, $i1
 	ret
-be_else.24651:
+be_else.18286:
 	li      0, $i1
 	ret
-solver_second_fast2.3012:
-	load    1($i11), $i4
+solver_second_fast2.3092:
 	load    0($i2), $f4
-	li      l.14001, $i5
-	load    0($i5), $f5
+	li      l.13298, $i4
+	load    0($i4), $f5
 	fcmp    $f4, $f5, $i12
-	bne     $i12, be_else.24659
-	li      1, $i5
-	b       be_cont.24660
-be_else.24659:
-	li      0, $i5
-be_cont.24660:
+	bne     $i12, be_else.18294
+	li      1, $i4
+	b       be_cont.18295
+be_else.18294:
+	li      0, $i4
+be_cont.18295:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24661
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18296
 	load    1($i2), $f5
 	fmul    $f5, $f1, $f1
 	load    2($i2), $f5
@@ -5674,127 +3927,72 @@ be_cont.24660:
 	fmul    $f1, $f1, $f3
 	fmul    $f4, $f2, $f2
 	fsub    $f3, $f2, $f2
-	li      l.14001, $i3
+	li      l.13298, $i3
 	load    0($i3), $f3
 	fcmp    $f2, $f3, $i12
-	bg      $i12, ble_else.24662
+	bg      $i12, ble_else.18297
 	li      0, $i3
-	b       ble_cont.24663
-ble_else.24662:
+	b       ble_cont.18298
+ble_else.18297:
 	li      1, $i3
-ble_cont.24663:
+ble_cont.18298:
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24664
+	bne     $i12, be_else.18299
 	li      0, $i1
 	ret
-be_else.24664:
+be_else.18299:
 	load    6($i1), $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24665
-	store   $i4, 0($sp)
-	store   $i2, 1($sp)
-	store   $f1, 2($sp)
+	bne     $i12, be_else.18300
+	store   $i2, 0($sp)
+	store   $f1, 1($sp)
+	li      min_caml_solver_dist, $i1
+	store   $i1, 2($sp)
 	mov     $f2, $f1
 	store   $ra, 3($sp)
 	add     $sp, 4, $sp
-	jal     sqrt.2751
+	jal     sqrt.2865
 	sub     $sp, 4, $sp
 	load    3($sp), $ra
-	load    2($sp), $f2
+	load    1($sp), $f2
 	fsub    $f2, $f1, $f1
-	load    1($sp), $i1
+	load    0($sp), $i1
 	load    4($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    0($sp), $i1
+	load    2($sp), $i1
 	store   $f1, 0($i1)
-	b       be_cont.24666
-be_else.24665:
-	store   $i4, 0($sp)
-	store   $i2, 1($sp)
-	store   $f1, 2($sp)
+	b       be_cont.18301
+be_else.18300:
+	store   $i2, 0($sp)
+	store   $f1, 1($sp)
+	li      min_caml_solver_dist, $i1
+	store   $i1, 3($sp)
 	mov     $f2, $f1
-	store   $ra, 3($sp)
-	add     $sp, 4, $sp
-	jal     sqrt.2751
-	sub     $sp, 4, $sp
-	load    3($sp), $ra
-	load    2($sp), $f2
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     sqrt.2865
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    1($sp), $f2
 	fadd    $f2, $f1, $f1
-	load    1($sp), $i1
+	load    0($sp), $i1
 	load    4($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    0($sp), $i1
+	load    3($sp), $i1
 	store   $f1, 0($i1)
-be_cont.24666:
+be_cont.18301:
 	li      1, $i1
 	ret
-be_else.24661:
+be_else.18296:
 	li      0, $i1
 	ret
-solver_fast2.3019:
-	load    4($i11), $i3
-	load    3($i11), $i4
-	load    2($i11), $i5
-	load    1($i11), $i6
-	add     $i6, $i1, $i12
-	load    0($i12), $i6
-	load    10($i6), $i7
-	load    0($i7), $f1
-	load    1($i7), $f2
-	load    2($i7), $f3
-	load    1($i2), $i8
-	add     $i8, $i1, $i12
-	load    0($i12), $i1
-	load    1($i6), $i8
-	li      1, $i12
-	cmp     $i8, $i12, $i12
-	bne     $i12, be_else.24667
-	load    0($i2), $i2
-	mov     $i1, $i3
-	mov     $i4, $i11
-	mov     $i6, $i1
-	load    0($i11), $i10
-	jr      $i10
-be_else.24667:
-	li      2, $i12
-	cmp     $i8, $i12, $i12
-	bne     $i12, be_else.24668
-	load    0($i1), $f1
-	li      l.14001, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24669
-	li      0, $i2
-	b       ble_cont.24670
-ble_else.24669:
-	li      1, $i2
-ble_cont.24670:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24671
-	li      0, $i1
-	ret
-be_else.24671:
-	load    0($i1), $f1
-	load    3($i7), $f2
-	fmul    $f1, $f2, $f1
-	store   $f1, 0($i5)
-	li      1, $i1
-	ret
-be_else.24668:
-	mov     $i1, $i2
-	mov     $i3, $i11
-	mov     $i7, $i3
-	mov     $i6, $i1
-	load    0($i11), $i10
-	jr      $i10
-setup_rect_table.3022:
+setup_rect_table.3102:
 	store   $i2, 0($sp)
 	store   $i1, 1($sp)
 	li      6, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 2($sp)
 	add     $sp, 3, $sp
@@ -5803,197 +4001,197 @@ setup_rect_table.3022:
 	load    2($sp), $ra
 	load    1($sp), $i2
 	load    0($i2), $f1
-	li      l.14001, $i3
+	li      l.13298, $i3
 	load    0($i3), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24672
+	bne     $i12, be_else.18302
 	li      1, $i3
-	b       be_cont.24673
-be_else.24672:
+	b       be_cont.18303
+be_else.18302:
 	li      0, $i3
-be_cont.24673:
+be_cont.18303:
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24674
+	bne     $i12, be_else.18304
 	load    0($sp), $i3
 	load    6($i3), $i4
 	load    0($i2), $f1
-	li      l.14001, $i5
+	li      l.13298, $i5
 	load    0($i5), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24676
+	bg      $i12, ble_else.18306
 	li      0, $i5
-	b       ble_cont.24677
-ble_else.24676:
+	b       ble_cont.18307
+ble_else.18306:
 	li      1, $i5
-ble_cont.24677:
+ble_cont.18307:
 	li      0, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24678
+	bne     $i12, be_else.18308
 	mov     $i5, $i4
-	b       be_cont.24679
-be_else.24678:
+	b       be_cont.18309
+be_else.18308:
 	li      0, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24680
+	bne     $i12, be_else.18310
 	li      1, $i4
-	b       be_cont.24681
-be_else.24680:
+	b       be_cont.18311
+be_else.18310:
 	li      0, $i4
-be_cont.24681:
-be_cont.24679:
+be_cont.18311:
+be_cont.18309:
 	load    4($i3), $i3
 	load    0($i3), $f1
 	li      0, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24682
+	bne     $i12, be_else.18312
 	fneg    $f1, $f1
-	b       be_cont.24683
-be_else.24682:
-be_cont.24683:
+	b       be_cont.18313
+be_else.18312:
+be_cont.18313:
 	store   $f1, 0($i1)
-	li      l.14035, $i3
+	li      l.13301, $i3
 	load    0($i3), $f1
 	load    0($i2), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
 	store   $f1, 1($i1)
-	b       be_cont.24675
-be_else.24674:
-	li      l.14001, $i3
+	b       be_cont.18305
+be_else.18304:
+	li      l.13298, $i3
 	load    0($i3), $f1
 	store   $f1, 1($i1)
-be_cont.24675:
+be_cont.18305:
 	load    1($i2), $f1
-	li      l.14001, $i3
+	li      l.13298, $i3
 	load    0($i3), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24684
+	bne     $i12, be_else.18314
 	li      1, $i3
-	b       be_cont.24685
-be_else.24684:
+	b       be_cont.18315
+be_else.18314:
 	li      0, $i3
-be_cont.24685:
+be_cont.18315:
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24686
+	bne     $i12, be_else.18316
 	load    0($sp), $i3
 	load    6($i3), $i4
 	load    1($i2), $f1
-	li      l.14001, $i5
+	li      l.13298, $i5
 	load    0($i5), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24688
+	bg      $i12, ble_else.18318
 	li      0, $i5
-	b       ble_cont.24689
-ble_else.24688:
+	b       ble_cont.18319
+ble_else.18318:
 	li      1, $i5
-ble_cont.24689:
+ble_cont.18319:
 	li      0, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24690
+	bne     $i12, be_else.18320
 	mov     $i5, $i4
-	b       be_cont.24691
-be_else.24690:
+	b       be_cont.18321
+be_else.18320:
 	li      0, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24692
+	bne     $i12, be_else.18322
 	li      1, $i4
-	b       be_cont.24693
-be_else.24692:
+	b       be_cont.18323
+be_else.18322:
 	li      0, $i4
-be_cont.24693:
-be_cont.24691:
+be_cont.18323:
+be_cont.18321:
 	load    4($i3), $i3
 	load    1($i3), $f1
 	li      0, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24694
+	bne     $i12, be_else.18324
 	fneg    $f1, $f1
-	b       be_cont.24695
-be_else.24694:
-be_cont.24695:
+	b       be_cont.18325
+be_else.18324:
+be_cont.18325:
 	store   $f1, 2($i1)
-	li      l.14035, $i3
+	li      l.13301, $i3
 	load    0($i3), $f1
 	load    1($i2), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
 	store   $f1, 3($i1)
-	b       be_cont.24687
-be_else.24686:
-	li      l.14001, $i3
+	b       be_cont.18317
+be_else.18316:
+	li      l.13298, $i3
 	load    0($i3), $f1
 	store   $f1, 3($i1)
-be_cont.24687:
+be_cont.18317:
 	load    2($i2), $f1
-	li      l.14001, $i3
+	li      l.13298, $i3
 	load    0($i3), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24696
+	bne     $i12, be_else.18326
 	li      1, $i3
-	b       be_cont.24697
-be_else.24696:
+	b       be_cont.18327
+be_else.18326:
 	li      0, $i3
-be_cont.24697:
+be_cont.18327:
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24698
+	bne     $i12, be_else.18328
 	load    0($sp), $i3
 	load    6($i3), $i4
 	load    2($i2), $f1
-	li      l.14001, $i5
+	li      l.13298, $i5
 	load    0($i5), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24700
+	bg      $i12, ble_else.18330
 	li      0, $i5
-	b       ble_cont.24701
-ble_else.24700:
+	b       ble_cont.18331
+ble_else.18330:
 	li      1, $i5
-ble_cont.24701:
+ble_cont.18331:
 	li      0, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24702
+	bne     $i12, be_else.18332
 	mov     $i5, $i4
-	b       be_cont.24703
-be_else.24702:
+	b       be_cont.18333
+be_else.18332:
 	li      0, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24704
+	bne     $i12, be_else.18334
 	li      1, $i4
-	b       be_cont.24705
-be_else.24704:
+	b       be_cont.18335
+be_else.18334:
 	li      0, $i4
-be_cont.24705:
-be_cont.24703:
+be_cont.18335:
+be_cont.18333:
 	load    4($i3), $i3
 	load    2($i3), $f1
 	li      0, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24706
+	bne     $i12, be_else.18336
 	fneg    $f1, $f1
-	b       be_cont.24707
-be_else.24706:
-be_cont.24707:
+	b       be_cont.18337
+be_else.18336:
+be_cont.18337:
 	store   $f1, 4($i1)
-	li      l.14035, $i3
+	li      l.13301, $i3
 	load    0($i3), $f1
 	load    2($i2), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
 	store   $f1, 5($i1)
-	b       be_cont.24699
-be_else.24698:
-	li      l.14001, $i2
+	b       be_cont.18329
+be_else.18328:
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $f1, 5($i1)
-be_cont.24699:
+be_cont.18329:
 	ret
-setup_surface_table.3025:
+setup_surface_table.3105:
 	store   $i2, 0($sp)
 	store   $i1, 1($sp)
 	li      4, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 2($sp)
 	add     $sp, 3, $sp
@@ -6016,24 +4214,24 @@ setup_surface_table.3025:
 	load    2($i2), $f3
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24708
+	bg      $i12, ble_else.18338
 	li      0, $i2
-	b       ble_cont.24709
-ble_else.24708:
+	b       ble_cont.18339
+ble_else.18338:
 	li      1, $i2
-ble_cont.24709:
+ble_cont.18339:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24710
-	li      l.14001, $i2
+	bne     $i12, be_else.18340
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $f1, 0($i1)
-	b       be_cont.24711
-be_else.24710:
-	li      l.14099, $i2
+	b       be_cont.18341
+be_else.18340:
+	li      l.13423, $i2
 	load    0($i2), $f2
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f2
@@ -6056,13 +4254,13 @@ be_else.24710:
 	fmul    $f2, $f15, $f1
 	fneg    $f1, $f1
 	store   $f1, 3($i1)
-be_cont.24711:
+be_cont.18341:
 	ret
-setup_second_table.3028:
+setup_second_table.3108:
 	store   $i2, 0($sp)
 	store   $i1, 1($sp)
 	li      5, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 2($sp)
 	add     $sp, 3, $sp
@@ -6077,7 +4275,7 @@ setup_second_table.3028:
 	load    0($sp), $i1
 	store   $ra, 3($sp)
 	add     $sp, 4, $sp
-	jal     quadratic.2959
+	jal     quadratic.3039
 	sub     $sp, 4, $sp
 	load    3($sp), $ra
 	load    1($sp), $i1
@@ -6102,12 +4300,12 @@ setup_second_table.3028:
 	load    3($i2), $i4
 	li      0, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24712
+	bne     $i12, be_else.18342
 	store   $f2, 1($i3)
 	store   $f3, 2($i3)
 	store   $f4, 3($i3)
-	b       be_cont.24713
-be_else.24712:
+	b       be_cont.18343
+be_else.18342:
 	load    2($i1), $f5
 	load    9($i2), $i4
 	load    1($i4), $f6
@@ -6117,7 +4315,7 @@ be_else.24712:
 	load    2($i4), $f7
 	fmul    $f6, $f7, $f6
 	fadd    $f5, $f6, $f5
-	li      l.14050, $i4
+	li      l.13374, $i4
 	load    0($i4), $f6
 	finv    $f6, $f15
 	fmul    $f5, $f15, $f5
@@ -6132,7 +4330,7 @@ be_else.24712:
 	load    2($i4), $f6
 	fmul    $f5, $f6, $f5
 	fadd    $f2, $f5, $f2
-	li      l.14050, $i4
+	li      l.13374, $i4
 	load    0($i4), $f5
 	finv    $f5, $f15
 	fmul    $f2, $f15, $f2
@@ -6147,43 +4345,41 @@ be_else.24712:
 	load    1($i1), $f5
 	fmul    $f3, $f5, $f3
 	fadd    $f2, $f3, $f2
-	li      l.14050, $i1
+	li      l.13374, $i1
 	load    0($i1), $f3
 	finv    $f3, $f15
 	fmul    $f2, $f15, $f2
 	fsub    $f4, $f2, $f2
 	store   $f2, 3($i3)
-be_cont.24713:
-	li      l.14001, $i1
+be_cont.18343:
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.24714
+	bne     $i12, be_else.18344
 	li      1, $i1
-	b       be_cont.24715
-be_else.24714:
+	b       be_cont.18345
+be_else.18344:
 	li      0, $i1
-be_cont.24715:
+be_cont.18345:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24716
-	li      l.14035, $i1
+	bne     $i12, be_else.18346
+	li      l.13301, $i1
 	load    0($i1), $f2
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f1
 	store   $f1, 4($i3)
-	b       be_cont.24717
-be_else.24716:
-be_cont.24717:
+	b       be_cont.18347
+be_else.18346:
+be_cont.18347:
 	mov     $i3, $i1
 	ret
-iter_setup_dirvec_constants.3031:
-	load    1($i11), $i3
+iter_setup_dirvec_constants.3111:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.24718
-	store   $i11, 0($sp)
-	store   $i1, 1($sp)
-	store   $i3, 2($sp)
+	bl      $i12, bge_else.18348
+	store   $i1, 0($sp)
+	li      min_caml_objects, $i3
 	add     $i3, $i2, $i12
 	load    0($i12), $i3
 	load    1($i1), $i4
@@ -6191,128 +4387,125 @@ iter_setup_dirvec_constants.3031:
 	load    1($i3), $i5
 	li      1, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24719
-	store   $i2, 3($sp)
-	store   $i4, 4($sp)
+	bne     $i12, be_else.18349
+	store   $i2, 1($sp)
+	store   $i4, 2($sp)
 	mov     $i3, $i2
-	store   $ra, 5($sp)
-	add     $sp, 6, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	load    3($sp), $i2
-	load    4($sp), $i3
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	load    1($sp), $i2
+	load    2($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-	b       be_cont.24720
-be_else.24719:
+	b       be_cont.18350
+be_else.18349:
 	li      2, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24721
-	store   $i2, 3($sp)
-	store   $i4, 4($sp)
+	bne     $i12, be_else.18351
+	store   $i2, 1($sp)
+	store   $i4, 2($sp)
 	mov     $i3, $i2
-	store   $ra, 5($sp)
-	add     $sp, 6, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	load    3($sp), $i2
-	load    4($sp), $i3
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	load    1($sp), $i2
+	load    2($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-	b       be_cont.24722
-be_else.24721:
-	store   $i2, 3($sp)
-	store   $i4, 4($sp)
+	b       be_cont.18352
+be_else.18351:
+	store   $i2, 1($sp)
+	store   $i4, 2($sp)
 	mov     $i3, $i2
-	store   $ra, 5($sp)
-	add     $sp, 6, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	load    3($sp), $i2
-	load    4($sp), $i3
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	load    1($sp), $i2
+	load    2($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-be_cont.24722:
-be_cont.24720:
+be_cont.18352:
+be_cont.18350:
 	sub     $i2, 1, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.24723
-	load    2($sp), $i2
+	bl      $i12, bge_else.18353
+	li      min_caml_objects, $i2
 	add     $i2, $i1, $i12
 	load    0($i12), $i2
-	load    1($sp), $i3
+	load    0($sp), $i3
 	load    1($i3), $i4
 	load    0($i3), $i3
 	load    1($i2), $i5
 	li      1, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24724
-	store   $i1, 5($sp)
-	store   $i4, 6($sp)
+	bne     $i12, be_else.18354
+	store   $i1, 3($sp)
+	store   $i4, 4($sp)
 	mov     $i3, $i1
-	store   $ra, 7($sp)
-	add     $sp, 8, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	load    5($sp), $i2
-	load    6($sp), $i3
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    3($sp), $i2
+	load    4($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-	b       be_cont.24725
-be_else.24724:
+	b       be_cont.18355
+be_else.18354:
 	li      2, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24726
-	store   $i1, 5($sp)
-	store   $i4, 6($sp)
+	bne     $i12, be_else.18356
+	store   $i1, 3($sp)
+	store   $i4, 4($sp)
 	mov     $i3, $i1
-	store   $ra, 7($sp)
-	add     $sp, 8, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	load    5($sp), $i2
-	load    6($sp), $i3
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    3($sp), $i2
+	load    4($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-	b       be_cont.24727
-be_else.24726:
-	store   $i1, 5($sp)
-	store   $i4, 6($sp)
+	b       be_cont.18357
+be_else.18356:
+	store   $i1, 3($sp)
+	store   $i4, 4($sp)
 	mov     $i3, $i1
-	store   $ra, 7($sp)
-	add     $sp, 8, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	load    5($sp), $i2
-	load    6($sp), $i3
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    3($sp), $i2
+	load    4($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-be_cont.24727:
-be_cont.24725:
+be_cont.18357:
+be_cont.18355:
 	sub     $i2, 1, $i2
-	load    1($sp), $i1
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.24723:
+	load    0($sp), $i1
+	b       iter_setup_dirvec_constants.3111
+bge_else.18353:
 	ret
-bge_else.24718:
+bge_else.18348:
 	ret
-setup_startp_constants.3036:
-	load    1($i11), $i3
+setup_startp_constants.3116:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.24730
+	bl      $i12, bge_else.18360
 	store   $i1, 0($sp)
-	store   $i11, 1($sp)
-	store   $i2, 2($sp)
+	store   $i2, 1($sp)
+	li      min_caml_objects, $i3
 	add     $i3, $i2, $i12
 	load    0($i12), $i2
 	load    10($i2), $i3
@@ -6334,7 +4527,7 @@ setup_startp_constants.3036:
 	store   $f1, 2($i3)
 	li      2, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24731
+	bne     $i12, be_else.18361
 	load    4($i2), $i1
 	load    0($i3), $f1
 	load    1($i3), $f2
@@ -6348,130 +4541,128 @@ setup_startp_constants.3036:
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
 	store   $f1, 3($i3)
-	b       be_cont.24732
-be_else.24731:
+	b       be_cont.18362
+be_else.18361:
 	li      2, $i12
 	cmp     $i4, $i12, $i12
-	bg      $i12, ble_else.24733
-	b       ble_cont.24734
-ble_else.24733:
-	store   $i3, 3($sp)
-	store   $i4, 4($sp)
+	bg      $i12, ble_else.18363
+	b       ble_cont.18364
+ble_else.18363:
+	store   $i3, 2($sp)
+	store   $i4, 3($sp)
 	load    0($i3), $f1
 	load    1($i3), $f2
 	load    2($i3), $f3
 	mov     $i2, $i1
-	store   $ra, 5($sp)
-	add     $sp, 6, $sp
-	jal     quadratic.2959
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	load    4($sp), $i1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     quadratic.3039
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
 	li      3, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24735
-	li      l.14035, $i1
+	bne     $i12, be_else.18365
+	li      l.13301, $i1
 	load    0($i1), $f2
 	fsub    $f1, $f2, $f1
-	b       be_cont.24736
-be_else.24735:
-be_cont.24736:
-	load    3($sp), $i1
-	store   $f1, 3($i1)
-ble_cont.24734:
-be_cont.24732:
+	b       be_cont.18366
+be_else.18365:
+be_cont.18366:
 	load    2($sp), $i1
+	store   $f1, 3($i1)
+ble_cont.18364:
+be_cont.18362:
+	load    1($sp), $i1
 	sub     $i1, 1, $i2
 	load    0($sp), $i1
-	load    1($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.24730:
+	b       setup_startp_constants.3116
+bge_else.18360:
 	ret
-is_rect_outside.3041:
-	li      l.14001, $i2
+is_rect_outside.3121:
+	li      l.13298, $i2
 	load    0($i2), $f4
 	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24738
-	b       ble_cont.24739
-ble_else.24738:
+	bg      $i12, ble_else.18368
+	b       ble_cont.18369
+ble_else.18368:
 	fneg    $f1, $f1
-ble_cont.24739:
+ble_cont.18369:
 	load    4($i1), $i2
 	load    0($i2), $f4
 	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24740
+	bg      $i12, ble_else.18370
 	li      0, $i2
-	b       ble_cont.24741
-ble_else.24740:
+	b       ble_cont.18371
+ble_else.18370:
 	li      1, $i2
-ble_cont.24741:
+ble_cont.18371:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24742
+	bne     $i12, be_else.18372
 	li      0, $i2
-	b       be_cont.24743
-be_else.24742:
-	li      l.14001, $i2
+	b       be_cont.18373
+be_else.18372:
+	li      l.13298, $i2
 	load    0($i2), $f1
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24744
+	bg      $i12, ble_else.18374
 	mov     $f2, $f1
-	b       ble_cont.24745
-ble_else.24744:
+	b       ble_cont.18375
+ble_else.18374:
 	fneg    $f2, $f1
-ble_cont.24745:
+ble_cont.18375:
 	load    4($i1), $i2
 	load    1($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24746
+	bg      $i12, ble_else.18376
 	li      0, $i2
-	b       ble_cont.24747
-ble_else.24746:
+	b       ble_cont.18377
+ble_else.18376:
 	li      1, $i2
-ble_cont.24747:
+ble_cont.18377:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24748
+	bne     $i12, be_else.18378
 	li      0, $i2
-	b       be_cont.24749
-be_else.24748:
-	li      l.14001, $i2
+	b       be_cont.18379
+be_else.18378:
+	li      l.13298, $i2
 	load    0($i2), $f1
 	fcmp    $f1, $f3, $i12
-	bg      $i12, ble_else.24750
+	bg      $i12, ble_else.18380
 	mov     $f3, $f1
-	b       ble_cont.24751
-ble_else.24750:
+	b       ble_cont.18381
+ble_else.18380:
 	fneg    $f3, $f1
-ble_cont.24751:
+ble_cont.18381:
 	load    4($i1), $i2
 	load    2($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24752
+	bg      $i12, ble_else.18382
 	li      0, $i2
-	b       ble_cont.24753
-ble_else.24752:
+	b       ble_cont.18383
+ble_else.18382:
 	li      1, $i2
-ble_cont.24753:
-be_cont.24749:
-be_cont.24743:
+ble_cont.18383:
+be_cont.18379:
+be_cont.18373:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24754
+	bne     $i12, be_else.18384
 	load    6($i1), $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24755
+	bne     $i12, be_else.18385
 	li      1, $i1
 	ret
-be_else.24755:
+be_else.18385:
 	li      0, $i1
 	ret
-be_else.24754:
+be_else.18384:
 	load    6($i1), $i1
 	ret
-is_outside.3056:
+is_outside.3136:
 	load    5($i1), $i2
 	load    0($i2), $f4
 	fsub    $f1, $f4, $f1
@@ -6484,93 +4675,93 @@ is_outside.3056:
 	load    1($i1), $i2
 	li      1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24756
-	li      l.14001, $i2
+	bne     $i12, be_else.18386
+	li      l.13298, $i2
 	load    0($i2), $f4
 	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24757
-	b       ble_cont.24758
-ble_else.24757:
+	bg      $i12, ble_else.18387
+	b       ble_cont.18388
+ble_else.18387:
 	fneg    $f1, $f1
-ble_cont.24758:
+ble_cont.18388:
 	load    4($i1), $i2
 	load    0($i2), $f4
 	fcmp    $f4, $f1, $i12
-	bg      $i12, ble_else.24759
+	bg      $i12, ble_else.18389
 	li      0, $i2
-	b       ble_cont.24760
-ble_else.24759:
+	b       ble_cont.18390
+ble_else.18389:
 	li      1, $i2
-ble_cont.24760:
+ble_cont.18390:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24761
+	bne     $i12, be_else.18391
 	li      0, $i2
-	b       be_cont.24762
-be_else.24761:
-	li      l.14001, $i2
+	b       be_cont.18392
+be_else.18391:
+	li      l.13298, $i2
 	load    0($i2), $f1
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24763
+	bg      $i12, ble_else.18393
 	mov     $f2, $f1
-	b       ble_cont.24764
-ble_else.24763:
+	b       ble_cont.18394
+ble_else.18393:
 	fneg    $f2, $f1
-ble_cont.24764:
+ble_cont.18394:
 	load    4($i1), $i2
 	load    1($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24765
+	bg      $i12, ble_else.18395
 	li      0, $i2
-	b       ble_cont.24766
-ble_else.24765:
+	b       ble_cont.18396
+ble_else.18395:
 	li      1, $i2
-ble_cont.24766:
+ble_cont.18396:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24767
+	bne     $i12, be_else.18397
 	li      0, $i2
-	b       be_cont.24768
-be_else.24767:
-	li      l.14001, $i2
+	b       be_cont.18398
+be_else.18397:
+	li      l.13298, $i2
 	load    0($i2), $f1
 	fcmp    $f1, $f3, $i12
-	bg      $i12, ble_else.24769
+	bg      $i12, ble_else.18399
 	mov     $f3, $f1
-	b       ble_cont.24770
-ble_else.24769:
+	b       ble_cont.18400
+ble_else.18399:
 	fneg    $f3, $f1
-ble_cont.24770:
+ble_cont.18400:
 	load    4($i1), $i2
 	load    2($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24771
+	bg      $i12, ble_else.18401
 	li      0, $i2
-	b       ble_cont.24772
-ble_else.24771:
+	b       ble_cont.18402
+ble_else.18401:
 	li      1, $i2
-ble_cont.24772:
-be_cont.24768:
-be_cont.24762:
+ble_cont.18402:
+be_cont.18398:
+be_cont.18392:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24773
+	bne     $i12, be_else.18403
 	load    6($i1), $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24774
+	bne     $i12, be_else.18404
 	li      1, $i1
 	ret
-be_else.24774:
+be_else.18404:
 	li      0, $i1
 	ret
-be_else.24773:
+be_else.18403:
 	load    6($i1), $i1
 	ret
-be_else.24756:
+be_else.18386:
 	li      2, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24775
+	bne     $i12, be_else.18405
 	load    4($i1), $i2
 	load    0($i2), $f4
 	fmul    $f4, $f1, $f1
@@ -6581,107 +4772,105 @@ be_else.24756:
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
 	load    6($i1), $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24776
+	bg      $i12, ble_else.18406
 	li      0, $i2
-	b       ble_cont.24777
-ble_else.24776:
+	b       ble_cont.18407
+ble_else.18406:
 	li      1, $i2
-ble_cont.24777:
+ble_cont.18407:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24778
+	bne     $i12, be_else.18408
 	mov     $i2, $i1
-	b       be_cont.24779
-be_else.24778:
+	b       be_cont.18409
+be_else.18408:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24780
+	bne     $i12, be_else.18410
 	li      1, $i1
-	b       be_cont.24781
-be_else.24780:
+	b       be_cont.18411
+be_else.18410:
 	li      0, $i1
-be_cont.24781:
-be_cont.24779:
+be_cont.18411:
+be_cont.18409:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24782
+	bne     $i12, be_else.18412
 	li      1, $i1
 	ret
-be_else.24782:
+be_else.18412:
 	li      0, $i1
 	ret
-be_else.24775:
+be_else.18405:
 	store   $i1, 0($sp)
 	store   $ra, 1($sp)
 	add     $sp, 2, $sp
-	jal     quadratic.2959
+	jal     quadratic.3039
 	sub     $sp, 2, $sp
 	load    1($sp), $ra
 	load    0($sp), $i1
 	load    1($i1), $i2
 	li      3, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24783
-	li      l.14035, $i2
+	bne     $i12, be_else.18413
+	li      l.13301, $i2
 	load    0($i2), $f2
 	fsub    $f1, $f2, $f1
-	b       be_cont.24784
-be_else.24783:
-be_cont.24784:
+	b       be_cont.18414
+be_else.18413:
+be_cont.18414:
 	load    6($i1), $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24785
+	bg      $i12, ble_else.18415
 	li      0, $i2
-	b       ble_cont.24786
-ble_else.24785:
+	b       ble_cont.18416
+ble_else.18415:
 	li      1, $i2
-ble_cont.24786:
+ble_cont.18416:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24787
+	bne     $i12, be_else.18417
 	mov     $i2, $i1
-	b       be_cont.24788
-be_else.24787:
+	b       be_cont.18418
+be_else.18417:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24789
+	bne     $i12, be_else.18419
 	li      1, $i1
-	b       be_cont.24790
-be_else.24789:
+	b       be_cont.18420
+be_else.18419:
 	li      0, $i1
-be_cont.24790:
-be_cont.24788:
+be_cont.18420:
+be_cont.18418:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24791
+	bne     $i12, be_else.18421
 	li      1, $i1
 	ret
-be_else.24791:
+be_else.18421:
 	li      0, $i1
 	ret
-check_all_inside.3061:
-	load    1($i11), $i3
+check_all_inside.3141:
 	add     $i2, $i1, $i12
-	load    0($i12), $i4
+	load    0($i12), $i3
 	li      -1, $i12
-	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.24792
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18422
 	li      1, $i1
 	ret
-be_else.24792:
-	store   $i11, 0($sp)
-	store   $f3, 1($sp)
-	store   $f2, 2($sp)
-	store   $f1, 3($sp)
-	store   $i3, 4($sp)
-	store   $i2, 5($sp)
-	store   $i1, 6($sp)
-	add     $i3, $i4, $i12
+be_else.18422:
+	store   $f3, 0($sp)
+	store   $f2, 1($sp)
+	store   $f1, 2($sp)
+	store   $i2, 3($sp)
+	store   $i1, 4($sp)
+	li      min_caml_objects, $i1
+	add     $i1, $i3, $i12
 	load    0($i12), $i1
 	load    5($i1), $i2
 	load    0($i2), $f4
@@ -6695,17 +4884,17 @@ be_else.24792:
 	load    1($i1), $i2
 	li      1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24793
-	store   $ra, 7($sp)
-	add     $sp, 8, $sp
-	jal     is_rect_outside.3041
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	b       be_cont.24794
-be_else.24793:
+	bne     $i12, be_else.18423
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     is_rect_outside.3121
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	b       be_cont.18424
+be_else.18423:
 	li      2, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24795
+	bne     $i12, be_else.18425
 	load    4($i1), $i2
 	load    0($i2), $f4
 	fmul    $f4, $f1, $f1
@@ -6716,391 +4905,95 @@ be_else.24793:
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
 	load    6($i1), $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24797
+	bg      $i12, ble_else.18427
 	li      0, $i2
-	b       ble_cont.24798
-ble_else.24797:
+	b       ble_cont.18428
+ble_else.18427:
 	li      1, $i2
-ble_cont.24798:
+ble_cont.18428:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24799
+	bne     $i12, be_else.18429
 	mov     $i2, $i1
-	b       be_cont.24800
-be_else.24799:
+	b       be_cont.18430
+be_else.18429:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24801
+	bne     $i12, be_else.18431
 	li      1, $i1
-	b       be_cont.24802
-be_else.24801:
+	b       be_cont.18432
+be_else.18431:
 	li      0, $i1
-be_cont.24802:
-be_cont.24800:
+be_cont.18432:
+be_cont.18430:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24803
+	bne     $i12, be_else.18433
 	li      1, $i1
-	b       be_cont.24804
-be_else.24803:
+	b       be_cont.18434
+be_else.18433:
 	li      0, $i1
-be_cont.24804:
-	b       be_cont.24796
-be_else.24795:
-	store   $i1, 7($sp)
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
-	jal     quadratic.2959
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	load    7($sp), $i1
+be_cont.18434:
+	b       be_cont.18426
+be_else.18425:
+	store   $i1, 5($sp)
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     quadratic.3039
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    5($sp), $i1
 	load    1($i1), $i2
 	li      3, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24805
-	li      l.14035, $i2
+	bne     $i12, be_else.18435
+	li      l.13301, $i2
 	load    0($i2), $f2
 	fsub    $f1, $f2, $f1
-	b       be_cont.24806
-be_else.24805:
-be_cont.24806:
+	b       be_cont.18436
+be_else.18435:
+be_cont.18436:
 	load    6($i1), $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24807
+	bg      $i12, ble_else.18437
 	li      0, $i2
-	b       ble_cont.24808
-ble_else.24807:
+	b       ble_cont.18438
+ble_else.18437:
 	li      1, $i2
-ble_cont.24808:
+ble_cont.18438:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24809
+	bne     $i12, be_else.18439
 	mov     $i2, $i1
-	b       be_cont.24810
-be_else.24809:
+	b       be_cont.18440
+be_else.18439:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24811
+	bne     $i12, be_else.18441
 	li      1, $i1
-	b       be_cont.24812
-be_else.24811:
+	b       be_cont.18442
+be_else.18441:
 	li      0, $i1
-be_cont.24812:
-be_cont.24810:
+be_cont.18442:
+be_cont.18440:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24813
+	bne     $i12, be_else.18443
 	li      1, $i1
-	b       be_cont.24814
-be_else.24813:
+	b       be_cont.18444
+be_else.18443:
 	li      0, $i1
-be_cont.24814:
-be_cont.24796:
-be_cont.24794:
+be_cont.18444:
+be_cont.18426:
+be_cont.18424:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24815
-	load    6($sp), $i1
-	add     $i1, 1, $i1
-	load    5($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i3
-	li      -1, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24816
-	li      1, $i1
-	ret
-be_else.24816:
-	store   $i1, 8($sp)
-	load    4($sp), $i1
-	add     $i1, $i3, $i12
-	load    0($i12), $i1
-	load    3($sp), $f1
-	load    2($sp), $f2
-	load    1($sp), $f3
-	store   $ra, 9($sp)
-	add     $sp, 10, $sp
-	jal     is_outside.3056
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24817
-	load    8($sp), $i1
-	add     $i1, 1, $i1
-	load    3($sp), $f1
-	load    2($sp), $f2
-	load    1($sp), $f3
-	load    5($sp), $i2
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.24817:
-	li      0, $i1
-	ret
-be_else.24815:
-	li      0, $i1
-	ret
-shadow_check_and_group.3067:
-	load    9($i11), $i3
-	load    8($i11), $i4
-	store   $i4, 0($sp)
-	load    7($i11), $i4
-	load    6($i11), $i5
-	load    5($i11), $i6
-	load    4($i11), $i7
-	load    3($i11), $i8
-	load    2($i11), $i9
-	load    1($i11), $i10
-	store   $i10, 1($sp)
-	add     $i2, $i1, $i12
-	load    0($i12), $i10
-	li      -1, $i12
-	cmp     $i10, $i12, $i12
-	bne     $i12, be_else.24818
-	li      0, $i1
-	ret
-be_else.24818:
-	store   $i8, 2($sp)
-	store   $i11, 3($sp)
-	store   $i1, 4($sp)
-	store   $i6, 5($sp)
-	store   $i5, 6($sp)
-	store   $i2, 7($sp)
-	store   $i7, 8($sp)
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	store   $i1, 9($sp)
-	add     $i6, $i1, $i12
-	load    0($i12), $i2
-	load    0($i8), $f1
-	load    5($i2), $i6
-	load    0($i6), $f2
-	fsub    $f1, $f2, $f1
-	load    1($i8), $f2
-	load    5($i2), $i6
-	load    1($i6), $f3
-	fsub    $f2, $f3, $f2
-	load    2($i8), $f3
-	load    5($i2), $i6
-	load    2($i6), $f4
-	fsub    $f3, $f4, $f3
-	add     $i9, $i1, $i12
-	load    0($i12), $i1
-	load    1($i2), $i6
-	li      1, $i12
-	cmp     $i6, $i12, $i12
-	bne     $i12, be_else.24819
-	mov     $i4, $i11
-	mov     $i3, $i10
-	mov     $i1, $i3
-	mov     $i2, $i1
-	mov     $i10, $i2
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24821, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24821:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	b       be_cont.24820
-be_else.24819:
-	li      2, $i12
-	cmp     $i6, $i12, $i12
-	bne     $i12, be_else.24822
-	load    0($i1), $f4
-	li      l.14001, $i2
-	load    0($i2), $f5
-	fcmp    $f5, $f4, $i12
-	bg      $i12, ble_else.24824
-	li      0, $i2
-	b       ble_cont.24825
-ble_else.24824:
-	li      1, $i2
-ble_cont.24825:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24826
-	li      0, $i1
-	b       be_cont.24827
-be_else.24826:
-	load    1($i1), $f4
-	fmul    $f4, $f1, $f1
-	load    2($i1), $f4
-	fmul    $f4, $f2, $f2
-	fadd    $f1, $f2, $f1
-	load    3($i1), $f2
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	store   $f1, 0($i5)
-	li      1, $i1
-be_cont.24827:
-	b       be_cont.24823
-be_else.24822:
-	load    0($sp), $i11
-	mov     $i2, $i10
-	mov     $i1, $i2
-	mov     $i10, $i1
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.24828, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.24828:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-be_cont.24823:
-be_cont.24820:
-	load    6($sp), $i2
-	load    0($i2), $f1
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24829
-	li      0, $i1
-	b       be_cont.24830
-be_else.24829:
-	li      l.14235, $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24831
-	li      0, $i1
-	b       ble_cont.24832
-ble_else.24831:
-	li      1, $i1
-ble_cont.24832:
-be_cont.24830:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24833
-	load    9($sp), $i1
-	load    5($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	load    6($i1), $i1
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24834
-	li      0, $i1
-	ret
-be_else.24834:
-	load    4($sp), $i1
-	add     $i1, 1, $i1
-	load    7($sp), $i2
-	load    3($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.24833:
-	li      l.14237, $i1
-	load    0($i1), $f2
-	fadd    $f1, $f2, $f1
-	load    8($sp), $i1
-	load    0($i1), $f2
-	fmul    $f2, $f1, $f2
-	load    2($sp), $i2
-	load    0($i2), $f3
-	fadd    $f2, $f3, $f2
-	load    1($i1), $f3
-	fmul    $f3, $f1, $f3
-	load    1($i2), $f4
-	fadd    $f3, $f4, $f3
-	load    2($i1), $f4
-	fmul    $f4, $f1, $f1
-	load    2($i2), $f4
-	fadd    $f1, $f4, $f1
-	load    7($sp), $i2
-	load    0($i2), $i1
-	li      -1, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24835
-	li      1, $i1
-	b       be_cont.24836
-be_else.24835:
-	store   $f1, 10($sp)
-	store   $f3, 11($sp)
-	store   $f2, 12($sp)
-	load    5($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	mov     $f3, $f14
-	mov     $f1, $f3
-	mov     $f2, $f1
-	mov     $f14, $f2
-	store   $ra, 13($sp)
-	add     $sp, 14, $sp
-	jal     is_outside.3056
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24837
-	li      1, $i1
-	load    12($sp), $f1
-	load    11($sp), $f2
-	load    10($sp), $f3
-	load    7($sp), $i2
-	load    1($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.24839, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.24839:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	b       be_cont.24838
-be_else.24837:
-	li      0, $i1
-be_cont.24838:
-be_cont.24836:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24840
-	load    4($sp), $i1
-	add     $i1, 1, $i1
-	load    7($sp), $i2
-	load    3($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.24840:
-	li      1, $i1
-	ret
-shadow_check_one_or_group.3070:
-	load    2($i11), $i3
-	load    1($i11), $i4
-	add     $i2, $i1, $i12
-	load    0($i12), $i5
-	li      -1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.24841
-	li      0, $i1
-	ret
-be_else.24841:
-	store   $i11, 0($sp)
-	store   $i3, 1($sp)
-	store   $i4, 2($sp)
-	store   $i2, 3($sp)
-	store   $i1, 4($sp)
-	add     $i4, $i5, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	mov     $i3, $i11
-	store   $ra, 5($sp)
-	load    0($i11), $i10
-	li      cls.24842, $ra
-	add     $sp, 6, $sp
-	jr      $i10
-cls.24842:
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24843
+	bne     $i12, be_else.18445
 	load    4($sp), $i1
 	add     $i1, 1, $i1
 	load    3($sp), $i2
@@ -7108,189 +5001,105 @@ cls.24842:
 	load    0($i12), $i3
 	li      -1, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24844
-	li      0, $i1
+	bne     $i12, be_else.18446
+	li      1, $i1
 	ret
-be_else.24844:
-	store   $i1, 5($sp)
-	load    2($sp), $i1
-	add     $i1, $i3, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.24845, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.24845:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24846
-	load    5($sp), $i1
-	add     $i1, 1, $i1
-	load    3($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i3
-	li      -1, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24847
-	li      0, $i1
-	ret
-be_else.24847:
+be_else.18446:
 	store   $i1, 6($sp)
-	load    2($sp), $i1
+	li      min_caml_objects, $i1
 	add     $i1, $i3, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i11
+	load    0($i12), $i1
+	load    2($sp), $f1
+	load    1($sp), $f2
+	load    0($sp), $f3
 	store   $ra, 7($sp)
-	load    0($i11), $i10
-	li      cls.24848, $ra
 	add     $sp, 8, $sp
-	jr      $i10
-cls.24848:
+	jal     is_outside.3136
 	sub     $sp, 8, $sp
 	load    7($sp), $ra
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24849
+	bne     $i12, be_else.18447
 	load    6($sp), $i1
 	add     $i1, 1, $i1
+	load    2($sp), $f1
+	load    1($sp), $f2
+	load    0($sp), $f3
 	load    3($sp), $i2
+	b       check_all_inside.3141
+be_else.18447:
+	li      0, $i1
+	ret
+be_else.18445:
+	li      0, $i1
+	ret
+shadow_check_and_group.3147:
 	add     $i2, $i1, $i12
 	load    0($i12), $i3
 	li      -1, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24850
+	bne     $i12, be_else.18448
 	li      0, $i1
 	ret
-be_else.24850:
-	store   $i1, 7($sp)
-	load    2($sp), $i1
-	add     $i1, $i3, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i11
-	store   $ra, 8($sp)
-	load    0($i11), $i10
-	li      cls.24851, $ra
-	add     $sp, 9, $sp
-	jr      $i10
-cls.24851:
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24852
-	load    7($sp), $i1
-	add     $i1, 1, $i1
-	load    3($sp), $i2
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.24852:
-	li      1, $i1
-	ret
-be_else.24849:
-	li      1, $i1
-	ret
-be_else.24846:
-	li      1, $i1
-	ret
-be_else.24843:
-	li      1, $i1
-	ret
-shadow_check_one_or_matrix.3073:
-	load    10($i11), $i3
-	store   $i3, 0($sp)
-	load    9($i11), $i3
-	store   $i3, 1($sp)
-	load    8($i11), $i3
-	store   $i3, 2($sp)
-	load    7($i11), $i3
-	store   $i3, 3($sp)
-	load    6($i11), $i3
-	load    5($i11), $i4
-	load    4($i11), $i5
-	load    3($i11), $i6
-	load    2($i11), $i7
-	load    1($i11), $i8
+be_else.18448:
+	store   $i2, 0($sp)
+	store   $i1, 1($sp)
 	add     $i2, $i1, $i12
-	load    0($i12), $i9
-	load    0($i9), $i10
-	li      -1, $i12
-	cmp     $i10, $i12, $i12
-	bne     $i12, be_else.24853
-	li      0, $i1
-	ret
-be_else.24853:
-	store   $i3, 4($sp)
-	store   $i4, 5($sp)
-	store   $i8, 6($sp)
-	store   $i9, 7($sp)
-	store   $i2, 8($sp)
-	store   $i11, 9($sp)
-	store   $i1, 10($sp)
-	li      99, $i12
-	cmp     $i10, $i12, $i12
-	bne     $i12, be_else.24854
-	li      1, $i1
-	b       be_cont.24855
-be_else.24854:
-	add     $i5, $i10, $i12
 	load    0($i12), $i1
-	load    0($i6), $f1
-	load    5($i1), $i2
-	load    0($i2), $f2
+	store   $i1, 2($sp)
+	li      min_caml_light_dirvec, $i2
+	li      min_caml_intersection_point, $i3
+	li      min_caml_objects, $i4
+	add     $i4, $i1, $i12
+	load    0($i12), $i4
+	load    0($i3), $f1
+	load    5($i4), $i5
+	load    0($i5), $f2
 	fsub    $f1, $f2, $f1
-	load    1($i6), $f2
-	load    5($i1), $i2
-	load    1($i2), $f3
+	load    1($i3), $f2
+	load    5($i4), $i5
+	load    1($i5), $f3
 	fsub    $f2, $f3, $f2
-	load    2($i6), $f3
-	load    5($i1), $i2
-	load    2($i2), $f4
+	load    2($i3), $f3
+	load    5($i4), $i3
+	load    2($i3), $f4
 	fsub    $f3, $f4, $f3
-	add     $i7, $i10, $i12
+	load    1($i2), $i3
+	add     $i3, $i1, $i12
 	load    0($i12), $i3
-	load    1($i1), $i2
+	load    1($i4), $i1
 	li      1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24856
-	load    0($sp), $i2
-	load    2($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24858, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24858:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	b       be_cont.24857
-be_else.24856:
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18449
+	load    0($i2), $i2
+	mov     $i4, $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     solver_rect_fast.3062
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	b       be_cont.18450
+be_else.18449:
 	li      2, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24859
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18451
 	load    0($i3), $f4
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f5
 	fcmp    $f5, $f4, $i12
-	bg      $i12, ble_else.24861
+	bg      $i12, ble_else.18453
 	li      0, $i1
-	b       ble_cont.24862
-ble_else.24861:
+	b       ble_cont.18454
+ble_else.18453:
 	li      1, $i1
-ble_cont.24862:
+ble_cont.18454:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24863
+	bne     $i12, be_else.18455
 	li      0, $i1
-	b       be_cont.24864
-be_else.24863:
+	b       be_cont.18456
+be_else.18455:
+	li      min_caml_solver_dist, $i1
 	load    1($i3), $f4
 	fmul    $f4, $f1, $f1
 	load    2($i3), $f4
@@ -7299,2274 +5108,1746 @@ be_else.24863:
 	load    3($i3), $f2
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
-	load    3($sp), $i1
 	store   $f1, 0($i1)
 	li      1, $i1
-be_cont.24864:
-	b       be_cont.24860
-be_else.24859:
-	load    1($sp), $i11
+be_cont.18456:
+	b       be_cont.18452
+be_else.18451:
 	mov     $i3, $i2
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24865, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24865:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-be_cont.24860:
-be_cont.24857:
+	mov     $i4, $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     solver_second_fast.3075
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+be_cont.18452:
+be_cont.18450:
+	li      min_caml_solver_dist, $i2
+	load    0($i2), $f1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24866
+	bne     $i12, be_else.18457
 	li      0, $i1
-	b       be_cont.24867
-be_else.24866:
-	load    3($sp), $i1
-	load    0($i1), $f1
-	li      l.14240, $i1
+	b       be_cont.18458
+be_else.18457:
+	li      l.13641, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24868
+	bg      $i12, ble_else.18459
 	li      0, $i1
-	b       ble_cont.24869
-ble_else.24868:
+	b       ble_cont.18460
+ble_else.18459:
 	li      1, $i1
-ble_cont.24869:
+ble_cont.18460:
+be_cont.18458:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24870
-	li      0, $i1
-	b       be_cont.24871
-be_else.24870:
-	load    7($sp), $i1
-	load    1($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24872
-	li      0, $i1
-	b       be_cont.24873
-be_else.24872:
-	load    6($sp), $i1
+	bne     $i12, be_else.18461
+	li      min_caml_objects, $i1
+	load    2($sp), $i2
 	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24874, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24874:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24875
-	load    7($sp), $i1
-	load    2($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24877
-	li      0, $i1
-	b       be_cont.24878
-be_else.24877:
-	load    6($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24879, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24879:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24880
-	load    7($sp), $i1
-	load    3($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24882
-	li      0, $i1
-	b       be_cont.24883
-be_else.24882:
-	load    6($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24884, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24884:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24885
-	li      4, $i1
-	load    7($sp), $i2
-	load    4($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24887, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24887:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	b       be_cont.24886
-be_else.24885:
-	li      1, $i1
-be_cont.24886:
-be_cont.24883:
-	b       be_cont.24881
-be_else.24880:
-	li      1, $i1
-be_cont.24881:
-be_cont.24878:
-	b       be_cont.24876
-be_else.24875:
-	li      1, $i1
-be_cont.24876:
-be_cont.24873:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24888
-	li      0, $i1
-	b       be_cont.24889
-be_else.24888:
-	li      1, $i1
-be_cont.24889:
-be_cont.24871:
-be_cont.24867:
-be_cont.24855:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24890
-	load    10($sp), $i1
-	add     $i1, 1, $i1
-	load    8($sp), $i2
-	load    9($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.24890:
-	load    7($sp), $i1
-	load    1($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24891
-	li      0, $i1
-	b       be_cont.24892
-be_else.24891:
-	load    6($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24893, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24893:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24894
-	load    7($sp), $i1
-	load    2($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24896
-	li      0, $i1
-	b       be_cont.24897
-be_else.24896:
-	load    6($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24898, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24898:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24899
-	load    7($sp), $i1
-	load    3($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24901
-	li      0, $i1
-	b       be_cont.24902
-be_else.24901:
-	load    6($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24903, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24903:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24904
-	li      4, $i1
-	load    7($sp), $i2
-	load    4($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.24906, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.24906:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	b       be_cont.24905
-be_else.24904:
-	li      1, $i1
-be_cont.24905:
-be_cont.24902:
-	b       be_cont.24900
-be_else.24899:
-	li      1, $i1
-be_cont.24900:
-be_cont.24897:
-	b       be_cont.24895
-be_else.24894:
-	li      1, $i1
-be_cont.24895:
-be_cont.24892:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24907
-	load    10($sp), $i1
-	add     $i1, 1, $i1
-	load    8($sp), $i2
-	load    9($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.24907:
-	li      1, $i1
-	ret
-solve_each_element.3076:
-	load    11($i11), $i4
-	load    10($i11), $i5
-	load    9($i11), $i6
-	store   $i6, 0($sp)
-	load    8($i11), $i6
-	store   $i6, 1($sp)
-	load    7($i11), $i6
-	load    6($i11), $i7
-	load    5($i11), $i8
-	load    4($i11), $i9
-	store   $i9, 2($sp)
-	load    3($i11), $i9
-	load    2($i11), $i10
-	store   $i10, 3($sp)
-	load    1($i11), $i10
-	store   $i10, 4($sp)
-	add     $i2, $i1, $i12
-	load    0($i12), $i10
-	li      -1, $i12
-	cmp     $i10, $i12, $i12
-	bne     $i12, be_else.24908
-	ret
-be_else.24908:
-	store   $i5, 5($sp)
-	store   $i7, 6($sp)
-	store   $i3, 7($sp)
-	store   $i2, 8($sp)
-	store   $i11, 9($sp)
-	store   $i1, 10($sp)
-	store   $i10, 11($sp)
-	store   $i8, 12($sp)
-	store   $i4, 13($sp)
-	store   $i9, 14($sp)
-	add     $i8, $i10, $i12
-	load    0($i12), $i1
-	load    0($i5), $f1
-	load    5($i1), $i2
-	load    0($i2), $f2
-	fsub    $f1, $f2, $f1
-	load    1($i5), $f2
-	load    5($i1), $i2
-	load    1($i2), $f3
-	fsub    $f2, $f3, $f2
-	load    2($i5), $f3
-	load    5($i1), $i2
-	load    2($i2), $f4
-	fsub    $f3, $f4, $f3
-	load    1($i1), $i2
-	li      1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24910
-	store   $f1, 15($sp)
-	store   $f3, 16($sp)
-	store   $f2, 17($sp)
-	store   $i1, 18($sp)
-	store   $i6, 19($sp)
-	li      0, $i2
-	li      1, $i4
-	li      2, $i5
-	mov     $i6, $i11
-	mov     $i3, $i10
-	mov     $i2, $i3
-	mov     $i10, $i2
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24912, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24912:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24913
-	li      1, $i3
-	li      2, $i4
-	li      0, $i5
-	load    17($sp), $f1
-	load    16($sp), $f2
-	load    15($sp), $f3
-	load    18($sp), $i1
-	load    7($sp), $i2
-	load    19($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24915, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24915:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24916
-	li      2, $i3
-	li      0, $i4
-	li      1, $i5
-	load    16($sp), $f1
-	load    15($sp), $f2
-	load    17($sp), $f3
-	load    18($sp), $i1
-	load    7($sp), $i2
-	load    19($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24918, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24918:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24919
-	li      0, $i1
-	b       be_cont.24920
-be_else.24919:
-	li      3, $i1
-be_cont.24920:
-	b       be_cont.24917
-be_else.24916:
-	li      2, $i1
-be_cont.24917:
-	b       be_cont.24914
-be_else.24913:
-	li      1, $i1
-be_cont.24914:
-	b       be_cont.24911
-be_else.24910:
-	li      2, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24921
-	load    0($sp), $i11
-	mov     $i3, $i2
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24923, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24923:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	b       be_cont.24922
-be_else.24921:
-	load    1($sp), $i11
-	mov     $i3, $i2
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24924, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24924:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-be_cont.24922:
-be_cont.24911:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24925
-	load    11($sp), $i1
-	load    12($sp), $i2
-	add     $i2, $i1, $i12
 	load    0($i12), $i1
 	load    6($i1), $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24926
+	bne     $i12, be_else.18462
+	li      0, $i1
 	ret
-be_else.24926:
-	load    10($sp), $i1
+be_else.18462:
+	load    1($sp), $i1
 	add     $i1, 1, $i1
-	load    8($sp), $i2
-	load    7($sp), $i3
-	load    9($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.24925:
-	load    6($sp), $i2
-	load    0($i2), $f1
-	li      l.14001, $i2
-	load    0($i2), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.24928
-	li      0, $i2
-	b       ble_cont.24929
-ble_else.24928:
-	li      1, $i2
-ble_cont.24929:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24930
-	b       be_cont.24931
-be_else.24930:
-	load    13($sp), $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24932
-	li      0, $i3
-	b       ble_cont.24933
-ble_else.24932:
-	li      1, $i3
-ble_cont.24933:
-	li      0, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24934
-	b       be_cont.24935
-be_else.24934:
-	store   $i1, 20($sp)
-	li      l.14237, $i1
+	load    0($sp), $i2
+	b       shadow_check_and_group.3147
+be_else.18461:
+	li      l.13643, $i1
 	load    0($i1), $f2
 	fadd    $f1, $f2, $f1
-	store   $f1, 21($sp)
-	load    7($sp), $i3
-	load    0($i3), $f2
+	li      min_caml_light, $i1
+	load    0($i1), $f2
 	fmul    $f2, $f1, $f2
-	load    5($sp), $i1
+	li      min_caml_intersection_point, $i1
 	load    0($i1), $f3
 	fadd    $f2, $f3, $f2
-	store   $f2, 22($sp)
-	load    1($i3), $f3
+	li      min_caml_light, $i1
+	load    1($i1), $f3
 	fmul    $f3, $f1, $f3
+	li      min_caml_intersection_point, $i1
 	load    1($i1), $f4
 	fadd    $f3, $f4, $f3
-	store   $f3, 23($sp)
-	load    2($i3), $f4
+	li      min_caml_light, $i1
+	load    2($i1), $f4
 	fmul    $f4, $f1, $f1
+	li      min_caml_intersection_point, $i1
 	load    2($i1), $f4
 	fadd    $f1, $f4, $f1
-	store   $f1, 24($sp)
-	load    8($sp), $i2
+	load    0($sp), $i2
 	load    0($i2), $i1
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24936
+	bne     $i12, be_else.18463
 	li      1, $i1
-	b       be_cont.24937
-be_else.24936:
-	load    12($sp), $i2
+	b       be_cont.18464
+be_else.18463:
+	store   $f1, 3($sp)
+	store   $f3, 4($sp)
+	store   $f2, 5($sp)
+	li      min_caml_objects, $i2
 	add     $i2, $i1, $i12
 	load    0($i12), $i1
 	mov     $f3, $f14
 	mov     $f1, $f3
 	mov     $f2, $f1
 	mov     $f14, $f2
-	store   $ra, 25($sp)
-	add     $sp, 26, $sp
-	jal     is_outside.3056
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24938
-	li      1, $i1
-	load    22($sp), $f1
-	load    23($sp), $f2
-	load    24($sp), $f3
-	load    8($sp), $i2
-	load    4($sp), $i11
-	store   $ra, 25($sp)
-	load    0($i11), $i10
-	li      cls.24940, $ra
-	add     $sp, 26, $sp
-	jr      $i10
-cls.24940:
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	b       be_cont.24939
-be_else.24938:
-	li      0, $i1
-be_cont.24939:
-be_cont.24937:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24941
-	b       be_cont.24942
-be_else.24941:
-	load    13($sp), $i1
-	load    21($sp), $f1
-	store   $f1, 0($i1)
-	load    14($sp), $i1
-	load    22($sp), $f1
-	store   $f1, 0($i1)
-	load    23($sp), $f1
-	store   $f1, 1($i1)
-	load    24($sp), $f1
-	store   $f1, 2($i1)
-	load    3($sp), $i1
-	load    11($sp), $i2
-	store   $i2, 0($i1)
-	load    2($sp), $i1
-	load    20($sp), $i2
-	store   $i2, 0($i1)
-be_cont.24942:
-be_cont.24935:
-be_cont.24931:
-	load    10($sp), $i1
-	add     $i1, 1, $i1
-	load    8($sp), $i2
-	load    7($sp), $i3
-	load    9($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-solve_one_or_network.3080:
-	load    2($i11), $i4
-	load    1($i11), $i5
-	add     $i2, $i1, $i12
-	load    0($i12), $i6
-	li      -1, $i12
-	cmp     $i6, $i12, $i12
-	bne     $i12, be_else.24943
-	ret
-be_else.24943:
-	store   $i11, 0($sp)
-	store   $i3, 1($sp)
-	store   $i4, 2($sp)
-	store   $i5, 3($sp)
-	store   $i2, 4($sp)
-	store   $i1, 5($sp)
-	add     $i5, $i6, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	mov     $i4, $i11
 	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.24945, $ra
 	add     $sp, 7, $sp
-	jr      $i10
-cls.24945:
+	jal     is_outside.3136
 	sub     $sp, 7, $sp
 	load    6($sp), $ra
-	load    5($sp), $i1
-	add     $i1, 1, $i1
-	load    4($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i3
-	li      -1, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24946
-	ret
-be_else.24946:
-	store   $i1, 6($sp)
-	load    3($sp), $i1
-	add     $i1, $i3, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i3
-	load    2($sp), $i11
-	store   $ra, 7($sp)
-	load    0($i11), $i10
-	li      cls.24948, $ra
-	add     $sp, 8, $sp
-	jr      $i10
-cls.24948:
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	load    6($sp), $i1
-	add     $i1, 1, $i1
-	load    4($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i3
-	li      -1, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24949
-	ret
-be_else.24949:
-	store   $i1, 7($sp)
-	load    3($sp), $i1
-	add     $i1, $i3, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i3
-	load    2($sp), $i11
-	store   $ra, 8($sp)
-	load    0($i11), $i10
-	li      cls.24951, $ra
-	add     $sp, 9, $sp
-	jr      $i10
-cls.24951:
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	load    7($sp), $i1
-	add     $i1, 1, $i1
-	load    4($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i3
-	li      -1, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.24952
-	ret
-be_else.24952:
-	store   $i1, 8($sp)
-	load    3($sp), $i1
-	add     $i1, $i3, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i3
-	load    2($sp), $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.24954, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.24954:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	load    8($sp), $i1
-	add     $i1, 1, $i1
-	load    4($sp), $i2
-	load    1($sp), $i3
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-trace_or_matrix.3084:
-	load    11($i11), $i4
-	store   $i4, 0($sp)
-	load    10($i11), $i4
-	load    9($i11), $i5
-	store   $i5, 1($sp)
-	load    8($i11), $i5
-	store   $i5, 2($sp)
-	load    7($i11), $i5
-	store   $i5, 3($sp)
-	load    6($i11), $i5
-	store   $i5, 4($sp)
-	load    5($i11), $i5
-	load    4($i11), $i6
-	load    3($i11), $i7
-	load    2($i11), $i8
-	store   $i8, 5($sp)
-	load    1($i11), $i8
-	add     $i2, $i1, $i12
-	load    0($i12), $i9
-	load    0($i9), $i10
-	li      -1, $i12
-	cmp     $i10, $i12, $i12
-	bne     $i12, be_else.24955
-	ret
-be_else.24955:
-	store   $i4, 6($sp)
-	store   $i5, 7($sp)
-	store   $i6, 8($sp)
-	store   $i7, 9($sp)
-	store   $i8, 10($sp)
-	store   $i3, 11($sp)
-	store   $i11, 12($sp)
-	store   $i2, 13($sp)
-	store   $i1, 14($sp)
-	li      99, $i12
-	cmp     $i10, $i12, $i12
-	bne     $i12, be_else.24957
-	load    1($i9), $i1
-	li      -1, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24959
-	b       be_cont.24960
-be_else.24959:
-	store   $i9, 15($sp)
-	add     $i8, $i1, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	mov     $i7, $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.24961, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.24961:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	load    15($sp), $i1
-	load    2($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24962
-	b       be_cont.24963
-be_else.24962:
-	load    10($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    11($sp), $i3
-	load    9($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.24964, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.24964:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	load    15($sp), $i1
-	load    3($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24965
-	b       be_cont.24966
-be_else.24965:
-	load    10($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    11($sp), $i3
-	load    9($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.24967, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.24967:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	li      4, $i1
-	load    15($sp), $i2
-	load    11($sp), $i3
-	load    8($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.24968, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.24968:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-be_cont.24966:
-be_cont.24963:
-be_cont.24960:
-	b       be_cont.24958
-be_else.24957:
-	store   $i9, 15($sp)
-	load    5($sp), $i1
-	add     $i1, $i10, $i12
-	load    0($i12), $i1
-	load    0($i4), $f1
-	load    5($i1), $i2
-	load    0($i2), $f2
-	fsub    $f1, $f2, $f1
-	load    1($i4), $f2
-	load    5($i1), $i2
-	load    1($i2), $f3
-	fsub    $f2, $f3, $f2
-	load    2($i4), $f3
-	load    5($i1), $i2
-	load    2($i2), $f4
-	fsub    $f3, $f4, $f3
-	load    1($i1), $i2
-	li      1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24969
-	store   $f1, 16($sp)
-	store   $f3, 17($sp)
-	store   $f2, 18($sp)
-	store   $i1, 19($sp)
-	li      0, $i2
-	li      1, $i4
-	li      2, $i5
-	load    3($sp), $i11
-	mov     $i3, $i10
-	mov     $i2, $i3
-	mov     $i10, $i2
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24971, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24971:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24972
-	li      1, $i3
-	li      2, $i4
-	li      0, $i5
-	load    18($sp), $f1
-	load    17($sp), $f2
-	load    16($sp), $f3
-	load    19($sp), $i1
-	load    11($sp), $i2
-	load    3($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24974, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24974:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24975
-	li      2, $i3
-	li      0, $i4
-	li      1, $i5
-	load    17($sp), $f1
-	load    16($sp), $f2
-	load    18($sp), $f3
-	load    19($sp), $i1
-	load    11($sp), $i2
-	load    3($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24977, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24977:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24978
-	li      0, $i1
-	b       be_cont.24979
-be_else.24978:
-	li      3, $i1
-be_cont.24979:
-	b       be_cont.24976
-be_else.24975:
-	li      2, $i1
-be_cont.24976:
-	b       be_cont.24973
-be_else.24972:
+	bne     $i12, be_else.18465
 	li      1, $i1
-be_cont.24973:
-	b       be_cont.24970
-be_else.24969:
-	li      2, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24980
-	load    1($sp), $i11
-	mov     $i3, $i2
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24982, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24982:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	b       be_cont.24981
-be_else.24980:
-	load    2($sp), $i11
-	mov     $i3, $i2
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24983, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24983:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-be_cont.24981:
-be_cont.24970:
+	load    5($sp), $f1
+	load    4($sp), $f2
+	load    3($sp), $f3
+	load    0($sp), $i2
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     check_all_inside.3141
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	b       be_cont.18466
+be_else.18465:
+	li      0, $i1
+be_cont.18466:
+be_cont.18464:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24984
-	b       be_cont.24985
-be_else.24984:
+	bne     $i12, be_else.18467
+	load    1($sp), $i1
+	add     $i1, 1, $i1
+	load    0($sp), $i2
+	b       shadow_check_and_group.3147
+be_else.18467:
+	li      1, $i1
+	ret
+shadow_check_one_or_group.3150:
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18468
+	li      0, $i1
+	ret
+be_else.18468:
+	store   $i2, 0($sp)
+	store   $i1, 1($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18469
+	load    1($sp), $i1
+	add     $i1, 1, $i1
+	load    0($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18470
+	li      0, $i1
+	ret
+be_else.18470:
+	store   $i1, 2($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18471
+	load    2($sp), $i1
+	add     $i1, 1, $i1
+	load    0($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18472
+	li      0, $i1
+	ret
+be_else.18472:
+	store   $i1, 3($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18473
+	load    3($sp), $i1
+	add     $i1, 1, $i1
+	load    0($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18474
+	li      0, $i1
+	ret
+be_else.18474:
+	store   $i1, 4($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18475
 	load    4($sp), $i1
-	load    0($i1), $f1
-	load    0($sp), $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.24986
-	li      0, $i1
-	b       ble_cont.24987
-ble_else.24986:
-	li      1, $i1
-ble_cont.24987:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.24988
-	b       be_cont.24989
-be_else.24988:
-	load    15($sp), $i1
-	load    1($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24990
-	b       be_cont.24991
-be_else.24990:
-	load    10($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    11($sp), $i3
-	load    9($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24992, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24992:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	load    15($sp), $i1
-	load    2($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24993
-	b       be_cont.24994
-be_else.24993:
-	load    10($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    11($sp), $i3
-	load    9($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24995, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24995:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	load    15($sp), $i1
-	load    3($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.24996
-	b       be_cont.24997
-be_else.24996:
-	load    10($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    11($sp), $i3
-	load    9($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24998, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24998:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	li      4, $i1
-	load    15($sp), $i2
-	load    11($sp), $i3
-	load    8($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.24999, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.24999:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-be_cont.24997:
-be_cont.24994:
-be_cont.24991:
-be_cont.24989:
-be_cont.24985:
-be_cont.24958:
-	load    14($sp), $i1
 	add     $i1, 1, $i1
-	load    13($sp), $i2
+	load    0($sp), $i2
+	b       shadow_check_one_or_group.3150
+be_else.18475:
+	li      1, $i1
+	ret
+be_else.18473:
+	li      1, $i1
+	ret
+be_else.18471:
+	li      1, $i1
+	ret
+be_else.18469:
+	li      1, $i1
+	ret
+shadow_check_one_or_matrix.3153:
 	add     $i2, $i1, $i12
 	load    0($i12), $i3
 	load    0($i3), $i4
 	li      -1, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.25000
+	bne     $i12, be_else.18476
+	li      0, $i1
 	ret
-be_else.25000:
-	store   $i1, 20($sp)
+be_else.18476:
+	store   $i3, 0($sp)
+	store   $i2, 1($sp)
+	store   $i1, 2($sp)
 	li      99, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.25002
-	load    1($i3), $i1
-	li      -1, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25004
-	b       be_cont.25005
-be_else.25004:
-	store   $i3, 21($sp)
-	load    10($sp), $i2
-	add     $i2, $i1, $i12
+	bne     $i12, be_else.18477
+	li      1, $i1
+	b       be_cont.18478
+be_else.18477:
+	li      min_caml_light_dirvec, $i1
+	li      min_caml_intersection_point, $i2
+	li      min_caml_objects, $i3
+	add     $i3, $i4, $i12
+	load    0($i12), $i3
+	load    0($i2), $f1
+	load    5($i3), $i5
+	load    0($i5), $f2
+	fsub    $f1, $f2, $f1
+	load    1($i2), $f2
+	load    5($i3), $i5
+	load    1($i5), $f3
+	fsub    $f2, $f3, $f2
+	load    2($i2), $f3
+	load    5($i3), $i2
+	load    2($i2), $f4
+	fsub    $f3, $f4, $f3
+	load    1($i1), $i2
+	add     $i2, $i4, $i12
 	load    0($i12), $i2
+	load    1($i3), $i4
+	li      1, $i12
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18479
+	load    0($i1), $i1
+	mov     $i3, $i10
+	mov     $i2, $i3
+	mov     $i1, $i2
+	mov     $i10, $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     solver_rect_fast.3062
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	b       be_cont.18480
+be_else.18479:
+	li      2, $i12
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18481
+	load    0($i2), $f4
+	li      l.13298, $i1
+	load    0($i1), $f5
+	fcmp    $f5, $f4, $i12
+	bg      $i12, ble_else.18483
 	li      0, $i1
-	load    11($sp), $i3
-	load    9($sp), $i11
-	store   $ra, 22($sp)
-	load    0($i11), $i10
-	li      cls.25006, $ra
-	add     $sp, 23, $sp
-	jr      $i10
-cls.25006:
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	load    21($sp), $i1
-	load    2($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25007
-	b       be_cont.25008
-be_else.25007:
-	load    10($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    11($sp), $i3
-	load    9($sp), $i11
-	store   $ra, 22($sp)
-	load    0($i11), $i10
-	li      cls.25009, $ra
-	add     $sp, 23, $sp
-	jr      $i10
-cls.25009:
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	li      3, $i1
-	load    21($sp), $i2
-	load    11($sp), $i3
-	load    8($sp), $i11
-	store   $ra, 22($sp)
-	load    0($i11), $i10
-	li      cls.25010, $ra
-	add     $sp, 23, $sp
-	jr      $i10
-cls.25010:
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-be_cont.25008:
-be_cont.25005:
-	b       be_cont.25003
-be_else.25002:
-	store   $i3, 21($sp)
-	load    11($sp), $i2
-	load    6($sp), $i3
-	load    7($sp), $i11
-	mov     $i4, $i1
-	store   $ra, 22($sp)
-	load    0($i11), $i10
-	li      cls.25011, $ra
-	add     $sp, 23, $sp
-	jr      $i10
-cls.25011:
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
+	b       ble_cont.18484
+ble_else.18483:
+	li      1, $i1
+ble_cont.18484:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25012
-	b       be_cont.25013
-be_else.25012:
-	load    4($sp), $i1
+	bne     $i12, be_else.18485
+	li      0, $i1
+	b       be_cont.18486
+be_else.18485:
+	li      min_caml_solver_dist, $i1
+	load    1($i2), $f4
+	fmul    $f4, $f1, $f1
+	load    2($i2), $f4
+	fmul    $f4, $f2, $f2
+	fadd    $f1, $f2, $f1
+	load    3($i2), $f2
+	fmul    $f2, $f3, $f2
+	fadd    $f1, $f2, $f1
+	store   $f1, 0($i1)
+	li      1, $i1
+be_cont.18486:
+	b       be_cont.18482
+be_else.18481:
+	mov     $i3, $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     solver_second_fast.3075
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+be_cont.18482:
+be_cont.18480:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18487
+	li      0, $i1
+	b       be_cont.18488
+be_else.18487:
+	li      min_caml_solver_dist, $i1
 	load    0($i1), $f1
-	load    0($sp), $i1
+	li      l.13646, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25014
+	bg      $i12, ble_else.18489
 	li      0, $i1
-	b       ble_cont.25015
-ble_else.25014:
+	b       ble_cont.18490
+ble_else.18489:
 	li      1, $i1
-ble_cont.25015:
+ble_cont.18490:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25016
-	b       be_cont.25017
-be_else.25016:
-	load    21($sp), $i1
+	bne     $i12, be_else.18491
+	li      0, $i1
+	b       be_cont.18492
+be_else.18491:
+	load    0($sp), $i1
 	load    1($i1), $i2
 	li      -1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25018
-	b       be_cont.25019
-be_else.25018:
-	load    10($sp), $i1
+	bne     $i12, be_else.18493
+	li      0, $i1
+	b       be_cont.18494
+be_else.18493:
+	li      min_caml_and_net, $i1
 	add     $i1, $i2, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	load    11($sp), $i3
-	load    9($sp), $i11
-	store   $ra, 22($sp)
-	load    0($i11), $i10
-	li      cls.25020, $ra
-	add     $sp, 23, $sp
-	jr      $i10
-cls.25020:
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	load    21($sp), $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18495
+	load    0($sp), $i1
 	load    2($i1), $i2
 	li      -1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25021
-	b       be_cont.25022
-be_else.25021:
-	load    10($sp), $i1
+	bne     $i12, be_else.18497
+	li      0, $i1
+	b       be_cont.18498
+be_else.18497:
+	li      min_caml_and_net, $i1
 	add     $i1, $i2, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	load    11($sp), $i3
-	load    9($sp), $i11
-	store   $ra, 22($sp)
-	load    0($i11), $i10
-	li      cls.25023, $ra
-	add     $sp, 23, $sp
-	jr      $i10
-cls.25023:
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	li      3, $i1
-	load    21($sp), $i2
-	load    11($sp), $i3
-	load    8($sp), $i11
-	store   $ra, 22($sp)
-	load    0($i11), $i10
-	li      cls.25024, $ra
-	add     $sp, 23, $sp
-	jr      $i10
-cls.25024:
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-be_cont.25022:
-be_cont.25019:
-be_cont.25017:
-be_cont.25013:
-be_cont.25003:
-	load    20($sp), $i1
-	add     $i1, 1, $i1
-	load    13($sp), $i2
-	load    11($sp), $i3
-	load    12($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-solve_each_element_fast.3090:
-	load    10($i11), $i4
-	load    9($i11), $i5
-	load    8($i11), $i6
-	store   $i6, 0($sp)
-	load    7($i11), $i6
-	load    6($i11), $i7
-	load    5($i11), $i8
-	load    4($i11), $i9
-	store   $i9, 1($sp)
-	load    3($i11), $i9
-	store   $i9, 2($sp)
-	load    2($i11), $i9
-	store   $i9, 3($sp)
-	load    1($i11), $i9
-	store   $i9, 4($sp)
-	load    0($i3), $i9
-	add     $i2, $i1, $i12
-	load    0($i12), $i10
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18499
+	load    0($sp), $i1
+	load    3($i1), $i2
 	li      -1, $i12
-	cmp     $i10, $i12, $i12
-	bne     $i12, be_else.25025
-	ret
-be_else.25025:
-	store   $i7, 5($sp)
-	store   $i3, 6($sp)
-	store   $i2, 7($sp)
-	store   $i11, 8($sp)
-	store   $i1, 9($sp)
-	store   $i10, 10($sp)
-	store   $i8, 11($sp)
-	store   $i4, 12($sp)
-	store   $i9, 13($sp)
-	store   $i5, 14($sp)
-	add     $i8, $i10, $i12
-	load    0($i12), $i1
-	load    10($i1), $i2
-	store   $i2, 15($sp)
-	load    0($i2), $f1
-	load    1($i2), $f2
-	load    2($i2), $f3
-	load    1($i3), $i2
-	add     $i2, $i10, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18501
+	li      0, $i1
+	b       be_cont.18502
+be_else.18501:
+	li      min_caml_and_net, $i1
+	add     $i1, $i2, $i12
 	load    0($i12), $i2
-	load    1($i1), $i4
-	li      1, $i12
-	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.25027
-	load    0($i3), $i3
-	mov     $i6, $i11
-	mov     $i3, $i10
-	mov     $i2, $i3
-	mov     $i10, $i2
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25029, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25029:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	b       be_cont.25028
-be_else.25027:
-	li      2, $i12
-	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.25030
-	load    0($i2), $f1
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25032
 	li      0, $i1
-	b       ble_cont.25033
-ble_else.25032:
-	li      1, $i1
-ble_cont.25033:
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25034
-	li      0, $i1
-	b       be_cont.25035
-be_else.25034:
-	load    0($i2), $f1
-	load    15($sp), $i1
-	load    3($i1), $f2
-	fmul    $f1, $f2, $f1
-	store   $f1, 0($i7)
+	bne     $i12, be_else.18503
+	li      4, $i1
+	load    0($sp), $i2
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_one_or_group.3150
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	b       be_cont.18504
+be_else.18503:
 	li      1, $i1
-be_cont.25035:
-	b       be_cont.25031
-be_else.25030:
-	load    15($sp), $i3
-	load    0($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25036, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25036:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-be_cont.25031:
-be_cont.25028:
+be_cont.18504:
+be_cont.18502:
+	b       be_cont.18500
+be_else.18499:
+	li      1, $i1
+be_cont.18500:
+be_cont.18498:
+	b       be_cont.18496
+be_else.18495:
+	li      1, $i1
+be_cont.18496:
+be_cont.18494:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25037
-	load    10($sp), $i1
-	load    11($sp), $i2
+	bne     $i12, be_else.18505
+	li      0, $i1
+	b       be_cont.18506
+be_else.18505:
+	li      1, $i1
+be_cont.18506:
+be_cont.18492:
+be_cont.18488:
+be_cont.18478:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18507
+	load    2($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	b       shadow_check_one_or_matrix.3153
+be_else.18507:
+	load    0($sp), $i1
+	load    1($i1), $i2
+	li      -1, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18508
+	li      0, $i1
+	b       be_cont.18509
+be_else.18508:
+	li      min_caml_and_net, $i1
+	add     $i1, $i2, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18510
+	load    0($sp), $i1
+	load    2($i1), $i2
+	li      -1, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18512
+	li      0, $i1
+	b       be_cont.18513
+be_else.18512:
+	li      min_caml_and_net, $i1
+	add     $i1, $i2, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18514
+	load    0($sp), $i1
+	load    3($i1), $i2
+	li      -1, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18516
+	li      0, $i1
+	b       be_cont.18517
+be_else.18516:
+	li      min_caml_and_net, $i1
+	add     $i1, $i2, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_and_group.3147
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18518
+	li      4, $i1
+	load    0($sp), $i2
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_one_or_group.3150
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	b       be_cont.18519
+be_else.18518:
+	li      1, $i1
+be_cont.18519:
+be_cont.18517:
+	b       be_cont.18515
+be_else.18514:
+	li      1, $i1
+be_cont.18515:
+be_cont.18513:
+	b       be_cont.18511
+be_else.18510:
+	li      1, $i1
+be_cont.18511:
+be_cont.18509:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18520
+	load    2($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	b       shadow_check_one_or_matrix.3153
+be_else.18520:
+	li      1, $i1
+	ret
+solve_each_element.3156:
 	add     $i2, $i1, $i12
+	load    0($i12), $i4
+	li      -1, $i12
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18521
+	ret
+be_else.18521:
+	store   $i3, 0($sp)
+	store   $i2, 1($sp)
+	store   $i1, 2($sp)
+	store   $i4, 3($sp)
+	li      min_caml_startp, $i1
+	li      min_caml_objects, $i2
+	add     $i2, $i4, $i12
+	load    0($i12), $i2
+	load    0($i1), $f1
+	load    5($i2), $i4
+	load    0($i4), $f2
+	fsub    $f1, $f2, $f1
+	load    1($i1), $f2
+	load    5($i2), $i4
+	load    1($i4), $f3
+	fsub    $f2, $f3, $f2
+	load    2($i1), $f3
+	load    5($i2), $i1
+	load    2($i1), $f4
+	fsub    $f3, $f4, $f3
+	load    1($i2), $i1
+	li      1, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18523
+	store   $f1, 4($sp)
+	store   $f3, 5($sp)
+	store   $f2, 6($sp)
+	store   $i2, 7($sp)
+	li      0, $i1
+	li      1, $i4
+	li      2, $i5
+	mov     $i3, $i10
+	mov     $i1, $i3
+	mov     $i2, $i1
+	mov     $i10, $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_rect_surface.3018
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18525
+	li      1, $i3
+	li      2, $i4
+	li      0, $i5
+	load    6($sp), $f1
+	load    5($sp), $f2
+	load    4($sp), $f3
+	load    7($sp), $i1
+	load    0($sp), $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_rect_surface.3018
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18527
+	li      2, $i3
+	li      0, $i4
+	li      1, $i5
+	load    5($sp), $f1
+	load    4($sp), $f2
+	load    6($sp), $f3
+	load    7($sp), $i1
+	load    0($sp), $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_rect_surface.3018
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18529
+	li      0, $i1
+	b       be_cont.18530
+be_else.18529:
+	li      3, $i1
+be_cont.18530:
+	b       be_cont.18528
+be_else.18527:
+	li      2, $i1
+be_cont.18528:
+	b       be_cont.18526
+be_else.18525:
+	li      1, $i1
+be_cont.18526:
+	b       be_cont.18524
+be_else.18523:
+	li      2, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18531
+	mov     $i2, $i1
+	mov     $i3, $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_surface.3033
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	b       be_cont.18532
+be_else.18531:
+	mov     $i2, $i1
+	mov     $i3, $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_second.3052
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+be_cont.18532:
+be_cont.18524:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18533
+	li      min_caml_objects, $i1
+	load    3($sp), $i2
+	add     $i1, $i2, $i12
 	load    0($i12), $i1
 	load    6($i1), $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25038
+	bne     $i12, be_else.18534
 	ret
-be_else.25038:
-	load    9($sp), $i1
+be_else.18534:
+	load    2($sp), $i1
 	add     $i1, 1, $i1
-	load    7($sp), $i2
-	load    6($sp), $i3
-	load    8($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.25037:
-	load    5($sp), $i2
+	load    1($sp), $i2
+	load    0($sp), $i3
+	b       solve_each_element.3156
+be_else.18533:
+	li      min_caml_solver_dist, $i2
 	load    0($i2), $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25040
+	bg      $i12, ble_else.18536
 	li      0, $i2
-	b       ble_cont.25041
-ble_else.25040:
+	b       ble_cont.18537
+ble_else.18536:
 	li      1, $i2
-ble_cont.25041:
+ble_cont.18537:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25042
-	b       be_cont.25043
-be_else.25042:
-	load    12($sp), $i2
+	bne     $i12, be_else.18538
+	b       be_cont.18539
+be_else.18538:
+	li      min_caml_tmin, $i2
 	load    0($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25044
-	li      0, $i3
-	b       ble_cont.25045
-ble_else.25044:
-	li      1, $i3
-ble_cont.25045:
+	bg      $i12, ble_else.18540
+	li      0, $i2
+	b       ble_cont.18541
+ble_else.18540:
+	li      1, $i2
+ble_cont.18541:
 	li      0, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25046
-	b       be_cont.25047
-be_else.25046:
-	store   $i1, 16($sp)
-	li      l.14237, $i1
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18542
+	b       be_cont.18543
+be_else.18542:
+	store   $i1, 8($sp)
+	li      l.13643, $i1
 	load    0($i1), $f2
 	fadd    $f1, $f2, $f1
-	store   $f1, 17($sp)
-	load    13($sp), $i1
-	load    0($i1), $f2
+	store   $f1, 9($sp)
+	load    0($sp), $i3
+	load    0($i3), $f2
 	fmul    $f2, $f1, $f2
-	load    14($sp), $i2
-	load    0($i2), $f3
+	li      min_caml_startp, $i1
+	load    0($i1), $f3
 	fadd    $f2, $f3, $f2
-	store   $f2, 18($sp)
-	load    1($i1), $f3
+	store   $f2, 10($sp)
+	load    1($i3), $f3
 	fmul    $f3, $f1, $f3
-	load    1($i2), $f4
+	li      min_caml_startp, $i1
+	load    1($i1), $f4
 	fadd    $f3, $f4, $f3
-	store   $f3, 19($sp)
-	load    2($i1), $f4
+	store   $f3, 11($sp)
+	load    2($i3), $f4
 	fmul    $f4, $f1, $f1
-	load    2($i2), $f4
+	li      min_caml_startp, $i1
+	load    2($i1), $f4
 	fadd    $f1, $f4, $f1
-	store   $f1, 20($sp)
-	load    7($sp), $i2
+	store   $f1, 12($sp)
+	load    1($sp), $i2
 	load    0($i2), $i1
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25048
+	bne     $i12, be_else.18544
 	li      1, $i1
-	b       be_cont.25049
-be_else.25048:
-	load    11($sp), $i2
+	b       be_cont.18545
+be_else.18544:
+	li      min_caml_objects, $i2
 	add     $i2, $i1, $i12
 	load    0($i12), $i1
 	mov     $f3, $f14
 	mov     $f1, $f3
 	mov     $f2, $f1
 	mov     $f14, $f2
-	store   $ra, 21($sp)
-	add     $sp, 22, $sp
-	jal     is_outside.3056
-	sub     $sp, 22, $sp
-	load    21($sp), $ra
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     is_outside.3136
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25050
+	bne     $i12, be_else.18546
 	li      1, $i1
-	load    18($sp), $f1
-	load    19($sp), $f2
-	load    20($sp), $f3
-	load    7($sp), $i2
-	load    4($sp), $i11
-	store   $ra, 21($sp)
-	load    0($i11), $i10
-	li      cls.25052, $ra
-	add     $sp, 22, $sp
-	jr      $i10
-cls.25052:
-	sub     $sp, 22, $sp
-	load    21($sp), $ra
-	b       be_cont.25051
-be_else.25050:
+	load    10($sp), $f1
+	load    11($sp), $f2
+	load    12($sp), $f3
+	load    1($sp), $i2
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     check_all_inside.3141
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
+	b       be_cont.18547
+be_else.18546:
 	li      0, $i1
-be_cont.25051:
-be_cont.25049:
+be_cont.18547:
+be_cont.18545:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25053
-	b       be_cont.25054
-be_else.25053:
-	load    12($sp), $i1
-	load    17($sp), $f1
+	bne     $i12, be_else.18548
+	b       be_cont.18549
+be_else.18548:
+	li      min_caml_tmin, $i1
+	load    9($sp), $f1
 	store   $f1, 0($i1)
-	load    2($sp), $i1
-	load    18($sp), $f1
+	li      min_caml_intersection_point, $i1
+	load    10($sp), $f1
 	store   $f1, 0($i1)
-	load    19($sp), $f1
+	load    11($sp), $f1
 	store   $f1, 1($i1)
-	load    20($sp), $f1
+	load    12($sp), $f1
 	store   $f1, 2($i1)
-	load    3($sp), $i1
-	load    10($sp), $i2
+	li      min_caml_intersected_object_id, $i1
+	load    3($sp), $i2
 	store   $i2, 0($i1)
-	load    1($sp), $i1
-	load    16($sp), $i2
+	li      min_caml_intsec_rectside, $i1
+	load    8($sp), $i2
 	store   $i2, 0($i1)
-be_cont.25054:
-be_cont.25047:
-be_cont.25043:
-	load    9($sp), $i1
+be_cont.18549:
+be_cont.18543:
+be_cont.18539:
+	load    2($sp), $i1
 	add     $i1, 1, $i1
-	load    7($sp), $i2
-	load    6($sp), $i3
-	load    8($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-solve_one_or_network_fast.3094:
-	load    2($i11), $i4
-	load    1($i11), $i5
+	load    1($sp), $i2
+	load    0($sp), $i3
+	b       solve_each_element.3156
+solve_one_or_network.3160:
 	add     $i2, $i1, $i12
-	load    0($i12), $i6
+	load    0($i12), $i4
 	li      -1, $i12
-	cmp     $i6, $i12, $i12
-	bne     $i12, be_else.25055
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18550
 	ret
-be_else.25055:
-	store   $i11, 0($sp)
-	store   $i3, 1($sp)
-	store   $i4, 2($sp)
-	store   $i5, 3($sp)
-	store   $i2, 4($sp)
-	store   $i1, 5($sp)
-	add     $i5, $i6, $i12
+be_else.18550:
+	store   $i3, 0($sp)
+	store   $i2, 1($sp)
+	store   $i1, 2($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i4, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	mov     $i4, $i11
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     solve_each_element.3156
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	load    2($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18552
+	ret
+be_else.18552:
+	store   $i1, 3($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element.3156
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18554
+	ret
+be_else.18554:
+	store   $i1, 4($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     solve_each_element.3156
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    4($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18556
+	ret
+be_else.18556:
+	store   $i1, 5($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
 	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.25057, $ra
 	add     $sp, 7, $sp
-	jr      $i10
-cls.25057:
+	jal     solve_each_element.3156
 	sub     $sp, 7, $sp
 	load    6($sp), $ra
 	load    5($sp), $i1
 	add     $i1, 1, $i1
-	load    4($sp), $i2
+	load    1($sp), $i2
+	load    0($sp), $i3
+	b       solve_one_or_network.3160
+trace_or_matrix.3164:
 	add     $i2, $i1, $i12
-	load    0($i12), $i3
+	load    0($i12), $i4
+	load    0($i4), $i5
 	li      -1, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25058
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.18558
 	ret
-be_else.25058:
-	store   $i1, 6($sp)
-	load    3($sp), $i1
-	add     $i1, $i3, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i3
-	load    2($sp), $i11
-	store   $ra, 7($sp)
-	load    0($i11), $i10
-	li      cls.25060, $ra
-	add     $sp, 8, $sp
-	jr      $i10
-cls.25060:
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	load    6($sp), $i1
-	add     $i1, 1, $i1
-	load    4($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i3
-	li      -1, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25061
-	ret
-be_else.25061:
-	store   $i1, 7($sp)
-	load    3($sp), $i1
-	add     $i1, $i3, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i3
-	load    2($sp), $i11
-	store   $ra, 8($sp)
-	load    0($i11), $i10
-	li      cls.25063, $ra
-	add     $sp, 9, $sp
-	jr      $i10
-cls.25063:
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	load    7($sp), $i1
-	add     $i1, 1, $i1
-	load    4($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i3
-	li      -1, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25064
-	ret
-be_else.25064:
-	store   $i1, 8($sp)
-	load    3($sp), $i1
-	add     $i1, $i3, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i3
-	load    2($sp), $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.25066, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.25066:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	load    8($sp), $i1
-	add     $i1, 1, $i1
-	load    4($sp), $i2
-	load    1($sp), $i3
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-trace_or_matrix_fast.3098:
-	load    9($i11), $i4
-	store   $i4, 0($sp)
-	load    8($i11), $i4
-	store   $i4, 1($sp)
-	load    7($i11), $i4
-	store   $i4, 2($sp)
-	load    6($i11), $i4
-	load    5($i11), $i5
-	load    4($i11), $i6
-	load    3($i11), $i7
-	load    2($i11), $i8
-	store   $i8, 3($sp)
-	load    1($i11), $i8
-	add     $i2, $i1, $i12
-	load    0($i12), $i9
-	load    0($i9), $i10
-	li      -1, $i12
-	cmp     $i10, $i12, $i12
-	bne     $i12, be_else.25067
-	ret
-be_else.25067:
-	store   $i5, 4($sp)
-	store   $i4, 5($sp)
-	store   $i6, 6($sp)
-	store   $i7, 7($sp)
-	store   $i8, 8($sp)
-	store   $i3, 9($sp)
-	store   $i11, 10($sp)
-	store   $i2, 11($sp)
-	store   $i1, 12($sp)
+be_else.18558:
+	store   $i3, 0($sp)
+	store   $i2, 1($sp)
+	store   $i1, 2($sp)
 	li      99, $i12
-	cmp     $i10, $i12, $i12
-	bne     $i12, be_else.25069
-	load    1($i9), $i1
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.18560
+	load    1($i4), $i1
 	li      -1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25071
-	b       be_cont.25072
-be_else.25071:
-	store   $i9, 13($sp)
-	add     $i8, $i1, $i12
+	bne     $i12, be_else.18562
+	b       be_cont.18563
+be_else.18562:
+	store   $i4, 3($sp)
+	li      min_caml_and_net, $i2
+	add     $i2, $i1, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	mov     $i7, $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25073, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25073:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    13($sp), $i1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element.3156
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
 	load    2($i1), $i2
 	li      -1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25074
-	b       be_cont.25075
-be_else.25074:
-	load    8($sp), $i1
+	bne     $i12, be_else.18564
+	b       be_cont.18565
+be_else.18564:
+	li      min_caml_and_net, $i1
 	add     $i1, $i2, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	load    9($sp), $i3
-	load    7($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25076, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25076:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    13($sp), $i1
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element.3156
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
 	load    3($i1), $i2
 	li      -1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25077
-	b       be_cont.25078
-be_else.25077:
-	load    8($sp), $i1
+	bne     $i12, be_else.18566
+	b       be_cont.18567
+be_else.18566:
+	li      min_caml_and_net, $i1
 	add     $i1, $i2, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	load    9($sp), $i3
-	load    7($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25079, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25079:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element.3156
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
 	li      4, $i1
-	load    13($sp), $i2
-	load    9($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25080, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25080:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-be_cont.25078:
-be_cont.25075:
-be_cont.25072:
-	b       be_cont.25070
-be_else.25069:
-	store   $i9, 13($sp)
+	load    3($sp), $i2
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_one_or_network.3160
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+be_cont.18567:
+be_cont.18565:
+be_cont.18563:
+	b       be_cont.18561
+be_else.18560:
+	store   $i4, 3($sp)
+	li      min_caml_startp, $i1
+	li      min_caml_objects, $i2
+	add     $i2, $i5, $i12
+	load    0($i12), $i2
+	load    0($i1), $f1
+	load    5($i2), $i4
+	load    0($i4), $f2
+	fsub    $f1, $f2, $f1
+	load    1($i1), $f2
+	load    5($i2), $i4
+	load    1($i4), $f3
+	fsub    $f2, $f3, $f2
+	load    2($i1), $f3
+	load    5($i2), $i1
+	load    2($i1), $f4
+	fsub    $f3, $f4, $f3
+	load    1($i2), $i1
+	li      1, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18568
+	store   $f1, 4($sp)
+	store   $f3, 5($sp)
+	store   $f2, 6($sp)
+	store   $i2, 7($sp)
+	li      0, $i1
+	li      1, $i4
+	li      2, $i5
+	mov     $i3, $i10
+	mov     $i1, $i3
+	mov     $i2, $i1
+	mov     $i10, $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_rect_surface.3018
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18570
+	li      1, $i3
+	li      2, $i4
+	li      0, $i5
+	load    6($sp), $f1
+	load    5($sp), $f2
+	load    4($sp), $f3
+	load    7($sp), $i1
+	load    0($sp), $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_rect_surface.3018
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18572
+	li      2, $i3
+	li      0, $i4
+	li      1, $i5
+	load    5($sp), $f1
+	load    4($sp), $f2
+	load    6($sp), $f3
+	load    7($sp), $i1
+	load    0($sp), $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_rect_surface.3018
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18574
+	li      0, $i1
+	b       be_cont.18575
+be_else.18574:
+	li      3, $i1
+be_cont.18575:
+	b       be_cont.18573
+be_else.18572:
+	li      2, $i1
+be_cont.18573:
+	b       be_cont.18571
+be_else.18570:
+	li      1, $i1
+be_cont.18571:
+	b       be_cont.18569
+be_else.18568:
+	li      2, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18576
+	mov     $i2, $i1
+	mov     $i3, $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_surface.3033
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	b       be_cont.18577
+be_else.18576:
+	mov     $i2, $i1
+	mov     $i3, $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solver_second.3052
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+be_cont.18577:
+be_cont.18569:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18578
+	b       be_cont.18579
+be_else.18578:
+	li      min_caml_solver_dist, $i1
+	load    0($i1), $f1
+	li      min_caml_tmin, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18580
+	li      0, $i1
+	b       ble_cont.18581
+ble_else.18580:
+	li      1, $i1
+ble_cont.18581:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18582
+	b       be_cont.18583
+be_else.18582:
 	load    3($sp), $i1
-	add     $i1, $i10, $i12
+	load    1($i1), $i2
+	li      -1, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18584
+	b       be_cont.18585
+be_else.18584:
+	li      min_caml_and_net, $i1
+	add     $i1, $i2, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solve_each_element.3156
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    3($sp), $i1
+	load    2($i1), $i2
+	li      -1, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18586
+	b       be_cont.18587
+be_else.18586:
+	li      min_caml_and_net, $i1
+	add     $i1, $i2, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solve_each_element.3156
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    3($sp), $i1
+	load    3($i1), $i2
+	li      -1, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18588
+	b       be_cont.18589
+be_else.18588:
+	li      min_caml_and_net, $i1
+	add     $i1, $i2, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solve_each_element.3156
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	li      4, $i1
+	load    3($sp), $i2
+	load    0($sp), $i3
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     solve_one_or_network.3160
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+be_cont.18589:
+be_cont.18587:
+be_cont.18585:
+be_cont.18583:
+be_cont.18579:
+be_cont.18561:
+	load    2($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	load    0($sp), $i3
+	b       trace_or_matrix.3164
+solve_each_element_fast.3170:
+	load    0($i3), $i4
+	add     $i2, $i1, $i12
+	load    0($i12), $i5
+	li      -1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.18590
+	ret
+be_else.18590:
+	store   $i4, 0($sp)
+	store   $i3, 1($sp)
+	store   $i2, 2($sp)
+	store   $i1, 3($sp)
+	store   $i5, 4($sp)
+	li      min_caml_objects, $i1
+	add     $i1, $i5, $i12
 	load    0($i12), $i1
 	load    10($i1), $i2
 	load    0($i2), $f1
 	load    1($i2), $f2
 	load    2($i2), $f3
 	load    1($i3), $i4
-	add     $i4, $i10, $i12
+	add     $i4, $i5, $i12
 	load    0($i12), $i4
-	load    1($i1), $i6
+	load    1($i1), $i5
 	li      1, $i12
-	cmp     $i6, $i12, $i12
-	bne     $i12, be_else.25081
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.18592
 	load    0($i3), $i2
-	load    2($sp), $i11
 	mov     $i4, $i3
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25083, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25083:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	b       be_cont.25082
-be_else.25081:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     solver_rect_fast.3062
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	b       be_cont.18593
+be_else.18592:
 	li      2, $i12
-	cmp     $i6, $i12, $i12
-	bne     $i12, be_else.25084
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.18594
 	load    0($i4), $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25086
+	bg      $i12, ble_else.18596
 	li      0, $i1
-	b       ble_cont.25087
-ble_else.25086:
+	b       ble_cont.18597
+ble_else.18596:
 	li      1, $i1
-ble_cont.25087:
+ble_cont.18597:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25088
+	bne     $i12, be_else.18598
 	li      0, $i1
-	b       be_cont.25089
-be_else.25088:
+	b       be_cont.18599
+be_else.18598:
+	li      min_caml_solver_dist, $i1
 	load    0($i4), $f1
 	load    3($i2), $f2
 	fmul    $f1, $f2, $f1
-	store   $f1, 0($i5)
+	store   $f1, 0($i1)
 	li      1, $i1
-be_cont.25089:
-	b       be_cont.25085
-be_else.25084:
-	load    1($sp), $i11
+be_cont.18599:
+	b       be_cont.18595
+be_else.18594:
 	mov     $i2, $i3
 	mov     $i4, $i2
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25090, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25090:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-be_cont.25085:
-be_cont.25082:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     solver_second_fast2.3092
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+be_cont.18595:
+be_cont.18593:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25091
-	b       be_cont.25092
-be_else.25091:
-	load    4($sp), $i1
-	load    0($i1), $f1
+	bne     $i12, be_else.18600
+	li      min_caml_objects, $i1
+	load    4($sp), $i2
+	add     $i1, $i2, $i12
+	load    0($i12), $i1
+	load    6($i1), $i1
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18601
+	ret
+be_else.18601:
+	load    3($sp), $i1
+	add     $i1, 1, $i1
+	load    2($sp), $i2
+	load    1($sp), $i3
+	b       solve_each_element_fast.3170
+be_else.18600:
+	li      min_caml_solver_dist, $i2
+	load    0($i2), $f1
+	li      l.13298, $i2
+	load    0($i2), $f2
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18603
+	li      0, $i2
+	b       ble_cont.18604
+ble_else.18603:
+	li      1, $i2
+ble_cont.18604:
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18605
+	b       be_cont.18606
+be_else.18605:
+	li      min_caml_tmin, $i2
+	load    0($i2), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18607
+	li      0, $i2
+	b       ble_cont.18608
+ble_else.18607:
+	li      1, $i2
+ble_cont.18608:
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18609
+	b       be_cont.18610
+be_else.18609:
+	store   $i1, 5($sp)
+	li      l.13643, $i1
+	load    0($i1), $f2
+	fadd    $f1, $f2, $f1
+	store   $f1, 6($sp)
 	load    0($sp), $i1
 	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25093
-	li      0, $i1
-	b       ble_cont.25094
-ble_else.25093:
+	fmul    $f2, $f1, $f2
+	li      min_caml_startp_fast, $i2
+	load    0($i2), $f3
+	fadd    $f2, $f3, $f2
+	store   $f2, 7($sp)
+	load    1($i1), $f3
+	fmul    $f3, $f1, $f3
+	li      min_caml_startp_fast, $i2
+	load    1($i2), $f4
+	fadd    $f3, $f4, $f3
+	store   $f3, 8($sp)
+	load    2($i1), $f4
+	fmul    $f4, $f1, $f1
+	li      min_caml_startp_fast, $i1
+	load    2($i1), $f4
+	fadd    $f1, $f4, $f1
+	store   $f1, 9($sp)
+	load    2($sp), $i2
+	load    0($i2), $i1
+	li      -1, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18611
 	li      1, $i1
-ble_cont.25094:
+	b       be_cont.18612
+be_else.18611:
+	li      min_caml_objects, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i1
+	mov     $f3, $f14
+	mov     $f1, $f3
+	mov     $f2, $f1
+	mov     $f14, $f2
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     is_outside.3136
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25095
-	b       be_cont.25096
-be_else.25095:
-	load    13($sp), $i1
-	load    1($i1), $i2
+	bne     $i12, be_else.18613
+	li      1, $i1
+	load    7($sp), $f1
+	load    8($sp), $f2
+	load    9($sp), $f3
+	load    2($sp), $i2
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     check_all_inside.3141
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	b       be_cont.18614
+be_else.18613:
+	li      0, $i1
+be_cont.18614:
+be_cont.18612:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18615
+	b       be_cont.18616
+be_else.18615:
+	li      min_caml_tmin, $i1
+	load    6($sp), $f1
+	store   $f1, 0($i1)
+	li      min_caml_intersection_point, $i1
+	load    7($sp), $f1
+	store   $f1, 0($i1)
+	load    8($sp), $f1
+	store   $f1, 1($i1)
+	load    9($sp), $f1
+	store   $f1, 2($i1)
+	li      min_caml_intersected_object_id, $i1
+	load    4($sp), $i2
+	store   $i2, 0($i1)
+	li      min_caml_intsec_rectside, $i1
+	load    5($sp), $i2
+	store   $i2, 0($i1)
+be_cont.18616:
+be_cont.18610:
+be_cont.18606:
+	load    3($sp), $i1
+	add     $i1, 1, $i1
+	load    2($sp), $i2
+	load    1($sp), $i3
+	b       solve_each_element_fast.3170
+solve_one_or_network_fast.3174:
+	add     $i2, $i1, $i12
+	load    0($i12), $i4
 	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25097
-	b       be_cont.25098
-be_else.25097:
-	load    8($sp), $i1
-	add     $i1, $i2, $i12
+	cmp     $i4, $i12, $i12
+	bne     $i12, be_else.18617
+	ret
+be_else.18617:
+	store   $i3, 0($sp)
+	store   $i2, 1($sp)
+	store   $i1, 2($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i4, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	load    9($sp), $i3
-	load    7($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25099, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25099:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    13($sp), $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	load    2($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18619
+	ret
+be_else.18619:
+	store   $i1, 3($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18621
+	ret
+be_else.18621:
+	store   $i1, 4($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    4($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i3
+	li      -1, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18623
+	ret
+be_else.18623:
+	store   $i1, 5($sp)
+	li      min_caml_and_net, $i1
+	add     $i1, $i3, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    5($sp), $i1
+	add     $i1, 1, $i1
+	load    1($sp), $i2
+	load    0($sp), $i3
+	b       solve_one_or_network_fast.3174
+trace_or_matrix_fast.3178:
+	add     $i2, $i1, $i12
+	load    0($i12), $i4
+	load    0($i4), $i5
+	li      -1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.18625
+	ret
+be_else.18625:
+	store   $i3, 0($sp)
+	store   $i2, 1($sp)
+	store   $i1, 2($sp)
+	li      99, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.18627
+	load    1($i4), $i1
+	li      -1, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18629
+	b       be_cont.18630
+be_else.18629:
+	store   $i4, 3($sp)
+	li      min_caml_and_net, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
 	load    2($i1), $i2
 	li      -1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25100
-	b       be_cont.25101
-be_else.25100:
-	load    8($sp), $i1
+	bne     $i12, be_else.18631
+	b       be_cont.18632
+be_else.18631:
+	li      min_caml_and_net, $i1
 	add     $i1, $i2, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	load    9($sp), $i3
-	load    7($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25102, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25102:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    13($sp), $i1
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
 	load    3($i1), $i2
 	li      -1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25103
-	b       be_cont.25104
-be_else.25103:
-	load    8($sp), $i1
+	bne     $i12, be_else.18633
+	b       be_cont.18634
+be_else.18633:
+	li      min_caml_and_net, $i1
 	add     $i1, $i2, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	load    9($sp), $i3
-	load    7($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25105, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25105:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
 	li      4, $i1
-	load    13($sp), $i2
-	load    9($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25106, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25106:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-be_cont.25104:
-be_cont.25101:
-be_cont.25098:
-be_cont.25096:
-be_cont.25092:
-be_cont.25070:
-	load    12($sp), $i1
-	add     $i1, 1, $i1
-	load    11($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i3
-	load    0($i3), $i4
-	li      -1, $i12
-	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.25107
-	ret
-be_else.25107:
-	store   $i1, 14($sp)
-	li      99, $i12
-	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.25109
-	load    1($i3), $i1
-	li      -1, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25111
-	b       be_cont.25112
-be_else.25111:
-	store   $i3, 15($sp)
-	load    8($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    9($sp), $i3
-	load    7($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25113, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25113:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	load    15($sp), $i1
-	load    2($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25114
-	b       be_cont.25115
-be_else.25114:
-	load    8($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    9($sp), $i3
-	load    7($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25116, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25116:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	li      3, $i1
-	load    15($sp), $i2
-	load    9($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25117, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25117:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-be_cont.25115:
-be_cont.25112:
-	b       be_cont.25110
-be_else.25109:
-	store   $i3, 15($sp)
-	load    9($sp), $i2
-	load    5($sp), $i11
-	mov     $i4, $i1
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25118, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25118:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25119
-	b       be_cont.25120
-be_else.25119:
-	load    4($sp), $i1
-	load    0($i1), $f1
-	load    0($sp), $i1
+	load    3($sp), $i2
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_one_or_network_fast.3174
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+be_cont.18634:
+be_cont.18632:
+be_cont.18630:
+	b       be_cont.18628
+be_else.18627:
+	store   $i4, 3($sp)
+	li      min_caml_objects, $i1
+	add     $i1, $i5, $i12
+	load    0($i12), $i1
+	load    10($i1), $i2
+	load    0($i2), $f1
+	load    1($i2), $f2
+	load    2($i2), $f3
+	load    1($i3), $i4
+	add     $i4, $i5, $i12
+	load    0($i12), $i4
+	load    1($i1), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.18635
+	load    0($i3), $i2
+	mov     $i4, $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solver_rect_fast.3062
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	b       be_cont.18636
+be_else.18635:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.18637
+	load    0($i4), $f1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25121
+	bg      $i12, ble_else.18639
 	li      0, $i1
-	b       ble_cont.25122
-ble_else.25121:
+	b       ble_cont.18640
+ble_else.18639:
 	li      1, $i1
-ble_cont.25122:
+ble_cont.18640:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25123
-	b       be_cont.25124
-be_else.25123:
-	load    15($sp), $i1
+	bne     $i12, be_else.18641
+	li      0, $i1
+	b       be_cont.18642
+be_else.18641:
+	li      min_caml_solver_dist, $i1
+	load    0($i4), $f1
+	load    3($i2), $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, 0($i1)
+	li      1, $i1
+be_cont.18642:
+	b       be_cont.18638
+be_else.18637:
+	mov     $i2, $i3
+	mov     $i4, $i2
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solver_second_fast2.3092
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+be_cont.18638:
+be_cont.18636:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18643
+	b       be_cont.18644
+be_else.18643:
+	li      min_caml_solver_dist, $i1
+	load    0($i1), $f1
+	li      min_caml_tmin, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18645
+	li      0, $i1
+	b       ble_cont.18646
+ble_else.18645:
+	li      1, $i1
+ble_cont.18646:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18647
+	b       be_cont.18648
+be_else.18647:
+	load    3($sp), $i1
 	load    1($i1), $i2
 	li      -1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25125
-	b       be_cont.25126
-be_else.25125:
-	load    8($sp), $i1
+	bne     $i12, be_else.18649
+	b       be_cont.18650
+be_else.18649:
+	li      min_caml_and_net, $i1
 	add     $i1, $i2, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	load    9($sp), $i3
-	load    7($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25127, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25127:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	load    15($sp), $i1
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
 	load    2($i1), $i2
 	li      -1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25128
-	b       be_cont.25129
-be_else.25128:
-	load    8($sp), $i1
+	bne     $i12, be_else.18651
+	b       be_cont.18652
+be_else.18651:
+	li      min_caml_and_net, $i1
 	add     $i1, $i2, $i12
 	load    0($i12), $i2
 	li      0, $i1
-	load    9($sp), $i3
-	load    7($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25130, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25130:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	li      3, $i1
-	load    15($sp), $i2
-	load    9($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25131, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25131:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-be_cont.25129:
-be_cont.25126:
-be_cont.25124:
-be_cont.25120:
-be_cont.25110:
-	load    14($sp), $i1
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $i1
+	load    3($i1), $i2
+	li      -1, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18653
+	b       be_cont.18654
+be_else.18653:
+	li      min_caml_and_net, $i1
+	add     $i1, $i2, $i12
+	load    0($i12), $i2
+	li      0, $i1
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_each_element_fast.3170
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	li      4, $i1
+	load    3($sp), $i2
+	load    0($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     solve_one_or_network_fast.3174
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+be_cont.18654:
+be_cont.18652:
+be_cont.18650:
+be_cont.18648:
+be_cont.18644:
+be_cont.18628:
+	load    2($sp), $i1
 	add     $i1, 1, $i1
-	load    11($sp), $i2
-	load    9($sp), $i3
-	load    10($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-judge_intersection_fast.3102:
-	load    8($i11), $i2
-	load    7($i11), $i3
-	store   $i3, 0($sp)
-	load    6($i11), $i4
-	load    5($i11), $i5
-	load    4($i11), $i6
-	load    3($i11), $i7
-	load    2($i11), $i8
-	load    1($i11), $i9
-	li      l.14248, $i10
-	load    0($i10), $f1
-	store   $f1, 0($i3)
-	load    0($i8), $i8
-	load    0($i8), $i10
-	load    0($i10), $i11
-	li      -1, $i12
-	cmp     $i11, $i12, $i12
-	bne     $i12, be_else.25132
-	b       be_cont.25133
-be_else.25132:
-	store   $i1, 1($sp)
-	store   $i8, 2($sp)
-	store   $i2, 3($sp)
-	li      99, $i12
-	cmp     $i11, $i12, $i12
-	bne     $i12, be_else.25134
-	load    1($i10), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25136
-	b       be_cont.25137
-be_else.25136:
-	store   $i6, 4($sp)
-	store   $i7, 5($sp)
-	store   $i9, 6($sp)
-	store   $i10, 7($sp)
-	add     $i9, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i3
-	mov     $i7, $i11
-	mov     $i3, $i10
-	mov     $i1, $i3
-	mov     $i10, $i1
-	store   $ra, 8($sp)
-	load    0($i11), $i10
-	li      cls.25138, $ra
-	add     $sp, 9, $sp
-	jr      $i10
-cls.25138:
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	load    7($sp), $i1
-	load    2($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25139
-	b       be_cont.25140
-be_else.25139:
-	load    6($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i3
-	load    5($sp), $i11
-	store   $ra, 8($sp)
-	load    0($i11), $i10
-	li      cls.25141, $ra
-	add     $sp, 9, $sp
-	jr      $i10
-cls.25141:
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	li      3, $i1
-	load    7($sp), $i2
-	load    1($sp), $i3
-	load    4($sp), $i11
-	store   $ra, 8($sp)
-	load    0($i11), $i10
-	li      cls.25142, $ra
-	add     $sp, 9, $sp
-	jr      $i10
-cls.25142:
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-be_cont.25140:
-be_cont.25137:
-	b       be_cont.25135
-be_else.25134:
-	store   $i6, 4($sp)
-	store   $i7, 5($sp)
-	store   $i9, 6($sp)
-	store   $i10, 7($sp)
-	store   $i5, 8($sp)
-	mov     $i1, $i2
-	mov     $i11, $i1
-	mov     $i4, $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.25143, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.25143:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25144
-	b       be_cont.25145
-be_else.25144:
-	load    8($sp), $i1
-	load    0($i1), $f1
-	load    0($sp), $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25146
-	li      0, $i1
-	b       ble_cont.25147
-ble_else.25146:
-	li      1, $i1
-ble_cont.25147:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25148
-	b       be_cont.25149
-be_else.25148:
-	load    7($sp), $i1
-	load    1($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25150
-	b       be_cont.25151
-be_else.25150:
-	load    6($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i3
-	load    5($sp), $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.25152, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.25152:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	load    7($sp), $i1
-	load    2($i1), $i2
-	li      -1, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25153
-	b       be_cont.25154
-be_else.25153:
-	load    6($sp), $i1
-	add     $i1, $i2, $i12
-	load    0($i12), $i2
-	li      0, $i1
-	load    1($sp), $i3
-	load    5($sp), $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.25155, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.25155:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	li      3, $i1
-	load    7($sp), $i2
-	load    1($sp), $i3
-	load    4($sp), $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.25156, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.25156:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-be_cont.25154:
-be_cont.25151:
-be_cont.25149:
-be_cont.25145:
-be_cont.25135:
-	li      1, $i1
-	load    2($sp), $i2
-	load    1($sp), $i3
-	load    3($sp), $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.25157, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.25157:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-be_cont.25133:
-	load    0($sp), $i1
-	load    0($i1), $f1
-	li      l.14240, $i1
-	load    0($i1), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25158
-	li      0, $i1
-	b       ble_cont.25159
-ble_else.25158:
-	li      1, $i1
-ble_cont.25159:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25160
-	li      0, $i1
-	ret
-be_else.25160:
-	li      l.14251, $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25161
-	li      0, $i1
-	ret
-ble_else.25161:
-	li      1, $i1
-	ret
-get_nvector_second.3108:
-	load    2($i11), $i2
-	load    1($i11), $i3
-	load    0($i3), $f1
-	load    5($i1), $i4
-	load    0($i4), $f2
+	load    1($sp), $i2
+	load    0($sp), $i3
+	b       trace_or_matrix_fast.3178
+get_nvector_second.3188:
+	li      min_caml_intersection_point, $i2
+	load    0($i2), $f1
+	load    5($i1), $i2
+	load    0($i2), $f2
 	fsub    $f1, $f2, $f1
-	load    1($i3), $f2
-	load    5($i1), $i4
-	load    1($i4), $f3
+	li      min_caml_intersection_point, $i2
+	load    1($i2), $f2
+	load    5($i1), $i2
+	load    1($i2), $f3
 	fsub    $f2, $f3, $f2
-	load    2($i3), $f3
-	load    5($i1), $i3
-	load    2($i3), $f4
+	li      min_caml_intersection_point, $i2
+	load    2($i2), $f3
+	load    5($i1), $i2
+	load    2($i2), $f4
 	fsub    $f3, $f4, $f3
-	load    4($i1), $i3
-	load    0($i3), $f4
+	load    4($i1), $i2
+	load    0($i2), $f4
 	fmul    $f1, $f4, $f4
-	load    4($i1), $i3
-	load    1($i3), $f5
+	load    4($i1), $i2
+	load    1($i2), $f5
 	fmul    $f2, $f5, $f5
-	load    4($i1), $i3
-	load    2($i3), $f6
+	load    4($i1), $i2
+	load    2($i2), $f6
 	fmul    $f3, $f6, $f6
-	load    3($i1), $i3
+	load    3($i1), $i2
 	li      0, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25162
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18655
+	li      min_caml_nvector, $i2
 	store   $f4, 0($i2)
+	li      min_caml_nvector, $i2
 	store   $f5, 1($i2)
+	li      min_caml_nvector, $i2
 	store   $f6, 2($i2)
-	b       be_cont.25163
-be_else.25162:
+	b       be_cont.18656
+be_else.18655:
+	li      min_caml_nvector, $i2
 	load    9($i1), $i3
 	load    2($i3), $f7
 	fmul    $f2, $f7, $f7
@@ -9574,12 +6855,13 @@ be_else.25162:
 	load    1($i3), $f8
 	fmul    $f3, $f8, $f8
 	fadd    $f7, $f8, $f7
-	li      l.14050, $i3
+	li      l.13374, $i3
 	load    0($i3), $f8
 	finv    $f8, $f15
 	fmul    $f7, $f15, $f7
 	fadd    $f4, $f7, $f4
 	store   $f4, 0($i2)
+	li      min_caml_nvector, $i2
 	load    9($i1), $i3
 	load    2($i3), $f4
 	fmul    $f1, $f4, $f4
@@ -9587,12 +6869,13 @@ be_else.25162:
 	load    0($i3), $f7
 	fmul    $f3, $f7, $f3
 	fadd    $f4, $f3, $f3
-	li      l.14050, $i3
+	li      l.13374, $i3
 	load    0($i3), $f4
 	finv    $f4, $f15
 	fmul    $f3, $f15, $f3
 	fadd    $f5, $f3, $f3
 	store   $f3, 1($i2)
+	li      min_caml_nvector, $i2
 	load    9($i1), $i3
 	load    1($i3), $f3
 	fmul    $f1, $f3, $f1
@@ -9600,316 +6883,217 @@ be_else.25162:
 	load    0($i3), $f3
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
-	li      l.14050, $i3
+	li      l.13374, $i3
 	load    0($i3), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
 	fadd    $f6, $f1, $f1
 	store   $f1, 2($i2)
-be_cont.25163:
+be_cont.18656:
+	li      min_caml_nvector, $i2
 	load    6($i1), $i1
 	mov     $i2, $i10
 	mov     $i1, $i2
 	mov     $i10, $i1
-	b       vecunit_sgn.2816
-get_nvector.3110:
-	load    3($i11), $i3
-	load    2($i11), $i4
-	load    1($i11), $i11
-	load    1($i1), $i5
+	b       vecunit_sgn.2896
+utexture.3193:
+	load    0($i1), $i3
+	li      min_caml_texture_color, $i4
+	load    8($i1), $i5
+	load    0($i5), $f1
+	store   $f1, 0($i4)
+	li      min_caml_texture_color, $i4
+	load    8($i1), $i5
+	load    1($i5), $f1
+	store   $f1, 1($i4)
+	li      min_caml_texture_color, $i4
+	load    8($i1), $i5
+	load    2($i5), $f1
+	store   $f1, 2($i4)
 	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25164
-	load    0($i4), $i1
-	li      l.14001, $i4
-	load    0($i4), $f1
-	store   $f1, 0($i3)
-	store   $f1, 1($i3)
-	store   $f1, 2($i3)
-	sub     $i1, 1, $i4
-	sub     $i1, 1, $i1
-	add     $i2, $i1, $i12
-	load    0($i12), $f1
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.25165
-	li      1, $i1
-	b       be_cont.25166
-be_else.25165:
-	li      0, $i1
-be_cont.25166:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25167
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25169
-	li      0, $i1
-	b       ble_cont.25170
-ble_else.25169:
-	li      1, $i1
-ble_cont.25170:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25171
-	li      l.14099, $i1
-	load    0($i1), $f1
-	b       be_cont.25172
-be_else.25171:
-	li      l.14035, $i1
-	load    0($i1), $f1
-be_cont.25172:
-	b       be_cont.25168
-be_else.25167:
-	li      l.14001, $i1
-	load    0($i1), $f1
-be_cont.25168:
-	fneg    $f1, $f1
-	add     $i3, $i4, $i12
-	store   $f1, 0($i12)
-	ret
-be_else.25164:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25174
-	load    4($i1), $i2
-	load    0($i2), $f1
-	fneg    $f1, $f1
-	store   $f1, 0($i3)
-	load    4($i1), $i2
-	load    1($i2), $f1
-	fneg    $f1, $f1
-	store   $f1, 1($i3)
-	load    4($i1), $i1
-	load    2($i1), $f1
-	fneg    $f1, $f1
-	store   $f1, 2($i3)
-	ret
-be_else.25174:
-	load    0($i11), $i10
-	jr      $i10
-utexture.3113:
-	load    9($i11), $i3
-	load    8($i11), $i4
-	load    7($i11), $f1
-	load    6($i11), $f2
-	load    5($i11), $f3
-	load    4($i11), $i5
-	load    3($i11), $i6
-	load    2($i11), $i7
-	load    1($i11), $i8
-	load    0($i1), $i9
-	load    8($i1), $i10
-	load    0($i10), $f4
-	store   $f4, 0($i3)
-	load    8($i1), $i10
-	load    1($i10), $f4
-	store   $f4, 1($i3)
-	load    8($i1), $i10
-	load    2($i10), $f4
-	store   $f4, 2($i3)
-	li      1, $i12
-	cmp     $i9, $i12, $i12
-	bne     $i12, be_else.25176
-	store   $i3, 0($sp)
-	store   $i1, 1($sp)
-	store   $i2, 2($sp)
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18657
+	store   $i1, 0($sp)
+	store   $i2, 1($sp)
 	load    0($i2), $f1
 	load    5($i1), $i1
 	load    0($i1), $f2
 	fsub    $f1, $f2, $f1
-	store   $f1, 3($sp)
-	li      l.14301, $i1
+	store   $f1, 2($sp)
+	li      l.13708, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	store   $ra, 4($sp)
-	add     $sp, 5, $sp
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
 	jal     min_caml_floor
-	sub     $sp, 5, $sp
-	load    4($sp), $ra
-	li      l.14303, $i1
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      l.13710, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    3($sp), $f2
+	load    2($sp), $f2
 	fsub    $f2, $f1, $f1
-	li      l.14288, $i1
+	li      l.13683, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25177
+	bg      $i12, ble_else.18658
 	li      0, $i1
-	b       ble_cont.25178
-ble_else.25177:
+	b       ble_cont.18659
+ble_else.18658:
 	li      1, $i1
-ble_cont.25178:
-	store   $i1, 4($sp)
-	load    2($sp), $i1
-	load    2($i1), $f1
+ble_cont.18659:
+	store   $i1, 3($sp)
 	load    1($sp), $i1
+	load    2($i1), $f1
+	load    0($sp), $i1
 	load    5($i1), $i1
 	load    2($i1), $f2
 	fsub    $f1, $f2, $f1
-	store   $f1, 5($sp)
-	li      l.14301, $i1
+	store   $f1, 4($sp)
+	li      l.13708, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	store   $ra, 6($sp)
-	add     $sp, 7, $sp
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
 	jal     min_caml_floor
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	li      l.14303, $i1
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	li      l.13710, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    5($sp), $f2
+	load    4($sp), $f2
 	fsub    $f2, $f1, $f1
-	li      l.14288, $i1
+	li      l.13683, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25179
+	bg      $i12, ble_else.18660
 	li      0, $i1
-	b       ble_cont.25180
-ble_else.25179:
+	b       ble_cont.18661
+ble_else.18660:
 	li      1, $i1
-ble_cont.25180:
-	load    4($sp), $i2
+ble_cont.18661:
+	li      min_caml_texture_color, $i2
+	load    3($sp), $i3
 	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25181
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25183
-	li      l.14284, $i1
-	load    0($i1), $f1
-	b       be_cont.25184
-be_else.25183:
-	li      l.14001, $i1
-	load    0($i1), $f1
-be_cont.25184:
-	b       be_cont.25182
-be_else.25181:
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18662
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25185
-	li      l.14001, $i1
+	bne     $i12, be_else.18664
+	li      l.13679, $i1
 	load    0($i1), $f1
-	b       be_cont.25186
-be_else.25185:
-	li      l.14284, $i1
+	b       be_cont.18665
+be_else.18664:
+	li      l.13298, $i1
 	load    0($i1), $f1
-be_cont.25186:
-be_cont.25182:
-	load    0($sp), $i1
-	store   $f1, 1($i1)
+be_cont.18665:
+	b       be_cont.18663
+be_else.18662:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18666
+	li      l.13298, $i1
+	load    0($i1), $f1
+	b       be_cont.18667
+be_else.18666:
+	li      l.13679, $i1
+	load    0($i1), $f1
+be_cont.18667:
+be_cont.18663:
+	store   $f1, 1($i2)
 	ret
-be_else.25176:
+be_else.18657:
 	li      2, $i12
-	cmp     $i9, $i12, $i12
-	bne     $i12, be_else.25188
-	store   $i3, 0($sp)
-	load    1($i2), $f4
-	li      l.14295, $i1
-	load    0($i1), $f5
-	fmul    $f4, $f5, $f4
-	li      l.14001, $i1
-	load    0($i1), $f5
-	fcmp    $f5, $f4, $i12
-	bg      $i12, ble_else.25189
-	fcmp    $f1, $f4, $i12
-	bg      $i12, ble_else.25191
-	fcmp    $f3, $f4, $i12
-	bg      $i12, ble_else.25193
-	fcmp    $f2, $f4, $i12
-	bg      $i12, ble_else.25195
-	fsub    $f4, $f2, $f1
-	mov     $i4, $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.25197, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.25197:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	b       ble_cont.25196
-ble_else.25195:
-	fsub    $f2, $f4, $f1
-	mov     $i4, $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.25198, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.25198:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	fneg    $f1, $f1
-ble_cont.25196:
-	b       ble_cont.25194
-ble_else.25193:
-	fsub    $f3, $f4, $f1
-	mov     $i6, $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.25199, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.25199:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-ble_cont.25194:
-	b       ble_cont.25192
-ble_else.25191:
-	mov     $i6, $i11
-	mov     $f4, $f1
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.25200, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.25200:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-ble_cont.25192:
-	b       ble_cont.25190
-ble_else.25189:
-	fneg    $f4, $f1
-	mov     $i4, $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.25201, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.25201:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	fneg    $f1, $f1
-ble_cont.25190:
-	fmul    $f1, $f1, $f1
-	li      l.14284, $i1
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18669
+	load    1($i2), $f1
+	li      l.13696, $i1
 	load    0($i1), $f2
-	fmul    $f2, $f1, $f2
-	load    0($sp), $i1
-	store   $f2, 0($i1)
-	li      l.14284, $i2
+	fmul    $f1, $f2, $f1
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18670
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18672
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18674
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18676
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sin.2857
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	b       ble_cont.18677
+ble_else.18676:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sin.2857
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18677:
+	b       ble_cont.18675
+ble_else.18674:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+ble_cont.18675:
+	b       ble_cont.18673
+ble_else.18672:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+ble_cont.18673:
+	b       ble_cont.18671
+ble_else.18670:
+	fneg    $f1, $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sin.2857
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18671:
+	fmul    $f1, $f1, $f1
+	li      min_caml_texture_color, $i1
+	li      l.13679, $i2
 	load    0($i2), $f2
-	li      l.14035, $i2
+	fmul    $f2, $f1, $f2
+	store   $f2, 0($i1)
+	li      min_caml_texture_color, $i1
+	li      l.13679, $i2
+	load    0($i2), $f2
+	li      l.13301, $i2
 	load    0($i2), $f3
 	fsub    $f3, $f1, $f1
 	fmul    $f2, $f1, $f1
 	store   $f1, 1($i1)
 	ret
-be_else.25188:
+be_else.18669:
 	li      3, $i12
-	cmp     $i9, $i12, $i12
-	bne     $i12, be_else.25203
-	store   $i7, 6($sp)
-	store   $i3, 0($sp)
-	store   $i5, 7($sp)
-	store   $f2, 8($sp)
-	store   $f3, 9($sp)
-	store   $f1, 10($sp)
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18679
 	load    0($i2), $f1
 	load    5($i1), $i3
 	load    0($i3), $f2
@@ -9921,466 +7105,485 @@ be_else.25188:
 	fmul    $f1, $f1, $f1
 	fmul    $f2, $f2, $f2
 	fadd    $f1, $f2, $f1
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     sqrt.2751
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	li      l.14288, $i1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     sqrt.2865
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	li      l.13683, $i1
 	load    0($i1), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	store   $f1, 11($sp)
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
+	store   $f1, 5($sp)
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
 	jal     min_caml_floor
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	load    11($sp), $f2
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    5($sp), $f2
 	fsub    $f2, $f1, $f1
-	li      l.14270, $i1
+	li      l.13665, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25204
-	load    10($sp), $f2
+	bg      $i12, ble_else.18680
+	li      l.13317, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25206
-	load    9($sp), $f2
+	bg      $i12, ble_else.18682
+	li      l.13319, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25208
-	load    8($sp), $f2
+	bg      $i12, ble_else.18684
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25210
+	bg      $i12, ble_else.18686
+	li      l.13322, $i1
+	load    0($i1), $f2
 	fsub    $f1, $f2, $f1
-	load    7($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.25212, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.25212:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	b       ble_cont.25211
-ble_else.25210:
-	fsub    $f2, $f1, $f1
-	load    7($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.25213, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.25213:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.25211:
-	b       ble_cont.25209
-ble_else.25208:
-	fsub    $f2, $f1, $f1
-	load    6($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.25214, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.25214:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	fneg    $f1, $f1
-ble_cont.25209:
-	b       ble_cont.25207
-ble_else.25206:
-	load    6($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.25215, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.25215:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.25207:
-	b       ble_cont.25205
-ble_else.25204:
-	fneg    $f1, $f1
-	load    7($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.25216, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.25216:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-ble_cont.25205:
-	fmul    $f1, $f1, $f1
-	li      l.14284, $i1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cos.2859
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	b       ble_cont.18687
+ble_else.18686:
+	li      l.13322, $i1
 	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cos.2859
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+ble_cont.18687:
+	b       ble_cont.18685
+ble_else.18684:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18685:
+	b       ble_cont.18683
+ble_else.18682:
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+ble_cont.18683:
+	b       ble_cont.18681
+ble_else.18680:
+	fneg    $f1, $f1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     cos.2859
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+ble_cont.18681:
+	fmul    $f1, $f1, $f1
+	li      min_caml_texture_color, $i1
+	li      l.13679, $i2
+	load    0($i2), $f2
 	fmul    $f1, $f2, $f2
-	load    0($sp), $i1
 	store   $f2, 1($i1)
-	li      l.14035, $i2
+	li      min_caml_texture_color, $i1
+	li      l.13301, $i2
 	load    0($i2), $f2
 	fsub    $f2, $f1, $f1
-	li      l.14284, $i2
+	li      l.13679, $i2
 	load    0($i2), $f2
 	fmul    $f1, $f2, $f1
 	store   $f1, 2($i1)
 	ret
-be_else.25203:
+be_else.18679:
 	li      4, $i12
-	cmp     $i9, $i12, $i12
-	bne     $i12, be_else.25218
-	store   $i3, 0($sp)
-	store   $i8, 12($sp)
-	store   $i1, 1($sp)
-	store   $i2, 2($sp)
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18689
+	store   $i1, 0($sp)
+	store   $i2, 1($sp)
 	load    0($i2), $f1
 	load    5($i1), $i2
 	load    0($i2), $f2
 	fsub    $f1, $f2, $f1
-	store   $f1, 13($sp)
+	store   $f1, 6($sp)
 	load    4($i1), $i1
 	load    0($i1), $f1
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
-	jal     sqrt.2751
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    13($sp), $f2
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     sqrt.2865
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	load    6($sp), $f2
 	fmul    $f2, $f1, $f1
-	store   $f1, 14($sp)
-	load    2($sp), $i1
-	load    2($i1), $f1
+	store   $f1, 7($sp)
 	load    1($sp), $i1
+	load    2($i1), $f1
+	load    0($sp), $i1
 	load    5($i1), $i2
 	load    2($i2), $f2
 	fsub    $f1, $f2, $f1
-	store   $f1, 15($sp)
+	store   $f1, 8($sp)
 	load    4($i1), $i1
 	load    2($i1), $f1
-	store   $ra, 16($sp)
-	add     $sp, 17, $sp
-	jal     sqrt.2751
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	load    15($sp), $f2
+	store   $ra, 9($sp)
+	add     $sp, 10, $sp
+	jal     sqrt.2865
+	sub     $sp, 10, $sp
+	load    9($sp), $ra
+	load    8($sp), $f2
 	fmul    $f2, $f1, $f1
-	load    14($sp), $f2
+	load    7($sp), $f2
 	fmul    $f2, $f2, $f3
 	fmul    $f1, $f1, $f4
 	fadd    $f3, $f4, $f3
-	store   $f3, 16($sp)
-	li      l.14001, $i1
+	store   $f3, 9($sp)
+	li      l.13298, $i1
 	load    0($i1), $f3
 	fcmp    $f3, $f2, $i12
-	bg      $i12, ble_else.25219
+	bg      $i12, ble_else.18690
 	mov     $f2, $f3
-	b       ble_cont.25220
-ble_else.25219:
+	b       ble_cont.18691
+ble_else.18690:
 	fneg    $f2, $f3
-ble_cont.25220:
-	li      l.14263, $i1
+ble_cont.18691:
+	li      l.13658, $i1
 	load    0($i1), $f4
 	fcmp    $f4, $f3, $i12
-	bg      $i12, ble_else.25221
+	bg      $i12, ble_else.18692
 	li      0, $i1
-	b       ble_cont.25222
-ble_else.25221:
+	b       ble_cont.18693
+ble_else.18692:
 	li      1, $i1
-ble_cont.25222:
+ble_cont.18693:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25223
+	bne     $i12, be_else.18694
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25225
-	b       ble_cont.25226
-ble_else.25225:
+	bg      $i12, ble_else.18696
+	b       ble_cont.18697
+ble_else.18696:
 	fneg    $f1, $f1
-ble_cont.25226:
-	load    12($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25227, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25227:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	li      l.14268, $i1
+ble_cont.18697:
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     cordic_atan.2855
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	li      l.13663, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	li      l.14270, $i1
+	li      l.13665, $i1
 	load    0($i1), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	b       be_cont.25224
-be_else.25223:
-	li      l.14265, $i1
+	b       be_cont.18695
+be_else.18694:
+	li      l.13660, $i1
 	load    0($i1), $f1
-be_cont.25224:
-	store   $f1, 17($sp)
-	store   $ra, 18($sp)
-	add     $sp, 19, $sp
+be_cont.18695:
+	store   $f1, 10($sp)
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
 	jal     min_caml_floor
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-	load    17($sp), $f2
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	load    10($sp), $f2
 	fsub    $f2, $f1, $f1
-	store   $f1, 18($sp)
-	load    2($sp), $i1
-	load    1($i1), $f1
+	store   $f1, 11($sp)
 	load    1($sp), $i1
+	load    1($i1), $f1
+	load    0($sp), $i1
 	load    5($i1), $i2
 	load    1($i2), $f2
 	fsub    $f1, $f2, $f1
-	store   $f1, 19($sp)
+	store   $f1, 12($sp)
 	load    4($i1), $i1
 	load    1($i1), $f1
-	store   $ra, 20($sp)
-	add     $sp, 21, $sp
-	jal     sqrt.2751
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	load    19($sp), $f2
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     sqrt.2865
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
+	load    12($sp), $f2
 	fmul    $f2, $f1, $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
-	load    16($sp), $f3
+	load    9($sp), $f3
 	fcmp    $f2, $f3, $i12
-	bg      $i12, ble_else.25228
+	bg      $i12, ble_else.18698
 	mov     $f3, $f2
-	b       ble_cont.25229
-ble_else.25228:
+	b       ble_cont.18699
+ble_else.18698:
 	fneg    $f3, $f2
-ble_cont.25229:
-	li      l.14263, $i1
+ble_cont.18699:
+	li      l.13658, $i1
 	load    0($i1), $f4
 	fcmp    $f4, $f2, $i12
-	bg      $i12, ble_else.25230
+	bg      $i12, ble_else.18700
 	li      0, $i1
-	b       ble_cont.25231
-ble_else.25230:
+	b       ble_cont.18701
+ble_else.18700:
 	li      1, $i1
-ble_cont.25231:
+ble_cont.18701:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25232
+	bne     $i12, be_else.18702
 	finv    $f3, $f15
 	fmul    $f1, $f15, $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25234
-	b       ble_cont.25235
-ble_else.25234:
+	bg      $i12, ble_else.18704
+	b       ble_cont.18705
+ble_else.18704:
 	fneg    $f1, $f1
-ble_cont.25235:
-	load    12($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.25236, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.25236:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	li      l.14268, $i1
+ble_cont.18705:
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     cordic_atan.2855
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
+	li      l.13663, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	li      l.14270, $i1
+	li      l.13665, $i1
 	load    0($i1), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	b       be_cont.25233
-be_else.25232:
-	li      l.14265, $i1
+	b       be_cont.18703
+be_else.18702:
+	li      l.13660, $i1
 	load    0($i1), $f1
-be_cont.25233:
-	store   $f1, 20($sp)
-	store   $ra, 21($sp)
-	add     $sp, 22, $sp
+be_cont.18703:
+	store   $f1, 13($sp)
+	store   $ra, 14($sp)
+	add     $sp, 15, $sp
 	jal     min_caml_floor
-	sub     $sp, 22, $sp
-	load    21($sp), $ra
-	load    20($sp), $f2
+	sub     $sp, 15, $sp
+	load    14($sp), $ra
+	load    13($sp), $f2
 	fsub    $f2, $f1, $f1
-	li      l.14278, $i1
+	li      l.13673, $i1
 	load    0($i1), $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
-	load    18($sp), $f4
+	load    11($sp), $f4
 	fsub    $f3, $f4, $f3
 	fmul    $f3, $f3, $f3
 	fsub    $f2, $f3, $f2
-	li      l.13994, $i1
+	li      l.13293, $i1
 	load    0($i1), $f3
 	fsub    $f3, $f1, $f1
 	fmul    $f1, $f1, $f1
 	fsub    $f2, $f1, $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25237
+	bg      $i12, ble_else.18706
 	li      0, $i1
-	b       ble_cont.25238
-ble_else.25237:
+	b       ble_cont.18707
+ble_else.18706:
 	li      1, $i1
-ble_cont.25238:
+ble_cont.18707:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25239
-	b       be_cont.25240
-be_else.25239:
-	li      l.14001, $i1
+	bne     $i12, be_else.18708
+	b       be_cont.18709
+be_else.18708:
+	li      l.13298, $i1
 	load    0($i1), $f1
-be_cont.25240:
-	li      l.14284, $i1
-	load    0($i1), $f2
+be_cont.18709:
+	li      min_caml_texture_color, $i1
+	li      l.13679, $i2
+	load    0($i2), $f2
 	fmul    $f2, $f1, $f1
-	li      l.14286, $i1
-	load    0($i1), $f2
+	li      l.13681, $i2
+	load    0($i2), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	load    0($sp), $i1
 	store   $f1, 2($i1)
 	ret
-be_else.25218:
+be_else.18689:
 	ret
-trace_reflections.3120:
-	load    10($i11), $i3
-	load    9($i11), $i4
-	load    8($i11), $i5
-	store   $i5, 0($sp)
-	load    7($i11), $i5
-	load    6($i11), $i6
-	store   $i6, 1($sp)
-	load    5($i11), $i6
-	load    4($i11), $i7
-	load    3($i11), $i8
-	load    2($i11), $i9
-	load    1($i11), $i10
+add_light.3196:
+	li      l.13298, $i1
+	load    0($i1), $f4
+	fcmp    $f1, $f4, $i12
+	bg      $i12, ble_else.18712
+	li      0, $i1
+	b       ble_cont.18713
+ble_else.18712:
+	li      1, $i1
+ble_cont.18713:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25243
-	store   $i9, 2($sp)
-	store   $i10, 3($sp)
-	store   $f2, 4($sp)
-	store   $f1, 5($sp)
-	store   $i2, 6($sp)
-	store   $i11, 7($sp)
-	store   $i1, 8($sp)
-	store   $i4, 9($sp)
-	store   $i7, 10($sp)
-	store   $i5, 11($sp)
-	store   $i8, 12($sp)
-	add     $i6, $i1, $i12
-	load    0($i12), $i1
-	store   $i1, 13($sp)
-	load    1($i1), $i1
-	store   $i1, 14($sp)
-	li      l.14248, $i2
-	load    0($i2), $f1
-	store   $f1, 0($i4)
-	li      0, $i2
-	load    0($i7), $i4
-	mov     $i3, $i11
-	mov     $i1, $i3
-	mov     $i2, $i1
-	mov     $i4, $i2
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25244, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25244:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    9($sp), $i1
+	bne     $i12, be_else.18714
+	b       be_cont.18715
+be_else.18714:
+	li      min_caml_rgb, $i1
+	li      min_caml_texture_color, $i2
+	load    0($i1), $f4
+	load    0($i2), $f5
+	fmul    $f1, $f5, $f5
+	fadd    $f4, $f5, $f4
+	store   $f4, 0($i1)
+	load    1($i1), $f4
+	load    1($i2), $f5
+	fmul    $f1, $f5, $f5
+	fadd    $f4, $f5, $f4
+	store   $f4, 1($i1)
+	load    2($i1), $f4
+	load    2($i2), $f5
+	fmul    $f1, $f5, $f1
+	fadd    $f4, $f1, $f1
+	store   $f1, 2($i1)
+be_cont.18715:
+	li      l.13298, $i1
 	load    0($i1), $f1
-	li      l.14240, $i1
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18716
+	li      0, $i1
+	b       ble_cont.18717
+ble_else.18716:
+	li      1, $i1
+ble_cont.18717:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18718
+	ret
+be_else.18718:
+	fmul    $f2, $f2, $f1
+	fmul    $f1, $f1, $f1
+	fmul    $f1, $f3, $f1
+	li      min_caml_rgb, $i1
+	li      min_caml_rgb, $i2
+	load    0($i2), $f2
+	fadd    $f2, $f1, $f2
+	store   $f2, 0($i1)
+	li      min_caml_rgb, $i1
+	li      min_caml_rgb, $i2
+	load    1($i2), $f2
+	fadd    $f2, $f1, $f2
+	store   $f2, 1($i1)
+	li      min_caml_rgb, $i1
+	li      min_caml_rgb, $i2
+	load    2($i2), $f2
+	fadd    $f2, $f1, $f1
+	store   $f1, 2($i1)
+	ret
+trace_reflections.3200:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.18721
+	store   $f2, 0($sp)
+	store   $f1, 1($sp)
+	store   $i2, 2($sp)
+	store   $i1, 3($sp)
+	li      min_caml_reflections, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i1
+	store   $i1, 4($sp)
+	load    1($i1), $i3
+	store   $i3, 5($sp)
+	li      min_caml_tmin, $i1
+	li      l.13722, $i2
+	load    0($i2), $f1
+	store   $f1, 0($i1)
+	li      0, $i1
+	li      min_caml_or_net, $i2
+	load    0($i2), $i2
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     trace_or_matrix_fast.3178
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	li      min_caml_tmin, $i1
+	load    0($i1), $f1
+	li      l.13646, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25245
+	bg      $i12, ble_else.18722
 	li      0, $i1
-	b       ble_cont.25246
-ble_else.25245:
+	b       ble_cont.18723
+ble_else.18722:
 	li      1, $i1
-ble_cont.25246:
+ble_cont.18723:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25247
+	bne     $i12, be_else.18724
 	li      0, $i1
-	b       be_cont.25248
-be_else.25247:
-	li      l.14251, $i1
+	b       be_cont.18725
+be_else.18724:
+	li      l.13725, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25249
+	bg      $i12, ble_else.18726
 	li      0, $i1
-	b       ble_cont.25250
-ble_else.25249:
+	b       ble_cont.18727
+ble_else.18726:
 	li      1, $i1
-ble_cont.25250:
-be_cont.25248:
+ble_cont.18727:
+be_cont.18725:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25251
-	b       be_cont.25252
-be_else.25251:
-	load    3($sp), $i1
+	bne     $i12, be_else.18728
+	b       be_cont.18729
+be_else.18728:
+	li      min_caml_intersected_object_id, $i1
 	load    0($i1), $i1
 	sll     $i1, 2, $i1
-	load    2($sp), $i2
+	li      min_caml_intsec_rectside, $i2
 	load    0($i2), $i2
 	add     $i1, $i2, $i1
-	load    13($sp), $i2
+	load    4($sp), $i2
 	load    0($i2), $i3
 	cmp     $i1, $i3, $i12
-	bne     $i12, be_else.25253
+	bne     $i12, be_else.18730
 	li      0, $i1
-	load    10($sp), $i2
+	li      min_caml_or_net, $i2
 	load    0($i2), $i2
-	load    11($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25255, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25255:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     shadow_check_one_or_matrix.3153
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25256
-	load    14($sp), $i1
-	load    0($i1), $i2
-	load    12($sp), $i3
-	load    0($i3), $f1
-	load    0($i2), $f2
+	bne     $i12, be_else.18732
+	li      min_caml_nvector, $i1
+	load    5($sp), $i2
+	load    0($i2), $i3
+	load    0($i1), $f1
+	load    0($i3), $f2
 	fmul    $f1, $f2, $f1
-	load    1($i3), $f2
-	load    1($i2), $f3
+	load    1($i1), $f2
+	load    1($i3), $f3
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
-	load    2($i3), $f2
-	load    2($i2), $f3
+	load    2($i1), $f2
+	load    2($i3), $f3
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
-	load    13($sp), $i2
-	load    2($i2), $f2
-	load    5($sp), $f3
+	load    4($sp), $i1
+	load    2($i1), $f2
+	load    1($sp), $f3
 	fmul    $f2, $f3, $f3
 	fmul    $f3, $f1, $f1
-	load    0($i1), $i1
-	load    6($sp), $i2
+	load    0($i2), $i1
+	load    2($sp), $i2
 	load    0($i2), $f3
 	load    0($i1), $f4
 	fmul    $f3, $f4, $f3
@@ -10393,374 +7596,274 @@ cls.25255:
 	fmul    $f4, $f5, $f4
 	fadd    $f3, $f4, $f3
 	fmul    $f2, $f3, $f2
-	li      l.14001, $i1
-	load    0($i1), $f3
-	fcmp    $f1, $f3, $i12
-	bg      $i12, ble_else.25258
-	li      0, $i1
-	b       ble_cont.25259
-ble_else.25258:
-	li      1, $i1
-ble_cont.25259:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25260
-	b       be_cont.25261
-be_else.25260:
-	load    1($sp), $i1
-	load    0($i1), $f3
-	load    0($sp), $i2
-	load    0($i2), $f4
-	fmul    $f1, $f4, $f4
-	fadd    $f3, $f4, $f3
-	store   $f3, 0($i1)
-	load    1($i1), $f3
-	load    1($i2), $f4
-	fmul    $f1, $f4, $f4
-	fadd    $f3, $f4, $f3
-	store   $f3, 1($i1)
-	load    2($i1), $f3
-	load    2($i2), $f4
-	fmul    $f1, $f4, $f1
-	fadd    $f3, $f1, $f1
-	store   $f1, 2($i1)
-be_cont.25261:
-	li      l.14001, $i1
-	load    0($i1), $f1
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25262
-	li      0, $i1
-	b       ble_cont.25263
-ble_else.25262:
-	li      1, $i1
-ble_cont.25263:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25264
-	b       be_cont.25265
-be_else.25264:
-	fmul    $f2, $f2, $f1
-	fmul    $f1, $f1, $f1
-	load    4($sp), $f2
-	fmul    $f1, $f2, $f1
-	load    1($sp), $i1
-	load    0($i1), $f2
-	fadd    $f2, $f1, $f2
-	store   $f2, 0($i1)
-	load    1($i1), $f2
-	fadd    $f2, $f1, $f2
-	store   $f2, 1($i1)
-	load    2($i1), $f2
-	fadd    $f2, $f1, $f1
-	store   $f1, 2($i1)
-be_cont.25265:
-	b       be_cont.25257
-be_else.25256:
-be_cont.25257:
-	b       be_cont.25254
-be_else.25253:
-be_cont.25254:
-be_cont.25252:
-	load    8($sp), $i1
+	load    0($sp), $f3
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     add_light.3196
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	b       be_cont.18733
+be_else.18732:
+be_cont.18733:
+	b       be_cont.18731
+be_else.18730:
+be_cont.18731:
+be_cont.18729:
+	load    3($sp), $i1
 	sub     $i1, 1, $i1
-	load    5($sp), $f1
-	load    4($sp), $f2
-	load    6($sp), $i2
-	load    7($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25243:
+	load    1($sp), $f1
+	load    0($sp), $f2
+	load    2($sp), $i2
+	b       trace_reflections.3200
+bge_else.18721:
 	ret
-trace_ray.3125:
-	store   $i11, 0($sp)
-	load    21($i11), $i4
-	store   $i4, 1($sp)
-	load    20($i11), $i4
-	store   $i4, 2($sp)
-	load    19($i11), $i4
-	load    18($i11), $i5
-	load    17($i11), $i6
-	store   $i6, 3($sp)
-	load    16($i11), $i6
-	store   $i6, 4($sp)
-	load    15($i11), $i6
-	store   $i6, 5($sp)
-	load    14($i11), $i6
-	store   $i6, 6($sp)
-	load    13($i11), $i6
-	store   $i6, 7($sp)
-	load    12($i11), $i6
-	load    11($i11), $i7
-	load    10($i11), $i8
-	store   $i8, 8($sp)
-	load    9($i11), $i8
-	store   $i8, 9($sp)
-	load    8($i11), $i8
-	store   $i8, 10($sp)
-	load    7($i11), $i8
-	store   $i8, 11($sp)
-	load    6($i11), $i8
-	load    5($i11), $i9
-	store   $i9, 12($sp)
-	load    4($i11), $i9
-	store   $i9, 13($sp)
-	load    3($i11), $i9
-	load    2($i11), $i10
-	load    1($i11), $i11
+trace_ray.3205:
 	li      4, $i12
 	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25267
-	store   $f2, 14($sp)
-	store   $i9, 15($sp)
-	store   $i6, 16($sp)
-	store   $i11, 17($sp)
-	store   $f1, 18($sp)
-	store   $i8, 19($sp)
-	store   $i2, 20($sp)
-	store   $i1, 21($sp)
-	store   $i5, 22($sp)
-	store   $i7, 23($sp)
-	store   $i3, 24($sp)
-	store   $i10, 25($sp)
+	bg      $i12, ble_else.18735
+	store   $f2, 0($sp)
+	store   $i3, 1($sp)
+	store   $f1, 2($sp)
+	store   $i2, 3($sp)
+	store   $i1, 4($sp)
 	load    2($i3), $i1
-	store   $i1, 26($sp)
-	li      l.14248, $i1
-	load    0($i1), $f1
-	store   $f1, 0($i5)
+	store   $i1, 5($sp)
+	li      min_caml_tmin, $i1
+	li      l.13722, $i3
+	load    0($i3), $f1
+	store   $f1, 0($i1)
 	li      0, $i1
-	load    0($i7), $i3
-	mov     $i4, $i11
+	li      min_caml_or_net, $i3
+	load    0($i3), $i3
 	mov     $i3, $i10
 	mov     $i2, $i3
 	mov     $i10, $i2
-	store   $ra, 27($sp)
-	load    0($i11), $i10
-	li      cls.25268, $ra
-	add     $sp, 28, $sp
-	jr      $i10
-cls.25268:
-	sub     $sp, 28, $sp
-	load    27($sp), $ra
-	load    22($sp), $i1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     trace_or_matrix.3164
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	li      min_caml_tmin, $i1
 	load    0($i1), $f1
-	li      l.14240, $i2
-	load    0($i2), $f2
+	li      l.13646, $i1
+	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25269
-	li      0, $i2
-	b       ble_cont.25270
-ble_else.25269:
-	li      1, $i2
-ble_cont.25270:
+	bg      $i12, ble_else.18736
+	li      0, $i1
+	b       ble_cont.18737
+ble_else.18736:
+	li      1, $i1
+ble_cont.18737:
 	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25271
-	li      0, $i2
-	b       be_cont.25272
-be_else.25271:
-	li      l.14251, $i2
-	load    0($i2), $f2
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18738
+	li      0, $i1
+	b       be_cont.18739
+be_else.18738:
+	li      l.13725, $i1
+	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25273
-	li      0, $i2
-	b       ble_cont.25274
-ble_else.25273:
-	li      1, $i2
-ble_cont.25274:
-be_cont.25272:
+	bg      $i12, ble_else.18740
+	li      0, $i1
+	b       ble_cont.18741
+ble_else.18740:
+	li      1, $i1
+ble_cont.18741:
+be_cont.18739:
 	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25275
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.18742
 	li      -1, $i1
-	load    21($sp), $i2
-	load    26($sp), $i3
+	load    4($sp), $i2
+	load    5($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25276
+	bne     $i12, be_else.18743
 	ret
-be_else.25276:
-	load    20($sp), $i1
-	load    0($i1), $f1
-	load    19($sp), $i2
-	load    0($i2), $f2
+be_else.18743:
+	li      min_caml_light, $i1
+	load    3($sp), $i2
+	load    0($i2), $f1
+	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    1($i1), $f2
-	load    1($i2), $f3
+	load    1($i2), $f2
+	load    1($i1), $f3
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
-	load    2($i1), $f2
-	load    2($i2), $f3
+	load    2($i2), $f2
+	load    2($i1), $f3
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
 	fneg    $f1, $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25278
+	bg      $i12, ble_else.18745
 	li      0, $i1
-	b       ble_cont.25279
-ble_else.25278:
+	b       ble_cont.18746
+ble_else.18745:
 	li      1, $i1
-ble_cont.25279:
+ble_cont.18746:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25280
+	bne     $i12, be_else.18747
 	ret
-be_else.25280:
+be_else.18747:
 	fmul    $f1, $f1, $f2
 	fmul    $f2, $f1, $f1
-	load    18($sp), $f2
+	load    2($sp), $f2
 	fmul    $f1, $f2, $f1
-	load    17($sp), $i1
+	li      min_caml_beam, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	load    16($sp), $i1
-	load    0($i1), $f2
+	li      min_caml_rgb, $i1
+	li      min_caml_rgb, $i2
+	load    0($i2), $f2
 	fadd    $f2, $f1, $f2
 	store   $f2, 0($i1)
-	load    1($i1), $f2
+	li      min_caml_rgb, $i1
+	li      min_caml_rgb, $i2
+	load    1($i2), $f2
 	fadd    $f2, $f1, $f2
 	store   $f2, 1($i1)
-	load    2($i1), $f2
+	li      min_caml_rgb, $i1
+	li      min_caml_rgb, $i2
+	load    2($i2), $f2
 	fadd    $f2, $f1, $f1
 	store   $f1, 2($i1)
 	ret
-be_else.25275:
-	load    15($sp), $i1
+be_else.18742:
+	li      min_caml_intersected_object_id, $i1
 	load    0($i1), $i1
-	store   $i1, 27($sp)
-	load    8($sp), $i2
+	store   $i1, 6($sp)
+	li      min_caml_objects, $i2
 	add     $i2, $i1, $i12
 	load    0($i12), $i1
-	store   $i1, 28($sp)
+	store   $i1, 7($sp)
 	load    2($i1), $i2
-	store   $i2, 29($sp)
+	store   $i2, 8($sp)
 	load    7($i1), $i2
 	load    0($i2), $f1
-	load    18($sp), $f2
+	load    2($sp), $f2
 	fmul    $f1, $f2, $f1
-	store   $f1, 30($sp)
+	store   $f1, 9($sp)
 	load    1($i1), $i2
 	li      1, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25283
-	load    12($sp), $i1
+	bne     $i12, be_else.18750
+	li      min_caml_intsec_rectside, $i1
 	load    0($i1), $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	load    9($sp), $i2
+	li      min_caml_nvector, $i2
+	li      l.13298, $i3
+	load    0($i3), $f1
 	store   $f1, 0($i2)
 	store   $f1, 1($i2)
 	store   $f1, 2($i2)
+	li      min_caml_nvector, $i2
 	sub     $i1, 1, $i3
 	sub     $i1, 1, $i1
-	load    20($sp), $i4
+	load    3($sp), $i4
 	add     $i4, $i1, $i12
 	load    0($i12), $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.25285
+	bne     $i12, be_else.18752
 	li      1, $i1
-	b       be_cont.25286
-be_else.25285:
+	b       be_cont.18753
+be_else.18752:
 	li      0, $i1
-be_cont.25286:
+be_cont.18753:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25287
-	li      l.14001, $i1
+	bne     $i12, be_else.18754
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25289
+	bg      $i12, ble_else.18756
 	li      0, $i1
-	b       ble_cont.25290
-ble_else.25289:
+	b       ble_cont.18757
+ble_else.18756:
 	li      1, $i1
-ble_cont.25290:
+ble_cont.18757:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25291
-	li      l.14099, $i1
+	bne     $i12, be_else.18758
+	li      l.13423, $i1
 	load    0($i1), $f1
-	b       be_cont.25292
-be_else.25291:
-	li      l.14035, $i1
+	b       be_cont.18759
+be_else.18758:
+	li      l.13301, $i1
 	load    0($i1), $f1
-be_cont.25292:
-	b       be_cont.25288
-be_else.25287:
-	li      l.14001, $i1
+be_cont.18759:
+	b       be_cont.18755
+be_else.18754:
+	li      l.13298, $i1
 	load    0($i1), $f1
-be_cont.25288:
+be_cont.18755:
 	fneg    $f1, $f1
 	add     $i2, $i3, $i12
 	store   $f1, 0($i12)
-	b       be_cont.25284
-be_else.25283:
+	b       be_cont.18751
+be_else.18750:
 	li      2, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25293
-	load    4($i1), $i2
-	load    0($i2), $f1
+	bne     $i12, be_else.18760
+	li      min_caml_nvector, $i2
+	load    4($i1), $i3
+	load    0($i3), $f1
 	fneg    $f1, $f1
-	load    9($sp), $i2
 	store   $f1, 0($i2)
+	li      min_caml_nvector, $i2
 	load    4($i1), $i3
 	load    1($i3), $f1
 	fneg    $f1, $f1
 	store   $f1, 1($i2)
+	li      min_caml_nvector, $i2
 	load    4($i1), $i1
 	load    2($i1), $f1
 	fneg    $f1, $f1
 	store   $f1, 2($i2)
-	b       be_cont.25294
-be_else.25293:
-	load    25($sp), $i11
-	store   $ra, 31($sp)
-	load    0($i11), $i10
-	li      cls.25295, $ra
-	add     $sp, 32, $sp
-	jr      $i10
-cls.25295:
-	sub     $sp, 32, $sp
-	load    31($sp), $ra
-be_cont.25294:
-be_cont.25284:
-	load    13($sp), $i2
+	b       be_cont.18761
+be_else.18760:
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     get_nvector_second.3188
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+be_cont.18761:
+be_cont.18751:
+	li      min_caml_startp, $i1
+	li      min_caml_intersection_point, $i2
 	load    0($i2), $f1
-	load    5($sp), $i1
 	store   $f1, 0($i1)
 	load    1($i2), $f1
 	store   $f1, 1($i1)
 	load    2($i2), $f1
 	store   $f1, 2($i1)
-	load    28($sp), $i1
-	load    1($sp), $i11
-	store   $ra, 31($sp)
-	load    0($i11), $i10
-	li      cls.25296, $ra
-	add     $sp, 32, $sp
-	jr      $i10
-cls.25296:
-	sub     $sp, 32, $sp
-	load    31($sp), $ra
-	load    27($sp), $i1
+	li      min_caml_intersection_point, $i2
+	load    7($sp), $i1
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     utexture.3193
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	load    6($sp), $i1
 	sll     $i1, 2, $i1
-	load    12($sp), $i2
+	li      min_caml_intsec_rectside, $i2
 	load    0($i2), $i2
 	add     $i1, $i2, $i1
-	load    21($sp), $i2
-	load    26($sp), $i3
+	load    4($sp), $i2
+	load    5($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-	load    24($sp), $i1
+	load    1($sp), $i1
 	load    1($i1), $i3
 	add     $i3, $i2, $i12
 	load    0($i12), $i3
-	load    13($sp), $i4
+	li      min_caml_intersection_point, $i4
 	load    0($i4), $f1
 	store   $f1, 0($i3)
 	load    1($i4), $f1
@@ -10768,28 +7871,28 @@ cls.25296:
 	load    2($i4), $f1
 	store   $f1, 2($i3)
 	load    3($i1), $i3
-	load    28($sp), $i4
+	load    7($sp), $i4
 	load    7($i4), $i5
 	load    0($i5), $f1
-	li      l.13994, $i5
+	li      l.13293, $i5
 	load    0($i5), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25297
+	bg      $i12, ble_else.18762
 	li      0, $i5
-	b       ble_cont.25298
-ble_else.25297:
+	b       ble_cont.18763
+ble_else.18762:
 	li      1, $i5
-ble_cont.25298:
+ble_cont.18763:
 	li      0, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25299
+	bne     $i12, be_else.18764
 	li      1, $i5
 	add     $i3, $i2, $i12
 	store   $i5, 0($i12)
 	load    4($i1), $i3
 	add     $i3, $i2, $i12
 	load    0($i12), $i5
-	load    3($sp), $i6
+	li      min_caml_texture_color, $i6
 	load    0($i6), $f1
 	store   $f1, 0($i5)
 	load    1($i6), $f1
@@ -10798,9 +7901,9 @@ ble_cont.25298:
 	store   $f1, 2($i5)
 	add     $i3, $i2, $i12
 	load    0($i12), $i3
-	li      l.14328, $i5
+	li      l.13737, $i5
 	load    0($i5), $f1
-	load    30($sp), $f2
+	load    9($sp), $f2
 	fmul    $f1, $f2, $f1
 	load    0($i3), $f2
 	fmul    $f2, $f1, $f2
@@ -10814,73 +7917,70 @@ ble_cont.25298:
 	load    7($i1), $i1
 	add     $i1, $i2, $i12
 	load    0($i12), $i1
-	load    9($sp), $i2
+	li      min_caml_nvector, $i2
 	load    0($i2), $f1
 	store   $f1, 0($i1)
 	load    1($i2), $f1
 	store   $f1, 1($i1)
 	load    2($i2), $f1
 	store   $f1, 2($i1)
-	b       be_cont.25300
-be_else.25299:
+	b       be_cont.18765
+be_else.18764:
 	li      0, $i1
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-be_cont.25300:
-	li      l.14330, $i1
+be_cont.18765:
+	li      l.13739, $i1
 	load    0($i1), $f1
-	load    20($sp), $i1
-	load    0($i1), $f2
-	load    9($sp), $i2
-	load    0($i2), $f3
+	li      min_caml_nvector, $i1
+	load    3($sp), $i2
+	load    0($i2), $f2
+	load    0($i1), $f3
 	fmul    $f2, $f3, $f2
-	load    1($i1), $f3
-	load    1($i2), $f4
+	load    1($i2), $f3
+	load    1($i1), $f4
 	fmul    $f3, $f4, $f3
 	fadd    $f2, $f3, $f2
-	load    2($i1), $f3
-	load    2($i2), $f4
+	load    2($i2), $f3
+	load    2($i1), $f4
 	fmul    $f3, $f4, $f3
 	fadd    $f2, $f3, $f2
 	fmul    $f1, $f2, $f1
-	load    0($i1), $f2
-	load    0($i2), $f3
+	li      min_caml_nvector, $i1
+	load    0($i2), $f2
+	load    0($i1), $f3
 	fmul    $f1, $f3, $f3
 	fadd    $f2, $f3, $f2
-	store   $f2, 0($i1)
-	load    1($i1), $f2
-	load    1($i2), $f3
+	store   $f2, 0($i2)
+	load    1($i2), $f2
+	load    1($i1), $f3
 	fmul    $f1, $f3, $f3
 	fadd    $f2, $f3, $f2
-	store   $f2, 1($i1)
-	load    2($i1), $f2
-	load    2($i2), $f3
+	store   $f2, 1($i2)
+	load    2($i2), $f2
+	load    2($i1), $f3
 	fmul    $f1, $f3, $f1
 	fadd    $f2, $f1, $f1
-	store   $f1, 2($i1)
+	store   $f1, 2($i2)
 	load    7($i4), $i1
 	load    1($i1), $f1
-	load    18($sp), $f2
+	load    2($sp), $f2
 	fmul    $f2, $f1, $f1
-	store   $f1, 31($sp)
+	store   $f1, 10($sp)
 	li      0, $i1
-	load    23($sp), $i2
+	li      min_caml_or_net, $i2
 	load    0($i2), $i2
-	load    6($sp), $i11
-	store   $ra, 32($sp)
-	load    0($i11), $i10
-	li      cls.25301, $ra
-	add     $sp, 33, $sp
-	jr      $i10
-cls.25301:
-	sub     $sp, 33, $sp
-	load    32($sp), $ra
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     shadow_check_one_or_matrix.3153
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25302
-	load    9($sp), $i1
+	bne     $i12, be_else.18766
+	li      min_caml_nvector, $i1
+	li      min_caml_light, $i2
 	load    0($i1), $f1
-	load    19($sp), $i2
 	load    0($i2), $f2
 	fmul    $f1, $f2, $f1
 	load    1($i1), $f2
@@ -10892,377 +7992,275 @@ cls.25301:
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
 	fneg    $f1, $f1
-	load    30($sp), $f2
+	load    9($sp), $f2
 	fmul    $f1, $f2, $f1
-	load    20($sp), $i1
-	load    0($i1), $f2
-	load    0($i2), $f3
+	li      min_caml_light, $i1
+	load    3($sp), $i2
+	load    0($i2), $f2
+	load    0($i1), $f3
 	fmul    $f2, $f3, $f2
-	load    1($i1), $f3
-	load    1($i2), $f4
+	load    1($i2), $f3
+	load    1($i1), $f4
 	fmul    $f3, $f4, $f3
 	fadd    $f2, $f3, $f2
-	load    2($i1), $f3
-	load    2($i2), $f4
+	load    2($i2), $f3
+	load    2($i1), $f4
 	fmul    $f3, $f4, $f3
 	fadd    $f2, $f3, $f2
 	fneg    $f2, $f2
-	li      l.14001, $i1
-	load    0($i1), $f3
-	fcmp    $f1, $f3, $i12
-	bg      $i12, ble_else.25304
-	li      0, $i1
-	b       ble_cont.25305
-ble_else.25304:
-	li      1, $i1
-ble_cont.25305:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25306
-	b       be_cont.25307
-be_else.25306:
-	load    16($sp), $i1
-	load    0($i1), $f3
-	load    3($sp), $i2
-	load    0($i2), $f4
-	fmul    $f1, $f4, $f4
-	fadd    $f3, $f4, $f3
-	store   $f3, 0($i1)
-	load    1($i1), $f3
-	load    1($i2), $f4
-	fmul    $f1, $f4, $f4
-	fadd    $f3, $f4, $f3
-	store   $f3, 1($i1)
-	load    2($i1), $f3
-	load    2($i2), $f4
-	fmul    $f1, $f4, $f1
-	fadd    $f3, $f1, $f1
-	store   $f1, 2($i1)
-be_cont.25307:
-	li      l.14001, $i1
+	load    10($sp), $f3
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     add_light.3196
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	b       be_cont.18767
+be_else.18766:
+be_cont.18767:
+	li      min_caml_intersection_point, $i1
+	li      min_caml_startp_fast, $i2
 	load    0($i1), $f1
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25308
-	li      0, $i1
-	b       ble_cont.25309
-ble_else.25308:
-	li      1, $i1
-ble_cont.25309:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25310
-	b       be_cont.25311
-be_else.25310:
-	fmul    $f2, $f2, $f1
-	fmul    $f1, $f1, $f1
-	load    31($sp), $f2
-	fmul    $f1, $f2, $f1
-	load    16($sp), $i1
-	load    0($i1), $f2
-	fadd    $f2, $f1, $f2
-	store   $f2, 0($i1)
-	load    1($i1), $f2
-	fadd    $f2, $f1, $f2
-	store   $f2, 1($i1)
-	load    2($i1), $f2
-	fadd    $f2, $f1, $f1
-	store   $f1, 2($i1)
-be_cont.25311:
-	b       be_cont.25303
-be_else.25302:
-be_cont.25303:
-	load    13($sp), $i1
-	load    0($i1), $f1
-	load    4($sp), $i2
 	store   $f1, 0($i2)
 	load    1($i1), $f1
 	store   $f1, 1($i2)
 	load    2($i1), $f1
 	store   $f1, 2($i2)
-	load    11($sp), $i2
+	li      min_caml_n_objects, $i2
 	load    0($i2), $i2
 	sub     $i2, 1, $i2
-	load    7($sp), $i11
-	store   $ra, 32($sp)
-	load    0($i11), $i10
-	li      cls.25312, $ra
-	add     $sp, 33, $sp
-	jr      $i10
-cls.25312:
-	sub     $sp, 33, $sp
-	load    32($sp), $ra
-	load    10($sp), $i1
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     setup_startp_constants.3116
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	li      min_caml_n_reflections, $i1
 	load    0($i1), $i1
 	sub     $i1, 1, $i1
-	load    30($sp), $f1
-	load    31($sp), $f2
-	load    20($sp), $i2
-	load    2($sp), $i11
-	store   $ra, 32($sp)
-	load    0($i11), $i10
-	li      cls.25313, $ra
-	add     $sp, 33, $sp
-	jr      $i10
-cls.25313:
-	sub     $sp, 33, $sp
-	load    32($sp), $ra
-	li      l.14334, $i1
+	load    9($sp), $f1
+	load    10($sp), $f2
+	load    3($sp), $i2
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     trace_reflections.3200
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	li      l.13741, $i1
 	load    0($i1), $f1
-	load    18($sp), $f2
+	load    2($sp), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25314
+	bg      $i12, ble_else.18768
 	li      0, $i1
-	b       ble_cont.25315
-ble_else.25314:
+	b       ble_cont.18769
+ble_else.18768:
 	li      1, $i1
-ble_cont.25315:
+ble_cont.18769:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25316
+	bne     $i12, be_else.18770
 	ret
-be_else.25316:
-	load    21($sp), $i1
+be_else.18770:
+	load    4($sp), $i1
 	li      4, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25318
-	b       bge_cont.25319
-bge_else.25318:
+	bl      $i12, bge_else.18772
+	b       bge_cont.18773
+bge_else.18772:
 	add     $i1, 1, $i1
 	li      -1, $i2
-	load    26($sp), $i3
+	load    5($sp), $i3
 	add     $i3, $i1, $i12
 	store   $i2, 0($i12)
-bge_cont.25319:
-	load    29($sp), $i1
+bge_cont.18773:
+	load    8($sp), $i1
 	li      2, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25320
-	li      l.14035, $i1
+	bne     $i12, be_else.18774
+	li      l.13301, $i1
 	load    0($i1), $f1
-	load    28($sp), $i1
+	load    7($sp), $i1
 	load    7($i1), $i1
 	load    0($i1), $f2
 	fsub    $f1, $f2, $f1
-	load    18($sp), $f2
+	load    2($sp), $f2
 	fmul    $f2, $f1, $f1
-	load    21($sp), $i1
+	load    4($sp), $i1
 	add     $i1, 1, $i1
-	load    22($sp), $i2
+	li      min_caml_tmin, $i2
 	load    0($i2), $f2
-	load    14($sp), $f3
+	load    0($sp), $f3
 	fadd    $f3, $f2, $f2
-	load    20($sp), $i2
-	load    24($sp), $i3
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.25320:
+	load    3($sp), $i2
+	load    1($sp), $i3
+	b       trace_ray.3205
+be_else.18774:
 	ret
-ble_else.25267:
+ble_else.18735:
 	ret
-trace_diffuse_ray.3131:
+trace_diffuse_ray.3211:
 	store   $f1, 0($sp)
 	store   $i1, 1($sp)
-	load    14($i11), $i2
-	store   $i2, 2($sp)
-	load    13($i11), $i2
-	load    12($i11), $i3
-	store   $i3, 3($sp)
-	load    11($i11), $i4
-	store   $i4, 4($sp)
-	load    10($i11), $i4
-	store   $i4, 5($sp)
-	load    9($i11), $i4
-	store   $i4, 6($sp)
-	load    8($i11), $i5
-	store   $i5, 7($sp)
-	load    7($i11), $i5
-	store   $i5, 8($sp)
-	load    6($i11), $i5
-	store   $i5, 9($sp)
-	load    5($i11), $i5
-	store   $i5, 10($sp)
-	load    4($i11), $i5
-	store   $i5, 11($sp)
-	load    3($i11), $i5
-	store   $i5, 12($sp)
-	load    2($i11), $i5
-	store   $i5, 13($sp)
-	load    1($i11), $i5
-	store   $i5, 14($sp)
-	li      l.14248, $i5
-	load    0($i5), $f1
-	store   $f1, 0($i3)
-	li      0, $i3
-	load    0($i4), $i4
-	mov     $i2, $i11
-	mov     $i4, $i2
+	li      min_caml_tmin, $i2
+	li      l.13722, $i3
+	load    0($i3), $f1
+	store   $f1, 0($i2)
+	li      0, $i2
+	li      min_caml_or_net, $i3
+	load    0($i3), $i3
 	mov     $i3, $i10
 	mov     $i1, $i3
-	mov     $i10, $i1
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25323, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25323:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    3($sp), $i1
+	mov     $i2, $i1
+	mov     $i10, $i2
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     trace_or_matrix_fast.3178
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	li      min_caml_tmin, $i1
 	load    0($i1), $f1
-	li      l.14240, $i1
+	li      l.13646, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25324
+	bg      $i12, ble_else.18777
 	li      0, $i1
-	b       ble_cont.25325
-ble_else.25324:
+	b       ble_cont.18778
+ble_else.18777:
 	li      1, $i1
-ble_cont.25325:
+ble_cont.18778:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25326
+	bne     $i12, be_else.18779
 	li      0, $i1
-	b       be_cont.25327
-be_else.25326:
-	li      l.14251, $i1
+	b       be_cont.18780
+be_else.18779:
+	li      l.13725, $i1
 	load    0($i1), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25328
+	bg      $i12, ble_else.18781
 	li      0, $i1
-	b       ble_cont.25329
-ble_else.25328:
+	b       ble_cont.18782
+ble_else.18781:
 	li      1, $i1
-ble_cont.25329:
-be_cont.25327:
+ble_cont.18782:
+be_cont.18780:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25330
+	bne     $i12, be_else.18783
 	ret
-be_else.25330:
-	load    12($sp), $i1
-	load    0($i1), $i1
-	load    7($sp), $i2
-	add     $i2, $i1, $i12
+be_else.18783:
+	li      min_caml_objects, $i1
+	li      min_caml_intersected_object_id, $i2
+	load    0($i2), $i2
+	add     $i1, $i2, $i12
 	load    0($i12), $i1
-	store   $i1, 15($sp)
+	store   $i1, 2($sp)
 	load    1($sp), $i2
 	load    0($i2), $i2
 	load    1($i1), $i3
 	li      1, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25332
-	load    10($sp), $i1
+	bne     $i12, be_else.18785
+	li      min_caml_intsec_rectside, $i1
 	load    0($i1), $i1
-	li      l.14001, $i3
-	load    0($i3), $f1
-	load    8($sp), $i3
+	li      min_caml_nvector, $i3
+	li      l.13298, $i4
+	load    0($i4), $f1
 	store   $f1, 0($i3)
 	store   $f1, 1($i3)
 	store   $f1, 2($i3)
+	li      min_caml_nvector, $i3
 	sub     $i1, 1, $i4
 	sub     $i1, 1, $i1
 	add     $i2, $i1, $i12
 	load    0($i12), $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bne     $i12, be_else.25334
+	bne     $i12, be_else.18787
 	li      1, $i1
-	b       be_cont.25335
-be_else.25334:
+	b       be_cont.18788
+be_else.18787:
 	li      0, $i1
-be_cont.25335:
+be_cont.18788:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25336
-	li      l.14001, $i1
+	bne     $i12, be_else.18789
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25338
+	bg      $i12, ble_else.18791
 	li      0, $i1
-	b       ble_cont.25339
-ble_else.25338:
+	b       ble_cont.18792
+ble_else.18791:
 	li      1, $i1
-ble_cont.25339:
+ble_cont.18792:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25340
-	li      l.14099, $i1
+	bne     $i12, be_else.18793
+	li      l.13423, $i1
 	load    0($i1), $f1
-	b       be_cont.25341
-be_else.25340:
-	li      l.14035, $i1
+	b       be_cont.18794
+be_else.18793:
+	li      l.13301, $i1
 	load    0($i1), $f1
-be_cont.25341:
-	b       be_cont.25337
-be_else.25336:
-	li      l.14001, $i1
+be_cont.18794:
+	b       be_cont.18790
+be_else.18789:
+	li      l.13298, $i1
 	load    0($i1), $f1
-be_cont.25337:
+be_cont.18790:
 	fneg    $f1, $f1
 	add     $i3, $i4, $i12
 	store   $f1, 0($i12)
-	b       be_cont.25333
-be_else.25332:
+	b       be_cont.18786
+be_else.18785:
 	li      2, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25342
-	load    4($i1), $i2
-	load    0($i2), $f1
+	bne     $i12, be_else.18795
+	li      min_caml_nvector, $i2
+	load    4($i1), $i3
+	load    0($i3), $f1
 	fneg    $f1, $f1
-	load    8($sp), $i2
 	store   $f1, 0($i2)
+	li      min_caml_nvector, $i2
 	load    4($i1), $i3
 	load    1($i3), $f1
 	fneg    $f1, $f1
 	store   $f1, 1($i2)
+	li      min_caml_nvector, $i2
 	load    4($i1), $i1
 	load    2($i1), $f1
 	fneg    $f1, $f1
 	store   $f1, 2($i2)
-	b       be_cont.25343
-be_else.25342:
-	load    13($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25344, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25344:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-be_cont.25343:
-be_cont.25333:
-	load    15($sp), $i1
-	load    11($sp), $i2
-	load    2($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25345, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25345:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
+	b       be_cont.18796
+be_else.18795:
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     get_nvector_second.3188
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+be_cont.18796:
+be_cont.18786:
+	li      min_caml_intersection_point, $i2
+	load    2($sp), $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     utexture.3193
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
 	li      0, $i1
-	load    6($sp), $i2
+	li      min_caml_or_net, $i2
 	load    0($i2), $i2
-	load    5($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25346, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25346:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     shadow_check_one_or_matrix.3153
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25347
-	load    8($sp), $i1
+	bne     $i12, be_else.18797
+	li      min_caml_nvector, $i1
+	li      min_caml_light, $i2
 	load    0($i1), $f1
-	load    9($sp), $i2
 	load    0($i2), $f2
 	fmul    $f1, $f2, $f1
 	load    1($i1), $f2
@@ -11274,32 +8272,32 @@ cls.25346:
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
 	fneg    $f1, $f1
-	li      l.14001, $i1
+	li      l.13298, $i1
 	load    0($i1), $f2
 	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25348
+	bg      $i12, ble_else.18798
 	li      0, $i1
-	b       ble_cont.25349
-ble_else.25348:
+	b       ble_cont.18799
+ble_else.18798:
 	li      1, $i1
-ble_cont.25349:
+ble_cont.18799:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25350
-	li      l.14001, $i1
+	bne     $i12, be_else.18800
+	li      l.13298, $i1
 	load    0($i1), $f1
-	b       be_cont.25351
-be_else.25350:
-be_cont.25351:
+	b       be_cont.18801
+be_else.18800:
+be_cont.18801:
+	li      min_caml_diffuse_ray, $i1
 	load    0($sp), $f2
 	fmul    $f2, $f1, $f1
-	load    15($sp), $i1
-	load    7($i1), $i1
-	load    0($i1), $f2
+	load    2($sp), $i2
+	load    7($i2), $i2
+	load    0($i2), $f2
 	fmul    $f1, $f2, $f1
-	load    14($sp), $i1
+	li      min_caml_texture_color, $i2
 	load    0($i1), $f2
-	load    4($sp), $i2
 	load    0($i2), $f3
 	fmul    $f1, $f3, $f3
 	fadd    $f2, $f3, $f2
@@ -11315,39 +8313,16 @@ be_cont.25351:
 	fadd    $f2, $f1, $f1
 	store   $f1, 2($i1)
 	ret
-be_else.25347:
+be_else.18797:
 	ret
-iter_trace_diffuse_rays.3134:
-	load    13($i11), $i5
-	store   $i5, 0($sp)
-	load    12($i11), $i5
-	load    11($i11), $i6
-	store   $i6, 1($sp)
-	load    10($i11), $i6
-	store   $i6, 2($sp)
-	load    9($i11), $i6
-	store   $i6, 3($sp)
-	load    8($i11), $i6
-	load    7($i11), $i7
-	store   $i7, 4($sp)
-	load    6($i11), $i7
-	store   $i7, 5($sp)
-	load    5($i11), $i7
-	load    4($i11), $i8
-	store   $i8, 6($sp)
-	load    3($i11), $i8
-	load    2($i11), $i9
-	load    1($i11), $i10
+iter_trace_diffuse_rays.3214:
 	li      0, $i12
 	cmp     $i4, $i12, $i12
-	bl      $i12, bge_else.25354
-	store   $i3, 7($sp)
-	store   $i11, 8($sp)
-	store   $i5, 9($sp)
-	store   $i2, 10($sp)
-	store   $i1, 11($sp)
-	store   $i4, 12($sp)
-	store   $i10, 13($sp)
+	bl      $i12, bge_else.18804
+	store   $i3, 0($sp)
+	store   $i2, 1($sp)
+	store   $i1, 2($sp)
+	store   $i4, 3($sp)
 	add     $i1, $i4, $i12
 	load    0($i12), $i3
 	load    0($i3), $i3
@@ -11362,286 +8337,56 @@ iter_trace_diffuse_rays.3134:
 	load    2($i2), $f3
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25355
+	bg      $i12, ble_else.18805
 	li      0, $i2
-	b       ble_cont.25356
-ble_else.25355:
+	b       ble_cont.18806
+ble_else.18805:
 	li      1, $i2
-ble_cont.25356:
+ble_cont.18806:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25357
-	store   $i9, 14($sp)
-	store   $i6, 15($sp)
-	store   $i8, 16($sp)
+	bne     $i12, be_else.18807
 	add     $i1, $i4, $i12
 	load    0($i12), $i1
-	store   $i1, 17($sp)
-	li      l.14354, $i2
+	li      l.13759, $i2
 	load    0($i2), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	store   $f1, 18($sp)
-	mov     $i7, $i11
-	store   $ra, 19($sp)
-	load    0($i11), $i10
-	li      cls.25359, $ra
-	add     $sp, 20, $sp
-	jr      $i10
-cls.25359:
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25360
-	b       be_cont.25361
-be_else.25360:
-	load    16($sp), $i1
-	load    0($i1), $i1
-	load    15($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	store   $i1, 19($sp)
-	load    17($sp), $i2
-	load    0($i2), $i2
-	load    14($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.25362, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.25362:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	load    19($sp), $i1
-	load    6($sp), $i2
-	load    0($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.25363, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.25363:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	li      0, $i1
-	load    3($sp), $i2
-	load    0($i2), $i2
-	load    2($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.25364, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.25364:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25365
-	load    4($sp), $i1
-	load    0($i1), $f1
-	load    5($sp), $i2
-	load    0($i2), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i1), $f2
-	load    1($i2), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i1), $f2
-	load    2($i2), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	fneg    $f1, $f1
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25367
-	li      0, $i1
-	b       ble_cont.25368
-ble_else.25367:
-	li      1, $i1
-ble_cont.25368:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25369
-	li      l.14001, $i1
-	load    0($i1), $f1
-	b       be_cont.25370
-be_else.25369:
-be_cont.25370:
-	load    18($sp), $f2
-	fmul    $f2, $f1, $f1
-	load    19($sp), $i1
-	load    7($i1), $i1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f1
-	load    13($sp), $i1
-	load    0($i1), $f2
-	load    1($sp), $i2
-	load    0($i2), $f3
-	fmul    $f1, $f3, $f3
-	fadd    $f2, $f3, $f2
-	store   $f2, 0($i1)
-	load    1($i1), $f2
-	load    1($i2), $f3
-	fmul    $f1, $f3, $f3
-	fadd    $f2, $f3, $f2
-	store   $f2, 1($i1)
-	load    2($i1), $f2
-	load    2($i2), $f3
-	fmul    $f1, $f3, $f1
-	fadd    $f2, $f1, $f1
-	store   $f1, 2($i1)
-	b       be_cont.25366
-be_else.25365:
-be_cont.25366:
-be_cont.25361:
-	b       be_cont.25358
-be_else.25357:
-	store   $i9, 14($sp)
-	store   $i6, 15($sp)
-	store   $i8, 16($sp)
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     trace_diffuse_ray.3211
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	b       be_cont.18808
+be_else.18807:
 	add     $i4, 1, $i2
 	add     $i1, $i2, $i12
 	load    0($i12), $i1
-	store   $i1, 20($sp)
-	li      l.14350, $i2
+	li      l.13757, $i2
 	load    0($i2), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	store   $f1, 21($sp)
-	mov     $i7, $i11
-	store   $ra, 22($sp)
-	load    0($i11), $i10
-	li      cls.25371, $ra
-	add     $sp, 23, $sp
-	jr      $i10
-cls.25371:
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25372
-	b       be_cont.25373
-be_else.25372:
-	load    16($sp), $i1
-	load    0($i1), $i1
-	load    15($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	store   $i1, 22($sp)
-	load    20($sp), $i2
-	load    0($i2), $i2
-	load    14($sp), $i11
-	store   $ra, 23($sp)
-	load    0($i11), $i10
-	li      cls.25374, $ra
-	add     $sp, 24, $sp
-	jr      $i10
-cls.25374:
-	sub     $sp, 24, $sp
-	load    23($sp), $ra
-	load    22($sp), $i1
-	load    6($sp), $i2
-	load    0($sp), $i11
-	store   $ra, 23($sp)
-	load    0($i11), $i10
-	li      cls.25375, $ra
-	add     $sp, 24, $sp
-	jr      $i10
-cls.25375:
-	sub     $sp, 24, $sp
-	load    23($sp), $ra
-	li      0, $i1
-	load    3($sp), $i2
-	load    0($i2), $i2
-	load    2($sp), $i11
-	store   $ra, 23($sp)
-	load    0($i11), $i10
-	li      cls.25376, $ra
-	add     $sp, 24, $sp
-	jr      $i10
-cls.25376:
-	sub     $sp, 24, $sp
-	load    23($sp), $ra
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25377
-	load    4($sp), $i1
-	load    0($i1), $f1
-	load    5($sp), $i2
-	load    0($i2), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i1), $f2
-	load    1($i2), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i1), $f2
-	load    2($i2), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	fneg    $f1, $f1
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25379
-	li      0, $i1
-	b       ble_cont.25380
-ble_else.25379:
-	li      1, $i1
-ble_cont.25380:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25381
-	li      l.14001, $i1
-	load    0($i1), $f1
-	b       be_cont.25382
-be_else.25381:
-be_cont.25382:
-	load    21($sp), $f2
-	fmul    $f2, $f1, $f1
-	load    22($sp), $i1
-	load    7($i1), $i1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f1
-	load    13($sp), $i1
-	load    0($i1), $f2
-	load    1($sp), $i2
-	load    0($i2), $f3
-	fmul    $f1, $f3, $f3
-	fadd    $f2, $f3, $f2
-	store   $f2, 0($i1)
-	load    1($i1), $f2
-	load    1($i2), $f3
-	fmul    $f1, $f3, $f3
-	fadd    $f2, $f3, $f2
-	store   $f2, 1($i1)
-	load    2($i1), $f2
-	load    2($i2), $f3
-	fmul    $f1, $f3, $f1
-	fadd    $f2, $f1, $f1
-	store   $f1, 2($i1)
-	b       be_cont.25378
-be_else.25377:
-be_cont.25378:
-be_cont.25373:
-be_cont.25358:
-	load    12($sp), $i1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     trace_diffuse_ray.3211
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+be_cont.18808:
+	load    3($sp), $i1
 	sub     $i1, 2, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25383
-	store   $i1, 23($sp)
-	load    11($sp), $i2
+	bl      $i12, bge_else.18809
+	store   $i1, 4($sp)
+	load    2($sp), $i2
 	add     $i2, $i1, $i12
 	load    0($i12), $i3
 	load    0($i3), $i3
 	load    0($i3), $f1
-	load    10($sp), $i4
+	load    1($sp), $i4
 	load    0($i4), $f2
 	fmul    $f1, $f2, $f1
 	load    1($i3), $f2
@@ -11652,1220 +8397,665 @@ be_cont.25358:
 	load    2($i4), $f3
 	fmul    $f2, $f3, $f2
 	fadd    $f1, $f2, $f1
-	li      l.14001, $i3
+	li      l.13298, $i3
 	load    0($i3), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25384
+	bg      $i12, ble_else.18810
 	li      0, $i3
-	b       ble_cont.25385
-ble_else.25384:
+	b       ble_cont.18811
+ble_else.18810:
 	li      1, $i3
-ble_cont.25385:
+ble_cont.18811:
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25386
+	bne     $i12, be_else.18812
 	add     $i2, $i1, $i12
 	load    0($i12), $i1
-	li      l.14354, $i2
+	li      l.13759, $i2
 	load    0($i2), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	load    9($sp), $i11
-	store   $ra, 24($sp)
-	load    0($i11), $i10
-	li      cls.25388, $ra
-	add     $sp, 25, $sp
-	jr      $i10
-cls.25388:
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	b       be_cont.25387
-be_else.25386:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     trace_diffuse_ray.3211
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	b       be_cont.18813
+be_else.18812:
 	add     $i1, 1, $i1
 	add     $i2, $i1, $i12
 	load    0($i12), $i1
-	li      l.14350, $i2
+	li      l.13757, $i2
 	load    0($i2), $f2
 	finv    $f2, $f15
 	fmul    $f1, $f15, $f1
-	load    9($sp), $i11
-	store   $ra, 24($sp)
-	load    0($i11), $i10
-	li      cls.25389, $ra
-	add     $sp, 25, $sp
-	jr      $i10
-cls.25389:
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-be_cont.25387:
-	load    23($sp), $i1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     trace_diffuse_ray.3211
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+be_cont.18813:
+	load    4($sp), $i1
 	sub     $i1, 2, $i4
-	load    11($sp), $i1
-	load    10($sp), $i2
-	load    7($sp), $i3
-	load    8($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25383:
+	load    2($sp), $i1
+	load    1($sp), $i2
+	load    0($sp), $i3
+	b       iter_trace_diffuse_rays.3214
+bge_else.18809:
 	ret
-bge_else.25354:
+bge_else.18804:
 	ret
-trace_diffuse_ray_80percent.3143:
+trace_diffuse_ray_80percent.3223:
 	store   $i2, 0($sp)
 	store   $i3, 1($sp)
 	store   $i1, 2($sp)
-	load    5($i11), $i4
-	store   $i4, 3($sp)
-	load    4($i11), $i5
-	store   $i5, 4($sp)
-	load    3($i11), $i6
-	store   $i6, 5($sp)
-	load    2($i11), $i7
-	store   $i7, 6($sp)
-	load    1($i11), $i8
-	store   $i8, 7($sp)
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25392
-	b       be_cont.25393
-be_else.25392:
-	load    0($i8), $i1
-	store   $i1, 8($sp)
+	bne     $i12, be_else.18816
+	b       be_cont.18817
+be_else.18816:
+	li      min_caml_dirvecs, $i1
+	load    0($i1), $i1
+	store   $i1, 3($sp)
+	li      min_caml_startp_fast, $i1
 	load    0($i3), $f1
-	store   $f1, 0($i4)
+	store   $f1, 0($i1)
 	load    1($i3), $f1
-	store   $f1, 1($i4)
+	store   $f1, 1($i1)
 	load    2($i3), $f1
-	store   $f1, 2($i4)
-	load    0($i6), $i1
+	store   $f1, 2($i1)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
 	sub     $i1, 1, $i2
 	mov     $i3, $i1
-	mov     $i5, $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.25394, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.25394:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     setup_startp_constants.3116
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
 	li      118, $i4
-	load    8($sp), $i1
+	load    3($sp), $i1
 	load    0($sp), $i2
 	load    1($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 9($sp)
-	load    0($i11), $i10
-	li      cls.25395, $ra
-	add     $sp, 10, $sp
-	jr      $i10
-cls.25395:
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-be_cont.25393:
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     iter_trace_diffuse_rays.3214
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+be_cont.18817:
 	load    2($sp), $i1
 	li      1, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25396
-	b       be_cont.25397
-be_else.25396:
-	load    7($sp), $i1
+	bne     $i12, be_else.18818
+	b       be_cont.18819
+be_else.18818:
+	li      min_caml_dirvecs, $i1
 	load    1($i1), $i1
-	store   $i1, 9($sp)
-	load    1($sp), $i1
-	load    0($i1), $f1
-	load    3($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    5($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    4($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.25398, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.25398:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	li      118, $i4
-	load    9($sp), $i1
-	load    0($sp), $i2
-	load    1($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.25399, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.25399:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-be_cont.25397:
-	load    2($sp), $i1
-	li      2, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25400
-	b       be_cont.25401
-be_else.25400:
-	load    7($sp), $i1
-	load    2($i1), $i1
-	store   $i1, 10($sp)
-	load    1($sp), $i1
-	load    0($i1), $f1
-	load    3($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    5($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    4($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.25402, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.25402:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	li      118, $i4
-	load    10($sp), $i1
-	load    0($sp), $i2
-	load    1($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.25403, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.25403:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-be_cont.25401:
-	load    2($sp), $i1
-	li      3, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25404
-	b       be_cont.25405
-be_else.25404:
-	load    7($sp), $i1
-	load    3($i1), $i1
-	store   $i1, 11($sp)
-	load    1($sp), $i1
-	load    0($i1), $f1
-	load    3($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    5($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    4($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.25406, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.25406:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	li      118, $i4
-	load    11($sp), $i1
-	load    0($sp), $i2
-	load    1($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 12($sp)
-	load    0($i11), $i10
-	li      cls.25407, $ra
-	add     $sp, 13, $sp
-	jr      $i10
-cls.25407:
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-be_cont.25405:
-	load    2($sp), $i1
-	li      4, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25408
-	ret
-be_else.25408:
-	load    7($sp), $i1
-	load    4($i1), $i1
-	store   $i1, 12($sp)
-	load    1($sp), $i1
-	load    0($i1), $f1
-	load    3($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    5($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    4($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.25410, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.25410:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	li      118, $i4
-	load    12($sp), $i1
-	load    0($sp), $i2
-	load    1($sp), $i3
-	load    6($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-calc_diffuse_using_1point.3147:
-	store   $i2, 0($sp)
-	load    8($i11), $i3
-	store   $i3, 1($sp)
-	load    7($i11), $i3
-	store   $i3, 2($sp)
-	load    6($i11), $i4
-	store   $i4, 3($sp)
-	load    5($i11), $i4
-	store   $i4, 4($sp)
-	load    4($i11), $i4
-	store   $i4, 5($sp)
-	load    3($i11), $i5
-	store   $i5, 6($sp)
-	load    2($i11), $i5
-	store   $i5, 7($sp)
-	load    1($i11), $i6
-	store   $i6, 8($sp)
-	load    5($i1), $i7
-	load    7($i1), $i8
-	load    1($i1), $i9
-	load    4($i1), $i10
-	store   $i10, 9($sp)
-	add     $i7, $i2, $i12
-	load    0($i12), $i7
-	load    0($i7), $f1
-	store   $f1, 0($i6)
-	load    1($i7), $f1
-	store   $f1, 1($i6)
-	load    2($i7), $f1
-	store   $f1, 2($i6)
-	load    6($i1), $i1
-	load    0($i1), $i1
-	store   $i1, 10($sp)
-	add     $i8, $i2, $i12
-	load    0($i12), $i6
-	store   $i6, 11($sp)
-	add     $i9, $i2, $i12
-	load    0($i12), $i2
-	store   $i2, 12($sp)
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25411
-	b       be_cont.25412
-be_else.25411:
-	load    0($i5), $i1
-	store   $i1, 13($sp)
+	store   $i1, 4($sp)
+	li      min_caml_startp_fast, $i1
+	load    1($sp), $i2
 	load    0($i2), $f1
-	store   $f1, 0($i3)
+	store   $f1, 0($i1)
 	load    1($i2), $f1
-	store   $f1, 1($i3)
+	store   $f1, 1($i1)
 	load    2($i2), $f1
-	store   $f1, 2($i3)
-	load    0($i4), $i1
+	store   $f1, 2($i1)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
 	sub     $i1, 1, $i1
-	load    3($sp), $i11
 	mov     $i2, $i10
 	mov     $i1, $i2
 	mov     $i10, $i1
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25413, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25413:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    13($sp), $i1
-	load    118($i1), $i2
-	load    0($i2), $i2
-	load    0($i2), $f1
-	load    11($sp), $i3
-	load    0($i3), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i2), $f2
-	load    1($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i2), $f2
-	load    2($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25414
-	li      0, $i2
-	b       ble_cont.25415
-ble_else.25414:
-	li      1, $i2
-ble_cont.25415:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25416
-	load    118($i1), $i1
-	li      l.14354, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25418, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25418:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	b       be_cont.25417
-be_else.25416:
-	load    119($i1), $i1
-	li      l.14350, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25419, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25419:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-be_cont.25417:
-	li      116, $i4
-	load    13($sp), $i1
-	load    11($sp), $i2
-	load    12($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25420, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25420:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-be_cont.25412:
-	load    10($sp), $i1
-	li      1, $i12
-	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25421
-	b       be_cont.25422
-be_else.25421:
-	load    7($sp), $i1
-	load    1($i1), $i1
-	store   $i1, 14($sp)
-	load    12($sp), $i1
-	load    0($i1), $f1
-	load    2($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    5($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    3($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25423, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25423:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    14($sp), $i1
-	load    118($i1), $i2
-	load    0($i2), $i2
-	load    0($i2), $f1
-	load    11($sp), $i3
-	load    0($i3), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i2), $f2
-	load    1($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i2), $f2
-	load    2($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25424
-	li      0, $i2
-	b       ble_cont.25425
-ble_else.25424:
-	li      1, $i2
-ble_cont.25425:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25426
-	load    118($i1), $i1
-	li      l.14354, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25428, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25428:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	b       be_cont.25427
-be_else.25426:
-	load    119($i1), $i1
-	li      l.14350, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25429, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25429:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-be_cont.25427:
-	li      116, $i4
-	load    14($sp), $i1
-	load    11($sp), $i2
-	load    12($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25430, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25430:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-be_cont.25422:
-	load    10($sp), $i1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     setup_startp_constants.3116
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	li      118, $i4
+	load    4($sp), $i1
+	load    0($sp), $i2
+	load    1($sp), $i3
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     iter_trace_diffuse_rays.3214
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+be_cont.18819:
+	load    2($sp), $i1
 	li      2, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25431
-	b       be_cont.25432
-be_else.25431:
-	load    7($sp), $i1
+	bne     $i12, be_else.18820
+	b       be_cont.18821
+be_else.18820:
+	li      min_caml_dirvecs, $i1
 	load    2($i1), $i1
-	store   $i1, 15($sp)
-	load    12($sp), $i1
-	load    0($i1), $f1
-	load    2($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    5($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    3($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25433, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25433:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	load    15($sp), $i1
-	load    118($i1), $i2
-	load    0($i2), $i2
+	store   $i1, 5($sp)
+	li      min_caml_startp_fast, $i1
+	load    1($sp), $i2
 	load    0($i2), $f1
-	load    11($sp), $i3
-	load    0($i3), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i2), $f2
-	load    1($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i2), $f2
-	load    2($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25434
-	li      0, $i2
-	b       ble_cont.25435
-ble_else.25434:
-	li      1, $i2
-ble_cont.25435:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25436
-	load    118($i1), $i1
-	li      l.14354, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25438, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25438:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	b       be_cont.25437
-be_else.25436:
-	load    119($i1), $i1
-	li      l.14350, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25439, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25439:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-be_cont.25437:
-	li      116, $i4
-	load    15($sp), $i1
-	load    11($sp), $i2
-	load    12($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25440, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25440:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-be_cont.25432:
-	load    10($sp), $i1
+	store   $f1, 0($i1)
+	load    1($i2), $f1
+	store   $f1, 1($i1)
+	load    2($i2), $f1
+	store   $f1, 2($i1)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	sub     $i1, 1, $i1
+	mov     $i2, $i10
+	mov     $i1, $i2
+	mov     $i10, $i1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     setup_startp_constants.3116
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	li      118, $i4
+	load    5($sp), $i1
+	load    0($sp), $i2
+	load    1($sp), $i3
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     iter_trace_diffuse_rays.3214
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+be_cont.18821:
+	load    2($sp), $i1
 	li      3, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25441
-	b       be_cont.25442
-be_else.25441:
-	load    7($sp), $i1
+	bne     $i12, be_else.18822
+	b       be_cont.18823
+be_else.18822:
+	li      min_caml_dirvecs, $i1
 	load    3($i1), $i1
-	store   $i1, 16($sp)
-	load    12($sp), $i1
-	load    0($i1), $f1
-	load    2($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    5($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    3($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25443, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25443:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	load    16($sp), $i1
-	load    118($i1), $i2
-	load    0($i2), $i2
+	store   $i1, 6($sp)
+	li      min_caml_startp_fast, $i1
+	load    1($sp), $i2
 	load    0($i2), $f1
-	load    11($sp), $i3
-	load    0($i3), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i2), $f2
-	load    1($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i2), $f2
-	load    2($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25444
-	li      0, $i2
-	b       ble_cont.25445
-ble_else.25444:
-	li      1, $i2
-ble_cont.25445:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25446
-	load    118($i1), $i1
-	li      l.14354, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25448, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25448:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	b       be_cont.25447
-be_else.25446:
-	load    119($i1), $i1
-	li      l.14350, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25449, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25449:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-be_cont.25447:
-	li      116, $i4
-	load    16($sp), $i1
-	load    11($sp), $i2
-	load    12($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25450, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25450:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-be_cont.25442:
-	load    10($sp), $i1
+	store   $f1, 0($i1)
+	load    1($i2), $f1
+	store   $f1, 1($i1)
+	load    2($i2), $f1
+	store   $f1, 2($i1)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	sub     $i1, 1, $i1
+	mov     $i2, $i10
+	mov     $i1, $i2
+	mov     $i10, $i1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     setup_startp_constants.3116
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	li      118, $i4
+	load    6($sp), $i1
+	load    0($sp), $i2
+	load    1($sp), $i3
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     iter_trace_diffuse_rays.3214
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+be_cont.18823:
+	load    2($sp), $i1
 	li      4, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25451
-	b       be_cont.25452
-be_else.25451:
-	load    7($sp), $i1
+	bne     $i12, be_else.18824
+	ret
+be_else.18824:
+	li      min_caml_dirvecs, $i1
 	load    4($i1), $i1
-	store   $i1, 17($sp)
-	load    12($sp), $i1
-	load    0($i1), $f1
-	load    2($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    5($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    3($sp), $i11
-	store   $ra, 18($sp)
-	load    0($i11), $i10
-	li      cls.25453, $ra
-	add     $sp, 19, $sp
-	jr      $i10
-cls.25453:
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-	load    17($sp), $i1
-	load    118($i1), $i2
-	load    0($i2), $i2
+	store   $i1, 7($sp)
+	li      min_caml_startp_fast, $i1
+	load    1($sp), $i2
 	load    0($i2), $f1
-	load    11($sp), $i3
-	load    0($i3), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i2), $f2
-	load    1($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i2), $f2
-	load    2($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25454
-	li      0, $i2
-	b       ble_cont.25455
-ble_else.25454:
-	li      1, $i2
-ble_cont.25455:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25456
-	load    118($i1), $i1
-	li      l.14354, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 18($sp)
-	load    0($i11), $i10
-	li      cls.25458, $ra
-	add     $sp, 19, $sp
-	jr      $i10
-cls.25458:
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-	b       be_cont.25457
-be_else.25456:
-	load    119($i1), $i1
-	li      l.14350, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 18($sp)
-	load    0($i11), $i10
-	li      cls.25459, $ra
-	add     $sp, 19, $sp
-	jr      $i10
-cls.25459:
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-be_cont.25457:
-	li      116, $i4
-	load    17($sp), $i1
-	load    11($sp), $i2
-	load    12($sp), $i3
-	load    6($sp), $i11
-	store   $ra, 18($sp)
-	load    0($i11), $i10
-	li      cls.25460, $ra
-	add     $sp, 19, $sp
-	jr      $i10
-cls.25460:
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-be_cont.25452:
-	load    0($sp), $i1
-	load    9($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i2
-	load    4($sp), $i1
-	load    8($sp), $i3
-	b       vecaccumv.2840
-calc_diffuse_using_5points.3150:
-	load    2($i11), $i6
-	load    1($i11), $i7
+	store   $f1, 0($i1)
+	load    1($i2), $f1
+	store   $f1, 1($i1)
+	load    2($i2), $f1
+	store   $f1, 2($i1)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	sub     $i1, 1, $i1
+	mov     $i2, $i10
+	mov     $i1, $i2
+	mov     $i10, $i1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     setup_startp_constants.3116
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	li      118, $i4
+	load    7($sp), $i1
+	load    0($sp), $i2
+	load    1($sp), $i3
+	b       iter_trace_diffuse_rays.3214
+calc_diffuse_using_5points.3230:
 	add     $i2, $i1, $i12
 	load    0($i12), $i2
 	load    5($i2), $i2
-	sub     $i1, 1, $i8
+	sub     $i1, 1, $i6
+	add     $i3, $i6, $i12
+	load    0($i12), $i6
+	load    5($i6), $i6
+	add     $i3, $i1, $i12
+	load    0($i12), $i7
+	load    5($i7), $i7
+	add     $i1, 1, $i8
 	add     $i3, $i8, $i12
 	load    0($i12), $i8
 	load    5($i8), $i8
-	add     $i3, $i1, $i12
-	load    0($i12), $i9
-	load    5($i9), $i9
-	add     $i1, 1, $i10
-	add     $i3, $i10, $i12
-	load    0($i12), $i10
-	load    5($i10), $i10
 	add     $i4, $i1, $i12
 	load    0($i12), $i4
 	load    5($i4), $i4
+	li      min_caml_diffuse_ray, $i9
 	add     $i2, $i5, $i12
 	load    0($i12), $i2
 	load    0($i2), $f1
-	store   $f1, 0($i7)
+	store   $f1, 0($i9)
 	load    1($i2), $f1
-	store   $f1, 1($i7)
+	store   $f1, 1($i9)
 	load    2($i2), $f1
-	store   $f1, 2($i7)
+	store   $f1, 2($i9)
+	li      min_caml_diffuse_ray, $i2
+	add     $i6, $i5, $i12
+	load    0($i12), $i6
+	load    0($i2), $f1
+	load    0($i6), $f2
+	fadd    $f1, $f2, $f1
+	store   $f1, 0($i2)
+	load    1($i2), $f1
+	load    1($i6), $f2
+	fadd    $f1, $f2, $f1
+	store   $f1, 1($i2)
+	load    2($i2), $f1
+	load    2($i6), $f2
+	fadd    $f1, $f2, $f1
+	store   $f1, 2($i2)
+	li      min_caml_diffuse_ray, $i2
+	add     $i7, $i5, $i12
+	load    0($i12), $i6
+	load    0($i2), $f1
+	load    0($i6), $f2
+	fadd    $f1, $f2, $f1
+	store   $f1, 0($i2)
+	load    1($i2), $f1
+	load    1($i6), $f2
+	fadd    $f1, $f2, $f1
+	store   $f1, 1($i2)
+	load    2($i2), $f1
+	load    2($i6), $f2
+	fadd    $f1, $f2, $f1
+	store   $f1, 2($i2)
+	li      min_caml_diffuse_ray, $i2
 	add     $i8, $i5, $i12
-	load    0($i12), $i2
-	load    0($i7), $f1
-	load    0($i2), $f2
+	load    0($i12), $i6
+	load    0($i2), $f1
+	load    0($i6), $f2
 	fadd    $f1, $f2, $f1
-	store   $f1, 0($i7)
-	load    1($i7), $f1
-	load    1($i2), $f2
+	store   $f1, 0($i2)
+	load    1($i2), $f1
+	load    1($i6), $f2
 	fadd    $f1, $f2, $f1
-	store   $f1, 1($i7)
-	load    2($i7), $f1
-	load    2($i2), $f2
+	store   $f1, 1($i2)
+	load    2($i2), $f1
+	load    2($i6), $f2
 	fadd    $f1, $f2, $f1
-	store   $f1, 2($i7)
-	add     $i9, $i5, $i12
-	load    0($i12), $i2
-	load    0($i7), $f1
-	load    0($i2), $f2
-	fadd    $f1, $f2, $f1
-	store   $f1, 0($i7)
-	load    1($i7), $f1
-	load    1($i2), $f2
-	fadd    $f1, $f2, $f1
-	store   $f1, 1($i7)
-	load    2($i7), $f1
-	load    2($i2), $f2
-	fadd    $f1, $f2, $f1
-	store   $f1, 2($i7)
-	add     $i10, $i5, $i12
-	load    0($i12), $i2
-	load    0($i7), $f1
-	load    0($i2), $f2
-	fadd    $f1, $f2, $f1
-	store   $f1, 0($i7)
-	load    1($i7), $f1
-	load    1($i2), $f2
-	fadd    $f1, $f2, $f1
-	store   $f1, 1($i7)
-	load    2($i7), $f1
-	load    2($i2), $f2
-	fadd    $f1, $f2, $f1
-	store   $f1, 2($i7)
+	store   $f1, 2($i2)
+	li      min_caml_diffuse_ray, $i2
 	add     $i4, $i5, $i12
-	load    0($i12), $i2
-	load    0($i7), $f1
-	load    0($i2), $f2
+	load    0($i12), $i4
+	load    0($i2), $f1
+	load    0($i4), $f2
 	fadd    $f1, $f2, $f1
-	store   $f1, 0($i7)
-	load    1($i7), $f1
-	load    1($i2), $f2
+	store   $f1, 0($i2)
+	load    1($i2), $f1
+	load    1($i4), $f2
 	fadd    $f1, $f2, $f1
-	store   $f1, 1($i7)
-	load    2($i7), $f1
-	load    2($i2), $f2
+	store   $f1, 1($i2)
+	load    2($i2), $f1
+	load    2($i4), $f2
 	fadd    $f1, $f2, $f1
-	store   $f1, 2($i7)
+	store   $f1, 2($i2)
 	add     $i3, $i1, $i12
 	load    0($i12), $i1
 	load    4($i1), $i1
+	li      min_caml_rgb, $i2
 	add     $i1, $i5, $i12
-	load    0($i12), $i2
-	mov     $i7, $i3
-	mov     $i6, $i1
-	b       vecaccumv.2840
-do_without_neighbors.3156:
-	load    4($i11), $i3
-	load    3($i11), $i4
-	load    2($i11), $i5
-	load    1($i11), $i6
+	load    0($i12), $i1
+	li      min_caml_diffuse_ray, $i3
+	mov     $i2, $i10
+	mov     $i1, $i2
+	mov     $i10, $i1
+	b       vecaccumv.2920
+do_without_neighbors.3236:
 	li      4, $i12
 	cmp     $i2, $i12, $i12
-	bg      $i12, ble_else.25461
-	load    2($i1), $i7
-	add     $i7, $i2, $i12
-	load    0($i12), $i7
-	li      0, $i12
-	cmp     $i7, $i12, $i12
-	bl      $i12, bge_else.25462
-	store   $i6, 0($sp)
-	store   $i11, 1($sp)
-	store   $i1, 2($sp)
-	store   $i2, 3($sp)
-	load    3($i1), $i6
-	add     $i6, $i2, $i12
-	load    0($i12), $i6
-	li      0, $i12
-	cmp     $i6, $i12, $i12
-	bne     $i12, be_else.25463
-	b       be_cont.25464
-be_else.25463:
-	store   $i5, 4($sp)
-	store   $i4, 5($sp)
-	load    5($i1), $i4
-	load    7($i1), $i6
-	load    1($i1), $i7
-	load    4($i1), $i8
-	store   $i8, 6($sp)
-	add     $i4, $i2, $i12
-	load    0($i12), $i4
-	load    0($i4), $f1
-	store   $f1, 0($i5)
-	load    1($i4), $f1
-	store   $f1, 1($i5)
-	load    2($i4), $f1
-	store   $f1, 2($i5)
-	load    6($i1), $i1
-	load    0($i1), $i1
-	add     $i6, $i2, $i12
-	load    0($i12), $i4
-	add     $i7, $i2, $i12
-	load    0($i12), $i2
-	mov     $i3, $i11
-	mov     $i2, $i3
-	mov     $i4, $i2
-	store   $ra, 7($sp)
-	load    0($i11), $i10
-	li      cls.25465, $ra
-	add     $sp, 8, $sp
-	jr      $i10
-cls.25465:
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	load    3($sp), $i1
-	load    6($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i2
-	load    5($sp), $i1
-	load    4($sp), $i3
-	store   $ra, 7($sp)
-	add     $sp, 8, $sp
-	jal     vecaccumv.2840
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-be_cont.25464:
-	load    3($sp), $i1
-	add     $i1, 1, $i2
-	li      4, $i12
-	cmp     $i2, $i12, $i12
-	bg      $i12, ble_else.25466
-	load    2($sp), $i1
+	bg      $i12, ble_else.18826
 	load    2($i1), $i3
 	add     $i3, $i2, $i12
 	load    0($i12), $i3
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bl      $i12, bge_else.25467
-	store   $i2, 7($sp)
+	bl      $i12, bge_else.18827
+	store   $i1, 0($sp)
+	store   $i2, 1($sp)
 	load    3($i1), $i3
 	add     $i3, $i2, $i12
 	load    0($i12), $i3
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25468
-	b       be_cont.25469
-be_else.25468:
-	load    0($sp), $i11
-	store   $ra, 8($sp)
-	load    0($i11), $i10
-	li      cls.25470, $ra
-	add     $sp, 9, $sp
-	jr      $i10
-cls.25470:
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-be_cont.25469:
-	load    7($sp), $i1
-	add     $i1, 1, $i2
-	load    2($sp), $i1
-	load    1($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25467:
-	ret
-ble_else.25466:
-	ret
-bge_else.25462:
-	ret
-ble_else.25461:
-	ret
-try_exploit_neighbors.3172:
-	load    3($i11), $i7
-	load    2($i11), $i8
-	load    1($i11), $i9
+	bne     $i12, be_else.18828
+	b       be_cont.18829
+be_else.18828:
+	load    5($i1), $i3
+	load    7($i1), $i4
+	load    1($i1), $i5
+	load    4($i1), $i6
+	store   $i6, 2($sp)
+	li      min_caml_diffuse_ray, $i6
+	add     $i3, $i2, $i12
+	load    0($i12), $i3
+	load    0($i3), $f1
+	store   $f1, 0($i6)
+	load    1($i3), $f1
+	store   $f1, 1($i6)
+	load    2($i3), $f1
+	store   $f1, 2($i6)
+	load    6($i1), $i1
+	load    0($i1), $i1
+	add     $i4, $i2, $i12
+	load    0($i12), $i3
+	add     $i5, $i2, $i12
+	load    0($i12), $i2
+	mov     $i3, $i10
+	mov     $i2, $i3
+	mov     $i10, $i2
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     trace_diffuse_ray_80percent.3223
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      min_caml_rgb, $i1
+	load    1($sp), $i2
+	load    2($sp), $i3
+	add     $i3, $i2, $i12
+	load    0($i12), $i2
+	li      min_caml_diffuse_ray, $i3
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     vecaccumv.2920
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+be_cont.18829:
+	load    1($sp), $i1
+	add     $i1, 1, $i1
+	li      4, $i12
+	cmp     $i1, $i12, $i12
+	bg      $i12, ble_else.18830
+	load    0($sp), $i2
+	load    2($i2), $i3
+	add     $i3, $i1, $i12
+	load    0($i12), $i3
+	li      0, $i12
+	cmp     $i3, $i12, $i12
+	bl      $i12, bge_else.18831
+	store   $i1, 3($sp)
+	load    3($i2), $i3
+	add     $i3, $i1, $i12
+	load    0($i12), $i3
+	li      0, $i12
+	cmp     $i3, $i12, $i12
+	bne     $i12, be_else.18832
+	b       be_cont.18833
+be_else.18832:
+	load    5($i2), $i3
+	load    7($i2), $i4
+	load    1($i2), $i5
+	load    4($i2), $i6
+	store   $i6, 4($sp)
+	li      min_caml_diffuse_ray, $i6
+	add     $i3, $i1, $i12
+	load    0($i12), $i3
+	load    0($i3), $f1
+	store   $f1, 0($i6)
+	load    1($i3), $f1
+	store   $f1, 1($i6)
+	load    2($i3), $f1
+	store   $f1, 2($i6)
+	load    6($i2), $i2
+	load    0($i2), $i2
 	add     $i4, $i1, $i12
-	load    0($i12), $i10
+	load    0($i12), $i3
+	add     $i5, $i1, $i12
+	load    0($i12), $i1
+	mov     $i3, $i10
+	mov     $i1, $i3
+	mov     $i2, $i1
+	mov     $i10, $i2
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     trace_diffuse_ray_80percent.3223
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	li      min_caml_rgb, $i1
+	load    3($sp), $i2
+	load    4($sp), $i3
+	add     $i3, $i2, $i12
+	load    0($i12), $i2
+	li      min_caml_diffuse_ray, $i3
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     vecaccumv.2920
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+be_cont.18833:
+	load    3($sp), $i1
+	add     $i1, 1, $i2
+	load    0($sp), $i1
+	b       do_without_neighbors.3236
+bge_else.18831:
+	ret
+ble_else.18830:
+	ret
+bge_else.18827:
+	ret
+ble_else.18826:
+	ret
+try_exploit_neighbors.3252:
+	add     $i4, $i1, $i12
+	load    0($i12), $i7
 	li      4, $i12
 	cmp     $i6, $i12, $i12
-	bg      $i12, ble_else.25475
-	store   $i8, 0($sp)
-	load    2($i10), $i8
+	bg      $i12, ble_else.18838
+	load    2($i7), $i8
 	add     $i8, $i6, $i12
 	load    0($i12), $i8
 	li      0, $i12
 	cmp     $i8, $i12, $i12
-	bl      $i12, bge_else.25476
-	store   $i2, 1($sp)
+	bl      $i12, bge_else.18839
 	add     $i4, $i1, $i12
-	load    0($i12), $i2
-	load    2($i2), $i2
-	add     $i2, $i6, $i12
-	load    0($i12), $i2
+	load    0($i12), $i8
+	load    2($i8), $i8
+	add     $i8, $i6, $i12
+	load    0($i12), $i8
 	add     $i3, $i1, $i12
-	load    0($i12), $i8
-	load    2($i8), $i8
-	add     $i8, $i6, $i12
-	load    0($i12), $i8
-	cmp     $i8, $i2, $i12
-	bne     $i12, be_else.25477
+	load    0($i12), $i9
+	load    2($i9), $i9
+	add     $i9, $i6, $i12
+	load    0($i12), $i9
+	cmp     $i9, $i8, $i12
+	bne     $i12, be_else.18840
 	add     $i5, $i1, $i12
-	load    0($i12), $i8
-	load    2($i8), $i8
-	add     $i8, $i6, $i12
-	load    0($i12), $i8
-	cmp     $i8, $i2, $i12
-	bne     $i12, be_else.25479
-	sub     $i1, 1, $i8
-	add     $i4, $i8, $i12
-	load    0($i12), $i8
-	load    2($i8), $i8
-	add     $i8, $i6, $i12
-	load    0($i12), $i8
-	cmp     $i8, $i2, $i12
-	bne     $i12, be_else.25481
-	add     $i1, 1, $i8
-	add     $i4, $i8, $i12
-	load    0($i12), $i8
-	load    2($i8), $i8
-	add     $i8, $i6, $i12
-	load    0($i12), $i8
-	cmp     $i8, $i2, $i12
-	bne     $i12, be_else.25483
-	li      1, $i2
-	b       be_cont.25484
-be_else.25483:
-	li      0, $i2
-be_cont.25484:
-	b       be_cont.25482
-be_else.25481:
-	li      0, $i2
-be_cont.25482:
-	b       be_cont.25480
-be_else.25479:
-	li      0, $i2
-be_cont.25480:
-	b       be_cont.25478
-be_else.25477:
-	li      0, $i2
-be_cont.25478:
+	load    0($i12), $i9
+	load    2($i9), $i9
+	add     $i9, $i6, $i12
+	load    0($i12), $i9
+	cmp     $i9, $i8, $i12
+	bne     $i12, be_else.18842
+	sub     $i1, 1, $i9
+	add     $i4, $i9, $i12
+	load    0($i12), $i9
+	load    2($i9), $i9
+	add     $i9, $i6, $i12
+	load    0($i12), $i9
+	cmp     $i9, $i8, $i12
+	bne     $i12, be_else.18844
+	add     $i1, 1, $i9
+	add     $i4, $i9, $i12
+	load    0($i12), $i9
+	load    2($i9), $i9
+	add     $i9, $i6, $i12
+	load    0($i12), $i9
+	cmp     $i9, $i8, $i12
+	bne     $i12, be_else.18846
+	li      1, $i8
+	b       be_cont.18847
+be_else.18846:
+	li      0, $i8
+be_cont.18847:
+	b       be_cont.18845
+be_else.18844:
+	li      0, $i8
+be_cont.18845:
+	b       be_cont.18843
+be_else.18842:
+	li      0, $i8
+be_cont.18843:
+	b       be_cont.18841
+be_else.18840:
+	li      0, $i8
+be_cont.18841:
 	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25485
+	cmp     $i8, $i12, $i12
+	bne     $i12, be_else.18848
 	add     $i4, $i1, $i12
 	load    0($i12), $i1
 	li      4, $i12
 	cmp     $i6, $i12, $i12
-	bg      $i12, ble_else.25486
+	bg      $i12, ble_else.18849
 	load    2($i1), $i2
 	add     $i2, $i6, $i12
 	load    0($i12), $i2
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25487
-	store   $i1, 2($sp)
-	store   $i7, 3($sp)
-	store   $i6, 4($sp)
+	bl      $i12, bge_else.18850
+	store   $i1, 0($sp)
+	store   $i6, 1($sp)
 	load    3($i1), $i2
 	add     $i2, $i6, $i12
 	load    0($i12), $i2
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25488
-	b       be_cont.25489
-be_else.25488:
-	mov     $i6, $i2
-	mov     $i9, $i11
-	store   $ra, 5($sp)
-	load    0($i11), $i10
-	li      cls.25490, $ra
-	add     $sp, 6, $sp
-	jr      $i10
-cls.25490:
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-be_cont.25489:
-	load    4($sp), $i1
+	bne     $i12, be_else.18851
+	b       be_cont.18852
+be_else.18851:
+	load    5($i1), $i2
+	load    7($i1), $i3
+	load    1($i1), $i4
+	load    4($i1), $i5
+	store   $i5, 2($sp)
+	li      min_caml_diffuse_ray, $i5
+	add     $i2, $i6, $i12
+	load    0($i12), $i2
+	load    0($i2), $f1
+	store   $f1, 0($i5)
+	load    1($i2), $f1
+	store   $f1, 1($i5)
+	load    2($i2), $f1
+	store   $f1, 2($i5)
+	load    6($i1), $i1
+	load    0($i1), $i1
+	add     $i3, $i6, $i12
+	load    0($i12), $i2
+	add     $i4, $i6, $i12
+	load    0($i12), $i3
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     trace_diffuse_ray_80percent.3223
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      min_caml_rgb, $i1
+	load    1($sp), $i2
+	load    2($sp), $i3
+	add     $i3, $i2, $i12
+	load    0($i12), $i2
+	li      min_caml_diffuse_ray, $i3
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     vecaccumv.2920
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+be_cont.18852:
+	load    1($sp), $i1
 	add     $i1, 1, $i2
-	load    2($sp), $i1
-	load    3($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25487:
+	load    0($sp), $i1
+	b       do_without_neighbors.3236
+bge_else.18850:
 	ret
-ble_else.25486:
+ble_else.18849:
 	ret
-be_else.25485:
-	store   $i11, 5($sp)
-	store   $i7, 3($sp)
-	store   $i5, 6($sp)
-	store   $i3, 7($sp)
-	store   $i1, 8($sp)
-	store   $i4, 9($sp)
-	store   $i6, 4($sp)
-	load    3($i10), $i2
+be_else.18848:
+	store   $i2, 3($sp)
+	store   $i5, 4($sp)
+	store   $i3, 5($sp)
+	store   $i1, 6($sp)
+	store   $i4, 7($sp)
+	store   $i6, 1($sp)
+	load    3($i7), $i2
 	add     $i2, $i6, $i12
 	load    0($i12), $i2
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25493
-	b       be_cont.25494
-be_else.25493:
-	load    0($sp), $i11
+	bne     $i12, be_else.18855
+	b       be_cont.18856
+be_else.18855:
 	mov     $i3, $i2
 	mov     $i4, $i3
 	mov     $i5, $i4
 	mov     $i6, $i5
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.25495, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.25495:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-be_cont.25494:
-	load    4($sp), $i1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     calc_diffuse_using_5points.3230
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+be_cont.18856:
+	load    1($sp), $i1
 	add     $i1, 1, $i2
-	load    8($sp), $i1
-	load    9($sp), $i3
+	load    6($sp), $i1
+	load    7($sp), $i3
 	add     $i3, $i1, $i12
 	load    0($i12), $i4
 	li      4, $i12
 	cmp     $i2, $i12, $i12
-	bg      $i12, ble_else.25496
+	bg      $i12, ble_else.18857
 	load    2($i4), $i5
 	add     $i5, $i2, $i12
 	load    0($i12), $i5
 	li      0, $i12
 	cmp     $i5, $i12, $i12
-	bl      $i12, bge_else.25497
+	bl      $i12, bge_else.18858
 	add     $i3, $i1, $i12
 	load    0($i12), $i5
 	load    2($i5), $i5
 	add     $i5, $i2, $i12
 	load    0($i12), $i5
-	load    7($sp), $i6
+	load    5($sp), $i6
 	add     $i6, $i1, $i12
 	load    0($i12), $i7
 	load    2($i7), $i7
 	add     $i7, $i2, $i12
 	load    0($i12), $i7
 	cmp     $i7, $i5, $i12
-	bne     $i12, be_else.25498
-	load    6($sp), $i7
+	bne     $i12, be_else.18859
+	load    4($sp), $i7
 	add     $i7, $i1, $i12
 	load    0($i12), $i7
 	load    2($i7), $i7
 	add     $i7, $i2, $i12
 	load    0($i12), $i7
 	cmp     $i7, $i5, $i12
-	bne     $i12, be_else.25500
+	bne     $i12, be_else.18861
 	sub     $i1, 1, $i7
 	add     $i3, $i7, $i12
 	load    0($i12), $i7
@@ -12873,7 +9063,7 @@ be_cont.25494:
 	add     $i7, $i2, $i12
 	load    0($i12), $i7
 	cmp     $i7, $i5, $i12
-	bne     $i12, be_else.25502
+	bne     $i12, be_else.18863
 	add     $i1, 1, $i7
 	add     $i3, $i7, $i12
 	load    0($i12), $i7
@@ -12881,74 +9071,66 @@ be_cont.25494:
 	add     $i7, $i2, $i12
 	load    0($i12), $i7
 	cmp     $i7, $i5, $i12
-	bne     $i12, be_else.25504
+	bne     $i12, be_else.18865
 	li      1, $i5
-	b       be_cont.25505
-be_else.25504:
+	b       be_cont.18866
+be_else.18865:
 	li      0, $i5
-be_cont.25505:
-	b       be_cont.25503
-be_else.25502:
+be_cont.18866:
+	b       be_cont.18864
+be_else.18863:
 	li      0, $i5
-be_cont.25503:
-	b       be_cont.25501
-be_else.25500:
+be_cont.18864:
+	b       be_cont.18862
+be_else.18861:
 	li      0, $i5
-be_cont.25501:
-	b       be_cont.25499
-be_else.25498:
+be_cont.18862:
+	b       be_cont.18860
+be_else.18859:
 	li      0, $i5
-be_cont.25499:
+be_cont.18860:
 	li      0, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25506
+	bne     $i12, be_else.18867
 	add     $i3, $i1, $i12
 	load    0($i12), $i1
-	load    3($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-be_else.25506:
-	store   $i2, 10($sp)
+	b       do_without_neighbors.3236
+be_else.18867:
+	store   $i2, 8($sp)
 	load    3($i4), $i4
 	add     $i4, $i2, $i12
 	load    0($i12), $i4
 	li      0, $i12
 	cmp     $i4, $i12, $i12
-	bne     $i12, be_else.25507
-	b       be_cont.25508
-be_else.25507:
-	load    6($sp), $i4
-	load    0($sp), $i11
+	bne     $i12, be_else.18868
+	b       be_cont.18869
+be_else.18868:
+	load    4($sp), $i4
 	mov     $i2, $i5
 	mov     $i6, $i2
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.25509, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.25509:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-be_cont.25508:
-	load    10($sp), $i1
-	add     $i1, 1, $i6
+	store   $ra, 9($sp)
+	add     $sp, 10, $sp
+	jal     calc_diffuse_using_5points.3230
+	sub     $sp, 10, $sp
+	load    9($sp), $ra
+be_cont.18869:
 	load    8($sp), $i1
-	load    1($sp), $i2
-	load    7($sp), $i3
-	load    9($sp), $i4
-	load    6($sp), $i5
-	load    5($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25497:
+	add     $i1, 1, $i6
+	load    6($sp), $i1
+	load    3($sp), $i2
+	load    5($sp), $i3
+	load    7($sp), $i4
+	load    4($sp), $i5
+	b       try_exploit_neighbors.3252
+bge_else.18858:
 	ret
-ble_else.25496:
+ble_else.18857:
 	ret
-bge_else.25476:
+bge_else.18839:
 	ret
-ble_else.25475:
+ble_else.18838:
 	ret
-write_ppm_header.3179:
+write_ppm_header.3259:
 	li      80, $i1
 	store   $ra, 0($sp)
 	add     $sp, 1, $sp
@@ -13035,452 +9217,251 @@ write_ppm_header.3179:
 	load    0($sp), $ra
 	li      10, $i1
 	b       min_caml_write
-write_rgb.3183:
-	load    1($i11), $i1
-	store   $i1, 0($sp)
+write_rgb.3263:
+	li      min_caml_rgb, $i1
 	load    0($i1), $f1
-	store   $ra, 1($sp)
-	add     $sp, 2, $sp
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
 	jal     min_caml_int_of_float
-	sub     $sp, 2, $sp
-	load    1($sp), $ra
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
 	li      255, $i12
 	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25514
+	bg      $i12, ble_else.18874
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25516
-	b       bge_cont.25517
-bge_else.25516:
+	bl      $i12, bge_else.18876
+	b       bge_cont.18877
+bge_else.18876:
 	li      0, $i1
-bge_cont.25517:
-	b       ble_cont.25515
-ble_else.25514:
+bge_cont.18877:
+	b       ble_cont.18875
+ble_else.18874:
 	li      255, $i1
-ble_cont.25515:
-	store   $ra, 1($sp)
-	add     $sp, 2, $sp
+ble_cont.18875:
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
 	jal     min_caml_write
-	sub     $sp, 2, $sp
-	load    1($sp), $ra
-	load    0($sp), $i1
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	li      min_caml_rgb, $i1
 	load    1($i1), $f1
-	store   $ra, 1($sp)
-	add     $sp, 2, $sp
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
 	jal     min_caml_int_of_float
-	sub     $sp, 2, $sp
-	load    1($sp), $ra
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
 	li      255, $i12
 	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25518
+	bg      $i12, ble_else.18878
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25520
-	b       bge_cont.25521
-bge_else.25520:
+	bl      $i12, bge_else.18880
+	b       bge_cont.18881
+bge_else.18880:
 	li      0, $i1
-bge_cont.25521:
-	b       ble_cont.25519
-ble_else.25518:
+bge_cont.18881:
+	b       ble_cont.18879
+ble_else.18878:
 	li      255, $i1
-ble_cont.25519:
-	store   $ra, 1($sp)
-	add     $sp, 2, $sp
+ble_cont.18879:
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
 	jal     min_caml_write
-	sub     $sp, 2, $sp
-	load    1($sp), $ra
-	load    0($sp), $i1
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
+	li      min_caml_rgb, $i1
 	load    2($i1), $f1
-	store   $ra, 1($sp)
-	add     $sp, 2, $sp
+	store   $ra, 0($sp)
+	add     $sp, 1, $sp
 	jal     min_caml_int_of_float
-	sub     $sp, 2, $sp
-	load    1($sp), $ra
+	sub     $sp, 1, $sp
+	load    0($sp), $ra
 	li      255, $i12
 	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25522
+	bg      $i12, ble_else.18882
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25524
-	b       bge_cont.25525
-bge_else.25524:
+	bl      $i12, bge_else.18884
+	b       bge_cont.18885
+bge_else.18884:
 	li      0, $i1
-bge_cont.25525:
-	b       ble_cont.25523
-ble_else.25522:
+bge_cont.18885:
+	b       ble_cont.18883
+ble_else.18882:
 	li      255, $i1
-ble_cont.25523:
+ble_cont.18883:
 	b       min_caml_write
-pretrace_diffuse_rays.3185:
-	load    7($i11), $i3
-	load    6($i11), $i4
-	load    5($i11), $i5
-	load    4($i11), $i6
-	load    3($i11), $i7
-	load    2($i11), $i8
-	load    1($i11), $i9
+pretrace_diffuse_rays.3265:
 	li      4, $i12
 	cmp     $i2, $i12, $i12
-	bg      $i12, ble_else.25526
-	load    2($i1), $i10
-	add     $i10, $i2, $i12
-	load    0($i12), $i10
-	li      0, $i12
-	cmp     $i10, $i12, $i12
-	bl      $i12, bge_else.25527
-	store   $i7, 0($sp)
-	store   $i3, 1($sp)
-	store   $i5, 2($sp)
-	store   $i6, 3($sp)
-	store   $i4, 4($sp)
-	store   $i8, 5($sp)
-	store   $i9, 6($sp)
-	store   $i11, 7($sp)
-	store   $i2, 8($sp)
-	load    3($i1), $i3
-	add     $i3, $i2, $i12
-	load    0($i12), $i3
-	li      0, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25528
-	b       be_cont.25529
-be_else.25528:
-	store   $i1, 9($sp)
-	load    6($i1), $i3
-	load    0($i3), $i3
-	li      l.14001, $i7
-	load    0($i7), $f1
-	store   $f1, 0($i9)
-	store   $f1, 1($i9)
-	store   $f1, 2($i9)
-	load    7($i1), $i7
-	load    1($i1), $i1
-	add     $i8, $i3, $i12
-	load    0($i12), $i3
-	store   $i3, 10($sp)
-	add     $i7, $i2, $i12
-	load    0($i12), $i3
-	store   $i3, 11($sp)
-	add     $i1, $i2, $i12
-	load    0($i12), $i1
-	store   $i1, 12($sp)
-	load    0($i1), $f1
-	store   $f1, 0($i4)
-	load    1($i1), $f1
-	store   $f1, 1($i4)
-	load    2($i1), $f1
-	store   $f1, 2($i4)
-	load    0($i6), $i2
-	sub     $i2, 1, $i2
-	mov     $i5, $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.25530, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.25530:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	li      118, $i4
-	load    10($sp), $i1
-	load    11($sp), $i2
-	load    12($sp), $i3
-	load    0($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.25531, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.25531:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	load    9($sp), $i1
-	load    5($i1), $i2
-	load    8($sp), $i3
-	add     $i2, $i3, $i12
-	load    0($i12), $i2
-	load    6($sp), $i3
-	load    0($i3), $f1
-	store   $f1, 0($i2)
-	load    1($i3), $f1
-	store   $f1, 1($i2)
-	load    2($i3), $f1
-	store   $f1, 2($i2)
-be_cont.25529:
-	load    8($sp), $i2
-	add     $i2, 1, $i2
-	li      4, $i12
-	cmp     $i2, $i12, $i12
-	bg      $i12, ble_else.25532
+	bg      $i12, ble_else.18886
 	load    2($i1), $i3
 	add     $i3, $i2, $i12
 	load    0($i12), $i3
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bl      $i12, bge_else.25533
-	store   $i2, 13($sp)
+	bl      $i12, bge_else.18887
+	store   $i2, 0($sp)
 	load    3($i1), $i3
 	add     $i3, $i2, $i12
 	load    0($i12), $i3
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25534
-	b       be_cont.25535
-be_else.25534:
-	store   $i1, 9($sp)
+	bne     $i12, be_else.18888
+	b       be_cont.18889
+be_else.18888:
+	store   $i1, 1($sp)
 	load    6($i1), $i3
 	load    0($i3), $i3
-	li      l.14001, $i4
-	load    0($i4), $f1
-	load    6($sp), $i4
+	li      min_caml_diffuse_ray, $i4
+	li      l.13298, $i5
+	load    0($i5), $f1
 	store   $f1, 0($i4)
 	store   $f1, 1($i4)
 	store   $f1, 2($i4)
 	load    7($i1), $i4
 	load    1($i1), $i1
-	load    5($sp), $i5
+	li      min_caml_dirvecs, $i5
 	add     $i5, $i3, $i12
 	load    0($i12), $i3
-	store   $i3, 14($sp)
+	store   $i3, 2($sp)
 	add     $i4, $i2, $i12
 	load    0($i12), $i3
-	store   $i3, 15($sp)
+	store   $i3, 3($sp)
 	add     $i1, $i2, $i12
 	load    0($i12), $i1
-	store   $i1, 16($sp)
+	store   $i1, 4($sp)
+	li      min_caml_startp_fast, $i2
 	load    0($i1), $f1
-	load    4($sp), $i2
 	store   $f1, 0($i2)
 	load    1($i1), $f1
 	store   $f1, 1($i2)
 	load    2($i1), $f1
 	store   $f1, 2($i2)
-	load    3($sp), $i2
+	li      min_caml_n_objects, $i2
 	load    0($i2), $i2
 	sub     $i2, 1, $i2
-	load    2($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25536, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25536:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	load    14($sp), $i1
-	load    118($i1), $i2
-	load    0($i2), $i2
-	load    0($i2), $f1
-	load    15($sp), $i3
-	load    0($i3), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i2), $f2
-	load    1($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i2), $f2
-	load    2($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25537
-	li      0, $i2
-	b       ble_cont.25538
-ble_else.25537:
-	li      1, $i2
-ble_cont.25538:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25539
-	load    118($i1), $i1
-	li      l.14354, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25541, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25541:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	b       be_cont.25540
-be_else.25539:
-	load    119($i1), $i1
-	li      l.14350, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    1($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25542, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25542:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-be_cont.25540:
-	li      116, $i4
-	load    14($sp), $i1
-	load    15($sp), $i2
-	load    16($sp), $i3
-	load    0($sp), $i11
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25543, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25543:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	load    9($sp), $i1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     setup_startp_constants.3116
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	li      118, $i4
+	load    2($sp), $i1
+	load    3($sp), $i2
+	load    4($sp), $i3
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     iter_trace_diffuse_rays.3214
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    1($sp), $i1
 	load    5($i1), $i2
-	load    13($sp), $i3
+	load    0($sp), $i3
 	add     $i2, $i3, $i12
 	load    0($i12), $i2
-	load    6($sp), $i3
+	li      min_caml_diffuse_ray, $i3
 	load    0($i3), $f1
 	store   $f1, 0($i2)
 	load    1($i3), $f1
 	store   $f1, 1($i2)
 	load    2($i3), $f1
 	store   $f1, 2($i2)
-be_cont.25535:
-	load    13($sp), $i2
+be_cont.18889:
+	load    0($sp), $i2
 	add     $i2, 1, $i2
-	load    7($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25533:
+	b       pretrace_diffuse_rays.3265
+bge_else.18887:
 	ret
-ble_else.25532:
+ble_else.18886:
 	ret
-bge_else.25527:
-	ret
-ble_else.25526:
-	ret
-pretrace_pixels.3188:
-	store   $i3, 0($sp)
-	store   $i11, 1($sp)
-	load    16($i11), $i3
-	load    15($i11), $i4
-	store   $i4, 2($sp)
-	load    14($i11), $i4
-	store   $i4, 3($sp)
-	load    13($i11), $i4
-	store   $i4, 4($sp)
-	load    12($i11), $i4
-	load    11($i11), $i5
-	store   $i5, 5($sp)
-	load    10($i11), $i5
-	load    9($i11), $i6
-	load    8($i11), $i7
-	load    7($i11), $i8
-	load    6($i11), $i9
-	store   $i9, 6($sp)
-	load    5($i11), $i9
-	store   $i9, 7($sp)
-	load    4($i11), $i9
-	store   $i9, 8($sp)
-	load    3($i11), $i9
-	load    2($i11), $i10
-	load    1($i11), $i11
+pretrace_pixels.3268:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25548
-	store   $i10, 9($sp)
-	store   $i11, 10($sp)
-	store   $i2, 11($sp)
-	store   $i1, 12($sp)
-	store   $i4, 13($sp)
-	store   $i3, 14($sp)
-	store   $i7, 15($sp)
-	store   $f3, 16($sp)
-	store   $f2, 17($sp)
-	store   $i8, 18($sp)
-	store   $f1, 19($sp)
-	store   $i5, 20($sp)
-	load    0($i6), $f1
-	store   $f1, 21($sp)
-	load    0($i9), $i1
-	sub     $i2, $i1, $i1
-	store   $ra, 22($sp)
-	add     $sp, 23, $sp
-	jal     min_caml_float_of_int
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	load    21($sp), $f2
-	fmul    $f2, $f1, $f1
-	load    20($sp), $i1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f2
-	load    19($sp), $f3
-	fadd    $f2, $f3, $f2
-	load    18($sp), $i2
-	store   $f2, 0($i2)
-	load    1($i1), $f2
-	fmul    $f1, $f2, $f2
-	load    17($sp), $f3
-	fadd    $f2, $f3, $f2
-	store   $f2, 1($i2)
-	load    2($i1), $f2
-	fmul    $f1, $f2, $f1
-	load    16($sp), $f2
-	fadd    $f1, $f2, $f1
-	store   $f1, 2($i2)
-	li      0, $i1
-	mov     $i2, $i10
-	mov     $i1, $i2
-	mov     $i10, $i1
-	store   $ra, 22($sp)
-	add     $sp, 23, $sp
-	jal     vecunit_sgn.2816
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	li      l.14001, $i1
+	bl      $i12, bge_else.18892
+	store   $i3, 0($sp)
+	store   $i2, 1($sp)
+	store   $i1, 2($sp)
+	store   $f3, 3($sp)
+	store   $f2, 4($sp)
+	store   $f1, 5($sp)
+	li      min_caml_scan_pitch, $i1
 	load    0($i1), $f1
-	load    15($sp), $i1
+	store   $f1, 6($sp)
+	li      min_caml_image_center, $i1
+	load    0($i1), $i1
+	sub     $i2, $i1, $i1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     min_caml_float_of_int
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	load    6($sp), $f2
+	fmul    $f2, $f1, $f1
+	li      min_caml_ptrace_dirvec, $i1
+	li      min_caml_screenx_dir, $i2
+	load    0($i2), $f2
+	fmul    $f1, $f2, $f2
+	load    5($sp), $f3
+	fadd    $f2, $f3, $f2
+	store   $f2, 0($i1)
+	li      min_caml_ptrace_dirvec, $i1
+	li      min_caml_screenx_dir, $i2
+	load    1($i2), $f2
+	fmul    $f1, $f2, $f2
+	load    4($sp), $f3
+	fadd    $f2, $f3, $f2
+	store   $f2, 1($i1)
+	li      min_caml_ptrace_dirvec, $i1
+	li      min_caml_screenx_dir, $i2
+	load    2($i2), $f2
+	fmul    $f1, $f2, $f1
+	load    3($sp), $f2
+	fadd    $f1, $f2, $f1
+	store   $f1, 2($i1)
+	li      min_caml_ptrace_dirvec, $i1
+	li      0, $i2
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     vecunit_sgn.2896
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	li      min_caml_rgb, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
 	store   $f1, 0($i1)
 	store   $f1, 1($i1)
 	store   $f1, 2($i1)
-	load    14($sp), $i1
-	load    0($i1), $f1
-	load    13($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	li      0, $i1
-	li      l.14035, $i2
+	li      min_caml_startp, $i1
+	li      min_caml_viewpoint, $i2
 	load    0($i2), $f1
-	load    11($sp), $i2
-	load    12($sp), $i3
-	add     $i3, $i2, $i12
+	store   $f1, 0($i1)
+	load    1($i2), $f1
+	store   $f1, 1($i1)
+	load    2($i2), $f1
+	store   $f1, 2($i1)
+	li      0, $i1
+	li      l.13301, $i2
+	load    0($i2), $f1
+	li      min_caml_ptrace_dirvec, $i2
+	load    1($sp), $i3
+	load    2($sp), $i4
+	add     $i4, $i3, $i12
 	load    0($i12), $i3
-	li      l.14001, $i2
-	load    0($i2), $f2
-	load    18($sp), $i2
-	load    2($sp), $i11
-	store   $ra, 22($sp)
-	load    0($i11), $i10
-	li      cls.25549, $ra
-	add     $sp, 23, $sp
-	jr      $i10
-cls.25549:
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	load    11($sp), $i1
-	load    12($sp), $i2
+	li      l.13298, $i4
+	load    0($i4), $f2
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     trace_ray.3205
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	load    1($sp), $i1
+	load    2($sp), $i2
 	add     $i2, $i1, $i12
 	load    0($i12), $i3
 	load    0($i3), $i3
-	load    15($sp), $i4
+	li      min_caml_rgb, $i4
 	load    0($i4), $f1
 	store   $f1, 0($i3)
 	load    1($i4), $f1
@@ -13494,846 +9475,639 @@ cls.25549:
 	store   $i4, 0($i3)
 	add     $i2, $i1, $i12
 	load    0($i12), $i1
-	load    2($i1), $i2
-	load    0($i2), $i2
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25550
-	load    3($i1), $i2
-	load    0($i2), $i2
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25552
-	b       be_cont.25553
-be_else.25552:
-	store   $i1, 22($sp)
-	load    6($i1), $i2
-	load    0($i2), $i2
-	li      l.14001, $i3
-	load    0($i3), $f1
-	load    10($sp), $i3
-	store   $f1, 0($i3)
-	store   $f1, 1($i3)
-	store   $f1, 2($i3)
-	load    7($i1), $i3
-	load    1($i1), $i1
-	load    9($sp), $i4
-	add     $i4, $i2, $i12
-	load    0($i12), $i2
-	store   $i2, 23($sp)
-	load    0($i3), $i2
-	store   $i2, 24($sp)
-	load    0($i1), $i1
-	store   $i1, 25($sp)
-	load    0($i1), $f1
-	load    4($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    7($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    5($sp), $i11
-	store   $ra, 26($sp)
-	load    0($i11), $i10
-	li      cls.25554, $ra
-	add     $sp, 27, $sp
-	jr      $i10
-cls.25554:
-	sub     $sp, 27, $sp
-	load    26($sp), $ra
-	load    23($sp), $i1
-	load    118($i1), $i2
-	load    0($i2), $i2
-	load    0($i2), $f1
-	load    24($sp), $i3
-	load    0($i3), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i2), $f2
-	load    1($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i2), $f2
-	load    2($i3), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	li      l.14001, $i2
-	load    0($i2), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25555
 	li      0, $i2
-	b       ble_cont.25556
-ble_else.25555:
-	li      1, $i2
-ble_cont.25556:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25557
-	load    118($i1), $i1
-	li      l.14354, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    3($sp), $i11
-	store   $ra, 26($sp)
-	load    0($i11), $i10
-	li      cls.25559, $ra
-	add     $sp, 27, $sp
-	jr      $i10
-cls.25559:
-	sub     $sp, 27, $sp
-	load    26($sp), $ra
-	b       be_cont.25558
-be_else.25557:
-	load    119($i1), $i1
-	li      l.14350, $i2
-	load    0($i2), $f2
-	finv    $f2, $f15
-	fmul    $f1, $f15, $f1
-	load    3($sp), $i11
-	store   $ra, 26($sp)
-	load    0($i11), $i10
-	li      cls.25560, $ra
-	add     $sp, 27, $sp
-	jr      $i10
-cls.25560:
-	sub     $sp, 27, $sp
-	load    26($sp), $ra
-be_cont.25558:
-	li      116, $i4
-	load    23($sp), $i1
-	load    24($sp), $i2
-	load    25($sp), $i3
-	load    8($sp), $i11
-	store   $ra, 26($sp)
-	load    0($i11), $i10
-	li      cls.25561, $ra
-	add     $sp, 27, $sp
-	jr      $i10
-cls.25561:
-	sub     $sp, 27, $sp
-	load    26($sp), $ra
-	load    22($sp), $i1
-	load    5($i1), $i2
-	load    0($i2), $i2
-	load    10($sp), $i3
-	load    0($i3), $f1
-	store   $f1, 0($i2)
-	load    1($i3), $f1
-	store   $f1, 1($i2)
-	load    2($i3), $f1
-	store   $f1, 2($i2)
-be_cont.25553:
-	li      1, $i2
-	load    6($sp), $i11
-	store   $ra, 26($sp)
-	load    0($i11), $i10
-	li      cls.25562, $ra
-	add     $sp, 27, $sp
-	jr      $i10
-cls.25562:
-	sub     $sp, 27, $sp
-	load    26($sp), $ra
-	b       bge_cont.25551
-bge_else.25550:
-bge_cont.25551:
-	load    11($sp), $i1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     pretrace_diffuse_rays.3265
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	load    1($sp), $i1
 	sub     $i1, 1, $i2
 	load    0($sp), $i1
 	add     $i1, 1, $i1
 	li      5, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25563
+	bl      $i12, bge_else.18893
 	sub     $i1, 5, $i1
-	b       bge_cont.25564
-bge_else.25563:
-bge_cont.25564:
+	b       bge_cont.18894
+bge_else.18893:
+bge_cont.18894:
 	mov     $i1, $i3
-	load    19($sp), $f1
-	load    17($sp), $f2
-	load    16($sp), $f3
-	load    12($sp), $i1
-	load    1($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25548:
+	load    5($sp), $f1
+	load    4($sp), $f2
+	load    3($sp), $f3
+	load    2($sp), $i1
+	b       pretrace_pixels.3268
+bge_else.18892:
 	ret
-pretrace_line.3195:
+pretrace_line.3275:
 	store   $i3, 0($sp)
 	store   $i1, 1($sp)
-	load    6($i11), $i1
-	store   $i1, 2($sp)
-	load    5($i11), $i1
-	store   $i1, 3($sp)
-	load    4($i11), $i1
-	load    3($i11), $i3
-	store   $i3, 4($sp)
-	load    2($i11), $i3
-	store   $i3, 5($sp)
-	load    1($i11), $i3
+	li      min_caml_scan_pitch, $i1
 	load    0($i1), $f1
-	store   $f1, 6($sp)
-	load    1($i3), $i1
+	store   $f1, 2($sp)
+	li      min_caml_image_center, $i1
+	load    1($i1), $i1
 	sub     $i2, $i1, $i1
-	store   $ra, 7($sp)
-	add     $sp, 8, $sp
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
 	jal     min_caml_float_of_int
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	load    6($sp), $f2
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	load    2($sp), $f2
 	fmul    $f2, $f1, $f1
-	load    3($sp), $i1
+	li      min_caml_screeny_dir, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f2
-	load    2($sp), $i2
-	load    0($i2), $f3
+	li      min_caml_screenz_dir, $i1
+	load    0($i1), $f3
 	fadd    $f2, $f3, $f2
+	li      min_caml_screeny_dir, $i1
 	load    1($i1), $f3
 	fmul    $f1, $f3, $f3
-	load    1($i2), $f4
+	li      min_caml_screenz_dir, $i1
+	load    1($i1), $f4
 	fadd    $f3, $f4, $f3
+	li      min_caml_screeny_dir, $i1
 	load    2($i1), $f4
 	fmul    $f1, $f4, $f1
-	load    2($i2), $f4
+	li      min_caml_screenz_dir, $i1
+	load    2($i1), $f4
 	fadd    $f1, $f4, $f1
-	load    5($sp), $i1
+	li      min_caml_image_size, $i1
 	load    0($i1), $i1
 	sub     $i1, 1, $i2
 	load    1($sp), $i1
 	load    0($sp), $i3
-	load    4($sp), $i11
 	mov     $f3, $f14
 	mov     $f1, $f3
 	mov     $f2, $f1
 	mov     $f14, $f2
-	load    0($i11), $i10
-	jr      $i10
-scan_pixel.3199:
-	load    7($i11), $i6
-	load    6($i11), $i7
-	store   $i7, 0($sp)
-	load    5($i11), $i7
-	load    4($i11), $i8
-	load    3($i11), $i9
-	load    2($i11), $i10
-	store   $i10, 1($sp)
-	load    1($i11), $i10
-	store   $i10, 2($sp)
-	load    0($i8), $i10
-	cmp     $i10, $i1, $i12
-	bg      $i12, ble_else.25566
+	b       pretrace_pixels.3268
+scan_pixel.3279:
+	li      min_caml_image_size, $i6
+	load    0($i6), $i6
+	cmp     $i6, $i1, $i12
+	bg      $i12, ble_else.18896
 	ret
-ble_else.25566:
-	store   $i3, 3($sp)
-	store   $i11, 4($sp)
-	store   $i6, 5($sp)
-	store   $i9, 6($sp)
-	store   $i2, 7($sp)
-	store   $i4, 8($sp)
-	store   $i8, 9($sp)
-	store   $i1, 10($sp)
-	store   $i7, 11($sp)
-	store   $i5, 12($sp)
-	add     $i4, $i1, $i12
-	load    0($i12), $i5
-	load    0($i5), $i5
-	load    0($i5), $f1
-	store   $f1, 0($i7)
-	load    1($i5), $f1
-	store   $f1, 1($i7)
-	load    2($i5), $f1
-	store   $f1, 2($i7)
-	load    1($i8), $i5
-	add     $i2, 1, $i6
-	cmp     $i5, $i6, $i12
-	bg      $i12, ble_else.25568
-	li      0, $i5
-	b       ble_cont.25569
-ble_else.25568:
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bg      $i12, ble_else.25570
-	li      0, $i5
-	b       ble_cont.25571
-ble_else.25570:
-	load    0($i8), $i5
-	add     $i1, 1, $i6
-	cmp     $i5, $i6, $i12
-	bg      $i12, ble_else.25572
-	li      0, $i5
-	b       ble_cont.25573
-ble_else.25572:
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25574
-	li      0, $i5
-	b       ble_cont.25575
-ble_else.25574:
-	li      1, $i5
-ble_cont.25575:
-ble_cont.25573:
-ble_cont.25571:
-ble_cont.25569:
-	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25576
-	add     $i4, $i1, $i12
-	load    0($i12), $i1
-	li      0, $i2
-	load    2($i1), $i3
-	load    0($i3), $i3
-	li      0, $i12
-	cmp     $i3, $i12, $i12
-	bl      $i12, bge_else.25578
-	store   $i1, 13($sp)
-	load    3($i1), $i3
-	load    0($i3), $i3
-	li      0, $i12
-	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25580
-	b       be_cont.25581
-be_else.25580:
-	load    2($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25582, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25582:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-be_cont.25581:
-	li      1, $i2
-	load    13($sp), $i1
-	load    6($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25583, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25583:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	b       bge_cont.25579
-bge_else.25578:
-bge_cont.25579:
-	b       be_cont.25577
-be_else.25576:
-	li      0, $i5
-	add     $i4, $i1, $i12
-	load    0($i12), $i6
-	load    2($i6), $i7
-	load    0($i7), $i7
-	li      0, $i12
-	cmp     $i7, $i12, $i12
-	bl      $i12, bge_else.25584
+ble_else.18896:
+	store   $i5, 0($sp)
+	store   $i3, 1($sp)
+	store   $i2, 2($sp)
+	store   $i4, 3($sp)
+	store   $i1, 4($sp)
+	li      min_caml_rgb, $i6
 	add     $i4, $i1, $i12
 	load    0($i12), $i7
-	load    2($i7), $i7
 	load    0($i7), $i7
-	add     $i3, $i1, $i12
-	load    0($i12), $i8
-	load    2($i8), $i8
-	load    0($i8), $i8
-	cmp     $i8, $i7, $i12
-	bne     $i12, be_else.25586
-	load    12($sp), $i8
-	add     $i8, $i1, $i12
-	load    0($i12), $i8
-	load    2($i8), $i8
-	load    0($i8), $i8
-	cmp     $i8, $i7, $i12
-	bne     $i12, be_else.25588
-	sub     $i1, 1, $i8
-	add     $i4, $i8, $i12
-	load    0($i12), $i8
-	load    2($i8), $i8
-	load    0($i8), $i8
-	cmp     $i8, $i7, $i12
-	bne     $i12, be_else.25590
-	add     $i1, 1, $i8
-	add     $i4, $i8, $i12
-	load    0($i12), $i8
-	load    2($i8), $i8
-	load    0($i8), $i8
-	cmp     $i8, $i7, $i12
-	bne     $i12, be_else.25592
-	li      1, $i7
-	b       be_cont.25593
-be_else.25592:
-	li      0, $i7
-be_cont.25593:
-	b       be_cont.25591
-be_else.25590:
-	li      0, $i7
-be_cont.25591:
-	b       be_cont.25589
-be_else.25588:
-	li      0, $i7
-be_cont.25589:
-	b       be_cont.25587
-be_else.25586:
-	li      0, $i7
-be_cont.25587:
+	load    0($i7), $f1
+	store   $f1, 0($i6)
+	load    1($i7), $f1
+	store   $f1, 1($i6)
+	load    2($i7), $f1
+	store   $f1, 2($i6)
+	li      min_caml_image_size, $i6
+	load    1($i6), $i6
+	add     $i2, 1, $i7
+	cmp     $i6, $i7, $i12
+	bg      $i12, ble_else.18898
+	li      0, $i6
+	b       ble_cont.18899
+ble_else.18898:
 	li      0, $i12
-	cmp     $i7, $i12, $i12
-	bne     $i12, be_else.25594
+	cmp     $i2, $i12, $i12
+	bg      $i12, ble_else.18900
+	li      0, $i6
+	b       ble_cont.18901
+ble_else.18900:
+	li      min_caml_image_size, $i6
+	load    0($i6), $i6
+	add     $i1, 1, $i7
+	cmp     $i6, $i7, $i12
+	bg      $i12, ble_else.18902
+	li      0, $i6
+	b       ble_cont.18903
+ble_else.18902:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bg      $i12, ble_else.18904
+	li      0, $i6
+	b       ble_cont.18905
+ble_else.18904:
+	li      1, $i6
+ble_cont.18905:
+ble_cont.18903:
+ble_cont.18901:
+ble_cont.18899:
+	li      0, $i12
+	cmp     $i6, $i12, $i12
+	bne     $i12, be_else.18906
 	add     $i4, $i1, $i12
 	load    0($i12), $i1
-	mov     $i5, $i2
-	mov     $i9, $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25596, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25596:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	b       be_cont.25595
-be_else.25594:
-	load    3($i6), $i2
+	load    2($i1), $i2
 	load    0($i2), $i2
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25597
-	b       be_cont.25598
-be_else.25597:
-	load    12($sp), $i2
-	load    1($sp), $i11
-	mov     $i4, $i10
-	mov     $i2, $i4
+	bl      $i12, bge_else.18908
+	store   $i1, 5($sp)
+	load    3($i1), $i2
+	load    0($i2), $i2
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18910
+	b       be_cont.18911
+be_else.18910:
+	load    5($i1), $i2
+	load    7($i1), $i3
+	load    1($i1), $i4
+	load    4($i1), $i5
+	store   $i5, 6($sp)
+	li      min_caml_diffuse_ray, $i5
+	load    0($i2), $i2
+	load    0($i2), $f1
+	store   $f1, 0($i5)
+	load    1($i2), $f1
+	store   $f1, 1($i5)
+	load    2($i2), $f1
+	store   $f1, 2($i5)
+	load    6($i1), $i1
+	load    0($i1), $i1
+	load    0($i3), $i2
+	load    0($i4), $i3
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     trace_diffuse_ray_80percent.3223
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	li      min_caml_rgb, $i1
+	load    6($sp), $i2
+	load    0($i2), $i2
+	li      min_caml_diffuse_ray, $i3
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     vecaccumv.2920
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+be_cont.18911:
+	li      1, $i2
+	load    5($sp), $i1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     do_without_neighbors.3236
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	b       bge_cont.18909
+bge_else.18908:
+bge_cont.18909:
+	b       be_cont.18907
+be_else.18906:
+	li      0, $i6
+	add     $i4, $i1, $i12
+	load    0($i12), $i7
+	load    2($i7), $i8
+	load    0($i8), $i8
+	li      0, $i12
+	cmp     $i8, $i12, $i12
+	bl      $i12, bge_else.18912
+	add     $i4, $i1, $i12
+	load    0($i12), $i8
+	load    2($i8), $i8
+	load    0($i8), $i8
+	add     $i3, $i1, $i12
+	load    0($i12), $i9
+	load    2($i9), $i9
+	load    0($i9), $i9
+	cmp     $i9, $i8, $i12
+	bne     $i12, be_else.18914
+	add     $i5, $i1, $i12
+	load    0($i12), $i9
+	load    2($i9), $i9
+	load    0($i9), $i9
+	cmp     $i9, $i8, $i12
+	bne     $i12, be_else.18916
+	sub     $i1, 1, $i9
+	add     $i4, $i9, $i12
+	load    0($i12), $i9
+	load    2($i9), $i9
+	load    0($i9), $i9
+	cmp     $i9, $i8, $i12
+	bne     $i12, be_else.18918
+	add     $i1, 1, $i9
+	add     $i4, $i9, $i12
+	load    0($i12), $i9
+	load    2($i9), $i9
+	load    0($i9), $i9
+	cmp     $i9, $i8, $i12
+	bne     $i12, be_else.18920
+	li      1, $i8
+	b       be_cont.18921
+be_else.18920:
+	li      0, $i8
+be_cont.18921:
+	b       be_cont.18919
+be_else.18918:
+	li      0, $i8
+be_cont.18919:
+	b       be_cont.18917
+be_else.18916:
+	li      0, $i8
+be_cont.18917:
+	b       be_cont.18915
+be_else.18914:
+	li      0, $i8
+be_cont.18915:
+	li      0, $i12
+	cmp     $i8, $i12, $i12
+	bne     $i12, be_else.18922
+	add     $i4, $i1, $i12
+	load    0($i12), $i1
+	mov     $i6, $i2
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     do_without_neighbors.3236
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	b       be_cont.18923
+be_else.18922:
+	load    3($i7), $i2
+	load    0($i2), $i2
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bne     $i12, be_else.18924
+	b       be_cont.18925
+be_else.18924:
 	mov     $i3, $i2
-	mov     $i10, $i3
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25599, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25599:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-be_cont.25598:
+	mov     $i4, $i3
+	mov     $i5, $i4
+	mov     $i6, $i5
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     calc_diffuse_using_5points.3230
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+be_cont.18925:
 	li      1, $i6
-	load    10($sp), $i1
-	load    7($sp), $i2
-	load    3($sp), $i3
-	load    8($sp), $i4
-	load    12($sp), $i5
-	load    0($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25600, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25600:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-be_cont.25595:
-	b       bge_cont.25585
-bge_else.25584:
-bge_cont.25585:
-be_cont.25577:
-	load    11($sp), $i1
+	load    4($sp), $i1
+	load    2($sp), $i2
+	load    1($sp), $i3
+	load    3($sp), $i4
+	load    0($sp), $i5
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     try_exploit_neighbors.3252
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+be_cont.18923:
+	b       bge_cont.18913
+bge_else.18912:
+bge_cont.18913:
+be_cont.18907:
+	li      min_caml_rgb, $i1
 	load    0($i1), $f1
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
 	jal     min_caml_int_of_float
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
 	li      255, $i12
 	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25601
+	bg      $i12, ble_else.18926
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25603
-	b       bge_cont.25604
-bge_else.25603:
+	bl      $i12, bge_else.18928
+	b       bge_cont.18929
+bge_else.18928:
 	li      0, $i1
-bge_cont.25604:
-	b       ble_cont.25602
-ble_else.25601:
+bge_cont.18929:
+	b       ble_cont.18927
+ble_else.18926:
 	li      255, $i1
-ble_cont.25602:
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
+ble_cont.18927:
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
 	jal     min_caml_write
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    11($sp), $i1
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	li      min_caml_rgb, $i1
 	load    1($i1), $f1
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
 	jal     min_caml_int_of_float
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
 	li      255, $i12
 	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25605
+	bg      $i12, ble_else.18930
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25607
-	b       bge_cont.25608
-bge_else.25607:
+	bl      $i12, bge_else.18932
+	b       bge_cont.18933
+bge_else.18932:
 	li      0, $i1
-bge_cont.25608:
-	b       ble_cont.25606
-ble_else.25605:
+bge_cont.18933:
+	b       ble_cont.18931
+ble_else.18930:
 	li      255, $i1
-ble_cont.25606:
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
+ble_cont.18931:
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
 	jal     min_caml_write
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    11($sp), $i1
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	li      min_caml_rgb, $i1
 	load    2($i1), $f1
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
 	jal     min_caml_int_of_float
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
 	li      255, $i12
 	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25609
+	bg      $i12, ble_else.18934
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25611
-	b       bge_cont.25612
-bge_else.25611:
+	bl      $i12, bge_else.18936
+	b       bge_cont.18937
+bge_else.18936:
 	li      0, $i1
-bge_cont.25612:
-	b       ble_cont.25610
-ble_else.25609:
+bge_cont.18937:
+	b       ble_cont.18935
+ble_else.18934:
 	li      255, $i1
-ble_cont.25610:
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
+ble_cont.18935:
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
 	jal     min_caml_write
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    10($sp), $i1
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	load    4($sp), $i1
 	add     $i1, 1, $i1
-	load    9($sp), $i2
-	load    0($i2), $i3
-	cmp     $i3, $i1, $i12
-	bg      $i12, ble_else.25613
+	li      min_caml_image_size, $i2
+	load    0($i2), $i2
+	cmp     $i2, $i1, $i12
+	bg      $i12, ble_else.18938
 	ret
-ble_else.25613:
-	store   $i1, 14($sp)
-	load    8($sp), $i4
+ble_else.18938:
+	store   $i1, 7($sp)
+	li      min_caml_rgb, $i2
+	load    3($sp), $i4
 	add     $i4, $i1, $i12
 	load    0($i12), $i3
 	load    0($i3), $i3
 	load    0($i3), $f1
-	load    11($sp), $i5
-	store   $f1, 0($i5)
+	store   $f1, 0($i2)
 	load    1($i3), $f1
-	store   $f1, 1($i5)
+	store   $f1, 1($i2)
 	load    2($i3), $f1
-	store   $f1, 2($i5)
-	load    1($i2), $i3
-	load    7($sp), $i5
-	add     $i5, 1, $i6
-	cmp     $i3, $i6, $i12
-	bg      $i12, ble_else.25615
+	store   $f1, 2($i2)
+	li      min_caml_image_size, $i2
+	load    1($i2), $i2
+	load    2($sp), $i3
+	add     $i3, 1, $i5
+	cmp     $i2, $i5, $i12
+	bg      $i12, ble_else.18940
 	li      0, $i2
-	b       ble_cont.25616
-ble_else.25615:
+	b       ble_cont.18941
+ble_else.18940:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bg      $i12, ble_else.25617
+	cmp     $i3, $i12, $i12
+	bg      $i12, ble_else.18942
 	li      0, $i2
-	b       ble_cont.25618
-ble_else.25617:
+	b       ble_cont.18943
+ble_else.18942:
+	li      min_caml_image_size, $i2
 	load    0($i2), $i2
-	add     $i1, 1, $i3
-	cmp     $i2, $i3, $i12
-	bg      $i12, ble_else.25619
+	add     $i1, 1, $i5
+	cmp     $i2, $i5, $i12
+	bg      $i12, ble_else.18944
 	li      0, $i2
-	b       ble_cont.25620
-ble_else.25619:
+	b       ble_cont.18945
+ble_else.18944:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25621
+	bg      $i12, ble_else.18946
 	li      0, $i2
-	b       ble_cont.25622
-ble_else.25621:
+	b       ble_cont.18947
+ble_else.18946:
 	li      1, $i2
-ble_cont.25622:
-ble_cont.25620:
-ble_cont.25618:
-ble_cont.25616:
+ble_cont.18947:
+ble_cont.18945:
+ble_cont.18943:
+ble_cont.18941:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25623
+	bne     $i12, be_else.18948
 	add     $i4, $i1, $i12
 	load    0($i12), $i1
 	li      0, $i2
-	load    6($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25625, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25625:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	b       be_cont.25624
-be_else.25623:
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     do_without_neighbors.3236
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	b       be_cont.18949
+be_else.18948:
 	li      0, $i6
-	load    3($sp), $i3
-	load    12($sp), $i2
-	load    0($sp), $i11
-	mov     $i5, $i10
-	mov     $i2, $i5
+	load    1($sp), $i2
+	load    0($sp), $i5
+	mov     $i3, $i10
+	mov     $i2, $i3
 	mov     $i10, $i2
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25626, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25626:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-be_cont.25624:
-	load    5($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25627, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25627:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    14($sp), $i1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     try_exploit_neighbors.3252
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+be_cont.18949:
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     write_rgb.3263
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    7($sp), $i1
 	add     $i1, 1, $i1
-	load    7($sp), $i2
-	load    3($sp), $i3
-	load    8($sp), $i4
-	load    12($sp), $i5
-	load    4($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-scan_line.3205:
-	load    7($i11), $i6
-	store   $i6, 0($sp)
-	load    6($i11), $i6
-	store   $i6, 1($sp)
-	load    5($i11), $i6
-	load    4($i11), $i7
-	load    3($i11), $i8
-	load    2($i11), $i9
-	load    1($i11), $i10
-	store   $i10, 2($sp)
-	load    1($i9), $i10
-	cmp     $i10, $i1, $i12
-	bg      $i12, ble_else.25628
+	load    2($sp), $i2
+	load    1($sp), $i3
+	load    3($sp), $i4
+	load    0($sp), $i5
+	b       scan_pixel.3279
+scan_line.3285:
+	li      min_caml_image_size, $i6
+	load    1($i6), $i6
+	cmp     $i6, $i1, $i12
+	bg      $i12, ble_else.18950
 	ret
-ble_else.25628:
-	store   $i7, 3($sp)
-	store   $i8, 4($sp)
-	store   $i11, 5($sp)
-	store   $i2, 6($sp)
-	store   $i4, 7($sp)
-	store   $i3, 8($sp)
-	store   $i6, 9($sp)
-	store   $i5, 10($sp)
-	store   $i1, 11($sp)
-	store   $i9, 12($sp)
-	load    1($i9), $i2
+ble_else.18950:
+	store   $i2, 0($sp)
+	store   $i4, 1($sp)
+	store   $i3, 2($sp)
+	store   $i5, 3($sp)
+	store   $i1, 4($sp)
+	li      min_caml_image_size, $i2
+	load    1($i2), $i2
 	sub     $i2, 1, $i2
 	cmp     $i2, $i1, $i12
-	bg      $i12, ble_else.25630
-	b       ble_cont.25631
-ble_else.25630:
+	bg      $i12, ble_else.18952
+	b       ble_cont.18953
+ble_else.18952:
 	add     $i1, 1, $i2
 	mov     $i5, $i3
 	mov     $i4, $i1
-	mov     $i8, $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.25632, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.25632:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-ble_cont.25631:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     pretrace_line.3275
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+ble_cont.18953:
 	li      0, $i1
-	load    12($sp), $i2
-	load    0($i2), $i3
+	li      min_caml_image_size, $i2
+	load    0($i2), $i2
 	li      0, $i12
-	cmp     $i3, $i12, $i12
-	bg      $i12, ble_else.25633
-	b       ble_cont.25634
-ble_else.25633:
-	load    8($sp), $i4
+	cmp     $i2, $i12, $i12
+	bg      $i12, ble_else.18954
+	b       ble_cont.18955
+ble_else.18954:
+	li      min_caml_rgb, $i2
+	load    2($sp), $i4
 	load    0($i4), $i3
 	load    0($i3), $i3
 	load    0($i3), $f1
-	load    3($sp), $i5
-	store   $f1, 0($i5)
+	store   $f1, 0($i2)
 	load    1($i3), $f1
-	store   $f1, 1($i5)
+	store   $f1, 1($i2)
 	load    2($i3), $f1
-	store   $f1, 2($i5)
-	load    1($i2), $i3
-	load    11($sp), $i5
-	add     $i5, 1, $i6
-	cmp     $i3, $i6, $i12
-	bg      $i12, ble_else.25635
+	store   $f1, 2($i2)
+	li      min_caml_image_size, $i2
+	load    1($i2), $i2
+	load    4($sp), $i3
+	add     $i3, 1, $i5
+	cmp     $i2, $i5, $i12
+	bg      $i12, ble_else.18956
 	li      0, $i2
-	b       ble_cont.25636
-ble_else.25635:
+	b       ble_cont.18957
+ble_else.18956:
 	li      0, $i12
-	cmp     $i5, $i12, $i12
-	bg      $i12, ble_else.25637
+	cmp     $i3, $i12, $i12
+	bg      $i12, ble_else.18958
 	li      0, $i2
-	b       ble_cont.25638
-ble_else.25637:
+	b       ble_cont.18959
+ble_else.18958:
+	li      min_caml_image_size, $i2
 	load    0($i2), $i2
 	li      1, $i12
 	cmp     $i2, $i12, $i12
-	bg      $i12, ble_else.25639
+	bg      $i12, ble_else.18960
 	li      0, $i2
-	b       ble_cont.25640
-ble_else.25639:
+	b       ble_cont.18961
+ble_else.18960:
 	li      0, $i2
-ble_cont.25640:
-ble_cont.25638:
-ble_cont.25636:
+ble_cont.18961:
+ble_cont.18959:
+ble_cont.18957:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bne     $i12, be_else.25641
+	bne     $i12, be_else.18962
 	load    0($i4), $i1
 	li      0, $i2
-	load    2($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.25643, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.25643:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-	b       be_cont.25642
-be_else.25641:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     do_without_neighbors.3236
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	b       be_cont.18963
+be_else.18962:
 	li      0, $i6
-	load    6($sp), $i3
-	load    7($sp), $i2
-	load    1($sp), $i11
-	mov     $i5, $i10
-	mov     $i2, $i5
+	load    0($sp), $i2
+	load    1($sp), $i5
+	mov     $i3, $i10
+	mov     $i2, $i3
 	mov     $i10, $i2
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.25644, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.25644:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-be_cont.25642:
-	load    0($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.25645, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.25645:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     try_exploit_neighbors.3252
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+be_cont.18963:
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     write_rgb.3263
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
 	li      1, $i1
-	load    11($sp), $i2
-	load    6($sp), $i3
-	load    8($sp), $i4
-	load    7($sp), $i5
-	load    9($sp), $i11
-	store   $ra, 13($sp)
-	load    0($i11), $i10
-	li      cls.25646, $ra
-	add     $sp, 14, $sp
-	jr      $i10
-cls.25646:
-	sub     $sp, 14, $sp
-	load    13($sp), $ra
-ble_cont.25634:
-	load    11($sp), $i1
+	load    4($sp), $i2
+	load    0($sp), $i3
+	load    2($sp), $i4
+	load    1($sp), $i5
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     scan_pixel.3279
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+ble_cont.18955:
+	load    4($sp), $i1
 	add     $i1, 1, $i2
-	load    10($sp), $i1
+	load    3($sp), $i1
 	add     $i1, 2, $i1
 	li      5, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25647
+	bl      $i12, bge_else.18964
 	sub     $i1, 5, $i1
-	b       bge_cont.25648
-bge_else.25647:
-bge_cont.25648:
+	b       bge_cont.18965
+bge_else.18964:
+bge_cont.18965:
 	mov     $i1, $i3
-	load    12($sp), $i1
-	load    1($i1), $i4
-	cmp     $i4, $i2, $i12
-	bg      $i12, ble_else.25649
+	li      min_caml_image_size, $i1
+	load    1($i1), $i1
+	cmp     $i1, $i2, $i12
+	bg      $i12, ble_else.18966
 	ret
-ble_else.25649:
-	store   $i3, 13($sp)
-	store   $i2, 14($sp)
+ble_else.18966:
+	store   $i3, 5($sp)
+	store   $i2, 6($sp)
+	li      min_caml_image_size, $i1
 	load    1($i1), $i1
 	sub     $i1, 1, $i1
 	cmp     $i1, $i2, $i12
-	bg      $i12, ble_else.25651
-	b       ble_cont.25652
-ble_else.25651:
+	bg      $i12, ble_else.18968
+	b       ble_cont.18969
+ble_else.18968:
 	add     $i2, 1, $i2
-	load    6($sp), $i1
-	load    4($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25653, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25653:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-ble_cont.25652:
+	load    0($sp), $i1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     pretrace_line.3275
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+ble_cont.18969:
 	li      0, $i1
-	load    14($sp), $i2
-	load    8($sp), $i3
-	load    7($sp), $i4
-	load    6($sp), $i5
-	load    9($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25654, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25654:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    14($sp), $i1
+	load    6($sp), $i2
+	load    2($sp), $i3
+	load    1($sp), $i4
+	load    0($sp), $i5
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     scan_pixel.3279
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	load    6($sp), $i1
 	add     $i1, 1, $i1
-	load    13($sp), $i2
+	load    5($sp), $i2
 	add     $i2, 2, $i2
 	li      5, $i12
 	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25655
+	bl      $i12, bge_else.18970
 	sub     $i2, 5, $i2
-	b       bge_cont.25656
-bge_else.25655:
-bge_cont.25656:
+	b       bge_cont.18971
+bge_else.18970:
+bge_cont.18971:
 	mov     $i2, $i5
-	load    7($sp), $i2
-	load    6($sp), $i3
-	load    8($sp), $i4
-	load    5($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-create_float5x3array.3211:
+	load    1($sp), $i2
+	load    0($sp), $i3
+	load    2($sp), $i4
+	b       scan_line.3285
+create_float5x3array.3291:
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 0($sp)
 	add     $sp, 1, $sp
@@ -14349,7 +10123,7 @@ create_float5x3array.3211:
 	load    0($sp), $ra
 	store   $i1, 0($sp)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 1($sp)
 	add     $sp, 2, $sp
@@ -14359,7 +10133,7 @@ create_float5x3array.3211:
 	load    0($sp), $i2
 	store   $i1, 1($i2)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 1($sp)
 	add     $sp, 2, $sp
@@ -14369,7 +10143,7 @@ create_float5x3array.3211:
 	load    0($sp), $i2
 	store   $i1, 2($i2)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 1($sp)
 	add     $sp, 2, $sp
@@ -14379,7 +10153,7 @@ create_float5x3array.3211:
 	load    0($sp), $i2
 	store   $i1, 3($i2)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 1($sp)
 	add     $sp, 2, $sp
@@ -14390,14 +10164,14 @@ create_float5x3array.3211:
 	store   $i1, 4($i2)
 	mov     $i2, $i1
 	ret
-init_line_elements.3215:
+init_line_elements.3295:
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25657
+	bl      $i12, bge_else.18972
 	store   $i2, 0($sp)
 	store   $i1, 1($sp)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 2($sp)
 	add     $sp, 3, $sp
@@ -14407,7 +10181,7 @@ init_line_elements.3215:
 	store   $i1, 2($sp)
 	store   $ra, 3($sp)
 	add     $sp, 4, $sp
-	jal     create_float5x3array.3211
+	jal     create_float5x3array.3291
 	sub     $sp, 4, $sp
 	load    3($sp), $ra
 	store   $i1, 3($sp)
@@ -14429,13 +10203,13 @@ init_line_elements.3215:
 	store   $i1, 5($sp)
 	store   $ra, 6($sp)
 	add     $sp, 7, $sp
-	jal     create_float5x3array.3211
+	jal     create_float5x3array.3291
 	sub     $sp, 7, $sp
 	load    6($sp), $ra
 	store   $i1, 6($sp)
 	store   $ra, 7($sp)
 	add     $sp, 8, $sp
-	jal     create_float5x3array.3211
+	jal     create_float5x3array.3291
 	sub     $sp, 8, $sp
 	load    7($sp), $ra
 	store   $i1, 7($sp)
@@ -14449,7 +10223,7 @@ init_line_elements.3215:
 	store   $i1, 8($sp)
 	store   $ra, 9($sp)
 	add     $sp, 10, $sp
-	jal     create_float5x3array.3211
+	jal     create_float5x3array.3291
 	sub     $sp, 10, $sp
 	load    9($sp), $ra
 	mov     $hp, $i2
@@ -14477,10 +10251,10 @@ init_line_elements.3215:
 	sub     $i2, 1, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25658
+	bl      $i12, bge_else.18973
 	store   $i1, 9($sp)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 10($sp)
 	add     $sp, 11, $sp
@@ -14490,7 +10264,7 @@ init_line_elements.3215:
 	store   $i1, 10($sp)
 	store   $ra, 11($sp)
 	add     $sp, 12, $sp
-	jal     create_float5x3array.3211
+	jal     create_float5x3array.3291
 	sub     $sp, 12, $sp
 	load    11($sp), $ra
 	store   $i1, 11($sp)
@@ -14512,13 +10286,13 @@ init_line_elements.3215:
 	store   $i1, 13($sp)
 	store   $ra, 14($sp)
 	add     $sp, 15, $sp
-	jal     create_float5x3array.3211
+	jal     create_float5x3array.3291
 	sub     $sp, 15, $sp
 	load    14($sp), $ra
 	store   $i1, 14($sp)
 	store   $ra, 15($sp)
 	add     $sp, 16, $sp
-	jal     create_float5x3array.3211
+	jal     create_float5x3array.3291
 	sub     $sp, 16, $sp
 	load    15($sp), $ra
 	store   $i1, 15($sp)
@@ -14532,7 +10306,7 @@ init_line_elements.3215:
 	store   $i1, 16($sp)
 	store   $ra, 17($sp)
 	add     $sp, 18, $sp
-	jal     create_float5x3array.3211
+	jal     create_float5x3array.3291
 	sub     $sp, 18, $sp
 	load    17($sp), $ra
 	mov     $hp, $i2
@@ -14559,54 +10333,182 @@ init_line_elements.3215:
 	store   $i1, 0($i12)
 	sub     $i2, 1, $i2
 	mov     $i3, $i1
-	b       init_line_elements.3215
-bge_else.25658:
+	b       init_line_elements.3295
+bge_else.18973:
 	mov     $i3, $i1
 	ret
-bge_else.25657:
+bge_else.18972:
 	ret
-calc_dirvec.3225:
-	load    9($i11), $i4
-	load    8($i11), $f5
-	load    7($i11), $f6
-	load    6($i11), $f7
-	load    5($i11), $i5
-	load    4($i11), $i6
-	load    3($i11), $i7
-	load    2($i11), $i8
-	load    1($i11), $i9
+tan.3300:
+	store   $f1, 0($sp)
+	li      l.13298, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18974
+	li      l.13317, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18976
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18978
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fcmp    $f2, $f1, $i12
+	bg      $i12, ble_else.18980
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     sin.2857
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	b       ble_cont.18981
+ble_else.18980:
+	li      l.13322, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     sin.2857
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18981:
+	b       ble_cont.18979
+ble_else.18978:
+	li      l.13319, $i1
+	load    0($i1), $f2
+	fsub    $f2, $f1, $f1
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+ble_cont.18979:
+	b       ble_cont.18977
+ble_else.18976:
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     cordic_sin.2851
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+ble_cont.18977:
+	b       ble_cont.18975
+ble_else.18974:
+	fneg    $f1, $f1
+	store   $ra, 1($sp)
+	add     $sp, 2, $sp
+	jal     sin.2857
+	sub     $sp, 2, $sp
+	load    1($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18975:
+	store   $f1, 1($sp)
+	li      l.13298, $i1
+	load    0($i1), $f1
+	load    0($sp), $f2
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18982
+	li      l.13317, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18984
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18986
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fcmp    $f1, $f2, $i12
+	bg      $i12, ble_else.18988
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f2, $f1, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cos.2859
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	b       ble_cont.18989
+ble_else.18988:
+	li      l.13322, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cos.2859
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+ble_cont.18989:
+	b       ble_cont.18987
+ble_else.18986:
+	li      l.13319, $i1
+	load    0($i1), $f1
+	fsub    $f1, $f2, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	fneg    $f1, $f1
+ble_cont.18987:
+	b       ble_cont.18985
+ble_else.18984:
+	mov     $f2, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cordic_cos.2853
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+ble_cont.18985:
+	b       ble_cont.18983
+ble_else.18982:
+	fneg    $f2, $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     cos.2859
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+ble_cont.18983:
+	load    1($sp), $f2
+	finv    $f1, $f15
+	fmul    $f2, $f15, $f1
+	ret
+calc_dirvec.3305:
 	li      5, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25659
+	bl      $i12, bge_else.18990
 	store   $i3, 0($sp)
 	store   $i2, 1($sp)
-	store   $i5, 2($sp)
-	store   $f2, 3($sp)
-	store   $f1, 4($sp)
+	store   $f2, 2($sp)
+	store   $f1, 3($sp)
 	fmul    $f1, $f1, $f1
 	fmul    $f2, $f2, $f2
 	fadd    $f1, $f2, $f1
-	li      l.14035, $i1
+	li      l.13301, $i1
 	load    0($i1), $f2
 	fadd    $f1, $f2, $f1
-	store   $ra, 5($sp)
-	add     $sp, 6, $sp
-	jal     sqrt.2751
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	load    4($sp), $f2
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     sqrt.2865
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    3($sp), $f2
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f2
-	load    3($sp), $f3
+	load    2($sp), $f3
 	finv    $f1, $f15
 	fmul    $f3, $f15, $f3
-	li      l.14035, $i1
+	li      l.13301, $i1
 	load    0($i1), $f4
 	finv    $f1, $f15
 	fmul    $f4, $f15, $f1
-	load    1($sp), $i1
-	load    2($sp), $i2
-	add     $i2, $i1, $i12
+	li      min_caml_dirvecs, $i1
+	load    1($sp), $i2
+	add     $i1, $i2, $i12
 	load    0($i12), $i1
 	load    0($sp), $i2
 	add     $i1, $i2, $i12
@@ -14660,597 +10562,275 @@ calc_dirvec.3225:
 	store   $f2, 1($i1)
 	store   $f3, 2($i1)
 	ret
-bge_else.25659:
-	store   $i7, 5($sp)
-	store   $i8, 6($sp)
+bge_else.18990:
 	store   $i3, 0($sp)
 	store   $i2, 1($sp)
-	store   $i11, 7($sp)
-	store   $f4, 8($sp)
-	store   $i1, 9($sp)
-	store   $i6, 10($sp)
-	store   $i4, 11($sp)
-	store   $f6, 12($sp)
-	store   $f7, 13($sp)
-	store   $f5, 14($sp)
-	store   $f3, 15($sp)
-	store   $i9, 16($sp)
+	store   $f4, 4($sp)
+	store   $i1, 5($sp)
+	store   $f3, 6($sp)
 	fmul    $f2, $f2, $f1
-	li      l.14334, $i1
+	li      l.13741, $i1
 	load    0($i1), $f2
 	fadd    $f1, $f2, $f1
-	store   $ra, 17($sp)
-	add     $sp, 18, $sp
-	jal     sqrt.2751
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	store   $f1, 17($sp)
-	li      l.14035, $i1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     sqrt.2865
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	store   $f1, 7($sp)
+	li      l.13301, $i1
 	load    0($i1), $f2
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f1
-	load    16($sp), $i11
-	store   $ra, 18($sp)
-	load    0($i11), $i10
-	li      cls.25661, $ra
-	add     $sp, 19, $sp
-	jr      $i10
-cls.25661:
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-	load    15($sp), $f2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     cordic_atan.2855
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    6($sp), $f2
 	fmul    $f1, $f2, $f1
-	store   $f1, 18($sp)
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25662
-	load    14($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25664
-	load    13($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25666
-	load    12($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25668
-	fsub    $f1, $f2, $f1
-	load    11($sp), $i11
-	store   $ra, 19($sp)
-	load    0($i11), $i10
-	li      cls.25670, $ra
-	add     $sp, 20, $sp
-	jr      $i10
-cls.25670:
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	b       ble_cont.25669
-ble_else.25668:
-	fsub    $f2, $f1, $f1
-	load    11($sp), $i11
-	store   $ra, 19($sp)
-	load    0($i11), $i10
-	li      cls.25671, $ra
-	add     $sp, 20, $sp
-	jr      $i10
-cls.25671:
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	fneg    $f1, $f1
-ble_cont.25669:
-	b       ble_cont.25667
-ble_else.25666:
-	fsub    $f2, $f1, $f1
-	load    5($sp), $i11
-	store   $ra, 19($sp)
-	load    0($i11), $i10
-	li      cls.25672, $ra
-	add     $sp, 20, $sp
-	jr      $i10
-cls.25672:
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-ble_cont.25667:
-	b       ble_cont.25665
-ble_else.25664:
-	load    5($sp), $i11
-	store   $ra, 19($sp)
-	load    0($i11), $i10
-	li      cls.25673, $ra
-	add     $sp, 20, $sp
-	jr      $i10
-cls.25673:
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-ble_cont.25665:
-	b       ble_cont.25663
-ble_else.25662:
-	fneg    $f1, $f1
-	load    11($sp), $i11
-	store   $ra, 19($sp)
-	load    0($i11), $i10
-	li      cls.25674, $ra
-	add     $sp, 20, $sp
-	jr      $i10
-cls.25674:
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	fneg    $f1, $f1
-ble_cont.25663:
-	store   $f1, 19($sp)
-	li      l.14001, $i1
-	load    0($i1), $f1
-	load    18($sp), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25675
-	load    14($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25677
-	load    13($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25679
-	load    12($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25681
-	fsub    $f2, $f1, $f1
-	load    10($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.25683, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.25683:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	b       ble_cont.25682
-ble_else.25681:
-	fsub    $f1, $f2, $f1
-	load    10($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.25684, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.25684:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-ble_cont.25682:
-	b       ble_cont.25680
-ble_else.25679:
-	fsub    $f1, $f2, $f1
-	load    6($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.25685, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.25685:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-	fneg    $f1, $f1
-ble_cont.25680:
-	b       ble_cont.25678
-ble_else.25677:
-	load    6($sp), $i11
-	mov     $f2, $f1
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.25686, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.25686:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-ble_cont.25678:
-	b       ble_cont.25676
-ble_else.25675:
-	fneg    $f2, $f1
-	load    10($sp), $i11
-	store   $ra, 20($sp)
-	load    0($i11), $i10
-	li      cls.25687, $ra
-	add     $sp, 21, $sp
-	jr      $i10
-cls.25687:
-	sub     $sp, 21, $sp
-	load    20($sp), $ra
-ble_cont.25676:
-	load    19($sp), $f2
-	finv    $f1, $f15
-	fmul    $f2, $f15, $f1
-	load    17($sp), $f2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     tan.3300
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    7($sp), $f2
 	fmul    $f1, $f2, $f1
-	store   $f1, 20($sp)
-	load    9($sp), $i1
+	store   $f1, 8($sp)
+	load    5($sp), $i1
 	add     $i1, 1, $i1
-	store   $i1, 21($sp)
+	store   $i1, 9($sp)
 	fmul    $f1, $f1, $f1
-	li      l.14334, $i1
+	li      l.13741, $i1
 	load    0($i1), $f2
 	fadd    $f1, $f2, $f1
-	store   $ra, 22($sp)
-	add     $sp, 23, $sp
-	jal     sqrt.2751
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	store   $f1, 22($sp)
-	li      l.14035, $i1
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     sqrt.2865
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	store   $f1, 10($sp)
+	li      l.13301, $i1
 	load    0($i1), $f2
 	finv    $f1, $f15
 	fmul    $f2, $f15, $f1
-	load    16($sp), $i11
-	store   $ra, 23($sp)
-	load    0($i11), $i10
-	li      cls.25688, $ra
-	add     $sp, 24, $sp
-	jr      $i10
-cls.25688:
-	sub     $sp, 24, $sp
-	load    23($sp), $ra
-	load    8($sp), $f2
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     cordic_atan.2855
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	load    4($sp), $f2
 	fmul    $f1, $f2, $f1
-	store   $f1, 23($sp)
-	li      l.14001, $i1
-	load    0($i1), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25689
-	load    14($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25691
-	load    13($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25693
-	load    12($sp), $f2
-	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25695
-	fsub    $f1, $f2, $f1
-	load    11($sp), $i11
-	store   $ra, 24($sp)
-	load    0($i11), $i10
-	li      cls.25697, $ra
-	add     $sp, 25, $sp
-	jr      $i10
-cls.25697:
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	b       ble_cont.25696
-ble_else.25695:
-	fsub    $f2, $f1, $f1
-	load    11($sp), $i11
-	store   $ra, 24($sp)
-	load    0($i11), $i10
-	li      cls.25698, $ra
-	add     $sp, 25, $sp
-	jr      $i10
-cls.25698:
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	fneg    $f1, $f1
-ble_cont.25696:
-	b       ble_cont.25694
-ble_else.25693:
-	fsub    $f2, $f1, $f1
-	load    5($sp), $i11
-	store   $ra, 24($sp)
-	load    0($i11), $i10
-	li      cls.25699, $ra
-	add     $sp, 25, $sp
-	jr      $i10
-cls.25699:
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-ble_cont.25694:
-	b       ble_cont.25692
-ble_else.25691:
-	load    5($sp), $i11
-	store   $ra, 24($sp)
-	load    0($i11), $i10
-	li      cls.25700, $ra
-	add     $sp, 25, $sp
-	jr      $i10
-cls.25700:
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-ble_cont.25692:
-	b       ble_cont.25690
-ble_else.25689:
-	fneg    $f1, $f1
-	load    11($sp), $i11
-	store   $ra, 24($sp)
-	load    0($i11), $i10
-	li      cls.25701, $ra
-	add     $sp, 25, $sp
-	jr      $i10
-cls.25701:
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	fneg    $f1, $f1
-ble_cont.25690:
-	store   $f1, 24($sp)
-	li      l.14001, $i1
-	load    0($i1), $f1
-	load    23($sp), $f2
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25702
-	load    14($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25704
-	load    13($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25706
-	load    12($sp), $f1
-	fcmp    $f1, $f2, $i12
-	bg      $i12, ble_else.25708
-	fsub    $f2, $f1, $f1
-	load    10($sp), $i11
-	store   $ra, 25($sp)
-	load    0($i11), $i10
-	li      cls.25710, $ra
-	add     $sp, 26, $sp
-	jr      $i10
-cls.25710:
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	b       ble_cont.25709
-ble_else.25708:
-	fsub    $f1, $f2, $f1
-	load    10($sp), $i11
-	store   $ra, 25($sp)
-	load    0($i11), $i10
-	li      cls.25711, $ra
-	add     $sp, 26, $sp
-	jr      $i10
-cls.25711:
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-ble_cont.25709:
-	b       ble_cont.25707
-ble_else.25706:
-	fsub    $f1, $f2, $f1
-	load    6($sp), $i11
-	store   $ra, 25($sp)
-	load    0($i11), $i10
-	li      cls.25712, $ra
-	add     $sp, 26, $sp
-	jr      $i10
-cls.25712:
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	fneg    $f1, $f1
-ble_cont.25707:
-	b       ble_cont.25705
-ble_else.25704:
-	load    6($sp), $i11
-	mov     $f2, $f1
-	store   $ra, 25($sp)
-	load    0($i11), $i10
-	li      cls.25713, $ra
-	add     $sp, 26, $sp
-	jr      $i10
-cls.25713:
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-ble_cont.25705:
-	b       ble_cont.25703
-ble_else.25702:
-	fneg    $f2, $f1
-	load    10($sp), $i11
-	store   $ra, 25($sp)
-	load    0($i11), $i10
-	li      cls.25714, $ra
-	add     $sp, 26, $sp
-	jr      $i10
-cls.25714:
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-ble_cont.25703:
-	load    24($sp), $f2
-	finv    $f1, $f15
-	fmul    $f2, $f15, $f1
-	load    22($sp), $f2
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     tan.3300
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	load    10($sp), $f2
 	fmul    $f1, $f2, $f2
-	load    20($sp), $f1
-	load    15($sp), $f3
-	load    8($sp), $f4
-	load    21($sp), $i1
+	load    8($sp), $f1
+	load    6($sp), $f3
+	load    4($sp), $f4
+	load    9($sp), $i1
 	load    1($sp), $i2
 	load    0($sp), $i3
-	load    7($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-calc_dirvecs.3233:
-	load    1($i11), $i4
+	b       calc_dirvec.3305
+calc_dirvecs.3313:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25715
-	store   $i11, 0($sp)
-	store   $i1, 1($sp)
-	store   $f1, 2($sp)
-	store   $i3, 3($sp)
-	store   $i2, 4($sp)
-	store   $i4, 5($sp)
-	store   $ra, 6($sp)
-	add     $sp, 7, $sp
+	bl      $i12, bge_else.18992
+	store   $i1, 0($sp)
+	store   $f1, 1($sp)
+	store   $i3, 2($sp)
+	store   $i2, 3($sp)
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
 	jal     min_caml_float_of_int
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	li      l.14423, $i1
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	li      l.13813, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	li      l.14425, $i1
+	li      l.13815, $i1
 	load    0($i1), $f2
 	fsub    $f1, $f2, $f3
 	li      0, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
-	load    2($sp), $f4
-	load    4($sp), $i2
-	load    3($sp), $i3
-	load    5($sp), $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.25716, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.25716:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	load    1($sp), $i1
-	store   $ra, 6($sp)
-	add     $sp, 7, $sp
+	load    1($sp), $f4
+	load    3($sp), $i2
+	load    2($sp), $i3
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     calc_dirvec.3305
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    0($sp), $i1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
 	jal     min_caml_float_of_int
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	li      l.14423, $i1
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	li      l.13813, $i1
 	load    0($i1), $f2
 	fmul    $f1, $f2, $f1
-	li      l.14334, $i1
+	li      l.13741, $i1
 	load    0($i1), $f2
 	fadd    $f1, $f2, $f3
 	li      0, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f2
-	load    3($sp), $i2
+	load    2($sp), $i2
 	add     $i2, 2, $i3
-	load    2($sp), $f4
-	load    4($sp), $i2
-	load    5($sp), $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.25717, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.25717:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	load    1($sp), $i1
+	load    1($sp), $f4
+	load    3($sp), $i2
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     calc_dirvec.3305
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    0($sp), $i1
 	sub     $i1, 1, $i1
-	load    4($sp), $i2
+	load    3($sp), $i2
 	add     $i2, 1, $i2
 	li      5, $i12
 	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25718
+	bl      $i12, bge_else.18993
 	sub     $i2, 5, $i2
-	b       bge_cont.25719
-bge_else.25718:
-bge_cont.25719:
-	load    2($sp), $f1
-	load    3($sp), $i3
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25715:
+	b       bge_cont.18994
+bge_else.18993:
+bge_cont.18994:
+	load    1($sp), $f1
+	load    2($sp), $i3
+	b       calc_dirvecs.3313
+bge_else.18992:
 	ret
-calc_dirvec_rows.3238:
-	load    1($i11), $i4
+calc_dirvec_rows.3318:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25721
-	store   $i11, 0($sp)
+	bl      $i12, bge_else.18996
+	store   $i1, 0($sp)
+	store   $i3, 1($sp)
+	store   $i2, 2($sp)
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     min_caml_float_of_int
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	li      l.13813, $i1
+	load    0($i1), $f2
+	fmul    $f1, $f2, $f1
+	li      l.13815, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	li      4, $i1
+	load    2($sp), $i2
+	load    1($sp), $i3
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     calc_dirvecs.3313
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	load    0($sp), $i1
+	sub     $i1, 1, $i1
+	load    2($sp), $i2
+	add     $i2, 2, $i2
+	li      5, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.18997
+	sub     $i2, 5, $i2
+	b       bge_cont.18998
+bge_else.18997:
+bge_cont.18998:
+	load    1($sp), $i3
+	add     $i3, 4, $i3
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.18999
+	store   $i1, 3($sp)
+	store   $i3, 4($sp)
+	store   $i2, 5($sp)
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     min_caml_float_of_int
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	li      l.13813, $i1
+	load    0($i1), $f2
+	fmul    $f1, $f2, $f1
+	li      l.13815, $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	li      4, $i1
+	load    5($sp), $i2
+	load    4($sp), $i3
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     calc_dirvecs.3313
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    3($sp), $i1
+	sub     $i1, 1, $i1
+	load    5($sp), $i2
+	add     $i2, 2, $i2
+	li      5, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.19000
+	sub     $i2, 5, $i2
+	b       bge_cont.19001
+bge_else.19000:
+bge_cont.19001:
+	load    4($sp), $i3
+	add     $i3, 4, $i3
+	b       calc_dirvec_rows.3318
+bge_else.18999:
+	ret
+bge_else.18996:
+	ret
+create_dirvec_elements.3324:
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.19004
+	store   $i2, 0($sp)
 	store   $i1, 1($sp)
-	store   $i3, 2($sp)
-	store   $i2, 3($sp)
-	store   $i4, 4($sp)
-	store   $ra, 5($sp)
-	add     $sp, 6, $sp
-	jal     min_caml_float_of_int
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	li      l.14423, $i1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f1
-	li      l.14425, $i1
-	load    0($i1), $f2
-	fsub    $f1, $f2, $f1
-	li      4, $i1
-	load    3($sp), $i2
-	load    2($sp), $i3
-	load    4($sp), $i11
-	store   $ra, 5($sp)
-	load    0($i11), $i10
-	li      cls.25722, $ra
-	add     $sp, 6, $sp
-	jr      $i10
-cls.25722:
-	sub     $sp, 6, $sp
-	load    5($sp), $ra
-	load    1($sp), $i1
-	sub     $i1, 1, $i1
-	load    3($sp), $i2
-	add     $i2, 2, $i2
-	li      5, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25723
-	sub     $i2, 5, $i2
-	b       bge_cont.25724
-bge_else.25723:
-bge_cont.25724:
-	load    2($sp), $i3
-	add     $i3, 4, $i3
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	mov     $i1, $i2
+	store   $i2, 2($sp)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     min_caml_create_array
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 2, $hp
+	store   $i1, 1($i2)
+	load    2($sp), $i1
+	store   $i1, 0($i2)
+	mov     $i2, $i1
+	load    0($sp), $i2
+	load    1($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	sub     $i2, 1, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25725
-	store   $i1, 5($sp)
-	store   $i3, 6($sp)
-	store   $i2, 7($sp)
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
-	jal     min_caml_float_of_int
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	li      l.14423, $i1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f1
-	li      l.14425, $i1
-	load    0($i1), $f2
-	fsub    $f1, $f2, $f1
-	li      4, $i1
-	load    7($sp), $i2
-	load    6($sp), $i3
-	load    4($sp), $i11
-	store   $ra, 8($sp)
-	load    0($i11), $i10
-	li      cls.25726, $ra
-	add     $sp, 9, $sp
-	jr      $i10
-cls.25726:
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	load    5($sp), $i1
-	sub     $i1, 1, $i1
-	load    7($sp), $i2
-	add     $i2, 2, $i2
-	li      5, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25727
-	sub     $i2, 5, $i2
-	b       bge_cont.25728
-bge_else.25727:
-bge_cont.25728:
-	load    6($sp), $i3
-	add     $i3, 4, $i3
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25725:
-	ret
-bge_else.25721:
-	ret
-create_dirvec_elements.3244:
-	load    1($i11), $i3
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25731
-	store   $i11, 0($sp)
-	store   $i2, 1($sp)
-	store   $i1, 2($sp)
-	store   $i3, 3($sp)
+	bl      $i12, bge_else.19005
+	store   $i1, 3($sp)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 4($sp)
 	add     $sp, 5, $sp
@@ -15259,7 +10839,7 @@ create_dirvec_elements.3244:
 	load    4($sp), $ra
 	mov     $i1, $i2
 	store   $i2, 4($sp)
-	load    3($sp), $i1
+	li      min_caml_n_objects, $i1
 	load    0($i1), $i1
 	store   $ra, 5($sp)
 	add     $sp, 6, $sp
@@ -15272,17 +10852,17 @@ create_dirvec_elements.3244:
 	load    4($sp), $i1
 	store   $i1, 0($i2)
 	mov     $i2, $i1
-	load    1($sp), $i2
-	load    2($sp), $i3
+	load    3($sp), $i2
+	load    1($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
 	sub     $i2, 1, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25732
+	bl      $i12, bge_else.19006
 	store   $i1, 5($sp)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 6($sp)
 	add     $sp, 7, $sp
@@ -15291,7 +10871,7 @@ create_dirvec_elements.3244:
 	load    6($sp), $ra
 	mov     $i1, $i2
 	store   $i2, 6($sp)
-	load    3($sp), $i1
+	li      min_caml_n_objects, $i1
 	load    0($i1), $i1
 	store   $ra, 7($sp)
 	add     $sp, 8, $sp
@@ -15305,16 +10885,16 @@ create_dirvec_elements.3244:
 	store   $i1, 0($i2)
 	mov     $i2, $i1
 	load    5($sp), $i2
-	load    2($sp), $i3
+	load    1($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
 	sub     $i2, 1, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25733
+	bl      $i12, bge_else.19007
 	store   $i1, 7($sp)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 8($sp)
 	add     $sp, 9, $sp
@@ -15323,7 +10903,7 @@ create_dirvec_elements.3244:
 	load    8($sp), $ra
 	mov     $i1, $i2
 	store   $i2, 8($sp)
-	load    3($sp), $i1
+	li      min_caml_n_objects, $i1
 	load    0($i1), $i1
 	store   $ra, 9($sp)
 	add     $sp, 10, $sp
@@ -15337,70 +10917,92 @@ create_dirvec_elements.3244:
 	store   $i1, 0($i2)
 	mov     $i2, $i1
 	load    7($sp), $i2
-	load    2($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	sub     $i2, 1, $i1
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25734
-	store   $i1, 9($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 10($sp)
-	add     $sp, 11, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	mov     $i1, $i2
-	store   $i2, 10($sp)
-	load    3($sp), $i1
-	load    0($i1), $i1
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     min_caml_create_array
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    10($sp), $i1
-	store   $i1, 0($i2)
-	mov     $i2, $i1
-	load    9($sp), $i2
-	load    2($sp), $i3
+	load    1($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
 	sub     $i2, 1, $i2
-	load    0($sp), $i11
 	mov     $i3, $i1
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25734:
+	b       create_dirvec_elements.3324
+bge_else.19007:
 	ret
-bge_else.25733:
+bge_else.19006:
 	ret
-bge_else.25732:
+bge_else.19005:
 	ret
-bge_else.25731:
+bge_else.19004:
 	ret
-create_dirvecs.3247:
-	load    3($i11), $i2
-	load    2($i11), $i3
-	load    1($i11), $i4
+create_dirvecs.3327:
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25739
-	store   $i11, 0($sp)
-	store   $i4, 1($sp)
-	store   $i1, 2($sp)
-	store   $i3, 3($sp)
-	store   $i2, 4($sp)
+	bl      $i12, bge_else.19012
+	store   $i1, 0($sp)
+	li      min_caml_dirvecs, $i1
+	store   $i1, 1($sp)
 	li      120, $i1
-	store   $i1, 5($sp)
+	store   $i1, 2($sp)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	mov     $i1, $i2
+	store   $i2, 3($sp)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     min_caml_create_array
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 2, $hp
+	store   $i1, 1($i2)
+	load    3($sp), $i1
+	store   $i1, 0($i2)
+	load    2($sp), $i1
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     min_caml_create_array
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	load    0($sp), $i2
+	load    1($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	li      min_caml_dirvecs, $i1
+	add     $i1, $i2, $i12
+	load    0($i12), $i1
+	store   $i1, 4($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	mov     $i1, $i2
+	store   $i2, 5($sp)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     min_caml_create_array
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 2, $hp
+	store   $i1, 1($i2)
+	load    5($sp), $i1
+	store   $i1, 0($i2)
+	mov     $i2, $i1
+	load    4($sp), $i2
+	store   $i1, 118($i2)
+	li      3, $i1
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 6($sp)
 	add     $sp, 7, $sp
@@ -15409,7 +11011,7 @@ create_dirvecs.3247:
 	load    6($sp), $ra
 	mov     $i1, $i2
 	store   $i2, 6($sp)
-	load    4($sp), $i1
+	li      min_caml_n_objects, $i1
 	load    0($i1), $i1
 	store   $ra, 7($sp)
 	add     $sp, 8, $sp
@@ -15421,117 +11023,91 @@ create_dirvecs.3247:
 	store   $i1, 1($i2)
 	load    6($sp), $i1
 	store   $i1, 0($i2)
-	load    5($sp), $i1
-	store   $ra, 7($sp)
-	add     $sp, 8, $sp
-	jal     min_caml_create_array
-	sub     $sp, 8, $sp
-	load    7($sp), $ra
-	load    2($sp), $i2
-	load    3($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	add     $i3, $i2, $i12
-	load    0($i12), $i1
-	store   $i1, 7($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 8($sp)
-	add     $sp, 9, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 9, $sp
-	load    8($sp), $ra
-	mov     $i1, $i2
-	store   $i2, 8($sp)
-	load    4($sp), $i1
-	load    0($i1), $i1
-	store   $ra, 9($sp)
-	add     $sp, 10, $sp
-	jal     min_caml_create_array
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    8($sp), $i1
-	store   $i1, 0($i2)
 	mov     $i2, $i1
-	load    7($sp), $i2
-	store   $i1, 118($i2)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 9($sp)
-	add     $sp, 10, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 10, $sp
-	load    9($sp), $ra
-	mov     $i1, $i2
-	store   $i2, 9($sp)
-	load    4($sp), $i1
-	load    0($i1), $i1
-	store   $ra, 10($sp)
-	add     $sp, 11, $sp
-	jal     min_caml_create_array
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    9($sp), $i1
-	store   $i1, 0($i2)
-	mov     $i2, $i1
-	load    7($sp), $i2
+	load    4($sp), $i2
 	store   $i1, 117($i2)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
-	store   $ra, 10($sp)
-	add     $sp, 11, $sp
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
 	jal     min_caml_create_float_array
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
 	mov     $i1, $i2
-	store   $i2, 10($sp)
-	load    4($sp), $i1
+	store   $i2, 7($sp)
+	li      min_caml_n_objects, $i1
 	load    0($i1), $i1
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
 	jal     min_caml_create_array
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
 	mov     $hp, $i2
 	add     $hp, 2, $hp
 	store   $i1, 1($i2)
-	load    10($sp), $i1
+	load    7($sp), $i1
 	store   $i1, 0($i2)
 	mov     $i2, $i1
-	load    7($sp), $i2
+	load    4($sp), $i2
 	store   $i1, 116($i2)
 	li      115, $i1
-	load    1($sp), $i11
 	mov     $i2, $i10
 	mov     $i1, $i2
 	mov     $i10, $i1
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.25740, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.25740:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	load    2($sp), $i1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     create_dirvec_elements.3324
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    0($sp), $i1
 	sub     $i1, 1, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25741
-	store   $i1, 11($sp)
+	bl      $i12, bge_else.19013
+	store   $i1, 8($sp)
+	li      min_caml_dirvecs, $i1
+	store   $i1, 9($sp)
 	li      120, $i1
+	store   $i1, 10($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	mov     $i1, $i2
+	store   $i2, 11($sp)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
+	jal     min_caml_create_array
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 2, $hp
+	store   $i1, 1($i2)
+	load    11($sp), $i1
+	store   $i1, 0($i2)
+	load    10($sp), $i1
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
+	jal     min_caml_create_array
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
+	load    8($sp), $i2
+	load    9($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	li      min_caml_dirvecs, $i1
+	add     $i1, $i2, $i12
+	load    0($i12), $i1
 	store   $i1, 12($sp)
 	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 13($sp)
 	add     $sp, 14, $sp
@@ -15540,7 +11116,7 @@ cls.25740:
 	load    13($sp), $ra
 	mov     $i1, $i2
 	store   $i2, 13($sp)
-	load    4($sp), $i1
+	li      min_caml_n_objects, $i1
 	load    0($i1), $i1
 	store   $ra, 14($sp)
 	add     $sp, 15, $sp
@@ -15552,790 +11128,11 @@ cls.25740:
 	store   $i1, 1($i2)
 	load    13($sp), $i1
 	store   $i1, 0($i2)
-	load    12($sp), $i1
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
-	jal     min_caml_create_array
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    11($sp), $i2
-	load    3($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	add     $i3, $i2, $i12
-	load    0($i12), $i1
-	store   $i1, 14($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	mov     $i1, $i2
-	store   $i2, 15($sp)
-	load    4($sp), $i1
-	load    0($i1), $i1
-	store   $ra, 16($sp)
-	add     $sp, 17, $sp
-	jal     min_caml_create_array
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    15($sp), $i1
-	store   $i1, 0($i2)
 	mov     $i2, $i1
-	load    14($sp), $i2
+	load    12($sp), $i2
 	store   $i1, 118($i2)
 	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 16($sp)
-	add     $sp, 17, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	mov     $i1, $i2
-	store   $i2, 16($sp)
-	load    4($sp), $i1
-	load    0($i1), $i1
-	store   $ra, 17($sp)
-	add     $sp, 18, $sp
-	jal     min_caml_create_array
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    16($sp), $i1
-	store   $i1, 0($i2)
-	mov     $i2, $i1
-	load    14($sp), $i2
-	store   $i1, 117($i2)
-	li      116, $i1
-	load    1($sp), $i11
-	mov     $i2, $i10
-	mov     $i1, $i2
-	mov     $i10, $i1
-	store   $ra, 17($sp)
-	load    0($i11), $i10
-	li      cls.25742, $ra
-	add     $sp, 18, $sp
-	jr      $i10
-cls.25742:
-	sub     $sp, 18, $sp
-	load    17($sp), $ra
-	load    11($sp), $i1
-	sub     $i1, 1, $i1
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25741:
-	ret
-bge_else.25739:
-	ret
-init_dirvec_constants.3249:
-	load    3($i11), $i3
-	load    2($i11), $i4
-	load    1($i11), $i5
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25745
-	store   $i11, 0($sp)
-	store   $i5, 1($sp)
-	store   $i3, 2($sp)
-	store   $i4, 3($sp)
-	store   $i1, 4($sp)
-	store   $i2, 5($sp)
-	add     $i1, $i2, $i12
-	load    0($i12), $i1
-	load    0($i4), $i2
-	sub     $i2, 1, $i2
-	mov     $i5, $i11
-	store   $ra, 6($sp)
-	load    0($i11), $i10
-	li      cls.25746, $ra
-	add     $sp, 7, $sp
-	jr      $i10
-cls.25746:
-	sub     $sp, 7, $sp
-	load    6($sp), $ra
-	load    5($sp), $i1
-	sub     $i1, 1, $i1
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25747
-	store   $i1, 6($sp)
-	load    4($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	load    3($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25748
-	store   $i1, 7($sp)
-	load    2($sp), $i3
-	add     $i3, $i2, $i12
-	load    0($i12), $i3
-	load    1($i1), $i4
-	load    0($i1), $i1
-	load    1($i3), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25750
-	store   $i2, 8($sp)
-	store   $i4, 9($sp)
-	mov     $i3, $i2
-	store   $ra, 10($sp)
-	add     $sp, 11, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	load    8($sp), $i2
-	load    9($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25751
-be_else.25750:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25752
-	store   $i2, 8($sp)
-	store   $i4, 9($sp)
-	mov     $i3, $i2
-	store   $ra, 10($sp)
-	add     $sp, 11, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	load    8($sp), $i2
-	load    9($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25753
-be_else.25752:
-	store   $i2, 8($sp)
-	store   $i4, 9($sp)
-	mov     $i3, $i2
-	store   $ra, 10($sp)
-	add     $sp, 11, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	load    8($sp), $i2
-	load    9($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25753:
-be_cont.25751:
-	sub     $i2, 1, $i2
-	load    7($sp), $i1
-	load    1($sp), $i11
-	store   $ra, 10($sp)
-	load    0($i11), $i10
-	li      cls.25754, $ra
-	add     $sp, 11, $sp
-	jr      $i10
-cls.25754:
-	sub     $sp, 11, $sp
-	load    10($sp), $ra
-	b       bge_cont.25749
-bge_else.25748:
-bge_cont.25749:
-	load    6($sp), $i1
-	sub     $i1, 1, $i1
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25755
-	store   $i1, 10($sp)
-	load    4($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	load    3($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    1($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.25756, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.25756:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	load    10($sp), $i1
-	sub     $i1, 1, $i1
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25757
-	store   $i1, 11($sp)
-	load    4($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	load    3($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25758
-	store   $i1, 12($sp)
-	load    2($sp), $i3
-	add     $i3, $i2, $i12
-	load    0($i12), $i3
-	load    1($i1), $i4
-	load    0($i1), $i1
-	load    1($i3), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25760
-	store   $i2, 13($sp)
-	store   $i4, 14($sp)
-	mov     $i3, $i2
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    13($sp), $i2
-	load    14($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25761
-be_else.25760:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25762
-	store   $i2, 13($sp)
-	store   $i4, 14($sp)
-	mov     $i3, $i2
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    13($sp), $i2
-	load    14($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25763
-be_else.25762:
-	store   $i2, 13($sp)
-	store   $i4, 14($sp)
-	mov     $i3, $i2
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    13($sp), $i2
-	load    14($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25763:
-be_cont.25761:
-	sub     $i2, 1, $i2
-	load    12($sp), $i1
-	load    1($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25764, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25764:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	b       bge_cont.25759
-bge_else.25758:
-bge_cont.25759:
-	load    11($sp), $i1
-	sub     $i1, 1, $i2
-	load    4($sp), $i1
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25757:
-	ret
-bge_else.25755:
-	ret
-bge_else.25747:
-	ret
-bge_else.25745:
-	ret
-init_vecset_constants.3252:
-	load    5($i11), $i2
-	load    4($i11), $i3
-	load    3($i11), $i4
-	load    2($i11), $i5
-	load    1($i11), $i6
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25769
-	store   $i11, 0($sp)
-	store   $i6, 1($sp)
-	store   $i1, 2($sp)
-	store   $i5, 3($sp)
-	store   $i2, 4($sp)
-	store   $i4, 5($sp)
-	store   $i3, 6($sp)
-	add     $i6, $i1, $i12
-	load    0($i12), $i1
-	store   $i1, 7($sp)
-	load    119($i1), $i1
-	load    0($i3), $i3
-	sub     $i3, 1, $i3
-	li      0, $i12
-	cmp     $i3, $i12, $i12
-	bl      $i12, bge_else.25770
-	store   $i1, 8($sp)
-	add     $i2, $i3, $i12
-	load    0($i12), $i2
-	load    1($i1), $i4
-	load    0($i1), $i1
-	load    1($i2), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25772
-	store   $i3, 9($sp)
-	store   $i4, 10($sp)
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	load    9($sp), $i2
-	load    10($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25773
-be_else.25772:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25774
-	store   $i3, 9($sp)
-	store   $i4, 10($sp)
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	load    9($sp), $i2
-	load    10($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25775
-be_else.25774:
-	store   $i3, 9($sp)
-	store   $i4, 10($sp)
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	load    9($sp), $i2
-	load    10($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25775:
-be_cont.25773:
-	sub     $i2, 1, $i2
-	load    8($sp), $i1
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.25776, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.25776:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	b       bge_cont.25771
-bge_else.25770:
-bge_cont.25771:
-	load    7($sp), $i1
-	load    118($i1), $i1
-	load    6($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    5($sp), $i11
-	store   $ra, 11($sp)
-	load    0($i11), $i10
-	li      cls.25777, $ra
-	add     $sp, 12, $sp
-	jr      $i10
-cls.25777:
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	load    7($sp), $i1
-	load    117($i1), $i1
-	load    6($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25778
-	store   $i1, 11($sp)
-	load    4($sp), $i3
-	add     $i3, $i2, $i12
-	load    0($i12), $i3
-	load    1($i1), $i4
-	load    0($i1), $i1
-	load    1($i3), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25780
-	store   $i2, 12($sp)
-	store   $i4, 13($sp)
-	mov     $i3, $i2
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    12($sp), $i2
-	load    13($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25781
-be_else.25780:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25782
-	store   $i2, 12($sp)
-	store   $i4, 13($sp)
-	mov     $i3, $i2
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    12($sp), $i2
-	load    13($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25783
-be_else.25782:
-	store   $i2, 12($sp)
-	store   $i4, 13($sp)
-	mov     $i3, $i2
-	store   $ra, 14($sp)
-	add     $sp, 15, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    12($sp), $i2
-	load    13($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25783:
-be_cont.25781:
-	sub     $i2, 1, $i2
-	load    11($sp), $i1
-	load    5($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25784, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25784:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	b       bge_cont.25779
-bge_else.25778:
-bge_cont.25779:
-	li      116, $i2
-	load    7($sp), $i1
-	load    3($sp), $i11
-	store   $ra, 14($sp)
-	load    0($i11), $i10
-	li      cls.25785, $ra
-	add     $sp, 15, $sp
-	jr      $i10
-cls.25785:
-	sub     $sp, 15, $sp
-	load    14($sp), $ra
-	load    2($sp), $i1
-	sub     $i1, 1, $i1
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25786
-	store   $i1, 14($sp)
-	load    1($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	store   $i1, 15($sp)
-	load    119($i1), $i1
-	load    6($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	load    5($sp), $i11
-	store   $ra, 16($sp)
-	load    0($i11), $i10
-	li      cls.25787, $ra
-	add     $sp, 17, $sp
-	jr      $i10
-cls.25787:
-	sub     $sp, 17, $sp
-	load    16($sp), $ra
-	load    15($sp), $i1
-	load    118($i1), $i1
-	load    6($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25788
-	store   $i1, 16($sp)
-	load    4($sp), $i3
-	add     $i3, $i2, $i12
-	load    0($i12), $i3
-	load    1($i1), $i4
-	load    0($i1), $i1
-	load    1($i3), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25790
-	store   $i2, 17($sp)
-	store   $i4, 18($sp)
-	mov     $i3, $i2
-	store   $ra, 19($sp)
-	add     $sp, 20, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	load    17($sp), $i2
-	load    18($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25791
-be_else.25790:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25792
-	store   $i2, 17($sp)
-	store   $i4, 18($sp)
-	mov     $i3, $i2
-	store   $ra, 19($sp)
-	add     $sp, 20, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	load    17($sp), $i2
-	load    18($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25793
-be_else.25792:
-	store   $i2, 17($sp)
-	store   $i4, 18($sp)
-	mov     $i3, $i2
-	store   $ra, 19($sp)
-	add     $sp, 20, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	load    17($sp), $i2
-	load    18($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25793:
-be_cont.25791:
-	sub     $i2, 1, $i2
-	load    16($sp), $i1
-	load    5($sp), $i11
-	store   $ra, 19($sp)
-	load    0($i11), $i10
-	li      cls.25794, $ra
-	add     $sp, 20, $sp
-	jr      $i10
-cls.25794:
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	b       bge_cont.25789
-bge_else.25788:
-bge_cont.25789:
-	li      117, $i2
-	load    15($sp), $i1
-	load    3($sp), $i11
-	store   $ra, 19($sp)
-	load    0($i11), $i10
-	li      cls.25795, $ra
-	add     $sp, 20, $sp
-	jr      $i10
-cls.25795:
-	sub     $sp, 20, $sp
-	load    19($sp), $ra
-	load    14($sp), $i1
-	sub     $i1, 1, $i1
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25796
-	store   $i1, 19($sp)
-	load    1($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	store   $i1, 20($sp)
-	load    119($i1), $i1
-	load    6($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 1, $i2
-	li      0, $i12
-	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25797
-	store   $i1, 21($sp)
-	load    4($sp), $i3
-	add     $i3, $i2, $i12
-	load    0($i12), $i3
-	load    1($i1), $i4
-	load    0($i1), $i1
-	load    1($i3), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25799
-	store   $i2, 22($sp)
-	store   $i4, 23($sp)
-	mov     $i3, $i2
-	store   $ra, 24($sp)
-	add     $sp, 25, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	load    22($sp), $i2
-	load    23($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25800
-be_else.25799:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25801
-	store   $i2, 22($sp)
-	store   $i4, 23($sp)
-	mov     $i3, $i2
-	store   $ra, 24($sp)
-	add     $sp, 25, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	load    22($sp), $i2
-	load    23($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25802
-be_else.25801:
-	store   $i2, 22($sp)
-	store   $i4, 23($sp)
-	mov     $i3, $i2
-	store   $ra, 24($sp)
-	add     $sp, 25, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	load    22($sp), $i2
-	load    23($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25802:
-be_cont.25800:
-	sub     $i2, 1, $i2
-	load    21($sp), $i1
-	load    5($sp), $i11
-	store   $ra, 24($sp)
-	load    0($i11), $i10
-	li      cls.25803, $ra
-	add     $sp, 25, $sp
-	jr      $i10
-cls.25803:
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	b       bge_cont.25798
-bge_else.25797:
-bge_cont.25798:
-	li      118, $i2
-	load    20($sp), $i1
-	load    3($sp), $i11
-	store   $ra, 24($sp)
-	load    0($i11), $i10
-	li      cls.25804, $ra
-	add     $sp, 25, $sp
-	jr      $i10
-cls.25804:
-	sub     $sp, 25, $sp
-	load    24($sp), $ra
-	load    19($sp), $i1
-	sub     $i1, 1, $i1
-	li      0, $i12
-	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25805
-	store   $i1, 24($sp)
-	load    1($sp), $i2
-	add     $i2, $i1, $i12
-	load    0($i12), $i1
-	li      119, $i2
-	load    3($sp), $i11
-	store   $ra, 25($sp)
-	load    0($i11), $i10
-	li      cls.25806, $ra
-	add     $sp, 26, $sp
-	jr      $i10
-cls.25806:
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	load    24($sp), $i1
-	sub     $i1, 1, $i1
-	load    0($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-bge_else.25805:
-	ret
-bge_else.25796:
-	ret
-bge_else.25786:
-	ret
-bge_else.25769:
-	ret
-setup_rect_reflection.3263:
-	load    6($i11), $i3
-	store   $i3, 0($sp)
-	load    5($i11), $i3
-	store   $i3, 1($sp)
-	load    4($i11), $i3
-	store   $i3, 2($sp)
-	load    3($i11), $i4
-	store   $i4, 3($sp)
-	load    2($i11), $i4
-	store   $i4, 4($sp)
-	load    1($i11), $i5
-	store   $i5, 5($sp)
-	sll     $i1, 2, $i1
-	store   $i1, 6($sp)
-	load    0($i3), $i3
-	store   $i3, 7($sp)
-	li      l.14035, $i3
-	load    0($i3), $f1
-	load    7($i2), $i2
-	load    0($i2), $f2
-	fsub    $f1, $f2, $f1
-	store   $f1, 8($sp)
-	load    0($i4), $f1
-	fneg    $f1, $f1
-	store   $f1, 9($sp)
-	load    1($i4), $f1
-	fneg    $f1, $f1
-	store   $f1, 10($sp)
-	load    2($i4), $f1
-	fneg    $f1, $f1
-	store   $f1, 11($sp)
-	add     $i1, 1, $i1
-	store   $i1, 12($sp)
-	load    0($i4), $f1
-	store   $f1, 13($sp)
-	li      3, $i1
-	li      l.14001, $i2
+	li      l.13298, $i2
 	load    0($i2), $f1
 	store   $ra, 14($sp)
 	add     $sp, 15, $sp
@@ -16344,7 +11141,7 @@ setup_rect_reflection.3263:
 	load    14($sp), $ra
 	mov     $i1, $i2
 	store   $i2, 14($sp)
-	load    3($sp), $i1
+	li      min_caml_n_objects, $i1
 	load    0($i1), $i1
 	store   $ra, 15($sp)
 	add     $sp, 16, $sp
@@ -16354,973 +11151,60 @@ setup_rect_reflection.3263:
 	mov     $hp, $i2
 	add     $hp, 2, $hp
 	store   $i1, 1($i2)
-	load    14($sp), $i3
-	store   $i3, 0($i2)
-	store   $i2, 15($sp)
-	load    13($sp), $f1
-	store   $f1, 0($i3)
-	load    10($sp), $f1
-	store   $f1, 1($i3)
-	load    11($sp), $f1
-	store   $f1, 2($i3)
-	load    3($sp), $i4
-	load    0($i4), $i4
-	sub     $i4, 1, $i4
-	li      0, $i12
-	cmp     $i4, $i12, $i12
-	bl      $i12, bge_else.25811
-	load    1($sp), $i2
-	add     $i2, $i4, $i12
-	load    0($i12), $i2
-	load    1($i2), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25813
-	store   $i4, 16($sp)
-	store   $i1, 17($sp)
-	mov     $i3, $i1
-	store   $ra, 18($sp)
-	add     $sp, 19, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-	load    16($sp), $i2
-	load    17($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25814
-be_else.25813:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25815
-	store   $i4, 16($sp)
-	store   $i1, 17($sp)
-	mov     $i3, $i1
-	store   $ra, 18($sp)
-	add     $sp, 19, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-	load    16($sp), $i2
-	load    17($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25816
-be_else.25815:
-	store   $i4, 16($sp)
-	store   $i1, 17($sp)
-	mov     $i3, $i1
-	store   $ra, 18($sp)
-	add     $sp, 19, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-	load    16($sp), $i2
-	load    17($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25816:
-be_cont.25814:
-	sub     $i2, 1, $i2
-	load    15($sp), $i1
-	load    5($sp), $i11
-	store   $ra, 18($sp)
-	load    0($i11), $i10
-	li      cls.25817, $ra
-	add     $sp, 19, $sp
-	jr      $i10
-cls.25817:
-	sub     $sp, 19, $sp
-	load    18($sp), $ra
-	b       bge_cont.25812
-bge_else.25811:
-bge_cont.25812:
-	mov     $hp, $i1
-	add     $hp, 3, $hp
-	load    8($sp), $f1
-	store   $f1, 2($i1)
-	load    15($sp), $i2
-	store   $i2, 1($i1)
+	load    14($sp), $i1
+	store   $i1, 0($i2)
+	mov     $i2, $i1
 	load    12($sp), $i2
-	store   $i2, 0($i1)
-	load    7($sp), $i2
-	load    0($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	add     $i2, 1, $i1
-	store   $i1, 18($sp)
-	load    6($sp), $i1
-	add     $i1, 2, $i1
-	store   $i1, 19($sp)
-	load    4($sp), $i1
-	load    1($i1), $f1
-	store   $f1, 20($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 21($sp)
-	add     $sp, 22, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 22, $sp
-	load    21($sp), $ra
+	store   $i1, 117($i2)
+	li      116, $i1
+	mov     $i2, $i10
 	mov     $i1, $i2
-	store   $i2, 21($sp)
-	load    3($sp), $i1
-	load    0($i1), $i1
-	store   $ra, 22($sp)
-	add     $sp, 23, $sp
-	jal     min_caml_create_array
-	sub     $sp, 23, $sp
-	load    22($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    21($sp), $i3
-	store   $i3, 0($i2)
-	store   $i2, 22($sp)
-	load    9($sp), $f1
-	store   $f1, 0($i3)
-	load    20($sp), $f1
-	store   $f1, 1($i3)
-	load    11($sp), $f1
-	store   $f1, 2($i3)
-	load    3($sp), $i4
-	load    0($i4), $i4
-	sub     $i4, 1, $i4
-	li      0, $i12
-	cmp     $i4, $i12, $i12
-	bl      $i12, bge_else.25818
-	load    1($sp), $i2
-	add     $i2, $i4, $i12
-	load    0($i12), $i2
-	load    1($i2), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25820
-	store   $i4, 23($sp)
-	store   $i1, 24($sp)
-	mov     $i3, $i1
-	store   $ra, 25($sp)
-	add     $sp, 26, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	load    23($sp), $i2
-	load    24($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25821
-be_else.25820:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25822
-	store   $i4, 23($sp)
-	store   $i1, 24($sp)
-	mov     $i3, $i1
-	store   $ra, 25($sp)
-	add     $sp, 26, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	load    23($sp), $i2
-	load    24($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25823
-be_else.25822:
-	store   $i4, 23($sp)
-	store   $i1, 24($sp)
-	mov     $i3, $i1
-	store   $ra, 25($sp)
-	add     $sp, 26, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	load    23($sp), $i2
-	load    24($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25823:
-be_cont.25821:
-	sub     $i2, 1, $i2
-	load    22($sp), $i1
-	load    5($sp), $i11
-	store   $ra, 25($sp)
-	load    0($i11), $i10
-	li      cls.25824, $ra
-	add     $sp, 26, $sp
-	jr      $i10
-cls.25824:
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	b       bge_cont.25819
-bge_else.25818:
-bge_cont.25819:
-	mov     $hp, $i1
-	add     $hp, 3, $hp
-	load    8($sp), $f1
-	store   $f1, 2($i1)
-	load    22($sp), $i2
-	store   $i2, 1($i1)
-	load    19($sp), $i2
-	store   $i2, 0($i1)
-	load    18($sp), $i2
-	load    0($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	load    7($sp), $i1
-	add     $i1, 2, $i1
-	store   $i1, 25($sp)
-	load    6($sp), $i1
-	add     $i1, 3, $i1
-	store   $i1, 26($sp)
-	load    4($sp), $i1
-	load    2($i1), $f1
-	store   $f1, 27($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 28($sp)
-	add     $sp, 29, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 29, $sp
-	load    28($sp), $ra
-	mov     $i1, $i2
-	store   $i2, 28($sp)
-	load    3($sp), $i1
-	load    0($i1), $i1
-	store   $ra, 29($sp)
-	add     $sp, 30, $sp
-	jal     min_caml_create_array
-	sub     $sp, 30, $sp
-	load    29($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    28($sp), $i3
-	store   $i3, 0($i2)
-	store   $i2, 29($sp)
-	load    9($sp), $f1
-	store   $f1, 0($i3)
-	load    10($sp), $f1
-	store   $f1, 1($i3)
-	load    27($sp), $f1
-	store   $f1, 2($i3)
-	load    3($sp), $i4
-	load    0($i4), $i4
-	sub     $i4, 1, $i4
-	li      0, $i12
-	cmp     $i4, $i12, $i12
-	bl      $i12, bge_else.25825
-	load    1($sp), $i2
-	add     $i2, $i4, $i12
-	load    0($i12), $i2
-	load    1($i2), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25827
-	store   $i4, 30($sp)
-	store   $i1, 31($sp)
-	mov     $i3, $i1
-	store   $ra, 32($sp)
-	add     $sp, 33, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 33, $sp
-	load    32($sp), $ra
-	load    30($sp), $i2
-	load    31($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25828
-be_else.25827:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25829
-	store   $i4, 30($sp)
-	store   $i1, 31($sp)
-	mov     $i3, $i1
-	store   $ra, 32($sp)
-	add     $sp, 33, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 33, $sp
-	load    32($sp), $ra
-	load    30($sp), $i2
-	load    31($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25830
-be_else.25829:
-	store   $i4, 30($sp)
-	store   $i1, 31($sp)
-	mov     $i3, $i1
-	store   $ra, 32($sp)
-	add     $sp, 33, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 33, $sp
-	load    32($sp), $ra
-	load    30($sp), $i2
-	load    31($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25830:
-be_cont.25828:
-	sub     $i2, 1, $i2
-	load    29($sp), $i1
-	load    5($sp), $i11
-	store   $ra, 32($sp)
-	load    0($i11), $i10
-	li      cls.25831, $ra
-	add     $sp, 33, $sp
-	jr      $i10
-cls.25831:
-	sub     $sp, 33, $sp
-	load    32($sp), $ra
-	b       bge_cont.25826
-bge_else.25825:
-bge_cont.25826:
-	mov     $hp, $i1
-	add     $hp, 3, $hp
-	load    8($sp), $f1
-	store   $f1, 2($i1)
-	load    29($sp), $i2
-	store   $i2, 1($i1)
-	load    26($sp), $i2
-	store   $i2, 0($i1)
-	load    25($sp), $i2
-	load    0($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	load    7($sp), $i1
-	add     $i1, 3, $i1
-	load    2($sp), $i2
-	store   $i1, 0($i2)
+	mov     $i10, $i1
+	store   $ra, 15($sp)
+	add     $sp, 16, $sp
+	jal     create_dirvec_elements.3324
+	sub     $sp, 16, $sp
+	load    15($sp), $ra
+	load    8($sp), $i1
+	sub     $i1, 1, $i1
+	b       create_dirvecs.3327
+bge_else.19013:
 	ret
-setup_surface_reflection.3266:
-	load    6($i11), $i3
-	store   $i3, 0($sp)
-	load    5($i11), $i3
-	store   $i3, 1($sp)
-	load    4($i11), $i3
-	store   $i3, 2($sp)
-	load    3($i11), $i4
-	store   $i4, 3($sp)
-	load    2($i11), $i4
-	load    1($i11), $i5
-	store   $i5, 4($sp)
-	sll     $i1, 2, $i1
-	add     $i1, 1, $i1
-	store   $i1, 5($sp)
-	load    0($i3), $i1
-	store   $i1, 6($sp)
-	li      l.14035, $i1
-	load    0($i1), $f1
-	load    7($i2), $i1
-	load    0($i1), $f2
-	fsub    $f1, $f2, $f1
-	store   $f1, 7($sp)
-	load    4($i2), $i1
-	load    0($i4), $f1
-	load    0($i1), $f2
-	fmul    $f1, $f2, $f1
-	load    1($i4), $f2
-	load    1($i1), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	load    2($i4), $f2
-	load    2($i1), $f3
-	fmul    $f2, $f3, $f2
-	fadd    $f1, $f2, $f1
-	li      l.14050, $i1
-	load    0($i1), $f2
-	load    4($i2), $i1
-	load    0($i1), $f3
-	fmul    $f2, $f3, $f2
-	fmul    $f2, $f1, $f2
-	load    0($i4), $f3
-	fsub    $f2, $f3, $f2
-	store   $f2, 8($sp)
-	li      l.14050, $i1
-	load    0($i1), $f2
-	load    4($i2), $i1
-	load    1($i1), $f3
-	fmul    $f2, $f3, $f2
-	fmul    $f2, $f1, $f2
-	load    1($i4), $f3
-	fsub    $f2, $f3, $f2
-	store   $f2, 9($sp)
-	li      l.14050, $i1
-	load    0($i1), $f2
-	load    4($i2), $i1
-	load    2($i1), $f3
-	fmul    $f2, $f3, $f2
-	fmul    $f2, $f1, $f1
-	load    2($i4), $f2
-	fsub    $f1, $f2, $f1
-	store   $f1, 10($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 11($sp)
-	add     $sp, 12, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 12, $sp
-	load    11($sp), $ra
-	mov     $i1, $i2
-	store   $i2, 11($sp)
-	load    3($sp), $i1
-	load    0($i1), $i1
-	store   $ra, 12($sp)
-	add     $sp, 13, $sp
-	jal     min_caml_create_array
-	sub     $sp, 13, $sp
-	load    12($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 2, $hp
-	store   $i1, 1($i2)
-	load    11($sp), $i3
-	store   $i3, 0($i2)
-	store   $i2, 12($sp)
-	load    8($sp), $f1
-	store   $f1, 0($i3)
-	load    9($sp), $f1
-	store   $f1, 1($i3)
-	load    10($sp), $f1
-	store   $f1, 2($i3)
-	load    3($sp), $i4
-	load    0($i4), $i4
-	sub     $i4, 1, $i4
-	li      0, $i12
-	cmp     $i4, $i12, $i12
-	bl      $i12, bge_else.25833
-	load    1($sp), $i2
-	add     $i2, $i4, $i12
-	load    0($i12), $i2
-	load    1($i2), $i5
-	li      1, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25835
-	store   $i4, 13($sp)
-	store   $i1, 14($sp)
-	mov     $i3, $i1
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    13($sp), $i2
-	load    14($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25836
-be_else.25835:
-	li      2, $i12
-	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25837
-	store   $i4, 13($sp)
-	store   $i1, 14($sp)
-	mov     $i3, $i1
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    13($sp), $i2
-	load    14($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	b       be_cont.25838
-be_else.25837:
-	store   $i4, 13($sp)
-	store   $i1, 14($sp)
-	mov     $i3, $i1
-	store   $ra, 15($sp)
-	add     $sp, 16, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	load    13($sp), $i2
-	load    14($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-be_cont.25838:
-be_cont.25836:
-	sub     $i2, 1, $i2
-	load    12($sp), $i1
-	load    4($sp), $i11
-	store   $ra, 15($sp)
-	load    0($i11), $i10
-	li      cls.25839, $ra
-	add     $sp, 16, $sp
-	jr      $i10
-cls.25839:
-	sub     $sp, 16, $sp
-	load    15($sp), $ra
-	b       bge_cont.25834
-bge_else.25833:
-bge_cont.25834:
-	mov     $hp, $i1
-	add     $hp, 3, $hp
-	load    7($sp), $f1
-	store   $f1, 2($i1)
-	load    12($sp), $i2
-	store   $i2, 1($i1)
-	load    5($sp), $i2
-	store   $i2, 0($i1)
-	load    6($sp), $i2
-	load    0($sp), $i3
-	add     $i3, $i2, $i12
-	store   $i1, 0($i12)
-	add     $i2, 1, $i1
-	load    2($sp), $i2
-	store   $i1, 0($i2)
+bge_else.19012:
 	ret
-rt.3271:
-	load    25($i11), $i3
-	store   $i3, 0($sp)
-	load    24($i11), $i3
-	store   $i3, 1($sp)
-	load    23($i11), $i3
-	store   $i3, 2($sp)
-	load    22($i11), $i3
-	store   $i3, 3($sp)
-	load    21($i11), $i3
-	store   $i3, 4($sp)
-	load    20($i11), $i3
-	store   $i3, 5($sp)
-	load    19($i11), $i3
-	store   $i3, 6($sp)
-	load    18($i11), $i3
-	store   $i3, 7($sp)
-	load    17($i11), $i3
-	store   $i3, 8($sp)
-	load    16($i11), $i3
-	store   $i3, 9($sp)
-	load    15($i11), $i3
-	store   $i3, 10($sp)
-	load    14($i11), $i3
-	store   $i3, 11($sp)
-	load    13($i11), $i3
-	store   $i3, 12($sp)
-	load    12($i11), $i3
-	store   $i3, 13($sp)
-	load    11($i11), $i3
-	store   $i3, 14($sp)
-	load    10($i11), $i3
-	store   $i3, 15($sp)
-	load    9($i11), $i3
-	store   $i3, 16($sp)
-	load    8($i11), $i3
-	store   $i3, 17($sp)
-	load    7($i11), $i3
-	store   $i3, 18($sp)
-	load    6($i11), $i3
-	store   $i3, 19($sp)
-	load    5($i11), $i3
-	store   $i3, 20($sp)
-	load    4($i11), $i4
-	load    3($i11), $i5
-	store   $i5, 21($sp)
-	load    2($i11), $i5
-	store   $i5, 22($sp)
-	load    1($i11), $i5
-	store   $i5, 23($sp)
-	store   $i1, 0($i3)
-	store   $i2, 1($i3)
-	srl     $i1, 1, $i3
-	store   $i3, 0($i4)
-	srl     $i2, 1, $i2
-	store   $i2, 1($i4)
-	li      l.14518, $i2
-	load    0($i2), $f1
-	store   $f1, 24($sp)
-	store   $ra, 25($sp)
-	add     $sp, 26, $sp
-	jal     min_caml_float_of_int
-	sub     $sp, 26, $sp
-	load    25($sp), $ra
-	load    24($sp), $f2
-	finv    $f1, $f15
-	fmul    $f2, $f15, $f1
-	load    4($sp), $i1
-	store   $f1, 0($i1)
-	load    20($sp), $i1
-	load    0($i1), $i1
-	store   $i1, 25($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 26($sp)
-	add     $sp, 27, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 27, $sp
-	load    26($sp), $ra
-	store   $i1, 26($sp)
-	store   $ra, 27($sp)
-	add     $sp, 28, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 28, $sp
-	load    27($sp), $ra
-	store   $i1, 27($sp)
-	li      5, $i1
-	li      0, $i2
-	store   $ra, 28($sp)
-	add     $sp, 29, $sp
-	jal     min_caml_create_array
-	sub     $sp, 29, $sp
-	load    28($sp), $ra
-	store   $i1, 28($sp)
-	li      5, $i1
-	li      0, $i2
-	store   $ra, 29($sp)
-	add     $sp, 30, $sp
-	jal     min_caml_create_array
-	sub     $sp, 30, $sp
-	load    29($sp), $ra
-	store   $i1, 29($sp)
-	store   $ra, 30($sp)
-	add     $sp, 31, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 31, $sp
-	load    30($sp), $ra
-	store   $i1, 30($sp)
-	store   $ra, 31($sp)
-	add     $sp, 32, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 32, $sp
-	load    31($sp), $ra
-	store   $i1, 31($sp)
-	li      1, $i1
-	li      0, $i2
-	store   $ra, 32($sp)
-	add     $sp, 33, $sp
-	jal     min_caml_create_array
-	sub     $sp, 33, $sp
-	load    32($sp), $ra
-	store   $i1, 32($sp)
-	store   $ra, 33($sp)
-	add     $sp, 34, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 34, $sp
-	load    33($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 8, $hp
-	store   $i1, 7($i2)
-	load    32($sp), $i1
-	store   $i1, 6($i2)
-	load    31($sp), $i1
-	store   $i1, 5($i2)
-	load    30($sp), $i1
-	store   $i1, 4($i2)
-	load    29($sp), $i1
-	store   $i1, 3($i2)
-	load    28($sp), $i1
-	store   $i1, 2($i2)
-	load    27($sp), $i1
-	store   $i1, 1($i2)
-	load    26($sp), $i1
-	store   $i1, 0($i2)
-	load    25($sp), $i1
-	store   $ra, 33($sp)
-	add     $sp, 34, $sp
-	jal     min_caml_create_array
-	sub     $sp, 34, $sp
-	load    33($sp), $ra
-	load    20($sp), $i2
+init_dirvec_constants.3329:
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.19016
+	store   $i1, 0($sp)
+	store   $i2, 1($sp)
+	add     $i1, $i2, $i12
+	load    0($i12), $i1
+	li      min_caml_n_objects, $i2
 	load    0($i2), $i2
-	sub     $i2, 2, $i2
-	store   $ra, 33($sp)
-	add     $sp, 34, $sp
-	jal     init_line_elements.3215
-	sub     $sp, 34, $sp
-	load    33($sp), $ra
-	store   $i1, 33($sp)
-	load    20($sp), $i1
-	load    0($i1), $i1
-	store   $i1, 34($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 35($sp)
-	add     $sp, 36, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 36, $sp
-	load    35($sp), $ra
-	store   $i1, 35($sp)
-	store   $ra, 36($sp)
-	add     $sp, 37, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 37, $sp
-	load    36($sp), $ra
-	store   $i1, 36($sp)
-	li      5, $i1
-	li      0, $i2
-	store   $ra, 37($sp)
-	add     $sp, 38, $sp
-	jal     min_caml_create_array
-	sub     $sp, 38, $sp
-	load    37($sp), $ra
-	store   $i1, 37($sp)
-	li      5, $i1
-	li      0, $i2
-	store   $ra, 38($sp)
-	add     $sp, 39, $sp
-	jal     min_caml_create_array
-	sub     $sp, 39, $sp
-	load    38($sp), $ra
-	store   $i1, 38($sp)
-	store   $ra, 39($sp)
-	add     $sp, 40, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 40, $sp
-	load    39($sp), $ra
-	store   $i1, 39($sp)
-	store   $ra, 40($sp)
-	add     $sp, 41, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 41, $sp
-	load    40($sp), $ra
-	store   $i1, 40($sp)
-	li      1, $i1
-	li      0, $i2
-	store   $ra, 41($sp)
-	add     $sp, 42, $sp
-	jal     min_caml_create_array
-	sub     $sp, 42, $sp
-	load    41($sp), $ra
-	store   $i1, 41($sp)
-	store   $ra, 42($sp)
-	add     $sp, 43, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 43, $sp
-	load    42($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 8, $hp
-	store   $i1, 7($i2)
-	load    41($sp), $i1
-	store   $i1, 6($i2)
-	load    40($sp), $i1
-	store   $i1, 5($i2)
-	load    39($sp), $i1
-	store   $i1, 4($i2)
-	load    38($sp), $i1
-	store   $i1, 3($i2)
-	load    37($sp), $i1
-	store   $i1, 2($i2)
-	load    36($sp), $i1
-	store   $i1, 1($i2)
-	load    35($sp), $i1
-	store   $i1, 0($i2)
-	load    34($sp), $i1
-	store   $ra, 42($sp)
-	add     $sp, 43, $sp
-	jal     min_caml_create_array
-	sub     $sp, 43, $sp
-	load    42($sp), $ra
-	load    20($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 2, $i2
-	store   $ra, 42($sp)
-	add     $sp, 43, $sp
-	jal     init_line_elements.3215
-	sub     $sp, 43, $sp
-	load    42($sp), $ra
-	store   $i1, 42($sp)
-	load    20($sp), $i1
-	load    0($i1), $i1
-	store   $i1, 43($sp)
-	li      3, $i1
-	li      l.14001, $i2
-	load    0($i2), $f1
-	store   $ra, 44($sp)
-	add     $sp, 45, $sp
-	jal     min_caml_create_float_array
-	sub     $sp, 45, $sp
-	load    44($sp), $ra
-	store   $i1, 44($sp)
-	store   $ra, 45($sp)
-	add     $sp, 46, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 46, $sp
-	load    45($sp), $ra
-	store   $i1, 45($sp)
-	li      5, $i1
-	li      0, $i2
-	store   $ra, 46($sp)
-	add     $sp, 47, $sp
-	jal     min_caml_create_array
-	sub     $sp, 47, $sp
-	load    46($sp), $ra
-	store   $i1, 46($sp)
-	li      5, $i1
-	li      0, $i2
-	store   $ra, 47($sp)
-	add     $sp, 48, $sp
-	jal     min_caml_create_array
-	sub     $sp, 48, $sp
-	load    47($sp), $ra
-	store   $i1, 47($sp)
-	store   $ra, 48($sp)
-	add     $sp, 49, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 49, $sp
-	load    48($sp), $ra
-	store   $i1, 48($sp)
-	store   $ra, 49($sp)
-	add     $sp, 50, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 50, $sp
-	load    49($sp), $ra
-	store   $i1, 49($sp)
-	li      1, $i1
-	li      0, $i2
-	store   $ra, 50($sp)
-	add     $sp, 51, $sp
-	jal     min_caml_create_array
-	sub     $sp, 51, $sp
-	load    50($sp), $ra
-	store   $i1, 50($sp)
-	store   $ra, 51($sp)
-	add     $sp, 52, $sp
-	jal     create_float5x3array.3211
-	sub     $sp, 52, $sp
-	load    51($sp), $ra
-	mov     $hp, $i2
-	add     $hp, 8, $hp
-	store   $i1, 7($i2)
-	load    50($sp), $i1
-	store   $i1, 6($i2)
-	load    49($sp), $i1
-	store   $i1, 5($i2)
-	load    48($sp), $i1
-	store   $i1, 4($i2)
-	load    47($sp), $i1
-	store   $i1, 3($i2)
-	load    46($sp), $i1
-	store   $i1, 2($i2)
-	load    45($sp), $i1
-	store   $i1, 1($i2)
-	load    44($sp), $i1
-	store   $i1, 0($i2)
-	load    43($sp), $i1
-	store   $ra, 51($sp)
-	add     $sp, 52, $sp
-	jal     min_caml_create_array
-	sub     $sp, 52, $sp
-	load    51($sp), $ra
-	load    20($sp), $i2
-	load    0($i2), $i2
-	sub     $i2, 2, $i2
-	store   $ra, 51($sp)
-	add     $sp, 52, $sp
-	jal     init_line_elements.3215
-	sub     $sp, 52, $sp
-	load    51($sp), $ra
-	store   $i1, 51($sp)
-	load    6($sp), $i11
-	store   $ra, 52($sp)
-	load    0($i11), $i10
-	li      cls.25841, $ra
-	add     $sp, 53, $sp
-	jr      $i10
-cls.25841:
-	sub     $sp, 53, $sp
-	load    52($sp), $ra
-	load    9($sp), $i11
-	store   $ra, 52($sp)
-	load    0($i11), $i10
-	li      cls.25842, $ra
-	add     $sp, 53, $sp
-	jr      $i10
-cls.25842:
-	sub     $sp, 53, $sp
-	load    52($sp), $ra
-	li      0, $i1
-	store   $i1, 52($sp)
-	load    8($sp), $i11
-	store   $ra, 53($sp)
-	load    0($i11), $i10
-	li      cls.25843, $ra
-	add     $sp, 54, $sp
-	jr      $i10
-cls.25843:
-	sub     $sp, 54, $sp
-	load    53($sp), $ra
+	sub     $i2, 1, $i2
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	load    1($sp), $i1
+	sub     $i1, 1, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bne     $i12, be_else.25844
-	load    14($sp), $i1
-	load    52($sp), $i2
-	store   $i2, 0($i1)
-	b       be_cont.25845
-be_else.25844:
-	li      1, $i1
-	load    7($sp), $i11
-	store   $ra, 53($sp)
-	load    0($i11), $i10
-	li      cls.25846, $ra
-	add     $sp, 54, $sp
-	jr      $i10
-cls.25846:
-	sub     $sp, 54, $sp
-	load    53($sp), $ra
-be_cont.25845:
-	li      0, $i1
-	load    10($sp), $i11
-	store   $ra, 53($sp)
-	load    0($i11), $i10
-	li      cls.25847, $ra
-	add     $sp, 54, $sp
-	jr      $i10
-cls.25847:
-	sub     $sp, 54, $sp
-	load    53($sp), $ra
-	li      0, $i1
-	store   $ra, 53($sp)
-	add     $sp, 54, $sp
-	jal     read_or_network.2932
-	sub     $sp, 54, $sp
-	load    53($sp), $ra
-	load    12($sp), $i2
-	store   $i1, 0($i2)
-	store   $ra, 53($sp)
-	add     $sp, 54, $sp
-	jal     write_ppm_header.3179
-	sub     $sp, 54, $sp
-	load    53($sp), $ra
-	li      4, $i1
-	load    22($sp), $i11
-	store   $ra, 53($sp)
-	load    0($i11), $i10
-	li      cls.25848, $ra
-	add     $sp, 54, $sp
-	jr      $i10
-cls.25848:
-	sub     $sp, 54, $sp
-	load    53($sp), $ra
-	li      9, $i1
-	li      0, $i2
-	li      0, $i3
-	load    23($sp), $i11
-	store   $ra, 53($sp)
-	load    0($i11), $i10
-	li      cls.25849, $ra
-	add     $sp, 54, $sp
-	jr      $i10
-cls.25849:
-	sub     $sp, 54, $sp
-	load    53($sp), $ra
-	load    21($sp), $i1
-	load    4($i1), $i1
-	store   $i1, 53($sp)
-	load    119($i1), $i1
-	load    14($sp), $i2
+	bl      $i12, bge_else.19017
+	store   $i1, 2($sp)
+	load    0($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i1
+	li      min_caml_n_objects, $i2
 	load    0($i2), $i2
 	sub     $i2, 1, $i2
 	li      0, $i12
 	cmp     $i2, $i12, $i12
-	bl      $i12, bge_else.25850
-	store   $i1, 54($sp)
-	load    13($sp), $i3
+	bl      $i12, bge_else.19018
+	store   $i1, 3($sp)
+	li      min_caml_objects, $i3
 	add     $i3, $i2, $i12
 	load    0($i12), $i3
 	load    1($i1), $i4
@@ -17328,288 +11212,1729 @@ cls.25849:
 	load    1($i3), $i5
 	li      1, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25852
-	store   $i2, 55($sp)
-	store   $i4, 56($sp)
+	bne     $i12, be_else.19020
+	store   $i2, 4($sp)
+	store   $i4, 5($sp)
 	mov     $i3, $i2
-	store   $ra, 57($sp)
-	add     $sp, 58, $sp
-	jal     setup_rect_table.3022
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
-	load    55($sp), $i2
-	load    56($sp), $i3
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    4($sp), $i2
+	load    5($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-	b       be_cont.25853
-be_else.25852:
+	b       be_cont.19021
+be_else.19020:
 	li      2, $i12
 	cmp     $i5, $i12, $i12
-	bne     $i12, be_else.25854
-	store   $i2, 55($sp)
-	store   $i4, 56($sp)
+	bne     $i12, be_else.19022
+	store   $i2, 4($sp)
+	store   $i4, 5($sp)
 	mov     $i3, $i2
-	store   $ra, 57($sp)
-	add     $sp, 58, $sp
-	jal     setup_surface_table.3025
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
-	load    55($sp), $i2
-	load    56($sp), $i3
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    4($sp), $i2
+	load    5($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-	b       be_cont.25855
-be_else.25854:
-	store   $i2, 55($sp)
-	store   $i4, 56($sp)
+	b       be_cont.19023
+be_else.19022:
+	store   $i2, 4($sp)
+	store   $i4, 5($sp)
 	mov     $i3, $i2
-	store   $ra, 57($sp)
-	add     $sp, 58, $sp
-	jal     setup_second_table.3028
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
-	load    55($sp), $i2
-	load    56($sp), $i3
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	load    4($sp), $i2
+	load    5($sp), $i3
 	add     $i3, $i2, $i12
 	store   $i1, 0($i12)
-be_cont.25855:
-be_cont.25853:
+be_cont.19023:
+be_cont.19021:
 	sub     $i2, 1, $i2
-	load    54($sp), $i1
-	load    17($sp), $i11
-	store   $ra, 57($sp)
-	load    0($i11), $i10
-	li      cls.25856, $ra
-	add     $sp, 58, $sp
-	jr      $i10
-cls.25856:
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
-	b       bge_cont.25851
-bge_else.25850:
-bge_cont.25851:
+	load    3($sp), $i1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	b       bge_cont.19019
+bge_else.19018:
+bge_cont.19019:
+	load    2($sp), $i1
+	sub     $i1, 1, $i1
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.19024
+	store   $i1, 6($sp)
+	load    0($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	load    6($sp), $i1
+	sub     $i1, 1, $i1
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.19025
+	store   $i1, 7($sp)
+	load    0($sp), $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.19026
+	store   $i1, 8($sp)
+	li      min_caml_objects, $i3
+	add     $i3, $i2, $i12
+	load    0($i12), $i3
+	load    1($i1), $i4
+	load    0($i1), $i1
+	load    1($i3), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19028
+	store   $i2, 9($sp)
+	store   $i4, 10($sp)
+	mov     $i3, $i2
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	load    9($sp), $i2
+	load    10($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19029
+be_else.19028:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19030
+	store   $i2, 9($sp)
+	store   $i4, 10($sp)
+	mov     $i3, $i2
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	load    9($sp), $i2
+	load    10($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19031
+be_else.19030:
+	store   $i2, 9($sp)
+	store   $i4, 10($sp)
+	mov     $i3, $i2
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	load    9($sp), $i2
+	load    10($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19031:
+be_cont.19029:
+	sub     $i2, 1, $i2
+	load    8($sp), $i1
+	store   $ra, 11($sp)
+	add     $sp, 12, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 12, $sp
+	load    11($sp), $ra
+	b       bge_cont.19027
+bge_else.19026:
+bge_cont.19027:
+	load    7($sp), $i1
+	sub     $i1, 1, $i2
+	load    0($sp), $i1
+	b       init_dirvec_constants.3329
+bge_else.19025:
+	ret
+bge_else.19024:
+	ret
+bge_else.19017:
+	ret
+bge_else.19016:
+	ret
+init_vecset_constants.3332:
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.19036
+	store   $i1, 0($sp)
+	li      min_caml_dirvecs, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i1
+	store   $i1, 1($sp)
+	load    119($i1), $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.19037
+	store   $i1, 2($sp)
+	li      min_caml_objects, $i3
+	add     $i3, $i2, $i12
+	load    0($i12), $i3
+	load    1($i1), $i4
+	load    0($i1), $i1
+	load    1($i3), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19039
+	store   $i2, 3($sp)
+	store   $i4, 4($sp)
+	mov     $i3, $i2
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    3($sp), $i2
+	load    4($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19040
+be_else.19039:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19041
+	store   $i2, 3($sp)
+	store   $i4, 4($sp)
+	mov     $i3, $i2
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    3($sp), $i2
+	load    4($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19042
+be_else.19041:
+	store   $i2, 3($sp)
+	store   $i4, 4($sp)
+	mov     $i3, $i2
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    3($sp), $i2
+	load    4($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19042:
+be_cont.19040:
+	sub     $i2, 1, $i2
+	load    2($sp), $i1
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	b       bge_cont.19038
+bge_else.19037:
+bge_cont.19038:
+	load    1($sp), $i1
+	load    118($i1), $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	load    1($sp), $i1
+	load    117($i1), $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.19043
+	store   $i1, 5($sp)
+	li      min_caml_objects, $i3
+	add     $i3, $i2, $i12
+	load    0($i12), $i3
+	load    1($i1), $i4
+	load    0($i1), $i1
+	load    1($i3), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19045
+	store   $i2, 6($sp)
+	store   $i4, 7($sp)
+	mov     $i3, $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    6($sp), $i2
+	load    7($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19046
+be_else.19045:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19047
+	store   $i2, 6($sp)
+	store   $i4, 7($sp)
+	mov     $i3, $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    6($sp), $i2
+	load    7($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19048
+be_else.19047:
+	store   $i2, 6($sp)
+	store   $i4, 7($sp)
+	mov     $i3, $i2
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    6($sp), $i2
+	load    7($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19048:
+be_cont.19046:
+	sub     $i2, 1, $i2
+	load    5($sp), $i1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	b       bge_cont.19044
+bge_else.19043:
+bge_cont.19044:
+	li      116, $i2
+	load    1($sp), $i1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     init_dirvec_constants.3329
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	load    0($sp), $i1
+	sub     $i1, 1, $i1
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.19049
+	store   $i1, 8($sp)
+	li      min_caml_dirvecs, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i1
+	store   $i1, 9($sp)
+	load    119($i1), $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	load    9($sp), $i1
+	load    118($i1), $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.19050
+	store   $i1, 10($sp)
+	li      min_caml_objects, $i3
+	add     $i3, $i2, $i12
+	load    0($i12), $i3
+	load    1($i1), $i4
+	load    0($i1), $i1
+	load    1($i3), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19052
+	store   $i2, 11($sp)
+	store   $i4, 12($sp)
+	mov     $i3, $i2
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
+	load    11($sp), $i2
+	load    12($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19053
+be_else.19052:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19054
+	store   $i2, 11($sp)
+	store   $i4, 12($sp)
+	mov     $i3, $i2
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
+	load    11($sp), $i2
+	load    12($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19055
+be_else.19054:
+	store   $i2, 11($sp)
+	store   $i4, 12($sp)
+	mov     $i3, $i2
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
+	load    11($sp), $i2
+	load    12($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19055:
+be_cont.19053:
+	sub     $i2, 1, $i2
+	load    10($sp), $i1
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
+	b       bge_cont.19051
+bge_else.19050:
+bge_cont.19051:
+	li      117, $i2
+	load    9($sp), $i1
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     init_dirvec_constants.3329
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
+	load    8($sp), $i1
+	sub     $i1, 1, $i1
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.19056
+	store   $i1, 13($sp)
+	li      min_caml_dirvecs, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i1
+	store   $i1, 14($sp)
+	load    119($i1), $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.19057
+	store   $i1, 15($sp)
+	li      min_caml_objects, $i3
+	add     $i3, $i2, $i12
+	load    0($i12), $i3
+	load    1($i1), $i4
+	load    0($i1), $i1
+	load    1($i3), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19059
+	store   $i2, 16($sp)
+	store   $i4, 17($sp)
+	mov     $i3, $i2
+	store   $ra, 18($sp)
+	add     $sp, 19, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 19, $sp
+	load    18($sp), $ra
+	load    16($sp), $i2
+	load    17($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19060
+be_else.19059:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19061
+	store   $i2, 16($sp)
+	store   $i4, 17($sp)
+	mov     $i3, $i2
+	store   $ra, 18($sp)
+	add     $sp, 19, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 19, $sp
+	load    18($sp), $ra
+	load    16($sp), $i2
+	load    17($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19062
+be_else.19061:
+	store   $i2, 16($sp)
+	store   $i4, 17($sp)
+	mov     $i3, $i2
+	store   $ra, 18($sp)
+	add     $sp, 19, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 19, $sp
+	load    18($sp), $ra
+	load    16($sp), $i2
+	load    17($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19062:
+be_cont.19060:
+	sub     $i2, 1, $i2
+	load    15($sp), $i1
+	store   $ra, 18($sp)
+	add     $sp, 19, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 19, $sp
+	load    18($sp), $ra
+	b       bge_cont.19058
+bge_else.19057:
+bge_cont.19058:
 	li      118, $i2
-	load    53($sp), $i1
-	load    19($sp), $i11
-	store   $ra, 57($sp)
-	load    0($i11), $i10
-	li      cls.25857, $ra
-	add     $sp, 58, $sp
-	jr      $i10
-cls.25857:
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
+	load    14($sp), $i1
+	store   $ra, 18($sp)
+	add     $sp, 19, $sp
+	jal     init_dirvec_constants.3329
+	sub     $sp, 19, $sp
+	load    18($sp), $ra
+	load    13($sp), $i1
+	sub     $i1, 1, $i1
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bl      $i12, bge_else.19063
+	store   $i1, 18($sp)
+	li      min_caml_dirvecs, $i2
+	add     $i2, $i1, $i12
+	load    0($i12), $i1
+	li      119, $i2
+	store   $ra, 19($sp)
+	add     $sp, 20, $sp
+	jal     init_dirvec_constants.3329
+	sub     $sp, 20, $sp
+	load    19($sp), $ra
+	load    18($sp), $i1
+	sub     $i1, 1, $i1
+	b       init_vecset_constants.3332
+bge_else.19063:
+	ret
+bge_else.19056:
+	ret
+bge_else.19049:
+	ret
+bge_else.19036:
+	ret
+setup_rect_reflection.3343:
+	sll     $i1, 2, $i1
+	store   $i1, 0($sp)
+	li      min_caml_n_reflections, $i3
+	load    0($i3), $i3
+	store   $i3, 1($sp)
+	li      l.13301, $i3
+	load    0($i3), $f1
+	load    7($i2), $i2
+	load    0($i2), $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, 2($sp)
+	li      min_caml_light, $i2
+	load    0($i2), $f1
+	fneg    $f1, $f1
+	store   $f1, 3($sp)
+	li      min_caml_light, $i2
+	load    1($i2), $f1
+	fneg    $f1, $f1
+	store   $f1, 4($sp)
+	li      min_caml_light, $i2
+	load    2($i2), $f1
+	fneg    $f1, $f1
+	store   $f1, 5($sp)
+	add     $i1, 1, $i1
+	store   $i1, 6($sp)
+	li      min_caml_light, $i1
+	load    0($i1), $f1
+	store   $f1, 7($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	mov     $i1, $i2
+	store   $i2, 8($sp)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	store   $ra, 9($sp)
+	add     $sp, 10, $sp
+	jal     min_caml_create_array
+	sub     $sp, 10, $sp
+	load    9($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 2, $hp
+	store   $i1, 1($i2)
+	load    8($sp), $i3
+	store   $i3, 0($i2)
+	store   $i2, 9($sp)
+	load    7($sp), $f1
+	store   $f1, 0($i3)
+	load    4($sp), $f1
+	store   $f1, 1($i3)
+	load    5($sp), $f1
+	store   $f1, 2($i3)
+	li      min_caml_n_objects, $i4
+	load    0($i4), $i4
+	sub     $i4, 1, $i4
+	li      0, $i12
+	cmp     $i4, $i12, $i12
+	bl      $i12, bge_else.19068
+	li      min_caml_objects, $i2
+	add     $i2, $i4, $i12
+	load    0($i12), $i2
+	load    1($i2), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19070
+	store   $i4, 10($sp)
+	store   $i1, 11($sp)
+	mov     $i3, $i1
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
+	load    10($sp), $i2
+	load    11($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19071
+be_else.19070:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19072
+	store   $i4, 10($sp)
+	store   $i1, 11($sp)
+	mov     $i3, $i1
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
+	load    10($sp), $i2
+	load    11($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19073
+be_else.19072:
+	store   $i4, 10($sp)
+	store   $i1, 11($sp)
+	mov     $i3, $i1
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
+	load    10($sp), $i2
+	load    11($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19073:
+be_cont.19071:
+	sub     $i2, 1, $i2
+	load    9($sp), $i1
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
+	b       bge_cont.19069
+bge_else.19068:
+bge_cont.19069:
+	li      min_caml_reflections, $i1
+	mov     $hp, $i2
+	add     $hp, 3, $hp
+	load    2($sp), $f1
+	store   $f1, 2($i2)
+	load    9($sp), $i3
+	store   $i3, 1($i2)
+	load    6($sp), $i3
+	store   $i3, 0($i2)
+	load    1($sp), $i3
+	add     $i1, $i3, $i12
+	store   $i2, 0($i12)
+	add     $i3, 1, $i1
+	store   $i1, 12($sp)
+	load    0($sp), $i1
+	add     $i1, 2, $i1
+	store   $i1, 13($sp)
+	li      min_caml_light, $i1
+	load    1($i1), $f1
+	store   $f1, 14($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 15($sp)
+	add     $sp, 16, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 16, $sp
+	load    15($sp), $ra
+	mov     $i1, $i2
+	store   $i2, 15($sp)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	store   $ra, 16($sp)
+	add     $sp, 17, $sp
+	jal     min_caml_create_array
+	sub     $sp, 17, $sp
+	load    16($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 2, $hp
+	store   $i1, 1($i2)
+	load    15($sp), $i3
+	store   $i3, 0($i2)
+	store   $i2, 16($sp)
+	load    3($sp), $f1
+	store   $f1, 0($i3)
+	load    14($sp), $f1
+	store   $f1, 1($i3)
+	load    5($sp), $f1
+	store   $f1, 2($i3)
+	li      min_caml_n_objects, $i4
+	load    0($i4), $i4
+	sub     $i4, 1, $i4
+	li      0, $i12
+	cmp     $i4, $i12, $i12
+	bl      $i12, bge_else.19074
+	li      min_caml_objects, $i2
+	add     $i2, $i4, $i12
+	load    0($i12), $i2
+	load    1($i2), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19076
+	store   $i4, 17($sp)
+	store   $i1, 18($sp)
+	mov     $i3, $i1
+	store   $ra, 19($sp)
+	add     $sp, 20, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 20, $sp
+	load    19($sp), $ra
+	load    17($sp), $i2
+	load    18($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19077
+be_else.19076:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19078
+	store   $i4, 17($sp)
+	store   $i1, 18($sp)
+	mov     $i3, $i1
+	store   $ra, 19($sp)
+	add     $sp, 20, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 20, $sp
+	load    19($sp), $ra
+	load    17($sp), $i2
+	load    18($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19079
+be_else.19078:
+	store   $i4, 17($sp)
+	store   $i1, 18($sp)
+	mov     $i3, $i1
+	store   $ra, 19($sp)
+	add     $sp, 20, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 20, $sp
+	load    19($sp), $ra
+	load    17($sp), $i2
+	load    18($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19079:
+be_cont.19077:
+	sub     $i2, 1, $i2
+	load    16($sp), $i1
+	store   $ra, 19($sp)
+	add     $sp, 20, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 20, $sp
+	load    19($sp), $ra
+	b       bge_cont.19075
+bge_else.19074:
+bge_cont.19075:
+	li      min_caml_reflections, $i1
+	mov     $hp, $i2
+	add     $hp, 3, $hp
+	load    2($sp), $f1
+	store   $f1, 2($i2)
+	load    16($sp), $i3
+	store   $i3, 1($i2)
+	load    13($sp), $i3
+	store   $i3, 0($i2)
+	load    12($sp), $i3
+	add     $i1, $i3, $i12
+	store   $i2, 0($i12)
+	load    1($sp), $i1
+	add     $i1, 2, $i1
+	store   $i1, 19($sp)
+	load    0($sp), $i1
+	add     $i1, 3, $i1
+	store   $i1, 20($sp)
+	li      min_caml_light, $i1
+	load    2($i1), $f1
+	store   $f1, 21($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 22($sp)
+	add     $sp, 23, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 23, $sp
+	load    22($sp), $ra
+	mov     $i1, $i2
+	store   $i2, 22($sp)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	store   $ra, 23($sp)
+	add     $sp, 24, $sp
+	jal     min_caml_create_array
+	sub     $sp, 24, $sp
+	load    23($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 2, $hp
+	store   $i1, 1($i2)
+	load    22($sp), $i3
+	store   $i3, 0($i2)
+	store   $i2, 23($sp)
+	load    3($sp), $f1
+	store   $f1, 0($i3)
+	load    4($sp), $f1
+	store   $f1, 1($i3)
+	load    21($sp), $f1
+	store   $f1, 2($i3)
+	li      min_caml_n_objects, $i4
+	load    0($i4), $i4
+	sub     $i4, 1, $i4
+	li      0, $i12
+	cmp     $i4, $i12, $i12
+	bl      $i12, bge_else.19080
+	li      min_caml_objects, $i2
+	add     $i2, $i4, $i12
+	load    0($i12), $i2
+	load    1($i2), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19082
+	store   $i4, 24($sp)
+	store   $i1, 25($sp)
+	mov     $i3, $i1
+	store   $ra, 26($sp)
+	add     $sp, 27, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 27, $sp
+	load    26($sp), $ra
+	load    24($sp), $i2
+	load    25($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19083
+be_else.19082:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19084
+	store   $i4, 24($sp)
+	store   $i1, 25($sp)
+	mov     $i3, $i1
+	store   $ra, 26($sp)
+	add     $sp, 27, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 27, $sp
+	load    26($sp), $ra
+	load    24($sp), $i2
+	load    25($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19085
+be_else.19084:
+	store   $i4, 24($sp)
+	store   $i1, 25($sp)
+	mov     $i3, $i1
+	store   $ra, 26($sp)
+	add     $sp, 27, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 27, $sp
+	load    26($sp), $ra
+	load    24($sp), $i2
+	load    25($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19085:
+be_cont.19083:
+	sub     $i2, 1, $i2
+	load    23($sp), $i1
+	store   $ra, 26($sp)
+	add     $sp, 27, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 27, $sp
+	load    26($sp), $ra
+	b       bge_cont.19081
+bge_else.19080:
+bge_cont.19081:
+	li      min_caml_reflections, $i1
+	mov     $hp, $i2
+	add     $hp, 3, $hp
+	load    2($sp), $f1
+	store   $f1, 2($i2)
+	load    23($sp), $i3
+	store   $i3, 1($i2)
+	load    20($sp), $i3
+	store   $i3, 0($i2)
+	load    19($sp), $i3
+	add     $i1, $i3, $i12
+	store   $i2, 0($i12)
+	li      min_caml_n_reflections, $i1
+	load    1($sp), $i2
+	add     $i2, 3, $i2
+	store   $i2, 0($i1)
+	ret
+setup_surface_reflection.3346:
+	sll     $i1, 2, $i1
+	add     $i1, 1, $i1
+	store   $i1, 0($sp)
+	li      min_caml_n_reflections, $i1
+	load    0($i1), $i1
+	store   $i1, 1($sp)
+	li      l.13301, $i1
+	load    0($i1), $f1
+	load    7($i2), $i1
+	load    0($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, 2($sp)
+	li      min_caml_light, $i1
+	load    4($i2), $i3
+	load    0($i1), $f1
+	load    0($i3), $f2
+	fmul    $f1, $f2, $f1
+	load    1($i1), $f2
+	load    1($i3), $f3
+	fmul    $f2, $f3, $f2
+	fadd    $f1, $f2, $f1
+	load    2($i1), $f2
+	load    2($i3), $f3
+	fmul    $f2, $f3, $f2
+	fadd    $f1, $f2, $f1
+	li      l.13374, $i1
+	load    0($i1), $f2
+	load    4($i2), $i1
+	load    0($i1), $f3
+	fmul    $f2, $f3, $f2
+	fmul    $f2, $f1, $f2
+	li      min_caml_light, $i1
+	load    0($i1), $f3
+	fsub    $f2, $f3, $f2
+	store   $f2, 3($sp)
+	li      l.13374, $i1
+	load    0($i1), $f2
+	load    4($i2), $i1
+	load    1($i1), $f3
+	fmul    $f2, $f3, $f2
+	fmul    $f2, $f1, $f2
+	li      min_caml_light, $i1
+	load    1($i1), $f3
+	fsub    $f2, $f3, $f2
+	store   $f2, 4($sp)
+	li      l.13374, $i1
+	load    0($i1), $f2
+	load    4($i2), $i1
+	load    2($i1), $f3
+	fmul    $f2, $f3, $f2
+	fmul    $f2, $f1, $f1
+	li      min_caml_light, $i1
+	load    2($i1), $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, 5($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	mov     $i1, $i2
+	store   $i2, 6($sp)
+	li      min_caml_n_objects, $i1
+	load    0($i1), $i1
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     min_caml_create_array
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 2, $hp
+	store   $i1, 1($i2)
+	load    6($sp), $i3
+	store   $i3, 0($i2)
+	store   $i2, 7($sp)
+	load    3($sp), $f1
+	store   $f1, 0($i3)
+	load    4($sp), $f1
+	store   $f1, 1($i3)
+	load    5($sp), $f1
+	store   $f1, 2($i3)
+	li      min_caml_n_objects, $i4
+	load    0($i4), $i4
+	sub     $i4, 1, $i4
+	li      0, $i12
+	cmp     $i4, $i12, $i12
+	bl      $i12, bge_else.19087
+	li      min_caml_objects, $i2
+	add     $i2, $i4, $i12
+	load    0($i12), $i2
+	load    1($i2), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19089
+	store   $i4, 8($sp)
+	store   $i1, 9($sp)
+	mov     $i3, $i1
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	load    8($sp), $i2
+	load    9($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19090
+be_else.19089:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19091
+	store   $i4, 8($sp)
+	store   $i1, 9($sp)
+	mov     $i3, $i1
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	load    8($sp), $i2
+	load    9($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19092
+be_else.19091:
+	store   $i4, 8($sp)
+	store   $i1, 9($sp)
+	mov     $i3, $i1
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	load    8($sp), $i2
+	load    9($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19092:
+be_cont.19090:
+	sub     $i2, 1, $i2
+	load    7($sp), $i1
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	b       bge_cont.19088
+bge_else.19087:
+bge_cont.19088:
+	li      min_caml_reflections, $i1
+	mov     $hp, $i2
+	add     $hp, 3, $hp
+	load    2($sp), $f1
+	store   $f1, 2($i2)
+	load    7($sp), $i3
+	store   $i3, 1($i2)
+	load    0($sp), $i3
+	store   $i3, 0($i2)
+	load    1($sp), $i3
+	add     $i1, $i3, $i12
+	store   $i2, 0($i12)
+	li      min_caml_n_reflections, $i1
+	add     $i3, 1, $i2
+	store   $i2, 0($i1)
+	ret
+rt.3351:
+	li      min_caml_image_size, $i3
+	store   $i1, 0($i3)
+	li      min_caml_image_size, $i3
+	store   $i2, 1($i3)
+	li      min_caml_image_center, $i3
+	srl     $i1, 1, $i4
+	store   $i4, 0($i3)
+	li      min_caml_image_center, $i3
+	srl     $i2, 1, $i2
+	store   $i2, 1($i3)
+	li      min_caml_scan_pitch, $i2
+	store   $i2, 0($sp)
+	li      l.13908, $i2
+	load    0($i2), $f1
+	store   $f1, 1($sp)
+	store   $ra, 2($sp)
+	add     $sp, 3, $sp
+	jal     min_caml_float_of_int
+	sub     $sp, 3, $sp
+	load    2($sp), $ra
+	load    1($sp), $f2
+	finv    $f1, $f15
+	fmul    $f2, $f15, $f1
+	load    0($sp), $i1
+	store   $f1, 0($i1)
+	li      min_caml_image_size, $i1
+	load    0($i1), $i1
+	store   $i1, 2($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 3($sp)
+	add     $sp, 4, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 4, $sp
+	load    3($sp), $ra
+	store   $i1, 3($sp)
+	store   $ra, 4($sp)
+	add     $sp, 5, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 5, $sp
+	load    4($sp), $ra
+	store   $i1, 4($sp)
+	li      5, $i1
+	li      0, $i2
+	store   $ra, 5($sp)
+	add     $sp, 6, $sp
+	jal     min_caml_create_array
+	sub     $sp, 6, $sp
+	load    5($sp), $ra
+	store   $i1, 5($sp)
+	li      5, $i1
+	li      0, $i2
+	store   $ra, 6($sp)
+	add     $sp, 7, $sp
+	jal     min_caml_create_array
+	sub     $sp, 7, $sp
+	load    6($sp), $ra
+	store   $i1, 6($sp)
+	store   $ra, 7($sp)
+	add     $sp, 8, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 8, $sp
+	load    7($sp), $ra
+	store   $i1, 7($sp)
+	store   $ra, 8($sp)
+	add     $sp, 9, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 9, $sp
+	load    8($sp), $ra
+	store   $i1, 8($sp)
+	li      1, $i1
+	li      0, $i2
+	store   $ra, 9($sp)
+	add     $sp, 10, $sp
+	jal     min_caml_create_array
+	sub     $sp, 10, $sp
+	load    9($sp), $ra
+	store   $i1, 9($sp)
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 8, $hp
+	store   $i1, 7($i2)
+	load    9($sp), $i1
+	store   $i1, 6($i2)
+	load    8($sp), $i1
+	store   $i1, 5($i2)
+	load    7($sp), $i1
+	store   $i1, 4($i2)
+	load    6($sp), $i1
+	store   $i1, 3($i2)
+	load    5($sp), $i1
+	store   $i1, 2($i2)
+	load    4($sp), $i1
+	store   $i1, 1($i2)
+	load    3($sp), $i1
+	store   $i1, 0($i2)
+	load    2($sp), $i1
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     min_caml_create_array
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	li      min_caml_image_size, $i2
+	load    0($i2), $i2
+	sub     $i2, 2, $i2
+	store   $ra, 10($sp)
+	add     $sp, 11, $sp
+	jal     init_line_elements.3295
+	sub     $sp, 11, $sp
+	load    10($sp), $ra
+	store   $i1, 10($sp)
+	li      min_caml_image_size, $i1
+	load    0($i1), $i1
+	store   $i1, 11($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 12($sp)
+	add     $sp, 13, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 13, $sp
+	load    12($sp), $ra
+	store   $i1, 12($sp)
+	store   $ra, 13($sp)
+	add     $sp, 14, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 14, $sp
+	load    13($sp), $ra
+	store   $i1, 13($sp)
+	li      5, $i1
+	li      0, $i2
+	store   $ra, 14($sp)
+	add     $sp, 15, $sp
+	jal     min_caml_create_array
+	sub     $sp, 15, $sp
+	load    14($sp), $ra
+	store   $i1, 14($sp)
+	li      5, $i1
+	li      0, $i2
+	store   $ra, 15($sp)
+	add     $sp, 16, $sp
+	jal     min_caml_create_array
+	sub     $sp, 16, $sp
+	load    15($sp), $ra
+	store   $i1, 15($sp)
+	store   $ra, 16($sp)
+	add     $sp, 17, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 17, $sp
+	load    16($sp), $ra
+	store   $i1, 16($sp)
+	store   $ra, 17($sp)
+	add     $sp, 18, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 18, $sp
+	load    17($sp), $ra
+	store   $i1, 17($sp)
+	li      1, $i1
+	li      0, $i2
+	store   $ra, 18($sp)
+	add     $sp, 19, $sp
+	jal     min_caml_create_array
+	sub     $sp, 19, $sp
+	load    18($sp), $ra
+	store   $i1, 18($sp)
+	store   $ra, 19($sp)
+	add     $sp, 20, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 20, $sp
+	load    19($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 8, $hp
+	store   $i1, 7($i2)
+	load    18($sp), $i1
+	store   $i1, 6($i2)
+	load    17($sp), $i1
+	store   $i1, 5($i2)
+	load    16($sp), $i1
+	store   $i1, 4($i2)
+	load    15($sp), $i1
+	store   $i1, 3($i2)
+	load    14($sp), $i1
+	store   $i1, 2($i2)
+	load    13($sp), $i1
+	store   $i1, 1($i2)
+	load    12($sp), $i1
+	store   $i1, 0($i2)
+	load    11($sp), $i1
+	store   $ra, 19($sp)
+	add     $sp, 20, $sp
+	jal     min_caml_create_array
+	sub     $sp, 20, $sp
+	load    19($sp), $ra
+	li      min_caml_image_size, $i2
+	load    0($i2), $i2
+	sub     $i2, 2, $i2
+	store   $ra, 19($sp)
+	add     $sp, 20, $sp
+	jal     init_line_elements.3295
+	sub     $sp, 20, $sp
+	load    19($sp), $ra
+	store   $i1, 19($sp)
+	li      min_caml_image_size, $i1
+	load    0($i1), $i1
+	store   $i1, 20($sp)
+	li      3, $i1
+	li      l.13298, $i2
+	load    0($i2), $f1
+	store   $ra, 21($sp)
+	add     $sp, 22, $sp
+	jal     min_caml_create_float_array
+	sub     $sp, 22, $sp
+	load    21($sp), $ra
+	store   $i1, 21($sp)
+	store   $ra, 22($sp)
+	add     $sp, 23, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 23, $sp
+	load    22($sp), $ra
+	store   $i1, 22($sp)
+	li      5, $i1
+	li      0, $i2
+	store   $ra, 23($sp)
+	add     $sp, 24, $sp
+	jal     min_caml_create_array
+	sub     $sp, 24, $sp
+	load    23($sp), $ra
+	store   $i1, 23($sp)
+	li      5, $i1
+	li      0, $i2
+	store   $ra, 24($sp)
+	add     $sp, 25, $sp
+	jal     min_caml_create_array
+	sub     $sp, 25, $sp
+	load    24($sp), $ra
+	store   $i1, 24($sp)
+	store   $ra, 25($sp)
+	add     $sp, 26, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 26, $sp
+	load    25($sp), $ra
+	store   $i1, 25($sp)
+	store   $ra, 26($sp)
+	add     $sp, 27, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 27, $sp
+	load    26($sp), $ra
+	store   $i1, 26($sp)
+	li      1, $i1
+	li      0, $i2
+	store   $ra, 27($sp)
+	add     $sp, 28, $sp
+	jal     min_caml_create_array
+	sub     $sp, 28, $sp
+	load    27($sp), $ra
+	store   $i1, 27($sp)
+	store   $ra, 28($sp)
+	add     $sp, 29, $sp
+	jal     create_float5x3array.3291
+	sub     $sp, 29, $sp
+	load    28($sp), $ra
+	mov     $hp, $i2
+	add     $hp, 8, $hp
+	store   $i1, 7($i2)
+	load    27($sp), $i1
+	store   $i1, 6($i2)
+	load    26($sp), $i1
+	store   $i1, 5($i2)
+	load    25($sp), $i1
+	store   $i1, 4($i2)
+	load    24($sp), $i1
+	store   $i1, 3($i2)
+	load    23($sp), $i1
+	store   $i1, 2($i2)
+	load    22($sp), $i1
+	store   $i1, 1($i2)
 	load    21($sp), $i1
+	store   $i1, 0($i2)
+	load    20($sp), $i1
+	store   $ra, 28($sp)
+	add     $sp, 29, $sp
+	jal     min_caml_create_array
+	sub     $sp, 29, $sp
+	load    28($sp), $ra
+	li      min_caml_image_size, $i2
+	load    0($i2), $i2
+	sub     $i2, 2, $i2
+	store   $ra, 28($sp)
+	add     $sp, 29, $sp
+	jal     init_line_elements.3295
+	sub     $sp, 29, $sp
+	load    28($sp), $ra
+	store   $i1, 28($sp)
+	store   $ra, 29($sp)
+	add     $sp, 30, $sp
+	jal     read_screen_settings.2997
+	sub     $sp, 30, $sp
+	load    29($sp), $ra
+	store   $ra, 29($sp)
+	add     $sp, 30, $sp
+	jal     read_light.2999
+	sub     $sp, 30, $sp
+	load    29($sp), $ra
+	li      0, $i1
+	store   $i1, 29($sp)
+	store   $ra, 30($sp)
+	add     $sp, 31, $sp
+	jal     read_nth_object.3004
+	sub     $sp, 31, $sp
+	load    30($sp), $ra
+	li      0, $i12
+	cmp     $i1, $i12, $i12
+	bne     $i12, be_else.19094
+	li      min_caml_n_objects, $i1
+	load    29($sp), $i2
+	store   $i2, 0($i1)
+	b       be_cont.19095
+be_else.19094:
+	li      1, $i1
+	store   $ra, 30($sp)
+	add     $sp, 31, $sp
+	jal     read_object.3006
+	sub     $sp, 31, $sp
+	load    30($sp), $ra
+be_cont.19095:
+	li      0, $i1
+	store   $ra, 30($sp)
+	add     $sp, 31, $sp
+	jal     read_and_network.3014
+	sub     $sp, 31, $sp
+	load    30($sp), $ra
+	li      min_caml_or_net, $i1
+	store   $i1, 30($sp)
+	li      0, $i1
+	store   $ra, 31($sp)
+	add     $sp, 32, $sp
+	jal     read_or_network.3012
+	sub     $sp, 32, $sp
+	load    31($sp), $ra
+	load    30($sp), $i2
+	store   $i1, 0($i2)
+	store   $ra, 31($sp)
+	add     $sp, 32, $sp
+	jal     write_ppm_header.3259
+	sub     $sp, 32, $sp
+	load    31($sp), $ra
+	li      4, $i1
+	store   $ra, 31($sp)
+	add     $sp, 32, $sp
+	jal     create_dirvecs.3327
+	sub     $sp, 32, $sp
+	load    31($sp), $ra
+	li      9, $i1
+	li      0, $i2
+	li      0, $i3
+	store   $ra, 31($sp)
+	add     $sp, 32, $sp
+	jal     calc_dirvec_rows.3318
+	sub     $sp, 32, $sp
+	load    31($sp), $ra
+	li      min_caml_dirvecs, $i1
+	load    4($i1), $i1
+	store   $i1, 31($sp)
+	load    119($i1), $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	li      0, $i12
+	cmp     $i2, $i12, $i12
+	bl      $i12, bge_else.19096
+	store   $i1, 32($sp)
+	li      min_caml_objects, $i3
+	add     $i3, $i2, $i12
+	load    0($i12), $i3
+	load    1($i1), $i4
+	load    0($i1), $i1
+	load    1($i3), $i5
+	li      1, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19098
+	store   $i2, 33($sp)
+	store   $i4, 34($sp)
+	mov     $i3, $i2
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     setup_rect_table.3102
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
+	load    33($sp), $i2
+	load    34($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19099
+be_else.19098:
+	li      2, $i12
+	cmp     $i5, $i12, $i12
+	bne     $i12, be_else.19100
+	store   $i2, 33($sp)
+	store   $i4, 34($sp)
+	mov     $i3, $i2
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     setup_surface_table.3105
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
+	load    33($sp), $i2
+	load    34($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+	b       be_cont.19101
+be_else.19100:
+	store   $i2, 33($sp)
+	store   $i4, 34($sp)
+	mov     $i3, $i2
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     setup_second_table.3108
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
+	load    33($sp), $i2
+	load    34($sp), $i3
+	add     $i3, $i2, $i12
+	store   $i1, 0($i12)
+be_cont.19101:
+be_cont.19099:
+	sub     $i2, 1, $i2
+	load    32($sp), $i1
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
+	b       bge_cont.19097
+bge_else.19096:
+bge_cont.19097:
+	li      118, $i2
+	load    31($sp), $i1
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     init_dirvec_constants.3329
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
+	li      min_caml_dirvecs, $i1
 	load    3($i1), $i1
 	li      119, $i2
-	load    19($sp), $i11
-	store   $ra, 57($sp)
-	load    0($i11), $i10
-	li      cls.25858, $ra
-	add     $sp, 58, $sp
-	jr      $i10
-cls.25858:
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     init_dirvec_constants.3329
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
 	li      2, $i1
-	load    18($sp), $i11
-	store   $ra, 57($sp)
-	load    0($i11), $i10
-	li      cls.25859, $ra
-	add     $sp, 58, $sp
-	jr      $i10
-cls.25859:
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
-	load    16($sp), $i1
-	load    0($i1), $f1
-	load    0($sp), $i2
-	store   $f1, 0($i2)
-	load    1($i1), $f1
-	store   $f1, 1($i2)
-	load    2($i1), $f1
-	store   $f1, 2($i2)
-	load    14($sp), $i1
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     init_vecset_constants.3332
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
+	li      min_caml_light_dirvec, $i1
 	load    0($i1), $i1
-	sub     $i1, 1, $i2
-	load    15($sp), $i1
-	load    17($sp), $i11
-	store   $ra, 57($sp)
-	load    0($i11), $i10
-	li      cls.25860, $ra
-	add     $sp, 58, $sp
-	jr      $i10
-cls.25860:
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
-	load    14($sp), $i1
+	li      min_caml_light, $i2
+	load    0($i2), $f1
+	store   $f1, 0($i1)
+	load    1($i2), $f1
+	store   $f1, 1($i1)
+	load    2($i2), $f1
+	store   $f1, 2($i1)
+	li      min_caml_light_dirvec, $i1
+	li      min_caml_n_objects, $i2
+	load    0($i2), $i2
+	sub     $i2, 1, $i2
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     iter_setup_dirvec_constants.3111
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
+	li      min_caml_n_objects, $i1
 	load    0($i1), $i1
 	sub     $i1, 1, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bl      $i12, bge_else.25861
-	load    13($sp), $i2
+	bl      $i12, bge_else.19102
+	li      min_caml_objects, $i2
 	add     $i2, $i1, $i12
 	load    0($i12), $i2
 	load    2($i2), $i3
 	li      2, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25863
+	bne     $i12, be_else.19104
 	load    7($i2), $i3
 	load    0($i3), $f1
-	li      l.14035, $i3
+	li      l.13301, $i3
 	load    0($i3), $f2
 	fcmp    $f2, $f1, $i12
-	bg      $i12, ble_else.25865
+	bg      $i12, ble_else.19106
 	li      0, $i3
-	b       ble_cont.25866
-ble_else.25865:
+	b       ble_cont.19107
+ble_else.19106:
 	li      1, $i3
-ble_cont.25866:
+ble_cont.19107:
 	li      0, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25867
-	b       be_cont.25868
-be_else.25867:
+	bne     $i12, be_else.19108
+	b       be_cont.19109
+be_else.19108:
 	load    1($i2), $i3
 	li      1, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25869
-	load    2($sp), $i11
-	store   $ra, 57($sp)
-	load    0($i11), $i10
-	li      cls.25871, $ra
-	add     $sp, 58, $sp
-	jr      $i10
-cls.25871:
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
-	b       be_cont.25870
-be_else.25869:
+	bne     $i12, be_else.19110
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     setup_rect_reflection.3343
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
+	b       be_cont.19111
+be_else.19110:
 	li      2, $i12
 	cmp     $i3, $i12, $i12
-	bne     $i12, be_else.25872
-	load    1($sp), $i11
-	store   $ra, 57($sp)
-	load    0($i11), $i10
-	li      cls.25874, $ra
-	add     $sp, 58, $sp
-	jr      $i10
-cls.25874:
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
-	b       be_cont.25873
-be_else.25872:
-be_cont.25873:
-be_cont.25870:
-be_cont.25868:
-	b       be_cont.25864
-be_else.25863:
-be_cont.25864:
-	b       bge_cont.25862
-bge_else.25861:
-bge_cont.25862:
+	bne     $i12, be_else.19112
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     setup_surface_reflection.3346
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
+	b       be_cont.19113
+be_else.19112:
+be_cont.19113:
+be_cont.19111:
+be_cont.19109:
+	b       be_cont.19105
+be_else.19104:
+be_cont.19105:
+	b       bge_cont.19103
+bge_else.19102:
+bge_cont.19103:
 	li      0, $i2
 	li      0, $i3
-	load    42($sp), $i1
-	load    11($sp), $i11
-	store   $ra, 57($sp)
-	load    0($i11), $i10
-	li      cls.25875, $ra
-	add     $sp, 58, $sp
-	jr      $i10
-cls.25875:
-	sub     $sp, 58, $sp
-	load    57($sp), $ra
+	load    19($sp), $i1
+	store   $ra, 35($sp)
+	add     $sp, 36, $sp
+	jal     pretrace_line.3275
+	sub     $sp, 36, $sp
+	load    35($sp), $ra
 	li      0, $i2
 	li      2, $i3
-	load    20($sp), $i1
-	load    1($i1), $i4
+	li      min_caml_image_size, $i1
+	load    1($i1), $i1
 	li      0, $i12
-	cmp     $i4, $i12, $i12
-	bg      $i12, ble_else.25876
+	cmp     $i1, $i12, $i12
+	bg      $i12, ble_else.19114
 	ret
-ble_else.25876:
-	store   $i2, 57($sp)
+ble_else.19114:
+	store   $i2, 35($sp)
+	li      min_caml_image_size, $i1
 	load    1($i1), $i1
 	sub     $i1, 1, $i1
 	li      0, $i12
 	cmp     $i1, $i12, $i12
-	bg      $i12, ble_else.25878
-	b       ble_cont.25879
-ble_else.25878:
+	bg      $i12, ble_else.19116
+	b       ble_cont.19117
+ble_else.19116:
 	li      1, $i2
-	load    51($sp), $i1
-	load    11($sp), $i11
-	store   $ra, 58($sp)
-	load    0($i11), $i10
-	li      cls.25880, $ra
-	add     $sp, 59, $sp
-	jr      $i10
-cls.25880:
-	sub     $sp, 59, $sp
-	load    58($sp), $ra
-ble_cont.25879:
+	load    28($sp), $i1
+	store   $ra, 36($sp)
+	add     $sp, 37, $sp
+	jal     pretrace_line.3275
+	sub     $sp, 37, $sp
+	load    36($sp), $ra
+ble_cont.19117:
 	li      0, $i1
-	load    57($sp), $i2
-	load    33($sp), $i3
-	load    42($sp), $i4
-	load    51($sp), $i5
-	load    3($sp), $i11
-	store   $ra, 58($sp)
-	load    0($i11), $i10
-	li      cls.25881, $ra
-	add     $sp, 59, $sp
-	jr      $i10
-cls.25881:
-	sub     $sp, 59, $sp
-	load    58($sp), $ra
+	load    35($sp), $i2
+	load    10($sp), $i3
+	load    19($sp), $i4
+	load    28($sp), $i5
+	store   $ra, 36($sp)
+	add     $sp, 37, $sp
+	jal     scan_pixel.3279
+	sub     $sp, 37, $sp
+	load    36($sp), $ra
 	li      1, $i1
 	li      4, $i5
-	load    42($sp), $i2
-	load    51($sp), $i3
-	load    33($sp), $i4
-	load    5($sp), $i11
-	load    0($i11), $i10
-	jr      $i10
-l.14555:	.float  1.5707963268E+00
-l.14553:	.float  6.2831853072E+00
-l.14551:	.float  3.1415926536E+00
-l.14518:	.float  1.2800000000E+02
-l.14425:	.float  9.0000000000E-01
-l.14423:	.float  2.0000000000E-01
-l.14354:	.float  1.5000000000E+02
-l.14350:	.float  -1.5000000000E+02
-l.14334:	.float  1.0000000000E-01
-l.14330:	.float  -2.0000000000E+00
-l.14328:	.float  3.9062500000E-03
-l.14303:	.float  2.0000000000E+01
-l.14301:	.float  5.0000000000E-02
-l.14295:	.float  2.5000000000E-01
-l.14288:	.float  1.0000000000E+01
-l.14286:	.float  3.0000000000E-01
-l.14284:	.float  2.5500000000E+02
-l.14278:	.float  1.5000000000E-01
-l.14270:	.float  3.1415927000E+00
-l.14268:	.float  3.0000000000E+01
-l.14265:	.float  1.5000000000E+01
-l.14263:	.float  1.0000000000E-04
-l.14251:	.float  1.0000000000E+08
-l.14248:	.float  1.0000000000E+09
-l.14240:	.float  -1.0000000000E-01
-l.14237:	.float  1.0000000000E-02
-l.14235:	.float  -2.0000000000E-01
-l.14111:	.float  -2.0000000000E+02
-l.14109:	.float  2.0000000000E+02
-l.14102:	.float  1.7453293000E-02
-l.14099:	.float  -1.0000000000E+00
-l.14077:	.float  3.0000000000E+00
-l.14050:	.float  2.0000000000E+00
-l.14035:	.float  1.0000000000E+00
-l.14008:	.float  -6.0725293501E-01
-l.14003:	.float  6.0725293501E-01
-l.14001:	.float  0.0000000000E+00
-l.13994:	.float  5.0000000000E-01
+	load    19($sp), $i2
+	load    28($sp), $i3
+	load    10($sp), $i4
+	b       scan_line.3285
+l.13908:	.float  1.2800000000E+02
+l.13815:	.float  9.0000000000E-01
+l.13813:	.float  2.0000000000E-01
+l.13759:	.float  1.5000000000E+02
+l.13757:	.float  -1.5000000000E+02
+l.13741:	.float  1.0000000000E-01
+l.13739:	.float  -2.0000000000E+00
+l.13737:	.float  3.9062500000E-03
+l.13725:	.float  1.0000000000E+08
+l.13722:	.float  1.0000000000E+09
+l.13710:	.float  2.0000000000E+01
+l.13708:	.float  5.0000000000E-02
+l.13696:	.float  2.5000000000E-01
+l.13683:	.float  1.0000000000E+01
+l.13681:	.float  3.0000000000E-01
+l.13679:	.float  2.5500000000E+02
+l.13673:	.float  1.5000000000E-01
+l.13665:	.float  3.1415927000E+00
+l.13663:	.float  3.0000000000E+01
+l.13660:	.float  1.5000000000E+01
+l.13658:	.float  1.0000000000E-04
+l.13646:	.float  -1.0000000000E-01
+l.13643:	.float  1.0000000000E-02
+l.13641:	.float  -2.0000000000E-01
+l.13459:	.float  -2.0000000000E+02
+l.13457:	.float  2.0000000000E+02
+l.13426:	.float  1.7453293000E-02
+l.13423:	.float  -1.0000000000E+00
+l.13401:	.float  3.0000000000E+00
+l.13374:	.float  2.0000000000E+00
+l.13322:	.float  6.2831853072E+00
+l.13319:	.float  3.1415926536E+00
+l.13317:	.float  1.5707963268E+00
+l.13301:	.float  1.0000000000E+00
+l.13298:	.float  0.0000000000E+00
+l.13296:	.float  6.0725293501E-01
+l.13293:	.float  5.0000000000E-01
 ######################################################################
 #
 # 		↓　ここから lib_asm.s
@@ -17712,17 +13037,38 @@ min_caml_rsqrt_table:
 ######################################################################
 # * floor
 ######################################################################
-# floor(f) = itof(ftoi(f)) という適当仕様
-# これじゃおそらく明らかに誤差るので、まだ要実装
 min_caml_floor:
+	fcmp $f1 $fzero $cond
+	bge $cond FLOOR_POSITIVE	# if ($f1 >= 0) FLOOR_POSITIVE
 	store $sp $ra 0
 	addi $sp $sp 1
-	jal min_caml_int_of_float
-	jal min_caml_float_of_int
+	fsub $fzero $f1 $f1
+	jal min_caml_floor		# $f1 = FLOOR_POSITIVE(-$f1)
+	load $zero $f2 FLOOR_MONE
+	fsub $f2 $f1 $f1		# $f1 = (-1) - $f1
 	addi $sp $sp -1
 	load $sp $ra 0
-	jr $ra
-
+	ret
+FLOOR_POSITIVE:
+	load $zero $mf FLOAT_MAGICF
+	fcmp $f1 $mf $cond
+	ble $cond FLOOR_POSITIVE_MAIN
+	ret
+FLOOR_POSITIVE_MAIN:
+	store $sp $f1 0
+	fadd $f1 $mf $f1		# $f1 += 0x4b000000
+	fsub $f1 $mf $f1		# $f1 -= 0x4b000000
+	load $sp $f2 0
+	fcmp $f1 $f2 $cond
+	ble $cond FLOOR_RET
+	load $zero $f2 FLOOR_ONE
+	fsub $f1 $f2 $f1		# 返り値が元の値より大きければ1.0引く
+FLOOR_RET:
+	ret
+FLOOR_ONE:
+	.float 1.0
+FLOOR_MONE:
+	.float -1.0
 
 ######################################################################
 # * float_of_int
@@ -17939,6 +13285,22 @@ CREATE_ARRAY_END:
 	ret
 
 ######################################################################
+# * ledout_int
+# * バイトLED出力
+######################################################################
+min_caml_ledout_int:
+	ledout $i1
+	ret
+
+######################################################################
+# * ledout_float
+# * バイトLED出力
+######################################################################
+min_caml_ledout_float:
+	ledout $f1
+	ret
+
+######################################################################
 # * create_float_array
 ######################################################################
 min_caml_create_float_array:
@@ -17959,3 +13321,68 @@ CREATE_FLOAT_ARRAY_END:
 # 		↑　ここまで lib_asm.s
 #
 ######################################################################
+min_caml_n_objects:
+	.skip	1
+min_caml_objects:
+	.skip	60
+min_caml_screen:
+	.skip	3
+min_caml_viewpoint:
+	.skip	3
+min_caml_light:
+	.skip	3
+min_caml_beam:
+	.skip	1
+min_caml_and_net:
+	.skip	50
+min_caml_or_net:
+	.skip	1
+min_caml_solver_dist:
+	.skip	1
+min_caml_intsec_rectside:
+	.skip	1
+min_caml_tmin:
+	.skip	1
+min_caml_intersection_point:
+	.skip	3
+min_caml_intersected_object_id:
+	.skip	1
+min_caml_nvector:
+	.skip	3
+min_caml_texture_color:
+	.skip	3
+min_caml_diffuse_ray:
+	.skip	3
+min_caml_rgb:
+	.skip	3
+min_caml_image_size:
+	.skip	2
+min_caml_image_center:
+	.skip	2
+min_caml_scan_pitch:
+	.skip	1
+min_caml_startp:
+	.skip	3
+min_caml_startp_fast:
+	.skip	3
+min_caml_screenx_dir:
+	.skip	3
+min_caml_screeny_dir:
+	.skip	3
+min_caml_screenz_dir:
+	.skip	3
+min_caml_ptrace_dirvec:
+	.skip	3
+min_caml_dirvecs:
+	.skip	5
+min_caml_light_dirvec:
+	.int	light_dirvec_v3
+	.int	light_dirvec_consts
+light_dirvec_v3:
+	.skip	3
+light_dirvec_consts:
+	.skip	60
+min_caml_reflections:
+	.skip	180
+min_caml_n_reflections:
+	.skip	1

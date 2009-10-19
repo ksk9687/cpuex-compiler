@@ -6,5 +6,8 @@ trueとfalseの定義を削除
 **globals.ml
 文末にinを追加
 
+**globals.s
+globals.mlの定義に従いてきとーに作った
+
 *コンパイル方法
-シミュレータのレポジトリからmacro.sとlib_asm.sの最新版を、コンパイラのレポジトリからlib_ml.mlの最新版をそれぞれ持ってきてmakeする
+Makefileのsimのパスとかをてきとーに書き変えてmakeする
