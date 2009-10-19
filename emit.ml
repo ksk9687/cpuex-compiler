@@ -75,6 +75,7 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
 			Printf.fprintf oc "\t%-8s%s, %s\n" "finv" z reg_fasm;
 			g' oc (NonTail(x), FMul(y, reg_fasm))
   | NonTail(x), LdF(y, z') -> g' oc (NonTail(x), Ld(y, z'))
+	| NonTail(x), LdFL(Id.L(y)) -> Printf.fprintf oc "\t%-8s%s, %s\n" "load" y x
   | NonTail(r), StF(x, y, z') -> g' oc (NonTail(r), St(x, y, z'))
   | NonTail(_), Comment(s) -> Printf.fprintf oc "\t# %s\n" s
   (* 退避の仮想命令の実装 (caml2html: emit_save) *)
@@ -98,7 +99,7 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | Tail, (Set _ | SetL _ | Mov _ | Neg _ | Add _ | Sub _ | SLL _ | SRL _ | Ld _ as exp) ->
       g' oc (NonTail(regs.(0)), exp);
       Printf.fprintf oc "\tret\n"
-  | Tail, (FMov _ | FNeg _ | FAdd _ | FSub _ | FMul _ | FDiv _ | LdF _  as exp) ->
+  | Tail, (FMov _ | FNeg _ | FAdd _ | FSub _ | FMul _ | FDiv _ | LdF _  | LdFL _ as exp) ->
       g' oc (NonTail(fregs.(0)), exp);
       Printf.fprintf oc "\tret\n"
   | Tail, (Restore(x) as exp) ->
@@ -108,17 +109,26 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | Tail, IfEq(x, V(y), e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
       g'_tail_if oc e1 e2 "be" "bne"
+	| Tail, IfEq(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_asm;
+      g'_tail_if oc e1 e2 "be" "bne"
   | Tail, IfEq(x, C(y), e1, e2) ->
 			g' oc (NonTail(reg_asm), Set(y));
 			g' oc (Tail, IfEq(x, V(reg_asm), e1, e2))
   | Tail, IfLE(x, V(y), e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
       g'_tail_if oc e1 e2 "ble" "bg"
+  | Tail, IfLE(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_asm;
+      g'_tail_if oc e1 e2 "ble" "bg"
   | Tail, IfLE(x, C(y), e1, e2) ->
 			g' oc (NonTail(reg_asm), Set(y));
 			g' oc (Tail, IfLE(x, V(reg_asm), e1, e2))
   | Tail, IfGE(x, V(y), e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
+      g'_tail_if oc e1 e2 "bge" "bl"
+  | Tail, IfGE(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_asm;
       g'_tail_if oc e1 e2 "bge" "bl"
   | Tail, IfGE(x, C(y), e1, e2) ->
 			g' oc (NonTail(reg_asm), Set(y));
@@ -132,17 +142,26 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | NonTail(z), IfEq(x, V(y), e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
       g'_non_tail_if oc (NonTail(z)) e1 e2 "be" "bne"
+  | NonTail(z), IfEq(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_asm;
+      g'_non_tail_if oc (NonTail(z)) e1 e2 "be" "bne"
   | NonTail(z), IfEq(x, C(y), e1, e2) ->
 			g' oc (NonTail(reg_asm), Set(y));
 			g' oc (NonTail(z), IfEq(x, V(reg_asm), e1, e2))
   | NonTail(z), IfLE(x, V(y), e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
       g'_non_tail_if oc (NonTail(z)) e1 e2 "ble" "bg"
+  | NonTail(z), IfLE(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_asm;
+      g'_non_tail_if oc (NonTail(z)) e1 e2 "ble" "bg"
   | NonTail(z), IfLE(x, C(y), e1, e2) ->
 			g' oc (NonTail(reg_asm), Set(y));
 			g' oc (NonTail(z), IfLE(x, V(reg_asm), e1, e2))
   | NonTail(z), IfGE(x, V(y), e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_asm;
+      g'_non_tail_if oc (NonTail(z)) e1 e2 "bge" "bl"
+  | NonTail(z), IfGE(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_asm;
       g'_non_tail_if oc (NonTail(z)) e1 e2 "bge" "bl"
   | NonTail(z), IfGE(x, C(y), e1, e2) ->
 			g' oc (NonTail(reg_asm), Set(y));

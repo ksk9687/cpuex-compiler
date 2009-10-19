@@ -24,6 +24,7 @@ and exp = (* 一つ一つの命令に対応する式 (caml2html: sparcasm_exp) *
   | FMul of Id.t * Id.t
   | FDiv of Id.t * Id.t
   | LdF of Id.t * id_or_imm
+	| LdFL of Id.l (* ラベルの指す値を読み込む(定数テーブル用) *)
   | StF of Id.t * Id.t * id_or_imm
   | Comment of string
   (* virtual instructions *)
@@ -70,7 +71,7 @@ let rec remove_and_uniq xs = function
 (* free variables in the order of use (for spilling) (caml2html: sparcasm_fv) *)
 let fv_id_or_imm = function V(x) -> [x] | _ -> []
 let rec fv_exp cont = function
-  | Nop | Set(_) | SetL(_) | Comment(_) | Restore(_) -> cont
+  | Nop | Set(_) | SetL(_) | LdFL(_) | Comment(_) | Restore(_) -> cont
   | Mov(x) | Neg(x) | FMov(x) | FNeg(x) | Save(x, _) -> x :: cont
   | Add(x, y') | Sub(x, y') | SLL(x, y') | SRL(x, y') | Ld(x, y') | LdF(x, y') -> x :: fv_id_or_imm y' @ cont
   | St(x, y, z') | StF(x, y, z') -> x :: y :: fv_id_or_imm z' @ cont

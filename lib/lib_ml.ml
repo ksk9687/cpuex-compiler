@@ -3,7 +3,7 @@ let rec fless a b = (a < b) in
 let rec fispos a = (a > 0.0) in
 let rec fisneg a = (a < 0.0) in
 let rec fiszero a = (a = 0.0) in
-let rec fhalf a = a /. 2.0 in
+let rec fhalf a = a *. 0.5 in
 let rec fsqr a = a *. a in
 let rec fabs a =
 	if a < 0.0 then -. a
@@ -65,7 +65,7 @@ let rec get_sqrt_init a =
   let rec get_sqrt_init_rec a m =
 	if m = 49 then rsqrt_table.(m)
 	else if a < 2.0 then rsqrt_table.(m)
-    else get_sqrt_init_rec (a /. 2.0) (m + 1)
+    else get_sqrt_init_rec (a *. 0.5) (m + 1)
   in get_sqrt_init_rec a 0
 in
 let rec sqrt a =

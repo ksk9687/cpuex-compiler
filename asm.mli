@@ -22,6 +22,7 @@ and exp =
   | FMul of Id.t * Id.t
   | FDiv of Id.t * Id.t
   | LdF of Id.t * id_or_imm
+	| LdFL of Id.l 
   | StF of Id.t * Id.t * id_or_imm
   | Comment of string
   (* virtual instructions *)
