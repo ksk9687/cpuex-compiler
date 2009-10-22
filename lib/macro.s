@@ -5,16 +5,14 @@
 ######################################################################
 
 #レジスタ名置き換え
-.define $zero $i0
-.define $ra $i15
-.define $sp $i14
-.define $hp $i13
-.define $fzero $f0
-.define $i0 orz
-.define $i15 orz
-.define $i14 orz
-.define $i13 orz
-.define $f0 orz
+.define $zero $0
+.define $ra $31
+.define $sp $30
+.define $hp $29
+.define $0 orz
+.define $31 orz
+.define $30 orz
+.define $29 orz
 
 #jmp
 .define { jmp %Reg %Imm %Imm } { _jmp %1 %2 %{ %3 - %pc } }
@@ -22,7 +20,7 @@
 #疑似命令
 .define { mov %Reg %Reg } { addi %1 %2 0 }
 .define { neg %Reg %Reg } { sub $zero %1 %2 }
-.define { fneg %Reg %Reg } { fsub $fzero %1 %2 }
+.define { fneg %Reg %Reg } { fsub $zero %1 %2 }
 .define { b %Imm } { jmp $zero 0 %1 }
 .define { be %Reg %Imm } { jmp %1 5 %2 }
 .define { bne %Reg %Imm } { jmp %1 2 %2 }
@@ -73,41 +71,6 @@
 .define { store %Reg, [%Reg - %Imm] } { store %1, -%3(%2) }
 .define { store %Reg, [%Reg] } { store %1, %2 }
 .define { store %Reg, [%Imm] } { store %1, %2 }
-
-#代入に=使う形式
-.define { %Reg = %Reg + %Reg } { add %2, %3, %1 }
-.define { %Reg = %Reg + %Imm } { add %2, %3, %1 }
-.define { %Reg = %Reg - %Reg } { sub %2, %3, %1 }
-.define { %Reg = %Reg - %Imm } { sub %2, %3, %1 }
-.define { %Reg = %Reg >> %Imm } { srl %2, %3, %1 }
-.define { %Reg = %Reg << %Imm } { sll %2, %3, %1 }
-.define { %Reg = %Reg + %Reg } { fadd %2, %3, %1 }
-.define { %Reg = %Reg - %Reg } { fsub %2, %3, %1 }
-.define { %Reg = %Reg * %Reg } { fmul %2, %3, %1 }
-.define { %Reg = finv %Reg } { finv %2, %1 }
-.define { %Reg = [%Reg + %Imm] } { load [%2 + %3], %1 }
-.define { %Reg = [%Reg - %Imm] } { load [%2 - %3], %1 }
-.define { %Reg = [%Reg] } { load [%2], %1 }
-.define { %Reg = [%Imm] } { load [%2], %1 }
-.define { %Reg = %Imm } { li %2, %1 }
-.define { [%Reg + %Imm] = %Reg } { store %3, [%1 + %2] }
-.define { [%Reg - %Imm] = %Reg } { store %3, [%1 - %2] }
-.define { [%Reg] = %Reg } { store %2, [%1] }
-.define { [%Imm] = %Reg } { store %2, [%1] }
-.define { %Reg = cmp %Reg %Reg } { cmp %2, %3, %1 }
-.define { %Reg = fcmp %Reg %Reg } { fcmp %2, %3, %1 }
-.define { %Reg = read } { read %1 }
-.define { %Reg = write %Reg } { write %2 %1 }
-.define { %Reg = %Reg } { mov %2, %1 }
-.define { %Reg = -%Reg } { neg %2, %1 }
-.define { %Reg = -%Reg } { fneg %2, %1 }
-.define { %Reg += %Reg } { %1 = %1 + %2 }
-.define { %Reg += %Imm } { %1 = %1 + %2 }
-.define { %Reg -= %Reg } { %1 = %1 - %2 }
-.define { %Reg -= %Imm } { %1 = %1 - %2 }
-.define { %Reg++ } { %1 += 1 }
-.define { %Reg-- } { %1 -= 1 }
-.define { %Reg *= %Reg } { %1 = %1 * %2 }
 
 #スタックとヒープの初期化
 	li      0x1000, $hp

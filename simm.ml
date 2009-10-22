@@ -19,8 +19,6 @@ and g' env = function (* 各命令の即値最適化 *)
   | SRL(x, V(y)) when M.mem y env -> SRL(x, C(M.find y env))
   | Ld(x, V(y)) when M.mem y env -> Ld(x, C(M.find y env))
   | St(x, y, V(z)) when M.mem z env -> St(x, y, C(M.find z env))
-  | LdF(x, V(y)) when M.mem y env -> LdF(x, C(M.find y env))
-  | StF(x, y, V(z)) when M.mem z env -> StF(x, y, C(M.find z env))
   | IfEq(x, V(y), e1, e2) when M.mem y env -> IfEq(x, C(M.find y env), g env e1, g env e2)
   | IfLE(x, V(y), e1, e2) when M.mem y env -> IfLE(x, C(M.find y env), g env e1, g env e2)
   | IfGE(x, V(y), e1, e2) when M.mem y env -> IfGE(x, C(M.find y env), g env e1, g env e2)
@@ -34,8 +32,8 @@ and g' env = function (* 各命令の即値最適化 *)
   | IfFLE(x, y, e1, e2) -> IfFLE(x, y, g env e1, g env e2)
   | e -> e
 
-let h { name = l; args = xs; fargs = ys; body = e; ret = t } = (* トップレベル関数の即値最適化 *)
-  { name = l; args = xs; fargs = ys; body = g M.empty e; ret = t }
+let h { name = l; args = xs; body = e; ret = t } = (* トップレベル関数の即値最適化 *)
+  { name = l; args = xs; body = g M.empty e; ret = t }
 
 let f (Prog(data, fundefs, e)) = (* プログラム全体の即値最適化 *)
   Prog(data, List.map h fundefs, g M.empty e)
