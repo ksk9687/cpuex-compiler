@@ -44,13 +44,12 @@ let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
 let regs = Array.init 27 (fun i -> Printf.sprintf "$%d" (i + 1))
 let allregs = Array.to_list regs
-(* こいつらもregAllocのレジスタ割り当てで使われる？？ *)
-let reg_cl = regs.(Array.length regs - 1) (* closure address (caml2html: sparcasm_regcl) *)
-let reg_sw = regs.(Array.length regs - 2) (* temporary for swap *)
+(* reg_clをregsから取り除くとバグるぽい *)
+let reg_cl = "$27" (* closure address (caml2html: sparcasm_regcl) *)
+let reg_tmp = "$tmp" (* temporary for swap *)
 let reg_sp = "$sp" (* stack pointer *)
 let reg_hp = "$hp" (* heap pointer (caml2html: sparcasm_reghp) *)
 let reg_ra = "$ra" (* return address *)
-let reg_tmp = "$28" (* for tmp *)
 let reg_zero = "$zero" (* 0 *)
 let is_reg x = (x.[0] = '$')
 

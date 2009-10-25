@@ -47,7 +47,7 @@ let rec g oc = function (* 命令列のアセンブリ生成 (caml2html: emit_g)
   | _, Forget _ -> assert false
 and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprime) *)
   (* 末尾でなかったら計算結果をdestにセット (caml2html: emit_nontail) *)
-  | NonTail(_), Nop -> ()
+  | NonTail(_), Nop -> () (*Printf.fprintf oc "\tnop\n"*)
   | NonTail(x), Set(i) -> Printf.fprintf oc "\t%-8s%d, %s\n" "li" i x
   | NonTail(x), SetL(Id.L(y)) -> Printf.fprintf oc "\t%-8s%s, %s\n" "li" y x
   | NonTail(x), Mov(y) when x = y -> ()
@@ -166,8 +166,8 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   (* 関数呼び出しの仮想命令の実装 (caml2html: emit_call) *)
   | Tail, CallCls(x, ys) -> (* 末尾呼び出し (caml2html: emit_tailcall) *)
       g'_args oc [(x, reg_cl)] ys;
-			g' oc (NonTail(reg_sw), Ld(reg_cl, C(0)));
-      Printf.fprintf oc "\t%-8s%s\n" "jr" reg_sw
+			g' oc (NonTail(reg_tmp), Ld(reg_cl, C(0)));
+      Printf.fprintf oc "\t%-8s%s\n" "jr" reg_tmp
   | Tail, CallDir(Id.L(x), ys) -> (* 末尾呼び出し *)
       g'_args oc [] ys;
       Printf.fprintf oc "\t%-8s%s\n" "b" x
@@ -175,11 +175,11 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
       g'_args oc [(x, reg_cl)] ys;
       let ss = stacksize () in
 			g' oc (NonTail(a), St(reg_ra, reg_sp, C(ss - 1)));
-			g' oc (NonTail(reg_sw), Ld(reg_cl, C(0)));
+			g' oc (NonTail(reg_tmp), Ld(reg_cl, C(0)));
 			let ra = Id.genid ("cls") in
 			g' oc (NonTail(reg_ra), SetL(Id.L(ra)));
 			g' oc (NonTail(reg_sp), Add(reg_sp, C(ss)));
-      Printf.fprintf oc "\t%-8s%s\n" "jr" reg_sw;
+      Printf.fprintf oc "\t%-8s%s\n" "jr" reg_tmp;
 			Printf.fprintf oc "%s:\n" ra;
 			g' oc (NonTail(reg_sp), Sub(reg_sp, C(ss)));
 			g' oc (NonTail(reg_ra), Ld(reg_sp, C(ss - 1)));
@@ -225,7 +225,7 @@ and g'_args oc x_reg_cl ys =
       ys in
   List.iter
     (fun (y, r) -> g' oc (NonTail(r), Mov(y)))
-    (shuffle reg_sw yrs)
+    (shuffle reg_tmp yrs)
 
 let h oc { name = Id.L(x); args = _; body = e; ret = _ } =
   Printf.fprintf oc "%s:\n" x;

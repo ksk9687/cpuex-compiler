@@ -57,7 +57,8 @@ let rec alloc dest cont regenv x t =
     let r = (* そうでないレジスタを探す *)
       List.find
         (fun r -> not (S.mem r live))
-        (prefer @ all) in
+(*        (prefer @ all) in*)
+					(prefer @ (List.rev all)) in
     (* Format.eprintf "allocated %s to %s@." x r; *)
     Alloc(r)
   with Not_found ->
@@ -117,10 +118,10 @@ let rec g dest cont regenv = function (* 命令列のレジスタ割り当て (c
 	  | Alloc(r) ->
 	      match g dest cont (add x r regenv1) e with
 	      | ToSpill(e2, ys) when List.mem x ys ->
-		  let x_saved = Let(xt, exp, seq(Save(x, x), e2)) in
-		  (match List.filter (fun y -> y <> x) ys with
-		  | [] -> g dest cont regenv x_saved
-		  | ys_left -> ToSpill(x_saved, ys_left))
+		  		let x_saved = Let(xt, exp, seq(Save(x, x), e2)) in
+		  		(match List.filter (fun y -> y <> x) ys with
+		  			| [] -> g dest cont regenv x_saved
+		  			| ys_left -> ToSpill(x_saved, ys_left))
 	      | ToSpill(e2, ys) -> ToSpill(Let(xt, exp, e2), ys)
 	      | NoSpill(e2', regenv2) -> NoSpill(concat e1' (r, t) e2', regenv2)))
   | Forget(x, e) ->

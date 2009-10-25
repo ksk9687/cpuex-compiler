@@ -9,10 +9,12 @@
 .define $ra $31
 .define $sp $30
 .define $hp $29
+.define $tmp $28
 .define $0 orz
 .define $31 orz
 .define $30 orz
 .define $29 orz
+.define $28 orz
 
 #jmp
 .define { jmp %Reg %Imm %Imm } { _jmp %1 %2 %{ %3 - %pc } }
