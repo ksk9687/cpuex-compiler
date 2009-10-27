@@ -1,8 +1,8 @@
 LIB = ../lib
 MIN_CAML = ../min-caml.opt
-SIM = ../../CPU/sim.jar
-FAST_SIM = ../../CPU/fastsim/fastsim.exe
-MIN_CAML_OPTION = -inline 50
+SIM = ../../sim/sim.jar
+FAST_SIM = ../../sim/fastsim/fastsim.exe
+MIN_CAML_OPTION = -inline 100	
 CPU = Scalar
 RUN_SIM = java -jar -Xmx256M -Xss32M $(SIM) -cpu $(CPU)
 
