@@ -315,6 +315,7 @@ min_caml_div2:
 	li DIV2_F, $tmp
 	load [$tmp], $2
 	fmul $1, $2, $1
+	jal min_caml_floor
 	jal min_caml_int_of_float
 	add $sp, -1, $sp
 	load [$sp], $ra

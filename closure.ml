@@ -108,6 +108,7 @@ let rec g env known = function (* クロージャ変換ルーチン本体 (caml2
       match x with
 	| "sqrt" -> FSqrt(List.hd ys)
 	| "fabs" -> FAbs(List.hd ys)
+(* fnegが抜けてる *)
 	| _ -> AppDir(Id.L("min_caml_" ^ x), ys)
 
 let f e =

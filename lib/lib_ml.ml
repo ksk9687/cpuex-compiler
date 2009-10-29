@@ -5,10 +5,6 @@ let rec fisneg a = (a < 0.0) in
 let rec fiszero a = (a = 0.0) in
 let rec fhalf a = a *. 0.5 in
 let rec fsqr a = a *. a in
-let rec fabs a =
-	if a < 0.0 then -. a
-	else a
-in
 let rec fneg a = -. a in
 
 (* 算術関数 *)
@@ -59,40 +55,4 @@ in
 
 let rec atan a =
   cordic_atan a
-in
-
-let rec get_sqrt_init a =
-  let rec get_sqrt_init_rec a m =
-	if m = 49 then rsqrt_table.(m)
-	else if a < 2.0 then rsqrt_table.(m)
-    else get_sqrt_init_rec (a *. 0.5) (m + 1)
-  in get_sqrt_init_rec a 0
-in
-let rec sqrt a =
-  if a < 1.0 then
-    let x = a in
-      let x = 0.5 *. (x +. a /. x) in
-      let x = 0.5 *. (x +. a /. x) in
-      let x = 0.5 *. (x +. a /. x) in
-      let x = 0.5 *. (x +. a /. x) in
-      let x = 0.5 *. (x +. a /. x) in
-      let x = 0.5 *. (x +. a /. x) in
-      let x = 0.5 *. (x +. a /. x) in
-      let x = 0.5 *. (x +. a /. x) in
-      let x = 0.5 *. (x +. a /. x) in
-      let x = 0.5 *. (x +. a /. x) in
-	x
-  else
-    let x = get_sqrt_init a in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-    let x = 0.5 *. x *. (3.0 -. a *. x *. x) in
-      x *. a
 in
