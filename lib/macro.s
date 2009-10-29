@@ -51,10 +51,11 @@
 .define { load [%Reg + %Reg], %Reg } { loadr %1 %2 %3 }
 .define { store %Reg, [%Reg + %Imm] } { store %2 %1 %3 }
 .define { store %Reg, [%Reg - %Imm] } { store %1, [%2 + -%3] }
-.define { store %Reg, [%Reg] } { store %1, [%1 + 0] }
+.define { store %Reg, [%Reg] } { store %1, [%2 + 0] }
 .define { store %Reg, [%Imm] } { store %1, [$zero + %2] }
 .define { mov %Reg, %Reg } { mov %1 %2 }
-
+.define { neg %Reg, %Reg } { neg %1 %2 }
+	
 #スタックとヒープの初期化
 	li      0x1000, $hp
 	sll		$hp, 4, $hp

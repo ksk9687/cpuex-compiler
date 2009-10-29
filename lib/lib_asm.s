@@ -7,12 +7,11 @@
 .define $mi $3
 .define $mfhx $4
 .define $mf $5
-.define $cond $6
 
-.define $q $7
-.define $r $8
+.define $q $6
+.define $r $7
 
-.define $rf $9
+.define $rf $8
 
 ######################################################################
 # * 算術関数用定数テーブル
@@ -99,29 +98,32 @@ min_caml_rsqrt_table:
 # * floor
 ######################################################################
 min_caml_floor:
-	fcmp $1, $zero, $cond
-	bge $cond, FLOOR_POSITIVE	# if ($f1 >= 0) FLOOR_POSITIVE
-	store $ra, 0($sp)
+	fcmp $1, $zero
+	bge FLOOR_POSITIVE	# if ($f1 >= 0) FLOOR_POSITIVE
+	store $ra, [$sp]
 	add $sp, 1, $sp
 	fneg $1, $1
 	jal min_caml_floor		# $f1 = FLOOR_POSITIVE(-$f1)
-	load FLOOR_MONE, $2
+	li FLOOR_MONE, $tmp
+	load [$tmp], $2
 	fsub $2, $1, $1		# $f1 = (-1) - $f1
 	add $sp, -1, $sp
-	load 0($sp), $ra
+	load [$sp], $ra
 	ret
 FLOOR_POSITIVE:
-	load FLOAT_MAGICF, $mf
-	fcmp $1, $mf, $cond
-	ble $cond, FLOOR_POSITIVE_MAIN
+	li FLOAT_MAGICF, $tmp
+	load [$tmp], $mf
+	fcmp $1, $mf
+	ble FLOOR_POSITIVE_MAIN
 	ret
 FLOOR_POSITIVE_MAIN:
 	mov $1, $2
 	fadd $1, $mf, $1		# $f1 += 0x4b000000
 	fsub $1, $mf, $1		# $f1 -= 0x4b000000
-	fcmp $1, $2, $cond
-	ble $cond, FLOOR_RET
-	load FLOOR_ONE, $2
+	fcmp $1, $2
+	ble FLOOR_RET
+	li FLOOR_ONE, $tmp
+	load [$tmp], $2
 	fsub $1, $2, $1		# 返り値が元の値より大きければ1.0引く
 FLOOR_RET:
 	ret
@@ -134,22 +136,25 @@ FLOOR_MONE:
 # * float_of_int
 ######################################################################
 min_caml_float_of_int:
-	cmp $1, $zero, $cond
-	bge $cond, ITOF_MAIN		# if ($i1 >= 0) goto ITOF_MAIN
+	cmp $1, $zero
+	bge ITOF_MAIN		# if ($i1 >= 0) goto ITOF_MAIN
 	neg $1, $1		# 正の値にしてitofした後に、マイナスにしてかえす
-	store $ra, 0($sp)
+	store $ra, [$sp]
 	add $sp, 1, $sp
 	jal min_caml_float_of_int	# $f1 = float_of_int(-$i1)
 	add $sp, -1, $sp
-	load 0($sp), $ra
+	load [$sp], $ra
 	fneg $1, $1
 	ret
 ITOF_MAIN:
-	load FLOAT_MAGICI, $mi	# $mi = 8388608
-	load FLOAT_MAGICF, $mf 	# $mf = 8388608.0
-	load FLOAT_MAGICFHX, $mfhx 	# $mfhx = 0x4b000000
-	cmp $1, $mi, $cond		# $cond = cmp($i1, 8388608)
-	bge $cond, ITOF_BIG		# if ($i1 >= 8388608) goto ITOF_BIG
+	li FLOAT_MAGICI, $tmp
+	load [$tmp], $mi		# $mi = 8388608
+	li FLOAT_MAGICF, $tmp
+	load [$tmp], $mf 		# $mf = 8388608.0
+	li FLOAT_MAGICFHX, $tmp
+	load [$tmp], $mfhx 		# $mfhx = 0x4b000000
+	cmp $1, $mi 			# $cond = cmp($i1, 8388608)
+	bge ITOF_BIG			# if ($i1 >= 8388608) goto ITOF_BIG
 	add $1, $mfhx, $1		# $i1 = $i1 + $mfhx (i.e. $i1 + 0x4b000000)
 	fsub $1, $mf, $1		# $f1 = $f1 - $mf (i.e. $f1 - 8388608.0)
 	ret				# return
@@ -159,14 +164,14 @@ ITOF_BIG:
 ITOF_LOOP:
 	add $q, 1, $q			# $q += 1
 	sub $r, $mi, $r			# $r -= 8388608
-	cmp $r, $mi, $cond
-	bge $cond, ITOF_LOOP		# if ($r >= 8388608) continue
+	cmp $r, $mi
+	bge ITOF_LOOP		# if ($r >= 8388608) continue
 	li 0, $1
 ITOF_LOOP2:
 	fadd $1, $mf, $1		# $f1 = $q * $mf
 	add $q, -1, $q
-	cmp $q, $zero, $cond
-	bg $cond, ITOF_LOOP2
+	cmp $q, $zero
+	bg ITOF_LOOP2
 	add $r, $mfhx, $r			# $r < 8388608 だからそのままitof
 	fsub $r, $mf, $r		# $tempf = itof($r)
 	fadd $1, $r, $1		# $f1 = $f1 + $tempf (i.e. $f1 = itof($q * $mf) + itof($r) )
@@ -177,22 +182,25 @@ ITOF_LOOP2:
 # * int_of_float
 ######################################################################
 min_caml_int_of_float:
-	fcmp $1, $zero, $cond
-	bge $cond, FTOI_MAIN		# if ($f1 >= 0) goto FTOI_MAIN
+	fcmp $1, $zero
+	bge FTOI_MAIN		# if ($f1 >= 0) goto FTOI_MAIN
 	fneg $1, $1		# 正の値にしてftoiした後に、マイナスにしてかえす
-	store $ra, 0($sp)
+	store $ra, [$sp]
 	add $sp, 1, $sp
 	jal min_caml_int_of_float	# $i1 = float_of_int(-$f1)
 	add $sp, -1, $sp
-	load 0($sp), $ra
+	load [$sp], $ra
 	neg $1, $1
 	ret				# return
 FTOI_MAIN:
-	load FLOAT_MAGICI, $mi	# $mi = 8388608
-	load FLOAT_MAGICF, $mf 	# $mf = 8388608.0
-	load FLOAT_MAGICFHX, $mfhx	# $mfhx = 0x4b000000
-	fcmp $1, $mf, $cond
-	bge $cond, FTOI_BIG		# if ($f1 >= 8688608.0) goto FTOI_BIG
+	li FLOAT_MAGICI, $tmp
+	load [$tmp], $mi		# $mi = 8388608
+	li FLOAT_MAGICF, $tmp
+	load [$tmp], $mf 		# $mf = 8388608.0
+	li FLOAT_MAGICFHX, $tmp
+	load [$tmp], $mfhx		# $mfhx = 0x4b000000
+	fcmp $1, $mf
+	bge FTOI_BIG		# if ($f1 >= 8688608.0) goto FTOI_BIG
 	fadd $1, $mf, $1
 	sub $1, $mfhx, $1
 	ret
@@ -202,14 +210,14 @@ FTOI_BIG:
 FTOI_LOOP:
 	add $q, 1, $q			# $q += 1
 	fsub $rf, $mf, $rf		# $rf -= 8388608.0
-	fcmp $rf, $mf, $cond
-	bge $cond, FTOI_LOOP		# if ($rf >= 8388608.0) continue
+	fcmp $rf, $mf
+	bge FTOI_LOOP		# if ($rf >= 8388608.0) continue
 	li 0, $1
 FTOI_LOOP2:
 	add $1, $mi, $1			# $i1 = $q * $mi
 	add $q, -1, $q
-	cmp $q, $zero, $cond
-	bg $cond, FTOI_LOOP2
+	cmp $q, $zero
+	bg FTOI_LOOP2
 	fadd $rf, $mf, $rf		# $rf < 8388608.0 だからそのままftoi
 	sub $rf, $mfhx, $rf		# $temp = ftoi($rf)
 	add $1, $rf, $1		# $i1 = $i1 + $temp (i.e. $i1 = ftoi($q * $mi) + ftoi($rf) )
@@ -227,33 +235,34 @@ FLOAT_MAGICFHX:
 # * read_int=read_float
 # * wordバイナリ読み込み
 ######################################################################
+	# TODO
 min_caml_read_int:
 min_caml_read_float:
 read_1:
 	read $1
 	li 255, $2
-	cmp $1, $2, $2
-	bg $2, read_1
+	cmp $1, $2
+	bg read_1
 	sll $1, 24, $1
 read_2:
 	read $2
 	li 255, $3
-	cmp $2, $3, $3
-	bg $3, read_2
+	cmp $2, $3
+	bg read_2
 	sll $2, 16, $2
 	add $1, $2, $1
 read_3:
 	read $2
 	li 255, $3
-	cmp $2, $3, $3
-	bg $3, read_3
+	cmp $2, $3
+	bg read_3
 	sll $2, 8, $2
 	add $1, $2, $1
 read_4:
 	read $2
 	li 255, $3
-	cmp $2, $3, $3
-	bg $3, read_4
+	cmp $2, $3
+	bg read_4
 	add $1, $2, $1
 	ret
 
@@ -263,9 +272,8 @@ read_4:
 # * 失敗してたらループ
 ######################################################################
 min_caml_write:
-	write $1, $2
-	cmp $2, $zero, $3
-	bg $3, min_caml_write
+	write $1
+	bg min_caml_write		# TODO
 	ret
 
 ######################################################################
@@ -273,20 +281,19 @@ min_caml_write:
 # * create_float_array
 ######################################################################
 min_caml_create_array:
-min_caml_create_float_array:
 	add $1, $hp, $3
 	mov $hp, $1
 CREATE_ARRAY_LOOP:
-	cmp $hp, $3, $4
-	bge $4, CREATE_ARRAY_END
-	store $2, 0($hp)
+	cmp $hp, $3
+	bge CREATE_ARRAY_END
+	store $2, [$hp]
 	add $hp, 1, $hp
 	b CREATE_ARRAY_LOOP
 CREATE_ARRAY_END:
 	ret
 
 ######################################################################
-# * ledout_int
+# * ledout_in
 # * ledout_float
 # * バイトLED出力
 ######################################################################
@@ -295,6 +302,25 @@ min_caml_ledout_float:
 	ledout $1
 	ret
 
+
+######################################################################
+# * div2
+# とりあえず今は itof, *0.5, ftoi になっている
+######################################################################
+	# TODO
+min_caml_div2:
+	store $ra, [$sp]
+	add $sp, 1, $sp
+	jal min_caml_float_of_int
+	li DIV2_F, $tmp
+	load [$tmp], $2
+	fmul $1, $2, $1
+	jal min_caml_int_of_float
+	add $sp, -1, $sp
+	load [$sp], $ra
+	ret
+DIV2_F:
+	.float 0.5
 ######################################################################
 #
 # 		↑　ここまで lib_asm.s
