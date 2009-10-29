@@ -44,10 +44,10 @@ type prog = Prog of (Id.l * float) list * fundef list * t
 let flet(x, e1, e2) = Let((x, Type.Float), e1, e2)
 let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
-let regs = Array.init 27 (fun i -> Printf.sprintf "$%d" (i + 1))
+let regs = Array.init 59 (fun i -> Printf.sprintf "$%d" (i + 1))
 let allregs = Array.to_list regs
 (* reg_clをregsから取り除くとバグるぽい *)
-let reg_cl = "$27" (* closure address (caml2html: sparcasm_regcl) *)
+let reg_cl = "$59" (* closure address (caml2html: sparcasm_regcl) *)
 let reg_tmp = "$tmp" (* temporary for swap *)
 let reg_sp = "$sp" (* stack pointer *)
 let reg_hp = "$hp" (* heap pointer (caml2html: sparcasm_reghp) *)

@@ -106,7 +106,7 @@ let rec g env known = function (* クロージャ変換ルーチン本体 (caml2
   | KNormal.ExtArray(x) -> ExtArray(Id.L(x))
   | KNormal.ExtFunApp(x, ys) ->
       match x with
-	| "fsqrt" -> FSqrt(List.hd ys)
+	| "sqrt" -> FSqrt(List.hd ys)
 	| "fabs" -> FAbs(List.hd ys)
 	| _ -> AppDir(Id.L("min_caml_" ^ x), ys)
 
