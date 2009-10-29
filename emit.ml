@@ -66,6 +66,8 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
 			g' oc (NonTail(r), St(x, reg_tmp, C(0)))
   | NonTail(_), St(x, y, C(z)) -> Printf.fprintf oc "\t%-8s%s, %d(%s)\n" "store" x z y
   | NonTail(x), FNeg(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "fneg" y x
+  | NonTail(x), FSqrt(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "fsqrt" y x
+  | NonTail(x), FAbs(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "fabs" y x
   | NonTail(x), FAdd(y, z) -> Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fadd" y z x
   | NonTail(x), FSub(y, z) -> Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fsub" y z x
   | NonTail(x), FMul(y, z) -> Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fmul" y z x
@@ -90,73 +92,67 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | Tail, (Set _ | SetL _ | Mov _ | Neg _ | Add _ | Sub _ | SLL _ | SRL _ | Ld _ as exp) ->
       g' oc (NonTail(regs.(0)), exp);
       Printf.fprintf oc "\tret\n"
-  | Tail, (FNeg _ | FAdd _ | FSub _ | FMul _ | FDiv _ | LdFL _ as exp) ->
+  | Tail, (FNeg _ | FSqrt _ | FAbs _ | FAdd _ | FSub _ | FMul _ | FDiv _ | LdFL _ as exp) ->
       g' oc (NonTail(regs.(0)), exp);
       Printf.fprintf oc "\tret\n"
   | Tail, (Restore(x) as exp) ->
 			(if List.mem x allregs then g' oc (NonTail(regs.(0)), exp)
 			else g' oc (NonTail(regs.(0)), exp));
       Printf.fprintf oc "\tret\n"
-  | Tail, IfEq(x, V(y), e1, e2) ->
-      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_tmp;
-      g'_tail_if oc e1 e2 "be" "bne"
-	| Tail, IfEq(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
+(*
+  | Tail, IfEq(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_tmp;
       g'_tail_if oc e1 e2 "be" "bne"
-  | Tail, IfEq(x, C(y), e1, e2) ->
-			g' oc (NonTail(reg_tmp), Set(y));
-			g' oc (Tail, IfEq(x, V(reg_tmp), e1, e2))
-  | Tail, IfLE(x, V(y), e1, e2) ->
-      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_tmp;
-      g'_tail_if oc e1 e2 "ble" "bg"
+*)
+  | Tail, IfEq(x, y', e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x (pp_id_or_imm y') reg_tmp;
+      g'_tail_if oc e1 e2 "be" "bne"
+(*
   | Tail, IfLE(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_tmp;
       g'_tail_if oc e1 e2 "ble" "bg"
-  | Tail, IfLE(x, C(y), e1, e2) ->
-			g' oc (NonTail(reg_tmp), Set(y));
-			g' oc (Tail, IfLE(x, V(reg_tmp), e1, e2))
-  | Tail, IfGE(x, V(y), e1, e2) ->
-      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_tmp;
-      g'_tail_if oc e1 e2 "bge" "bl"
+*)
+  | Tail, IfLE(x, y', e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x (pp_id_or_imm y') reg_tmp;
+      g'_tail_if oc e1 e2 "ble" "bg"
+(*
   | Tail, IfGE(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_tmp;
       g'_tail_if oc e1 e2 "bge" "bl"
-  | Tail, IfGE(x, C(y), e1, e2) ->
-			g' oc (NonTail(reg_tmp), Set(y));
-			g' oc (Tail, IfGE(x, V(reg_tmp), e1, e2))
+*)
+  | Tail, IfGE(x, y', e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x (pp_id_or_imm y') reg_tmp;
+      g'_tail_if oc e1 e2 "bge" "bl"
   | Tail, IfFEq(x, y, e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fcmp" x y reg_tmp;
       g'_tail_if oc e1 e2 "be" "bne"
   | Tail, IfFLE(x, y, e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fcmp" x y reg_tmp;
       g'_tail_if oc e1 e2 "ble" "bg"
-  | NonTail(z), IfEq(x, V(y), e1, e2) ->
-      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_tmp;
-      g'_non_tail_if oc (NonTail(z)) e1 e2 "be" "bne"
+(*
   | NonTail(z), IfEq(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_tmp;
       g'_non_tail_if oc (NonTail(z)) e1 e2 "be" "bne"
-  | NonTail(z), IfEq(x, C(y), e1, e2) ->
-			g' oc (NonTail(reg_tmp), Set(y));
-			g' oc (NonTail(z), IfEq(x, V(reg_tmp), e1, e2))
-  | NonTail(z), IfLE(x, V(y), e1, e2) ->
-      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_tmp;
-      g'_non_tail_if oc (NonTail(z)) e1 e2 "ble" "bg"
+*)
+  | NonTail(z), IfEq(x, y', e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x (pp_id_or_imm y') reg_tmp;
+      g'_non_tail_if oc (NonTail(z)) e1 e2 "be" "bne"
+(*
   | NonTail(z), IfLE(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_tmp;
       g'_non_tail_if oc (NonTail(z)) e1 e2 "ble" "bg"
-  | NonTail(z), IfLE(x, C(y), e1, e2) ->
-			g' oc (NonTail(reg_tmp), Set(y));
-			g' oc (NonTail(z), IfLE(x, V(reg_tmp), e1, e2))
-  | NonTail(z), IfGE(x, V(y), e1, e2) ->
-      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x y reg_tmp;
-      g'_non_tail_if oc (NonTail(z)) e1 e2 "bge" "bl"
+*)
+  | NonTail(z), IfLE(x, y', e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x (pp_id_or_imm y') reg_tmp;
+      g'_non_tail_if oc (NonTail(z)) e1 e2 "ble" "bg"
+(*
   | NonTail(z), IfGE(x, C(0), e1, e2) -> (* 零レジスタ最適化 *)
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x reg_zero reg_tmp;
       g'_non_tail_if oc (NonTail(z)) e1 e2 "bge" "bl"
-  | NonTail(z), IfGE(x, C(y), e1, e2) ->
-			g' oc (NonTail(reg_tmp), Set(y));
-			g' oc (NonTail(z), IfGE(x, V(reg_tmp), e1, e2))
+*)
+  | NonTail(z), IfGE(x, y', e1, e2) ->
+      Printf.fprintf oc "\t%-8s%s, %s, %s\n" "cmp" x (pp_id_or_imm y') reg_tmp;
+      g'_non_tail_if oc (NonTail(z)) e1 e2 "bge" "bl"
   | NonTail(z), IfFEq(x, y, e1, e2) ->
       Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fcmp" x y reg_tmp;
       g'_non_tail_if oc (NonTail(z)) e1 e2 "be" "bne"

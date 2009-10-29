@@ -13,16 +13,18 @@ and exp = (* 一つ一つの命令に対応する式 (caml2html: sparcasm_exp) *
   | Neg of Id.t
   | Add of Id.t * id_or_imm
   | Sub of Id.t * id_or_imm
-	| SLL of Id.t * id_or_imm
-	| SRL of Id.t * id_or_imm
+  | SLL of Id.t * id_or_imm
+  | SRL of Id.t * id_or_imm
   | Ld of Id.t * id_or_imm
   | St of Id.t * Id.t * id_or_imm
   | FNeg of Id.t
+  | FSqrt of Id.t
+  | FAbs of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
   | FDiv of Id.t * Id.t
-	| LdFL of Id.l (* ラベルの指す値を読み込む(定数テーブル用) *)
+  | LdFL of Id.l (* ラベルの指す値を読み込む(定数テーブル用) *)
   | Comment of string
   (* virtual instructions *)
   | IfEq of Id.t * id_or_imm * t * t
@@ -63,7 +65,7 @@ let rec remove_and_uniq xs = function
 let fv_id_or_imm = function V(x) -> [x] | _ -> []
 let rec fv_exp cont = function
   | Nop | Set(_) | SetL(_) | LdFL(_) | Comment(_) | Restore(_) -> cont
-  | Mov(x) | Neg(x) | FNeg(x) | Save(x, _) -> x :: cont
+  | Mov(x) | Neg(x) | FNeg(x) | FSqrt(x) | FAbs(x) | Save(x, _) -> x :: cont
   | Add(x, y') | Sub(x, y') | SLL(x, y') | SRL(x, y') | Ld(x, y') -> x :: fv_id_or_imm y' @ cont
   | St(x, y, z') -> x :: y :: fv_id_or_imm z' @ cont
   | FAdd(x, y) | FSub(x, y) | FMul(x, y) | FDiv(x, y) -> x :: y :: cont

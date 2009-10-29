@@ -97,7 +97,9 @@ exp: /* 一般の式 (caml2html: parser_exp) */
 | exp AST log2_x
     { SLL($1, $3) }
 | exp SLASH log2_x
-    { SRL($1, $3) }
+/*    { SRL($1, $3) } */
+    { if $3 = Int(1) then App(Var("div2"), [$1])
+	else assert false}
 | exp EQUAL exp
     { Eq($1, $3) }
 | exp LESS_GREATER exp

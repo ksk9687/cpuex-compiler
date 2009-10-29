@@ -9,6 +9,8 @@ type t =
   | SLL of Id.t * Id.t
   | SRL of Id.t * Id.t
   | FNeg of Id.t
+  | FSqrt of Id.t
+  | FAbs of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t

@@ -34,14 +34,14 @@
 .define { sub %Reg, %Reg, %Reg } { sub %1 %2 %3 }
 .define { sub %Reg, %Imm, %Reg } { addi %1 %3 -%2 }
 .define { sll %Reg, %Imm, %Reg } { sll %1 %3 %2 }
-.define { cmp %Reg, %Reg } { cmp %1 %2 }
-.define { cmpi %Reg, %Reg } { cmpi %1 %2 }
+.define { cmp %Reg, %Reg, %Reg } { cmp %1 %2 %3}
+.define { cmp %Reg, %Imm, %Reg } { cmpi %1 %3 %2 }
 .define { fadd %Reg, %Reg, %Reg } { fadd %1 %2 %3 }
 .define { fsub %Reg, %Reg, %Reg } { fsub %1 %2 %3 }
 .define { fmul %Reg, %Reg, %Reg } { fmul %1 %2 %3 }
 .define { finv %Reg, %Reg } { finv %1 %2 }
 .define { fsqrt %Reg, %Reg } { fsqrt %1 %2 }
-.define { fcmp %Reg, %Reg } { fcmp %1 %2 }
+.define { fcmp %Reg, %Reg, %Reg } { fcmp %1 %2 %3 }
 .define { fabs %Reg, %Reg } { fabs %1 %2 }
 .define { fneg %Reg, %Reg } { fneg %1 %2 }
 .define { load [%Reg + %Imm], %Reg } { load %1 %3 %2 }

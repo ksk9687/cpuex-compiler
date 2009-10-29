@@ -9,6 +9,8 @@ type t = (* クロージャ変換後の式 (caml2html: closure_t) *)
   | SLL of Id.t * Id.t
   | SRL of Id.t * Id.t
   | FNeg of Id.t
+  | FSqrt of Id.t
+  | FAbs of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
@@ -33,7 +35,7 @@ type prog = Prog of fundef list * t
 
 let rec fv = function
   | Unit | Int(_) | Float(_) | ExtArray(_) -> S.empty
-  | Neg(x) | FNeg(x) -> S.singleton x
+  | Neg(x) | FNeg(x) | FSqrt(x) | FAbs(x) -> S.singleton x
   | Add(x, y) | Sub(x, y) | SLL(x, y) | SRL(x, y) | FAdd(x, y) | FSub(x, y) | FMul(x, y) | FDiv(x, y) | Get(x, y) -> S.of_list [x; y]
   | IfEq(x, y, e1, e2)| IfLE(x, y, e1, e2) -> S.add x (S.add y (S.union (fv e1) (fv e2)))
   | Let((x, t), e1, e2) -> S.union (fv e1) (S.remove x (fv e2))
@@ -102,7 +104,11 @@ let rec g env known = function (* クロージャ変換ルーチン本体 (caml2
   | KNormal.Get(x, y) -> Get(x, y)
   | KNormal.Put(x, y, z) -> Put(x, y, z)
   | KNormal.ExtArray(x) -> ExtArray(Id.L(x))
-  | KNormal.ExtFunApp(x, ys) -> AppDir(Id.L("min_caml_" ^ x), ys)
+  | KNormal.ExtFunApp(x, ys) ->
+      match x with
+	| "fsqrt" -> FSqrt(List.hd ys)
+	| "fabs" -> FAbs(List.hd ys)
+	| _ -> AppDir(Id.L("min_caml_" ^ x), ys)
 
 let f e =
   toplevel := [];

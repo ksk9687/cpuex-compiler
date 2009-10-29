@@ -11,16 +11,18 @@ and exp =
   | Neg of Id.t
   | Add of Id.t * id_or_imm
   | Sub of Id.t * id_or_imm
-	| SLL of Id.t * id_or_imm
-	| SRL of Id.t * id_or_imm
+  | SLL of Id.t * id_or_imm
+  | SRL of Id.t * id_or_imm
   | Ld of Id.t * id_or_imm
   | St of Id.t * Id.t * id_or_imm
   | FNeg of Id.t
+  | FSqrt of Id.t
+  | FAbs of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
   | FDiv of Id.t * Id.t
-	| LdFL of Id.l 
+  | LdFL of Id.l 
   | Comment of string
   (* virtual instructions *)
   | IfEq of Id.t * id_or_imm * t * t
