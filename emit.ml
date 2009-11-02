@@ -73,11 +73,7 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | NonTail(x), FDiv(y, z) ->
 			Printf.fprintf oc "\t%-8s%s, %s\n" "finv" z reg_tmp;
 			g' oc (NonTail(x), FMul(y, reg_tmp))
-(*	| NonTail(x), LdFL(Id.L(y)) -> Printf.fprintf oc "\t%-8s[%s], %s\n" "load" y x*)
-(* loadが符号拡張して負の数になってしまった… *)
-  | NonTail(x), LdFL(y) ->
-		g' oc (NonTail(reg_tmp), SetL(y));
-		g' oc (NonTail(x), Ld(reg_tmp, C(0)))
+	| NonTail(x), LdFL(Id.L(y)) -> Printf.fprintf oc "\t%-8s[%s], %s\n" "load" y x
   | NonTail(_), Comment(s) -> Printf.fprintf oc "\t# %s\n" s
   (* 退避の仮想命令の実装 (caml2html: emit_save) *)
   | NonTail(r), Save(x, y) when List.mem x allregs && not (S.mem y !stackset) ->
@@ -204,11 +200,13 @@ let h oc { name = Id.L(x); args = _; body = e; ret = _ } =
 
 let f oc (Prog(data, fundefs, e)) =
   Format.eprintf "generating assembly...@.";
+	Printf.fprintf oc "\t%-8s%s\n" "b" "min_caml_start";
+  List.iter
+    (fun (Id.L(x), d) -> Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
+    data;
+	Printf.fprintf oc "min_caml_start:\n";
   stackset := S.empty;
   stackmap := [];
   g oc (NonTail(reg_tmp), e);
   Printf.fprintf oc "\thalt\n";
-  List.iter (fun fundef -> h oc fundef) fundefs;
-  List.iter
-    (fun (Id.L(x), d) -> Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
-    data
+  List.iter (fun fundef -> h oc fundef) fundefs
