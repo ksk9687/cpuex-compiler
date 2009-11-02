@@ -185,18 +185,19 @@ let rec g env = function (* K正規化ルーチン本体 (caml2html: knormal_g) 
 
 let f e = fst (g M.empty e)
 
-(* report1  *)
-(*
+(* デバッグ用 *)
 let rec string_t indent knormal =
   let indent = indent ^ "  " in
   match knormal with
     | Unit -> indent ^ "Unit\n"
     | Int (i) -> indent ^ "Int(" ^ (string_of_int i) ^ ")\n"
     | Float (f) -> indent ^ "Float(" ^ (string_of_float f) ^ ")\n"
-		| Neg (i) -> indent ^ "- " ^ i ^ "\n"
+    | Neg (i) -> indent ^ "- " ^ i ^ "\n"
     | Add (i,j) -> indent ^ i ^ " + " ^ j ^ "\n"
     | Sub (i,j) -> indent ^ i ^ " - " ^ j ^ "\n"
-		| FNeg (i) -> indent ^ "- " ^ i ^ "\n"
+    | SRL (i,j) -> indent ^ i ^ " >> " ^ j ^ "\n"
+    | SLL (i,j) -> indent ^ i ^ " << " ^ j ^ "\n"
+    | FNeg (i) -> indent ^ "- " ^ i ^ "\n"
     | FAdd (i,j) -> indent ^ i ^ " +. " ^ j ^ "\n"
     | FSub (i,j) -> indent ^ i ^ " -. " ^ j ^ "\n"
     | FMul (i,j) -> indent ^ i ^ " *. " ^ j ^ "\n"
@@ -208,8 +209,7 @@ let rec string_t indent knormal =
 	indent ^ "If " ^ i ^ "<=" ^ j ^ "\n"
 	^ (string_t indent t) ^ (string_t indent u)
     | Let ((i,t),u,v) ->
-	indent ^ "Let\n  " ^ indent ^ i ^ " : " ^ (Type.string_of_t t) ^ "\n"
-	^ (string_t indent u) ^ indent ^ "In\n" ^ (string_t indent v)
+	indent ^ i ^ " : " ^ (Type.string_of_t t) ^ (string_t "" u) ^ (string_t indent v)
     | Var (i) -> indent ^ "Var(" ^ i ^ ")\n"
     | App (i, list) ->
 	indent ^ i ^ "("
@@ -248,5 +248,5 @@ and string_fundef indent {name = (i,t); args = list; body = b} =
   ^ (string_t (indent ^ "  ") b)
 
 let string t = (* KNormal.tを出力する *)
-  print_string (string_t "" t)
-*)
+  print_string (string_t "" t); t
+

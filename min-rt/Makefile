@@ -1,6 +1,6 @@
 LIB = ../lib
 MIN_CAML = ../min-caml.opt
-SIM = ../../CPU/sim.jar
+SIM = ../../sim/sim.jar
 FAST_SIM = ../../sim/fastsim/fastsim.exe
 MIN_CAML_OPTION = -inline 50
 CPU = SuperScalar
