@@ -13,10 +13,10 @@ let rec target' src (dest, t) = function
       let c2, rs2 = target src (dest, t) e2 in
       c1 && c2, rs1 @ rs2
   | CallCls(x, ys) ->
-      true, (target_args src regs 0 ys @
+      true, (target_args src regs 1 ys @
              if x = src then [reg_cl] else [])
   | CallDir(_, ys) ->
-      true, (target_args src regs 0 ys)
+      true, (target_args src regs 1 ys)
   | _ -> false, []
 and target src dest = function (* register targeting (caml2html: regalloc_target) *)
   | Ans(exp) -> target' src dest exp
@@ -39,9 +39,9 @@ let rec alloc dest cont regenv x t =
   assert (not (M.mem x regenv));
   let all =
     match t with
-    | Type.Unit -> ["%g0"] (* dummy *)
+    | Type.Unit -> ["$dummy"] (* dummy *)
     | _ -> allregs in
-  if all = ["%g0"] then Alloc("%g0") else (* [XX] ad hoc optimization *)
+  if all = ["$dummy"] then Alloc("$dummy") else (* [XX] ad hoc optimization *)
   if is_reg x then Alloc(x) else
   let free = fv cont in
   try
@@ -216,7 +216,7 @@ let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジス�
 	 arg_regs @ [r],
 	 (assert (not (is_reg y));
 	  M.add y r regenv)))
-      (0, [], regenv)
+      (1, [], regenv)
       ys in
   let a =
     match t with

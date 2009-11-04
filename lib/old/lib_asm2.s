@@ -47,7 +47,6 @@ min_caml_atan_table:
 # * floor
 ######################################################################
 min_caml_floor:
-	mov $2, $1
 	cmp $1, 0
 	bge FLOOR_POSITIVE	# if ($f1 >= 0) FLOOR_POSITIVE
 	fneg $1, $1
@@ -80,7 +79,6 @@ FLOOR_MONE:
 # * float_of_int
 ######################################################################
 min_caml_float_of_int:
-	mov $2, $1
 	cmp $1, 0
 	bge ITOF_MAIN		# if ($i1 >= 0) goto ITOF_MAIN
 	neg $1, $1		# 正の値にしてitofした後に、マイナスにしてかえす
@@ -121,7 +119,6 @@ ITOF_LOOP2:
 # * int_of_float
 ######################################################################
 min_caml_int_of_float:
-	mov $2, $1
 	cmp $1, 0
 	bge FTOI_MAIN		# if ($f1 >= 0) goto FTOI_MAIN
 	fneg $1, $1		# 正の値にしてftoiした後に、マイナスにしてかえす
@@ -202,7 +199,7 @@ read_4:
 # * 失敗してたらループ
 ######################################################################
 min_caml_write:
-	write $2
+	write $1
 #	bg min_caml_write		# TODO
 	ret
 
@@ -211,8 +208,6 @@ min_caml_write:
 # * create_float_array
 ######################################################################
 min_caml_create_array:
-	mov $2, $1
-	mov $3, $2
 	add $1, $hp, $3
 	mov $hp, $1
 CREATE_ARRAY_LOOP:
@@ -231,7 +226,7 @@ CREATE_ARRAY_END:
 ######################################################################
 min_caml_ledout_int:
 min_caml_ledout_float:
-	ledout $2
+	ledout $1
 	ret
 
 
@@ -245,9 +240,8 @@ min_caml_div2:
 	add $sp, 1, $sp
 	jal min_caml_float_of_int
 	load [DIV2_F], $2
-	fmul $1, $2, $2
+	fmul $1, $2, $1
 	jal min_caml_floor
-	mov $1, $2
 	jal min_caml_int_of_float
 	add $sp, -1, $sp
 	load [$sp], $ra

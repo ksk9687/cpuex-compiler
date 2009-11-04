@@ -5,11 +5,11 @@
 ######################################################################
 
 min_caml_debug_int:
-	debug_int $1
+	debug_int $2
 	ret
 
 min_caml_debug_float:
-	debug_float $1
+	debug_float $2
 	ret
 
 min_caml_break:

@@ -186,7 +186,7 @@ and g'_args oc x_reg_cl ys =
   let (i, yrs) =
     List.fold_left
       (fun (i, yrs) y -> (i + 1, (y, regs.(i)) :: yrs))
-      (0, x_reg_cl)
+      (1, x_reg_cl)
       ys in
   List.iter
     (fun (y, r) -> g' oc (NonTail(r), Mov(y)))
