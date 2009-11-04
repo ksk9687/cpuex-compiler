@@ -3,7 +3,7 @@ open Asm
 let rec g env = function (* 命令列の即値最適化 *)
   | Ans(exp) -> Ans(g' env exp)
 																(* 負の数に変換されることがあるので等号を除いた *)
-  | Let((x, t), Set(i), e) when (-32768 < i) && (i < 32768) ->
+  | Let((x, t), Set(i), e) when (-8192 < i) && (i < 8192) ->
       (* Format.eprintf "found simm %s = %d@." x i; *)
       let e' = g (M.add x i env) e in
       if List.mem x (fv e') then Let((x, t), Set(i), e') else

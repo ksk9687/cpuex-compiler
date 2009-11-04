@@ -200,7 +200,6 @@ let h oc { name = Id.L(x); args = _; body = e; ret = _ } =
 
 let f oc (Prog(data, fundefs, e)) =
   Format.eprintf "generating assembly...@.";
-	Printf.fprintf oc "\t%-8s%s\n" "b" "min_caml_start";
   List.iter
     (fun (Id.L(x), d) -> Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
     data;

@@ -53,15 +53,13 @@ min_caml_floor:
 	add $sp, 1, $sp
 	fneg $1, $1
 	jal min_caml_floor		# $f1 = FLOOR_POSITIVE(-$f1)
-	li FLOOR_MONE, $tmp
-	load [$tmp], $2
+	load [FLOOR_MONE], $2
 	fsub $2, $1, $1		# $f1 = (-1) - $f1
 	add $sp, -1, $sp
 	load [$sp], $ra
 	ret
 FLOOR_POSITIVE:
-	li FLOAT_MAGICF, $tmp
-	load [$tmp], $mf
+	load [FLOAT_MAGICF], $mf
 	fcmp $1, $mf
 	ble FLOOR_POSITIVE_MAIN
 	ret
@@ -71,8 +69,7 @@ FLOOR_POSITIVE_MAIN:
 	fsub $1, $mf, $1		# $f1 -= 0x4b000000
 	fcmp $1, $2
 	ble FLOOR_RET
-	li FLOOR_ONE, $tmp
-	load [$tmp], $2
+	load [FLOOR_ONE], $2
 	fsub $1, $2, $1		# 返り値が元の値より大きければ1.0引く
 FLOOR_RET:
 	ret
@@ -96,12 +93,9 @@ min_caml_float_of_int:
 	fneg $1, $1
 	ret
 ITOF_MAIN:
-	li FLOAT_MAGICI, $tmp
-	load [$tmp], $mi		# $mi = 8388608
-	li FLOAT_MAGICF, $tmp
-	load [$tmp], $mf 		# $mf = 8388608.0
-	li FLOAT_MAGICFHX, $tmp
-	load [$tmp], $mfhx 		# $mfhx = 0x4b000000
+	load [FLOAT_MAGICI], $mi		# $mi = 8388608
+	load [FLOAT_MAGICF], $mf 		# $mf = 8388608.0
+	load [FLOAT_MAGICFHX], $mfhx 		# $mfhx = 0x4b000000
 	cmp $1, $mi 			# $cond = cmp($i1, 8388608)
 	bge ITOF_BIG			# if ($i1 >= 8388608) goto ITOF_BIG
 	add $1, $mfhx, $1		# $i1 = $i1 + $mfhx (i.e. $i1 + 0x4b000000)
@@ -142,12 +136,9 @@ min_caml_int_of_float:
 	neg $1, $1
 	ret				# return
 FTOI_MAIN:
-	li FLOAT_MAGICI, $tmp
-	load [$tmp], $mi		# $mi = 8388608
-	li FLOAT_MAGICF, $tmp
-	load [$tmp], $mf 		# $mf = 8388608.0
-	li FLOAT_MAGICFHX, $tmp
-	load [$tmp], $mfhx		# $mfhx = 0x4b000000
+	load [FLOAT_MAGICI], $mi		# $mi = 8388608
+	load [FLOAT_MAGICF], $mf 		# $mf = 8388608.0
+	load [FLOAT_MAGICFHX], $mfhx		# $mfhx = 0x4b000000
 	fcmp $1, $mf
 	bge FTOI_BIG		# if ($f1 >= 8688608.0) goto FTOI_BIG
 	fadd $1, $mf, $1
@@ -261,8 +252,7 @@ min_caml_div2:
 	store $ra, [$sp]
 	add $sp, 1, $sp
 	jal min_caml_float_of_int
-	li DIV2_F, $tmp
-	load [$tmp], $2
+	load [DIV2_F], $2
 	fmul $1, $2, $1
 	jal min_caml_floor
 	jal min_caml_int_of_float

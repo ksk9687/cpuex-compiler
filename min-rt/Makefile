@@ -25,8 +25,8 @@ min-rt.bin: $(SIM) min-rt.s
 min-rt.s: $(MIN_CAML) min-rt.ml globals.s $(LIB)/lib_ml.ml $(LIB)/macro.s $(LIB)/lib_asm.s
 	cat $(LIB)/lib_ml.ml min-rt.ml > tmp.ml
 	$(MIN_CAML) $(MIN_CAML_OPTION) tmp
-	cat $(LIB)/macro.s tmp.s $(LIB)/lib_asm.s globals.s > min-rt.s
+	cat $(LIB)/macro.s $(LIB)/lib_asm.s globals.s tmp.s > min-rt.s
 	rm tmp.ml tmp.s
 
 clean:
-	rm -f min-rt.s min-rt.bin contest.ppm fastsim.exe tmp.ml tmp.s
+	rm -f min-rt.s min-rt.bin contest.ppm tmp.ml tmp.s
