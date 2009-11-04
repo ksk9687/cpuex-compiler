@@ -2,7 +2,7 @@ open Asm
 
 let rec g env = function (* 命令列の即値最適化 *)
   | Ans(exp) -> Ans(g' env exp)
-																(* 負の数に変換されることがあるので等号を除いた *)
+                                                                                                                                (* 負の数に変換されることがあるので等号を除いた *)
   | Let((x, t), Set(i), e) when (-8192 < i) && (i < 8192) ->
       (* Format.eprintf "found simm %s = %d@." x i; *)
       let e' = g (M.add x i env) e in
@@ -15,8 +15,6 @@ and g' env = function (* 各命令の即値最適化 *)
   | Add(x, V(y)) when M.mem y env -> Add(x, C(M.find y env))
   | Add(x, V(y)) when M.mem x env -> Add(y, C(M.find x env))
   | Sub(x, V(y)) when M.mem y env -> Sub(x, C(M.find y env))
-  | SLL(x, V(y)) when M.mem y env -> SLL(x, C(M.find y env))
-  | SRL(x, V(y)) when M.mem y env -> SRL(x, C(M.find y env))
   | Ld(x, V(y)) when M.mem y env -> Ld(x, C(M.find y env))
   | St(x, y, V(z)) when M.mem z env -> St(x, y, C(M.find z env))
   | IfEq(x, V(y), e1, e2) when M.mem y env -> IfEq(x, C(M.find y env), g env e1, g env e2)

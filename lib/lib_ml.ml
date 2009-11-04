@@ -1,8 +1,4 @@
 (* 浮動小数基本演算 *)
-let rec fless a b = (a < b) in
-let rec fispos a = (a > 0.0) in
-let rec fisneg a = (a < 0.0) in
-let rec fiszero a = (a = 0.0) in
 let rec fhalf a = a *. 0.5 in
 let rec fsqr a = a *. a in
 let rec fneg a = -. a in

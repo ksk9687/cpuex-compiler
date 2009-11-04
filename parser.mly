@@ -5,8 +5,7 @@ open Lexing
 let addtyp x = (x, Type.gentyp ())
 let rec log2 x =
   if x = 1 then 0
-  else if x mod 2 != 0 then assert false
-  else (log2 (x/2)) + 1
+  else (assert (x mod 2 = 0); (log2 (x / 2)) + 1)
 %}
 
 /* 字句を表すデータ型の定義 (caml2html: parser_token) */
@@ -37,6 +36,7 @@ let rec log2 x =
 %token REC
 %token COMMA
 %token ARRAY_CREATE
+%token <Id.t> FUNC
 %token DOT
 %token LESS_MINUS
 %token SEMICOLON
@@ -94,12 +94,10 @@ exp: /* 一般の式 (caml2html: parser_exp) */
     { Add($1, $3) }
 | exp MINUS exp
     { Sub($1, $3) }
-| exp AST log2_x
-    { SLL($1, $3) }
-| exp SLASH log2_x
-/*    { SRL($1, $3) } */
-    { if $3 = Int(1) then App(Var("div2"), [$1])
-	else assert false}
+| exp AST INT
+    { SLL($1, log2 $3) }
+| exp SLASH INT
+    { assert ($3 = 2); App(Var("div2"), [$1]) }
 | exp EQUAL exp
     { Eq($1, $3) }
 | exp LESS_GREATER exp
@@ -148,14 +146,17 @@ exp: /* 一般の式 (caml2html: parser_exp) */
 | ARRAY_CREATE simple_exp simple_exp
     %prec prec_app
     { Array($2, $3) }
+| FUNC actual_args
+    %prec prec_app
+    { App(Var($1), $2) }
 | error
     { failwith
-	(Printf.sprintf "parse error from l:%d c:%d to l:%d c:%d "
-	   (Parsing.symbol_start_pos ()).pos_lnum 
-	   (Parsing.symbol_start_pos ()).pos_cnum 
-	   (Parsing.symbol_end_pos ()).pos_lnum 
-	   (Parsing.symbol_end_pos ()).pos_cnum 
-	)}
+        (Printf.sprintf "parse error from l:%d c:%d to l:%d c:%d "
+           (Parsing.symbol_start_pos ()).pos_lnum 
+           (Parsing.symbol_start_pos ()).pos_cnum 
+           (Parsing.symbol_end_pos ()).pos_lnum 
+           (Parsing.symbol_end_pos ()).pos_cnum 
+        )}
 
 fundef:
 | IDENT formal_args EQUAL exp
@@ -186,8 +187,3 @@ pat:
     { $1 @ [addtyp $3] }
 | IDENT COMMA IDENT
     { [addtyp $1; addtyp $3] }
-
-log2_x:
-| INT
-    {Int(log2 $1)}
-    

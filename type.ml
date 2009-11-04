@@ -24,7 +24,7 @@ let rec string_of_t = function (* Type.tを文字列に変換 *)
   | Array (t) -> (string_of_t t) ^ " Array"
   | Var (top) -> (
       match !top with 
-			| None -> "None"
-			| Some t -> string_of_t t
-			)
-	| _ -> assert false
+        | None -> "None"
+        | Some t -> string_of_t t
+      )
+  | _ -> assert false

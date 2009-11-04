@@ -49,7 +49,7 @@ let rec alloc dest cont regenv x t =
     let live = (* 生きているレジスタ *)
       List.fold_left
         (fun live y ->
-	  if is_reg y then S.add y live else
+          if is_reg y then S.add y live else
           try S.add (M.find y regenv) live
           with Not_found -> live)
         S.empty
@@ -58,7 +58,7 @@ let rec alloc dest cont regenv x t =
       List.find
         (fun r -> not (S.mem r live))
 (*        (prefer @ all) in*)
-					(prefer @ (List.rev all)) in
+                                        (prefer @ (List.rev all)) in
     (* Format.eprintf "allocated %s to %s@." x r; *)
     Alloc(r)
   with Not_found ->
@@ -66,7 +66,7 @@ let rec alloc dest cont regenv x t =
     let y = (* 型の合うレジスタ変数を探す *)
       List.find
         (fun y ->
-	  not (is_reg y) &&
+          not (is_reg y) &&
           try List.mem (M.find y regenv) all
           with Not_found -> false)
         (List.rev free) in
@@ -113,24 +113,24 @@ let rec g dest cont regenv = function (* 命令列のレジスタ割り当て (c
       (match g'_and_restore xt cont' regenv exp with
       | ToSpill(e1, ys) -> ToSpill(concat e1 xt e, ys)
       | NoSpill(e1', regenv1) ->
-	  (match alloc dest cont' regenv1 x t with
-	  | Spill(y) -> ToSpill(Let(xt, exp, Forget(y, e)), [y])
-	  | Alloc(r) ->
-	      match g dest cont (add x r regenv1) e with
-	      | ToSpill(e2, ys) when List.mem x ys ->
-		  		let x_saved = Let(xt, exp, seq(Save(x, x), e2)) in
-		  		(match List.filter (fun y -> y <> x) ys with
-		  			| [] -> g dest cont regenv x_saved
-		  			| ys_left -> ToSpill(x_saved, ys_left))
-	      | ToSpill(e2, ys) -> ToSpill(Let(xt, exp, e2), ys)
-	      | NoSpill(e2', regenv2) -> NoSpill(concat e1' (r, t) e2', regenv2)))
+          (match alloc dest cont' regenv1 x t with
+          | Spill(y) -> ToSpill(Let(xt, exp, Forget(y, e)), [y])
+          | Alloc(r) ->
+              match g dest cont (add x r regenv1) e with
+              | ToSpill(e2, ys) when List.mem x ys ->
+                  let x_saved = Let(xt, exp, seq(Save(x, x), e2)) in
+                  (match List.filter (fun y -> y <> x) ys with
+                    | [] -> g dest cont regenv x_saved
+                    | ys_left -> ToSpill(x_saved, ys_left))
+              | ToSpill(e2, ys) -> ToSpill(Let(xt, exp, e2), ys)
+              | NoSpill(e2', regenv2) -> NoSpill(concat e1' (r, t) e2', regenv2)))
   | Forget(x, e) ->
       (match g dest cont (M.remove x regenv) e with
       | ToSpill(e1, ys) ->
-	  let x_forgotten = Forget(x, e1) in
-	  (match List.filter (fun y -> y <> x) ys with
-	  | [] -> g dest cont regenv x_forgotten
-	  | ys_left -> ToSpill(x_forgotten, ys_left))
+          let x_forgotten = Forget(x, e1) in
+          (match List.filter (fun y -> y <> x) ys with
+          | [] -> g dest cont regenv x_forgotten
+          | ys_left -> ToSpill(x_forgotten, ys_left))
       | NoSpill(e1', regenv1) -> NoSpill(e1', regenv1))
 and g'_and_restore dest cont regenv exp = (* 使用される変数をスタックからレジスタへRestore (caml2html: regalloc_unspill) *)
   try g' dest cont regenv exp
@@ -143,8 +143,7 @@ and g' dest cont regenv = function (* 各命令のレジスタ割り当て (caml
   | Neg(x) -> NoSpill(Ans(Neg(find x Type.Int regenv)), regenv)
   | Add(x, y') -> NoSpill(Ans(Add(find x Type.Int regenv, find' y' regenv)), regenv)
   | Sub(x, y') -> NoSpill(Ans(Sub(find x Type.Int regenv, find' y' regenv)), regenv)
-  | SLL(x, y') -> NoSpill(Ans(SLL(find x Type.Int regenv, find' y' regenv)), regenv)
-  | SRL(x, y') -> NoSpill(Ans(SRL(find x Type.Int regenv, find' y' regenv)), regenv)
+  | SLL(x, i) -> NoSpill(Ans(SLL(find x Type.Int regenv, i)), regenv)
   | Ld(x, y') -> NoSpill(Ans(Ld(find x Type.Int regenv, find' y' regenv)), regenv)
   | St(x, y, z') -> NoSpill(Ans(St(find x Type.Int regenv, find y Type.Int regenv, find' z' regenv)), regenv)
   | FNeg(x) -> NoSpill(Ans(FNeg(find x Type.Float regenv)), regenv)
@@ -173,11 +172,11 @@ and g'_if dest cont regenv exp constr e1 e2 = (* ifのレジスタ割り当て (
     List.fold_left
       (fun regenv' x ->
         try
-	  if is_reg x then regenv' else
+          if is_reg x then regenv' else
           let r1 = M.find x regenv1 in
           let r2 = M.find x regenv2 in
           if r1 <> r2 then regenv' else
-	  M.add x r1 regenv'
+          M.add x r1 regenv'
         with Not_found -> regenv')
       M.empty
       (fv cont) in
@@ -193,18 +192,18 @@ and g'_call dest cont regenv exp constr ys = (* 関数呼び出しのレジス�
       (fun x -> not (is_reg x) && x <> fst dest)
       (fv cont)
   with [] -> NoSpill(Ans(constr
-			   (List.map (fun y -> find y Type.Int regenv) ys)),
-		     M.empty)
+                           (List.map (fun y -> find y Type.Int regenv) ys)),
+                     M.empty)
   | xs -> insert_forget xs exp (snd dest)
 and g_repeat dest cont regenv e = (* Spillがなくなるまでgを繰り返す (caml2html: regalloc_repeat) *)
     match g dest cont regenv e with
     | NoSpill(e', regenv') -> (e', regenv')
     | ToSpill(e, xs) ->
-	g_repeat dest cont regenv
-	  (List.fold_left
-	     (fun e x -> seq(Save(x, x), e))
-	     e
-	     xs)
+        g_repeat dest cont regenv
+          (List.fold_left
+             (fun e x -> seq(Save(x, x), e))
+             e
+             xs)
 
 let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジスタ割り当て (caml2html: regalloc_h) *)
   let regenv = M.add x reg_cl M.empty in
@@ -213,9 +212,9 @@ let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジス�
       (fun (i, arg_regs, regenv) y ->
         let r = regs.(i) in
         (i + 1,
-	 arg_regs @ [r],
-	 (assert (not (is_reg y));
-	  M.add y r regenv)))
+         arg_regs @ [r],
+         (assert (not (is_reg y));
+          M.add y r regenv)))
       (1, [], regenv)
       ys in
   let a =

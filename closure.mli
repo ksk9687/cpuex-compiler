@@ -6,8 +6,7 @@ type t =
   | Neg of Id.t
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
-  | SLL of Id.t * Id.t
-  | SRL of Id.t * Id.t
+  | SLL of Id.t * int
   | FNeg of Id.t
   | FSqrt of Id.t
   | FAbs of Id.t
@@ -28,9 +27,9 @@ type t =
   | Put of Id.t * Id.t * Id.t
   | ExtArray of Id.l
 type fundef = { name : Id.l * Type.t;
-		args : (Id.t * Type.t) list;
-		formal_fv : (Id.t * Type.t) list;
-		body : t }
+                args : (Id.t * Type.t) list;
+                formal_fv : (Id.t * Type.t) list;
+                body : t }
 type prog = Prog of fundef list * t
 
 val fv : t -> S.t

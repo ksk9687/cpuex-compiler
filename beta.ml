@@ -9,8 +9,7 @@ let rec g env = function (* β簡約ルーチン本体 (caml2html: beta_g) *)
   | Neg(x) -> Neg(find x env)
   | Add(x, y) -> Add(find x env, find y env)
   | Sub(x, y) -> Sub(find x env, find y env)
-  | SLL(x, y) -> SLL(find x env, find y env)
-  | SRL(x, y) -> SRL(find x env, find y env)
+  | SLL(x, i) -> SLL(find x env, i)
   | FNeg(x) -> FNeg(find x env)
   | FAdd(x, y) -> FAdd(find x env, find y env)
   | FSub(x, y) -> FSub(find x env, find y env)
@@ -21,11 +20,11 @@ let rec g env = function (* β簡約ルーチン本体 (caml2html: beta_g) *)
   | Let((x, t), e1, e2) -> (* letのβ簡約 (caml2html: beta_let) *)
       (match g env e1 with
       | Var(y) ->
-(*	  Format.eprintf "beta-reducing %s = %s@." x y;*)
-	  g (M.add x y env) e2
+(*          Format.eprintf "beta-reducing %s = %s@." x y;*)
+          g (M.add x y env) e2
       | e1' ->
-	  let e2' = g env e2 in
-	  Let((x, t), e1', e2'))
+          let e2' = g env e2 in
+          Let((x, t), e1', e2'))
   | LetRec({ name = xt; args = yts; body = e1 }, e2) ->
       LetRec({ name = xt; args = yts; body = g env e1 }, g env e2)
   | Var(x) -> Var(find x env) (* 変数を置換 (caml2html: beta_var) *)
