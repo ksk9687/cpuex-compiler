@@ -58,14 +58,14 @@ min_caml_floor:
 	jr $9
 FLOOR_POSITIVE:
 	load [FLOAT_MAGICF], $mf
-	fcmp $1, $mf
+	cmp $1, $mf
 	ble FLOOR_POSITIVE_MAIN
 	ret
 FLOOR_POSITIVE_MAIN:
 	mov $1, $2
 	fadd $1, $mf, $1		# $f1 += 0x4b000000
 	fsub $1, $mf, $1		# $f1 -= 0x4b000000
-	fcmp $1, $2
+	cmp $1, $2
 	ble FLOOR_RET
 	load [FLOOR_ONE], $2
 	fsub $1, $2, $1		# 返り値が元の値より大きければ1.0引く
@@ -133,7 +133,7 @@ FTOI_MAIN:
 	load [FLOAT_MAGICI], $mi		# $mi = 8388608
 	load [FLOAT_MAGICF], $mf 		# $mf = 8388608.0
 	load [FLOAT_MAGICFHX], $mfhx		# $mfhx = 0x4b000000
-	fcmp $1, $mf
+	cmp $1, $mf
 	bge FTOI_BIG		# if ($f1 >= 8688608.0) goto FTOI_BIG
 	fadd $1, $mf, $1
 	sub $1, $mfhx, $1
@@ -144,13 +144,13 @@ FTOI_BIG:
 FTOI_LOOP:
 	add $q, 1, $q			# $q += 1
 	fsub $rf, $mf, $rf		# $rf -= 8388608.0
-	fcmp $rf, $mf
+	cmp $rf, $mf
 	bge FTOI_LOOP		# if ($rf >= 8388608.0) continue
 	li 0, $1
 FTOI_LOOP2:
 	add $1, $mi, $1			# $i1 = $q * $mi
 	add $q, -1, $q
-	cmp $q, $zero
+	cmp $q, 0
 	bg FTOI_LOOP2
 	fadd $rf, $mf, $rf		# $rf < 8388608.0 だからそのままftoi
 	sub $rf, $mfhx, $rf		# $temp = ftoi($rf)

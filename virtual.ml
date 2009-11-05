@@ -38,8 +38,9 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
         with Not_found ->
           let l = Id.L(Id.genid "f") in
           data := (l, d) :: !data;
-          l in
-          Ans(LdFL(l)) (* ラベルから直接ロード *)
+          l
+      in
+      Ans(Ld(L(l), C(0))) (* ラベルから直接ロード *)
 (*      let x = Id.genid "l" in
       Let((x, Type.Int), SetL(l), Ans(LdF(x, C(0))))*)
   | Closure.Neg(x) -> Ans(Neg(x))
@@ -78,12 +79,12 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
         expand
           (List.map (fun y -> (y, M.find y env)) ys)
           (1, e2')
-          (fun y _ offset store_fv -> seq(St(y, x, C(offset)), store_fv)) in
+          (fun y _ offset store_fv -> seq(St(y, V(x), C(offset)), store_fv)) in
       Let((x, t), Mov(reg_hp),
           Let((reg_hp, Type.Int), Add(reg_hp, C(offset)),
               let z = Id.genid "l" in
               Let((z, Type.Int), SetL(l),
-                  seq(St(z, x, C(0)),
+                  seq(St(z, V(x), C(0)),
                       store_fv))))
   | Closure.AppCls(x, ys) ->
       let xts = separate (List.map (fun y -> (y, M.find y env)) ys) in
@@ -97,7 +98,7 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
         expand
           (List.map (fun x -> (x, M.find x env)) xs)
           (0, Ans(Mov(y)))
-          (fun x _ offset store -> seq(St(x, y, C(offset)), store)) in
+          (fun x _ offset store -> seq(St(x, V(y), C(offset)), store)) in
       Let((y, Type.Tuple(List.map (fun x -> M.find x env) xs)), Mov(reg_hp),
           Let((reg_hp, Type.Int), Add(reg_hp, C(offset)),
               store))
@@ -109,17 +110,17 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
           (0, g (M.add_list xts env) e2)
           (fun x t offset load ->
             if not (S.mem x s) then load else (* [XX] a little ad hoc optimization *)
-            Let((x, t), Ld(y, C(offset)), load)) in
+            Let((x, t), Ld(V(y), C(offset)), load)) in
       load
   | Closure.Get(x, y) -> (* 配列の読み出し (caml2html: virtual_get) *)
       (match M.find x env with
       | Type.Array(Type.Unit) -> Ans(Nop)
-      | Type.Array(_) -> Ans(Ld(x, V(y)))
+      | Type.Array(_) -> Ans(Ld(V(x), V(y)))
       | _ -> assert false)
   | Closure.Put(x, y, z) ->
       (match M.find x env with
       | Type.Array(Type.Unit) -> Ans(Nop)
-      | Type.Array(_) -> Ans(St(z, x, V(y)))
+      | Type.Array(_) -> Ans(St(z, V(x), V(y)))
       | _ -> assert false)
   | Closure.ExtArray(Id.L(x)) -> Ans(SetL(Id.L("min_caml_" ^ x)))
 
@@ -130,7 +131,7 @@ let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.formal_fv = zts
     expand
       zts
       (1, g (M.add x t (M.add_list yts (M.add_list zts M.empty))) e)
-      (fun z t offset load -> Let((z, t), Ld(reg_cl, C(offset)), load)) in
+      (fun z t offset load -> Let((z, t), Ld(V(reg_cl), C(offset)), load)) in
   match t with
   | Type.Fun(_, t2) ->
       { name = Id.L(x); args = xts; body = load; ret = t2 }

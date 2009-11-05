@@ -1,6 +1,6 @@
 (* ksk assembly with a few virtual instructions *)
 
-type id_or_imm = V of Id.t | C of int
+type id_or_imm = V of Id.t | C of int | L of Id.l
 type t = (* 命令の列 (caml2html: sparcasm_t) *)
   | Ans of exp
   | Let of (Id.t * Type.t) * exp * t
@@ -14,8 +14,8 @@ and exp = (* 一つ一つの命令に対応する式 (caml2html: sparcasm_exp) *
   | Add of Id.t * id_or_imm
   | Sub of Id.t * id_or_imm
   | SLL of Id.t * int
-  | Ld of Id.t * id_or_imm
-  | St of Id.t * Id.t * id_or_imm
+  | Ld of id_or_imm * id_or_imm
+  | St of Id.t * id_or_imm * id_or_imm
   | FNeg of Id.t
   | FSqrt of Id.t
   | FAbs of Id.t
@@ -23,7 +23,6 @@ and exp = (* 一つ一つの命令に対応する式 (caml2html: sparcasm_exp) *
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
   | FDiv of Id.t * Id.t
-  | LdFL of Id.l (* ラベルの指す値を読み込む(定数テーブル用) *)
   | Comment of string
   (* virtual instructions *)
   | IfEq of Id.t * id_or_imm * t * t
@@ -63,10 +62,11 @@ let rec remove_and_uniq xs = function
 (* free variables in the order of use (for spilling) (caml2html: sparcasm_fv) *)
 let fv_id_or_imm = function V(x) -> [x] | _ -> []
 let rec fv_exp cont = function
-  | Nop | Set(_) | SetL(_) | LdFL(_) | Comment(_) | Restore(_) -> cont
+  | Nop | Set(_) | SetL(_) | Comment(_) | Restore(_) -> cont
   | Mov(x) | Neg(x) | FNeg(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | Save(x, _) -> x :: cont
-  | Add(x, y') | Sub(x, y') | Ld(x, y') -> x :: fv_id_or_imm y' @ cont
-  | St(x, y, z') -> x :: y :: fv_id_or_imm z' @ cont
+  | Add(x, y') | Sub(x, y') -> x :: fv_id_or_imm y' @ cont
+  | Ld(x', y') -> fv_id_or_imm x' @ fv_id_or_imm y' @ cont
+  | St(x, y', z') -> x :: fv_id_or_imm y' @ fv_id_or_imm z' @ cont
   | FAdd(x, y) | FSub(x, y) | FMul(x, y) | FDiv(x, y) -> x :: y :: cont
   | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> x :: fv_id_or_imm y' @ remove_and_uniq S.empty (fv cont e1 @ fv cont e2) (* uniq here just for efficiency *)
   | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> x :: y :: remove_and_uniq S.empty (fv cont e1 @ fv cont e2) (* uniq here just for efficiency *)

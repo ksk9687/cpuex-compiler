@@ -12,15 +12,16 @@ let lexbuf outchan l = (* バッファをコンパイルしてチャンネルへ
   Typing.extenv := M.empty;
   Emit.f outchan
     (RegAlloc.f
-       (Simm.f
-          (Virtual.f
-             (Closure.f
-                (iter !limit
-                   (Alpha.f
-                      (KNormal.f
-                         (BuiltIn.f
-                           (Typing.f
-                              (Parser.exp Lexer.token l))))))))))
+      (Slabel.f
+	       (Simm.f
+	          (Virtual.f
+	             (Closure.f
+	                (iter !limit
+	                   (Alpha.f
+	                      (KNormal.f
+	                         (BuiltIn.f
+	                           (Typing.f
+	                              (Parser.exp Lexer.token l)))))))))))
 
 let string s = lexbuf stdout (Lexing.from_string s) (* 文字列をコンパイルして標準出力に表示する (caml2html: main_string) *)
 

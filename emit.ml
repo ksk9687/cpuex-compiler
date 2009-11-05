@@ -22,6 +22,7 @@ let stacksize () = (List.length !stackmap + 1)
 let pp_id_or_imm = function
   | V(x) -> x
   | C(i) -> string_of_int i
+  | L(Id.L(l)) -> l
 
 (* 関数呼び出しのために引数を並べ替える(register shuffling) (caml2html: emit_shuffle) *)
 let rec shuffle sw xys =
@@ -58,11 +59,11 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | NonTail(x), Add(y, z') -> Printf.fprintf oc "\t%-8s%s, %s, %s\n" "add" y (pp_id_or_imm z') x
   | NonTail(x), Sub(y, z') -> Printf.fprintf oc "\t%-8s%s, %s, %s\n" "sub" y (pp_id_or_imm z') x
   | NonTail(x), SLL(y, i) -> Printf.fprintf oc "\t%-8s%s, %d, %s\n" "sll" y i x
-  | NonTail(x), Ld(y, z') -> Printf.fprintf oc "\t%-8s[%s + %s], %s\n" "load" y (pp_id_or_imm z') x
-  | NonTail(r), St(x, y, V(z)) ->
+  | NonTail(x), Ld(y', z') -> Printf.fprintf oc "\t%-8s[%s + %s], %s\n" "load" (pp_id_or_imm y') (pp_id_or_imm z') x
+  | NonTail(r), St(x, V(y), V(z)) ->
       g' oc (NonTail(reg_tmp), Add(y, V(z)));
-      g' oc (NonTail(r), St(x, reg_tmp, C(0)))
-  | NonTail(_), St(x, y, C(z)) -> Printf.fprintf oc "\t%-8s%s, [%s + %d]\n" "store" x y z
+      g' oc (NonTail(r), St(x, V(reg_tmp), C(0)))
+  | NonTail(_), St(x, y', z') -> Printf.fprintf oc "\t%-8s%s, [%s + %s]\n" "store" x (pp_id_or_imm y') (pp_id_or_imm z')
   | NonTail(x), FNeg(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "fneg" y x
   | NonTail(x), FSqrt(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "fsqrt" y x
   | NonTail(x), FAbs(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "fabs" y x
@@ -72,17 +73,16 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | NonTail(x), FDiv(y, z) ->
       Printf.fprintf oc "\t%-8s%s, %s\n" "finv" z reg_tmp;
       g' oc (NonTail(x), FMul(y, reg_tmp))
-  | NonTail(x), LdFL(Id.L(y)) -> Printf.fprintf oc "\t%-8s[%s], %s\n" "load" y x
   | NonTail(_), Comment(s) -> Printf.fprintf oc "\t# %s\n" s
   (* 退避の仮想命令の実装 (caml2html: emit_save) *)
   | NonTail(r), Save(x, y) when List.mem x allregs && not (S.mem y !stackset) ->
       save y;
-      g' oc (NonTail(r), St(x, reg_sp, C(offset y)))
+      g' oc (NonTail(r), St(x, V(reg_sp), C(offset y)))
   | NonTail(_), Save(x, y) -> assert (S.mem y !stackset); ()
   (* 復帰の仮想命令の実装 (caml2html: emit_restore) *)
   | NonTail(x), Restore(y) ->
       assert (List.mem x allregs);
-      g' oc (NonTail(x), Ld(reg_sp, C(offset y)))
+      g' oc (NonTail(x), Ld(V(reg_sp), C(offset y)))
   (* 末尾だったら計算結果を第一レジスタにセットしてret (caml2html: emit_tailret) *)
   | Tail, (Nop | St _ | Comment _ | Save _ as exp) ->
       g' oc (NonTail(Id.gentmp Type.Unit), exp);
@@ -90,7 +90,7 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | Tail, (Set _ | SetL _ | Mov _ | Neg _ | Add _ | Sub _ | SLL _ | Ld _ as exp) ->
       g' oc (NonTail(regs.(0)), exp);
       Printf.fprintf oc "\tret\n"
-  | Tail, (FNeg _ | FSqrt _ | FAbs _ | FAdd _ | FSub _ | FMul _ | FDiv _ | LdFL _ as exp) ->
+  | Tail, (FNeg _ | FSqrt _ | FAbs _ | FAdd _ | FSub _ | FMul _ | FDiv _ as exp) ->
       g' oc (NonTail(regs.(0)), exp);
       Printf.fprintf oc "\tret\n"
   | Tail, (Restore(x) as exp) ->
@@ -130,7 +130,7 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   (* 関数呼び出しの仮想命令の実装 (caml2html: emit_call) *)
   | Tail, CallCls(x, ys) -> (* 末尾呼び出し (caml2html: emit_tailcall) *)
       g'_args oc [(x, reg_cl)] ys;
-      g' oc (NonTail(reg_tmp), Ld(reg_cl, C(0)));
+      g' oc (NonTail(reg_tmp), Ld(V(reg_cl), C(0)));
       Printf.fprintf oc "\t%-8s%s\n" "jr" reg_tmp
   | Tail, CallDir(Id.L(x), ys) -> (* 末尾呼び出し *)
       g'_args oc [] ys;
@@ -138,25 +138,25 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
   | NonTail(a), CallCls(x, ys) ->
       g'_args oc [(x, reg_cl)] ys;
       let ss = stacksize () in
-      g' oc (NonTail(a), St(reg_ra, reg_sp, C(ss - 1)));
-      g' oc (NonTail(reg_tmp), Ld(reg_cl, C(0)));
+      g' oc (NonTail(a), St(reg_ra, V(reg_sp), C(ss - 1)));
+      g' oc (NonTail(reg_tmp), Ld(V(reg_cl), C(0)));
       let ra = Id.genid ("cls") in
       g' oc (NonTail(reg_ra), SetL(Id.L(ra)));
       g' oc (NonTail(reg_sp), Add(reg_sp, C(ss)));
       Printf.fprintf oc "\t%-8s%s\n" "jr" reg_tmp;
       Printf.fprintf oc "%s:\n" ra;
       g' oc (NonTail(reg_sp), Sub(reg_sp, C(ss)));
-      g' oc (NonTail(reg_ra), Ld(reg_sp, C(ss - 1)));
+      g' oc (NonTail(reg_ra), Ld(V(reg_sp), C(ss - 1)));
       if List.mem a allregs && a <> regs.(0) then
         g' oc (NonTail(a), Mov(regs.(0)))
   | NonTail(a), CallDir(Id.L(x), ys) ->
       g'_args oc [] ys;
       let ss = stacksize () in
-      g' oc (NonTail(a), St(reg_ra, reg_sp, C(ss - 1)));
+      g' oc (NonTail(a), St(reg_ra, V(reg_sp), C(ss - 1)));
       g' oc (NonTail(reg_sp), Add(reg_sp, C(ss)));
       Printf.fprintf oc "\t%-8s%s\n" "jal" x;
       g' oc (NonTail(reg_sp), Sub(reg_sp, C(ss)));
-      g' oc (NonTail(reg_ra), Ld(reg_sp, C(ss - 1)));
+      g' oc (NonTail(reg_ra), Ld(V(reg_sp), C(ss - 1)));
       if List.mem a allregs && a <> regs.(0) then
       g' oc (NonTail(a), Mov(regs.(0)))
 and g'_tail_if oc e1 e2 b bn =
