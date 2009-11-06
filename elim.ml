@@ -32,7 +32,7 @@ let rec g env = function (* 不要定義削除ルーチン本体 (caml2html: eli
       let env' = if effect_fun x env e1' then env else S.add x env in
       let e2' = g env' e2 in
       if S.mem x (fv e2') then
-	LetRec({ name = (x, t); args = yts; body = e1' }, e2')
+	      LetRec({ name = (x, t); args = yts; body = e1' }, e2')
       else (
 (*	Format.eprintf "eliminating function %s@." x; *)
 	 e2')
