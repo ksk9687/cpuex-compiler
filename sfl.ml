@@ -74,7 +74,7 @@ let f (Prog(data, fundefs, e)) = (* プログラム全体の即値最適化 *)
 	  0 fls
 	in
 	Prog(data, List.map h fundefs,
-        List.fold_right
-          (fun (l, reg) e -> if reg = reg_zero then e else Let((reg, Type.Float), Ld(L(l), C(0)), e))
-          !ftable
-          (g M.empty e))
+        List.fold_left
+          (fun e (l, reg) -> if reg = reg_zero then e else Let((reg, Type.Float), Ld(L(l), C(0)), e))
+          (g M.empty e)
+          !ftable)

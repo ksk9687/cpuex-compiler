@@ -74,6 +74,7 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
       Printf.fprintf oc "\t%-8s%s, %s\n" "finv" z reg_tmp;
       g' oc (NonTail(x), FMul(y, reg_tmp))
   | NonTail(x), LdFL(Id.L(l)) -> Printf.fprintf oc "\t%-8s[%s], %s\n" "load" l x
+  | NonTail(_), MovR(x, y) -> g' oc (NonTail(y), Mov(x))
   | NonTail(_), Comment(s) -> Printf.fprintf oc "\t# %s\n" s
   (* 退避の仮想命令の実装 (caml2html: emit_save) *)
   | NonTail(r), Save(x, y) when List.mem x allregs && not (S.mem y !stackset) ->
@@ -85,7 +86,7 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
       assert (List.mem x allregs);
       g' oc (NonTail(x), Ld(V(reg_sp), C(offset y)))
   (* 末尾だったら計算結果を第一レジスタにセットしてret (caml2html: emit_tailret) *)
-  | Tail, (Nop | St _ | Comment _ | Save _ as exp) ->
+  | Tail, (Nop | St _ | MovR _ | Comment _ | Save _ as exp) ->
       g' oc (NonTail(Id.gentmp Type.Unit), exp);
       Printf.fprintf oc "\tret\n"
   | Tail, (Set _ | SetL _ | Mov _ | Neg _ | Add _ | Sub _ | SLL _ | Ld _ |

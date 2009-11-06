@@ -8,7 +8,7 @@ let rec g env = function (* 命令列のラベルアクセス最適化 *)
        e'
   | Let(xt, exp, e) -> Let(xt, g' env exp, g env e)
   | Forget(x, e) -> Forget(x, g env e)
-and g' env = function (* 各命令の即値最適化 *)
+and g' env = function (* 各命令のラベルアクセス最適化 *)
   | Ld(x', V(y)) when M.mem y env -> g' env (Ld(x', L(M.find y env)))
   | Ld(V(x), y') when M.mem x env -> g' env (Ld(L(M.find x env), y'))
   | St(x, y', V(z)) when M.mem z env -> g' env (St(x, y', L(M.find z env)))
@@ -20,8 +20,8 @@ and g' env = function (* 各命令の即値最適化 *)
   | IfFLE(x, y, e1, e2) -> IfFLE(x, y, g env e1, g env e2)
   | e -> e
 
-let h { name = l; args = xs; body = e; ret = t } = (* トップレベル関数の即値最適化 *)
+let h { name = l; args = xs; body = e; ret = t } = (* トップレベル関数のラベルアクセス最適化 *)
   { name = l; args = xs; body = g M.empty e; ret = t }
 
-let f (Prog(data, fundefs, e)) = (* プログラム全体の即値最適化 *)
+let f (Prog(data, fundefs, e)) = (* プログラム全体のラベルアクセス最適化 *)
   Prog(data, List.map h fundefs, g M.empty e)

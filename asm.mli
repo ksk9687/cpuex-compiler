@@ -22,6 +22,7 @@ and exp =
   | FMul of Id.t * Id.t
   | FDiv of Id.t * Id.t
   | LdFL of Id.l
+  | MovR of Id.t * Id.t
   | Comment of string
   (* virtual instructions *)
   | IfEq of Id.t * id_or_imm * t * t
@@ -50,6 +51,7 @@ val reg_sp : Id.t
 val reg_zero : Id.t
 val is_reg : Id.t -> bool
 val reg_fls : Id.t list
+val reg_gls : Id.t list
 
 val fv : t -> Id.t list
 val concat : t -> Id.t * Type.t -> t -> t
