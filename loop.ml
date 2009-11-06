@@ -35,7 +35,7 @@ let rec level x n = (* 関数ごとにレベルを表示 *)
     S.iter (Format.eprintf "  %s@.") leafs;
   let loops =
     M.fold
-      (fun key x b -> if S.mem key x then S.add key b else b)
+      (fun key x b -> if S.equal x (S.singleton key) then S.add key b else b)
       x S.empty
   in
     Format.eprintf "level %d loops...@." n;
@@ -51,7 +51,7 @@ let rec level x n = (* 関数ごとにレベルを表示 *)
 (* Closure.f と iter の間などに挟むと、ループ(とついでにリーフ関数)を検出してくれる *)
 let f x=
   let m = appmap (Id.genid "main") M.empty x in
-    (* print m; *)
+    print m;
   let looplist =
     M.fold
       (fun key x b -> if S.mem key x then (key :: b) else b)

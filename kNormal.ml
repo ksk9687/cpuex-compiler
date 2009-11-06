@@ -179,7 +179,6 @@ let rec g env = function (* K正規化ルーチン本体 (caml2html: knormal_g) 
 
 let f e = fst (g M.empty e)
 
-(*
 (* デバッグ用 *)
 let rec string_t indent knormal =
   let indent = indent ^ "  " in
@@ -243,5 +242,3 @@ and string_fundef indent {name = (i,t); args = list; body = b} =
 
 let string t = (* KNormal.tを出力する *)
   print_string (string_t "" t); t
-
-*)
