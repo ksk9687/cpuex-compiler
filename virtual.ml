@@ -40,7 +40,7 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
           data := (l, d) :: !data;
           l
       in
-      Ans(Ld(L(l), C(0))) (* ラベルから直接ロード *)
+      Ans(LdFL(l)) (* ラベルから直接ロード *)
 (*      let x = Id.genid "l" in
       Let((x, Type.Int), SetL(l), Ans(LdF(x, C(0))))*)
   | Closure.Neg(x) -> Ans(Neg(x))

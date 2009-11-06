@@ -23,6 +23,7 @@ and exp = (* 一つ一つの命令に対応する式 (caml2html: sparcasm_exp) *
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
   | FDiv of Id.t * Id.t
+  | LdFL of Id.l
   | Comment of string
   (* virtual instructions *)
   | IfEq of Id.t * id_or_imm * t * t
@@ -42,16 +43,17 @@ type prog = Prog of (Id.l * float) list * fundef list * t
 let flet(x, e1, e2) = Let((x, Type.Float), e1, e2)
 let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
-let regs = Array.init 50 (fun i -> Printf.sprintf "$%d" (i + 1))
+let regs = Array.init 20 (fun i -> Printf.sprintf "$%d" (i + 1))
 let allregs = Array.to_list regs
 (* reg_clをregsから取り除くとバグるぽい *)
-let reg_cl = "$50" (* closure address (caml2html: sparcasm_regcl) *)
+let reg_cl = regs.(Array.length regs - 1) (* closure address (caml2html: sparcasm_regcl) *)
 let reg_tmp = "$tmp" (* temporary for swap *)
 let reg_sp = "$sp" (* stack pointer *)
 let reg_hp = "$hp" (* heap pointer (caml2html: sparcasm_reghp) *)
 let reg_ra = "$ra" (* return address *)
 let reg_zero = "$zero" (* 0 *)
 let is_reg x = (x.[0] = '$')
+let reg_fls = Array.to_list (Array.init 39 (fun i -> Printf.sprintf "$%d" (i + 21)))
 
 (* super-tenuki *)
 let rec remove_and_uniq xs = function
@@ -62,7 +64,7 @@ let rec remove_and_uniq xs = function
 (* free variables in the order of use (for spilling) (caml2html: sparcasm_fv) *)
 let fv_id_or_imm = function V(x) -> [x] | _ -> []
 let rec fv_exp cont = function
-  | Nop | Set(_) | SetL(_) | Comment(_) | Restore(_) -> cont
+  | Nop | Set _ | SetL _ | Comment _ | Restore _ | LdFL _ -> cont
   | Mov(x) | Neg(x) | FNeg(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | Save(x, _) -> x :: cont
   | Add(x, y') | Sub(x, y') -> x :: fv_id_or_imm y' @ cont
   | Ld(x', y') -> fv_id_or_imm x' @ fv_id_or_imm y' @ cont

@@ -1,6 +1,6 @@
 open Asm
 
-let rec g env = function (* 命令列のラベル読み書き最適化 *)
+let rec g env = function (* 命令列のラベルアクセス最適化 *)
   | Ans(exp) -> Ans(g' env exp)
   | Let((x, t), SetL(l), e) ->
       let e' = g (M.add x l env) e in

@@ -61,8 +61,9 @@
 .define { store %Reg, [%Imm - %Imm] } { store %1, [%{ %2 - %3 }] }
 .define { mov %Reg, %Reg } { mov %1 %2 }
 .define { neg %Reg, %Reg } { neg %1 %2 }
-	
+
 #スタックとヒープの初期化
+	li      0, $zero
 	li      0x1000, $hp
 	sll		$hp, 4, $hp
 	sll     $hp, 3, $sp
