@@ -7,6 +7,7 @@ let rec size = function
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2)
   | Let(_, e1, e2) | LetRec({ body = e1 }, e2) -> 1 + size e1 + size e2
   | LetTuple(_, _, e) -> 1 + size e
+  | App _ | ExtFunApp _ -> 10
   | _ -> 1
 
 let rec g env = function (* インライン展開ルーチン本体 (caml2html: inline_g) *)
