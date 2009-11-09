@@ -3,6 +3,36 @@ open Asm
 (* for register coalescing *)
 (* [XXX] Callがあったら、そこから先は無意味というか逆効果なので追わない。
          そのために「Callがあったかどうか」を返り値の第1要素に含める。 *)
+(* !Callがあっても先を追うようにした *)
+
+
+
+let rec fn f n =
+  if n > 1 then (fun x -> (fn f (n-1)) (f x))
+  else f
+
+
+let safe_regs =
+  let regs = ((fn List.tl 11) allregs) in
+  ref
+    (List.fold_left (* 外部関数のsafe regsを登録 *)
+       (fun map (id,regs) -> M.add ("min_caml_" ^ id) (S.of_list regs) map) 
+      M.empty
+       [("floor",["$4";"$5";"$6";"$7";"$8";"$10"]@regs);
+	("float_of_int",["$8";"$10"]@regs);
+	("int_of_float",["$10"]@regs);
+	("create_array",["$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs)])
+
+let get_safe_regs x =
+  try M.find x !safe_regs
+  with Not_found ->
+    if String.length x > 9 && String.sub x 0 9 = "min_caml_" then
+      S.of_list ((fn List.tl 11) allregs)
+    else
+      S.empty
+      
+
+
 let rec target' src (dest, t) = function
   | Mov(x) when x = src && is_reg dest ->
       assert (t <> Type.Unit);
@@ -13,18 +43,22 @@ let rec target' src (dest, t) = function
       let c2, rs2 = target src (dest, t) e2 in
       c1 && c2, rs1 @ rs2
   | CallCls(x, ys) ->
-      true, (target_args src regs 1 ys @
-             if x = src then [reg_cl] else [])
-  | CallDir(_, ys) ->
-      true, (target_args src regs 1 ys)
+      true, (target_args src regs 1 ys @ 
+               if x = src then [reg_cl] else [] @
+		 S.elements (get_safe_regs x))
+  | CallDir(Id.L(x), ys) ->
+      true, (target_args src regs 1 ys@
+	       S.elements (get_safe_regs x))
+
+
   | _ -> false, []
 and target src dest = function (* register targeting (caml2html: regalloc_target) *)
   | Ans(exp) -> target' src dest exp
   | Let(xt, exp, e) ->
       let c1, rs1 = target' src xt exp in
-      if c1 then true, rs1 else
+(*      if c1 then true, rs1 else*) (* Callがあっても先を追うようにした *)
       let c2, rs2 = target src dest e in
-      c2, rs1 @ rs2
+	c2, rs1 @ rs2
   | Forget(_, e) -> target src dest e
 and target_args src all n = function (* auxiliary function for Call *)
   | [] -> []
@@ -56,11 +90,20 @@ let rec alloc dest cont regenv x t =
         free in
     let r = (* そうでないレジスタを探す *)
       List.find
-        (fun r -> not (S.mem r live))
+      (fun r -> not (S.mem r live))
 (*        (prefer @ all) in*)
-                                        (prefer @ (List.rev all)) in
+        (prefer @ (List.rev all)) in
     (* Format.eprintf "allocated %s to %s@." x r; *)
     Alloc(r)
+(*    let list = List.filter (fun r -> not (S.mem r live)) prefer in
+      if list <> [] then
+	Alloc(List.nth list 0)
+      else
+	let list = List.filter (fun r -> not (S.mem r live)) all in
+	  if list <> [] then
+	    Alloc(List.nth list (Random.int (List.length list)))
+	  else
+	    raise Not_found*)
   with Not_found ->
     Format.eprintf "register allocation failed for %s@." x;
     let y = (* 型の合うレジスタ変数を探す *)
@@ -159,8 +202,8 @@ and g' dest cont regenv = function (* 各命令のレジスタ割り当て (caml
   | IfGE(x, y', e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfGE(find x Type.Int regenv, find' y' regenv, e1', e2')) e1 e2
   | IfFEq(x, y, e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfFEq(find x Type.Float regenv, find y Type.Float regenv, e1', e2')) e1 e2
   | IfFLE(x, y, e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfFLE(find x Type.Float regenv, find y Type.Float regenv, e1', e2')) e1 e2
-  | CallCls(x, ys) as exp -> g'_call dest cont regenv exp (fun ys -> CallCls(find x Type.Int regenv, ys)) ys
-  | CallDir(l, ys) as exp -> g'_call dest cont regenv exp (fun ys -> CallDir(l, ys)) ys
+  | CallCls(x, ys) as exp -> g'_call x dest cont regenv exp (fun ys -> CallCls(find x Type.Int regenv, ys)) ys
+  | CallDir(Id.L(x), ys) as exp -> g'_call x dest cont regenv exp (fun ys -> CallDir(Id.L(x), ys)) ys
   | Save(x, y) ->
       assert (x = y);
       assert (not (is_reg x));
@@ -187,10 +230,11 @@ and g'_if dest cont regenv exp constr e1 e2 = (* ifのレジスタ割り当て (
       (fv cont)
   with [] -> NoSpill(Ans(constr e1' e2'), regenv')
   | xs -> insert_forget xs exp (snd dest) (* そうでない変数は分岐以前にセーブ *)
-and g'_call dest cont regenv exp constr ys = (* 関数呼び出しのレジスタ割り当て (caml2html: regalloc_call) *)
+and g'_call id dest cont regenv exp constr ys = (* 関数呼び出しのレジスタ割り当て (caml2html: regalloc_call) *)
   match
     List.filter (* セーブすべきレジスタ変数を探す *)
-      (fun x -> not (is_reg x) && x <> fst dest)
+      (fun x ->
+	 not (is_reg x || x = fst dest || S.mem x (get_safe_regs id)))
       (fv cont)
   with [] -> NoSpill(Ans(constr
                            (List.map (fun y -> find y Type.Int regenv) ys)),
@@ -205,6 +249,35 @@ and g_repeat dest cont regenv e = (* Spillがなくなるまでgを繰り返す 
              (fun e x -> seq(Save(x, x), e))
              e
              xs)
+
+
+(* x->callee safe reg を safe_regs に追加 *)
+let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
+  let env = S.of_list allregs in
+  let env = S.diff env (S.of_list arg_regs) in
+  let env =
+    if t = Type.Unit then env
+    else S.remove regs.(0) env in
+  safe_regs := M.add x env !safe_regs;
+  let env = set_safe_regs' env e in
+    Format.eprintf "%s :" x;
+    S.iter (Format.eprintf " %s") env;
+    Format.eprintf "@.";
+    safe_regs := M.add x env !safe_regs
+and set_safe_regs' env = function
+  | Ans (e) -> set_safe_regs'' env e
+  | Let ((x,_),e,t) -> set_safe_regs' (set_safe_regs'' (S.remove x env) e) t
+  | Forget (x,t) -> set_safe_regs' (S.remove x env) t
+
+and set_safe_regs'' env = function
+  | CallCls (x,_) | CallDir (Id.L(x),_) ->
+      S.inter (get_safe_regs x) env
+  | IfEq (_,_,t1,t2) | IfLE (_,_,t1,t2) | IfGE (_,_,t1,t2)
+  | IfFEq (_,_,t1,t2) | IfFLE (_,_,t1,t2) ->
+      S.inter (set_safe_regs' env t1) (set_safe_regs' env t2)
+  | _ -> env
+	
+
 
 let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジスタ割り当て (caml2html: regalloc_h) *)
   let regenv = M.add x reg_cl M.empty in
@@ -223,9 +296,40 @@ let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジス�
     | Type.Unit -> Id.gentmp Type.Unit
     | _ -> regs.(0) in
   let (e', regenv') = g_repeat (a, t) (Ans(Mov(a))) regenv e in
-  { name = Id.L(x); args = arg_regs; body = e'; ret = t }
+    set_safe_regs   { name = Id.L(x); args = arg_regs; body = e'; ret = t };
+    { name = Id.L(x); args = arg_regs; body = e'; ret = t }
+
+
+let rec is_leaf env {name=Id.L(id);body=t}=
+  is_leaf_t (S.add id env) t
+and is_leaf_t env = function
+  | Ans (e) -> is_leaf_exp env e
+  | Let (_,e,t) -> is_leaf_exp env e && is_leaf_t env t
+  | Forget (_,t) -> is_leaf_t env t
+and is_leaf_exp env = function
+  | IfEq (_,_,t1,t2) | IfLE (_,_,t1,t2) | IfGE (_,_,t1,t2)
+  | IfFEq (_,_,t1,t2) | IfFLE (_,_,t1,t2) ->
+      is_leaf_t env t1 && is_leaf_t env t2
+  | CallCls (x,_) | CallDir (Id.L(x),_) ->
+      if String.length x > 9 && String.sub x 0 9 = "min_caml_" then
+	true
+      else
+	S.mem x env
+  | _ -> true
+
+let rec sort fundefs env =
+  let (leafs,fundefs') = List.partition (is_leaf env) fundefs in
+    assert (leafs <> []);
+    if fundefs' = [] then leafs
+    else
+      let env' = List.fold_left (fun env {name = Id.L(x)} -> S.add x env) env leafs in
+	leafs @ sort fundefs' env'
+
+  
 
 let f (Prog(data, fundefs, e)) = (* プログラム全体のレジスタ割り当て (caml2html: regalloc_f) *)
+  let fundefs = sort fundefs S.empty in
+(*  let fundefs' = sort fundefs S.empty in*)
   Format.eprintf "register allocation: may take some time (up to a few minutes, depending on the size of functions)@.";
   let fundefs' = List.map h fundefs in
   let e', regenv' = g_repeat (Id.gentmp Type.Unit, Type.Unit) (Ans(Nop)) M.empty e in
