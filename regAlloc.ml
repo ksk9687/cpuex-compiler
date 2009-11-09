@@ -6,7 +6,6 @@ open Asm
 (* !Callがあっても先を追うようにした *)
 
 
-
 let rec fn f n =
   if n > 1 then (fun x -> (fn f (n-1)) (f x))
   else f
@@ -49,8 +48,6 @@ let rec target' src (dest, t) = function
   | CallDir(Id.L(x), ys) ->
       true, (target_args src regs 1 ys@
 	       S.elements (get_safe_regs x))
-
-
   | _ -> false, []
 and target src dest = function (* register targeting (caml2html: regalloc_target) *)
   | Ans(exp) -> target' src dest exp
@@ -250,7 +247,6 @@ and g_repeat dest cont regenv e = (* Spillがなくなるまでgを繰り返す 
              e
              xs)
 
-
 (* x->callee safe reg を safe_regs に追加 *)
 let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
   let env = S.of_list allregs in
@@ -259,24 +255,22 @@ let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
     if t = Type.Unit then env
     else S.remove regs.(0) env in
   safe_regs := M.add x env !safe_regs;
-  let env = set_safe_regs' env e in
-    Format.eprintf "%s :" x;
+  let env = set_safe_regs_t env e in
+(*    Format.eprintf "%s :" x;
     S.iter (Format.eprintf " %s") env;
-    Format.eprintf "@.";
+    Format.eprintf "@.";*)
     safe_regs := M.add x env !safe_regs
-and set_safe_regs' env = function
-  | Ans (e) -> set_safe_regs'' env e
-  | Let ((x,_),e,t) -> set_safe_regs' (set_safe_regs'' (S.remove x env) e) t
-  | Forget (x,t) -> set_safe_regs' (S.remove x env) t
-
-and set_safe_regs'' env = function
+and set_safe_regs_t env = function
+  | Ans (e) -> set_safe_regs_exp env e
+  | Let ((x,_),e,t) -> set_safe_regs_t (set_safe_regs_exp (S.remove x env) e) t
+  | Forget (x,t) -> set_safe_regs_t (S.remove x env) t
+and set_safe_regs_exp env = function
   | CallCls (x,_) | CallDir (Id.L(x),_) ->
       S.inter (get_safe_regs x) env
   | IfEq (_,_,t1,t2) | IfLE (_,_,t1,t2) | IfGE (_,_,t1,t2)
   | IfFEq (_,_,t1,t2) | IfFLE (_,_,t1,t2) ->
-      S.inter (set_safe_regs' env t1) (set_safe_regs' env t2)
+      S.inter (set_safe_regs_t env t1) (set_safe_regs_t env t2)
   | _ -> env
-	
 
 
 let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジスタ割り当て (caml2html: regalloc_h) *)
@@ -317,6 +311,7 @@ and is_leaf_exp env = function
 	S.mem x env
   | _ -> true
 
+(* 関数の依存関係でソートする *)
 let rec sort fundefs env =
   let (leafs,fundefs') = List.partition (is_leaf env) fundefs in
     assert (leafs <> []);
@@ -329,7 +324,6 @@ let rec sort fundefs env =
 
 let f (Prog(data, fundefs, e)) = (* プログラム全体のレジスタ割り当て (caml2html: regalloc_f) *)
   let fundefs = sort fundefs S.empty in
-(*  let fundefs' = sort fundefs S.empty in*)
   Format.eprintf "register allocation: may take some time (up to a few minutes, depending on the size of functions)@.";
   let fundefs' = List.map h fundefs in
   let e', regenv' = g_repeat (Id.gentmp Type.Unit, Type.Unit) (Ans(Nop)) M.empty e in
