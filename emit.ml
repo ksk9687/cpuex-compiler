@@ -65,14 +65,12 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
       g' oc (NonTail(r), St(x, V(reg_tmp), C(0)))
   | NonTail(_), St(x, y', z') -> Printf.fprintf oc "\t%-8s%s, [%s + %s]\n" "store" x (pp_id_or_imm y') (pp_id_or_imm z')
   | NonTail(x), FNeg(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "fneg" y x
+  | NonTail(x), FInv(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "finv" y x
   | NonTail(x), FSqrt(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "fsqrt" y x
   | NonTail(x), FAbs(y) -> Printf.fprintf oc "\t%-8s%s, %s\n" "fabs" y x
   | NonTail(x), FAdd(y, z) -> Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fadd" y z x
   | NonTail(x), FSub(y, z) -> Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fsub" y z x
   | NonTail(x), FMul(y, z) -> Printf.fprintf oc "\t%-8s%s, %s, %s\n" "fmul" y z x
-  | NonTail(x), FDiv(y, z) ->
-      Printf.fprintf oc "\t%-8s%s, %s\n" "finv" z reg_tmp;
-      g' oc (NonTail(x), FMul(y, reg_tmp))
   | NonTail(x), LdFL(Id.L(l)) -> Printf.fprintf oc "\t%-8s[%s], %s\n" "load" l x
   | NonTail(_), MovR(x, y) -> g' oc (NonTail(y), Mov(x))
   | NonTail(_), Comment(s) -> Printf.fprintf oc "\t# %s\n" s
@@ -90,7 +88,7 @@ and g' oc = function (* 各命令のアセンブリ生成 (caml2html: emit_gprim
       g' oc (NonTail(Id.gentmp Type.Unit), exp);
       Printf.fprintf oc "\tret\n"
   | Tail, (Set _ | SetL _ | Mov _ | Neg _ | Add _ | Sub _ | SLL _ | Ld _ |
-           FNeg _ | FSqrt _ | FAbs _ | FAdd _ | FSub _ | FMul _ | FDiv _ | LdFL _ as exp) ->
+           FNeg _ | FInv _ | FSqrt _ | FAbs _ | FAdd _ | FSub _ | FMul _ | LdFL _ as exp) ->
       g' oc (NonTail(regs.(0)), exp);
       Printf.fprintf oc "\tret\n"
   | Tail, (Restore(x) as exp) ->

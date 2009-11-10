@@ -26,6 +26,7 @@ let rec g env = function (* 定数畳み込みルーチン本体 (caml2html: con
   | Sub(x, y) when memi y env && M.find y env = Int(0) -> g env (Var (y))
   | Sub(x, y) when memi x env && M.find x env = Int(0) -> g env (Neg (y))
   | FNeg(x) when memf x env -> Float(-.(findf x env))
+  | FInv(x) when memf x env -> Float(1. /. (findf x env))
   | FAdd(x, y) when memf x env && memf y env -> Float(findf x env +. findf y env)
   | FAdd(x, y) when memf x env && M.find x env = Float (0.) -> g env (Var(y))
   | FAdd(x, y) when memf y env && M.find y env = Float (0.) -> g env (Var(x))
@@ -35,8 +36,8 @@ let rec g env = function (* 定数畳み込みルーチン本体 (caml2html: con
   | FMul(x, y) when memf x env && memf y env -> Float(findf x env *. findf y env)
   | FMul(x, y) when memf x env && M.find x env = Float (1.) -> g env (Var (y))
   | FMul(x, y) when memf y env && M.find y env = Float (1.) -> g env (Var (x))
-  | FDiv(x, y) when memf x env && memf y env -> Float(findf x env /. findf y env)
-  | FDiv(x, y) when memf y env && M.find y env = Float (1.) -> g env (Var (x))
+  | FMul(x, y) when memf x env && M.find x env = Float (0.) -> Float (0.)
+  | FMul(x, y) when memf y env && M.find y env = Float (0.) -> Float (0.)
   | IfEq(x, y, e1, e2) when memi x env && memi y env -> if findi x env = findi y env then g env e1 else g env e2
   | IfEq(x, y, e1, e2) when memf x env && memf y env -> if findf x env = findf y env then g env e1 else g env e2
   | IfEq(x, y, e1, e2) -> IfEq(x, y, g env e1, g env e2)

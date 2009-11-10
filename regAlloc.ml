@@ -187,12 +187,12 @@ and g' dest cont regenv = function (* 各命令のレジスタ割り当て (caml
   | Ld(x', y') -> NoSpill(Ans(Ld(find' x' regenv, find' y' regenv)), regenv)
   | St(x, y', z') -> NoSpill(Ans(St(find x Type.Int regenv, find' y' regenv, find' z' regenv)), regenv)
   | FNeg(x) -> NoSpill(Ans(FNeg(find x Type.Float regenv)), regenv)
+  | FInv(x) -> NoSpill(Ans(FInv(find x Type.Float regenv)), regenv)
   | FSqrt(x) -> NoSpill(Ans(FSqrt(find x Type.Float regenv)), regenv)
   | FAbs(x) -> NoSpill(Ans(FAbs(find x Type.Float regenv)), regenv)
   | FAdd(x, y) -> NoSpill(Ans(FAdd(find x Type.Float regenv, find y Type.Float regenv)), regenv)
   | FSub(x, y) -> NoSpill(Ans(FSub(find x Type.Float regenv, find y Type.Float regenv)), regenv)
   | FMul(x, y) -> NoSpill(Ans(FMul(find x Type.Float regenv, find y Type.Float regenv)), regenv)
-  | FDiv(x, y) -> NoSpill(Ans(FDiv(find x Type.Float regenv, find y Type.Float regenv)), regenv)
   | MovR(x, y) -> NoSpill(Ans(MovR(find x Type.Int regenv, find y Type.Int regenv)), regenv)
   | IfEq(x, y', e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfEq(find x Type.Int regenv, find' y' regenv, e1', e2')) e1 e2
   | IfLE(x, y', e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfLE(find x Type.Int regenv, find' y' regenv, e1', e2')) e1 e2

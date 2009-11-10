@@ -123,7 +123,7 @@ exp: /* 一般の式 (caml2html: parser_exp) */
 | exp AST_DOT exp
     { FMul($1, $3) }
 | exp SLASH_DOT exp
-    { FDiv($1, $3) }
+    { FMul($1, FInv($3)) }
 | LET IDENT EQUAL exp IN exp
     %prec prec_let
     { Let(addtyp $2, $4, $6) }

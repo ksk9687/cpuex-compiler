@@ -31,10 +31,10 @@ let rec deref_term = function
   | Eq(e1, e2) -> Eq(deref_term e1, deref_term e2)
   | LE(e1, e2) -> LE(deref_term e1, deref_term e2)
   | FNeg(e) -> FNeg(deref_term e)
+  | FInv(e) -> FInv(deref_term e)
   | FAdd(e1, e2) -> FAdd(deref_term e1, deref_term e2)
   | FSub(e1, e2) -> FSub(deref_term e1, deref_term e2)
   | FMul(e1, e2) -> FMul(deref_term e1, deref_term e2)
-  | FDiv(e1, e2) -> FDiv(deref_term e1, deref_term e2)
   | If(e1, e2, e3) -> If(deref_term e1, deref_term e2, deref_term e3)
   | Let(xt, e1, e2) -> Let(deref_id_typ xt, deref_term e1, deref_term e2)
   | LetRec({ name = xt; args = yts; body = e1 }, e2) ->
@@ -102,10 +102,10 @@ let rec g env e = (* 型推論ルーチン (caml2html: typing_g) *)
     | SLL(e, _) ->
       unify Type.Int (g env e);
       Type.Int
-    | FNeg(e) ->
+    | FNeg(e) | FInv(e) ->
       unify Type.Float (g env e);
       Type.Float
-    | FAdd(e1, e2) | FSub(e1, e2) | FMul(e1, e2) | FDiv(e1, e2) ->
+    | FAdd(e1, e2) | FSub(e1, e2) | FMul(e1, e2) ->
       unify Type.Float (g env e1);
       unify Type.Float (g env e2);
       Type.Float

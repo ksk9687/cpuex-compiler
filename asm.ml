@@ -17,12 +17,12 @@ and exp = (* 一つ一つの命令に対応する式 (caml2html: sparcasm_exp) *
   | Ld of id_or_imm * id_or_imm
   | St of Id.t * id_or_imm * id_or_imm
   | FNeg of Id.t
+  | FInv of Id.t
   | FSqrt of Id.t
   | FAbs of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
-  | FDiv of Id.t * Id.t
   | LdFL of Id.l
   | MovR of Id.t * Id.t
   | Comment of string
@@ -67,11 +67,11 @@ let rec remove_and_uniq xs = function
 let fv_id_or_imm = function V(x) -> [x] | _ -> []
 let rec fv_exp cont = function
   | Nop | Set _ | SetL _ | Comment _ | Restore _ | LdFL _ -> cont
-  | Mov(x) | Neg(x) | FNeg(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | Save(x, _) -> x :: cont
+  | Mov(x) | Neg(x) | FNeg(x) |FInv(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | Save(x, _) -> x :: cont
   | Add(x, y') | Sub(x, y') -> x :: fv_id_or_imm y' @ cont
   | Ld(x', y') -> fv_id_or_imm x' @ fv_id_or_imm y' @ cont
   | St(x, y', z') -> x :: fv_id_or_imm y' @ fv_id_or_imm z' @ cont
-  | FAdd(x, y) | FSub(x, y) | FMul(x, y) | FDiv(x, y) | MovR(x, y) -> x :: y :: cont
+  | FAdd(x, y) | FSub(x, y) | FMul(x, y) | MovR(x, y) -> x :: y :: cont
   | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> x :: fv_id_or_imm y' @ remove_and_uniq S.empty (fv cont e1 @ fv cont e2) (* uniq here just for efficiency *)
   | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> x :: y :: remove_and_uniq S.empty (fv cont e1 @ fv cont e2) (* uniq here just for efficiency *)
   | CallCls(x, ys) -> x :: ys @ cont

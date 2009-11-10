@@ -48,12 +48,12 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
   | Closure.Sub(x, y) -> Ans(Sub(x, V(y)))
   | Closure.SLL(x, i) -> Ans(SLL(x, i))
   | Closure.FNeg(x) -> Ans(FNeg(x))
+  | Closure.FInv(x) -> Ans(FInv(x))
   | Closure.FSqrt(x) -> Ans(FSqrt(x))
   | Closure.FAbs(x) -> Ans(FAbs(x))
   | Closure.FAdd(x, y) -> Ans(FAdd(x, y))
   | Closure.FSub(x, y) -> Ans(FSub(x, y))
   | Closure.FMul(x, y) -> Ans(FMul(x, y))
-  | Closure.FDiv(x, y) -> Ans(FDiv(x, y))
   | Closure.IfEq(x, y, e1, e2) ->
       (match M.find x env with
       | Type.Bool | Type.Int -> Ans(IfEq(x, V(y), g env e1, g env e2))

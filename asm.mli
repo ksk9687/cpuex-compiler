@@ -15,12 +15,12 @@ and exp =
   | Ld of id_or_imm * id_or_imm
   | St of Id.t * id_or_imm * id_or_imm
   | FNeg of Id.t
+  | FInv of Id.t
   | FSqrt of Id.t
   | FAbs of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
-  | FDiv of Id.t * Id.t
   | LdFL of Id.l
   | MovR of Id.t * Id.t
   | Comment of string

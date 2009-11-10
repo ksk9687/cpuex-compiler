@@ -7,10 +7,10 @@ type t =
   | Sub of Id.t * Id.t
   | SLL of Id.t * int
   | FNeg of Id.t
+  | FInv of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
-  | FDiv of Id.t * Id.t
   | IfEq of Id.t * Id.t * t * t
   | IfLE of Id.t * Id.t * t * t
   | Let of (Id.t * Type.t) * t * t

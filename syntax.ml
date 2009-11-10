@@ -9,10 +9,10 @@ type t = (* MinCamlの構文を表現するデータ型 (caml2html: syntax_t) *)
   | Sub of t * t
   | SLL of t * int
   | FNeg of t
+  | FInv of t
   | FAdd of t * t
   | FSub of t * t
   | FMul of t * t
-  | FDiv of t * t
   | Eq of t * t
   | LE of t * t
   | If of t * t * t

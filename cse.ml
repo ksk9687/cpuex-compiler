@@ -25,7 +25,7 @@ let rec hasapp = function
 
 let rec g env = function
   | Unit | Float _ | Int _ | Neg _ | Add _ | Sub _ | SLL _ | App _
-  | FNeg _ | FAdd _ | FSub _ | FMul _ | FDiv _ | Get _ | ExtArray _ as e
+  | FNeg _ | FAdd _ | FSub _ | FMul _ | FInv _ |  Get _ | ExtArray _ as e
       -> (find e env)
   | IfEq(x, y, e1, e2) -> IfEq(x, y, g env e1, g env e2)
   | IfLE(x, y, e1, e2) -> IfLE(x, y, g env e1, g env e2)
