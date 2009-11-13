@@ -33,13 +33,13 @@ let rec g env = function
       let e1' = g env e1 in
       let e2' =
         if hasapp e1' then
-	        if Elim.effect !no_effect_fun e1' then g CM.empty e2
+	        if Movelet.effect !no_effect_fun e1' then g CM.empty e2
 	        else g (CM.add e1' (Var(x)) CM.empty) e2
         else g (CM.add e1' (Var(x)) env) e2
       in
       Let((x, t), e1', e2')
   | LetRec({ name = xt; args = yts; body = e1 }, e2) ->
-      if not (Elim.effect_fun (fst xt) !no_effect_fun e1) then
+      if not (Movelet.effect_fun (fst xt) !no_effect_fun e1) then
 	      no_effect_fun := S.add (fst xt) !no_effect_fun;
       LetRec({ name = xt; args = yts; body = g CM.empty e1 }, g env e2)
   | e -> e
