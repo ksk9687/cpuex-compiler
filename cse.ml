@@ -77,7 +77,14 @@ let rec number e =
 	let num = number e1 in
 	  tagenv := CM.add (Var(x)) num !tagenv;
 	  number e2
-    | _ -> newtag() (* Get,Put,LetTuple *)
+    | LetTuple (xts, y, e) ->
+	ignore (List.fold_left
+		  (fun num (x,_) -> tagenv := CM.add (Var(x)) (y ^ string_of_int num) !tagenv; num + 1)
+		   0
+		   xts); (* y という Tuple に対して n 番目の要素を "yn" と番号づけする *)
+	number e
+    | Get(x,y) -> find (Get (v x, v y))
+    | _ -> newtag() (* Get,Put *)
 
 
 
@@ -90,14 +97,21 @@ let rec hasapp = function
   | _ -> false
 
 
+(* Putや関数適用があった場合、以前までのGetに対する番号づけを削除 *)
+let remove_get () =
+    tagenv := CM.fold (fun x _ env -> match x with Get _ -> CM.remove x env | _ -> env) !tagenv !tagenv
+      
+
 let find e env =
   try Var(M.find (number e) env)
   with Not_found -> e
 
 let rec g env = function
-  | Unit | Float _ | Int _ | Neg _ | Add _ | Sub _ | SLL _ | App _
+  | Unit | Float _ | Int _ | Neg _ | Add _ | Sub _ | SLL _ | Var _ | Tuple _
   | FNeg _ | FAdd _ | FSub _ | FMul _ | FInv _ |  Get _ | ExtArray _ as e ->
       find e env
+  | App _ | ExtFunApp _ as e -> remove_get(); find e env
+  | Put _ as e -> remove_get() ; e
   | IfEq(x, y, e1, e2) -> IfEq(x, y, g env e1, g env e2)
   | IfLE(x, y, e1, e2) -> IfLE(x, y, g env e1, g env e2)
   | Let((x, t), e1, e2) ->
@@ -115,8 +129,14 @@ let rec g env = function
       if not (Movelet.effect_fun (fst xt) !no_effect_fun e1) then
 	      no_effect_fun := S.add (fst xt) !no_effect_fun;
       LetRec({ name = xt; args = yts; body = g M.empty e1 }, g env e2)
-  | e -> e
+  | LetTuple (xts, y, e) ->
+      ignore (List.fold_left
+		(fun num (x,_) -> tagenv := CM.add (Var(x)) (y ^ string_of_int num) !tagenv; num + 1)
+		0
+		xts); (* y という Tuple に対して n 番目の要素を "yn" と番号づけする *)
+      LetTuple (xts, y, g env e)
 
 let f x =
   no_effect_fun := Movelet.noeffectfun;
   g M.empty x
+
