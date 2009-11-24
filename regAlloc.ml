@@ -231,11 +231,11 @@ and g'_call id dest cont regenv exp constr ys = (* 関数呼び出しのレジ�
   match
     List.filter (* セーブすべきレジスタ変数を探す *)
       (fun x ->
-	 not (is_reg x || x = fst dest || S.mem x (get_safe_regs id)))
+	 not (is_reg x || x = fst dest || (M.mem x regenv && S.mem (M.find x regenv) (get_safe_regs id))))
       (fv cont)
   with [] -> NoSpill(Ans(constr
                            (List.map (fun y -> find y Type.Int regenv) ys)),
-                     M.empty)
+                     regenv)
   | xs -> insert_forget xs exp (snd dest)
 and g_repeat dest cont regenv e = (* Spillがなくなるまでgを繰り返す (caml2html: regalloc_repeat) *)
     match g dest cont regenv e with
@@ -314,13 +314,10 @@ and is_leaf_exp env = function
 (* 関数の依存関係でソートする *)
 let rec sort fundefs env =
   let (leafs,fundefs') = List.partition (is_leaf env) fundefs in
-    assert (leafs <> []);
     if fundefs' = [] then leafs
     else
       let env' = List.fold_left (fun env {name = Id.L(x)} -> S.add x env) env leafs in
 	leafs @ sort fundefs' env'
-
-  
 
 let f (Prog(data, fundefs, e)) = (* プログラム全体のレジスタ割り当て (caml2html: regalloc_f) *)
   let fundefs = sort fundefs S.empty in
