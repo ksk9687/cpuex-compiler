@@ -2,11 +2,11 @@ LIB = ../lib
 MIN_CAML = ../min-caml.opt
 SIM = ../../sim/sim.jar
 FAST_SIM = ../../sim/fastsim/fastsim.exe
-MIN_CAML_OPTION = -inline 130
+MIN_CAML_OPTION = -inline 150
 CPU = SuperScalar
 RUN_SIM = java -jar -Xmx256M -Xss32M $(SIM) -cpu $(CPU)
 
-.PHONY: run fast clean
+.PHONY: run fast fpu inline0 clean
 
 run: min-rt.s
 	$(RUN_SIM) -in contest.sldb -out contest.ppm -gui min-rt.s
@@ -26,6 +26,12 @@ min-rt.bin: $(SIM) min-rt.s
 min-rt.s: $(MIN_CAML) min-rt.ml globals.s $(LIB)/lib_ml.ml $(LIB)/macro.s $(LIB)/lib_asm.s Makefile
 	cat $(LIB)/lib_ml.ml min-rt.ml > tmp.ml
 	$(MIN_CAML) $(MIN_CAML_OPTION) tmp
+	cat $(LIB)/macro.s $(LIB)/lib_asm.s globals.s tmp.s > min-rt.s
+	rm tmp.ml tmp.s
+
+inline0:
+	cat $(LIB)/lib_ml.ml min-rt.ml > tmp.ml
+	$(MIN_CAML) tmp
 	cat $(LIB)/macro.s $(LIB)/lib_asm.s globals.s tmp.s > min-rt.s
 	rm tmp.ml tmp.s
 

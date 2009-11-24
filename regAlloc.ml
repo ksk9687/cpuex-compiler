@@ -12,7 +12,7 @@ let rec fn f n =
 
 
 let safe_regs =
-  let regs = ((fn List.tl 11) allregs) in
+  let regs = ((fn List.tl 10) allregs) in
   ref
     (List.fold_left (* 外部関数のsafe regsを登録 *)
        (fun map (id,regs) -> M.add ("min_caml_" ^ id) (S.of_list regs) map) 
@@ -26,11 +26,9 @@ let get_safe_regs x =
   try M.find x !safe_regs
   with Not_found ->
     if String.length x > 9 && String.sub x 0 9 = "min_caml_" then
-      S.of_list ((fn List.tl 11) allregs)
+      S.of_list ((fn List.tl 10) allregs)
     else
       S.empty
-      
-
 
 let rec target' src (dest, t) = function
   | Mov(x) when x = src && is_reg dest ->

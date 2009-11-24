@@ -210,16 +210,16 @@ min_caml_ledout_float:
 ######################################################################
 	# TODO
 min_caml_div2:
+	sub $sp, 1, $sp
 	store $ra, [$sp]
-	add $sp, 1, $sp
 	jal min_caml_float_of_int
 	load [DIV2_F], $2
 	fmul $1, $2, $2
 	jal min_caml_floor
 	mov $1, $2
 	jal min_caml_int_of_float
-	add $sp, -1, $sp
 	load [$sp], $ra
+	add $sp, 1, $sp
 	ret
 DIV2_F:
 	.float 0.5
@@ -359,11 +359,11 @@ min_caml_sin:
 	b       min_caml_sin
 ble_else._209:
 	fsub    $10, $2, $2
-	store   $ra, [$sp + 0]
-	add     $sp, 1, $sp
-	jal     min_caml_sin
 	sub     $sp, 1, $sp
+	store   $ra, [$sp + 0]
+	jal     min_caml_sin
 	load    [$sp + 0], $ra
+	add     $sp, 1, $sp
 	mov     $1, $10
 	fneg    $10, $1
 	ret
@@ -374,11 +374,11 @@ ble_else._207:
 	b       cordic_sin.85
 ble_else._206:
 	fneg    $2, $2
-	store   $ra, [$sp + 0]
-	add     $sp, 1, $sp
-	jal     min_caml_sin
 	sub     $sp, 1, $sp
+	store   $ra, [$sp + 0]
+	jal     min_caml_sin
 	load    [$sp + 0], $ra
+	add     $sp, 1, $sp
 	mov     $1, $10
 	fneg    $10, $1
 	ret

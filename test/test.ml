@@ -1,4 +1,5 @@
-let x = a.(0) + 1 in debug_int (x + 1); debug_int (x)
+let rec fib n = if n <= 1 then n else (fib (n - 1)) + (fib (n - 2)) in debug_int (fib 10)
+(*let x = a.(0) + 1 in debug_int (x + 1); debug_int (x)*)
 (*let x = a.(0) in let y = a.(0) in x + y*)
 (*let x = a.(0) + b.(0) in let y = a.(0) + b.(0) in x + y*)
 (*let z = 2.0 in let x = floor z in let y = floor z in debug_int (x + y)*)
