@@ -314,7 +314,8 @@ and is_leaf_exp env = function
 (* 関数の依存関係でソートする *)
 let rec sort fundefs env =
   let (leafs,fundefs') = List.partition (is_leaf env) fundefs in
-    if fundefs' = [] then leafs
+    if leafs = [] then fundefs'
+    else if fundefs' = [] then leafs
     else
       let env' = List.fold_left (fun env {name = Id.L(x)} -> S.add x env) env leafs in
 	leafs @ sort fundefs' env'

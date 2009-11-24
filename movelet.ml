@@ -4,7 +4,7 @@ open KNormal
 
 let noeffectfun =
   S.of_list
-    ["create_array"; "sqrt"; "fneg"; "fabs"; "floor"; "float_of_int"; "int_of_float"; "div2"]
+    ["sqrt"; "fneg"; "fabs"; "floor"; "float_of_int"; "int_of_float"; "div2"]
 
 let rec effect env = function (* 副作用の有無 (caml2html: elim_effect) *)
   | Let(_, e1, e2) | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) -> effect env e1 || effect env e2
