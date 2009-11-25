@@ -99,12 +99,15 @@ let rec hasapp = function
 
 (* Putや関数適用があった場合、以前までのGetに対する番号づけを削除 *)
 let remove_get () =
-    tagenv := CM.fold (fun x _ env -> match x with Get _ -> CM.remove x env | _ -> env) !tagenv !tagenv
+  tagenv := CM.fold (fun x _ env -> match x with Get _ -> CM.remove x env | _ -> env) !tagenv !tagenv
       
+let remove_extarray env =
+  CM.fold (fun key tag a -> match key with ExtArray _ -> M.remove tag a | _ -> a) !tagenv env
 
 let find e env =
   try Var(M.find (number e) env)
   with Not_found -> e
+
 
 let rec g env = function
   | Unit | Float _ | Int _ | Neg _ | Add _ | Sub _ | SLL _ | Var _ | Tuple _
@@ -117,11 +120,12 @@ let rec g env = function
   | Let((x, t), e1, e2) ->
       let e1' = g env e1 in
       let num = number e1' in
+      let env' = remove_extarray env in
       tagenv := CM.add (Var(x)) num !tagenv;
       let e2' =
 	if hasapp e1' then
-	  if Movelet.effect !no_effect_fun e1' then g M.empty e2
-	  else g ((M.add num x) M.empty) e2
+	  if Movelet.effect !no_effect_fun e1' then g env' e2
+	  else g ((M.add num x) env') e2
         else g ((M.add num x) env) e2
       in
       Let((x, t), e1', e2')
