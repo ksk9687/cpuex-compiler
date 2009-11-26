@@ -12,7 +12,21 @@ module CM =(* CSE用のMap KNormal.tをkeyとする *)
 include CM
 
 (* 式と番号の対応関係 *)
-let tagenv = ref CM.empty
+let tagenv = ref (CM.empty,CM.empty,CM.empty) (* Get, ExtArray, その他 *)
+
+let addtag key tag =
+  let (getenv, extenv, etcenv) = !tagenv in
+    match key with
+      | Get _ -> tagenv := (CM.add key tag getenv, extenv, etcenv)
+      | ExtArray _ -> tagenv := (getenv, CM.add key tag extenv, etcenv)
+      | _ -> tagenv := (getenv, extenv, CM.add key tag etcenv)
+
+let findtag key =
+  let (getenv, extenv, etcenv) = !tagenv in
+    match key with
+      | Get _ -> CM.find key getenv
+      | ExtArray _ -> CM.find key extenv
+      | _ -> CM.find key etcenv
 
 let tag = ref 0
 
@@ -25,10 +39,10 @@ let newtag () =
 
 let rec number e = 
   let find key =
-    try CM.find key !tagenv
+    try findtag key
     with Not_found ->
       let tag = newtag() in
-	(tagenv := CM.add key tag !tagenv; tag) in
+	addtag key tag; tag in
   let v x = (* 変数の番号 *)
     find (Var(x)) in
   match e with
@@ -75,11 +89,11 @@ let rec number e =
 	else newtag()
     | Let((x, t), e1, e2) ->
 	let num = number e1 in
-	  tagenv := CM.add (Var(x)) num !tagenv;
+	  addtag (Var(x)) num;
 	  number e2
     | LetTuple (xts, y, e) ->
 	ignore (List.fold_left
-		  (fun num (x,_) -> tagenv := CM.add (Var(x)) (y ^ string_of_int num) !tagenv; num + 1)
+		  (fun num (x,_) -> addtag (Var(x)) (y ^ string_of_int num); num + 1)
 		   0
 		   xts); (* y という Tuple に対して n 番目の要素を "yn" と番号づけする *)
 	number e
@@ -99,10 +113,12 @@ let rec hasapp = function
 
 (* Putや関数適用があった場合、以前までのGetに対する番号づけを削除 *)
 let remove_get () =
-  tagenv := CM.fold (fun x _ env -> match x with Get _ -> CM.remove x env | _ -> env) !tagenv !tagenv
+  let (getenv, extenv, etcenv) = !tagenv in
+    tagenv := (CM.empty, extenv, etcenv)
       
 let remove_extarray env =
-  CM.fold (fun key tag a -> match key with ExtArray _ -> M.remove tag a | _ -> a) !tagenv env
+  let (getenv, extenv, etcenv) = !tagenv in
+  CM.fold (fun _ tag a -> M.remove tag a) getenv env
 
 let find e env =
   try Var(M.find (number e) env)
@@ -120,8 +136,8 @@ let rec g env = function
   | Let((x, t), e1, e2) ->
       let e1' = g env e1 in
       let num = number e1' in
-      let env' = remove_extarray env in
-      tagenv := CM.add (Var(x)) num !tagenv;
+      let env' = remove_extarray env in (* remove_extarrayは高速化されるが、コンパイル時間がかかりすぎる *)
+      addtag (Var(x)) num;
       let e2' =
 	if hasapp e1' then
 	  if Movelet.effect !no_effect_fun e1' then g env' e2
@@ -135,7 +151,7 @@ let rec g env = function
       LetRec({ name = xt; args = yts; body = g M.empty e1 }, g env e2)
   | LetTuple (xts, y, e) ->
       ignore (List.fold_left
-		(fun num (x,_) -> tagenv := CM.add (Var(x)) (y ^ string_of_int num) !tagenv; num + 1)
+		(fun num (x,_) -> addtag (Var(x)) (y ^ string_of_int num); num + 1)
 		0
 		xts); (* y という Tuple に対して n 番目の要素を "yn" と番号づけする *)
       LetTuple (xts, y, g env e)
@@ -143,4 +159,5 @@ let rec g env = function
 let f x =
   no_effect_fun := Movelet.noeffectfun;
   g M.empty x
+      
 
