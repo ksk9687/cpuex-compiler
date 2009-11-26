@@ -20,4 +20,6 @@ closure.mli closure.ml asm.mli asm.ml virtual.mli virtual.ml \
 simm.mli simm.ml slabel.mli slabel.ml sfl.mli sfl.ml sglobal.mli sglobal.ml regAlloc.mli regAlloc.ml emit.mli emit.ml \
 main.mli main.ml
 
+OCAMLFLAGS = -dtypes
+
 include OCamlMakefile

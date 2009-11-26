@@ -291,35 +291,7 @@ let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジス�
     set_safe_regs   { name = Id.L(x); args = arg_regs; body = e'; ret = t };
     { name = Id.L(x); args = arg_regs; body = e'; ret = t }
 
-
-let rec is_leaf env {name=Id.L(id);body=t}=
-  is_leaf_t (S.add id env) t
-and is_leaf_t env = function
-  | Ans (e) -> is_leaf_exp env e
-  | Let (_,e,t) -> is_leaf_exp env e && is_leaf_t env t
-  | Forget (_,t) -> is_leaf_t env t
-and is_leaf_exp env = function
-  | IfEq (_,_,t1,t2) | IfLE (_,_,t1,t2) | IfGE (_,_,t1,t2)
-  | IfFEq (_,_,t1,t2) | IfFLE (_,_,t1,t2) ->
-      is_leaf_t env t1 && is_leaf_t env t2
-  | CallCls (x,_) | CallDir (Id.L(x),_) ->
-      if String.length x > 9 && String.sub x 0 9 = "min_caml_" then
-	true
-      else
-	S.mem x env
-  | _ -> true
-
-(* 関数の依存関係でソートする *)
-let rec sort fundefs env =
-  let (leafs,fundefs') = List.partition (is_leaf env) fundefs in
-    if leafs = [] then fundefs'
-    else if fundefs' = [] then leafs
-    else
-      let env' = List.fold_left (fun env {name = Id.L(x)} -> S.add x env) env leafs in
-	leafs @ sort fundefs' env'
-
 let f (Prog(data, fundefs, e)) = (* プログラム全体のレジスタ割り当て (caml2html: regalloc_f) *)
-  let fundefs = sort fundefs S.empty in
   Format.eprintf "register allocation: may take some time (up to a few minutes, depending on the size of functions)@.";
   let fundefs' = List.map h fundefs in
   let e', regenv' = g_repeat (Id.gentmp Type.Unit, Type.Unit) (Ans(Nop)) M.empty e in

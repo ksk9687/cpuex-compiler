@@ -4,7 +4,7 @@ open KNormal
 
 let noeffectfun =
   S.of_list
-    ["sqrt"; "fneg"; "fabs"; "floor"; "float_of_int"; "int_of_float"; "div2"]
+    ["sqrt"; "fneg"; "fabs"; "floor"; "float_of_int"; "int_of_float"]
 
 let rec effect env = function (* 副作用の有無 (caml2html: elim_effect) *)
   | Let(_, e1, e2) | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) -> effect env e1 || effect env e2
@@ -86,7 +86,8 @@ let rec g env letenv = function
 	if List.exists (fun x -> S.mem x live) xs then
 	  insert letenv (fv (LetTuple(xts, y, e'))) (LetTuple(xts, y, e'))
 	else
-	  (Format.eprintf "eliminating variables %s@." (Id.pp_list xs);
+	  (
+     (*Format.eprintf "eliminating variables %s@." (Id.pp_list xs);*)
 	   insert letenv (fv e') e')
   | e ->
       insert letenv (fv e) e
