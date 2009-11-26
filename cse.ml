@@ -118,7 +118,7 @@ let remove_get () =
       
 let remove_extarray env =
   let (getenv, extenv, etcenv) = !tagenv in
-  CM.fold (fun _ tag a -> M.remove tag a) getenv env
+    CM.fold (fun _ tag a -> M.remove tag a) extenv env
 
 let find e env =
   try Var(M.find (number e) env)
@@ -159,5 +159,3 @@ let rec g env = function
 let f x =
   no_effect_fun := Movelet.noeffectfun;
   g M.empty x
-      
-

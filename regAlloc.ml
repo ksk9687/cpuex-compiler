@@ -272,6 +272,7 @@ and set_safe_regs_exp env = function
 
 
 let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジスタ割り当て (caml2html: regalloc_h) *)
+  Format.eprintf "Allocating: %s@." x;
   let regenv = M.add x reg_cl M.empty in
   let (i, arg_regs, regenv) =
     List.fold_left
