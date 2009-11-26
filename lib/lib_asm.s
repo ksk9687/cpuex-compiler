@@ -144,25 +144,25 @@ min_caml_read_int:
 min_caml_read_float:
 read_1:
 	read $1
-#	cmp $1, 255
-#	bg read_1
+	cmp $1, 255
+	bg read_1
 	sll $1, 24, $1
 read_2:
 	read $2
-#	cmp $2, 255
-#	bg read_2
+	cmp $2, 255
+	bg read_2
 	sll $2, 16, $2
 	add $1, $2, $1
 read_3:
 	read $2
-#	cmp $2, 255
-#	bg read_3
+	cmp $2, 255
+	bg read_3
 	sll $2, 8, $2
 	add $1, $2, $1
 read_4:
 	read $2
-#	cmp $2, 255
-#	bg read_4
+	cmp $2, 255
+	bg read_4
 	add $1, $2, $1
 	ret
 
@@ -172,8 +172,9 @@ read_4:
 # * 失敗してたらループ
 ######################################################################
 min_caml_write:
-	write $2
-#	bg min_caml_write		# TODO
+	write $2, $tmp
+	cmp $tmp, 0
+#	bg min_caml_write
 	ret
 
 ######################################################################
