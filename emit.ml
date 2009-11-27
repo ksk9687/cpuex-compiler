@@ -35,6 +35,14 @@ let rec shuffle sw xys =
                                          xys)
   | xys, acyc -> acyc @ shuffle sw xys
 
+let check_args ys =
+  let _, res =
+    List.fold_left
+      (fun (i, res) y -> (i + 1, res && y = regs.(i)))
+      (1, true)
+      ys
+  in res
+
 let rec hasNonTailCall tail = function (* 非末尾関数呼び出しがあるか *)
   | Ans(exp) -> hasNonTailCall' tail exp
   | Let(_, exp, e) -> hasNonTailCall' false exp || hasNonTailCall tail e
@@ -196,27 +204,53 @@ and g' oc saved = function (* 各命令のアセンブリ生成 (caml2html: emit
       if List.mem a allregs && a <> regs.(0) then
       g' oc saved (NonTail(a), Mov(regs.(0)))
 and g'_tail_if oc saved e1 e2 b bn =
-  let b_else = Id.genid (b ^ "_else") in
-  Printf.fprintf oc "\t%-8s%s\n" bn b_else;
-  let stackset_back = !stackset in
-  g oc saved (Tail, e1);
-  Printf.fprintf oc "%s:\n" b_else;
-  stackset := stackset_back;
-  g oc saved (Tail, e2)
+  match e1, e2 with
+    | Ans(CallDir(Id.L(x), ys)), _ when check_args ys ->
+        Format.eprintf "hoge@.";
+        Printf.fprintf oc "\t%-8s%s\n" b x;
+        g oc saved (Tail, e2)
+    | _, Ans(CallDir(Id.L(x), ys)) when check_args ys ->
+        Format.eprintf "hoge@.";
+        Printf.fprintf oc "\t%-8s%s\n" bn x;
+        g oc saved (Tail, e1)
+    | _ ->
+        let b_else = Id.genid (b ^ "_else") in
+        Printf.fprintf oc "\t%-8s%s\n" bn b_else;
+        let stackset_back = !stackset in
+        g oc saved (Tail, e1);
+        Printf.fprintf oc "%s:\n" b_else;
+        stackset := stackset_back;
+        g oc saved (Tail, e2)
 and g'_non_tail_if oc saved dest e1 e2 b bn =
-  let b_else = Id.genid (b ^ "_else") in
-  let b_cont = Id.genid (b ^ "_cont") in
-  Printf.fprintf oc "\t%-8s%s\n" bn b_else;
-  let stackset_back = !stackset in
-  g oc saved (dest, e1);
-  let stackset1 = !stackset in
-  Printf.fprintf oc "\t%-8s%s\n" "b" b_cont;
-  Printf.fprintf oc "%s:\n" b_else;
-  stackset := stackset_back;
-  g oc saved (dest, e2);
-  Printf.fprintf oc "%s:\n" b_cont;
-  let stackset2 = !stackset in
-  stackset := S.inter stackset1 stackset2
+  match e1, e2 with
+    | Ans(Nop), _ ->
+        let b_skip = Id.genid (b ^ "_skip") in
+        Printf.fprintf oc "\t%-8s%s\n" b b_skip;
+        let stackset_back = !stackset in
+        g oc saved (dest, e2);
+        Printf.fprintf oc "%s:\n" b_skip;
+        stackset := stackset_back
+    | _, Ans(Nop) ->
+        let bn_skip = Id.genid (bn ^ "_skip") in
+        Printf.fprintf oc "\t%-8s%s\n" bn bn_skip;
+        let stackset_back = !stackset in
+        g oc saved (dest, e1);
+        Printf.fprintf oc "%s:\n" bn_skip;
+        stackset := stackset_back
+    | _ ->
+        let b_else = Id.genid (b ^ "_else") in
+        let b_cont = Id.genid (b ^ "_cont") in
+        Printf.fprintf oc "\t%-8s%s\n" bn b_else;
+        let stackset_back = !stackset in
+        g oc saved (dest, e1);
+        let stackset1 = !stackset in
+        Printf.fprintf oc "\t%-8s%s\n" "b" b_cont;
+        Printf.fprintf oc "%s:\n" b_else;
+        stackset := stackset_back;
+        g oc saved (dest, e2);
+        Printf.fprintf oc "%s:\n" b_cont;
+        let stackset2 = !stackset in
+        stackset := S.inter stackset1 stackset2
 and g'_args oc x_reg_cl ys =
   let (i, yrs) =
     List.fold_left
