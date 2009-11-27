@@ -1,9 +1,6 @@
 open Asm
 
 (* for register coalescing *)
-(* [XXX] Callがあったら、そこから先は無意味というか逆効果なので追わない。
-         そのために「Callがあったかどうか」を返り値の第1要素に含める。 *)
-(* !Callがあっても先を追うようにした *)
 
 
 let rec fn f n =
@@ -14,17 +11,17 @@ let rec fn f n =
 let safe_regs =
   let regs = ((fn List.tl 10) allregs) in
   ref
-    (List.fold_left (* 外部関数のsafe regsを登録 *)
+    (List.fold_left
        (fun map (id,regs) -> M.add ("min_caml_" ^ id) (S.of_list regs) map) 
       M.empty
-       [("floor", ["$4";"$5";"$6";"$7";"$8";"$10"]@regs);
-	("float_of_int", ["$8";"$10"]@regs);
-	("int_of_float", ["$10"]@regs);
-	("create_array", ["$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
-  ("read_int", ["$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
-  ("read_float", ["$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
-  ("write", ["$1";"$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
-  ("sin", regs); ("cos", regs); ("atan", regs)])
+        [("floor", ["$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
+         ("float_of_int", ["$8";"$9";"$10"]@regs);
+         ("int_of_float", ["$9";"$10"]@regs);
+         ("create_array", ["$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
+         ("read_int", ["$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
+         ("read_float", ["$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
+         ("write", ["$1";"$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
+         ("sin", regs); ("cos", regs); ("atan", regs)])
 
 let get_safe_regs x =
   try M.find x !safe_regs
@@ -42,10 +39,10 @@ let rec target' src (dest, t) = function
   | CallCls(x, ys) ->
       true, (target_args src regs 1 ys @ 
                if x = src then [reg_cl] else [] @
-		 S.elements (get_safe_regs x))
+     S.elements (get_safe_regs x))
   | CallDir(Id.L(x), ys) ->
-      true, (target_args src regs 1 ys@
-	       S.elements (get_safe_regs x))
+      true, (target_args src regs 1 ys @
+         S.elements (get_safe_regs x))
   | _ -> false, []
 and target src dest = function (* register targeting (caml2html: regalloc_target) *)
   | Ans(exp) -> target' src dest exp
@@ -53,7 +50,7 @@ and target src dest = function (* register targeting (caml2html: regalloc_target
       let c1, rs1 = target' src xt exp in
 (*      if c1 then true, rs1 else*) (* Callがあっても先を追うようにした *)
       let c2, rs2 = target src dest e in
-	c2, rs1 @ rs2
+        c2, rs1 @ rs2
   | Forget(_, e) -> target src dest e
 and target_args src all n = function (* auxiliary function for Call *)
   | [] -> []
@@ -86,19 +83,8 @@ let rec alloc dest cont regenv x t =
     let r = (* そうでないレジスタを探す *)
       List.find
       (fun r -> not (S.mem r live))
-(*        (prefer @ all) in*)
-        (prefer @ (List.rev all)) in
-    (* Format.eprintf "allocated %s to %s@." x r; *)
+        (prefer @ all) in
     Alloc(r)
-(*    let list = List.filter (fun r -> not (S.mem r live)) prefer in
-      if list <> [] then
-	Alloc(List.nth list 0)
-      else
-	let list = List.filter (fun r -> not (S.mem r live)) all in
-	  if list <> [] then
-	    Alloc(List.nth list (Random.int (List.length list)))
-	  else
-	    raise Not_found*)
   with Not_found ->
     Format.eprintf "register allocation failed for %s@." x;
     let y = (* 型の合うレジスタ変数を探す *)
@@ -229,7 +215,7 @@ and g'_call id dest cont regenv exp constr ys = (* 関数呼び出しのレジ�
   match
     List.filter (* セーブすべきレジスタ変数を探す *)
       (fun x ->
-	 not (is_reg x || x = fst dest || (M.mem x regenv && S.mem (M.find x regenv) (get_safe_regs id))))
+   not (is_reg x || x = fst dest || (M.mem x regenv && S.mem (M.find x regenv) (get_safe_regs id))))
       (fv cont)
   with [] -> NoSpill(Ans(constr
                            (List.map (fun y -> find y Type.Int regenv) ys)),
@@ -265,7 +251,7 @@ let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
     else S.remove regs.(0) env in
   safe_regs := M.add x env !safe_regs;
   let env = set_safe_regs_t env e in
-    S.iter (Format.eprintf "%s, ") env;
+    List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "o" else "x")) allregs;
     Format.eprintf "@.";
     safe_regs := M.add x env !safe_regs
 

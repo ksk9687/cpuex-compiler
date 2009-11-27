@@ -4,15 +4,6 @@
 #
 ######################################################################
 
-.define $mi $3
-.define $mfhx $4
-.define $mf $5
-
-.define $q $6
-.define $r $7
-
-.define $rf $8
-
 ######################################################################
 # * floor
 ######################################################################
@@ -21,20 +12,20 @@ min_caml_floor:
 	cmp $1, 0
 	bge FLOOR_POSITIVE	# if ($f1 >= 0) FLOOR_POSITIVE
 	fneg $1, $1
-	mov $ra, $9
+	mov $ra, $tmp
 	jal FLOOR_POSITIVE		# $f1 = FLOOR_POSITIVE(-$f1)
 	load [FLOOR_MONE], $2
 	fsub $2, $1, $1		# $f1 = (-1) - $f1
-	jr $9
+	jr $tmp
 FLOOR_POSITIVE:
-	load [FLOAT_MAGICF], $mf
-	cmp $1, $mf
+	load [FLOAT_MAGICF], $3
+	cmp $1, $3
 	ble FLOOR_POSITIVE_MAIN
 	ret
 FLOOR_POSITIVE_MAIN:
 	mov $1, $2
-	fadd $1, $mf, $1		# $f1 += 0x4b000000
-	fsub $1, $mf, $1		# $f1 -= 0x4b000000
+	fadd $1, $3, $1		# $f1 += 0x4b000000
+	fsub $1, $3, $1		# $f1 -= 0x4b000000
 	cmp $1, $2
 	ble FLOOR_RET
 	load [FLOOR_ONE], $2
@@ -54,36 +45,36 @@ min_caml_float_of_int:
 	cmp $1, 0
 	bge ITOF_MAIN		# if ($i1 >= 0) goto ITOF_MAIN
 	neg $1, $1		# 正の値にしてitofした後に、マイナスにしてかえす
-	mov $ra, $9
+	mov $ra, $tmp
 	jal ITOF_MAIN	# $f1 = float_of_int(-$i1)
 	fneg $1, $1
-	jr $9
+	jr $tmp
 ITOF_MAIN:
-	load [FLOAT_MAGICI], $mi		# $mi = 8388608
-	load [FLOAT_MAGICF], $mf 		# $mf = 8388608.0
-	load [FLOAT_MAGICFHX], $mfhx 		# $mfhx = 0x4b000000
-	cmp $1, $mi 			# $cond = cmp($i1, 8388608)
+	load [FLOAT_MAGICI], $3		# $3 = 8388608
+	load [FLOAT_MAGICF], $4 		# $4 = 8388608.0
+	load [FLOAT_MAGICFHX], $5 		# $5 = 0x4b000000
+	cmp $1, $3 			# $cond = cmp($i1, 8388608)
 	bge ITOF_BIG			# if ($i1 >= 8388608) goto ITOF_BIG
-	add $1, $mfhx, $1		# $i1 = $i1 + $mfhx (i.e. $i1 + 0x4b000000)
-	fsub $1, $mf, $1		# $f1 = $f1 - $mf (i.e. $f1 - 8388608.0)
+	add $1, $5, $1		# $i1 = $i1 + $5 (i.e. $i1 + 0x4b000000)
+	fsub $1, $4, $1		# $f1 = $f1 - $4 (i.e. $f1 - 8388608.0)
 	ret				# return
 ITOF_BIG:
-	li 0, $q				# $i1 = $q * 8388608 + $r なる$q, $rを求める
-	mov $1, $r
+	li 0, $6				# $i1 = $6 * 8388608 + $7 なる$6, $7を求める
+	mov $1, $7
 ITOF_LOOP:
-	add $q, 1, $q			# $q += 1
-	sub $r, $mi, $r			# $r -= 8388608
-	cmp $r, $mi
-	bge ITOF_LOOP		# if ($r >= 8388608) continue
+	add $6, 1, $6			# $6 += 1
+	sub $7, $3, $7			# $7 -= 8388608
+	cmp $7, $3
+	bge ITOF_LOOP		# if ($7 >= 8388608) continue
 	li 0, $1
 ITOF_LOOP2:
-	fadd $1, $mf, $1		# $f1 = $q * $mf
-	add $q, -1, $q
-	cmp $q, 0
+	fadd $1, $4, $1		# $f1 = $6 * $4
+	add $6, -1, $6
+	cmp $6, 0
 	bg ITOF_LOOP2
-	add $r, $mfhx, $r			# $r < 8388608 だからそのままitof
-	fsub $r, $mf, $r		# $tempf = itof($r)
-	fadd $1, $r, $1		# $f1 = $f1 + $tempf (i.e. $f1 = itof($q * $mf) + itof($r) )
+	add $7, $5, $7			# $7 < 8388608 だからそのままitof
+	fsub $7, $4, $7		# $tempf = itof($7)
+	fadd $1, $7, $1		# $f1 = $f1 + $tempf (i.e. $f1 = itof($6 * $4) + itof($7) )
 	ret
 
 
@@ -95,36 +86,36 @@ min_caml_int_of_float:
 	cmp $1, 0
 	bge FTOI_MAIN		# if ($f1 >= 0) goto FTOI_MAIN
 	fneg $1, $1		# 正の値にしてftoiした後に、マイナスにしてかえす
-	mov $ra, $9
+	mov $ra, $tmp
 	jal FTOI_MAIN	# $i1 = float_of_int(-$f1)
 	neg $1, $1
-	jr $9				# return
+	jr $tmp				# return
 FTOI_MAIN:
-	load [FLOAT_MAGICI], $mi		# $mi = 8388608
-	load [FLOAT_MAGICF], $mf 		# $mf = 8388608.0
-	load [FLOAT_MAGICFHX], $mfhx		# $mfhx = 0x4b000000
-	cmp $1, $mf
+	load [FLOAT_MAGICI], $3		# $3 = 8388608
+	load [FLOAT_MAGICF], $4 		# $4 = 8388608.0
+	load [FLOAT_MAGICFHX], $5		# $5 = 0x4b000000
+	cmp $1, $4
 	bge FTOI_BIG		# if ($f1 >= 8688608.0) goto FTOI_BIG
-	fadd $1, $mf, $1
-	sub $1, $mfhx, $1
+	fadd $1, $4, $1
+	sub $1, $5, $1
 	ret
 FTOI_BIG:
-	li 0, $q				# $f1 = $q * 8388608 + $rf なる$q, $rfを求める
-	mov $1, $rf
+	li 0, $6				# $f1 = $6 * 8388608 + $8 なる$6, $8を求める
+	mov $1, $8
 FTOI_LOOP:
-	add $q, 1, $q			# $q += 1
-	fsub $rf, $mf, $rf		# $rf -= 8388608.0
-	cmp $rf, $mf
-	bge FTOI_LOOP		# if ($rf >= 8388608.0) continue
+	add $6, 1, $6			# $6 += 1
+	fsub $8, $4, $8		# $8 -= 8388608.0
+	cmp $8, $4
+	bge FTOI_LOOP		# if ($8 >= 8388608.0) continue
 	li 0, $1
 FTOI_LOOP2:
-	add $1, $mi, $1			# $i1 = $q * $mi
-	add $q, -1, $q
-	cmp $q, 0
+	add $1, $3, $1			# $i1 = $6 * $3
+	add $6, -1, $6
+	cmp $6, 0
 	bg FTOI_LOOP2
-	fadd $rf, $mf, $rf		# $rf < 8388608.0 だからそのままftoi
-	sub $rf, $mfhx, $rf		# $temp = ftoi($rf)
-	add $1, $rf, $1		# $i1 = $i1 + $temp (i.e. $i1 = ftoi($q * $mi) + ftoi($rf) )
+	fadd $8, $4, $8		# $8 < 8388608.0 だからそのままftoi
+	sub $8, $5, $8		# $temp = ftoi($8)
+	add $1, $8, $1		# $i1 = $i1 + $temp (i.e. $i1 = ftoi($6 * $3) + ftoi($8) )
 	ret
 
 FLOAT_MAGICI:

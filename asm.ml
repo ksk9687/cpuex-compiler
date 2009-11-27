@@ -72,17 +72,24 @@ let rec cat xs ys env =
     | x :: xs -> x :: (cat xs ys (S.add x env))
 (* free variables in the order of use (for spilling) (caml2html: sparcasm_fv) *)
 let fv_id_or_imm x' = match x' with V(x) -> [x] | _ -> []
-let rec fv_exp env cont = function
-  | Nop | Set _ | SetL _ | Comment _ | Restore _ | LdFL _ -> cont
-  | Mov(x) | Neg(x) | FNeg(x) |FInv(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | Save(x, _) -> cat [x] cont env
-  | Add(x, y') | Sub(x, y') -> cat (x :: fv_id_or_imm y') cont env
-  | Ld(x', y') -> cat (fv_id_or_imm x' @ fv_id_or_imm y') cont env
-  | St(x, y', z') -> cat (x :: fv_id_or_imm y' @ fv_id_or_imm z') cont env
-  | FAdd(x, y) | FSub(x, y) | FMul(x, y) | MovR(x, y) -> cat [x; y] cont env
-  | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> cat (x :: fv_id_or_imm y') (fv env (fv env cont e2) e1) env (* uniq here just for efficiency *)
-  | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> cat [x; y] (fv env (fv env cont e2) e1) env (* uniq here just for efficiency *)
-  | CallCls(x, ys) -> cat (x :: ys) cont env
-  | CallDir(_, ys) -> cat ys cont env
+let rec fv' = function
+  | Nop | Set _ | SetL _ | Comment _ | Restore _ | LdFL _ -> []
+  | Mov(x) | Neg(x) | FNeg(x) |FInv(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | Save(x, _) -> [x]
+  | Add(x, y') | Sub(x, y') -> x :: fv_id_or_imm y'
+  | Ld(x', y') -> fv_id_or_imm x' @ fv_id_or_imm y'
+  | St(x, y', z') -> x :: fv_id_or_imm y' @ fv_id_or_imm z'
+  | FAdd(x, y) | FSub(x, y) | FMul(x, y) | MovR(x, y) -> [x; y]
+  | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> x :: fv_id_or_imm y'
+  | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> [x; y]
+  | CallCls(x, ys) -> x :: ys
+  | CallDir(_, ys) -> ys
+let rec fv_exp env cont e =
+  let xs = fv' e in
+  match e with
+    | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2)
+    | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+        cat xs (fv env (fv env cont e2) e1) env
+    | _ -> cat xs cont env
 and fv env cont = function
   | Ans(exp) -> fv_exp env cont exp
   | Let((x, t), exp, e) ->
