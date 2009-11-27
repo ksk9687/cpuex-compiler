@@ -238,12 +238,13 @@ let h oc { name = Id.L(x); args = _; body = e; ret = _ } =
 let f oc (Prog(data, fundefs, e)) =
   Format.eprintf "generating assembly...@.";
   List.iter
-    (fun (Id.L(x), d) -> Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
+    (fun (Id.L(x), d) -> if d <> 0.0 then Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
     data;
+  List.iter (fun fundef -> h oc fundef) fundefs;
+  Printf.fprintf oc "\n######################################################################\n";
   Printf.fprintf oc "min_caml_start:\n";
   stacksize := List.length (calcStack [] e) + 1;
   stackset := S.empty;
   stackmap := [];
   g oc false (NonTail(reg_tmp), e);
-  Printf.fprintf oc "\thalt\n";
-  List.iter (fun fundef -> h oc fundef) fundefs
+  Printf.fprintf oc "\thalt\n"

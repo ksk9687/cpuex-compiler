@@ -92,6 +92,4 @@ let rec g env letenv = function
   | e ->
       insert letenv (fv e) e
 
-
-let f  =  g S.empty M.empty
-
+let f x = g S.empty M.empty x

@@ -17,18 +17,18 @@ let safe_regs =
     (List.fold_left (* 外部関数のsafe regsを登録 *)
        (fun map (id,regs) -> M.add ("min_caml_" ^ id) (S.of_list regs) map) 
       M.empty
-       [("floor",["$4";"$5";"$6";"$7";"$8";"$10"]@regs);
-	("float_of_int",["$8";"$10"]@regs);
-	("int_of_float",["$10"]@regs);
-	("create_array",["$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs)])
+       [("floor", ["$4";"$5";"$6";"$7";"$8";"$10"]@regs);
+	("float_of_int", ["$8";"$10"]@regs);
+	("int_of_float", ["$10"]@regs);
+	("create_array", ["$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
+  ("read_int", ["$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
+  ("read_float", ["$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
+  ("write", ["$1";"$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10"]@regs);
+  ("sin", regs); ("cos", regs); ("atan", regs)])
 
 let get_safe_regs x =
   try M.find x !safe_regs
-  with Not_found ->
-    if String.length x > 9 && String.sub x 0 9 = "min_caml_" then
-      S.of_list ((fn List.tl 10) allregs)
-    else
-      S.empty
+  with Not_found -> S.empty
 
 let rec target' src (dest, t) = function
   | Mov(x) when x = src && is_reg dest ->
@@ -245,6 +245,17 @@ and g_repeat dest cont regenv e = (* Spillがなくなるまでgを繰り返す 
              e
              xs)
 
+let rec set_safe_regs_t env = function
+  | Ans (e) -> set_safe_regs_exp env e
+  | Let ((x, _), e, t) -> set_safe_regs_t (set_safe_regs_exp (S.remove x env) e) t
+  | Forget (x, t) -> set_safe_regs_t (S.remove x env) t
+and set_safe_regs_exp env = function
+  | CallCls (x, _) | CallDir (Id.L(x), _) ->
+      S.inter (get_safe_regs x) env
+  | IfEq (_, _, t1, t2) | IfLE (_, _, t1, t2) | IfGE (_, _, t1, t2)
+  | IfFEq (_, _, t1, t2) | IfFLE (_, _, t1, t2) ->
+      S.inter (set_safe_regs_t env t1) (set_safe_regs_t env t2)
+  | _ -> env
 (* x->callee safe reg を safe_regs に追加 *)
 let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
   let env = S.of_list allregs in
@@ -254,22 +265,9 @@ let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
     else S.remove regs.(0) env in
   safe_regs := M.add x env !safe_regs;
   let env = set_safe_regs_t env e in
-(*    Format.eprintf "%s :" x;
-    S.iter (Format.eprintf " %s") env;
-    Format.eprintf "@.";*)
+    S.iter (Format.eprintf "%s, ") env;
+    Format.eprintf "@.";
     safe_regs := M.add x env !safe_regs
-and set_safe_regs_t env = function
-  | Ans (e) -> set_safe_regs_exp env e
-  | Let ((x,_),e,t) -> set_safe_regs_t (set_safe_regs_exp (S.remove x env) e) t
-  | Forget (x,t) -> set_safe_regs_t (S.remove x env) t
-and set_safe_regs_exp env = function
-  | CallCls (x,_) | CallDir (Id.L(x),_) ->
-      S.inter (get_safe_regs x) env
-  | IfEq (_,_,t1,t2) | IfLE (_,_,t1,t2) | IfGE (_,_,t1,t2)
-  | IfFEq (_,_,t1,t2) | IfFLE (_,_,t1,t2) ->
-      S.inter (set_safe_regs_t env t1) (set_safe_regs_t env t2)
-  | _ -> env
-
 
 let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジスタ割り当て (caml2html: regalloc_h) *)
   Format.eprintf "Allocating: %s@." x;

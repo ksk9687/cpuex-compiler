@@ -65,29 +65,33 @@ let rec remove_and_uniq xs = function
   | [] -> []
   | x :: ys when S.mem x xs -> remove_and_uniq xs ys
   | x :: ys -> x :: remove_and_uniq (S.add x xs) ys
-
+let rec cat xs ys env =
+  match xs with
+    | [] -> ys
+    | x :: xs when S.mem x env -> cat xs ys env
+    | x :: xs -> x :: (cat xs ys (S.add x env))
 (* free variables in the order of use (for spilling) (caml2html: sparcasm_fv) *)
-let fv_id_or_imm = function V(x) -> [x] | _ -> []
-let rec fv_exp cont = function
+let fv_id_or_imm x' = match x' with V(x) -> [x] | _ -> []
+let rec fv_exp env cont = function
   | Nop | Set _ | SetL _ | Comment _ | Restore _ | LdFL _ -> cont
-  | Mov(x) | Neg(x) | FNeg(x) |FInv(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | Save(x, _) -> x :: cont
-  | Add(x, y') | Sub(x, y') -> x :: fv_id_or_imm y' @ cont
-  | Ld(x', y') -> fv_id_or_imm x' @ fv_id_or_imm y' @ cont
-  | St(x, y', z') -> x :: fv_id_or_imm y' @ fv_id_or_imm z' @ cont
-  | FAdd(x, y) | FSub(x, y) | FMul(x, y) | MovR(x, y) -> x :: y :: cont
-  | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> x :: fv_id_or_imm y' @ remove_and_uniq S.empty (fv cont e1 @ fv cont e2) (* uniq here just for efficiency *)
-  | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> x :: y :: remove_and_uniq S.empty (fv cont e1 @ fv cont e2) (* uniq here just for efficiency *)
-  | CallCls(x, ys) -> x :: ys @ cont
-  | CallDir(_, ys) -> ys @ cont
-and fv cont = function
-  | Ans(exp) -> fv_exp cont exp
+  | Mov(x) | Neg(x) | FNeg(x) |FInv(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | Save(x, _) -> cat [x] cont env
+  | Add(x, y') | Sub(x, y') -> cat (x :: fv_id_or_imm y') cont env
+  | Ld(x', y') -> cat (fv_id_or_imm x' @ fv_id_or_imm y') cont env
+  | St(x, y', z') -> cat (x :: fv_id_or_imm y' @ fv_id_or_imm z') cont env
+  | FAdd(x, y) | FSub(x, y) | FMul(x, y) | MovR(x, y) -> cat [x; y] cont env
+  | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> cat (x :: fv_id_or_imm y') (fv env (fv env cont e2) e1) env (* uniq here just for efficiency *)
+  | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> cat [x; y] (fv env (fv env cont e2) e1) env (* uniq here just for efficiency *)
+  | CallCls(x, ys) -> cat (x :: ys) cont env
+  | CallDir(_, ys) -> cat ys cont env
+and fv env cont = function
+  | Ans(exp) -> fv_exp env cont exp
   | Let((x, t), exp, e) ->
-      let cont' = remove_and_uniq (S.singleton x) (fv cont e) in
-      fv_exp cont' exp
-  | Forget(x, e) -> remove_and_uniq (S.singleton x) (fv cont e) (* Spillされた変数は、自由変数の計算から除外 (caml2html: sparcasm_exclude) *)
+      let cont' = fv (S.add x env) cont e in
+      fv_exp env cont' exp
+  | Forget(x, e) -> fv (S.add x env) cont e (* Spillされた変数は、自由変数の計算から除外 (caml2html: sparcasm_exclude) *)
     (* (if y = z then (forget x; ...) else (forget x; ...)); x + x
        のような場合のために、継続の自由変数contを引数とする *)
-let fv e = remove_and_uniq S.empty (fv [] e)
+let fv e = remove_and_uniq S.empty (fv S.empty [] e)
 
 let rec concat e1 xt e2 =
   match e1 with

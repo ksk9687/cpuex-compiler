@@ -174,7 +174,7 @@ read_4:
 min_caml_write:
 	write $2, $tmp
 	cmp $tmp, 0
-#	bg min_caml_write
+	bg min_caml_write
 	ret
 
 ######################################################################
@@ -233,137 +233,138 @@ min_caml_atan_table:
 	.float 2.38418579101557974e-07
 	.float 1.19209289550780681e-07
 	.float 5.96046447753905522e-08
-f._196:	.float  6.2831853072E+00
-f._195:	.float  3.1415926536E+00
-f._194:	.float  1.5707963268E+00
-f._193:	.float  1.0000000000E+00
-f._192:	.float  0.0000000000E+00
-f._191:	.float  6.0725293501E-01
-f._190:	.float  5.0000000000E-01
-cordic_rec.155:
-	cmp     $3, 25
-	bne     be_else._202
-	mov     $5, $1
-	ret
-be_else._202:
-	fcmp    $2, $6
-	bg      ble_else._203
-	add     $3, 1, $10
-	fmul    $7, $5, $9
-	fadd    $4, $9, $9
-	fmul    $7, $4, $8
-	fsub    $5, $8, $5
-	load    [min_caml_atan_table + $3], $8
-	fsub    $6, $8, $6
-	load    [f._190], $8
-	fmul    $7, $8, $7
-	mov     $9, $4
-	mov     $10, $3
-	b       cordic_rec.155
-ble_else._203:
-	add     $3, 1, $10
-	fmul    $7, $5, $9
-	fsub    $4, $9, $9
-	fmul    $7, $4, $8
-	fadd    $5, $8, $5
-	load    [min_caml_atan_table + $3], $8
-	fadd    $6, $8, $6
-	load    [f._190], $8
-	fmul    $7, $8, $7
-	mov     $9, $4
-	mov     $10, $3
-	b       cordic_rec.155
-cordic_sin.85:
-	li      0, $3
-	load    [f._191], $4
-	load    [f._192], $5
-	load    [f._193], $7
-	mov     $5, $6
-	b       cordic_rec.155
-cordic_rec.121:
+f._186:	.float  6.2831853072E+00
+f._185:	.float  3.1415926536E+00
+f._184:	.float  1.5707963268E+00
+f._183:	.float  6.0725293501E-01
+f._182:	.float  1.0000000000E+00
+f._181:	.float  5.0000000000E-01
+
+######################################################################
+cordic_rec._146:
 	cmp     $2, 25
-	bne     be_else._204
+	bne     be_else._192
 	mov     $5, $1
 	ret
-be_else._204:
-	load    [f._192], $10
-	fcmp    $4, $10
-	bg      ble_else._205
-	add     $2, 1, $10
-	fmul    $6, $4, $9
-	fsub    $3, $9, $9
-	fmul    $6, $3, $8
-	fadd    $4, $8, $4
+be_else._192:
+	fcmp    $4, $zero
+	bg      ble_else._193
+	fmul    $6, $4, $10
+	fmul    $6, $3, $9
 	load    [min_caml_atan_table + $2], $8
+	load    [f._181], $7
+	fsub    $3, $10, $3
+	fadd    $4, $9, $4
 	fsub    $5, $8, $5
-	load    [f._190], $8
-	fmul    $6, $8, $6
-	mov     $9, $3
-	mov     $10, $2
-	b       cordic_rec.121
-ble_else._205:
-	add     $2, 1, $10
-	fmul    $6, $4, $9
-	fadd    $3, $9, $9
-	fmul    $6, $3, $8
-	fsub    $4, $8, $4
+	fmul    $6, $7, $6
+	add     $2, 1, $2
+	b       cordic_rec._146
+ble_else._193:
+	fmul    $6, $4, $10
+	fmul    $6, $3, $9
 	load    [min_caml_atan_table + $2], $8
+	load    [f._181], $7
+	fadd    $3, $10, $3
+	fsub    $4, $9, $4
 	fadd    $5, $8, $5
-	load    [f._190], $8
-	fmul    $6, $8, $6
-	mov     $9, $3
-	mov     $10, $2
-	b       cordic_rec.121
+	fmul    $6, $7, $6
+	add     $2, 1, $2
+	b       cordic_rec._146
+
+######################################################################
 min_caml_atan:
+	load    [f._182], $3
 	li      0, $10
-	load    [f._193], $3
-	load    [f._192], $5
 	mov     $3, $6
+	mov     $zero, $5
 	mov     $2, $4
 	mov     $10, $2
-	b       cordic_rec.121
+	b       cordic_rec._146
+
+######################################################################
+cordic_rec._111:
+	cmp     $3, 25
+	bne     be_else._194
+	mov     $5, $1
+	ret
+be_else._194:
+	fcmp    $2, $6
+	bg      ble_else._195
+	fmul    $7, $5, $10
+	fmul    $7, $4, $9
+	load    [min_caml_atan_table + $3], $8
+	load    [f._181], $1
+	fadd    $4, $10, $4
+	fsub    $5, $9, $5
+	fsub    $6, $8, $6
+	fmul    $7, $1, $7
+	add     $3, 1, $3
+	b       cordic_rec._111
+ble_else._195:
+	fmul    $7, $5, $10
+	fmul    $7, $4, $9
+	load    [min_caml_atan_table + $3], $8
+	load    [f._181], $1
+	fsub    $4, $10, $4
+	fadd    $5, $9, $5
+	fadd    $6, $8, $6
+	fmul    $7, $1, $7
+	add     $3, 1, $3
+	b       cordic_rec._111
+
+######################################################################
+cordic_sin._82:
+	load    [f._183], $4
+	load    [f._182], $7
+	li      0, $3
+	mov     $zero, $6
+	mov     $zero, $5
+	b       cordic_rec._111
+
+######################################################################
 min_caml_sin:
-	load    [f._192], $10
+	fcmp    $zero, $2
+	bg      ble_else._196
+	load    [f._184], $10
 	fcmp    $10, $2
-	bg      ble_else._206
-	load    [f._194], $10
+	bg      ble_else._197
+	load    [f._185], $10
 	fcmp    $10, $2
-	bg      ble_else._207
-	load    [f._195], $10
+	bg      ble_else._198
+	load    [f._186], $10
 	fcmp    $10, $2
-	bg      ble_else._208
-	load    [f._196], $10
-	fcmp    $10, $2
-	bg      ble_else._209
+	bg      ble_else._199
 	fsub    $2, $10, $2
 	b       min_caml_sin
-ble_else._209:
-	fsub    $10, $2, $2
+ble_else._199:
 	sub     $sp, 1, $sp
 	store   $ra, [$sp + 0]
+	fsub    $10, $2, $2
 	jal     min_caml_sin
+	mov     $1, $10
 	load    [$sp + 0], $ra
 	add     $sp, 1, $sp
-	mov     $1, $10
 	fneg    $10, $1
 	ret
-ble_else._208:
+ble_else._198:
 	fsub    $10, $2, $2
-	b       cordic_sin.85
-ble_else._207:
-	b       cordic_sin.85
-ble_else._206:
+	b       cordic_sin._82
+ble_else._197:
+	b       cordic_sin._82
+ble_else._196:
+	sub     $sp, 1, $sp
+	store   $ra, [$sp + 0]
 	fneg    $2, $2
-	sub     $sp, 1, $sp
-	store   $ra, [$sp + 0]
 	jal     min_caml_sin
+	mov     $1, $10
 	load    [$sp + 0], $ra
 	add     $sp, 1, $sp
-	mov     $1, $10
 	fneg    $10, $1
 	ret
+
+######################################################################
 min_caml_cos:
-	load    [f._194], $10
+	load    [f._184], $10
 	fsub    $10, $2, $2
 	b       min_caml_sin
 
