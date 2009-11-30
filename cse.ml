@@ -69,9 +69,12 @@ let rec number e =
 	  if x < y then find (FMul(x, y))
 	  else find (FMul(y, x))
     | IfEq(x, y, e1, e2) ->
-	find (IfEq(v x, v y, 
-		   Var(number e1),
-		   Var(number e2)))
+	let x = v x in
+	let y = v y in
+	  if x < y then
+	    find (IfEq(x, y, Var(number e1), Var(number e2)))
+	  else
+	    find (IfEq(y, x, Var(number e1), Var(number e2)))
     | IfLE(x, y, e1, e2) ->
 	find (IfLE(v x, v y,
 		   Var(number e1),
