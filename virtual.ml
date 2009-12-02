@@ -1,8 +1,6 @@
-(* translation into SPARC assembly with infinite number of virtual registers *)
-
 open Asm
 
-let data = ref [] (* 浮動小数の定数テーブル (caml2html: virtual_data) *)
+let data = ref []
 
 let classify xts ini add =
   List.fold_left
@@ -26,13 +24,12 @@ let expand xts ini add =
     (fun (offset, acc) x t ->
       (offset + 1, add x t offset acc))
 
-let rec g env = function (* 式の仮想マシンコード生成 (caml2html: virtual_g) *)
+let rec g env = function
   | Closure.Unit -> Ans(Nop)
   | Closure.Int(i) -> Ans(Set(i))
   | Closure.Float(d) ->
       let l =
         try
-          (* すでに定数テーブルにあったら再利用 *)
           let (l, _) = List.find (fun (_, d') -> d = d') !data in
           l
         with Not_found ->
@@ -40,9 +37,7 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
           data := (l, d) :: !data;
           l
       in
-      Ans(LdFL(l)) (* ラベルから直接ロード *)
-(*      let x = Id.genid "l" in
-      Let((x, Type.Int), SetL(l), Ans(LdF(x, C(0))))*)
+      Ans(LdFL(l))
   | Closure.Neg(x) -> Ans(Neg(x))
   | Closure.Add(x, y) -> Ans(Add(x, V(y)))
   | Closure.Sub(x, y) -> Ans(Sub(x, V(y)))
@@ -72,8 +67,7 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
       (match M.find x env with
       | Type.Unit -> Ans(Nop)
       | _ -> Ans(Mov(x)))
-  | Closure.MakeCls((x, t), { Closure.entry = l; Closure.actual_fv = ys }, e2) -> (* クロージャの生成 (caml2html: virtual_makecls) *)
-      (* Closureのアドレスをセットしてから、自由変数の値をストア *)
+  | Closure.MakeCls((x, t), { Closure.entry = l; Closure.actual_fv = ys }, e2) ->
       let e2' = g (M.add x t env) e2 in
       let offset, store_fv =
         expand
@@ -92,7 +86,7 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
   | Closure.AppDir(Id.L(x), ys) ->
       let xts = separate (List.map (fun y -> (y, M.find y env)) ys) in
       Ans(CallDir(Id.L(x), xts))
-  | Closure.Tuple(xs) -> (* 組の生成 (caml2html: virtual_tuple) *)
+  | Closure.Tuple(xs) ->
       let y = Id.genid "t" in
       let (offset, store) =
         expand
@@ -109,10 +103,10 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
           xts
           (0, g (M.add_list xts env) e2)
           (fun x t offset load ->
-            if not (S.mem x s) then load else (* [XX] a little ad hoc optimization *)
+            if not (S.mem x s) then load else
             Let((x, t), Ld(V(y), C(offset)), load)) in
       load
-  | Closure.Get(x, y) -> (* 配列の読み出し (caml2html: virtual_get) *)
+  | Closure.Get(x, y) ->
       (match M.find x env with
       | Type.Array(Type.Unit) -> Ans(Nop)
       | Type.Array(_) -> Ans(Ld(V(x), V(y)))
@@ -124,7 +118,6 @@ let rec g env = function (* 式の仮想マシンコード生成 (caml2html: vir
       | _ -> assert false)
   | Closure.ExtArray(Id.L(x)) -> Ans(SetL(Id.L("min_caml_" ^ x)))
 
-(* 関数の仮想マシンコード生成 (caml2html: virtual_h) *)
 let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.formal_fv = zts; Closure.body = e } =
   let xts = separate yts in
   let (offset, load) =
@@ -137,7 +130,6 @@ let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.formal_fv = zts
       { name = Id.L(x); args = xts; body = load; ret = t2 }
   | _ -> assert false
 
-(* プログラム全体の仮想マシンコード生成 (caml2html: virtual_f) *)
 let f (Closure.Prog(fundefs, e)) =
   data := [];
   let fundefs = List.map h fundefs in

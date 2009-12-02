@@ -2,7 +2,7 @@ type id_or_imm = V of Id.t | C of int | L of Id.l
 type t =
   | Ans of exp
   | Let of (Id.t * Type.t) * exp * t
-  | Forget of Id.t * t (* virtual instruction *)
+  | Forget of Id.t * t
 and exp =
   | Nop
   | Set of int
@@ -23,23 +23,19 @@ and exp =
   | FMul of Id.t * Id.t
   | LdFL of Id.l
   | MovR of Id.t * Id.t
-  | Comment of string
-  (* virtual instructions *)
   | IfEq of Id.t * id_or_imm * t * t
   | IfLE of Id.t * id_or_imm * t * t
   | IfGE of Id.t * id_or_imm * t * t
   | IfFEq of Id.t * Id.t * t * t
   | IfFLE of Id.t * Id.t * t * t
-  (* closure address, integer arguments, and float arguments *)
   | CallCls of Id.t * Id.t list
   | CallDir of Id.l * Id.t list
-  | Save of Id.t * Id.t (* レジスタ変数の値をスタック変数へ保存 *)
-  | Restore of Id.t (* スタック変数から値を復元 *)
+  | Save of Id.t * Id.t
+  | Restore of Id.t
 type fundef = { name : Id.l; args : Id.t list; body : t; ret : Type.t }
 type prog = Prog of (Id.l * float) list * fundef list * t
 
-val flet : Id.t * exp * t -> t (* shorthand of Let for float *)
-val seq : exp * t -> t (* shorthand of Let for unit *)
+val seq : exp * t -> t
 
 val regs : Id.t array
 val allregs : Id.t list

@@ -51,7 +51,7 @@ and hasPut' l i = function
   | CallCls _ | CallDir _ -> true
   | _ -> false
 
-let rec g env = function (* 命令列のグローバル配列最適化 *)
+let rec g env = function
   | Ans(exp) -> Ans(g' env exp)
   | Let((x, t), Ld(L(l), C(i)), e) when List.mem_assoc (l, i) !gtable ->
 (*      if hasPut l i e then
@@ -61,7 +61,7 @@ let rec g env = function (* 命令列のグローバル配列最適化 *)
         g (M.add x (List.assoc (l, i) !gtable) env) e
   | Let(xt, exp, e) -> Let(xt, g' env exp, g env e)
   | Forget(x, e) -> Forget(x, g env e)
-and g' env = function (* 各命令のグローバル配列最適化 *)
+and g' env = function
   | Ld(L(l), C(i)) when List.mem_assoc (l, i) !gtable -> Mov(List.assoc (l, i) !gtable)
   | St(x, L(l), C(i)) when List.mem_assoc (l, i) !gtable -> MovR(x, List.assoc (l, i) !gtable)
   | Mov(x) -> Mov(replace x env)
@@ -87,10 +87,10 @@ and g' env = function (* 各命令のグローバル配列最適化 *)
   | CallDir(l, ys) -> CallDir(l, List.map (fun y -> replace y env) ys)
   | e -> e
 
-let h { name = l; args = xs; body = e; ret = t } = (* トップレベル関数のグローバル配列アクセス最適化 *)
+let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }
 
-let f (Prog(data, fundefs, e)) = (* プログラム全体のグローバル配列アクセス最適化 *)
+let f (Prog(data, fundefs, e)) =
 	let counts = List.fold_left (fun env { name = l; args = xs; body = e; ret = t} -> count env e) M.empty fundefs in
 	let counts = count counts e in
   let gls = M.fold (fun l env' ls -> List.fold_left (fun ls (i, n) -> (l, i, n) :: ls) ls env') counts [] in

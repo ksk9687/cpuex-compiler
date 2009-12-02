@@ -1,5 +1,4 @@
 open KNormal
-(* customized version of Map *)
 
 let no_effect_fun = ref S.empty
 

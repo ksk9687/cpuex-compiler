@@ -1,8 +1,5 @@
 open Asm
 
-(* for register coalescing *)
-
-
 let rec fn f n =
   if n > 1 then (fun x -> (fn f (n-1)) (f x))
   else f
@@ -44,35 +41,33 @@ let rec target' src (dest, t) = function
       true, (target_args src regs 1 ys @
          S.elements (get_safe_regs x))
   | _ -> false, []
-and target src dest = function (* register targeting (caml2html: regalloc_target) *)
+and target src dest = function
   | Ans(exp) -> target' src dest exp
   | Let(xt, exp, e) ->
       let c1, rs1 = target' src xt exp in
-(*      if c1 then true, rs1 else*) (* Callがあっても先を追うようにした *)
       let c2, rs2 = target src dest e in
         c2, rs1 @ rs2
   | Forget(_, e) -> target src dest e
-and target_args src all n = function (* auxiliary function for Call *)
+and target_args src all n = function
   | [] -> []
   | y :: ys when src = y -> all.(n) :: target_args src all (n + 1) ys
   | _ :: ys -> target_args src all (n + 1) ys
 
-type alloc_result = (* allocにおいてspillingがあったかどうかを表すデータ型 *)
-  | Alloc of Id.t (* allocated register *)
-  | Spill of Id.t (* spilled variable *)
+type alloc_result =
+  | Alloc of Id.t
+  | Spill of Id.t
 let rec alloc dest cont regenv x t =
-  (* allocate a register or spill a variable *)
   assert (not (M.mem x regenv));
   let all =
     match t with
-    | Type.Unit -> ["$dummy"] (* dummy *)
+    | Type.Unit -> ["$dummy"]
     | _ -> allregs in
-  if all = ["$dummy"] then Alloc("$dummy") else (* [XX] ad hoc optimization *)
+  if all = ["$dummy"] then Alloc("$dummy") else
   if is_reg x then Alloc(x) else
   let free = fv cont in
   try
     let (c, prefer) = target x dest cont in
-    let live = (* 生きているレジスタ *)
+    let live =
       List.fold_left
         (fun live y ->
           if is_reg y then S.add y live else
@@ -80,14 +75,14 @@ let rec alloc dest cont regenv x t =
           with Not_found -> live)
         S.empty
         free in
-    let r = (* そうでないレジスタを探す *)
+    let r =
       List.find
       (fun r -> not (S.mem r live))
         (prefer @ all) in
     Alloc(r)
   with Not_found ->
     Format.eprintf "register allocation failed for %s@." x;
-    let y = (* 型の合うレジスタ変数を探す *)
+    let y =
       List.find
         (fun y ->
           not (is_reg y) &&
@@ -97,16 +92,14 @@ let rec alloc dest cont regenv x t =
     Format.eprintf "spilling %s from %s@." y (M.find y regenv);
     Spill(y)
 
-(* auxiliary function for g and g'_and_restore *)
 let add x r regenv =
   if is_reg x then (assert (x = r); regenv) else
   M.add x r regenv
 
-type g_result = (* gやg'においてspillingがあったかどうかを表すデータ型 (caml2html: regalloc_result) *)
-  | NoSpill of t * Id.t M.t (* new regenv *)
-  | ToSpill of t * Id.t list (* spilled variables *)
+type g_result =
+  | NoSpill of t * Id.t M.t
+  | ToSpill of t * Id.t list
 
-(* auxiliary functions for g' *)
 exception NoReg of Id.t * Type.t
 let find x t regenv =
   if is_reg x then x else
@@ -129,7 +122,7 @@ let insert_forget xs exp t =
     | _ -> Mov(a) in
   ToSpill(Let((a, t), exp, forget_list xs (Ans(m))), xs)
 
-let rec g dest cont regenv = function (* 命令列のレジスタ割り当て (caml2html: regalloc_g) *)
+let rec g dest cont regenv = function
   | Ans(exp) -> g'_and_restore dest cont regenv exp
   | Let((x, t) as xt, exp, e) ->
       assert (not (M.mem x regenv));
@@ -156,13 +149,13 @@ let rec g dest cont regenv = function (* 命令列のレジスタ割り当て (c
           | [] -> g dest cont regenv x_forgotten
           | ys_left -> ToSpill(x_forgotten, ys_left))
       | NoSpill(e1', regenv1) -> NoSpill(e1', regenv1))
-and g'_and_restore dest cont regenv exp = (* 使用される変数をスタックからレジスタへRestore (caml2html: regalloc_unspill) *)
+and g'_and_restore dest cont regenv exp =
   try g' dest cont regenv exp
   with NoReg(x, t) ->
     ((* Format.eprintf "restoring %s@." x; *)
      g dest cont regenv (Let((x, t), Restore(x), Ans(exp))))
-and g' dest cont regenv = function (* 各命令のレジスタ割り当て (caml2html: regalloc_gprime) *)
-  | Nop | Set _ | SetL _ | LdFL _ | Comment _ | Restore _ as exp -> NoSpill(Ans(exp), regenv)
+and g' dest cont regenv = function
+  | Nop | Set _ | SetL _ | LdFL _ | Restore _ as exp -> NoSpill(Ans(exp), regenv)
   | Mov(x) -> NoSpill(Ans(Mov(find x Type.Int regenv)), regenv)
   | Neg(x) -> NoSpill(Ans(Neg(find x Type.Int regenv)), regenv)
   | Add(x, y') -> NoSpill(Ans(Add(find x Type.Int regenv, find' y' regenv)), regenv)
@@ -189,11 +182,11 @@ and g' dest cont regenv = function (* 各命令のレジスタ割り当て (caml
       assert (x = y);
       assert (not (is_reg x));
       try NoSpill(Ans(Save(M.find x regenv, x)), regenv)
-      with Not_found -> NoSpill(Ans(Nop), regenv) (* must have already been saved *)
-and g'_if dest cont regenv exp constr e1 e2 = (* ifのレジスタ割り当て (caml2html: regalloc_if) *)
+      with Not_found -> NoSpill(Ans(Nop), regenv)
+and g'_if dest cont regenv exp constr e1 e2 =
   let (e1', regenv1) = g_repeat dest cont regenv e1 in
   let (e2', regenv2) = g_repeat dest cont regenv e2 in
-  let regenv' = (* 両方に共通のレジスタ変数だけ利用 *)
+  let regenv' =
     List.fold_left
       (fun regenv' x ->
         try
@@ -210,10 +203,10 @@ and g'_if dest cont regenv exp constr e1 e2 = (* ifのレジスタ割り当て (
       (fun x -> not (is_reg x) && x <> fst dest && not (M.mem x regenv'))
       (fv cont)
   with [] -> NoSpill(Ans(constr e1' e2'), regenv')
-  | xs -> insert_forget xs exp (snd dest) (* そうでない変数は分岐以前にセーブ *)
-and g'_call id dest cont regenv exp constr ys = (* 関数呼び出しのレジスタ割り当て (caml2html: regalloc_call) *)
+  | xs -> insert_forget xs exp (snd dest)
+and g'_call id dest cont regenv exp constr ys =
   match
-    List.filter (* セーブすべきレジスタ変数を探す *)
+    List.filter
       (fun x ->
    not (is_reg x || x = fst dest || (M.mem x regenv && S.mem (M.find x regenv) (get_safe_regs id))))
       (fv cont)
@@ -221,7 +214,7 @@ and g'_call id dest cont regenv exp constr ys = (* 関数呼び出しのレジ�
                            (List.map (fun y -> find y Type.Int regenv) ys)),
                      regenv)
   | xs -> insert_forget xs exp (snd dest)
-and g_repeat dest cont regenv e = (* Spillがなくなるまでgを繰り返す (caml2html: regalloc_repeat) *)
+and g_repeat dest cont regenv e =
     match g dest cont regenv e with
     | NoSpill(e', regenv') -> (e', regenv')
     | ToSpill(e, xs) ->
@@ -242,7 +235,6 @@ and set_safe_regs_exp env = function
   | IfFEq (_, _, t1, t2) | IfFLE (_, _, t1, t2) ->
       S.inter (set_safe_regs_t env t1) (set_safe_regs_t env t2)
   | _ -> env
-(* x->callee safe reg を safe_regs に追加 *)
 let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
   let env = S.of_list allregs in
   let env = S.diff env (S.of_list arg_regs) in
@@ -255,7 +247,7 @@ let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
     Format.eprintf "@.";
     safe_regs := M.add x env !safe_regs
 
-let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジスタ割り当て (caml2html: regalloc_h) *)
+let h { name = Id.L(x); args = ys; body = e; ret = t } =
   Format.eprintf "Allocating: %s@." x;
   let regenv = M.add x reg_cl M.empty in
   let (i, arg_regs, regenv) =
@@ -276,7 +268,7 @@ let h { name = Id.L(x); args = ys; body = e; ret = t } = (* 関数のレジス�
     set_safe_regs   { name = Id.L(x); args = arg_regs; body = e'; ret = t };
     { name = Id.L(x); args = arg_regs; body = e'; ret = t }
 
-let f (Prog(data, fundefs, e)) = (* プログラム全体のレジスタ割り当て (caml2html: regalloc_f) *)
+let f (Prog(data, fundefs, e)) =
   Format.eprintf "register allocation: may take some time (up to a few minutes, depending on the size of functions)@.";
   let fundefs' = List.map h fundefs in
   let e', regenv' = g_repeat (Id.gentmp Type.Unit, Type.Unit) (Ans(Nop)) M.empty e in

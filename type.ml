@@ -1,16 +1,16 @@
-type t = (* MinCamlの型を表現するデータ型 (caml2html: type_t) *)
+type t =
   | Unit
   | Bool
   | Int
   | Float
-  | Fun of t list * t (* arguments are uncurried *)
+  | Fun of t list * t
   | Tuple of t list
   | Array of t
   | Var of t option ref
 
-let gentyp () = Var(ref None) (* 新しい型変数を作る *)
+let gentyp () = Var(ref None)
 
-let rec string_of_t = function (* Type.tを文字列に変換 *)
+let rec string_of_t = function
 	| Unit -> "Unit"
 	| Bool -> "Bool"
 	| Int -> "Int"

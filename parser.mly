@@ -44,7 +44,7 @@ let rec log2 x =
 %token RPAREN
 %token EOF
 
-/* 優先順位とassociativityの定義（低い方から高い方へ） (caml2html: parser_prior) */
+/* 優先順位とassociativityの定義（低い方から高い方へ） */
 %right prec_let
 %right SEMICOLON
 %right prec_if
@@ -63,7 +63,7 @@ let rec log2 x =
 
 %%
 
-simple_exp: /* 括弧をつけなくても関数の引数になれる式 (caml2html: parser_simple) */
+simple_exp: /* 括弧をつけなくても関数の引数になれる式 */
 | LPAREN exp RPAREN
     { $2 }
 | LPAREN RPAREN
@@ -79,7 +79,7 @@ simple_exp: /* 括弧をつけなくても関数の引数になれる式 (caml2h
 | simple_exp DOT LPAREN exp RPAREN
     { Get($1, $4) }
 
-exp: /* 一般の式 (caml2html: parser_exp) */
+exp: /* 一般の式 */
 | simple_exp
     { $1 }
 | NOT exp
@@ -90,7 +90,7 @@ exp: /* 一般の式 (caml2html: parser_exp) */
     { match $2 with
     | Float(f) -> Float(-.f) (* -1.23などは型エラーではないので別扱い *)
     | e -> Neg(e) }
-| exp PLUS exp /* 足し算を構文解析するルール (caml2html: parser_add) */
+| exp PLUS exp /* 足し算を構文解析するルール  */
     { Add($1, $3) }
 | exp MINUS exp
     { Sub($1, $3) }

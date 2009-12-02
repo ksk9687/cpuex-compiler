@@ -6,7 +6,7 @@ let noeffectfun =
   S.of_list
     ["sqrt"; "fneg"; "fabs"; "floor"; "float_of_int"; "int_of_float"]
 
-let rec effect env = function (* 副作用の有無 (caml2html: elim_effect) *)
+let rec effect env = function
   | Let(_, e1, e2) | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) -> effect env e1 || effect env e2
   | LetRec({name=(x,_);body=e1}, e2) ->
       if effect_fun x env e1 then effect env e2 else effect (S.add x env) e2
@@ -65,12 +65,12 @@ let rec g env letenv = function
       let e2' = g env letenv e2 in
       let xs = S.add x (S.add y (S.inter (find e1') (find e2'))) in
 	S.fold (insert letenv) xs (IfLE(x, y, e1', e2'))
-  | Let((x, t), e1, e2) -> (* letの場合 (caml2html: elim_let) *)
+  | Let((x, t), e1, e2) ->
       let e1' = (*g env M.empty*) e1 in
 	if effect env e1' then
 	  S.fold (insert letenv) (fv e1') (Let((x,t), e1', g env letenv e2))
 	else g env (M.add x (t,e1) letenv) e2
-  | LetRec({ name = (x, t); args = yts; body = e1 }, e2) -> (* let recの場合 (caml2html: elim_letrec) *)
+  | LetRec({ name = (x, t); args = yts; body = e1 }, e2) ->
       let env' =
 	if effect_fun x env e1 then env	else S.add x env in
       let e1' = g env' M.empty e1 in

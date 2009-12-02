@@ -32,7 +32,7 @@ rule token = parse
     { BOOL(false) }
 | "not"
     { NOT }
-| digit+ (* 整数を字句解析するルール (caml2html: lexer_int) *)
+| digit+ (* 整数を字句解析するルール  *)
     { INT(int_of_string (Lexing.lexeme lexbuf)) }
 | digit+ ('.' digit*)? (['e' 'E'] ['+' '-']? digit+)?
     { FLOAT(float_of_string (Lexing.lexeme lexbuf)) }

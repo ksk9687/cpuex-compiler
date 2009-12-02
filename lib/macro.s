@@ -68,7 +68,8 @@
 	li      0x1000, $hp
 	sll		$hp, 4, $hp
 	sll     $hp, 3, $sp
-	b       min_caml_start
+	jal     min_caml_main
+	halt
 
 ######################################################################
 #

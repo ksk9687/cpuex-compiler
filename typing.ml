@@ -1,5 +1,3 @@
-(* type inference/reconstruction *)
-
 open Syntax
 
 exception Unify of Type.t * Type.t
@@ -7,8 +5,7 @@ exception Error of t * Type.t * Type.t
 
 let extenv = ref M.empty
 
-(* for pretty printing (and type normalization) *)
-let rec deref_typ = function (* 型変数を中身でおきかえる関数 (caml2html: typing_deref) *)
+let rec deref_typ = function
   | Type.Fun(t1s, t2) -> Type.Fun(List.map deref_typ t1s, deref_typ t2)
   | Type.Tuple(ts) -> Type.Tuple(List.map deref_typ ts)
   | Type.Array(t) -> Type.Array(deref_typ t)
@@ -50,7 +47,7 @@ let rec deref_term = function
   | Put(e1, e2, e3) -> Put(deref_term e1, deref_term e2, deref_term e3)
   | e -> e
 
-let rec occur r1 = function (* occur check (caml2html: typing_occur) *)
+let rec occur r1 = function
   | Type.Fun(t2s, t2) -> List.exists (occur r1) t2s || occur r1 t2
   | Type.Tuple(t2s) -> List.exists (occur r1) t2s
   | Type.Array(t2) -> occur r1 t2
@@ -59,7 +56,7 @@ let rec occur r1 = function (* occur check (caml2html: typing_occur) *)
   | Type.Var({ contents = Some(t2) }) -> occur r1 t2
   | _ -> false
 
-let rec unify t1 t2 = (* 型が合うように、型変数への代入をする (caml2html: typing_unify) *)
+let rec unify t1 t2 =
   match t1, t2 with
   | Type.Unit, Type.Unit | Type.Bool, Type.Bool | Type.Int, Type.Int | Type.Float, Type.Float -> ()
   | Type.Fun(t1s, t1'), Type.Fun(t2s, t2') ->
@@ -73,7 +70,7 @@ let rec unify t1 t2 = (* 型が合うように、型変数への代入をする 
   | Type.Var(r1), Type.Var(r2) when r1 == r2 -> ()
   | Type.Var({ contents = Some(t1') }), _ -> unify t1' t2
   | _, Type.Var({ contents = Some(t2') }) -> unify t1 t2'
-  | Type.Var({ contents = None } as r1), _ -> (* 一方が未定義の型変数の場合 (caml2html: typing_undef) *)
+  | Type.Var({ contents = None } as r1), _ ->
       if occur r1 t2 then raise (Unify(t1, t2));
       r1 := Some(t2)
   | _, Type.Var({ contents = None } as r2) ->
@@ -81,7 +78,7 @@ let rec unify t1 t2 = (* 型が合うように、型変数への代入をする 
       r2 := Some(t1)
   | _, _ -> raise (Unify(t1, t2))
 
-let rec g env e = (* 型推論ルーチン (caml2html: typing_g) *)
+let rec g env e =
   try
     match e with
     | Unit -> Type.Unit
@@ -95,7 +92,6 @@ let rec g env e = (* 型推論ルーチン (caml2html: typing_g) *)
       unify Type.Int (g env e);
       Type.Int
     | Add(e1, e2) | Sub(e1, e2) ->
-      (* 足し算（と引き算とシフト演算）の型推論 (caml2html: typing_add) *)
       unify Type.Int (g env e1);
       unify Type.Int (g env e2);
       Type.Int
@@ -118,21 +114,21 @@ let rec g env e = (* 型推論ルーチン (caml2html: typing_g) *)
       let t3 = g env e3 in
       unify t2 t3;
       t2
-    | Let((x, t), e1, e2) -> (* letの型推論 (caml2html: typing_let) *)
+    | Let((x, t), e1, e2) ->
       unify t (g env e1);
       g (M.add x t env) e2
-    | Var(x) when M.mem x env -> M.find x env (* 変数の型推論 (caml2html: typing_var) *)
+    | Var(x) when M.mem x env -> M.find x env
     | Var(x) when M.mem x !extenv -> M.find x !extenv
-    | Var(x) -> (* 外部変数の型推論 (caml2html: typing_extvar) *)
+    | Var(x) ->
       (*Format.eprintf "free variable %s assumed as external@." x;*)
       let t = Type.gentyp () in
       extenv := M.add x t !extenv;
       t
-    | LetRec({ name = (x, t); args = yts; body = e1 }, e2) -> (* let recの型推論 (caml2html: typing_letrec) *)
+    | LetRec({ name = (x, t); args = yts; body = e1 }, e2) ->
       let env = M.add x t env in
       unify t (Type.Fun(List.map snd yts, g (M.add_list yts env) e1));
       g env e2
-    | App(e, es) -> (* 関数適用の型推論 (caml2html: typing_app) *)
+    | App(e, es) ->
       let t = Type.gentyp () in
       unify (g env e) (Type.Fun(List.map (g env) es, t));
       t
@@ -140,7 +136,7 @@ let rec g env e = (* 型推論ルーチン (caml2html: typing_g) *)
     | LetTuple(xts, e1, e2) ->
       unify (Type.Tuple(List.map snd xts)) (g env e1);
       g (M.add_list xts env) e2
-    | Array(e1, e2) -> (* must be a primitive for "polymorphic" typing *)
+    | Array(e1, e2) ->
       unify (g env e1) Type.Int;
       Type.Array(g env e2)
     | Get(e1, e2) ->

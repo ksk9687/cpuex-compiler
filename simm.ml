@@ -1,6 +1,6 @@
 open Asm
 
-let rec g env = function (* 命令列の即値最適化 *)
+let rec g env = function
   | Ans(exp) -> Ans(g' env exp)
   | Let((x, t), Set(i), e) when (-8192 < i) && (i < 8192) ->
       (* Format.eprintf "found simm %s = %d@." x i; *)
@@ -10,7 +10,7 @@ let rec g env = function (* 命令列の即値最適化 *)
        e')
   | Let(xt, exp, e) -> Let(xt, g' env exp, g env e)
   | Forget(x, e) -> Forget(x, g env e)
-and g' env = function (* 各命令の即値最適化 *)
+and g' env = function
   | Add(x, V(y)) when M.mem y env -> Add(x, C(M.find y env))
   | Add(x, V(y)) when M.mem x env -> Add(y, C(M.find x env))
   | Sub(x, V(y)) when M.mem y env -> Sub(x, C(M.find y env))
@@ -31,8 +31,8 @@ and g' env = function (* 各命令の即値最適化 *)
   | IfFLE(x, y, e1, e2) -> IfFLE(x, y, g env e1, g env e2)
   | e -> e
 
-let h { name = l; args = xs; body = e; ret = t } = (* トップレベル関数の即値最適化 *)
+let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }
 
-let f (Prog(data, fundefs, e)) = (* プログラム全体の即値最適化 *)
+let f (Prog(data, fundefs, e)) =
   Prog(data, List.map h fundefs, g M.empty e)
