@@ -20,6 +20,10 @@ let pp_id_or_imm = function
   | C(i) -> string_of_int i
   | L(Id.L(l)) -> l
 
+let name s =
+  try String.sub s 0 (String.index s '.')
+  with Not_found -> s
+
 (* 関数呼び出しのために引数を並べ替える(register shuffling) (caml2html: emit_shuffle) *)
 let rec shuffle sw xys =
   (* remove identical moves *)
@@ -263,11 +267,13 @@ and g'_args oc x_reg_cl ys =
 
 let h oc { name = Id.L(x); args = _; body = e; ret = _ } =
   Printf.fprintf oc "\n######################################################################\n";
+  Printf.fprintf oc ".begin %s\n" (name x);
   Printf.fprintf oc "%s:\n" x;
   stacksize := List.length (calcStack [] e) + 1;
   stackset := S.empty;
   stackmap := [];
-  g oc false (Tail, e)
+  g oc false (Tail, e);
+  Printf.fprintf oc ".end %s\n" (name x)
 
 let f oc (Prog(data, fundefs, e)) =
   Format.eprintf "generating assembly...@.";
@@ -276,9 +282,11 @@ let f oc (Prog(data, fundefs, e)) =
     data;
   List.iter (fun fundef -> h oc fundef) fundefs;
   Printf.fprintf oc "\n######################################################################\n";
+  Printf.fprintf oc ".begin start\n";
   Printf.fprintf oc "min_caml_start:\n";
   stacksize := List.length (calcStack [] e) + 1;
   stackset := S.empty;
   stackmap := [];
   g oc false (NonTail(reg_tmp), e);
-  Printf.fprintf oc "\thalt\n"
+  Printf.fprintf oc "\thalt\n";
+  Printf.fprintf oc ".end start\n"

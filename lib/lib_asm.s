@@ -7,6 +7,7 @@
 ######################################################################
 # * floor
 ######################################################################
+.begin floor
 min_caml_floor:
 	mov $2, $1
 	cmp $1, 0
@@ -36,10 +37,12 @@ FLOOR_ONE:
 	.float 1.0
 FLOOR_MONE:
 	.float -1.0
+.end floor
 
 ######################################################################
 # * float_of_int
 ######################################################################
+.begin float_of_int
 min_caml_float_of_int:
 	mov $2, $1
 	cmp $1, 0
@@ -76,11 +79,12 @@ ITOF_LOOP2:
 	fsub $7, $4, $7		# $tempf = itof($7)
 	fadd $1, $7, $1		# $f1 = $f1 + $tempf (i.e. $f1 = itof($6 * $4) + itof($7) )
 	ret
-
+.end float_of_int
 
 ######################################################################
 # * int_of_float
 ######################################################################
+.begin int_of_float
 min_caml_int_of_float:
 	mov $2, $1
 	cmp $1, 0
@@ -124,13 +128,13 @@ FLOAT_MAGICF:
 	.float 8388608.0
 FLOAT_MAGICFHX:
 	.int 1258291200			# 0x4b000000
-
+.end int_of_float
 
 ######################################################################
 # * read_int=read_float
 # * wordバイナリ読み込み
 ######################################################################
-	# TODO
+.begin read
 min_caml_read_int:
 min_caml_read_float:
 read_1:
@@ -156,21 +160,25 @@ read_4:
 	bg read_4
 	add $1, $2, $1
 	ret
+.end read
 
 ######################################################################
 # * write
 # * バイト出力
 # * 失敗してたらループ
 ######################################################################
+.begin write
 min_caml_write:
 	write $2, $tmp
 	cmp $tmp, 0
 	bg min_caml_write
 	ret
+.end write
 
 ######################################################################
 # * create_array
 ######################################################################
+.begin create_array
 min_caml_create_array:
 	mov $2, $1
 	mov $3, $2
@@ -184,16 +192,19 @@ CREATE_ARRAY_LOOP:
 	b CREATE_ARRAY_LOOP
 CREATE_ARRAY_END:
 	ret
+.end create_array
 
 ######################################################################
 # * ledout_in
 # * ledout_float
 # * バイトLED出力
 ######################################################################
+.begin ledout
 min_caml_ledout_int:
 min_caml_ledout_float:
 	ledout $2
 	ret
+.end ledout
 
 ######################################################################
 # * 算術関数(atan, sin, cos)
@@ -232,6 +243,17 @@ f._182:	.float  1.0000000000E+00
 f._181:	.float  5.0000000000E-01
 
 ######################################################################
+.begin atan
+min_caml_atan:
+	load    [f._182], $3
+	li      0, $10
+	mov     $3, $6
+	mov     $zero, $5
+	mov     $2, $4
+	mov     $10, $2
+	b       cordic_rec._146
+
+######################################################################
 cordic_rec._146:
 	cmp     $2, 25
 	bne     be_else._192
@@ -261,58 +283,10 @@ ble_else._193:
 	fmul    $6, $7, $6
 	add     $2, 1, $2
 	b       cordic_rec._146
+.end atan
 
 ######################################################################
-min_caml_atan:
-	load    [f._182], $3
-	li      0, $10
-	mov     $3, $6
-	mov     $zero, $5
-	mov     $2, $4
-	mov     $10, $2
-	b       cordic_rec._146
-
-######################################################################
-cordic_rec._111:
-	cmp     $3, 25
-	bne     be_else._194
-	mov     $5, $1
-	ret
-be_else._194:
-	fcmp    $2, $6
-	bg      ble_else._195
-	fmul    $7, $5, $10
-	fmul    $7, $4, $9
-	load    [min_caml_atan_table + $3], $8
-	load    [f._181], $1
-	fadd    $4, $10, $4
-	fsub    $5, $9, $5
-	fsub    $6, $8, $6
-	fmul    $7, $1, $7
-	add     $3, 1, $3
-	b       cordic_rec._111
-ble_else._195:
-	fmul    $7, $5, $10
-	fmul    $7, $4, $9
-	load    [min_caml_atan_table + $3], $8
-	load    [f._181], $1
-	fsub    $4, $10, $4
-	fadd    $5, $9, $5
-	fadd    $6, $8, $6
-	fmul    $7, $1, $7
-	add     $3, 1, $3
-	b       cordic_rec._111
-
-######################################################################
-cordic_sin._82:
-	load    [f._183], $4
-	load    [f._182], $7
-	li      0, $3
-	mov     $zero, $6
-	mov     $zero, $5
-	b       cordic_rec._111
-
-######################################################################
+.begin sin
 min_caml_sin:
 	fcmp    $zero, $2
 	bg      ble_else._196
@@ -354,10 +328,53 @@ ble_else._196:
 	ret
 
 ######################################################################
+cordic_rec._111:
+	cmp     $3, 25
+	bne     be_else._194
+	mov     $5, $1
+	ret
+be_else._194:
+	fcmp    $2, $6
+	bg      ble_else._195
+	fmul    $7, $5, $10
+	fmul    $7, $4, $9
+	load    [min_caml_atan_table + $3], $8
+	load    [f._181], $1
+	fadd    $4, $10, $4
+	fsub    $5, $9, $5
+	fsub    $6, $8, $6
+	fmul    $7, $1, $7
+	add     $3, 1, $3
+	b       cordic_rec._111
+ble_else._195:
+	fmul    $7, $5, $10
+	fmul    $7, $4, $9
+	load    [min_caml_atan_table + $3], $8
+	load    [f._181], $1
+	fsub    $4, $10, $4
+	fadd    $5, $9, $5
+	fadd    $6, $8, $6
+	fmul    $7, $1, $7
+	add     $3, 1, $3
+	b       cordic_rec._111
+
+######################################################################
+cordic_sin._82:
+	load    [f._183], $4
+	load    [f._182], $7
+	li      0, $3
+	mov     $zero, $6
+	mov     $zero, $5
+	b       cordic_rec._111
+.end sin
+
+######################################################################
+.begin cos
 min_caml_cos:
 	load    [f._184], $10
 	fsub    $10, $2, $2
 	b       min_caml_sin
+.end cos
 
 ######################################################################
 #
