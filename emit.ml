@@ -11,35 +11,34 @@ let rec g oc cont = function
       g oc cont e
   | If(b, bn, e1, e2, e3) ->
       let cont' = seq e3 cont in
-      match cont', e1, e2 with
-        | End, _, _ ->
-				    let b_else = Id.genid (b ^ "_else") in
-			 	    Printf.fprintf oc "\t%-8s%s\n" bn b_else;
-				    g oc cont' e1;
-				    Printf.fprintf oc "%s:\n" b_else;
-				    g oc cont' e2
-        | _, End, _ ->
-            let b_skip = Id.genid (b ^ "_skip") in
+      if cont' = End then
+		    let b_else = Id.genid (b ^ "_else") in
+	 	    Printf.fprintf oc "\t%-8s%s\n" bn b_else;
+		    g oc cont' e1;
+		    Printf.fprintf oc "%s:\n" b_else;
+		    g oc cont' e2
+      else if e1 = End then
+		    let b_skip = Id.genid (b ^ "_skip") in
 		        Printf.fprintf oc "\t%-8s%s\n" b b_skip;
 		        g oc cont' e2;
 		        Printf.fprintf oc "%s:\n" b_skip;
-            g oc cont e3
-        | _, _, End ->
-            let bn_skip = Id.genid (bn ^ "_skip") in
+		    g oc cont e3
+      else if e2 = End then
+		    let bn_skip = Id.genid (bn ^ "_skip") in
 		        Printf.fprintf oc "\t%-8s%s\n" bn bn_skip;
 		        g oc cont' e1;
 		        Printf.fprintf oc "%s:\n" bn_skip;
-            g oc cont e3
-        | _ ->
-				    let b_else = Id.genid (b ^ "_else") in
-			      let b_cont = Id.genid (b ^ "_cont") in
-			 	    Printf.fprintf oc "\t%-8s%s\n" bn b_else;
-				    g oc cont' e1;
-			      Printf.fprintf oc "\t%-8s%s\n" "b" b_cont;
-				    Printf.fprintf oc "%s:\n" b_else;
-				    g oc cont' e2;
-			      Printf.fprintf oc "%s:\n" b_cont;
-			      g oc cont e3
+		    g oc cont e3
+      else
+		    let b_else = Id.genid (b ^ "_else") in
+	      let b_cont = Id.genid (b ^ "_cont") in
+	 	    Printf.fprintf oc "\t%-8s%s\n" bn b_else;
+		    g oc cont' e1;
+	      Printf.fprintf oc "\t%-8s%s\n" "b" b_cont;
+		    Printf.fprintf oc "%s:\n" b_else;
+		    g oc cont' e2;
+	      Printf.fprintf oc "%s:\n" b_cont;
+	      g oc cont e3
 
 let h oc name x e =
   Printf.fprintf oc "\n######################################################################\n";
