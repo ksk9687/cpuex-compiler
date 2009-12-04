@@ -54,16 +54,16 @@ and hasPut' l i = function
 let rec g env = function
   | Ans(exp) -> Ans(g' env exp)
   | Let((x, t), Ld(L(l), C(i)), e) when List.mem_assoc (l, i) !gtable ->
-(*      if hasPut l i e then
+      (* これ除去するとまずいがレイトレは動く
+      if hasPut l i e then
         Let((x, t), Mov(List.assoc (l, i) !gtable), g env e)
-      else*)
-      (* これだとまずいがレイトレは動く *)
-        g (M.add x (List.assoc (l, i) !gtable) env) e
+      else *)
+        g (M.add x (List.assoc (l, i) !gtable) env) e 
   | Let(xt, exp, e) -> Let(xt, g' env exp, g env e)
   | Forget(x, e) -> Forget(x, g env e)
 and g' env = function
   | Ld(L(l), C(i)) when List.mem_assoc (l, i) !gtable -> Mov(List.assoc (l, i) !gtable)
-  | St(x, L(l), C(i)) when List.mem_assoc (l, i) !gtable -> MovR(x, List.assoc (l, i) !gtable)
+  | St(x, L(l), C(i)) when List.mem_assoc (l, i) !gtable -> MovR(replace x env, List.assoc (l, i) !gtable)
   | Mov(x) -> Mov(replace x env)
   | Neg(x) -> Neg(replace x env)
   | Add(x, y') -> Add(replace x env, replace' y' env)

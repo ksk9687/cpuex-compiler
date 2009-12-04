@@ -1,6 +1,5 @@
 open Scalar
 
-(* 1534253762 instr. *)
 let rec size = function
   | End -> 0
   | Seq(_, e) -> 1 + (size e)
@@ -16,11 +15,8 @@ let inter xs ys =
   List.fold_left (fun zs x -> if List.mem x ys then x :: zs else zs) [] xs
 
 let rec getFirst reads writes = function
-  | Seq(Exp(asm, read, write) as exp, e) when List.mem "all" write ->
-      if reads = [] && writes = [] then [exp]
-      else []
-  | Seq(Exp(asm, read, write) as exp, e) ->
-      if (inter reads write) <> [] || (inter writes read) <> [] then getFirst (read@reads) (write@writes) e
+  | Seq(Exp(asm, read, write) as exp, e) when not (List.mem "all" write) ->
+      if (inter (reads @ writes) write) <> [] || (inter writes read) <> [] then getFirst (read@reads) (write@writes) e
       else exp :: (getFirst (read@reads) (write@writes) e)
   | _ -> []
 

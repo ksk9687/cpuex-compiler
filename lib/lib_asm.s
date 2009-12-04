@@ -302,12 +302,16 @@ min_caml_sin:
 	fsub    $2, $10, $2
 	b       min_caml_sin
 ble_else._199:
+.count stack_move
 	sub     $sp, 1, $sp
+.count stack_store
 	store   $ra, [$sp + 0]
 	fsub    $10, $2, $2
 	jal     min_caml_sin
 	mov     $1, $10
+.count stack_load
 	load    [$sp + 0], $ra
+.count stack_move
 	add     $sp, 1, $sp
 	fneg    $10, $1
 	ret
@@ -317,12 +321,16 @@ ble_else._198:
 ble_else._197:
 	b       cordic_sin._82
 ble_else._196:
+.count stack_move
 	sub     $sp, 1, $sp
+.count stack_store
 	store   $ra, [$sp + 0]
 	fneg    $2, $2
 	jal     min_caml_sin
 	mov     $1, $10
+.count stack_load
 	load    [$sp + 0], $ra
+.count stack_move
 	add     $sp, 1, $sp
 	fneg    $10, $1
 	ret
