@@ -1,10 +1,5 @@
 open Scalar
 
-let rec size = function
-  | End -> 0
-  | Seq(_, e) -> 1 + (size e)
-  | If(_, _, e1, e2, e3) -> 2 + (size e1) + (size e2) + (size e3)
-
 let getRead = function
   | Exp(_, read, _) -> read
 
@@ -26,19 +21,17 @@ let rec remove exp = function
   | _ -> assert false
 
 let rec g cont = function
-  | End -> End
-  | Seq(Exp(asm, _, _) as exp, e) ->
-      Seq(exp, g cont e)
+  | End | Ret _ | Jmp _ as e -> e
+  | Call(s, e) -> Call(s, g cont e)
+  | Seq(Exp(asm, _, _) as exp, e) -> Seq(exp, g cont e)
   | If(b, bn, e1, e2, e3) ->
       let cont' = seq e3 cont in
       let exps = inter (getFirst ["cond"] [] e1) (getFirst ["cond"] [] e2) in
       if e1 = End && e2 = End then
-        (Format.eprintf "RemoveJmp@."; g cont e3)
+        ((*Format.eprintf "RemoveJmp@.";*) g cont e3)
       else if exps <> [] then
         let exp = List.hd exps in
-        (Format.eprintf "MoveFirst@."; Seq(exp, g cont (If(b, bn, remove exp e1, remove exp e2, e3))))
-      else if cont' <> End && (size cont') <= 5 then
-        (Format.eprintf "MoveCont %d@." (size cont'); If(b, bn, g End (seq e1 cont'), g End (seq e2 cont'), End))
+        ((*Format.eprintf "MoveFirst@.";*) Seq(exp, g cont (If(b, bn, remove exp e1, remove exp e2, e3))))
       else
         If(b, bn, g cont' e1, g cont' e2, g cont e3)
 

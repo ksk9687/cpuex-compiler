@@ -28,7 +28,6 @@ and exp =
   | IfGE of Id.t * id_or_imm * t * t
   | IfFEq of Id.t * Id.t * t * t
   | IfFLE of Id.t * Id.t * t * t
-  | CallCls of Id.t * Id.t list
   | CallDir of Id.l * Id.t list
   | Save of Id.t * Id.t
   | Restore of Id.t
@@ -71,7 +70,6 @@ let rec fv' = function
   | FAdd(x, y) | FSub(x, y) | FMul(x, y) | MovR(x, y) -> [x; y]
   | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> x :: fv_id_or_imm y'
   | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> [x; y]
-  | CallCls(x, ys) -> x :: ys
   | CallDir(_, ys) -> ys
 let rec fv_exp env cont e =
   let xs = fv' e in

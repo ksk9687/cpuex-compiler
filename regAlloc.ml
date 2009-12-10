@@ -33,10 +33,6 @@ let rec target' src (dest, t) = function
       let c1, rs1 = target src (dest, t) e1 in
       let c2, rs2 = target src (dest, t) e2 in
       c1 && c2, rs1 @ rs2
-  | CallCls(x, ys) ->
-      true, (target_args src regs 1 ys @ 
-               if x = src then [reg_cl] else [] @
-     S.elements (get_safe_regs x))
   | CallDir(Id.L(x), ys) ->
       true, (target_args src regs 1 ys @
          S.elements (get_safe_regs x))
@@ -176,7 +172,6 @@ and g' dest cont regenv = function
   | IfGE(x, y', e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfGE(find x Type.Int regenv, find' y' regenv, e1', e2')) e1 e2
   | IfFEq(x, y, e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfFEq(find x Type.Float regenv, find y Type.Float regenv, e1', e2')) e1 e2
   | IfFLE(x, y, e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfFLE(find x Type.Float regenv, find y Type.Float regenv, e1', e2')) e1 e2
-  | CallCls(x, ys) as exp -> g'_call x dest cont regenv exp (fun ys -> CallCls(find x Type.Int regenv, ys)) ys
   | CallDir(Id.L(x), ys) as exp -> g'_call x dest cont regenv exp (fun ys -> CallDir(Id.L(x), ys)) ys
   | Save(x, y) ->
       assert (x = y);
@@ -229,7 +224,7 @@ let rec set_safe_regs_t env = function
   | Let ((x, _), e, t) -> set_safe_regs_t (set_safe_regs_exp (S.remove x env) e) t
   | Forget (x, t) -> set_safe_regs_t (S.remove x env) t
 and set_safe_regs_exp env = function
-  | CallCls (x, _) | CallDir (Id.L(x), _) ->
+  | CallDir (Id.L(x), _) ->
       S.inter (get_safe_regs x) env
   | IfEq (_, _, t1, t2) | IfLE (_, _, t1, t2) | IfGE (_, _, t1, t2)
   | IfFEq (_, _, t1, t2) | IfFLE (_, _, t1, t2) ->

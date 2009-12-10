@@ -28,7 +28,6 @@ and exp =
   | IfGE of Id.t * id_or_imm * t * t
   | IfFEq of Id.t * Id.t * t * t
   | IfFLE of Id.t * Id.t * t * t
-  | CallCls of Id.t * Id.t list
   | CallDir of Id.l * Id.t list
   | Save of Id.t * Id.t
   | Restore of Id.t

@@ -48,7 +48,7 @@ and hasPut' l i = function
   | St(_, L(l'), C(i')) when l' = l && i' = i -> true
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2)
   | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) -> (hasPut l i e1) || (hasPut l i e2)
-  | CallCls _ | CallDir _ -> true
+  | CallDir _ -> true
   | _ -> false
 
 let rec g env = function
@@ -83,7 +83,6 @@ and g' env = function
   | IfGE(x, y', e1, e2) -> IfGE(replace x env, replace' y' env, g env e1, g env e2)
   | IfFEq(x, y, e1, e2) -> IfFEq(replace x env, replace y env, g env e1, g env e2)
   | IfFLE(x, y, e1, e2) -> IfFLE(replace x env, replace y env, g env e1, g env e2)
-  | CallCls(x, ys) -> CallCls(replace x env, List.map (fun y -> replace y env) ys)
   | CallDir(l, ys) -> CallDir(l, List.map (fun y -> replace y env) ys)
   | e -> e
 

@@ -2,6 +2,9 @@ open Asm
 
 type t =
   | End
+  | Ret of string
+  | Jmp of string * string
+  | Call of string * t
   | Seq of exp * t
   | If of string * string * t * t * t
 and exp = Exp of string * string list * string list (* asm, read, write *)
@@ -10,8 +13,10 @@ type prog = Prog of (Id.l * float) list * (Id.l * t) list * t
 let rec seq e1 e2 =
   match e1 with
     | End -> e2
-    | Seq(e1', e2') -> Seq(e1', seq e2' e2)
+    | Call(s, e) -> Call(s, seq e e2)
+    | Seq(exp, e) -> Seq(exp, seq e e2)
     | If(b, bn, e1', e2', e3') -> If(b, bn, e1', e2', seq e3' e2)
+    | _ -> e1
 
 let reg = function
   | V(x) -> [x]
@@ -22,7 +27,7 @@ let pp_id_or_imm = function
   | C(i) -> string_of_int i
   | L(Id.L(l)) -> l
 
-let ret = Seq(Exp(Printf.sprintf "\tret\n", [], ["all"]), End)
+let ret = Ret(Printf.sprintf "\tret\n")
 let cmp x y' = Seq(Exp(Printf.sprintf "\t%-8s%s, %s\n" "cmp" x (pp_id_or_imm y'), x :: (reg y'), ["cond"]), End)
 let fcmp x y = Seq(Exp(Printf.sprintf "\t%-8s%s, %s\n" "fcmp" x y, [x; y], ["cond"]), End)
 
@@ -66,7 +71,7 @@ let rec hasNonTailCall tail = function (* 非末尾関数呼び出しがある�
   | Let(_, exp, e) -> hasNonTailCall' false exp || hasNonTailCall tail e
   | Forget _ -> assert false
 and hasNonTailCall' tail = function
-  | CallCls _ | CallDir _ -> not tail
+  | CallDir _ -> not tail
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) |
     IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
       if tail then (hasNonTailCall tail e1) && (hasNonTailCall tail e2) (* 末尾の場合は必ずあるか *)
@@ -78,7 +83,7 @@ let rec notHasNonTailCall tail = function (* 非末尾関数呼び出しが絶�
   | Let(_, exp, e) -> notHasNonTailCall' false exp && notHasNonTailCall tail e
   | Forget _ -> assert false
 and notHasNonTailCall' tail = function
-  | CallCls _ | CallDir _ -> tail
+  | CallDir _ -> tail
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) |
     IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
       (notHasNonTailCall tail e1) && (notHasNonTailCall tail e2)
@@ -179,25 +184,12 @@ and g' saved s = function
       seq (fcmp x y) (g'_non_tail_if saved (NonTail(z)) e1 e2 "be" "bne")
   | NonTail(z), IfFLE(x, y, e1, e2) ->
       seq (fcmp x y) (g'_non_tail_if saved (NonTail(z)) e1 e2 "ble" "bg")
-  | Tail, CallCls(x, ys) ->
-      let e = g'_args [(x, reg_cl)] ys in
-      let e = seq e (g' saved ".count closure\n" (NonTail(reg_tmp), Ld(V(reg_cl), C(0)))) in
-      seq e (Seq(Exp(Printf.sprintf "%s\t%-8s%s\n" s "jr" reg_tmp, [], ["all"]), End))
   | Tail, CallDir(Id.L(x), ys) ->
       let e = g'_args [] ys in
-      seq e (Seq(Exp(Printf.sprintf "%s\t%-8s%s\n" s "b" x, [], ["all"]), End))
-  | NonTail(a), CallCls(x, ys) ->
-      let e = g'_args [(x, reg_cl)] ys in
-      let e = seq e (g' saved ".count closure\n" (NonTail(reg_tmp), Ld(V(reg_cl), C(0)))) in
-      let ra = Id.genid ("cls") in
-      let e = seq e (g' saved "" (NonTail(reg_ra), SetL(Id.L(ra)))) in
-      let e = seq e (Seq(Exp(Printf.sprintf "%s\t%-8s%s\n" s "jr" reg_tmp, [], ["all"; "cond"]), End)) in
-      let e = seq e (Seq(Exp(Printf.sprintf "%s:\n" ra, [], ["all"]), End)) in
-      if List.mem a allregs && a <> regs.(0) then seq e (g' saved ".count move_ret\n" (NonTail(a), Mov(regs.(0))))
-      else e
+      seq e (Jmp(s, x))
   | NonTail(a), CallDir(Id.L(x), ys) ->
       let e = g'_args [] ys in
-      let e = seq e (Seq(Exp(Printf.sprintf "%s\t%-8s%s\n" s "jal" x, [], ["all"; "cond"]), End)) in
+      let e = seq e (Call(Printf.sprintf "%s\t%-8s%s\n" s "jal" x, End)) in
       if List.mem a allregs && a <> regs.(0) then seq e (g' saved ".count move_ret\n" (NonTail(a), Mov(regs.(0))))
       else e
 and g'_tail_if saved e1 e2 b bn =

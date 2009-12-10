@@ -1,5 +1,8 @@
 type t =
   | End
+  | Ret of string
+  | Jmp of string * string
+  | Call of string * t
   | Seq of exp * t
   | If of string * string * t * t * t
 and exp = Exp of string * string list * string list (* asm, read, write *)

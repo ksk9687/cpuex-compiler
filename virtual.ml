@@ -67,22 +67,6 @@ let rec g env = function
       (match M.find x env with
       | Type.Unit -> Ans(Nop)
       | _ -> Ans(Mov(x)))
-  | Closure.MakeCls((x, t), { Closure.entry = l; Closure.actual_fv = ys }, e2) ->
-      let e2' = g (M.add x t env) e2 in
-      let offset, store_fv =
-        expand
-          (List.map (fun y -> (y, M.find y env)) ys)
-          (1, e2')
-          (fun y _ offset store_fv -> seq(St(y, V(x), C(offset)), store_fv)) in
-      Let((x, t), Mov(reg_hp),
-          Let((reg_hp, Type.Int), Add(reg_hp, C(offset)),
-              let z = Id.genid "l" in
-              Let((z, Type.Int), SetL(l),
-                  seq(St(z, V(x), C(0)),
-                      store_fv))))
-  | Closure.AppCls(x, ys) ->
-      let xts = separate (List.map (fun y -> (y, M.find y env)) ys) in
-      Ans(CallCls(x, xts))
   | Closure.AppDir(Id.L(x), ys) ->
       let xts = separate (List.map (fun y -> (y, M.find y env)) ys) in
       Ans(CallDir(Id.L(x), xts))

@@ -18,8 +18,6 @@ type t =
   | IfLE of Id.t * Id.t * t * t
   | Let of (Id.t * Type.t) * t * t
   | Var of Id.t
-  | MakeCls of (Id.t * Type.t) * closure * t
-  | AppCls of Id.t * Id.t list
   | AppDir of Id.l * Id.t list
   | Tuple of Id.t list
   | LetTuple of (Id.t * Type.t) list * Id.t * t
@@ -39,8 +37,6 @@ let rec fv = function
   | IfEq(x, y, e1, e2)| IfLE(x, y, e1, e2) -> S.add x (S.add y (S.union (fv e1) (fv e2)))
   | Let((x, t), e1, e2) -> S.union (fv e1) (S.remove x (fv e2))
   | Var(x) -> S.singleton x
-  | MakeCls((x, t), { entry = l; actual_fv = ys }, e) -> S.remove x (S.union (S.of_list ys) (fv e))
-  | AppCls(x, ys) -> S.of_list (x :: ys)
   | AppDir(_, xs) | Tuple(xs) -> S.of_list xs
   | LetTuple(xts, y, e) -> S.add y (S.diff (fv e) (S.of_list (List.map fst xts)))
   | Put(x, y, z) -> S.of_list [x; y; z]
@@ -82,14 +78,14 @@ let rec g env known = function
       toplevel := { name = (Id.L(x), t); args = yts; formal_fv = zts; body = e1' } :: !toplevel;
       let e2' = g env' known' e2 in
       if S.mem x (fv e2') then
-        MakeCls((x, t), { entry = Id.L(x); actual_fv = zs }, e2')
+        assert false
       else (
 (*        Format.eprintf "eliminating closure(s) %s@." x;*)
          e2')
   | KNormal.App(x, ys) when S.mem x known ->
 (*      Format.eprintf "directly applying %s@." x;*)
       AppDir(Id.L(x), ys)
-  | KNormal.App(f, xs) -> AppCls(f, xs)
+  | KNormal.App(f, xs) -> assert false
   | KNormal.Tuple(xs) -> Tuple(xs)
   | KNormal.LetTuple(xts, y, e) -> LetTuple(xts, y, g (M.add_list xts env) known e)
   | KNormal.Get(x, y) -> Get(x, y)
