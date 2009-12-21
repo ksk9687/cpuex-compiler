@@ -1,4 +1,4 @@
-(* debug_float *)
+(* '0' ‚ªo‚½‚ç³‰ğA'1' ‚ªo‚½‚ç•‰³‰ğ *)
 
 let rec fabs x =
   if x < 0.0 then -. x
