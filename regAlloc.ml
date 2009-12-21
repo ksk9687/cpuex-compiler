@@ -244,7 +244,7 @@ let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
 
 let h { name = Id.L(x); args = ys; body = e; ret = t } =
   Format.eprintf "Allocating: %s@." x;
-  let regenv = M.add x reg_cl M.empty in
+  let regenv = M.empty in
   let (i, arg_regs, regenv) =
     List.fold_left
       (fun (i, arg_regs, regenv) y ->

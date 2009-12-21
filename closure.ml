@@ -26,7 +26,6 @@ type t =
   | ExtArray of Id.l
 type fundef = { name : Id.l * Type.t;
                 args : (Id.t * Type.t) list;
-                formal_fv : (Id.t * Type.t) list;
                 body : t }
 type prog = Prog of fundef list * t
 
@@ -61,21 +60,15 @@ let rec g env known = function
   | KNormal.Let((x, t), e1, e2) -> Let((x, t), g env known e1, g (M.add x t env) known e2)
   | KNormal.Var(x) -> Var(x)
   | KNormal.LetRec({ KNormal.name = (x, t); KNormal.args = yts; KNormal.body = e1 }, e2) ->
-      let toplevel_backup = !toplevel in
       let env' = M.add x t env in
       let known' = S.add x known in
       let e1' = g (M.add_list yts env') known' e1 in
       let zs = S.diff (fv e1') (S.of_list (List.map fst yts)) in
-      let known', e1' =
-        if S.is_empty zs then known', e1' else
+      if not (S.is_empty zs) then
         (Format.eprintf "free variable(s) %s found in function %s@." (Id.pp_list (S.elements zs)) x;
          Format.eprintf "function %s cannot be directly applied in fact@." x;
-         toplevel := toplevel_backup;
-         let e1' = g (M.add_list yts env') known e1 in
-         known, e1') in
-      let zs = S.elements (S.diff (fv e1') (S.add x (S.of_list (List.map fst yts)))) in
-      let zts = List.map (fun z -> (z, M.find z env')) zs in
-      toplevel := { name = (Id.L(x), t); args = yts; formal_fv = zts; body = e1' } :: !toplevel;
+         assert false);
+      toplevel := { name = (Id.L(x), t); args = yts; body = e1' } :: !toplevel;
       let e2' = g env' known' e2 in
       if S.mem x (fv e2') then
         assert false

@@ -102,16 +102,11 @@ let rec g env = function
       | _ -> assert false)
   | Closure.ExtArray(Id.L(x)) -> Ans(SetL(Id.L("min_caml_" ^ x)))
 
-let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.formal_fv = zts; Closure.body = e } =
+let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.body = e } =
   let xts = separate yts in
-  let (offset, load) =
-    expand
-      zts
-      (1, g (M.add x t (M.add_list yts (M.add_list zts M.empty))) e)
-      (fun z t offset load -> Let((z, t), Ld(V(reg_cl), C(offset)), load)) in
   match t with
   | Type.Fun(_, t2) ->
-      { name = Id.L(x); args = xts; body = load; ret = t2 }
+      { name = Id.L(x); args = xts; body = g (M.add x t (M.add_list yts M.empty)) e; ret = t2 }
   | _ -> assert false
 
 let f (Closure.Prog(fundefs, e)) =

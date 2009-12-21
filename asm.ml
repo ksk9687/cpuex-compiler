@@ -41,7 +41,6 @@ let nfl = 5
 let ngl = 20
 let regs = Array.init nregs (fun i -> Printf.sprintf "$%d" (i + 1))
 let allregs = Array.to_list regs
-let reg_cl = regs.(Array.length regs - 1)
 let reg_tmp = "$tmp"
 let reg_sp = "$sp"
 let reg_hp = "$hp"
