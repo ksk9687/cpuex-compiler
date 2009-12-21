@@ -32,7 +32,7 @@ rule token = parse
     { BOOL(false) }
 | "not"
     { NOT }
-| digit+ (* 整数を字句解析するルール (caml2html: lexer_int) *)
+| digit+ (* 整数を字句解析するルール  *)
     { INT(int_of_string (Lexing.lexeme lexbuf)) }
 | digit+ ('.' digit*)? (['e' 'E'] ['+' '-']? digit+)?
     { FLOAT(float_of_string (Lexing.lexeme lexbuf)) }
@@ -82,6 +82,8 @@ rule token = parse
     { IDENT(Id.gentmp Type.Unit) }
 | "create_array" (* [XX] ad hoc *)
     { ARRAY_CREATE }
+| "fless" | "fispos" | "fisneg" | "fiszero" as func
+    { FUNC(func) }
 | '.'
     { DOT }
 | "<-"
@@ -94,11 +96,11 @@ rule token = parse
     { IDENT(Lexing.lexeme lexbuf) }
 | _
     { failwith
-	(Printf.sprintf "unknown token %s near line %d characters %d-%d"
-	   (Lexing.lexeme lexbuf)
-	   !lnum
-	   (Lexing.lexeme_start lexbuf)
-	   (Lexing.lexeme_end lexbuf)) }
+        (Printf.sprintf "unknown token %s near line %d characters %d-%d"
+           (Lexing.lexeme lexbuf)
+           !lnum
+           (Lexing.lexeme_start lexbuf)
+           (Lexing.lexeme_end lexbuf)) }
 and comment = parse
 | "*)"
     { () }

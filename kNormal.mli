@@ -5,13 +5,12 @@ type t =
   | Neg of Id.t
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
-  | SLL of Id.t * Id.t
-  | SRL of Id.t * Id.t
+  | SLL of Id.t * int
   | FNeg of Id.t
+  | FInv of Id.t
   | FAdd of Id.t * Id.t
   | FSub of Id.t * Id.t
   | FMul of Id.t * Id.t
-  | FDiv of Id.t * Id.t
   | IfEq of Id.t * Id.t * t * t
   | IfLE of Id.t * Id.t * t * t
   | Let of (Id.t * Type.t) * t * t
@@ -29,6 +28,4 @@ and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 val fv : t -> S.t
 val f : Syntax.t -> t
 
-(*
-val string : t -> unit
-*)
+val string : t -> t

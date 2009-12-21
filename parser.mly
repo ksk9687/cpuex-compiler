@@ -5,8 +5,7 @@ open Lexing
 let addtyp x = (x, Type.gentyp ())
 let rec log2 x =
   if x = 1 then 0
-  else if x mod 2 != 0 then assert false
-  else (log2 (x/2)) + 1
+  else (assert (x mod 2 = 0); (log2 (x / 2)) + 1)
 %}
 
 /* 字句を表すデータ型の定義 (caml2html: parser_token) */
@@ -37,6 +36,7 @@ let rec log2 x =
 %token REC
 %token COMMA
 %token ARRAY_CREATE
+%token <Id.t> FUNC
 %token DOT
 %token LESS_MINUS
 %token SEMICOLON
@@ -44,7 +44,7 @@ let rec log2 x =
 %token RPAREN
 %token EOF
 
-/* 優先順位とassociativityの定義（低い方から高い方へ） (caml2html: parser_prior) */
+/* 優先順位とassociativityの定義（低い方から高い方へ） */
 %right prec_let
 %right SEMICOLON
 %right prec_if
@@ -63,7 +63,7 @@ let rec log2 x =
 
 %%
 
-simple_exp: /* 括弧をつけなくても関数の引数になれる式 (caml2html: parser_simple) */
+simple_exp: /* 括弧をつけなくても関数の引数になれる式 */
 | LPAREN exp RPAREN
     { $2 }
 | LPAREN RPAREN
@@ -79,7 +79,7 @@ simple_exp: /* 括弧をつけなくても関数の引数になれる式 (caml2h
 | simple_exp DOT LPAREN exp RPAREN
     { Get($1, $4) }
 
-exp: /* 一般の式 (caml2html: parser_exp) */
+exp: /* 一般の式 */
 | simple_exp
     { $1 }
 | NOT exp
@@ -90,14 +90,14 @@ exp: /* 一般の式 (caml2html: parser_exp) */
     { match $2 with
     | Float(f) -> Float(-.f) (* -1.23などは型エラーではないので別扱い *)
     | e -> Neg(e) }
-| exp PLUS exp /* 足し算を構文解析するルール (caml2html: parser_add) */
+| exp PLUS exp /* 足し算を構文解析するルール  */
     { Add($1, $3) }
 | exp MINUS exp
     { Sub($1, $3) }
-| exp AST log2_x
-    { SLL($1, $3) }
-| exp SLASH log2_x
-    { SRL($1, $3) }
+| exp AST INT
+    { SLL($1, log2 $3) }
+| exp SLASH INT
+    { SLL($1, -(log2 $3)) }
 | exp EQUAL exp
     { Eq($1, $3) }
 | exp LESS_GREATER exp
@@ -123,7 +123,7 @@ exp: /* 一般の式 (caml2html: parser_exp) */
 | exp AST_DOT exp
     { FMul($1, $3) }
 | exp SLASH_DOT exp
-    { FDiv($1, $3) }
+    { FMul($1, FInv($3)) }
 | LET IDENT EQUAL exp IN exp
     %prec prec_let
     { Let(addtyp $2, $4, $6) }
@@ -146,14 +146,17 @@ exp: /* 一般の式 (caml2html: parser_exp) */
 | ARRAY_CREATE simple_exp simple_exp
     %prec prec_app
     { Array($2, $3) }
+| FUNC actual_args
+    %prec prec_app
+    { App(Var($1), $2) }
 | error
     { failwith
-	(Printf.sprintf "parse error from l:%d c:%d to l:%d c:%d "
-	   (Parsing.symbol_start_pos ()).pos_lnum 
-	   (Parsing.symbol_start_pos ()).pos_cnum 
-	   (Parsing.symbol_end_pos ()).pos_lnum 
-	   (Parsing.symbol_end_pos ()).pos_cnum 
-	)}
+        (Printf.sprintf "parse error from l:%d c:%d to l:%d c:%d "
+           (Parsing.symbol_start_pos ()).pos_lnum 
+           (Parsing.symbol_start_pos ()).pos_cnum 
+           (Parsing.symbol_end_pos ()).pos_lnum 
+           (Parsing.symbol_end_pos ()).pos_cnum 
+        )}
 
 fundef:
 | IDENT formal_args EQUAL exp
@@ -184,8 +187,3 @@ pat:
     { $1 @ [addtyp $3] }
 | IDENT COMMA IDENT
     { [addtyp $1; addtyp $3] }
-
-log2_x:
-| INT
-    {Int(log2 $1)}
-    

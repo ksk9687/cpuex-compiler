@@ -13,11 +13,14 @@ clean:: nobackup
 
 # ↓もし実装を改造したら、それに合わせて変える
 SOURCES = type.ml id.ml m.ml s.ml \
-syntax.ml parser.mly lexer.mll typing.mli typing.ml kNormal.mli kNormal.ml \
+syntax.ml parser.mly lexer.mll builtIn.mli builtIn.ml typing.mli typing.ml kNormal.mli kNormal.ml \
 alpha.mli alpha.ml beta.mli beta.ml assoc.mli assoc.ml \
-inline.mli inline.ml constFold.mli constFold.ml elim.mli elim.ml \
+inline.mli inline.ml constFold.mli constFold.ml movelet.mli movelet.ml cse.mli cse.ml constArg.mli constArg.ml\
 closure.mli closure.ml asm.mli asm.ml virtual.mli virtual.ml \
-simm.mli simm.ml regAlloc.mli regAlloc.ml emit.mli emit.ml \
+simm.mli simm.ml slabel.mli slabel.ml sfl.mli sfl.ml sglobal.mli sglobal.ml regAlloc.mli regAlloc.ml\
+scalar.mli scalar.ml moveAsm.mli moveAsm.ml emit.mli emit.ml \
 main.mli main.ml
+
+OCAMLFLAGS = -dtypes
 
 include OCamlMakefile

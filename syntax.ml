@@ -1,4 +1,4 @@
-type t = (* MinCamlの構文を表現するデータ型 (caml2html: syntax_t) *)
+type t =
   | Unit
   | Bool of bool
   | Int of int
@@ -7,13 +7,12 @@ type t = (* MinCamlの構文を表現するデータ型 (caml2html: syntax_t) *)
   | Neg of t
   | Add of t * t
   | Sub of t * t
-  | SLL of t * t
-  | SRL of t * t
+  | SLL of t * int
   | FNeg of t
+  | FInv of t
   | FAdd of t * t
   | FSub of t * t
   | FMul of t * t
-  | FDiv of t * t
   | Eq of t * t
   | LE of t * t
   | If of t * t * t
@@ -74,7 +73,7 @@ let rec string_t indent = function
   | LetTuple (list, u, v) ->
       indent ^ "Let\n" ^ indent ^ "  Tuple\n"
       ^ List.fold_left (fun x (i,y) -> x ^ indent ^ "    " ^ i ^ " : " ^ (Type.string_of_t y) ^"\n")
-	"" list
+  "" list
       ^ (string_t (indent ^ "  ") u)
       ^ "In\n"  ^ (string_t (indent ^ "  ") v)
   | Array (t,u) ->
