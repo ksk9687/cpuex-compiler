@@ -36,7 +36,7 @@ type prog = Prog of (Id.l * float) list * fundef list * t
 
 let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
-let nregs = 34
+let nregs = 35
 let nfl = 5
 let ngl = 20
 let regs = Array.init nregs (fun i -> Printf.sprintf "$%d" (i + 1))
@@ -44,7 +44,6 @@ let allregs = Array.to_list regs
 let reg_tmp = "$tmp"
 let reg_sp = "$sp"
 let reg_hp = "$hp"
-let reg_ra = "$ra"
 let reg_zero = "$zero"
 let is_reg x = (x.[0] = '$')
 let reg_fls = Array.to_list (Array.init nfl (fun i -> Printf.sprintf "$%d" (i + 1 + nregs)))

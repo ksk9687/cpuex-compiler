@@ -13,11 +13,10 @@ min_caml_floor:
 	cmp $1, 0
 	bge FLOOR_POSITIVE	# if ($f1 >= 0) FLOOR_POSITIVE
 	fneg $1, $1
-	mov $ra, $tmp
-	jal FLOOR_POSITIVE		# $f1 = FLOOR_POSITIVE(-$f1)
+	call FLOOR_POSITIVE		# $f1 = FLOOR_POSITIVE(-$f1)
 	load [FLOOR_MONE], $2
 	fsub $2, $1, $1		# $f1 = (-1) - $f1
-	jr $tmp
+	ret
 FLOOR_POSITIVE:
 	load [FLOAT_MAGICF], $3
 	cmp $1, $3
@@ -48,10 +47,9 @@ min_caml_float_of_int:
 	cmp $1, 0
 	bge ITOF_MAIN		# if ($i1 >= 0) goto ITOF_MAIN
 	neg $1, $1		# 正の値にしてitofした後に、マイナスにしてかえす
-	mov $ra, $tmp
-	jal ITOF_MAIN	# $f1 = float_of_int(-$i1)
+	call ITOF_MAIN	# $f1 = float_of_int(-$i1)
 	fneg $1, $1
-	jr $tmp
+	ret
 ITOF_MAIN:
 	load [FLOAT_MAGICI], $3		# $3 = 8388608
 	load [FLOAT_MAGICF], $4 		# $4 = 8388608.0
@@ -90,10 +88,9 @@ min_caml_int_of_float:
 	cmp $1, 0
 	bge FTOI_MAIN		# if ($f1 >= 0) goto FTOI_MAIN
 	fneg $1, $1		# 正の値にしてftoiした後に、マイナスにしてかえす
-	mov $ra, $tmp
-	jal FTOI_MAIN	# $i1 = float_of_int(-$f1)
+	call FTOI_MAIN	# $i1 = float_of_int(-$f1)
 	neg $1, $1
-	jr $tmp				# return
+	ret			# return
 FTOI_MAIN:
 	load [FLOAT_MAGICI], $3		# $3 = 8388608
 	load [FLOAT_MAGICF], $4 		# $4 = 8388608.0
@@ -302,17 +299,9 @@ min_caml_sin:
 	fsub    $2, $10, $2
 	b       min_caml_sin
 ble_else._199:
-.count stack_move
-	sub     $sp, 1, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
 	fsub    $10, $2, $2
-	jal     min_caml_sin
+	call     min_caml_sin
 	mov     $1, $10
-.count stack_load
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
 	fneg    $10, $1
 	ret
 ble_else._198:
@@ -321,17 +310,9 @@ ble_else._198:
 ble_else._197:
 	b       cordic_sin._82
 ble_else._196:
-.count stack_move
-	sub     $sp, 1, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
 	fneg    $2, $2
-	jal     min_caml_sin
+	call     min_caml_sin
 	mov     $1, $10
-.count stack_load
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
 	fneg    $10, $1
 	ret
 

@@ -48,7 +48,7 @@ let locate x =
 let offset x =
   let xs = locate x in
   if xs = [] then (Format.eprintf "Error: %s@." x; List.iter (fun s -> Format.eprintf "%s@." s) !stackmap; assert false)
-  else (List.hd xs) + 1
+  else List.hd xs
 
 let name s =
   try String.sub s 0 (String.index s '.')
@@ -107,13 +107,11 @@ let rec g saved (dest, e) =
   let tail = (match dest with Tail -> true | _ -> false) in
   let e1, saved' =
     if (not saved) && hasNonTailCall tail e then
-      let e1 = g' saved ".count stack_move\n" (NonTail(reg_sp), Sub(reg_sp, C(!stacksize))) in
-      let e2 = g' saved ".count stack_store\n" (NonTail(reg_tmp), St(reg_ra, V(reg_sp), C(0))) in
-      (seq e1 e2, true)
+      if !stacksize = 0 then (End, true)
+      else (g' saved ".count stack_move\n" (NonTail(reg_sp), Sub(reg_sp, C(!stacksize))), true)
     else if saved && tail && notHasNonTailCall tail e then
-      let e1 = g' saved ".count stack_load\n" (NonTail(reg_ra), Ld(V(reg_sp), C(0))) in
-      let e2 = g' saved ".count stack_move\n" (NonTail(reg_sp), Add(reg_sp, C(!stacksize))) in
-      (seq e1 e2, false)
+      if !stacksize = 0 then (End, false)
+      else (g' saved ".count stack_move\n" (NonTail(reg_sp), Add(reg_sp, C(!stacksize))), false)
     else
       (End, saved)
   in
@@ -189,7 +187,7 @@ and g' saved s = function
       seq e (Jmp(s, x))
   | NonTail(a), CallDir(Id.L(x), ys) ->
       let e = g'_args [] ys in
-      let e = seq e (Call(Printf.sprintf "%s\t%-8s%s\n" s "jal" x, End)) in
+      let e = seq e (Call(Printf.sprintf "%s\t%-8s%s\n" s "call" x, End)) in
       if List.mem a allregs && a <> regs.(0) then seq e (g' saved ".count move_ret\n" (NonTail(a), Mov(regs.(0))))
       else e
 and g'_tail_if saved e1 e2 b bn =
@@ -218,7 +216,7 @@ and g'_args x_reg_cl ys =
     (shuffle reg_tmp yrs) End
 
 let h e =
-  stacksize := List.length (calcStack [] e) + 1;
+  stacksize := List.length (calcStack [] e);
   stackset := S.empty;
   stackmap := [];
   g false (Tail, e)

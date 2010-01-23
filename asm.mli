@@ -39,7 +39,6 @@ val seq : exp * t -> t
 val regs : Id.t array
 val allregs : Id.t list
 val reg_tmp : Id.t
-val reg_ra : Id.t
 val reg_hp : Id.t
 val reg_sp : Id.t
 val reg_zero : Id.t
