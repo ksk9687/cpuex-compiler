@@ -34,17 +34,26 @@ let rec g = function
       else
         If(b, bn, g e1, g e2, g e3)
 
-let rec schedule write = function
+let aging write =
+  let write' = List.map (fun (x, y) -> (x-1, y)) write in
+    List.filter (fun (x, _) -> x >= 0) write'
+
+let rec schedule awrite = function
   | End | Ret _ | Jmp _ as e -> e
   | Call(s, e) -> Call(s, schedule [] e)
   | If(b, bn, e1, e2, e3) -> If(b, bn, schedule [] e1, schedule [] e2, schedule [] e3)
-  | Seq(exp, e) as es ->
-      let exps = getFirst [] write es in
-      if exps <> [] then
-        let exp = List.hd exps in
-        Seq(exp, schedule (getWrite exp) (remove exp es))
-      else
-        Seq(exp, schedule (getWrite exp) e)
+  | Seq(Exp(asm, reads, writes) as exp, e) ->
+      let awrite = aging awrite in
+      let write = List.fold_left (fun x (_,y) -> y@x) [] awrite in
+	if write = [] then Seq(exp, schedule [(4,writes)] e) 
+	else 
+	  if inter write reads <> [] then
+	    match getFirst reads (writes@write) e with
+	      | [] -> Seq(exp, schedule ((4,writes)::awrite) e)
+	      | (Exp(_,_,w) as hd) :: _ -> Seq(hd, schedule ((4,w)::awrite) (Seq(exp, remove hd e)))
+	  else
+	    schedule awrite (Seq(exp, e))
+
 
 let rec h e =
   let e' = g e in
