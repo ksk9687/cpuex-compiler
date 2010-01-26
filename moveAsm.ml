@@ -38,12 +38,18 @@ let rec schedule write = function
   | End | Ret _ | Jmp _ as e -> e
   | Call(s, e) -> Call(s, schedule [] e)
   | If(b, bn, e1, e2, e3) -> If(b, bn, schedule [] e1, schedule [] e2, schedule [] e3)
-  | Seq(exp, e) -> Seq(exp, schedule [] e)
+  | Seq(exp, e) as es ->
+      let exps = getFirst [] write es in
+      if exps <> [] then
+        let exp = List.hd exps in
+        Seq(exp, schedule (getWrite exp) (remove exp es))
+      else
+        Seq(exp, schedule (getWrite exp) e)
 
 let rec h e =
   let e' = g e in
   if e' = e then schedule [] e'
-  else h e
+  else h e'
 
 let f (Prog(data, fundefs, e)) =
   let fundefs = List.map (fun (f, e) -> (f, h e)) fundefs in
