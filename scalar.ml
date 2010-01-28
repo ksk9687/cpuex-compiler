@@ -7,7 +7,7 @@ type t =
   | Call of string * t
   | Seq of exp * t
   | If of string * string * t * t * t
-and exp = Exp of string * string list * string list (* asm, read, write *)
+and exp = Exp of string * string * string list * string list (* asm, read, write *)
 type prog = Prog of (Id.l * float) list * (Id.l * t) list * t
 
 let rec seq e1 e2 =
@@ -28,8 +28,8 @@ let pp_id_or_imm = function
   | L(Id.L(l)) -> l
 
 let ret = Ret(Printf.sprintf "\tret\n")
-let cmp x y' = Seq(Exp(Printf.sprintf "\t%-8s%s, %s\n" "cmp" x (pp_id_or_imm y'), x :: (reg y'), ["cond"]), End)
-let fcmp x y = Seq(Exp(Printf.sprintf "\t%-8s%s, %s\n" "fcmp" x y, [x; y], ["cond"]), End)
+let cmp x y' = Seq(Exp(Printf.sprintf "\t%-8s%s, %s\n" "cmp" x (pp_id_or_imm y'), "cmp", x :: (reg y'), ["cond"]), End)
+let fcmp x y = Seq(Exp(Printf.sprintf "\t%-8s%s, %s\n" "fcmp" x y, "fcmp", [x; y], ["cond"]), End)
 
 let stacksize = ref 0
 let stackset = ref S.empty
@@ -125,28 +125,28 @@ let rec g saved (dest, e) =
 and g' saved s = function
   | NonTail(_), Nop -> End
   | NonTail(x), Set(i) when i < 0 -> g' saved s (NonTail(x), Add(reg_zero, C(i)))
-  | NonTail(x), Set(i) -> Seq(Exp(Printf.sprintf "%s\t%-8s%d, %s\n" s "li" i x, [], [x]), End)
-  | NonTail(x), SetL(Id.L(y)) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "li" y x, [], [x]), End)
+  | NonTail(x), Set(i) -> Seq(Exp(Printf.sprintf "%s\t%-8s%d, %s\n" s "li" i x, "li", [], [x]), End)
+  | NonTail(x), SetL(Id.L(y)) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "li" y x, "li", [], [x]), End)
   | NonTail(x), Mov(y) when x = y -> End
-  | NonTail(x), Mov(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "mov" y x, [y], [x]), End)
-  | NonTail(x), Neg(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "neg" y x, [y], [x]), End)
-  | NonTail(x), Add(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "add" y (pp_id_or_imm z') x, y :: (reg z'), [x]), End)
-  | NonTail(x), Sub(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "sub" y (pp_id_or_imm z') x, y :: (reg z'), [x]), End)
-  | NonTail(x), SLL(y, i) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %d, %s\n" s "sll" y i x, [y], [x]), End)
-  | NonTail(x), Ld(y', C(z)) when z < 0 -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s - %d], %s\n" s "load" (pp_id_or_imm y') (-z) x, "memory" :: (reg y'), [x]), End)
-  | NonTail(x), Ld(y', z') -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s + %s], %s\n" s "load" (pp_id_or_imm y') (pp_id_or_imm z') x, "memory" :: (reg y')@(reg z'), [x]), End)
+  | NonTail(x), Mov(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "mov" y x, "mov", [y], [x]), End)
+  | NonTail(x), Neg(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "neg" y x, "neg", [y], [x]), End)
+  | NonTail(x), Add(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "add" y (pp_id_or_imm z') x, "add", y :: (reg z'), [x]), End)
+  | NonTail(x), Sub(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "sub" y (pp_id_or_imm z') x, "sub", y :: (reg z'), [x]), End)
+  | NonTail(x), SLL(y, i) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %d, %s\n" s "sll" y i x, "sll", [y], [x]), End)
+  | NonTail(x), Ld(y', C(z)) when z < 0 -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s - %d], %s\n" s "load" (pp_id_or_imm y') (-z) x, "load", "memory" :: (reg y'), [x]), End)
+  | NonTail(x), Ld(y', z') -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s + %s], %s\n" s "load" (pp_id_or_imm y') (pp_id_or_imm z') x, "load", "memory" :: (reg y')@(reg z'), [x]), End)
   | NonTail(r), St(x, V(y), V(z)) ->
       seq (g' saved (s ^ ".count storer\n") (NonTail(reg_tmp), Add(y, V(z)))) (g' saved "" (NonTail(r), St(x, V(reg_tmp), C(0))))
-  | NonTail(_), St(x, y', C(z)) when z < 0 -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, [%s - %d]\n" s "store" x (pp_id_or_imm y') (-z), x :: (reg y'), ["memory"]), End)
-  | NonTail(_), St(x, y', z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, [%s + %s]\n" s "store" x (pp_id_or_imm y') (pp_id_or_imm z'), x :: (reg y')@(reg z'), ["memory"]), End)
-  | NonTail(x), FNeg(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "fneg" y x, [y], [x]), End)
-  | NonTail(x), FInv(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "finv" y x, [y], [x]), End)
-  | NonTail(x), FSqrt(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "fsqrt" y x, [y], [x]), End)
-  | NonTail(x), FAbs(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "fabs" y x, [y], [x]), End)
-  | NonTail(x), FAdd(y, z) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "fadd" y z x, [y; z], [x]), End)
-  | NonTail(x), FSub(y, z) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "fsub" y z x, [y; z], [x]), End)
-  | NonTail(x), FMul(y, z) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "fmul" y z x, [y; z], [x]), End)
-  | NonTail(x), LdFL(Id.L(l)) -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s], %s\n" (s ^ ".count load_float\n") "load" l x, [], [x]), End)
+  | NonTail(_), St(x, y', C(z)) when z < 0 -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, [%s - %d]\n" s "store" x (pp_id_or_imm y') (-z), "store", x :: (reg y'), ["memory"]), End)
+  | NonTail(_), St(x, y', z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, [%s + %s]\n" s "store" x (pp_id_or_imm y') (pp_id_or_imm z'), "store", x :: (reg y')@(reg z'), ["memory"]), End)
+  | NonTail(x), FNeg(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "fneg" y x, "fneg", [y], [x]), End)
+  | NonTail(x), FInv(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "finv" y x, "finv", [y], [x]), End)
+  | NonTail(x), FSqrt(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "fsqrt" y x, "fsqrt", [y], [x]), End)
+  | NonTail(x), FAbs(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "fabs" y x, "fabs", [y], [x]), End)
+  | NonTail(x), FAdd(y, z) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "fadd" y z x, "fadd", [y; z], [x]), End)
+  | NonTail(x), FSub(y, z) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "fsub" y z x, "fsub", [y; z], [x]), End)
+  | NonTail(x), FMul(y, z) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "fmul" y z x, "fmul", [y; z], [x]), End)
+  | NonTail(x), LdFL(Id.L(l)) -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s], %s\n" (s ^ ".count load_float\n") "load" l x, "load", [], [x]), End)
   | NonTail(_), MovR(x, y) -> g' saved (s ^ ".count move_float\n") (NonTail(y), Mov(x))
   | NonTail(r), Save(x, y) when List.mem x allregs && not (S.mem y !stackset) ->
       save y;

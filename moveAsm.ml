@@ -1,16 +1,16 @@
 open Scalar
 
 let getRead = function
-  | Exp(_, read, _) -> read
+  | Exp(_, _, read, _) -> read
 
 let getWrite = function
-  | Exp(_, _, write) -> write
+  | Exp(_, _, _, write) -> write
 
 let inter xs ys =
   List.fold_left (fun zs x -> if List.mem x ys then x :: zs else zs) [] xs
 
 let rec getFirst reads writes = function
-  | Seq(Exp(asm, read, write) as exp, e) ->
+  | Seq(Exp(_, _, read, write) as exp, e) ->
       if (inter (reads @ writes) write) <> [] || (inter writes read) <> [] then getFirst (read@reads) (write@writes) e
       else exp :: (getFirst (read@reads) (write@writes) e)
   | _ -> []
@@ -23,7 +23,7 @@ let rec remove exp = function
 let rec g = function
   | End | Ret _ | Jmp _ as e -> e
   | Call(s, e) -> Call(s, g e)
-  | Seq(Exp(asm, _, _) as exp, e) -> Seq(exp, g e)
+  | Seq(Exp(asm, _, _, _) as exp, e) -> Seq(exp, g e)
   | If(b, bn, e1, e2, e3) ->
       let exps = inter (getFirst ["cond"] [] e1) (getFirst ["cond"] [] e2) in
       if e1 = End && e2 = End then
@@ -49,7 +49,7 @@ let rec schedule awrite = function
       let write = List.fold_left (fun x (_, y) -> y @ x) [] awrite in
       let exps = getFirst [] write es in
       let exp = if exps <> [] then List.hd exps else (incr miss; exp) in
-      Seq(exp, schedule ((4, (getWrite exp)) :: awrite) (remove exp es))
+      Seq(exp, schedule ((4, getWrite exp) :: awrite) (remove exp es))
 
 let rec h e =
   let e' = g e in
