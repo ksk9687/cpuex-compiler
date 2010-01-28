@@ -1,5 +1,24 @@
 open Scalar
 
+let delay =
+  List.fold_left
+    (fun m (n,list) ->
+       List.fold_left (fun m x -> M.add x n m) m list)
+    M.empty
+    [(0,["store";"mov"]);
+     (1,["cmp";"fcmp"]);
+     (2,["li";"add";"addi";"sub";"sll";"neg";"fabs";"fneg";"read";"write"]);
+     (3,["load";"loadr"]);
+     (4,["fadd";"fsub";"fmul";"finv";"fsqrt"])]
+
+let getDelay exp =
+  let Exp(_, inst, _, _) = exp in
+  try
+    M.find inst delay
+  with Not_found -> print_string inst; assert false
+
+
+
 let getRead = function
   | Exp(_, _, read, _) -> read
 
@@ -49,7 +68,7 @@ let rec schedule awrite = function
       let write = List.fold_left (fun x (_, y) -> y @ x) [] awrite in
       let exps = getFirst [] write es in
       let exp = if exps <> [] then List.hd exps else (incr miss; exp) in
-      Seq(exp, schedule ((4, getWrite exp) :: awrite) (remove exp es))
+      Seq(exp, schedule ((getDelay exp, getWrite exp) :: awrite) (remove exp es))
 
 let rec h e =
   let e' = g e in
