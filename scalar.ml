@@ -7,7 +7,7 @@ type t =
   | Call of string * t
   | Seq of exp * t
   | If of string * string * t * t * t
-and exp = Exp of string * string * string list * string list (* asm, read, write *)
+and exp = Exp of string * string * string list * string list (* asm, instr, read, write *)
 type prog = Prog of (Id.l * float) list * (Id.l * t) list * t
 
 let rec seq e1 e2 =
@@ -27,8 +27,12 @@ let pp_id_or_imm = function
   | C(i) -> string_of_int i
   | L(Id.L(l)) -> l
 
+let instr s = function
+  | V(x) -> s
+  | _ -> s ^ "i"
+
 let ret = Ret(Printf.sprintf "\tret\n")
-let cmp x y' = Seq(Exp(Printf.sprintf "\t%-8s%s, %s\n" "cmp" x (pp_id_or_imm y'), "cmp", x :: (reg y'), ["cond"]), End)
+let cmp x y' = Seq(Exp(Printf.sprintf "\t%-8s%s, %s\n" "cmp" x (pp_id_or_imm y'), instr "cmp" y', x :: (reg y'), ["cond"]), End)
 let fcmp x y = Seq(Exp(Printf.sprintf "\t%-8s%s, %s\n" "fcmp" x y, "fcmp", [x; y], ["cond"]), End)
 
 let stacksize = ref 0
@@ -129,11 +133,12 @@ and g' saved s = function
   | NonTail(x), SetL(Id.L(y)) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "li" y x, "li", [], [x]), End)
   | NonTail(x), Mov(y) when x = y -> End
   | NonTail(x), Mov(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "mov" y x, "mov", [y], [x]), End)
-  | NonTail(x), Neg(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "neg" y x, "neg", [y], [x]), End)
-  | NonTail(x), Add(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "add" y (pp_id_or_imm z') x, "add", y :: (reg z'), [x]), End)
-  | NonTail(x), Sub(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "sub" y (pp_id_or_imm z') x, "sub", y :: (reg z'), [x]), End)
+  | NonTail(x), Neg(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "neg" y x, "sub", [y], [x]), End)
+  | NonTail(x), Add(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "add" y (pp_id_or_imm z') x, instr "add" z', y :: (reg z'), [x]), End)
+  | NonTail(x), Sub(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "sub" y (pp_id_or_imm z') x, instr "sub" z', y :: (reg z'), [x]), End)
   | NonTail(x), SLL(y, i) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %d, %s\n" s "sll" y i x, "sll", [y], [x]), End)
   | NonTail(x), Ld(y', C(z)) when z < 0 -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s - %d], %s\n" s "load" (pp_id_or_imm y') (-z) x, "load", "memory" :: (reg y'), [x]), End)
+  | NonTail(x), Ld(V(y), V(z)) -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s + %s], %s\n" s "load" y z x, "loadr", ["memory"; y; z], [x]), End)
   | NonTail(x), Ld(y', z') -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s + %s], %s\n" s "load" (pp_id_or_imm y') (pp_id_or_imm z') x, "load", "memory" :: (reg y')@(reg z'), [x]), End)
   | NonTail(r), St(x, V(y), V(z)) ->
       seq (g' saved (s ^ ".count storer\n") (NonTail(reg_tmp), Add(y, V(z)))) (g' saved "" (NonTail(r), St(x, V(reg_tmp), C(0))))
@@ -150,11 +155,11 @@ and g' saved s = function
   | NonTail(_), MovR(x, y) -> g' saved (s ^ ".count move_float\n") (NonTail(y), Mov(x))
   | NonTail(r), Save(x, y) when List.mem x allregs && not (S.mem y !stackset) ->
       save y;
-      g' saved (s ^ ".count stack_store\n") (NonTail(r), St(x, V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
+      g' saved s (NonTail(r), St(x, V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
   | NonTail(_), Save(x, y) -> assert (S.mem y !stackset); End
   | NonTail(x), Restore(y) ->
       assert (List.mem x allregs);
-      g' saved (s ^ ".count stack_load\n") (NonTail(x), Ld(V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
+      g' saved s (NonTail(x), Ld(V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
   | Tail, (Nop | St _ | MovR _ | Save _ as exp) ->
       seq (g' saved s (NonTail(Id.gentmp Type.Unit), exp)) ret
   | Tail, (Set _ | SetL _ | Mov _ | Neg _ | Add _ | Sub _ | SLL _ | Ld _ |

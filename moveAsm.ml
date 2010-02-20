@@ -6,9 +6,9 @@ let delay =
        List.fold_left (fun m x -> M.add x n m) m list)
     M.empty
     [(0,["store";"mov"]);
-     (1,["cmp";"fcmp"]);
-     (2,["li";"add";"addi";"sub";"sll";"neg";"fabs";"fneg";"read";"write"]);
-     (3,["load";"loadr"]);
+     (1,["li";"add";"addi";"sub";"subi";"sll";"cmp";"cmpi";"fcmp";"fabs";"fneg";"read";"write"]);
+     (2,["load";"loadr"]);
+     (3,[]);
      (4,["fadd";"fsub";"fmul";"finv";"fsqrt"])]
 
 let getDelay exp =
@@ -62,13 +62,16 @@ let miss = ref 0
 let rec schedule awrite = function
   | End | Ret _ | Jmp _ as e -> e
   | Call(s, e) -> Call(s, schedule [] e)
-  | If(b, bn, e1, e2, e3) -> If(b, bn, schedule [] e1, schedule [] e2, schedule [] e3)
+  | If(b, bn, e1, e2, e3) -> If(b, bn, schedule (aging awrite) e1, schedule (aging awrite) e2, schedule [] e3)
   | Seq(exp, e) as es ->
       let awrite = aging awrite in
       let write = List.fold_left (fun x (_, y) -> y @ x) [] awrite in
       let exps = getFirst [] write es in
-      let exp = if exps <> [] then List.hd exps else (incr miss; exp) in
-      Seq(exp, schedule ((getDelay exp, getWrite exp) :: awrite) (remove exp es))
+      if exps <> [] then
+        let exp = List.hd exps in
+        Seq(exp, schedule ((getDelay exp, getWrite exp) :: awrite) (remove exp es))
+      else
+        (incr miss; schedule awrite es)
 
 let rec h e =
   let e' = g e in

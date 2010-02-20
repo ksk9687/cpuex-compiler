@@ -9,15 +9,19 @@ RUN_SIM = java -jar -Xmx256M -Xss32M $(SIM) -cpu $(CPU)
 .PHONY: run fast fpu inline0 clean
 
 run: min-rt.s
-	$(RUN_SIM) -asm min-rt.bin -in contest.sldb -out contest.ppm -gui min-rt.s
+	$(RUN_SIM).NoStat -asm min-rt.bin -in contest.sldb -out contest.ppm -gui min-rt.s
 	diff contest.ppm old/contest.ppm
 
 fast: $(FAST_SIM) min-rt.bin
 	$(FAST_SIM) min-rt.bin < contest.sldb > contest.ppm
 	diff contest.ppm old/contest.ppm
 
+stat: min-rt.s
+	$(RUN_SIM) -asm min-rt.bin -in contest.sldb -out contest.ppm -gui min-rt.s
+	diff contest.ppm old/contest.ppm
+
 fpu: min-rt.s
-	$(RUN_SIM).FPU -in contest.sldb -out contest_fpu.ppm -gui min-rt.s
+	$(RUN_SIM).FPU -asm min-rt.bin -in contest.sldb -out contest_fpu.ppm -gui min-rt.s
 	diff contest_fpu.ppm old/contest_fpu.ppm
 
 min-rt.bin: $(SIM) min-rt.s
