@@ -18,7 +18,7 @@ alpha.mli alpha.ml beta.mli beta.ml assoc.mli assoc.ml \
 inline.mli inline.ml constFold.mli constFold.ml movelet.mli movelet.ml cse.mli cse.ml constArg.mli constArg.ml\
 closure.mli closure.ml asm.mli asm.ml virtual.mli virtual.ml \
 simm.mli simm.ml slabel.mli slabel.ml sfl.mli sfl.ml sglobal.mli sglobal.ml regAlloc.mli regAlloc.ml\
-scalar.mli scalar.ml moveAsm.mli moveAsm.ml emit.mli emit.ml \
+scalar.mli scalar.ml moveAsm.mli moveAsm.ml emit.mli emit.ml schedule.mli schedule.ml\
 main.mli main.ml
 
 OCAMLFLAGS = -dtypes

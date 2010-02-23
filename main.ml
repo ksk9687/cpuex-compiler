@@ -14,6 +14,7 @@ let lexbuf outchan l =
   Id.counter := 0;
   Typing.extenv := M.empty;
   Emit.f outchan
+    (Schedule.f
     (MoveAsm.f
 	    (Scalar.f
 			  (RegAlloc.f
@@ -28,7 +29,7 @@ let lexbuf outchan l =
 						                      (KNormal.f
 						                         (BuiltIn.f
 						                           (Typing.f
-						                              (Parser.exp Lexer.token l)))))))))))))))
+						                              (Parser.exp Lexer.token l))))))))))))))))
 
 let string s = lexbuf stdout (Lexing.from_string s)
 
