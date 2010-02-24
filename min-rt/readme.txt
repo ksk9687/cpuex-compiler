@@ -9,6 +9,10 @@ make stat
 
 make fpu
 	詳細な統計+FPUシミュレーション(超低速)
+	実行結果はcontest_fpu.ppmに吐かれる
+
+make cui
+	CUIモードで実行
 
 make inline0
 	インライン化なしのアセンブリを生成

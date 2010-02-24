@@ -24,6 +24,14 @@ fpu: min-rt.s
 	$(RUN_SIM).FPU -asm min-rt.bin -in contest.sldb -out contest_fpu.ppm -gui min-rt.s
 	diff contest_fpu.ppm old/contest_fpu.ppm
 
+hyper: min-rt.s
+	$(RUN_SIM).HyperScalar -asm min-rt.bin -in contest.sldb -out contest.ppm -gui min-rt.s
+	diff contest.ppm old/contest.ppm
+
+cui: min-rt.s
+	$(RUN_SIM).NoStat -asm min-rt.bin -in contest.sldb -out contest.ppm -cui min-rt.s
+	diff contest.ppm old/contest.ppm
+
 min-rt.bin: $(SIM) min-rt.s
 	$(RUN_SIM) -asm min-rt.bin min-rt.s
 

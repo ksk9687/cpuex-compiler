@@ -155,11 +155,11 @@ and g' saved s = function
   | NonTail(_), MovR(x, y) -> g' saved (s ^ ".count move_float\n") (NonTail(y), Mov(x))
   | NonTail(r), Save(x, y) when List.mem x allregs && not (S.mem y !stackset) ->
       save y;
-      g' saved s (NonTail(r), St(x, V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
+      g' saved (s ^ ".count stack_store\n") (NonTail(r), St(x, V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
   | NonTail(_), Save(x, y) -> assert (S.mem y !stackset); End
   | NonTail(x), Restore(y) ->
       assert (List.mem x allregs);
-      g' saved s (NonTail(x), Ld(V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
+      g' saved (s ^ ".count stack_load\n") (NonTail(x), Ld(V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
   | Tail, (Nop | St _ | MovR _ | Save _ as exp) ->
       seq (g' saved s (NonTail(Id.gentmp Type.Unit), exp)) ret
   | Tail, (Set _ | SetL _ | Mov _ | Neg _ | Add _ | Sub _ | SLL _ | Ld _ |

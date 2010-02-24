@@ -76,7 +76,7 @@ let rec g oc cont = function
 			      let b_cont = b ^ "_cont" ^ id in
 			 	    Printf.fprintf oc "\t%-8s%s\n" bn b_else;
 				    Printf.fprintf oc "%s:\n" b_then;
-				    g oc cont' (seq e1 (Jmp("", b_cont)));
+				    g oc cont' (seq e1 (Jmp(".count b_cont\n", b_cont)));
 				    Printf.fprintf oc "%s:\n" b_else;
 				    g oc cont' e2;
 			      Printf.fprintf oc "%s:\n" b_cont;

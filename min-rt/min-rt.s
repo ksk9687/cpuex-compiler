@@ -510,59 +510,60 @@ min_caml_reflections:
 	.skip	180
 min_caml_n_reflections:
 	.skip	1
-f.27325:	.float  -2.0000000000E+02
-f.27324:	.float  2.0000000000E+02
-f.27296:	.float  1.2800000000E+02
-f.27234:	.float  2.0000000000E-01
-f.27233:	.float  9.0000000000E-01
-f.27205:	.float  1.5000000000E+02
-f.27204:	.float  -1.5000000000E+02
-f.27203:	.float  6.6666666667E-03
-f.27202:	.float  -6.6666666667E-03
-f.27201:	.float  -2.0000000000E+00
-f.27200:	.float  3.9062500000E-03
-f.27199:	.float  2.5600000000E+02
-f.27198:	.float  1.0000000000E+08
-f.27197:	.float  1.0000000000E+09
-f.27196:	.float  1.0000000000E+01
-f.27195:	.float  5.0000000000E-02
-f.27194:	.float  2.0000000000E+01
-f.27193:	.float  2.5000000000E-01
-f.27192:	.float  1.0000000000E-01
-f.27191:	.float  2.5500000000E+02
-f.27190:	.float  3.3333333333E+00
-f.27189:	.float  1.5000000000E-01
-f.27188:	.float  3.1830988148E-01
-f.27187:	.float  3.1415927000E+00
-f.27186:	.float  3.0000000000E+01
-f.27185:	.float  1.5000000000E+01
-f.27184:	.float  1.0000000000E-04
-f.27183:	.float  -1.0000000000E-01
-f.27182:	.float  1.0000000000E-02
-f.27181:	.float  -2.0000000000E-01
-f.27180:	.float  5.0000000000E-01
-f.27179:	.float  1.0000000000E+00
-f.27178:	.float  -1.0000000000E+00
-f.27177:	.float  2.0000000000E+00
-f.27164:	.float  1.7453293000E-02
+f.27231:	.float  -2.0000000000E+02
+f.27230:	.float  2.0000000000E+02
+f.27202:	.float  1.2800000000E+02
+f.27140:	.float  9.0000000000E-01
+f.27139:	.float  2.0000000000E-01
+f.27111:	.float  1.5000000000E+02
+f.27110:	.float  -1.5000000000E+02
+f.27109:	.float  6.6666666667E-03
+f.27108:	.float  -6.6666666667E-03
+f.27107:	.float  -2.0000000000E+00
+f.27106:	.float  3.9062500000E-03
+f.27105:	.float  2.5600000000E+02
+f.27104:	.float  1.0000000000E+08
+f.27103:	.float  1.0000000000E+09
+f.27102:	.float  1.0000000000E+01
+f.27101:	.float  2.0000000000E+01
+f.27100:	.float  5.0000000000E-02
+f.27099:	.float  2.5000000000E-01
+f.27098:	.float  1.0000000000E-01
+f.27097:	.float  3.3333333333E+00
+f.27096:	.float  2.5500000000E+02
+f.27095:	.float  1.5000000000E-01
+f.27094:	.float  3.1830988148E-01
+f.27093:	.float  3.1415927000E+00
+f.27092:	.float  3.0000000000E+01
+f.27091:	.float  1.5000000000E+01
+f.27090:	.float  1.0000000000E-04
+f.27089:	.float  -1.0000000000E-01
+f.27088:	.float  1.0000000000E-02
+f.27087:	.float  -2.0000000000E-01
+f.27086:	.float  5.0000000000E-01
+f.27085:	.float  1.0000000000E+00
+f.27084:	.float  -1.0000000000E+00
+f.27083:	.float  2.0000000000E+00
+f.27070:	.float  1.7453293000E-02
 
 ######################################################################
 .begin read_nth_object
 read_nth_object.2719:
 .count stack_move
 	sub     $sp, 1, $sp
+.count stack_store
 	store   $2, [$sp + 0]
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31032
-be_then.31032:
+	bne     be_else.30950
+be_then.30950:
 .count stack_move
 	add     $sp, 1, $sp
 	li      0, $1
 	ret
-be_else.31032:
+be_else.30950:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $11
@@ -650,11 +651,11 @@ be_else.31032:
 .count move_ret
 	mov     $1, $19
 	cmp     $13, 0
-	be      bne_cont.31033
-bne_then.31033:
+	be      bne_cont.30951
+bne_then.30951:
 	call    min_caml_read_float
 .count load_float
-	load    [f.27164], $21
+	load    [f.27070], $21
 .count move_ret
 	mov     $1, $20
 	fmul    $20, $21, $20
@@ -669,7 +670,7 @@ bne_then.31033:
 	mov     $1, $20
 	fmul    $20, $21, $20
 	store   $20, [$19 + 2]
-bne_cont.31033:
+bne_cont.30951:
 	li      4, $2
 .count move_args
 	mov     $zero, $3
@@ -677,21 +678,23 @@ bne_cont.31033:
 .count move_ret
 	mov     $1, $20
 	fcmp    $zero, $16
-	bg      ble_else.31034
-ble_then.31034:
+	bg      ble_else.30952
+ble_then.30952:
 	li      0, $16
-	b       ble_cont.31034
-ble_else.31034:
+.count b_cont
+	b       ble_cont.30952
+ble_else.30952:
 	li      1, $16
-ble_cont.31034:
+ble_cont.30952:
 	cmp     $11, 2
-	bne     be_else.31035
-be_then.31035:
+	bne     be_else.30953
+be_then.30953:
 	li      1, $21
-	b       be_cont.31035
-be_else.31035:
+.count b_cont
+	b       be_cont.30953
+be_else.30953:
 	mov     $16, $21
-be_cont.31035:
+be_cont.30953:
 	mov     $hp, $22
 	store   $20, [$22 + 10]
 	add     $hp, 11, $hp
@@ -707,73 +710,100 @@ be_cont.31035:
 	store   $11, [$22 + 1]
 	mov     $22, $12
 	store   $10, [$22 + 0]
+.count stack_load
 	load    [$sp + 0], $15
 	store   $12, [min_caml_objects + $15]
-	bne     be_else.31036
-be_then.31036:
+	bne     be_else.30954
+be_then.30954:
 	load    [$14 + 0], $11
 	fcmp    $11, $zero
-	bne     be_else.31037
-be_then.31037:
+	bne     be_else.30955
+be_then.30955:
 	mov     $zero, $11
-	b       be_cont.31037
-be_else.31037:
+.count b_cont
+	b       be_cont.30955
+be_else.30955:
 	fcmp    $11, $zero
-	bne     be_else.31038
-be_then.31038:
+	bne     be_else.30956
+be_then.30956:
 	fmul    $11, $11, $11
 	finv    $11, $11
 	mov     $zero, $11
-	b       be_cont.31038
-be_else.31038:
+.count b_cont
+	b       be_cont.30956
+be_else.30956:
 	fcmp    $11, $zero
 	fmul    $11, $11, $11
 	finv    $11, $11
-	bg      ble_cont.31039
-ble_then.31039:
+	bg      ble_cont.30957
+ble_then.30957:
 	fneg    $11, $11
-ble_cont.31039:
-be_cont.31038:
-be_cont.31037:
+ble_cont.30957:
+be_cont.30956:
+be_cont.30955:
 	store   $11, [$14 + 0]
 	load    [$14 + 1], $11
 	fcmp    $11, $zero
-	bne     be_else.31040
-be_then.31040:
+	bne     be_else.30958
+be_then.30958:
 	mov     $zero, $11
-	b       be_cont.31040
-be_else.31040:
+.count b_cont
+	b       be_cont.30958
+be_else.30958:
 	fcmp    $11, $zero
-	bne     be_else.31041
-be_then.31041:
+	bne     be_else.30959
+be_then.30959:
 	fmul    $11, $11, $11
 	finv    $11, $11
 	mov     $zero, $11
-	b       be_cont.31041
-be_else.31041:
+.count b_cont
+	b       be_cont.30959
+be_else.30959:
 	fcmp    $11, $zero
 	fmul    $11, $11, $11
 	finv    $11, $11
-	bg      ble_cont.31042
-ble_then.31042:
+	bg      ble_cont.30960
+ble_then.30960:
 	fneg    $11, $11
-ble_cont.31042:
-be_cont.31041:
-be_cont.31040:
+ble_cont.30960:
+be_cont.30959:
+be_cont.30958:
 	store   $11, [$14 + 1]
 	load    [$14 + 2], $11
 	fcmp    $11, $zero
-	bne     be_else.31043
-be_then.31043:
-	store   $zero, [$14 + 2]
+	bne     be_else.30961
+be_then.30961:
+	mov     $zero, $11
+.count b_cont
+	b       be_cont.30961
+be_else.30961:
+	fcmp    $11, $zero
+	bne     be_else.30962
+be_then.30962:
+	fmul    $11, $11, $11
+	finv    $11, $11
+	mov     $zero, $11
+.count b_cont
+	b       be_cont.30962
+be_else.30962:
+	fcmp    $11, $zero
+	fmul    $11, $11, $11
+	finv    $11, $11
+	bg      ble_cont.30963
+ble_then.30963:
+	fneg    $11, $11
+ble_cont.30963:
+be_cont.30962:
+be_cont.30961:
+	store   $11, [$14 + 2]
 	cmp     $13, 0
-	bne     be_else.31044
-be_then.31044:
+	bne     be_else.30964
+be_then.30964:
 .count stack_move
 	add     $sp, 1, $sp
 	li      1, $1
 	ret
-be_else.31044:
+be_else.30964:
 	load    [$19 + 0], $2
 	call    min_caml_cos
 .count move_ret
@@ -796,271 +826,140 @@ be_else.31044:
 	mov     $1, $16
 	load    [$19 + 2], $2
 	call    min_caml_sin
-	fmul    $13, $1, $6
-	fmul    $13, $16, $9
-	load    [$14 + 1], $5
-	load    [$14 + 0], $8
-	fneg    $15, $3
-	fmul    $6, $6, $7
-	fmul    $9, $9, $10
-	fmul    $3, $3, $4
-	fmul    $12, $15, $17
-	load    [$14 + 2], $2
-	fmul    $5, $7, $7
-	fmul    $8, $10, $10
-	fmul    $2, $4, $4
-	fmul    $17, $1, $18
-	fmul    $11, $1, $20
-	fmul    $17, $16, $17
-	fadd    $10, $7, $7
+	fmul    $13, $1, $3
+	fmul    $13, $16, $2
+	load    [$14 + 0], $4
+	load    [$14 + 1], $6
+	fneg    $15, $8
+	fmul    $3, $3, $7
+	fmul    $2, $2, $5
+	fmul    $8, $8, $9
+	load    [$14 + 2], $10
+	fmul    $12, $13, $17
+	fmul    $6, $7, $7
+	fmul    $4, $5, $5
+	fmul    $10, $9, $9
+	fmul    $4, $2, $2
+	fmul    $17, $17, $20
+	fmul    $6, $3, $3
+	fadd    $5, $7, $5
 .count stack_move
 	add     $sp, 1, $sp
-	fmul    $11, $16, $10
-	fsub    $17, $20, $17
-	fadd    $7, $4, $4
-	fadd    $18, $10, $10
-	fmul    $17, $17, $20
-	store   $4, [$14 + 0]
-	fmul    $12, $13, $4
-	fmul    $10, $10, $18
-	fmul    $8, $20, $20
-	fmul    $4, $4, $7
-	fmul    $5, $18, $18
-	fmul    $2, $7, $7
-	fadd    $20, $18, $18
-	fadd    $18, $7, $7
-	fmul    $12, $16, $18
-	store   $7, [$14 + 1]
-	fmul    $11, $13, $7
-	fmul    $11, $15, $11
-	fmul    $7, $7, $13
-	fmul    $11, $1, $15
-	fmul    $11, $16, $11
-	fmul    $12, $1, $1
-	fmul    $2, $13, $13
-	fsub    $15, $18, $15
-	fmul    $5, $10, $12
-	fadd    $11, $1, $1
-	fmul    $15, $15, $18
-	fmul    $12, $15, $12
-	fmul    $1, $1, $11
-	fmul    $5, $18, $18
-	fmul    $5, $6, $5
-	fmul    $8, $11, $11
-	fmul    $5, $15, $6
-	fadd    $11, $18, $11
-	fadd    $11, $13, $11
-	fmul    $8, $17, $13
-	store   $11, [$14 + 2]
-	fmul    $2, $4, $11
-	fmul    $13, $1, $13
-	fmul    $2, $3, $2
-	fmul    $11, $7, $11
-	fadd    $13, $12, $12
-	fmul    $2, $7, $3
-	fmul    $8, $9, $7
-	fadd    $12, $11, $11
+	fmul    $11, $1, $7
+	fadd    $5, $9, $5
+	fmul    $11, $16, $9
+	store   $5, [$14 + 0]
+	fmul    $12, $15, $5
+	fmul    $5, $16, $18
+	fmul    $5, $1, $5
+	fsub    $18, $7, $7
+	fadd    $5, $9, $5
+	fmul    $10, $20, $9
+	fmul    $7, $7, $18
+	fmul    $5, $5, $20
+	fmul    $4, $18, $18
+	fmul    $6, $20, $20
+	fadd    $18, $20, $18
+	fadd    $18, $9, $9
+	store   $9, [$14 + 1]
+	fmul    $11, $15, $9
+	fmul    $11, $13, $11
+	fmul    $12, $1, $15
+	fmul    $9, $16, $13
+	fmul    $9, $1, $1
+	fmul    $12, $16, $12
+	fmul    $11, $11, $9
+	fadd    $13, $15, $13
+	fsub    $1, $12, $1
+	fmul    $10, $9, $9
+	fmul    $13, $13, $12
+	fmul    $1, $1, $15
+	fmul    $4, $12, $12
+	fmul    $6, $15, $15
+	fadd    $12, $15, $12
+	fmul    $10, $17, $15
+	fadd    $12, $9, $9
+	fmul    $4, $7, $12
+	fmul    $15, $11, $15
+	fmul    $10, $8, $4
+	store   $9, [$14 + 2]
+	fmul    $6, $5, $14
+	fmul    $12, $13, $12
+	fmul    $2, $13, $6
+	fmul    $4, $11, $8
 .count load_float
-	load    [f.27177], $12
-	fmul    $7, $1, $1
-	fmul    $12, $11, $11
-	fadd    $1, $6, $1
-	store   $11, [$19 + 0]
-	fadd    $1, $3, $1
-	fmul    $7, $17, $3
-	fmul    $12, $1, $1
+	load    [f.27083], $9
+	fmul    $14, $1, $14
+	fmul    $3, $1, $1
+	fadd    $12, $14, $12
+	fadd    $6, $1, $1
+	fadd    $12, $15, $12
+	fadd    $1, $8, $1
+	fmul    $9, $12, $12
+	fmul    $9, $1, $1
+	store   $12, [$19 + 0]
 	store   $1, [$19 + 1]
-	fmul    $2, $4, $1
-	fmul    $5, $10, $2
-	fadd    $3, $2, $2
-	fadd    $2, $1, $1
-	fmul    $12, $1, $1
+	fmul    $2, $7, $1
+	fmul    $3, $5, $2
+	fmul    $4, $17, $3
+	fadd    $1, $2, $1
+	fadd    $1, $3, $1
+	fmul    $9, $1, $1
 	store   $1, [$19 + 2]
 	li      1, $1
 	ret
-be_else.31043:
-	fmul    $11, $11, $12
-	fcmp    $11, $zero
-	finv    $12, $12
-	bne     be_else.31045
-be_then.31045:
-	mov     $zero, $11
-	b       be_cont.31045
-be_else.31045:
-	fcmp    $11, $zero
-	bg      ble_else.31046
-ble_then.31046:
-	mov     $40, $11
-	b       ble_cont.31046
-ble_else.31046:
-	mov     $36, $11
-ble_cont.31046:
-be_cont.31045:
+be_else.30954:
+	cmp     $11, 2
+	bne     be_else.30965
+be_then.30965:
+	load    [$14 + 0], $11
+	cmp     $16, 0
+	bne     be_else.30966
+be_then.30966:
+	li      1, $12
+.count b_cont
+	b       be_cont.30966
+be_else.30966:
+	li      0, $12
+be_cont.30966:
+	load    [$14 + 1], $16
+	fmul    $11, $11, $15
+	load    [$14 + 2], $17
+	fmul    $16, $16, $16
+	fmul    $17, $17, $17
+	fadd    $15, $16, $15
+	fadd    $15, $17, $15
+	fsqrt   $15, $15
+	fcmp    $15, $zero
+	bne     be_else.30967
+be_then.30967:
+	mov     $36, $12
+.count b_cont
+	b       be_cont.30967
+be_else.30967:
+	cmp     $12, 0
+	finv    $15, $12
+	be      bne_cont.30968
+bne_then.30968:
+	fneg    $12, $12
+bne_cont.30968:
+be_cont.30967:
 	fmul    $11, $12, $11
 	cmp     $13, 0
-	store   $11, [$14 + 2]
-	bne     be_else.31047
-be_then.31047:
-.count stack_move
-	add     $sp, 1, $sp
-	li      1, $1
-	ret
-be_else.31047:
-	load    [$19 + 0], $2
-	call    min_caml_cos
-.count move_ret
-	mov     $1, $11
-	load    [$19 + 0], $2
-	call    min_caml_sin
-.count move_ret
-	mov     $1, $12
-	load    [$19 + 1], $2
-	call    min_caml_cos
-.count move_ret
-	mov     $1, $13
-	load    [$19 + 1], $2
-	call    min_caml_sin
-.count move_ret
-	mov     $1, $15
-	load    [$19 + 2], $2
-	call    min_caml_cos
-.count move_ret
-	mov     $1, $16
-	load    [$19 + 2], $2
-	call    min_caml_sin
-	fmul    $13, $1, $6
-	fmul    $13, $16, $9
-	load    [$14 + 1], $5
-	load    [$14 + 0], $8
-	fneg    $15, $3
-	fmul    $6, $6, $7
-	fmul    $9, $9, $10
-	fmul    $3, $3, $4
-	fmul    $12, $15, $17
-	load    [$14 + 2], $2
-	fmul    $5, $7, $7
-	fmul    $8, $10, $10
-	fmul    $2, $4, $4
-	fmul    $17, $1, $18
-	fmul    $11, $1, $20
-	fmul    $17, $16, $17
-	fadd    $10, $7, $7
-.count stack_move
-	add     $sp, 1, $sp
-	fmul    $11, $16, $10
-	fsub    $17, $20, $17
-	fadd    $7, $4, $4
-	fadd    $18, $10, $10
-	fmul    $17, $17, $20
-	store   $4, [$14 + 0]
-	fmul    $12, $13, $4
-	fmul    $10, $10, $18
-	fmul    $8, $20, $20
-	fmul    $4, $4, $7
-	fmul    $5, $18, $18
-	fmul    $2, $7, $7
-	fadd    $20, $18, $18
-	fadd    $18, $7, $7
-	fmul    $12, $16, $18
-	store   $7, [$14 + 1]
-	fmul    $11, $13, $7
-	fmul    $11, $15, $11
-	fmul    $7, $7, $13
-	fmul    $11, $1, $15
-	fmul    $11, $16, $11
-	fmul    $12, $1, $1
-	fmul    $2, $13, $13
-	fsub    $15, $18, $15
-	fmul    $5, $10, $12
-	fadd    $11, $1, $1
-	fmul    $15, $15, $18
-	fmul    $12, $15, $12
-	fmul    $1, $1, $11
-	fmul    $5, $18, $18
-	fmul    $5, $6, $5
-	fmul    $8, $11, $11
-	fmul    $5, $15, $6
-	fadd    $11, $18, $11
-	fadd    $11, $13, $11
-	fmul    $8, $17, $13
-	store   $11, [$14 + 2]
-	fmul    $2, $4, $11
-	fmul    $13, $1, $13
-	fmul    $2, $3, $2
-	fmul    $11, $7, $11
-	fadd    $13, $12, $12
-	fmul    $2, $7, $3
-	fmul    $8, $9, $7
-	fadd    $12, $11, $11
-.count load_float
-	load    [f.27177], $12
-	fmul    $7, $1, $1
-	fmul    $12, $11, $11
-	fadd    $1, $6, $1
-	store   $11, [$19 + 0]
-	fadd    $1, $3, $1
-	fmul    $7, $17, $3
-	fmul    $12, $1, $1
-	store   $1, [$19 + 1]
-	fmul    $2, $4, $1
-	fmul    $5, $10, $2
-	fadd    $3, $2, $2
-	fadd    $2, $1, $1
-	fmul    $12, $1, $1
-	store   $1, [$19 + 2]
-	li      1, $1
-	ret
-be_else.31036:
-	cmp     $11, 2
-	bne     be_else.31048
-be_then.31048:
-	load    [$14 + 1], $12
-	load    [$14 + 0], $15
+	store   $11, [$14 + 0]
+	load    [$14 + 1], $11
+	fmul    $11, $12, $11
+	store   $11, [$14 + 1]
 	load    [$14 + 2], $11
-	fmul    $12, $12, $12
-	fmul    $15, $15, $15
-	fmul    $11, $11, $11
-	cmp     $16, 0
-	fadd    $15, $12, $12
-	fadd    $12, $11, $11
-	fsqrt   $11, $11
-	bne     be_else.31049
-be_then.31049:
-	li      1, $12
-	b       be_cont.31049
-be_else.31049:
-	li      0, $12
-be_cont.31049:
-	fcmp    $11, $zero
-	bne     be_else.31050
-be_then.31050:
-	mov     $36, $11
-	b       be_cont.31050
-be_else.31050:
-	cmp     $12, 0
-	finv    $11, $11
-	be      bne_cont.31051
-bne_then.31051:
-	fneg    $11, $11
-bne_cont.31051:
-be_cont.31050:
-	load    [$14 + 0], $12
-	cmp     $13, 0
-	fmul    $12, $11, $12
-	store   $12, [$14 + 0]
-	load    [$14 + 1], $12
-	fmul    $12, $11, $12
-	store   $12, [$14 + 1]
-	load    [$14 + 2], $12
-	fmul    $12, $11, $11
+	fmul    $11, $12, $11
 	store   $11, [$14 + 2]
-	bne     be_else.31052
-be_then.31052:
+	bne     be_else.30969
+be_then.30969:
 .count stack_move
 	add     $sp, 1, $sp
 	li      1, $1
 	ret
-be_else.31052:
+be_else.30969:
 	load    [$19 + 0], $2
 	call    min_caml_cos
 .count move_ret
@@ -1083,97 +982,97 @@ be_else.31052:
 	mov     $1, $16
 	load    [$19 + 2], $2
 	call    min_caml_sin
-	fmul    $13, $1, $6
-	fmul    $13, $16, $9
-	load    [$14 + 1], $5
-	load    [$14 + 0], $8
-	fneg    $15, $3
-	fmul    $6, $6, $7
-	fmul    $9, $9, $10
-	fmul    $3, $3, $4
-	fmul    $12, $15, $17
-	load    [$14 + 2], $2
-	fmul    $5, $7, $7
-	fmul    $8, $10, $10
-	fmul    $2, $4, $4
-	fmul    $17, $1, $18
-	fmul    $11, $1, $20
-	fmul    $17, $16, $17
-	fadd    $10, $7, $7
+	fmul    $13, $1, $3
+	fmul    $13, $16, $2
+	load    [$14 + 0], $4
+	load    [$14 + 1], $6
+	fneg    $15, $8
+	fmul    $3, $3, $7
+	fmul    $2, $2, $5
+	fmul    $8, $8, $9
+	load    [$14 + 2], $10
+	fmul    $12, $13, $17
+	fmul    $6, $7, $7
+	fmul    $4, $5, $5
+	fmul    $10, $9, $9
+	fmul    $4, $2, $2
+	fmul    $17, $17, $20
+	fmul    $6, $3, $3
+	fadd    $5, $7, $5
 .count stack_move
 	add     $sp, 1, $sp
-	fmul    $11, $16, $10
-	fsub    $17, $20, $17
-	fadd    $7, $4, $4
-	fadd    $18, $10, $10
-	fmul    $17, $17, $20
-	store   $4, [$14 + 0]
-	fmul    $12, $13, $4
-	fmul    $10, $10, $18
-	fmul    $8, $20, $20
-	fmul    $4, $4, $7
-	fmul    $5, $18, $18
-	fmul    $2, $7, $7
-	fadd    $20, $18, $18
-	fadd    $18, $7, $7
-	fmul    $12, $16, $18
-	store   $7, [$14 + 1]
-	fmul    $11, $13, $7
-	fmul    $11, $15, $11
-	fmul    $7, $7, $13
-	fmul    $11, $1, $15
-	fmul    $11, $16, $11
-	fmul    $12, $1, $1
-	fmul    $2, $13, $13
-	fsub    $15, $18, $15
-	fmul    $5, $10, $12
-	fadd    $11, $1, $1
-	fmul    $15, $15, $18
-	fmul    $12, $15, $12
-	fmul    $1, $1, $11
-	fmul    $5, $18, $18
-	fmul    $5, $6, $5
-	fmul    $8, $11, $11
-	fmul    $5, $15, $6
-	fadd    $11, $18, $11
-	fadd    $11, $13, $11
-	fmul    $8, $17, $13
-	store   $11, [$14 + 2]
-	fmul    $2, $4, $11
-	fmul    $13, $1, $13
-	fmul    $2, $3, $2
-	fmul    $11, $7, $11
-	fadd    $13, $12, $12
-	fmul    $2, $7, $3
-	fmul    $8, $9, $7
-	fadd    $12, $11, $11
+	fmul    $11, $1, $7
+	fadd    $5, $9, $5
+	fmul    $11, $16, $9
+	store   $5, [$14 + 0]
+	fmul    $12, $15, $5
+	fmul    $5, $16, $18
+	fmul    $5, $1, $5
+	fsub    $18, $7, $7
+	fadd    $5, $9, $5
+	fmul    $10, $20, $9
+	fmul    $7, $7, $18
+	fmul    $5, $5, $20
+	fmul    $4, $18, $18
+	fmul    $6, $20, $20
+	fadd    $18, $20, $18
+	fadd    $18, $9, $9
+	store   $9, [$14 + 1]
+	fmul    $11, $15, $9
+	fmul    $11, $13, $11
+	fmul    $12, $1, $15
+	fmul    $9, $16, $13
+	fmul    $9, $1, $1
+	fmul    $12, $16, $12
+	fmul    $11, $11, $9
+	fadd    $13, $15, $13
+	fsub    $1, $12, $1
+	fmul    $10, $9, $9
+	fmul    $13, $13, $12
+	fmul    $1, $1, $15
+	fmul    $4, $12, $12
+	fmul    $6, $15, $15
+	fadd    $12, $15, $12
+	fmul    $10, $17, $15
+	fadd    $12, $9, $9
+	fmul    $4, $7, $12
+	fmul    $15, $11, $15
+	fmul    $10, $8, $4
+	store   $9, [$14 + 2]
+	fmul    $6, $5, $14
+	fmul    $12, $13, $12
+	fmul    $2, $13, $6
+	fmul    $4, $11, $8
 .count load_float
-	load    [f.27177], $12
-	fmul    $7, $1, $1
-	fmul    $12, $11, $11
-	fadd    $1, $6, $1
-	store   $11, [$19 + 0]
-	fadd    $1, $3, $1
-	fmul    $7, $17, $3
-	fmul    $12, $1, $1
+	load    [f.27083], $9
+	fmul    $14, $1, $14
+	fmul    $3, $1, $1
+	fadd    $12, $14, $12
+	fadd    $6, $1, $1
+	fadd    $12, $15, $12
+	fadd    $1, $8, $1
+	fmul    $9, $12, $12
+	fmul    $9, $1, $1
+	store   $12, [$19 + 0]
 	store   $1, [$19 + 1]
-	fmul    $2, $4, $1
-	fmul    $5, $10, $2
-	fadd    $3, $2, $2
-	fadd    $2, $1, $1
-	fmul    $12, $1, $1
+	fmul    $2, $7, $1
+	fmul    $3, $5, $2
+	fmul    $4, $17, $3
+	fadd    $1, $2, $1
+	fadd    $1, $3, $1
+	fmul    $9, $1, $1
 	store   $1, [$19 + 2]
 	li      1, $1
 	ret
-be_else.31048:
+be_else.30965:
 	cmp     $13, 0
-	bne     be_else.31053
-be_then.31053:
+	bne     be_else.30970
+be_then.30970:
 .count stack_move
 	add     $sp, 1, $sp
 	li      1, $1
 	ret
-be_else.31053:
+be_else.30970:
 	load    [$19 + 0], $2
 	call    min_caml_cos
 .count move_ret
@@ -1196,85 +1095,85 @@ be_else.31053:
 	mov     $1, $16
 	load    [$19 + 2], $2
 	call    min_caml_sin
-	fmul    $13, $1, $6
-	fmul    $13, $16, $9
-	load    [$14 + 1], $5
-	load    [$14 + 0], $8
-	fneg    $15, $3
-	fmul    $6, $6, $7
-	fmul    $9, $9, $10
-	fmul    $3, $3, $4
-	fmul    $12, $15, $17
-	load    [$14 + 2], $2
-	fmul    $5, $7, $7
-	fmul    $8, $10, $10
-	fmul    $2, $4, $4
-	fmul    $17, $1, $18
-	fmul    $11, $1, $20
-	fmul    $17, $16, $17
-	fadd    $10, $7, $7
+	fmul    $13, $1, $3
+	fmul    $13, $16, $2
+	load    [$14 + 0], $4
+	load    [$14 + 1], $6
+	fneg    $15, $8
+	fmul    $3, $3, $7
+	fmul    $2, $2, $5
+	fmul    $8, $8, $9
+	load    [$14 + 2], $10
+	fmul    $12, $13, $17
+	fmul    $6, $7, $7
+	fmul    $4, $5, $5
+	fmul    $10, $9, $9
+	fmul    $4, $2, $2
+	fmul    $17, $17, $20
+	fmul    $6, $3, $3
+	fadd    $5, $7, $5
 .count stack_move
 	add     $sp, 1, $sp
-	fmul    $11, $16, $10
-	fsub    $17, $20, $17
-	fadd    $7, $4, $4
-	fadd    $18, $10, $10
-	fmul    $17, $17, $20
-	store   $4, [$14 + 0]
-	fmul    $12, $13, $4
-	fmul    $10, $10, $18
-	fmul    $8, $20, $20
-	fmul    $4, $4, $7
-	fmul    $5, $18, $18
-	fmul    $2, $7, $7
-	fadd    $20, $18, $18
-	fadd    $18, $7, $7
-	fmul    $12, $16, $18
-	store   $7, [$14 + 1]
-	fmul    $11, $13, $7
-	fmul    $11, $15, $11
-	fmul    $7, $7, $13
-	fmul    $11, $1, $15
-	fmul    $11, $16, $11
-	fmul    $12, $1, $1
-	fmul    $2, $13, $13
-	fsub    $15, $18, $15
-	fmul    $5, $10, $12
-	fadd    $11, $1, $1
-	fmul    $15, $15, $18
-	fmul    $12, $15, $12
-	fmul    $1, $1, $11
-	fmul    $5, $18, $18
-	fmul    $5, $6, $5
-	fmul    $8, $11, $11
-	fmul    $5, $15, $6
-	fadd    $11, $18, $11
-	fadd    $11, $13, $11
-	fmul    $8, $17, $13
-	store   $11, [$14 + 2]
-	fmul    $2, $4, $11
-	fmul    $13, $1, $13
-	fmul    $2, $3, $2
-	fmul    $11, $7, $11
-	fadd    $13, $12, $12
-	fmul    $2, $7, $3
-	fmul    $8, $9, $7
-	fadd    $12, $11, $11
+	fmul    $11, $1, $7
+	fadd    $5, $9, $5
+	fmul    $11, $16, $9
+	store   $5, [$14 + 0]
+	fmul    $12, $15, $5
+	fmul    $5, $16, $18
+	fmul    $5, $1, $5
+	fsub    $18, $7, $7
+	fadd    $5, $9, $5
+	fmul    $10, $20, $9
+	fmul    $7, $7, $18
+	fmul    $5, $5, $20
+	fmul    $4, $18, $18
+	fmul    $6, $20, $20
+	fadd    $18, $20, $18
+	fadd    $18, $9, $9
+	store   $9, [$14 + 1]
+	fmul    $11, $15, $9
+	fmul    $11, $13, $11
+	fmul    $12, $1, $15
+	fmul    $9, $16, $13
+	fmul    $9, $1, $1
+	fmul    $12, $16, $12
+	fmul    $11, $11, $9
+	fadd    $13, $15, $13
+	fsub    $1, $12, $1
+	fmul    $10, $9, $9
+	fmul    $13, $13, $12
+	fmul    $1, $1, $15
+	fmul    $4, $12, $12
+	fmul    $6, $15, $15
+	fadd    $12, $15, $12
+	fmul    $10, $17, $15
+	fadd    $12, $9, $9
+	fmul    $4, $7, $12
+	fmul    $15, $11, $15
+	fmul    $10, $8, $4
+	store   $9, [$14 + 2]
+	fmul    $6, $5, $14
+	fmul    $12, $13, $12
+	fmul    $2, $13, $6
+	fmul    $4, $11, $8
 .count load_float
-	load    [f.27177], $12
-	fmul    $7, $1, $1
-	fmul    $12, $11, $11
-	fadd    $1, $6, $1
-	store   $11, [$19 + 0]
-	fadd    $1, $3, $1
-	fmul    $7, $17, $3
-	fmul    $12, $1, $1
+	load    [f.27083], $9
+	fmul    $14, $1, $14
+	fmul    $3, $1, $1
+	fadd    $12, $14, $12
+	fadd    $6, $1, $1
+	fadd    $12, $15, $12
+	fadd    $1, $8, $1
+	fmul    $9, $12, $12
+	fmul    $9, $1, $1
+	store   $12, [$19 + 0]
 	store   $1, [$19 + 1]
-	fmul    $2, $4, $1
-	fmul    $5, $10, $2
-	fadd    $3, $2, $2
-	fadd    $2, $1, $1
-	fmul    $12, $1, $1
+	fmul    $2, $7, $1
+	fmul    $3, $5, $2
+	fmul    $4, $17, $3
+	fadd    $1, $2, $1
+	fadd    $1, $3, $1
+	fmul    $9, $1, $1
 	store   $1, [$19 + 2]
 	li      1, $1
 	ret
@@ -1284,185 +1183,208 @@ be_else.31053:
 .begin read_object
 read_object.2721:
 	cmp     $2, 60
-	bl      bge_else.31054
-bge_then.31054:
+	bl      bge_else.30971
+bge_then.30971:
 	ret
-bge_else.31054:
+bge_else.30971:
 .count stack_move
 	sub     $sp, 8, $sp
+.count stack_store
 	store   $2, [$sp + 0]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31055
-be_then.31055:
+	bne     be_else.30972
+be_then.30972:
 .count stack_move
 	add     $sp, 8, $sp
+.count stack_load
 	load    [$sp - 8], $1
 .count move_float
 	mov     $1, $41
 	ret
-be_else.31055:
+be_else.30972:
+.count stack_load
 	load    [$sp + 0], $23
 	add     $23, 1, $2
 	cmp     $2, 60
-	bl      bge_else.31056
-bge_then.31056:
+	bl      bge_else.30973
+bge_then.30973:
 .count stack_move
 	add     $sp, 8, $sp
 	ret
-bge_else.31056:
+bge_else.30973:
+.count stack_store
 	store   $2, [$sp + 1]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31057
-be_then.31057:
+	bne     be_else.30974
+be_then.30974:
 .count stack_move
 	add     $sp, 8, $sp
+.count stack_load
 	load    [$sp - 7], $1
 .count move_float
 	mov     $1, $41
 	ret
-be_else.31057:
+be_else.30974:
+.count stack_load
 	load    [$sp + 1], $23
 	add     $23, 1, $2
 	cmp     $2, 60
-	bl      bge_else.31058
-bge_then.31058:
+	bl      bge_else.30975
+bge_then.30975:
 .count stack_move
 	add     $sp, 8, $sp
 	ret
-bge_else.31058:
+bge_else.30975:
+.count stack_store
 	store   $2, [$sp + 2]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31059
-be_then.31059:
+	bne     be_else.30976
+be_then.30976:
 .count stack_move
 	add     $sp, 8, $sp
+.count stack_load
 	load    [$sp - 6], $1
 .count move_float
 	mov     $1, $41
 	ret
-be_else.31059:
+be_else.30976:
+.count stack_load
 	load    [$sp + 2], $23
 	add     $23, 1, $2
 	cmp     $2, 60
-	bl      bge_else.31060
-bge_then.31060:
+	bl      bge_else.30977
+bge_then.30977:
 .count stack_move
 	add     $sp, 8, $sp
 	ret
-bge_else.31060:
+bge_else.30977:
+.count stack_store
 	store   $2, [$sp + 3]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31061
-be_then.31061:
+	bne     be_else.30978
+be_then.30978:
 .count stack_move
 	add     $sp, 8, $sp
+.count stack_load
 	load    [$sp - 5], $1
 .count move_float
 	mov     $1, $41
 	ret
-be_else.31061:
+be_else.30978:
+.count stack_load
 	load    [$sp + 3], $23
 	add     $23, 1, $2
 	cmp     $2, 60
-	bl      bge_else.31062
-bge_then.31062:
+	bl      bge_else.30979
+bge_then.30979:
 .count stack_move
 	add     $sp, 8, $sp
 	ret
-bge_else.31062:
+bge_else.30979:
+.count stack_store
 	store   $2, [$sp + 4]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31063
-be_then.31063:
+	bne     be_else.30980
+be_then.30980:
 .count stack_move
 	add     $sp, 8, $sp
+.count stack_load
 	load    [$sp - 4], $1
 .count move_float
 	mov     $1, $41
 	ret
-be_else.31063:
+be_else.30980:
+.count stack_load
 	load    [$sp + 4], $23
 	add     $23, 1, $2
 	cmp     $2, 60
-	bl      bge_else.31064
-bge_then.31064:
+	bl      bge_else.30981
+bge_then.30981:
 .count stack_move
 	add     $sp, 8, $sp
 	ret
-bge_else.31064:
+bge_else.30981:
+.count stack_store
 	store   $2, [$sp + 5]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31065
-be_then.31065:
+	bne     be_else.30982
+be_then.30982:
 .count stack_move
 	add     $sp, 8, $sp
+.count stack_load
 	load    [$sp - 3], $1
 .count move_float
 	mov     $1, $41
 	ret
-be_else.31065:
+be_else.30982:
+.count stack_load
 	load    [$sp + 5], $23
 	add     $23, 1, $2
 	cmp     $2, 60
-	bl      bge_else.31066
-bge_then.31066:
+	bl      bge_else.30983
+bge_then.30983:
 .count stack_move
 	add     $sp, 8, $sp
 	ret
-bge_else.31066:
+bge_else.30983:
+.count stack_store
 	store   $2, [$sp + 6]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31067
-be_then.31067:
+	bne     be_else.30984
+be_then.30984:
 .count stack_move
 	add     $sp, 8, $sp
+.count stack_load
 	load    [$sp - 2], $1
 .count move_float
 	mov     $1, $41
 	ret
-be_else.31067:
+be_else.30984:
+.count stack_load
 	load    [$sp + 6], $23
 	add     $23, 1, $2
 	cmp     $2, 60
-	bl      bge_else.31068
-bge_then.31068:
+	bl      bge_else.30985
+bge_then.30985:
 .count stack_move
 	add     $sp, 8, $sp
 	ret
-bge_else.31068:
+bge_else.30985:
+.count stack_store
 	store   $2, [$sp + 7]
 	call    read_nth_object.2719
 .count stack_move
 	add     $sp, 8, $sp
 	cmp     $1, 0
+.count stack_load
 	load    [$sp - 1], $1
-	bne     be_else.31069
-be_then.31069:
+	bne     be_else.30986
+be_then.30986:
 .count move_float
 	mov     $1, $41
 	ret
-be_else.31069:
+be_else.30986:
 	add     $1, 1, $2
 	b       read_object.2721
 .end read_object
@@ -1472,28 +1394,31 @@ be_else.31069:
 read_net_item.2725:
 .count stack_move
 	sub     $sp, 8, $sp
+.count stack_store
 	store   $2, [$sp + 0]
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31070
-be_then.31070:
+	bne     be_else.30987
+be_then.30987:
 .count stack_move
 	add     $sp, 8, $sp
 	add     $zero, -1, $3
+.count stack_load
 	load    [$sp - 8], $10
 	add     $10, 1, $2
 	b       min_caml_create_array
-be_else.31070:
+be_else.30987:
 	call    min_caml_read_int
+.count stack_load
 	load    [$sp + 0], $12
 .count move_ret
 	mov     $1, $11
 	cmp     $11, -1
 	add     $12, 1, $13
-	bne     be_else.31071
-be_then.31071:
+	bne     be_else.30988
+be_then.30988:
 	add     $zero, -1, $3
 	add     $13, 1, $2
 	call    min_caml_create_array
@@ -1503,14 +1428,14 @@ be_then.31071:
 	add     $sp, 8, $sp
 	store   $10, [$tmp + 0]
 	ret
-be_else.31071:
+be_else.30988:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $14
 	add     $13, 1, $15
 	cmp     $14, -1
-	bne     be_else.31072
-be_then.31072:
+	bne     be_else.30989
+be_then.30989:
 	add     $zero, -1, $3
 	add     $15, 1, $2
 	call    min_caml_create_array
@@ -1523,15 +1448,15 @@ be_then.31072:
 	add     $1, $12, $tmp
 	store   $10, [$tmp + 0]
 	ret
-be_else.31072:
+be_else.30989:
 	call    min_caml_read_int
 	add     $15, 1, $17
 .count move_ret
 	mov     $1, $16
 	cmp     $16, -1
 	add     $17, 1, $2
-	bne     be_else.31073
-be_then.31073:
+	bne     be_else.30990
+be_then.30990:
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count storer
@@ -1546,33 +1471,48 @@ be_then.31073:
 	add     $1, $12, $tmp
 	store   $10, [$tmp + 0]
 	ret
-be_else.31073:
+be_else.30990:
+.count stack_store
 	store   $10, [$sp + 1]
+.count stack_store
 	store   $13, [$sp + 2]
+.count stack_store
 	store   $11, [$sp + 3]
+.count stack_store
 	store   $15, [$sp + 4]
+.count stack_store
 	store   $14, [$sp + 5]
+.count stack_store
 	store   $17, [$sp + 6]
+.count stack_store
 	store   $16, [$sp + 7]
 	call    read_net_item.2725
 .count stack_move
 	add     $sp, 8, $sp
+.count stack_load
 	load    [$sp - 2], $2
+.count stack_load
 	load    [$sp - 1], $3
 .count storer
 	add     $1, $2, $tmp
 	store   $3, [$tmp + 0]
+.count stack_load
 	load    [$sp - 4], $2
+.count stack_load
 	load    [$sp - 3], $3
 .count storer
 	add     $1, $2, $tmp
 	store   $3, [$tmp + 0]
+.count stack_load
 	load    [$sp - 6], $2
+.count stack_load
 	load    [$sp - 5], $3
 .count storer
 	add     $1, $2, $tmp
 	store   $3, [$tmp + 0]
+.count stack_load
 	load    [$sp - 8], $2
+.count stack_load
 	load    [$sp - 7], $3
 .count storer
 	add     $1, $2, $tmp
@@ -1585,42 +1525,45 @@ be_else.31073:
 read_or_network.2727:
 .count stack_move
 	sub     $sp, 9, $sp
+.count stack_store
 	store   $2, [$sp + 0]
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31074
-be_then.31074:
+	bne     be_else.30991
+be_then.30991:
 	li      1, $2
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $10
-	b       be_cont.31074
-be_else.31074:
+.count b_cont
+	b       be_cont.30991
+be_else.30991:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $11
 	cmp     $11, -1
-	bne     be_else.31075
-be_then.31075:
-	add     $zero, -1, $3
+	bne     be_else.30992
+be_then.30992:
 	li      2, $2
+	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $11
 	store   $10, [$11 + 0]
 	mov     $11, $10
-	b       be_cont.31075
-be_else.31075:
+.count b_cont
+	b       be_cont.30992
+be_else.30992:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $12
 	cmp     $12, -1
 	li      3, $2
-	bne     be_else.31076
-be_then.31076:
+	bne     be_else.30993
+be_then.30993:
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
@@ -1628,102 +1571,125 @@ be_then.31076:
 	store   $11, [$12 + 1]
 	store   $10, [$12 + 0]
 	mov     $12, $10
-	b       be_cont.31076
-be_else.31076:
+.count b_cont
+	b       be_cont.30993
+be_else.30993:
+.count stack_store
 	store   $10, [$sp + 1]
+.count stack_store
 	store   $11, [$sp + 2]
+.count stack_store
 	store   $12, [$sp + 3]
 	call    read_net_item.2725
+.count stack_load
 	load    [$sp + 3], $11
 .count move_ret
 	mov     $1, $10
 	store   $11, [$10 + 2]
+.count stack_load
 	load    [$sp + 2], $11
 	store   $11, [$10 + 1]
+.count stack_load
 	load    [$sp + 1], $11
 	store   $11, [$10 + 0]
-be_cont.31076:
-be_cont.31075:
-be_cont.31074:
+be_cont.30993:
+be_cont.30992:
+be_cont.30991:
 	mov     $10, $3
 	load    [$3 + 0], $10
 	cmp     $10, -1
-	bne     be_else.31077
-be_then.31077:
+	bne     be_else.30994
+be_then.30994:
 .count stack_move
 	add     $sp, 9, $sp
+.count stack_load
 	load    [$sp - 9], $10
 	add     $10, 1, $2
 	b       min_caml_create_array
-be_else.31077:
+be_else.30994:
+.count stack_store
 	store   $3, [$sp + 4]
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31078
-be_then.31078:
-	add     $zero, -1, $3
+	bne     be_else.30995
+be_then.30995:
 	li      1, $2
+	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $10
-	b       be_cont.31078
-be_else.31078:
+.count b_cont
+	b       be_cont.30995
+be_else.30995:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $11
 	cmp     $11, -1
 	li      2, $2
-	bne     be_else.31079
-be_then.31079:
+	bne     be_else.30996
+be_then.30996:
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $11
 	store   $10, [$11 + 0]
 	mov     $11, $10
-	b       be_cont.31079
-be_else.31079:
+.count b_cont
+	b       be_cont.30996
+be_else.30996:
+.count stack_store
 	store   $10, [$sp + 5]
+.count stack_store
 	store   $11, [$sp + 6]
 	call    read_net_item.2725
+.count stack_load
 	load    [$sp + 6], $11
 .count move_ret
 	mov     $1, $10
 	store   $11, [$10 + 1]
+.count stack_load
 	load    [$sp + 5], $11
 	store   $11, [$10 + 0]
-be_cont.31079:
-be_cont.31078:
+be_cont.30996:
+be_cont.30995:
 	mov     $10, $3
-	load    [$3 + 0], $12
-	load    [$sp + 0], $10
-	cmp     $12, -1
-	add     $10, 1, $11
-	add     $11, 1, $2
-	bne     be_else.31080
-be_then.31080:
+.count stack_load
+	load    [$sp + 0], $11
+	load    [$3 + 0], $10
+	add     $11, 1, $12
+	cmp     $10, -1
+	add     $12, 1, $2
+	bne     be_else.30997
+be_then.30997:
 	call    min_caml_create_array
 .count stack_move
 	add     $sp, 9, $sp
 .count storer
-	add     $1, $10, $tmp
+	add     $1, $11, $tmp
+.count stack_load
 	load    [$sp - 5], $2
 	store   $2, [$tmp + 0]
 	ret
-be_else.31080:
-	store   $11, [$sp + 7]
+be_else.30997:
+.count stack_store
+	store   $12, [$sp + 7]
+.count stack_store
 	store   $3, [$sp + 8]
 	call    read_or_network.2727
 .count stack_move
 	add     $sp, 9, $sp
+.count stack_load
 	load    [$sp - 2], $2
+.count stack_load
 	load    [$sp - 1], $3
 .count storer
 	add     $1, $2, $tmp
 	store   $3, [$tmp + 0]
+.count stack_load
 	load    [$sp - 9], $2
+.count stack_load
 	load    [$sp - 5], $3
 .count storer
 	add     $1, $2, $tmp
@@ -1736,42 +1702,45 @@ be_else.31080:
 read_and_network.2729:
 .count stack_move
 	sub     $sp, 13, $sp
+.count stack_store
 	store   $2, [$sp + 0]
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31081
-be_then.31081:
+	bne     be_else.30998
+be_then.30998:
 	li      1, $2
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $10
-	b       be_cont.31081
-be_else.31081:
+.count b_cont
+	b       be_cont.30998
+be_else.30998:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $11
 	cmp     $11, -1
-	bne     be_else.31082
-be_then.31082:
-	add     $zero, -1, $3
+	bne     be_else.30999
+be_then.30999:
 	li      2, $2
+	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $11
 	store   $10, [$11 + 0]
 	mov     $11, $10
-	b       be_cont.31082
-be_else.31082:
+.count b_cont
+	b       be_cont.30999
+be_else.30999:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $12
 	cmp     $12, -1
 	li      3, $2
-	bne     be_else.31083
-be_then.31083:
+	bne     be_else.31000
+be_then.31000:
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
@@ -1779,119 +1748,137 @@ be_then.31083:
 	store   $11, [$12 + 1]
 	store   $10, [$12 + 0]
 	mov     $12, $10
-	b       be_cont.31083
-be_else.31083:
+.count b_cont
+	b       be_cont.31000
+be_else.31000:
+.count stack_store
 	store   $10, [$sp + 1]
+.count stack_store
 	store   $11, [$sp + 2]
+.count stack_store
 	store   $12, [$sp + 3]
 	call    read_net_item.2725
+.count stack_load
 	load    [$sp + 3], $11
 .count move_ret
 	mov     $1, $10
 	store   $11, [$10 + 2]
+.count stack_load
 	load    [$sp + 2], $11
 	store   $11, [$10 + 1]
+.count stack_load
 	load    [$sp + 1], $11
 	store   $11, [$10 + 0]
-be_cont.31083:
-be_cont.31082:
-be_cont.31081:
+be_cont.31000:
+be_cont.30999:
+be_cont.30998:
 	load    [$10 + 0], $11
 	cmp     $11, -1
-	bne     be_else.31084
-be_then.31084:
+	bne     be_else.31001
+be_then.31001:
 .count stack_move
 	add     $sp, 13, $sp
 	ret
-be_else.31084:
+be_else.31001:
+.count stack_load
 	load    [$sp + 0], $11
 	store   $10, [min_caml_and_net + $11]
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31085
-be_then.31085:
-	add     $zero, -1, $3
+	bne     be_else.31002
+be_then.31002:
 	li      1, $2
+	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $10
-	b       be_cont.31085
-be_else.31085:
+.count b_cont
+	b       be_cont.31002
+be_else.31002:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $11
 	cmp     $11, -1
 	li      2, $2
-	bne     be_else.31086
-be_then.31086:
+	bne     be_else.31003
+be_then.31003:
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $11
 	store   $10, [$11 + 0]
 	mov     $11, $10
-	b       be_cont.31086
-be_else.31086:
+.count b_cont
+	b       be_cont.31003
+be_else.31003:
+.count stack_store
 	store   $10, [$sp + 4]
+.count stack_store
 	store   $11, [$sp + 5]
 	call    read_net_item.2725
+.count stack_load
 	load    [$sp + 5], $11
 .count move_ret
 	mov     $1, $10
 	store   $11, [$10 + 1]
+.count stack_load
 	load    [$sp + 4], $11
 	store   $11, [$10 + 0]
-be_cont.31086:
-be_cont.31085:
+be_cont.31003:
+be_cont.31002:
 	load    [$10 + 0], $11
 	cmp     $11, -1
-	bne     be_else.31087
-be_then.31087:
+	bne     be_else.31004
+be_then.31004:
 .count stack_move
 	add     $sp, 13, $sp
 	ret
-be_else.31087:
+be_else.31004:
+.count stack_load
 	load    [$sp + 0], $11
 	add     $11, 1, $11
+.count stack_store
 	store   $11, [$sp + 6]
 	store   $10, [min_caml_and_net + $11]
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31088
-be_then.31088:
+	bne     be_else.31005
+be_then.31005:
 	li      1, $2
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $10
-	b       be_cont.31088
-be_else.31088:
+.count b_cont
+	b       be_cont.31005
+be_else.31005:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $11
 	cmp     $11, -1
-	bne     be_else.31089
-be_then.31089:
-	add     $zero, -1, $3
+	bne     be_else.31006
+be_then.31006:
 	li      2, $2
+	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $11
 	store   $10, [$11 + 0]
 	mov     $11, $10
-	b       be_cont.31089
-be_else.31089:
+.count b_cont
+	b       be_cont.31006
+be_else.31006:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $12
 	cmp     $12, -1
 	li      3, $2
-	bne     be_else.31090
-be_then.31090:
+	bne     be_else.31007
+be_then.31007:
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
@@ -1899,75 +1886,91 @@ be_then.31090:
 	store   $11, [$12 + 1]
 	store   $10, [$12 + 0]
 	mov     $12, $10
-	b       be_cont.31090
-be_else.31090:
+.count b_cont
+	b       be_cont.31007
+be_else.31007:
+.count stack_store
 	store   $10, [$sp + 7]
+.count stack_store
 	store   $11, [$sp + 8]
+.count stack_store
 	store   $12, [$sp + 9]
 	call    read_net_item.2725
+.count stack_load
 	load    [$sp + 9], $11
 .count move_ret
 	mov     $1, $10
 	store   $11, [$10 + 2]
+.count stack_load
 	load    [$sp + 8], $11
 	store   $11, [$10 + 1]
+.count stack_load
 	load    [$sp + 7], $11
 	store   $11, [$10 + 0]
-be_cont.31090:
-be_cont.31089:
-be_cont.31088:
+be_cont.31007:
+be_cont.31006:
+be_cont.31005:
 	load    [$10 + 0], $11
 	cmp     $11, -1
-	bne     be_else.31091
-be_then.31091:
+	bne     be_else.31008
+be_then.31008:
 .count stack_move
 	add     $sp, 13, $sp
 	ret
-be_else.31091:
+be_else.31008:
+.count stack_load
 	load    [$sp + 6], $11
 	add     $11, 1, $11
+.count stack_store
 	store   $11, [$sp + 10]
 	store   $10, [min_caml_and_net + $11]
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31092
-be_then.31092:
-	add     $zero, -1, $3
+	bne     be_else.31009
+be_then.31009:
 	li      1, $2
+	add     $zero, -1, $3
 	call    min_caml_create_array
-	b       be_cont.31092
-be_else.31092:
+.count b_cont
+	b       be_cont.31009
+be_else.31009:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $11
 	cmp     $11, -1
 	li      2, $2
-	bne     be_else.31093
-be_then.31093:
+	bne     be_else.31010
+be_then.31010:
 	add     $zero, -1, $3
 	call    min_caml_create_array
 	store   $10, [$1 + 0]
-	b       be_cont.31093
-be_else.31093:
+.count b_cont
+	b       be_cont.31010
+be_else.31010:
+.count stack_store
 	store   $10, [$sp + 11]
+.count stack_store
 	store   $11, [$sp + 12]
 	call    read_net_item.2725
+.count stack_load
 	load    [$sp + 12], $2
 	store   $2, [$1 + 1]
+.count stack_load
 	load    [$sp + 11], $2
 	store   $2, [$1 + 0]
-be_cont.31093:
-be_cont.31092:
+be_cont.31010:
+be_cont.31009:
 	load    [$1 + 0], $2
 .count stack_move
 	add     $sp, 13, $sp
 	cmp     $2, -1
-	bne     be_else.31094
-be_then.31094:
+	bne     be_else.31011
+be_then.31011:
 	ret
-be_else.31094:
+be_else.31011:
+.count stack_load
 	load    [$sp - 3], $2
 	add     $2, 1, $2
 	store   $1, [min_caml_and_net + $2]
@@ -1979,425 +1982,450 @@ be_else.31094:
 .begin solver
 solver.2773:
 	load    [min_caml_objects + $2], $1
-	load    [min_caml_startp + 2], $7
+	load    [min_caml_startp + 0], $7
+	load    [min_caml_startp + 1], $8
+	load    [$1 + 5], $2
 	load    [$1 + 5], $4
 	load    [$1 + 5], $5
-	load    [$1 + 5], $6
-	load    [$4 + 2], $4
-	load    [$5 + 1], $5
-	load    [$1 + 1], $2
-	fsub    $7, $4, $4
-	load    [$6 + 0], $6
-	load    [min_caml_startp + 1], $7
-	cmp     $2, 1
-	fsub    $7, $5, $5
-	load    [min_caml_startp + 0], $7
-	fsub    $7, $6, $6
-	bne     be_else.31095
-be_then.31095:
-	load    [$3 + 0], $2
-	fcmp    $2, $zero
-	bne     be_else.31096
-be_then.31096:
-	li      0, $2
-	b       be_cont.31096
-be_else.31096:
-	load    [$1 + 4], $8
-	finv    $2, $7
-	fcmp    $zero, $2
-	load    [$8 + 0], $9
-	bg      ble_else.31097
-ble_then.31097:
-	li      0, $2
-	b       ble_cont.31097
-ble_else.31097:
-	li      1, $2
-ble_cont.31097:
-	load    [$1 + 6], $10
-	cmp     $10, 0
-	be      bne_cont.31098
-bne_then.31098:
-	cmp     $2, 0
-	bne     be_else.31099
-be_then.31099:
-	li      1, $2
-	b       be_cont.31099
-be_else.31099:
-	li      0, $2
-be_cont.31099:
-bne_cont.31098:
-	cmp     $2, 0
-	bne     be_else.31100
-be_then.31100:
-	fneg    $9, $2
-	b       be_cont.31100
-be_else.31100:
-	mov     $9, $2
-be_cont.31100:
-	fsub    $2, $6, $2
-	load    [$8 + 1], $9
-	fmul    $2, $7, $2
-	load    [$3 + 1], $7
-	fmul    $2, $7, $7
-	fadd    $7, $5, $7
-	fabs    $7, $7
-	fcmp    $9, $7
-	bg      ble_else.31101
-ble_then.31101:
-	li      0, $2
-	b       ble_cont.31101
-ble_else.31101:
-	load    [$3 + 2], $7
-	load    [$8 + 2], $8
-	fmul    $2, $7, $7
-	fadd    $7, $4, $7
-	fabs    $7, $7
-	fcmp    $8, $7
-	bg      ble_else.31102
-ble_then.31102:
-	li      0, $2
-	b       ble_cont.31102
-ble_else.31102:
-.count move_float
-	mov     $2, $42
-	li      1, $2
-ble_cont.31102:
-ble_cont.31101:
-be_cont.31096:
-	cmp     $2, 0
-	bne     be_else.31103
-be_then.31103:
-	load    [$3 + 1], $2
-	fcmp    $2, $zero
-	bne     be_else.31104
-be_then.31104:
-	li      0, $2
-	b       be_cont.31104
-be_else.31104:
-	load    [$1 + 4], $8
-	finv    $2, $7
-	fcmp    $zero, $2
-	load    [$8 + 1], $9
-	bg      ble_else.31105
-ble_then.31105:
-	li      0, $2
-	b       ble_cont.31105
-ble_else.31105:
-	li      1, $2
-ble_cont.31105:
-	load    [$1 + 6], $10
-	cmp     $10, 0
-	be      bne_cont.31106
-bne_then.31106:
-	cmp     $2, 0
-	bne     be_else.31107
-be_then.31107:
-	li      1, $2
-	b       be_cont.31107
-be_else.31107:
-	li      0, $2
-be_cont.31107:
-bne_cont.31106:
-	cmp     $2, 0
-	bne     be_else.31108
-be_then.31108:
-	fneg    $9, $2
-	b       be_cont.31108
-be_else.31108:
-	mov     $9, $2
-be_cont.31108:
-	fsub    $2, $5, $2
-	load    [$8 + 2], $9
-	fmul    $2, $7, $2
-	load    [$3 + 2], $7
-	fmul    $2, $7, $7
-	fadd    $7, $4, $7
-	fabs    $7, $7
-	fcmp    $9, $7
-	bg      ble_else.31109
-ble_then.31109:
-	li      0, $2
-	b       ble_cont.31109
-ble_else.31109:
-	load    [$3 + 0], $7
-	load    [$8 + 0], $8
-	fmul    $2, $7, $7
-	fadd    $7, $6, $7
-	fabs    $7, $7
-	fcmp    $8, $7
-	bg      ble_else.31110
-ble_then.31110:
-	li      0, $2
-	b       ble_cont.31110
-ble_else.31110:
-.count move_float
-	mov     $2, $42
-	li      1, $2
-ble_cont.31110:
-ble_cont.31109:
-be_cont.31104:
-	cmp     $2, 0
-	bne     be_else.31111
-be_then.31111:
-	load    [$3 + 2], $2
-	fcmp    $2, $zero
-	bne     be_else.31112
-be_then.31112:
-	li      0, $1
-	ret
-be_else.31112:
+	load    [$2 + 0], $2
+	load    [$4 + 1], $4
+	load    [$5 + 2], $5
+	load    [min_caml_startp + 2], $9
+	load    [$1 + 1], $6
+	fsub    $7, $2, $2
+	fsub    $8, $4, $4
+	fsub    $9, $5, $5
+	cmp     $6, 1
+	bne     be_else.31012
+be_then.31012:
+	load    [$3 + 0], $6
+	fcmp    $6, $zero
+	bne     be_else.31013
+be_then.31013:
+	li      0, $6
+.count b_cont
+	b       be_cont.31013
+be_else.31013:
 	load    [$1 + 4], $7
-	finv    $2, $8
+	load    [$3 + 1], $8
+	load    [$1 + 6], $9
+	load    [$7 + 1], $10
+	fcmp    $zero, $6
+	bg      ble_else.31014
+ble_then.31014:
+	li      0, $11
+.count b_cont
+	b       ble_cont.31014
+ble_else.31014:
+	li      1, $11
+ble_cont.31014:
+	cmp     $9, 0
+	bne     be_else.31015
+be_then.31015:
+	mov     $11, $9
+.count b_cont
+	b       be_cont.31015
+be_else.31015:
+	cmp     $11, 0
+	bne     be_else.31016
+be_then.31016:
+	li      1, $9
+.count b_cont
+	b       be_cont.31016
+be_else.31016:
+	li      0, $9
+be_cont.31016:
+be_cont.31015:
+	load    [$7 + 0], $11
+	cmp     $9, 0
+	bne     be_else.31017
+be_then.31017:
+	fneg    $11, $9
+.count b_cont
+	b       be_cont.31017
+be_else.31017:
+	mov     $11, $9
+be_cont.31017:
+	finv    $6, $6
+	fsub    $9, $2, $9
+	fmul    $9, $6, $6
+	fmul    $6, $8, $8
+	fadd    $8, $4, $8
+	fabs    $8, $8
+	fcmp    $10, $8
+	bg      ble_else.31018
+ble_then.31018:
+	li      0, $6
+.count b_cont
+	b       ble_cont.31018
+ble_else.31018:
+	load    [$3 + 2], $8
+	load    [$7 + 2], $7
+	fmul    $6, $8, $8
+	fadd    $8, $5, $8
+	fabs    $8, $8
+	fcmp    $7, $8
+	bg      ble_else.31019
+ble_then.31019:
+	li      0, $6
+.count b_cont
+	b       ble_cont.31019
+ble_else.31019:
+.count move_float
+	mov     $6, $42
+	li      1, $6
+ble_cont.31019:
+ble_cont.31018:
+be_cont.31013:
+	cmp     $6, 0
+	bne     be_else.31020
+be_then.31020:
+	load    [$3 + 1], $6
+	fcmp    $6, $zero
+	bne     be_else.31021
+be_then.31021:
+	li      0, $6
+.count b_cont
+	b       be_cont.31021
+be_else.31021:
+	load    [$1 + 4], $7
+	load    [$3 + 2], $8
+	load    [$1 + 6], $9
+	load    [$7 + 2], $10
+	fcmp    $zero, $6
+	bg      ble_else.31022
+ble_then.31022:
+	li      0, $11
+.count b_cont
+	b       ble_cont.31022
+ble_else.31022:
+	li      1, $11
+ble_cont.31022:
+	cmp     $9, 0
+	bne     be_else.31023
+be_then.31023:
+	mov     $11, $9
+.count b_cont
+	b       be_cont.31023
+be_else.31023:
+	cmp     $11, 0
+	bne     be_else.31024
+be_then.31024:
+	li      1, $9
+.count b_cont
+	b       be_cont.31024
+be_else.31024:
+	li      0, $9
+be_cont.31024:
+be_cont.31023:
+	load    [$7 + 1], $11
+	cmp     $9, 0
+	bne     be_else.31025
+be_then.31025:
+	fneg    $11, $9
+.count b_cont
+	b       be_cont.31025
+be_else.31025:
+	mov     $11, $9
+be_cont.31025:
+	finv    $6, $6
+	fsub    $9, $4, $9
+	fmul    $9, $6, $6
+	fmul    $6, $8, $8
+	fadd    $8, $5, $8
+	fabs    $8, $8
+	fcmp    $10, $8
+	bg      ble_else.31026
+ble_then.31026:
+	li      0, $6
+.count b_cont
+	b       ble_cont.31026
+ble_else.31026:
+	load    [$3 + 0], $8
+	load    [$7 + 0], $7
+	fmul    $6, $8, $8
+	fadd    $8, $2, $8
+	fabs    $8, $8
+	fcmp    $7, $8
+	bg      ble_else.31027
+ble_then.31027:
+	li      0, $6
+.count b_cont
+	b       ble_cont.31027
+ble_else.31027:
+.count move_float
+	mov     $6, $42
+	li      1, $6
+ble_cont.31027:
+ble_cont.31026:
+be_cont.31021:
+	cmp     $6, 0
+	bne     be_else.31028
+be_then.31028:
+	load    [$3 + 2], $6
+	fcmp    $6, $zero
+	bne     be_else.31029
+be_then.31029:
+	li      0, $1
+	ret
+be_else.31029:
+	load    [$1 + 4], $7
+	load    [$3 + 0], $9
 	load    [$1 + 6], $1
-	load    [$7 + 2], $9
-	fcmp    $zero, $2
-	bg      ble_else.31113
-ble_then.31113:
-	li      0, $2
-	b       ble_cont.31113
-ble_else.31113:
-	li      1, $2
-ble_cont.31113:
+	load    [$7 + 0], $8
+	fcmp    $zero, $6
+	bg      ble_else.31030
+ble_then.31030:
+	li      0, $10
+.count b_cont
+	b       ble_cont.31030
+ble_else.31030:
+	li      1, $10
+ble_cont.31030:
 	cmp     $1, 0
-	bne     be_else.31114
-be_then.31114:
-	mov     $2, $1
-	b       be_cont.31114
-be_else.31114:
-	cmp     $2, 0
-	bne     be_else.31115
-be_then.31115:
+	bne     be_else.31031
+be_then.31031:
+	mov     $10, $1
+.count b_cont
+	b       be_cont.31031
+be_else.31031:
+	cmp     $10, 0
+	bne     be_else.31032
+be_then.31032:
 	li      1, $1
-	b       be_cont.31115
-be_else.31115:
+.count b_cont
+	b       be_cont.31032
+be_else.31032:
 	li      0, $1
-be_cont.31115:
-be_cont.31114:
+be_cont.31032:
+be_cont.31031:
+	load    [$7 + 2], $10
 	cmp     $1, 0
-	bne     be_else.31116
-be_then.31116:
-	fneg    $9, $1
-	b       be_cont.31116
-be_else.31116:
-	mov     $9, $1
-be_cont.31116:
-	fsub    $1, $4, $1
-	load    [$3 + 0], $2
-	load    [$7 + 0], $4
-	fmul    $1, $8, $1
-	fmul    $1, $2, $2
-	fadd    $2, $6, $2
+	bne     be_else.31033
+be_then.31033:
+	fneg    $10, $1
+.count b_cont
+	b       be_cont.31033
+be_else.31033:
+	mov     $10, $1
+be_cont.31033:
+	fsub    $1, $5, $1
+	finv    $6, $5
+	fmul    $1, $5, $1
+	fmul    $1, $9, $5
+	fadd    $5, $2, $2
 	fabs    $2, $2
-	fcmp    $4, $2
-	bg      ble_else.31117
-ble_then.31117:
+	fcmp    $8, $2
+	bg      ble_else.31034
+ble_then.31034:
 	li      0, $1
 	ret
-ble_else.31117:
-	load    [$3 + 1], $2
-	load    [$7 + 1], $3
-	fmul    $1, $2, $2
-	fadd    $2, $5, $2
-	fabs    $2, $2
-	fcmp    $3, $2
-	bg      ble_else.31118
-ble_then.31118:
+ble_else.31034:
+	load    [$3 + 1], $3
+	load    [$7 + 1], $2
+	fmul    $1, $3, $3
+	fadd    $3, $4, $3
+	fabs    $3, $3
+	fcmp    $2, $3
+	bg      ble_else.31035
+ble_then.31035:
 	li      0, $1
 	ret
-ble_else.31118:
+ble_else.31035:
 .count move_float
 	mov     $1, $42
 	li      3, $1
 	ret
-be_else.31111:
+be_else.31028:
 	li      2, $1
 	ret
-be_else.31103:
+be_else.31020:
 	li      1, $1
 	ret
-be_else.31095:
-	cmp     $2, 2
-	bne     be_else.31119
-be_then.31119:
+be_else.31012:
+	cmp     $6, 2
+	bne     be_else.31036
+be_then.31036:
 	load    [$1 + 4], $1
-	load    [$3 + 1], $9
-	load    [$3 + 2], $7
-	load    [$1 + 1], $8
-	load    [$1 + 2], $2
-	load    [$3 + 0], $3
-	load    [$1 + 0], $1
-	fmul    $9, $8, $9
-	fmul    $7, $2, $7
+	load    [$3 + 1], $8
+	load    [$3 + 0], $6
+	load    [$1 + 1], $9
+	load    [$1 + 0], $7
+	load    [$3 + 2], $3
+	fmul    $8, $9, $8
+	fmul    $6, $7, $6
+	load    [$1 + 2], $1
 	fmul    $3, $1, $3
-	fadd    $3, $9, $3
-	fadd    $3, $7, $3
+	fadd    $6, $8, $6
+	fadd    $6, $3, $3
 	fcmp    $3, $zero
-	bg      ble_else.31120
-ble_then.31120:
+	bg      ble_else.31037
+ble_then.31037:
 	li      0, $1
 	ret
-ble_else.31120:
-	fmul    $2, $4, $2
-	fmul    $1, $6, $1
-	fmul    $8, $5, $4
+ble_else.31037:
+	fmul    $9, $4, $4
+	fmul    $7, $2, $2
+	fmul    $1, $5, $1
 	finv    $3, $3
-	fadd    $1, $4, $1
-	fadd    $1, $2, $1
+	fadd    $2, $4, $2
+	fadd    $2, $1, $1
 	fneg    $1, $1
 	fmul    $1, $3, $1
 .count move_float
 	mov     $1, $42
 	li      1, $1
 	ret
-be_else.31119:
-	load    [$3 + 1], $13
-	load    [$3 + 2], $11
-	load    [$1 + 4], $9
-	load    [$3 + 0], $3
-	load    [$1 + 4], $8
-	fmul    $13, $13, $14
-	fmul    $3, $3, $15
-	load    [$9 + 0], $9
-	load    [$8 + 1], $8
+be_else.31036:
+	load    [$3 + 0], $11
+	load    [$3 + 1], $12
 	load    [$1 + 4], $7
-	fmul    $11, $11, $12
-	fmul    $15, $9, $15
+	load    [$1 + 4], $8
+	fmul    $11, $11, $13
+	fmul    $12, $12, $14
+	load    [$3 + 2], $3
+	load    [$7 + 0], $7
+	load    [$8 + 1], $8
+	load    [$1 + 4], $9
+	fmul    $3, $3, $15
+	fmul    $13, $7, $13
 	fmul    $14, $8, $14
-	load    [$7 + 2], $7
+	load    [$9 + 2], $9
 	load    [$1 + 3], $10
-	fmul    $12, $7, $12
-	fadd    $15, $14, $14
+	fmul    $15, $9, $15
+	fadd    $13, $14, $13
 	cmp     $10, 0
-	fadd    $14, $12, $12
-	bne     be_else.31121
-be_then.31121:
-	mov     $12, $10
-	b       be_cont.31121
-be_else.31121:
-	load    [$1 + 9], $10
-	fmul    $3, $13, $14
-	fmul    $11, $3, $15
-	load    [$10 + 2], $10
-	fmul    $13, $11, $16
-	fmul    $14, $10, $10
+	fadd    $13, $15, $13
+	bne     be_else.31038
+be_then.31038:
+	mov     $13, $10
+.count b_cont
+	b       be_cont.31038
+be_else.31038:
 	load    [$1 + 9], $14
-	load    [$14 + 1], $14
+	fmul    $12, $3, $10
+	load    [$1 + 9], $16
+	load    [$14 + 0], $14
+	fmul    $3, $11, $15
+	load    [$1 + 9], $17
+	fmul    $10, $14, $10
+	load    [$16 + 1], $14
+	fmul    $11, $12, $16
+	fadd    $13, $10, $10
 	fmul    $15, $14, $14
-	load    [$1 + 9], $15
-	load    [$15 + 0], $15
-	fmul    $16, $15, $15
-	fadd    $12, $15, $12
-	fadd    $12, $14, $12
-	fadd    $12, $10, $10
-be_cont.31121:
+	load    [$17 + 2], $13
+	fmul    $16, $13, $13
+	fadd    $10, $14, $10
+	fadd    $10, $13, $10
+be_cont.31038:
 	fcmp    $10, $zero
-	bne     be_else.31122
-be_then.31122:
+	bne     be_else.31039
+be_then.31039:
 	li      0, $1
 	ret
-be_else.31122:
-	fmul    $6, $6, $17
-	fmul    $5, $5, $16
-	fmul    $4, $4, $15
-	load    [$1 + 3], $12
+be_else.31039:
+	fmul    $11, $2, $15
+	fmul    $12, $4, $16
+	fmul    $3, $5, $17
+	load    [$1 + 3], $13
 	load    [$1 + 3], $14
-	fmul    $17, $9, $17
-	fmul    $16, $8, $16
 	fmul    $15, $7, $15
-	cmp     $12, 0
-	fadd    $17, $16, $16
-	fadd    $16, $15, $15
-	bne     be_else.31123
-be_then.31123:
-	mov     $15, $12
-	b       be_cont.31123
-be_else.31123:
-	load    [$1 + 9], $12
-	fmul    $6, $5, $16
-	fmul    $4, $6, $17
-	load    [$12 + 2], $12
-	fmul    $5, $4, $18
-	fmul    $16, $12, $12
-	load    [$1 + 9], $16
-	load    [$16 + 1], $16
-	fmul    $17, $16, $16
-	load    [$1 + 9], $17
-	load    [$17 + 0], $17
-	fmul    $18, $17, $17
-	fadd    $15, $17, $15
+	fmul    $16, $8, $16
+	fmul    $17, $9, $17
+	cmp     $13, 0
 	fadd    $15, $16, $15
-	fadd    $15, $12, $12
-be_cont.31123:
-	cmp     $2, 3
-	bne     be_else.31124
-be_then.31124:
-	fsub    $12, $36, $2
-	b       be_cont.31124
-be_else.31124:
-	mov     $12, $2
-be_cont.31124:
-	fmul    $11, $4, $12
-	fmul    $10, $2, $2
+	fadd    $15, $17, $15
+	bne     be_else.31040
+be_then.31040:
+	mov     $15, $3
+.count b_cont
+	b       be_cont.31040
+be_else.31040:
+	fmul    $3, $4, $13
+	fmul    $12, $5, $16
+	fmul    $11, $5, $18
+	fmul    $3, $2, $3
+	load    [$1 + 9], $17
+	fmul    $12, $2, $12
+	fadd    $13, $16, $13
+	load    [$17 + 0], $17
+	load    [$1 + 9], $16
+	fmul    $11, $4, $11
+	fadd    $18, $3, $3
+	fmul    $13, $17, $13
+	load    [$16 + 1], $16
+	load    [$1 + 9], $17
+	fadd    $11, $12, $11
+	fmul    $3, $16, $3
+	load    [$17 + 2], $16
+	fmul    $11, $16, $11
+	fadd    $13, $3, $3
+	fadd    $3, $11, $3
+	fmul    $3, $39, $3
+	fadd    $15, $3, $3
+be_cont.31040:
+	fmul    $2, $2, $12
+	fmul    $4, $4, $13
+	fmul    $5, $5, $15
+	fmul    $3, $3, $11
 	cmp     $14, 0
 	fmul    $12, $7, $7
-	fmul    $13, $5, $12
-	fmul    $12, $8, $8
-	fmul    $3, $6, $12
-	fmul    $12, $9, $9
-	fadd    $9, $8, $8
-	fadd    $8, $7, $7
-	bne     be_else.31125
-be_then.31125:
-	mov     $7, $3
-	b       be_cont.31125
-be_else.31125:
-	fmul    $3, $5, $12
-	fmul    $13, $6, $9
-	load    [$1 + 9], $8
-	fmul    $3, $4, $3
-	fmul    $11, $6, $6
-	load    [$8 + 2], $8
-	fadd    $12, $9, $9
-	fmul    $11, $5, $5
-	fmul    $13, $4, $4
-	fadd    $3, $6, $3
-	fmul    $9, $8, $8
-	load    [$1 + 9], $6
+	fmul    $13, $8, $8
+	fmul    $15, $9, $9
+	fadd    $7, $8, $7
+	fadd    $7, $9, $7
+	bne     be_else.31041
+be_then.31041:
+	mov     $7, $2
+.count b_cont
+	b       be_cont.31041
+be_else.31041:
 	load    [$1 + 9], $9
-	fadd    $5, $4, $4
-	load    [$6 + 0], $6
-	load    [$9 + 1], $9
-	fmul    $4, $6, $4
-	fmul    $3, $9, $3
-	fadd    $4, $3, $3
-	fadd    $3, $8, $3
-	fmul    $3, $39, $3
-	fadd    $7, $3, $3
-be_cont.31125:
-	fmul    $3, $3, $4
-	fsub    $4, $2, $2
+	fmul    $4, $5, $8
+	load    [$1 + 9], $12
+	load    [$9 + 0], $9
+	fmul    $5, $2, $5
+	fmul    $8, $9, $8
+	fmul    $2, $4, $2
+	load    [$12 + 1], $9
+	load    [$1 + 9], $4
+	fadd    $7, $8, $7
+	fmul    $5, $9, $5
+	load    [$4 + 2], $4
+	fmul    $2, $4, $2
+	fadd    $7, $5, $5
+	fadd    $5, $2, $2
+be_cont.31041:
+	cmp     $6, 3
+	bne     be_cont.31042
+be_then.31042:
+	fsub    $2, $36, $2
+be_cont.31042:
+	fmul    $10, $2, $2
+	fsub    $11, $2, $2
 	fcmp    $2, $zero
-	bg      ble_else.31126
-ble_then.31126:
+	bg      ble_else.31043
+ble_then.31043:
 	li      0, $1
 	ret
-ble_else.31126:
+ble_else.31043:
 	load    [$1 + 6], $1
 	fsqrt   $2, $2
-	finv    $10, $4
 	cmp     $1, 0
-	bne     be_else.31127
-be_then.31127:
+	bne     be_else.31044
+be_then.31044:
 	fneg    $2, $1
 	fsub    $1, $3, $1
-	fmul    $1, $4, $1
+	finv    $10, $2
+	fmul    $1, $2, $1
 .count move_float
 	mov     $1, $42
 	li      1, $1
 	ret
-be_else.31127:
+be_else.31044:
 	fsub    $2, $3, $1
-	fmul    $1, $4, $1
+	finv    $10, $2
+	fmul    $1, $2, $1
 .count move_float
 	mov     $1, $42
 	li      1, $1
@@ -2408,259 +2436,266 @@ be_else.31127:
 .begin solver_fast
 solver_fast.2796:
 	load    [min_caml_objects + $2], $1
-	load    [min_caml_light_dirvec + 1], $4
+	load    [min_caml_intersection_point + 0], $8
+	load    [min_caml_intersection_point + 1], $9
+	load    [$1 + 5], $4
 	load    [$1 + 5], $5
-	load    [$4 + $2], $2
 	load    [$1 + 5], $6
-	load    [$5 + 2], $4
-	load    [$1 + 5], $7
-	load    [min_caml_intersection_point + 2], $5
-	load    [$1 + 1], $3
-	fsub    $5, $4, $4
-	cmp     $3, 1
-	load    [$6 + 1], $5
-	load    [min_caml_intersection_point + 1], $6
-	fsub    $6, $5, $5
-	load    [$7 + 0], $6
-	load    [min_caml_intersection_point + 0], $7
-	fsub    $7, $6, $6
-	bne     be_else.31128
-be_then.31128:
+	load    [$4 + 0], $4
+	load    [$5 + 1], $5
+	load    [$6 + 2], $6
+	load    [min_caml_intersection_point + 2], $10
+	load    [min_caml_light_dirvec + 1], $3
+	load    [$1 + 1], $7
+	fsub    $8, $4, $4
+	fsub    $9, $5, $5
+	fsub    $10, $6, $6
+	load    [$3 + $2], $2
+	cmp     $7, 1
+	bne     be_else.31045
+be_then.31045:
 	load    [$2 + 0], $9
-	load    [$2 + 1], $8
+	load    [$2 + 1], $10
 	load    [min_caml_light_dirvec + 0], $3
-	fsub    $9, $6, $9
+	fsub    $9, $4, $9
 	load    [$1 + 4], $7
+	load    [$3 + 1], $8
 	load    [$7 + 1], $7
+	fmul    $9, $10, $9
 	fmul    $9, $8, $8
-	load    [$3 + 1], $9
-	fmul    $8, $9, $9
-	fadd    $9, $5, $9
-	fabs    $9, $9
-	fcmp    $7, $9
-	bg      ble_else.31129
-ble_then.31129:
-	li      0, $9
-	b       ble_cont.31129
-ble_else.31129:
+	fadd    $8, $5, $8
+	fabs    $8, $8
+	fcmp    $7, $8
+	bg      ble_else.31046
+ble_then.31046:
+	li      0, $8
+.count b_cont
+	b       ble_cont.31046
+ble_else.31046:
 	load    [$3 + 2], $10
-	load    [$1 + 4], $9
-	fmul    $8, $10, $10
-	load    [$9 + 2], $9
-	fadd    $10, $4, $10
-	fabs    $10, $10
-	fcmp    $9, $10
-	bg      ble_else.31130
-ble_then.31130:
-	li      0, $9
-	b       ble_cont.31130
-ble_else.31130:
-	load    [$2 + 1], $9
-	fcmp    $9, $zero
-	bne     be_else.31131
-be_then.31131:
-	li      0, $9
-	b       be_cont.31131
-be_else.31131:
-	li      1, $9
-be_cont.31131:
-ble_cont.31130:
-ble_cont.31129:
-	cmp     $9, 0
-	bne     be_else.31132
-be_then.31132:
-	load    [$2 + 2], $10
-	load    [$2 + 3], $9
 	load    [$1 + 4], $8
-	fsub    $10, $5, $10
-	load    [$8 + 0], $8
-	fmul    $10, $9, $9
-	load    [$3 + 0], $10
 	fmul    $9, $10, $10
+	load    [$8 + 2], $8
 	fadd    $10, $6, $10
 	fabs    $10, $10
 	fcmp    $8, $10
-	bg      ble_else.31133
-ble_then.31133:
+	bg      ble_else.31047
+ble_then.31047:
+	li      0, $8
+.count b_cont
+	b       ble_cont.31047
+ble_else.31047:
+	load    [$2 + 1], $8
+	fcmp    $8, $zero
+	bne     be_else.31048
+be_then.31048:
+	li      0, $8
+.count b_cont
+	b       be_cont.31048
+be_else.31048:
+	li      1, $8
+be_cont.31048:
+ble_cont.31047:
+ble_cont.31046:
+	cmp     $8, 0
+	bne     be_else.31049
+be_then.31049:
+	load    [$2 + 2], $10
+	load    [$2 + 3], $11
+	load    [$3 + 0], $9
+	fsub    $10, $5, $10
+	load    [$1 + 4], $8
+	load    [$8 + 0], $8
+	fmul    $10, $11, $10
+	fmul    $10, $9, $9
+	fadd    $9, $4, $9
+	fabs    $9, $9
+	fcmp    $8, $9
+	bg      ble_else.31050
+ble_then.31050:
 	li      0, $1
-	b       ble_cont.31133
-ble_else.31133:
-	load    [$3 + 2], $10
+.count b_cont
+	b       ble_cont.31050
+ble_else.31050:
+	load    [$3 + 2], $9
 	load    [$1 + 4], $1
-	fmul    $9, $10, $10
+	fmul    $10, $9, $9
 	load    [$1 + 2], $1
-	fadd    $10, $4, $10
-	fabs    $10, $10
-	fcmp    $1, $10
-	bg      ble_else.31134
-ble_then.31134:
+	fadd    $9, $6, $9
+	fabs    $9, $9
+	fcmp    $1, $9
+	bg      ble_else.31051
+ble_then.31051:
 	li      0, $1
-	b       ble_cont.31134
-ble_else.31134:
+.count b_cont
+	b       ble_cont.31051
+ble_else.31051:
 	load    [$2 + 3], $1
 	fcmp    $1, $zero
-	bne     be_else.31135
-be_then.31135:
+	bne     be_else.31052
+be_then.31052:
 	li      0, $1
-	b       be_cont.31135
-be_else.31135:
+.count b_cont
+	b       be_cont.31052
+be_else.31052:
 	li      1, $1
-be_cont.31135:
-ble_cont.31134:
-ble_cont.31133:
+be_cont.31052:
+ble_cont.31051:
+ble_cont.31050:
 	cmp     $1, 0
-	bne     be_else.31136
-be_then.31136:
+	bne     be_else.31053
+be_then.31053:
 	load    [$2 + 4], $9
+	load    [$3 + 0], $1
+	fsub    $9, $6, $6
+	load    [$2 + 5], $9
+	fmul    $6, $9, $6
+	fmul    $6, $1, $1
+	fadd    $1, $4, $1
+	fabs    $1, $1
+	fcmp    $8, $1
+	bg      ble_else.31054
+ble_then.31054:
+	li      0, $1
+	ret
+ble_else.31054:
+	load    [$3 + 1], $1
+	fmul    $6, $1, $1
+	fadd    $1, $5, $1
+	fabs    $1, $1
+	fcmp    $7, $1
+	bg      ble_else.31055
+ble_then.31055:
+	li      0, $1
+	ret
+ble_else.31055:
 	load    [$2 + 5], $1
-	fsub    $9, $4, $4
-	fmul    $4, $1, $1
-	load    [$3 + 0], $4
-	fmul    $1, $4, $4
-	fadd    $4, $6, $4
-	fabs    $4, $4
-	fcmp    $8, $4
-	bg      ble_else.31137
-ble_then.31137:
+	fcmp    $1, $zero
+	bne     be_else.31056
+be_then.31056:
 	li      0, $1
 	ret
-ble_else.31137:
-	load    [$3 + 1], $3
-	fmul    $1, $3, $3
-	fadd    $3, $5, $3
-	fabs    $3, $3
-	fcmp    $7, $3
-	bg      ble_else.31138
-ble_then.31138:
-	li      0, $1
-	ret
-ble_else.31138:
-	load    [$2 + 5], $2
-	fcmp    $2, $zero
-	bne     be_else.31139
-be_then.31139:
-	li      0, $1
-	ret
-be_else.31139:
+be_else.31056:
 .count move_float
-	mov     $1, $42
+	mov     $6, $42
 	li      3, $1
 	ret
-be_else.31136:
+be_else.31053:
 .count move_float
-	mov     $9, $42
+	mov     $10, $42
 	li      2, $1
 	ret
-be_else.31132:
+be_else.31049:
 .count move_float
-	mov     $8, $42
+	mov     $9, $42
 	li      1, $1
 	ret
-be_else.31128:
-	cmp     $3, 2
-	bne     be_else.31140
-be_then.31140:
+be_else.31045:
+	cmp     $7, 2
+	bne     be_else.31057
+be_then.31057:
 	load    [$2 + 0], $1
 	fcmp    $zero, $1
-	bg      ble_else.31141
-ble_then.31141:
+	bg      ble_else.31058
+ble_then.31058:
 	li      0, $1
 	ret
-ble_else.31141:
+ble_else.31058:
 	load    [$2 + 2], $3
-	load    [$2 + 3], $1
-	load    [$2 + 1], $2
+	load    [$2 + 1], $1
 	fmul    $3, $5, $3
 	fmul    $1, $4, $1
+	load    [$2 + 3], $2
 	fmul    $2, $6, $2
-	fadd    $2, $3, $2
-	fadd    $2, $1, $1
+	fadd    $1, $3, $1
+	fadd    $1, $2, $1
 .count move_float
 	mov     $1, $42
 	li      1, $1
 	ret
-be_else.31140:
-	load    [$2 + 0], $7
-	fcmp    $7, $zero
-	bne     be_else.31142
-be_then.31142:
-	li      0, $1
-	ret
-be_else.31142:
-	load    [$1 + 4], $8
-	fmul    $4, $4, $12
-	load    [$1 + 4], $9
-	load    [$8 + 2], $8
-	load    [$1 + 4], $10
-	load    [$9 + 1], $9
-	fmul    $12, $8, $8
-	load    [$10 + 0], $10
-	fmul    $5, $5, $12
-	load    [$1 + 3], $11
-	cmp     $11, 0
-	fmul    $12, $9, $9
-	fmul    $6, $6, $12
-	fmul    $12, $10, $10
-	fadd    $10, $9, $9
-	fadd    $9, $8, $8
-	be      bne_cont.31143
-bne_then.31143:
-	load    [$1 + 9], $9
-	fmul    $6, $5, $10
-	fmul    $4, $6, $11
-	load    [$9 + 2], $9
-	fmul    $5, $4, $12
-	fmul    $10, $9, $9
-	load    [$1 + 9], $10
-	load    [$10 + 1], $10
-	fmul    $11, $10, $10
-	load    [$1 + 9], $11
-	load    [$11 + 0], $11
-	fmul    $12, $11, $11
-	fadd    $8, $11, $8
-	fadd    $8, $10, $8
-	fadd    $8, $9, $8
-bne_cont.31143:
-	cmp     $3, 3
-	bne     be_else.31144
-be_then.31144:
-	fsub    $8, $36, $3
-	b       be_cont.31144
-be_else.31144:
-	mov     $8, $3
-be_cont.31144:
-	fmul    $7, $3, $3
-	load    [$2 + 3], $7
-	fmul    $7, $4, $4
-	load    [$2 + 2], $7
-	fmul    $7, $5, $5
-	load    [$2 + 1], $7
-	fmul    $7, $6, $6
-	fadd    $6, $5, $5
-	fadd    $5, $4, $4
-	fmul    $4, $4, $5
-	fsub    $5, $3, $3
+be_else.31057:
+	load    [$2 + 0], $3
 	fcmp    $3, $zero
-	bg      ble_else.31145
-ble_then.31145:
+	bne     be_else.31059
+be_then.31059:
 	li      0, $1
 	ret
-ble_else.31145:
+be_else.31059:
+	load    [$2 + 2], $13
+	load    [$2 + 1], $12
+	load    [$1 + 4], $8
+	fmul    $13, $5, $13
+	fmul    $12, $4, $12
+	load    [$1 + 4], $9
+	fmul    $5, $5, $15
+	load    [$8 + 0], $8
+	load    [$9 + 1], $9
+	fadd    $12, $13, $12
+	load    [$2 + 3], $14
+	fmul    $4, $4, $13
+	fmul    $15, $9, $9
+	load    [$1 + 4], $10
+	fmul    $14, $6, $14
+	load    [$1 + 3], $11
+	fmul    $13, $8, $8
+	load    [$10 + 2], $10
+	fmul    $6, $6, $13
+	fadd    $12, $14, $12
+	cmp     $11, 0
+	fadd    $8, $9, $8
+	fmul    $13, $10, $9
+	fmul    $12, $12, $14
+	fadd    $8, $9, $8
+	bne     be_else.31060
+be_then.31060:
+	mov     $8, $4
+.count b_cont
+	b       be_cont.31060
+be_else.31060:
+	load    [$1 + 9], $10
+	fmul    $5, $6, $9
+	load    [$1 + 9], $11
+	load    [$10 + 0], $10
+	fmul    $6, $4, $6
+	fmul    $9, $10, $9
+	fmul    $4, $5, $4
+	load    [$11 + 1], $10
+	load    [$1 + 9], $5
+	fadd    $8, $9, $8
+	fmul    $6, $10, $6
+	load    [$5 + 2], $5
+	fmul    $4, $5, $4
+	fadd    $8, $6, $6
+	fadd    $6, $4, $4
+be_cont.31060:
+	cmp     $7, 3
+	bne     be_cont.31061
+be_then.31061:
+	fsub    $4, $36, $4
+be_cont.31061:
+	fmul    $3, $4, $3
+	fsub    $14, $3, $3
+	fcmp    $3, $zero
+	bg      ble_else.31062
+ble_then.31062:
+	li      0, $1
+	ret
+ble_else.31062:
 	load    [$1 + 6], $1
+	load    [$2 + 4], $2
 	cmp     $1, 0
-	load    [$2 + 4], $1
-	fsqrt   $3, $2
-	bne     be_else.31146
-be_then.31146:
-	fsub    $4, $2, $2
-	fmul    $2, $1, $1
+	fsqrt   $3, $1
+	bne     be_else.31063
+be_then.31063:
+	fsub    $12, $1, $1
+	fmul    $1, $2, $1
 .count move_float
 	mov     $1, $42
 	li      1, $1
 	ret
-be_else.31146:
-	fadd    $4, $2, $2
-	fmul    $2, $1, $1
+be_else.31063:
+	fadd    $12, $1, $1
+	fmul    $1, $2, $1
 .count move_float
 	mov     $1, $42
 	li      1, $1
@@ -2670,204 +2705,210 @@ be_else.31146:
 ######################################################################
 .begin solver_fast2
 solver_fast2.2814:
-	load    [min_caml_objects + $2], $1
-	load    [$3 + 1], $6
-	load    [$1 + 10], $4
-	load    [$1 + 1], $5
-	load    [$6 + $2], $2
-	load    [$4 + 1], $7
-	load    [$4 + 2], $6
-	load    [$4 + 0], $8
-	cmp     $5, 1
-	bne     be_else.31147
-be_then.31147:
-	load    [$2 + 0], $9
+	load    [min_caml_objects + $2], $4
+	load    [$3 + 1], $1
+	load    [$4 + 10], $5
+	load    [$4 + 1], $6
+	load    [$1 + $2], $1
+	load    [$5 + 0], $7
+	load    [$5 + 1], $8
+	load    [$5 + 2], $9
+	cmp     $6, 1
+	bne     be_else.31064
+be_then.31064:
+	load    [$1 + 0], $6
+	load    [$1 + 1], $10
+	load    [$3 + 0], $2
+	fsub    $6, $7, $6
+	load    [$4 + 4], $3
 	load    [$2 + 1], $5
-	load    [$3 + 0], $3
-	fsub    $9, $8, $9
-	load    [$1 + 4], $4
-	load    [$4 + 1], $4
-	fmul    $9, $5, $5
-	load    [$3 + 1], $9
-	fmul    $5, $9, $9
-	fadd    $9, $7, $9
-	fabs    $9, $9
-	fcmp    $4, $9
-	bg      ble_else.31148
-ble_then.31148:
-	li      0, $9
-	b       ble_cont.31148
-ble_else.31148:
-	load    [$3 + 2], $10
-	load    [$1 + 4], $9
-	fmul    $5, $10, $10
-	load    [$9 + 2], $9
-	fadd    $10, $6, $10
-	fabs    $10, $10
-	fcmp    $9, $10
-	bg      ble_else.31149
-ble_then.31149:
-	li      0, $9
-	b       ble_cont.31149
-ble_else.31149:
-	load    [$2 + 1], $9
-	fcmp    $9, $zero
-	bne     be_else.31150
-be_then.31150:
-	li      0, $9
-	b       be_cont.31150
-be_else.31150:
-	li      1, $9
-be_cont.31150:
-ble_cont.31149:
-ble_cont.31148:
-	cmp     $9, 0
-	bne     be_else.31151
-be_then.31151:
+	load    [$3 + 1], $3
+	fmul    $6, $10, $6
+	fmul    $6, $5, $5
+	fadd    $5, $8, $5
+	fabs    $5, $5
+	fcmp    $3, $5
+	bg      ble_else.31065
+ble_then.31065:
+	li      0, $5
+.count b_cont
+	b       ble_cont.31065
+ble_else.31065:
 	load    [$2 + 2], $10
-	load    [$2 + 3], $9
-	load    [$1 + 4], $5
-	fsub    $10, $7, $10
-	load    [$5 + 0], $5
-	fmul    $10, $9, $9
-	load    [$3 + 0], $10
-	fmul    $9, $10, $10
-	fadd    $10, $8, $10
+	load    [$4 + 4], $5
+	fmul    $6, $10, $10
+	load    [$5 + 2], $5
+	fadd    $10, $9, $10
 	fabs    $10, $10
 	fcmp    $5, $10
-	bg      ble_else.31152
-ble_then.31152:
-	li      0, $1
-	b       ble_cont.31152
-ble_else.31152:
-	load    [$3 + 2], $10
-	load    [$1 + 4], $1
-	fmul    $9, $10, $10
-	load    [$1 + 2], $1
-	fadd    $10, $6, $10
-	fabs    $10, $10
-	fcmp    $1, $10
-	bg      ble_else.31153
-ble_then.31153:
-	li      0, $1
-	b       ble_cont.31153
-ble_else.31153:
-	load    [$2 + 3], $1
-	fcmp    $1, $zero
-	bne     be_else.31154
-be_then.31154:
-	li      0, $1
-	b       be_cont.31154
-be_else.31154:
-	li      1, $1
-be_cont.31154:
-ble_cont.31153:
-ble_cont.31152:
-	cmp     $1, 0
-	bne     be_else.31155
-be_then.31155:
-	load    [$2 + 4], $9
-	load    [$2 + 5], $1
-	fsub    $9, $6, $6
-	fmul    $6, $1, $1
-	load    [$3 + 0], $6
-	fmul    $1, $6, $6
-	fadd    $6, $8, $6
+	bg      ble_else.31066
+ble_then.31066:
+	li      0, $5
+.count b_cont
+	b       ble_cont.31066
+ble_else.31066:
+	load    [$1 + 1], $5
+	fcmp    $5, $zero
+	bne     be_else.31067
+be_then.31067:
+	li      0, $5
+.count b_cont
+	b       be_cont.31067
+be_else.31067:
+	li      1, $5
+be_cont.31067:
+ble_cont.31066:
+ble_cont.31065:
+	cmp     $5, 0
+	bne     be_else.31068
+be_then.31068:
+	load    [$1 + 2], $10
+	load    [$1 + 3], $11
+	load    [$2 + 0], $6
+	fsub    $10, $8, $10
+	load    [$4 + 4], $5
+	load    [$5 + 0], $5
+	fmul    $10, $11, $10
+	fmul    $10, $6, $6
+	fadd    $6, $7, $6
 	fabs    $6, $6
 	fcmp    $5, $6
-	bg      ble_else.31156
-ble_then.31156:
+	bg      ble_else.31069
+ble_then.31069:
+	li      0, $4
+.count b_cont
+	b       ble_cont.31069
+ble_else.31069:
+	load    [$2 + 2], $6
+	load    [$4 + 4], $4
+	fmul    $10, $6, $6
+	load    [$4 + 2], $4
+	fadd    $6, $9, $6
+	fabs    $6, $6
+	fcmp    $4, $6
+	bg      ble_else.31070
+ble_then.31070:
+	li      0, $4
+.count b_cont
+	b       ble_cont.31070
+ble_else.31070:
+	load    [$1 + 3], $4
+	fcmp    $4, $zero
+	bne     be_else.31071
+be_then.31071:
+	li      0, $4
+.count b_cont
+	b       be_cont.31071
+be_else.31071:
+	li      1, $4
+be_cont.31071:
+ble_cont.31070:
+ble_cont.31069:
+	cmp     $4, 0
+	bne     be_else.31072
+be_then.31072:
+	load    [$1 + 4], $6
+	load    [$2 + 0], $4
+	fsub    $6, $9, $6
+	load    [$1 + 5], $9
+	fmul    $6, $9, $6
+	fmul    $6, $4, $4
+	fadd    $4, $7, $4
+	fabs    $4, $4
+	fcmp    $5, $4
+	bg      ble_else.31073
+ble_then.31073:
 	li      0, $1
 	ret
-ble_else.31156:
-	load    [$3 + 1], $3
-	fmul    $1, $3, $3
-	fadd    $3, $7, $3
-	fabs    $3, $3
-	fcmp    $4, $3
-	bg      ble_else.31157
-ble_then.31157:
+ble_else.31073:
+	load    [$2 + 1], $2
+	fmul    $6, $2, $2
+	fadd    $2, $8, $2
+	fabs    $2, $2
+	fcmp    $3, $2
+	bg      ble_else.31074
+ble_then.31074:
 	li      0, $1
 	ret
-ble_else.31157:
-	load    [$2 + 5], $2
-	fcmp    $2, $zero
-	bne     be_else.31158
-be_then.31158:
+ble_else.31074:
+	load    [$1 + 5], $1
+	fcmp    $1, $zero
+	bne     be_else.31075
+be_then.31075:
 	li      0, $1
 	ret
-be_else.31158:
+be_else.31075:
 .count move_float
-	mov     $1, $42
+	mov     $6, $42
 	li      3, $1
 	ret
-be_else.31155:
+be_else.31072:
 .count move_float
-	mov     $9, $42
+	mov     $10, $42
 	li      2, $1
 	ret
-be_else.31151:
+be_else.31068:
 .count move_float
-	mov     $5, $42
+	mov     $6, $42
 	li      1, $1
 	ret
-be_else.31147:
-	cmp     $5, 2
-	bne     be_else.31159
-be_then.31159:
-	load    [$2 + 0], $1
+be_else.31064:
+	cmp     $6, 2
+	bne     be_else.31076
+be_then.31076:
+	load    [$1 + 0], $1
 	fcmp    $zero, $1
-	bg      ble_else.31160
-ble_then.31160:
+	bg      ble_else.31077
+ble_then.31077:
 	li      0, $1
 	ret
-ble_else.31160:
-	load    [$4 + 3], $2
+ble_else.31077:
+	load    [$5 + 3], $2
 	fmul    $1, $2, $1
 .count move_float
 	mov     $1, $42
 	li      1, $1
 	ret
-be_else.31159:
-	load    [$2 + 0], $3
-	fcmp    $3, $zero
-	bne     be_else.31161
-be_then.31161:
+be_else.31076:
+	load    [$1 + 0], $2
+	fcmp    $2, $zero
+	bne     be_else.31078
+be_then.31078:
 	li      0, $1
 	ret
-be_else.31161:
-	load    [$4 + 3], $4
-	load    [$2 + 2], $5
-	fmul    $3, $4, $3
-	fmul    $5, $7, $5
-	load    [$2 + 3], $4
-	fmul    $4, $6, $4
-	load    [$2 + 1], $6
+be_else.31078:
+	load    [$1 + 2], $6
+	load    [$1 + 1], $3
+	load    [$5 + 3], $5
 	fmul    $6, $8, $6
-	fadd    $6, $5, $5
-	fadd    $5, $4, $4
-	fmul    $4, $4, $5
-	fsub    $5, $3, $3
-	fcmp    $3, $zero
-	bg      ble_else.31162
-ble_then.31162:
+	fmul    $3, $7, $3
+	fmul    $2, $5, $2
+	load    [$1 + 3], $7
+	fadd    $3, $6, $3
+	fmul    $7, $9, $7
+	fadd    $3, $7, $3
+	fmul    $3, $3, $5
+	fsub    $5, $2, $2
+	fcmp    $2, $zero
+	bg      ble_else.31079
+ble_then.31079:
 	li      0, $1
 	ret
-ble_else.31162:
-	load    [$1 + 6], $1
-	cmp     $1, 0
-	load    [$2 + 4], $1
-	fsqrt   $3, $2
-	bne     be_else.31163
-be_then.31163:
-	fsub    $4, $2, $2
+ble_else.31079:
+	load    [$4 + 6], $4
+	load    [$1 + 4], $1
+	fsqrt   $2, $2
+	cmp     $4, 0
+	bne     be_else.31080
+be_then.31080:
+	fsub    $3, $2, $2
 	fmul    $2, $1, $1
 .count move_float
 	mov     $1, $42
 	li      1, $1
 	ret
-be_else.31163:
-	fadd    $4, $2, $2
+be_else.31080:
+	fadd    $3, $2, $2
 	fmul    $2, $1, $1
 .count move_float
 	mov     $1, $42
@@ -2879,713 +2920,751 @@ be_else.31163:
 .begin iter_setup_dirvec_constants
 iter_setup_dirvec_constants.2826:
 	cmp     $3, 0
-	bl      bge_else.31164
-bge_then.31164:
-	load    [min_caml_objects + $3], $11
+	bl      bge_else.31081
+bge_then.31081:
+	load    [min_caml_objects + $3], $12
 .count stack_move
 	sub     $sp, 2, $sp
-	load    [$2 + 1], $13
-	load    [$11 + 1], $12
-	load    [$2 + 0], $10
+	load    [$2 + 0], $11
+	load    [$12 + 1], $13
+	load    [$2 + 1], $10
+.count stack_store
 	store   $2, [$sp + 0]
-	cmp     $12, 1
+	cmp     $13, 1
+.count stack_store
 	store   $3, [$sp + 1]
 .count move_args
 	mov     $zero, $3
-	bne     be_else.31165
-be_then.31165:
+	bne     be_else.31082
+be_then.31082:
 	li      6, $2
 	call    min_caml_create_array
-	load    [$10 + 0], $14
+	load    [$11 + 0], $14
 .count move_ret
-	mov     $1, $12
+	mov     $1, $13
 	fcmp    $14, $zero
-	bne     be_else.31166
-be_then.31166:
-	store   $zero, [$12 + 1]
-	b       be_cont.31166
-be_else.31166:
-	load    [$11 + 6], $15
+	bne     be_else.31083
+be_then.31083:
+	store   $zero, [$13 + 1]
+.count b_cont
+	b       be_cont.31083
+be_else.31083:
+	load    [$12 + 6], $15
 	fcmp    $zero, $14
-	bg      ble_else.31167
-ble_then.31167:
+	bg      ble_else.31084
+ble_then.31084:
 	li      0, $14
-	b       ble_cont.31167
-ble_else.31167:
+.count b_cont
+	b       ble_cont.31084
+ble_else.31084:
 	li      1, $14
-ble_cont.31167:
+ble_cont.31084:
 	cmp     $15, 0
-	be      bne_cont.31168
-bne_then.31168:
+	be      bne_cont.31085
+bne_then.31085:
 	cmp     $14, 0
-	bne     be_else.31169
-be_then.31169:
+	bne     be_else.31086
+be_then.31086:
 	li      1, $14
-	b       be_cont.31169
-be_else.31169:
+.count b_cont
+	b       be_cont.31086
+be_else.31086:
 	li      0, $14
-be_cont.31169:
-bne_cont.31168:
-	load    [$11 + 4], $15
+be_cont.31086:
+bne_cont.31085:
+	load    [$12 + 4], $15
 	cmp     $14, 0
 	load    [$15 + 0], $15
-	bne     be_else.31170
-be_then.31170:
+	bne     be_else.31087
+be_then.31087:
 	fneg    $15, $14
-	store   $14, [$12 + 0]
-	load    [$10 + 0], $14
+	store   $14, [$13 + 0]
+	load    [$11 + 0], $14
 	finv    $14, $14
-	store   $14, [$12 + 1]
-	b       be_cont.31170
-be_else.31170:
-	store   $15, [$12 + 0]
-	load    [$10 + 0], $14
+	store   $14, [$13 + 1]
+.count b_cont
+	b       be_cont.31087
+be_else.31087:
+	store   $15, [$13 + 0]
+	load    [$11 + 0], $14
 	finv    $14, $14
-	store   $14, [$12 + 1]
-be_cont.31170:
-be_cont.31166:
-	load    [$10 + 1], $14
+	store   $14, [$13 + 1]
+be_cont.31087:
+be_cont.31083:
+	load    [$11 + 1], $14
 	fcmp    $14, $zero
-	bne     be_else.31171
-be_then.31171:
-	store   $zero, [$12 + 3]
-	b       be_cont.31171
-be_else.31171:
-	load    [$11 + 6], $15
+	bne     be_else.31088
+be_then.31088:
+	store   $zero, [$13 + 3]
+.count b_cont
+	b       be_cont.31088
+be_else.31088:
+	load    [$12 + 6], $15
 	fcmp    $zero, $14
-	bg      ble_else.31172
-ble_then.31172:
+	bg      ble_else.31089
+ble_then.31089:
 	li      0, $14
-	b       ble_cont.31172
-ble_else.31172:
+.count b_cont
+	b       ble_cont.31089
+ble_else.31089:
 	li      1, $14
-ble_cont.31172:
+ble_cont.31089:
 	cmp     $15, 0
-	be      bne_cont.31173
-bne_then.31173:
+	be      bne_cont.31090
+bne_then.31090:
 	cmp     $14, 0
-	bne     be_else.31174
-be_then.31174:
+	bne     be_else.31091
+be_then.31091:
 	li      1, $14
-	b       be_cont.31174
-be_else.31174:
+.count b_cont
+	b       be_cont.31091
+be_else.31091:
 	li      0, $14
-be_cont.31174:
-bne_cont.31173:
-	load    [$11 + 4], $15
+be_cont.31091:
+bne_cont.31090:
+	load    [$12 + 4], $15
 	cmp     $14, 0
 	load    [$15 + 1], $15
-	bne     be_else.31175
-be_then.31175:
+	bne     be_else.31092
+be_then.31092:
 	fneg    $15, $14
-	store   $14, [$12 + 2]
-	load    [$10 + 1], $14
+	store   $14, [$13 + 2]
+	load    [$11 + 1], $14
 	finv    $14, $14
-	store   $14, [$12 + 3]
-	b       be_cont.31175
-be_else.31175:
-	store   $15, [$12 + 2]
-	load    [$10 + 1], $14
+	store   $14, [$13 + 3]
+.count b_cont
+	b       be_cont.31092
+be_else.31092:
+	store   $15, [$13 + 2]
+	load    [$11 + 1], $14
 	finv    $14, $14
-	store   $14, [$12 + 3]
-be_cont.31175:
-be_cont.31171:
-	load    [$10 + 2], $14
+	store   $14, [$13 + 3]
+be_cont.31092:
+be_cont.31088:
+	load    [$11 + 2], $14
 	fcmp    $14, $zero
-	bne     be_else.31176
-be_then.31176:
-	store   $zero, [$12 + 5]
-	mov     $12, $11
-	b       be_cont.31176
-be_else.31176:
-	load    [$11 + 4], $15
+	bne     be_else.31093
+be_then.31093:
+	store   $zero, [$13 + 5]
+	mov     $13, $12
+.count b_cont
+	b       be_cont.31093
+be_else.31093:
+	load    [$12 + 6], $15
 	fcmp    $zero, $14
-	load    [$15 + 2], $15
-	bg      ble_else.31177
-ble_then.31177:
+	bg      ble_else.31094
+ble_then.31094:
 	li      0, $14
-	b       ble_cont.31177
-ble_else.31177:
+.count b_cont
+	b       ble_cont.31094
+ble_else.31094:
 	li      1, $14
-ble_cont.31177:
-	load    [$11 + 6], $11
-	cmp     $11, 0
-	bne     be_else.31178
-be_then.31178:
+ble_cont.31094:
+	cmp     $15, 0
+	be      bne_cont.31095
+bne_then.31095:
 	cmp     $14, 0
-	bne     be_else.31179
-be_then.31179:
-	fneg    $15, $11
-	store   $11, [$12 + 4]
-	load    [$10 + 2], $11
-	finv    $11, $11
-	store   $11, [$12 + 5]
-	mov     $12, $11
-	b       be_cont.31178
-be_else.31179:
-	store   $15, [$12 + 4]
-	load    [$10 + 2], $11
-	finv    $11, $11
-	store   $11, [$12 + 5]
-	mov     $12, $11
-	b       be_cont.31178
-be_else.31178:
+	bne     be_else.31096
+be_then.31096:
+	li      1, $14
+.count b_cont
+	b       be_cont.31096
+be_else.31096:
+	li      0, $14
+be_cont.31096:
+bne_cont.31095:
+	load    [$12 + 4], $12
 	cmp     $14, 0
-	bne     be_else.31180
-be_then.31180:
-	store   $15, [$12 + 4]
-	load    [$10 + 2], $11
-	finv    $11, $11
-	store   $11, [$12 + 5]
-	mov     $12, $11
-	b       be_cont.31180
-be_else.31180:
-	fneg    $15, $11
-	store   $11, [$12 + 4]
-	load    [$10 + 2], $11
-	finv    $11, $11
-	store   $11, [$12 + 5]
-	mov     $12, $11
-be_cont.31180:
-be_cont.31178:
-be_cont.31176:
-	load    [$sp + 1], $12
+	load    [$12 + 2], $12
+	bne     be_else.31097
+be_then.31097:
+	fneg    $12, $12
+	store   $12, [$13 + 4]
+	load    [$11 + 2], $12
+	finv    $12, $12
+	store   $12, [$13 + 5]
+	mov     $13, $12
+.count b_cont
+	b       be_cont.31097
+be_else.31097:
+	store   $12, [$13 + 4]
+	load    [$11 + 2], $12
+	finv    $12, $12
+	store   $12, [$13 + 5]
+	mov     $13, $12
+be_cont.31097:
+be_cont.31093:
+.count stack_load
+	load    [$sp + 1], $13
 .count storer
-	add     $13, $12, $tmp
-	store   $11, [$tmp + 0]
-	sub     $12, 1, $11
-	cmp     $11, 0
-	bl      bge_else.31181
-bge_then.31181:
-	load    [min_caml_objects + $11], $12
+	add     $10, $13, $tmp
+	store   $12, [$tmp + 0]
+	sub     $13, 1, $12
+	cmp     $12, 0
+	bl      bge_else.31098
+bge_then.31098:
+	load    [min_caml_objects + $12], $13
 .count move_args
 	mov     $zero, $3
-	load    [$12 + 1], $14
+	load    [$13 + 1], $14
 	cmp     $14, 1
-	bne     be_else.31182
-be_then.31182:
+	bne     be_else.31099
+be_then.31099:
 	li      6, $2
 	call    min_caml_create_array
-	load    [$10 + 0], $2
+	load    [$11 + 0], $2
 .count stack_move
 	add     $sp, 2, $sp
 	fcmp    $2, $zero
-	bne     be_else.31183
-be_then.31183:
+	bne     be_else.31100
+be_then.31100:
 	store   $zero, [$1 + 1]
-	b       be_cont.31183
-be_else.31183:
-	load    [$12 + 6], $3
+.count b_cont
+	b       be_cont.31100
+be_else.31100:
+	load    [$13 + 6], $3
 	fcmp    $zero, $2
-	bg      ble_else.31184
-ble_then.31184:
+	bg      ble_else.31101
+ble_then.31101:
 	li      0, $2
-	b       ble_cont.31184
-ble_else.31184:
+.count b_cont
+	b       ble_cont.31101
+ble_else.31101:
 	li      1, $2
-ble_cont.31184:
+ble_cont.31101:
 	cmp     $3, 0
-	be      bne_cont.31185
-bne_then.31185:
+	be      bne_cont.31102
+bne_then.31102:
 	cmp     $2, 0
-	bne     be_else.31186
-be_then.31186:
+	bne     be_else.31103
+be_then.31103:
 	li      1, $2
-	b       be_cont.31186
-be_else.31186:
+.count b_cont
+	b       be_cont.31103
+be_else.31103:
 	li      0, $2
-be_cont.31186:
-bne_cont.31185:
-	load    [$12 + 4], $3
+be_cont.31103:
+bne_cont.31102:
+	load    [$13 + 4], $3
 	cmp     $2, 0
 	load    [$3 + 0], $3
-	bne     be_else.31187
-be_then.31187:
+	bne     be_else.31104
+be_then.31104:
 	fneg    $3, $2
 	store   $2, [$1 + 0]
-	load    [$10 + 0], $2
+	load    [$11 + 0], $2
 	finv    $2, $2
 	store   $2, [$1 + 1]
-	b       be_cont.31187
-be_else.31187:
+.count b_cont
+	b       be_cont.31104
+be_else.31104:
 	store   $3, [$1 + 0]
-	load    [$10 + 0], $2
+	load    [$11 + 0], $2
 	finv    $2, $2
 	store   $2, [$1 + 1]
-be_cont.31187:
-be_cont.31183:
-	load    [$10 + 1], $2
+be_cont.31104:
+be_cont.31100:
+	load    [$11 + 1], $2
 	fcmp    $2, $zero
-	bne     be_else.31188
-be_then.31188:
+	bne     be_else.31105
+be_then.31105:
 	store   $zero, [$1 + 3]
-	b       be_cont.31188
-be_else.31188:
-	load    [$12 + 6], $3
+.count b_cont
+	b       be_cont.31105
+be_else.31105:
+	load    [$13 + 6], $3
 	fcmp    $zero, $2
-	bg      ble_else.31189
-ble_then.31189:
+	bg      ble_else.31106
+ble_then.31106:
 	li      0, $2
-	b       ble_cont.31189
-ble_else.31189:
+.count b_cont
+	b       ble_cont.31106
+ble_else.31106:
 	li      1, $2
-ble_cont.31189:
+ble_cont.31106:
 	cmp     $3, 0
-	be      bne_cont.31190
-bne_then.31190:
+	be      bne_cont.31107
+bne_then.31107:
 	cmp     $2, 0
-	bne     be_else.31191
-be_then.31191:
+	bne     be_else.31108
+be_then.31108:
 	li      1, $2
-	b       be_cont.31191
-be_else.31191:
+.count b_cont
+	b       be_cont.31108
+be_else.31108:
 	li      0, $2
-be_cont.31191:
-bne_cont.31190:
-	load    [$12 + 4], $3
+be_cont.31108:
+bne_cont.31107:
+	load    [$13 + 4], $3
 	cmp     $2, 0
 	load    [$3 + 1], $3
-	bne     be_else.31192
-be_then.31192:
+	bne     be_else.31109
+be_then.31109:
 	fneg    $3, $2
 	store   $2, [$1 + 2]
-	load    [$10 + 1], $2
+	load    [$11 + 1], $2
 	finv    $2, $2
 	store   $2, [$1 + 3]
-	b       be_cont.31192
-be_else.31192:
+.count b_cont
+	b       be_cont.31109
+be_else.31109:
 	store   $3, [$1 + 2]
-	load    [$10 + 1], $2
+	load    [$11 + 1], $2
 	finv    $2, $2
 	store   $2, [$1 + 3]
-be_cont.31192:
-be_cont.31188:
-	load    [$10 + 2], $2
+be_cont.31109:
+be_cont.31105:
+	load    [$11 + 2], $2
 	fcmp    $2, $zero
-	bne     be_else.31193
-be_then.31193:
+	bne     be_else.31110
+be_then.31110:
 	store   $zero, [$1 + 5]
 .count storer
-	add     $13, $11, $tmp
-	sub     $11, 1, $3
+	add     $10, $12, $tmp
+	sub     $12, 1, $3
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31193:
-	load    [$12 + 4], $3
-	load    [$12 + 6], $4
+be_else.31110:
+	load    [$13 + 6], $3
+	load    [$13 + 4], $4
 	fcmp    $zero, $2
-	load    [$3 + 2], $3
-	bg      ble_else.31194
-ble_then.31194:
+	bg      ble_else.31111
+ble_then.31111:
 	li      0, $2
-	b       ble_cont.31194
-ble_else.31194:
+.count b_cont
+	b       ble_cont.31111
+ble_else.31111:
 	li      1, $2
-ble_cont.31194:
-	cmp     $4, 0
-	be      bne_cont.31195
-bne_then.31195:
+ble_cont.31111:
+	cmp     $3, 0
+	be      bne_cont.31112
+bne_then.31112:
 	cmp     $2, 0
-	bne     be_else.31196
-be_then.31196:
+	bne     be_else.31113
+be_then.31113:
 	li      1, $2
-	b       be_cont.31196
-be_else.31196:
+.count b_cont
+	b       be_cont.31113
+be_else.31113:
 	li      0, $2
-be_cont.31196:
-bne_cont.31195:
+be_cont.31113:
+bne_cont.31112:
+	load    [$4 + 2], $3
 	cmp     $2, 0
-	bne     be_else.31197
-be_then.31197:
+	bne     be_else.31114
+be_then.31114:
 	fneg    $3, $2
-	b       be_cont.31197
-be_else.31197:
+.count b_cont
+	b       be_cont.31114
+be_else.31114:
 	mov     $3, $2
-be_cont.31197:
+be_cont.31114:
 	store   $2, [$1 + 4]
 .count storer
-	add     $13, $11, $tmp
-	load    [$10 + 2], $2
-	sub     $11, 1, $3
+	add     $10, $12, $tmp
+	load    [$11 + 2], $2
+	sub     $12, 1, $3
 	finv    $2, $2
 	store   $2, [$1 + 5]
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31182:
+be_else.31099:
 	cmp     $14, 2
-	bne     be_else.31198
-be_then.31198:
+	bne     be_else.31115
+be_then.31115:
 	li      4, $2
 	call    min_caml_create_array
-	load    [$12 + 4], $2
-	load    [$10 + 2], $5
-	load    [$12 + 4], $3
-	load    [$2 + 2], $2
-	load    [$12 + 4], $4
+	load    [$13 + 4], $2
+	load    [$11 + 0], $5
+	load    [$13 + 4], $3
+	load    [$2 + 0], $2
+	load    [$13 + 4], $4
 	load    [$3 + 1], $3
 	fmul    $5, $2, $2
-	load    [$4 + 0], $4
-	load    [$10 + 1], $5
+	load    [$4 + 2], $4
+	load    [$11 + 1], $5
 .count stack_move
 	add     $sp, 2, $sp
 .count storer
-	add     $13, $11, $tmp
+	add     $10, $12, $tmp
 	fmul    $5, $3, $3
-	load    [$10 + 0], $5
-	fmul    $5, $4, $4
-	fadd    $4, $3, $3
-	fadd    $3, $2, $2
+	load    [$11 + 2], $5
+	fadd    $2, $3, $2
+	fmul    $5, $4, $3
+	fadd    $2, $3, $2
 	fcmp    $2, $zero
-	bg      ble_else.31199
-ble_then.31199:
+	bg      ble_else.31116
+ble_then.31116:
 	store   $zero, [$1 + 0]
-	sub     $11, 1, $3
+	sub     $12, 1, $3
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-ble_else.31199:
+ble_else.31116:
 	finv    $2, $2
 	fneg    $2, $3
 	store   $3, [$1 + 0]
-	load    [$12 + 4], $3
+	load    [$13 + 4], $3
 	load    [$3 + 0], $3
 	fmul    $3, $2, $3
 	fneg    $3, $3
 	store   $3, [$1 + 1]
-	load    [$12 + 4], $3
+	load    [$13 + 4], $3
 	load    [$3 + 1], $3
 	fmul    $3, $2, $3
 	fneg    $3, $3
 	store   $3, [$1 + 2]
-	load    [$12 + 4], $3
+	load    [$13 + 4], $3
 	load    [$3 + 2], $3
 	fmul    $3, $2, $2
-	sub     $11, 1, $3
+	sub     $12, 1, $3
 	fneg    $2, $2
 	store   $2, [$1 + 3]
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31198:
+be_else.31115:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$10 + 2], $6
-	load    [$12 + 4], $2
-	load    [$12 + 4], $3
-	fmul    $6, $6, $7
-	load    [$2 + 2], $2
-	load    [$3 + 1], $3
-	load    [$12 + 4], $4
-	load    [$12 + 3], $5
-	fmul    $7, $2, $2
-	load    [$4 + 0], $4
-	load    [$10 + 1], $7
+	load    [$11 + 0], $6
+	load    [$11 + 1], $7
+	load    [$13 + 4], $3
+	load    [$13 + 4], $4
+	fmul    $6, $6, $9
+	fmul    $7, $7, $14
+	load    [$11 + 2], $8
+	load    [$3 + 0], $3
+	load    [$4 + 1], $4
+	load    [$13 + 4], $5
+	fmul    $8, $8, $15
+	fmul    $9, $3, $3
+	fmul    $14, $4, $4
+	load    [$5 + 2], $5
+	load    [$13 + 3], $2
 .count stack_move
 	add     $sp, 2, $sp
-	cmp     $5, 0
-	fmul    $7, $7, $8
-	fmul    $8, $3, $3
-	load    [$10 + 0], $8
-	fmul    $8, $8, $9
-	fmul    $9, $4, $4
-	fadd    $4, $3, $3
-	fadd    $3, $2, $2
-	be      bne_cont.31200
-bne_then.31200:
-	load    [$12 + 9], $4
-	fmul    $7, $6, $3
+	fmul    $15, $5, $5
+	fadd    $3, $4, $3
+	cmp     $2, 0
+	fadd    $3, $5, $3
+	be      bne_cont.31117
+bne_then.31117:
+	load    [$13 + 9], $5
+	fmul    $7, $8, $4
+	load    [$13 + 9], $9
+	load    [$5 + 0], $5
+	fmul    $8, $6, $8
+	fmul    $4, $5, $4
+	fmul    $6, $7, $6
+	load    [$9 + 1], $5
+	load    [$13 + 9], $7
+	fadd    $3, $4, $3
+	fmul    $8, $5, $5
+	load    [$7 + 2], $4
+	fmul    $6, $4, $4
+	fadd    $3, $5, $3
+	fadd    $3, $4, $3
+bne_cont.31117:
+	store   $3, [$1 + 0]
+	load    [$13 + 4], $4
+	load    [$11 + 0], $7
+	load    [$13 + 4], $5
 	load    [$4 + 0], $4
-	fmul    $3, $4, $3
-	load    [$12 + 9], $4
-	fadd    $2, $3, $2
-	load    [$4 + 1], $4
-	fmul    $6, $8, $3
-	fmul    $3, $4, $3
-	load    [$12 + 9], $4
-	fadd    $2, $3, $2
-	load    [$4 + 2], $4
-	fmul    $8, $7, $3
-	fmul    $3, $4, $3
-	fadd    $2, $3, $2
-bne_cont.31200:
-	store   $2, [$1 + 0]
-	load    [$12 + 4], $3
-	load    [$12 + 4], $4
-	load    [$12 + 4], $6
-	load    [$10 + 2], $7
-	load    [$3 + 2], $3
-	load    [$10 + 1], $8
-	load    [$4 + 1], $4
-	load    [$10 + 0], $9
-	load    [$6 + 0], $6
-	fmul    $7, $3, $3
-	fmul    $8, $4, $4
-	fmul    $9, $6, $6
-	cmp     $5, 0
-.count storer
-	add     $13, $11, $tmp
-	fneg    $3, $3
+	load    [$13 + 4], $6
+	load    [$5 + 1], $5
+	fmul    $7, $4, $4
+	load    [$11 + 2], $8
+	load    [$11 + 1], $7
+	load    [$6 + 2], $6
+	cmp     $2, 0
+	fmul    $7, $5, $5
+	fmul    $8, $6, $6
 	fneg    $4, $4
+.count storer
+	add     $10, $12, $tmp
+	fneg    $5, $5
 	fneg    $6, $6
-	bne     be_else.31201
-be_then.31201:
-	store   $6, [$1 + 1]
-	fcmp    $2, $zero
-	store   $4, [$1 + 2]
-	store   $3, [$1 + 3]
-	sub     $11, 1, $3
-	bne     be_else.31202
-be_then.31202:
+	bne     be_else.31118
+be_then.31118:
+	store   $4, [$1 + 1]
+	fcmp    $3, $zero
+	store   $5, [$1 + 2]
+	store   $6, [$1 + 3]
+	bne     be_else.31119
+be_then.31119:
 	store   $1, [$tmp + 0]
+	sub     $12, 1, $3
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31202:
-	finv    $2, $2
+be_else.31119:
+	finv    $3, $2
+	sub     $12, 1, $3
 	store   $2, [$1 + 4]
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31201:
-	load    [$12 + 9], $5
-	load    [$12 + 9], $9
-	fcmp    $2, $zero
-	load    [$5 + 2], $5
-	load    [$9 + 1], $9
-	fmul    $8, $5, $8
+be_else.31118:
+	load    [$13 + 9], $9
+	load    [$13 + 9], $2
+	fcmp    $3, $zero
+	load    [$9 + 2], $9
+	load    [$2 + 1], $2
 	fmul    $7, $9, $7
+	fmul    $8, $2, $8
+	fadd    $8, $7, $7
+	fmul    $7, $39, $7
+	fsub    $4, $7, $4
+	store   $4, [$1 + 1]
+	load    [$11 + 2], $7
+	load    [$13 + 9], $4
+	load    [$11 + 0], $8
+	load    [$4 + 0], $4
+	fmul    $8, $9, $8
+	fmul    $7, $4, $7
 	fadd    $7, $8, $7
 	fmul    $7, $39, $7
-	fsub    $6, $7, $6
-	store   $6, [$1 + 1]
-	load    [$10 + 0], $7
-	load    [$12 + 9], $6
-	fmul    $7, $5, $5
-	load    [$6 + 0], $6
-	load    [$10 + 2], $7
-	fmul    $7, $6, $7
-	fadd    $7, $5, $5
-	fmul    $5, $39, $5
-	fsub    $4, $5, $4
-	store   $4, [$1 + 2]
-	load    [$10 + 1], $5
-	load    [$10 + 0], $4
-	fmul    $5, $6, $5
-	fmul    $4, $9, $4
-	fadd    $5, $4, $4
-	fmul    $4, $39, $4
-	fsub    $3, $4, $3
-	store   $3, [$1 + 3]
-	sub     $11, 1, $3
-	bne     be_else.31203
-be_then.31203:
+	fsub    $5, $7, $5
+	store   $5, [$1 + 2]
+	load    [$11 + 0], $7
+	load    [$11 + 1], $5
+	fmul    $7, $2, $2
+	fmul    $5, $4, $4
+	fadd    $4, $2, $2
+	fmul    $2, $39, $2
+	fsub    $6, $2, $2
+	store   $2, [$1 + 3]
+	bne     be_else.31120
+be_then.31120:
 	store   $1, [$tmp + 0]
+	sub     $12, 1, $3
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31203:
-	finv    $2, $2
+be_else.31120:
+	finv    $3, $2
+	sub     $12, 1, $3
 	store   $2, [$1 + 4]
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-bge_else.31181:
+bge_else.31098:
 .count stack_move
 	add     $sp, 2, $sp
 	ret
-be_else.31165:
-	cmp     $12, 2
-	bne     be_else.31204
-be_then.31204:
+be_else.31082:
+	cmp     $13, 2
+	bne     be_else.31121
+be_then.31121:
 	li      4, $2
 	call    min_caml_create_array
-	load    [$11 + 4], $2
-	load    [$10 + 2], $5
-	load    [$11 + 4], $3
-	load    [$2 + 2], $2
-	load    [$11 + 4], $4
+	load    [$12 + 4], $2
+	load    [$11 + 0], $5
+	load    [$12 + 4], $3
+	load    [$2 + 0], $2
+	load    [$12 + 4], $4
 	load    [$3 + 1], $3
 	fmul    $5, $2, $2
-	load    [$4 + 0], $4
-	load    [$10 + 1], $5
+	load    [$4 + 2], $4
+	load    [$11 + 1], $5
 .count stack_move
 	add     $sp, 2, $sp
 	fmul    $5, $3, $3
-	load    [$10 + 0], $5
-	fmul    $5, $4, $4
-	fadd    $4, $3, $3
-	fadd    $3, $2, $2
+	load    [$11 + 2], $5
+	fadd    $2, $3, $2
+	fmul    $5, $4, $3
+	fadd    $2, $3, $2
 	fcmp    $2, $zero
-	bg      ble_else.31205
-ble_then.31205:
+	bg      ble_else.31122
+ble_then.31122:
 	store   $zero, [$1 + 0]
+.count stack_load
 	load    [$sp - 1], $2
 .count storer
-	add     $13, $2, $tmp
+	add     $10, $2, $tmp
 	sub     $2, 1, $3
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-ble_else.31205:
+ble_else.31122:
 	finv    $2, $2
 	fneg    $2, $3
 	store   $3, [$1 + 0]
-	load    [$11 + 4], $3
+	load    [$12 + 4], $3
 	load    [$3 + 0], $3
 	fmul    $3, $2, $3
 	fneg    $3, $3
 	store   $3, [$1 + 1]
-	load    [$11 + 4], $3
+	load    [$12 + 4], $3
 	load    [$3 + 1], $3
 	fmul    $3, $2, $3
 	fneg    $3, $3
 	store   $3, [$1 + 2]
-	load    [$11 + 4], $3
+	load    [$12 + 4], $3
 	load    [$3 + 2], $3
 	fmul    $3, $2, $2
 	fneg    $2, $2
 	store   $2, [$1 + 3]
+.count stack_load
 	load    [$sp - 1], $2
 .count storer
-	add     $13, $2, $tmp
+	add     $10, $2, $tmp
 	sub     $2, 1, $3
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31204:
+be_else.31121:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$10 + 2], $6
-	load    [$11 + 4], $2
-	load    [$11 + 4], $3
-	fmul    $6, $6, $7
-	load    [$2 + 2], $2
-	load    [$3 + 1], $3
-	load    [$11 + 4], $4
-	load    [$11 + 3], $5
-	fmul    $7, $2, $2
-	load    [$4 + 0], $4
-	load    [$10 + 1], $7
+	load    [$11 + 0], $6
+	load    [$11 + 1], $7
+	load    [$12 + 4], $3
+	load    [$12 + 4], $4
+	fmul    $6, $6, $9
+	fmul    $7, $7, $13
+	load    [$11 + 2], $8
+	load    [$3 + 0], $3
+	load    [$4 + 1], $4
+	load    [$12 + 4], $5
+	fmul    $8, $8, $14
+	fmul    $9, $3, $3
+	fmul    $13, $4, $4
+	load    [$5 + 2], $5
+	load    [$12 + 3], $2
 .count stack_move
 	add     $sp, 2, $sp
-	cmp     $5, 0
-	fmul    $7, $7, $8
-	fmul    $8, $3, $3
-	load    [$10 + 0], $8
-	fmul    $8, $8, $9
-	fmul    $9, $4, $4
-	fadd    $4, $3, $3
-	fadd    $3, $2, $2
-	be      bne_cont.31206
-bne_then.31206:
-	load    [$11 + 9], $4
-	fmul    $7, $6, $3
+	fmul    $14, $5, $5
+	fadd    $3, $4, $3
+	cmp     $2, 0
+	fadd    $3, $5, $3
+	be      bne_cont.31123
+bne_then.31123:
+	load    [$12 + 9], $5
+	fmul    $7, $8, $4
+	load    [$12 + 9], $9
+	load    [$5 + 0], $5
+	fmul    $8, $6, $8
+	fmul    $4, $5, $4
+	fmul    $6, $7, $6
+	load    [$9 + 1], $5
+	load    [$12 + 9], $7
+	fadd    $3, $4, $3
+	fmul    $8, $5, $5
+	load    [$7 + 2], $4
+	fmul    $6, $4, $4
+	fadd    $3, $5, $3
+	fadd    $3, $4, $3
+bne_cont.31123:
+	store   $3, [$1 + 0]
+	load    [$12 + 4], $4
+	load    [$11 + 0], $7
+	load    [$12 + 4], $5
 	load    [$4 + 0], $4
-	fmul    $3, $4, $3
-	load    [$11 + 9], $4
-	fadd    $2, $3, $2
-	load    [$4 + 1], $4
-	fmul    $6, $8, $3
-	fmul    $3, $4, $3
-	load    [$11 + 9], $4
-	fadd    $2, $3, $2
-	load    [$4 + 2], $4
-	fmul    $8, $7, $3
-	fmul    $3, $4, $3
-	fadd    $2, $3, $2
-bne_cont.31206:
-	store   $2, [$1 + 0]
-	load    [$11 + 4], $3
-	load    [$11 + 4], $4
-	load    [$11 + 4], $6
-	load    [$10 + 2], $7
-	load    [$3 + 2], $3
-	load    [$10 + 1], $8
-	load    [$4 + 1], $4
-	load    [$10 + 0], $9
-	load    [$6 + 0], $6
-	fmul    $7, $3, $3
-	fmul    $8, $4, $4
-	fmul    $9, $6, $6
-	cmp     $5, 0
-	fneg    $3, $3
+	load    [$12 + 4], $6
+	load    [$5 + 1], $5
+	fmul    $7, $4, $4
+	load    [$11 + 2], $8
+	load    [$11 + 1], $7
+	load    [$6 + 2], $6
+	cmp     $2, 0
+	fmul    $7, $5, $5
+	fmul    $8, $6, $6
 	fneg    $4, $4
+	fneg    $5, $5
 	fneg    $6, $6
-	bne     be_else.31207
-be_then.31207:
-	store   $6, [$1 + 1]
-	fcmp    $2, $zero
-	store   $4, [$1 + 2]
-	store   $3, [$1 + 3]
-	bne     be_else.31208
-be_then.31208:
+	bne     be_else.31124
+be_then.31124:
+	store   $4, [$1 + 1]
+	fcmp    $3, $zero
+	store   $5, [$1 + 2]
+	store   $6, [$1 + 3]
+	bne     be_else.31125
+be_then.31125:
+.count stack_load
 	load    [$sp - 1], $2
 .count storer
-	add     $13, $2, $tmp
+	add     $10, $2, $tmp
 	sub     $2, 1, $3
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31208:
-	finv    $2, $2
+be_else.31125:
+	finv    $3, $2
 	store   $2, [$1 + 4]
+.count stack_load
 	load    [$sp - 1], $2
 .count storer
-	add     $13, $2, $tmp
+	add     $10, $2, $tmp
 	sub     $2, 1, $3
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31207:
-	load    [$11 + 9], $9
-	load    [$11 + 9], $5
-	fcmp    $2, $zero
-	load    [$9 + 1], $9
-	load    [$5 + 2], $5
+be_else.31124:
+	load    [$12 + 9], $9
+	load    [$12 + 9], $2
+	fcmp    $3, $zero
+	load    [$9 + 2], $9
+	load    [$2 + 1], $2
 	fmul    $7, $9, $7
-	fmul    $8, $5, $8
+	fmul    $8, $2, $8
+	fadd    $8, $7, $7
+	fmul    $7, $39, $7
+	fsub    $4, $7, $4
+	store   $4, [$1 + 1]
+	load    [$11 + 2], $7
+	load    [$12 + 9], $4
+	load    [$11 + 0], $8
+	load    [$4 + 0], $4
+	fmul    $8, $9, $8
+	fmul    $7, $4, $7
 	fadd    $7, $8, $7
 	fmul    $7, $39, $7
-	fsub    $6, $7, $6
-	store   $6, [$1 + 1]
-	load    [$10 + 0], $7
-	load    [$11 + 9], $6
-	fmul    $7, $5, $5
-	load    [$6 + 0], $6
-	load    [$10 + 2], $7
-	fmul    $7, $6, $7
-	fadd    $7, $5, $5
-	fmul    $5, $39, $5
-	fsub    $4, $5, $4
-	store   $4, [$1 + 2]
-	load    [$10 + 1], $5
-	load    [$10 + 0], $4
-	fmul    $5, $6, $5
-	fmul    $4, $9, $4
-	fadd    $5, $4, $4
-	fmul    $4, $39, $4
-	fsub    $3, $4, $3
-	store   $3, [$1 + 3]
-	bne     be_else.31209
-be_then.31209:
+	fsub    $5, $7, $5
+	store   $5, [$1 + 2]
+	load    [$11 + 0], $7
+	load    [$11 + 1], $5
+	fmul    $7, $2, $2
+	fmul    $5, $4, $4
+	fadd    $4, $2, $2
+	fmul    $2, $39, $2
+	fsub    $6, $2, $2
+	store   $2, [$1 + 3]
+	bne     be_else.31126
+be_then.31126:
+.count stack_load
 	load    [$sp - 1], $2
 .count storer
-	add     $13, $2, $tmp
+	add     $10, $2, $tmp
 	sub     $2, 1, $3
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-be_else.31209:
-	finv    $2, $2
+be_else.31126:
+	finv    $3, $2
 	store   $2, [$1 + 4]
+.count stack_load
 	load    [$sp - 1], $2
 .count storer
-	add     $13, $2, $tmp
+	add     $10, $2, $tmp
 	sub     $2, 1, $3
 	store   $1, [$tmp + 0]
+.count stack_load
 	load    [$sp - 2], $2
 	b       iter_setup_dirvec_constants.2826
-bge_else.31164:
+bge_else.31081:
 	ret
 .end iter_setup_dirvec_constants
 
@@ -3593,102 +3672,103 @@ bge_else.31164:
 .begin setup_startp_constants
 setup_startp_constants.2831:
 	cmp     $3, 0
-	bl      bge_else.31210
-bge_then.31210:
+	bl      bge_else.31127
+bge_then.31127:
 	load    [min_caml_objects + $3], $1
-	load    [$2 + 0], $6
+	load    [$2 + 0], $4
 	load    [$1 + 5], $5
-	load    [$1 + 10], $4
+	load    [$1 + 10], $6
 	load    [$5 + 0], $5
-	fsub    $6, $5, $5
-	store   $5, [$4 + 0]
-	load    [$2 + 1], $6
-	load    [$1 + 5], $5
-	load    [$5 + 1], $5
-	fsub    $6, $5, $5
-	store   $5, [$4 + 1]
-	load    [$2 + 2], $6
-	load    [$1 + 5], $5
-	load    [$5 + 2], $5
-	fsub    $6, $5, $5
-	store   $5, [$4 + 2]
-	load    [$1 + 1], $5
-	cmp     $5, 2
-	bne     be_else.31211
-be_then.31211:
+	fsub    $4, $5, $4
+	store   $4, [$6 + 0]
+	load    [$2 + 1], $5
+	load    [$1 + 5], $4
+	load    [$4 + 1], $4
+	fsub    $5, $4, $4
+	store   $4, [$6 + 1]
+	load    [$2 + 2], $5
+	load    [$1 + 5], $4
+	load    [$4 + 2], $4
+	fsub    $5, $4, $4
+	store   $4, [$6 + 2]
+	load    [$1 + 1], $4
+	cmp     $4, 2
+	bne     be_else.31128
+be_then.31128:
 	load    [$1 + 4], $1
-	load    [$4 + 2], $6
-	load    [$4 + 1], $7
-	load    [$1 + 2], $5
+	load    [$6 + 0], $4
 	sub     $3, 1, $3
-	fmul    $5, $6, $5
-	load    [$1 + 1], $6
-	load    [$1 + 0], $1
-	fmul    $6, $7, $6
-	load    [$4 + 0], $7
+	load    [$1 + 0], $5
+	load    [$1 + 1], $7
+	fmul    $5, $4, $4
+	load    [$1 + 2], $1
+	load    [$6 + 1], $5
+	fmul    $7, $5, $5
+	load    [$6 + 2], $7
+	fadd    $4, $5, $4
 	fmul    $1, $7, $1
-	fadd    $1, $6, $1
-	fadd    $1, $5, $1
-	store   $1, [$4 + 3]
+	fadd    $4, $1, $1
+	store   $1, [$6 + 3]
 	b       setup_startp_constants.2831
-be_else.31211:
-	cmp     $5, 2
-	bg      ble_else.31212
-ble_then.31212:
+be_else.31128:
+	cmp     $4, 2
+	bg      ble_else.31129
+ble_then.31129:
 	sub     $3, 1, $3
 	b       setup_startp_constants.2831
-ble_else.31212:
-	load    [$4 + 2], $10
-	load    [$1 + 4], $6
+ble_else.31129:
+	load    [$6 + 0], $10
+	load    [$6 + 1], $11
+	load    [$1 + 4], $5
 	load    [$1 + 4], $7
-	fmul    $10, $10, $11
-	load    [$6 + 2], $6
+	fmul    $10, $10, $12
+	fmul    $11, $11, $14
+	load    [$6 + 2], $13
+	load    [$5 + 0], $5
 	load    [$7 + 1], $7
 	load    [$1 + 4], $8
+	fmul    $13, $13, $15
+	fmul    $12, $5, $5
+	fmul    $14, $7, $7
+	load    [$8 + 2], $8
 	load    [$1 + 3], $9
-	fmul    $11, $6, $6
-	load    [$8 + 0], $8
-	load    [$4 + 1], $11
+	fmul    $15, $8, $8
+	fadd    $5, $7, $5
 	cmp     $9, 0
-	fmul    $11, $11, $12
-	fmul    $12, $7, $7
-	load    [$4 + 0], $12
-	fmul    $12, $12, $13
-	fmul    $13, $8, $8
-	fadd    $8, $7, $7
-	fadd    $7, $6, $6
-	bne     be_else.31213
-be_then.31213:
-	mov     $6, $1
-	b       be_cont.31213
-be_else.31213:
+	fadd    $5, $8, $5
+	bne     be_else.31130
+be_then.31130:
+	mov     $5, $1
+.count b_cont
+	b       be_cont.31130
+be_else.31130:
 	load    [$1 + 9], $7
-	fmul    $12, $11, $9
+	fmul    $11, $13, $9
 	load    [$1 + 9], $8
-	load    [$7 + 2], $7
-	load    [$1 + 9], $1
+	load    [$7 + 0], $7
+	fmul    $13, $10, $12
 	load    [$8 + 1], $8
 	fmul    $9, $7, $7
-	load    [$1 + 0], $1
-	fmul    $10, $12, $9
-	fmul    $9, $8, $8
-	fmul    $11, $10, $9
-	fmul    $9, $1, $1
-	fadd    $6, $1, $1
-	fadd    $1, $8, $1
-	fadd    $1, $7, $1
-be_cont.31213:
-	cmp     $5, 3
+	load    [$1 + 9], $1
+	fmul    $10, $11, $10
+	fmul    $12, $8, $8
+	load    [$1 + 2], $1
+	fadd    $5, $7, $5
+	fmul    $10, $1, $1
+	fadd    $5, $8, $5
+	fadd    $5, $1, $1
+be_cont.31130:
+	cmp     $4, 3
 	sub     $3, 1, $3
-	bne     be_else.31214
-be_then.31214:
+	bne     be_else.31131
+be_then.31131:
 	fsub    $1, $36, $1
-	store   $1, [$4 + 3]
+	store   $1, [$6 + 3]
 	b       setup_startp_constants.2831
-be_else.31214:
-	store   $1, [$4 + 3]
+be_else.31131:
+	store   $1, [$6 + 3]
 	b       setup_startp_constants.2831
-bge_else.31210:
+bge_else.31127:
 	ret
 .end setup_startp_constants
 
@@ -3697,718 +3777,747 @@ bge_else.31210:
 check_all_inside.2856:
 	load    [$3 + $2], $1
 	cmp     $1, -1
-	bne     be_else.31215
-be_then.31215:
+	bne     be_else.31132
+be_then.31132:
 	li      1, $1
 	ret
-be_else.31215:
+be_else.31132:
 	load    [min_caml_objects + $1], $1
-	load    [$1 + 5], $7
 	load    [$1 + 5], $8
 	load    [$1 + 5], $9
-	load    [$7 + 2], $7
-	load    [$8 + 1], $8
-	load    [$9 + 0], $9
-	load    [$1 + 1], $10
-	fsub    $6, $7, $7
-	fsub    $5, $8, $8
-	fsub    $4, $9, $9
-	cmp     $10, 1
-	bne     be_else.31216
-be_then.31216:
-	load    [$1 + 4], $10
-	fabs    $9, $9
-	load    [$10 + 0], $10
-	fcmp    $10, $9
-	bg      ble_else.31217
-ble_then.31217:
-	load    [$1 + 6], $1
-	cmp     $1, 0
-	bne     be_else.31218
-be_then.31218:
-	li      1, $1
-	b       be_cont.31216
-be_else.31218:
-	li      0, $1
-	b       be_cont.31216
-ble_else.31217:
-	load    [$1 + 4], $9
-	fabs    $8, $8
+	load    [$1 + 5], $10
+	load    [$8 + 0], $8
 	load    [$9 + 1], $9
-	fcmp    $9, $8
-	bg      ble_else.31219
-ble_then.31219:
+	load    [$10 + 2], $10
+	load    [$1 + 1], $7
+	fsub    $4, $8, $8
+	fsub    $5, $9, $9
+	fsub    $6, $10, $10
+	cmp     $7, 1
+	bne     be_else.31133
+be_then.31133:
+	load    [$1 + 4], $7
+	fabs    $8, $8
+	load    [$7 + 0], $7
+	fcmp    $7, $8
+	bg      ble_else.31134
+ble_then.31134:
 	load    [$1 + 6], $1
 	cmp     $1, 0
-	bne     be_else.31220
-be_then.31220:
+	bne     be_else.31135
+be_then.31135:
 	li      1, $1
-	b       be_cont.31216
-be_else.31220:
+.count b_cont
+	b       be_cont.31133
+be_else.31135:
 	li      0, $1
-	b       be_cont.31216
-ble_else.31219:
-	load    [$1 + 4], $8
-	fabs    $7, $7
+.count b_cont
+	b       be_cont.31133
+ble_else.31134:
+	load    [$1 + 4], $7
+	fabs    $9, $8
+	load    [$7 + 1], $7
+	fcmp    $7, $8
+	bg      ble_else.31136
+ble_then.31136:
 	load    [$1 + 6], $1
-	load    [$8 + 2], $8
-	fcmp    $8, $7
-	bg      be_cont.31216
-ble_then.31221:
 	cmp     $1, 0
-	bne     be_else.31222
-be_then.31222:
+	bne     be_else.31137
+be_then.31137:
 	li      1, $1
-	b       be_cont.31216
-be_else.31222:
+.count b_cont
+	b       be_cont.31133
+be_else.31137:
 	li      0, $1
-	b       be_cont.31216
-be_else.31216:
-	cmp     $10, 2
-	bne     be_else.31223
-be_then.31223:
-	load    [$1 + 4], $10
+.count b_cont
+	b       be_cont.31133
+ble_else.31136:
+	load    [$1 + 4], $7
+	fabs    $10, $8
 	load    [$1 + 6], $1
-	load    [$10 + 0], $11
-	fmul    $11, $9, $9
-	load    [$10 + 1], $11
+	load    [$7 + 2], $7
+	fcmp    $7, $8
+	bg      be_cont.31133
+ble_then.31138:
+	cmp     $1, 0
+	bne     be_else.31139
+be_then.31139:
+	li      1, $1
+.count b_cont
+	b       be_cont.31133
+be_else.31139:
+	li      0, $1
+.count b_cont
+	b       be_cont.31133
+be_else.31133:
+	cmp     $7, 2
+	bne     be_else.31140
+be_then.31140:
+	load    [$1 + 6], $7
+	load    [$1 + 4], $1
+	load    [$1 + 1], $12
+	load    [$1 + 0], $11
+	fmul    $12, $9, $9
 	fmul    $11, $8, $8
-	fadd    $9, $8, $8
-	load    [$10 + 2], $9
-	fmul    $9, $7, $7
-	fadd    $8, $7, $7
-	fcmp    $zero, $7
-	bg      ble_else.31224
-ble_then.31224:
-	cmp     $1, 0
-	bne     be_else.31225
-be_then.31225:
+	load    [$1 + 2], $1
+	fmul    $1, $10, $1
+	fadd    $8, $9, $8
+	fadd    $8, $1, $1
+	fcmp    $zero, $1
+	bg      ble_else.31141
+ble_then.31141:
+	cmp     $7, 0
+	bne     be_else.31142
+be_then.31142:
 	li      1, $1
-	b       be_cont.31223
-be_else.31225:
+.count b_cont
+	b       be_cont.31140
+be_else.31142:
 	li      0, $1
-	b       be_cont.31223
-ble_else.31224:
-	cmp     $1, 0
-	bne     be_else.31226
-be_then.31226:
+.count b_cont
+	b       be_cont.31140
+ble_else.31141:
+	cmp     $7, 0
+	bne     be_else.31143
+be_then.31143:
 	li      0, $1
-	b       be_cont.31223
-be_else.31226:
+.count b_cont
+	b       be_cont.31140
+be_else.31143:
 	li      1, $1
-	b       be_cont.31223
-be_else.31223:
-	load    [$1 + 4], $12
-	fmul    $9, $9, $11
+.count b_cont
+	b       be_cont.31140
+be_else.31140:
 	load    [$1 + 4], $13
-	load    [$12 + 0], $12
-	load    [$13 + 1], $13
-	fmul    $11, $12, $11
 	fmul    $8, $8, $12
-	fmul    $12, $13, $12
-	load    [$1 + 4], $13
-	fadd    $11, $12, $11
-	load    [$13 + 2], $13
-	fmul    $7, $7, $12
-	fmul    $12, $13, $12
-	fadd    $11, $12, $11
-	load    [$1 + 3], $12
-	cmp     $12, 0
-	bne     be_else.31227
-be_then.31227:
-	mov     $11, $7
-	b       be_cont.31227
-be_else.31227:
-	load    [$1 + 9], $13
-	fmul    $8, $7, $12
+	load    [$1 + 4], $15
 	load    [$13 + 0], $13
-	fmul    $7, $9, $7
-	fmul    $9, $8, $8
+	fmul    $9, $9, $14
+	load    [$1 + 4], $16
 	fmul    $12, $13, $12
-	load    [$1 + 9], $9
-	load    [$9 + 2], $9
-	fadd    $11, $12, $11
-	load    [$1 + 9], $12
+	load    [$1 + 6], $11
+	load    [$15 + 1], $13
+	load    [$16 + 2], $16
+	fmul    $10, $10, $15
+	fmul    $14, $13, $13
+	load    [$1 + 3], $14
+	fadd    $12, $13, $12
+	cmp     $14, 0
+	fmul    $15, $16, $13
+	fadd    $12, $13, $12
+	bne     be_else.31144
+be_then.31144:
+	mov     $12, $1
+.count b_cont
+	b       be_cont.31144
+be_else.31144:
+	load    [$1 + 9], $14
+	fmul    $9, $10, $13
+	load    [$1 + 9], $15
+	load    [$14 + 0], $14
+	fmul    $10, $8, $10
+	load    [$1 + 9], $1
+	fmul    $13, $14, $13
 	fmul    $8, $9, $8
-	load    [$12 + 1], $12
-	fmul    $7, $12, $7
-	fadd    $11, $7, $7
-	fadd    $7, $8, $7
-be_cont.31227:
-	cmp     $10, 3
-	bne     be_cont.31228
-be_then.31228:
-	fsub    $7, $36, $7
-be_cont.31228:
-	load    [$1 + 6], $1
-	fcmp    $zero, $7
-	bg      ble_else.31229
-ble_then.31229:
-	cmp     $1, 0
-	bne     be_else.31230
-be_then.31230:
+	load    [$15 + 1], $14
+	load    [$1 + 2], $1
+	fmul    $10, $14, $9
+	fmul    $8, $1, $1
+	fadd    $12, $13, $10
+	fadd    $10, $9, $9
+	fadd    $9, $1, $1
+be_cont.31144:
+	cmp     $7, 3
+	bne     be_cont.31145
+be_then.31145:
+	fsub    $1, $36, $1
+be_cont.31145:
+	fcmp    $zero, $1
+	bg      ble_else.31146
+ble_then.31146:
+	cmp     $11, 0
+	bne     be_else.31147
+be_then.31147:
 	li      1, $1
-	b       ble_cont.31229
-be_else.31230:
+.count b_cont
+	b       ble_cont.31146
+be_else.31147:
 	li      0, $1
-	b       ble_cont.31229
-ble_else.31229:
-	cmp     $1, 0
-	bne     be_else.31231
-be_then.31231:
+.count b_cont
+	b       ble_cont.31146
+ble_else.31146:
+	cmp     $11, 0
+	bne     be_else.31148
+be_then.31148:
 	li      0, $1
-	b       be_cont.31231
-be_else.31231:
+.count b_cont
+	b       be_cont.31148
+be_else.31148:
 	li      1, $1
-be_cont.31231:
-ble_cont.31229:
-be_cont.31223:
-be_cont.31216:
+be_cont.31148:
+ble_cont.31146:
+be_cont.31140:
+be_cont.31133:
 	cmp     $1, 0
-	bne     be_else.31232
-be_then.31232:
+	bne     be_else.31149
+be_then.31149:
 	add     $2, 1, $1
 	load    [$3 + $1], $2
 	cmp     $2, -1
-	bne     be_else.31233
-be_then.31233:
+	bne     be_else.31150
+be_then.31150:
 	li      1, $1
 	ret
-be_else.31233:
+be_else.31150:
 	load    [min_caml_objects + $2], $2
 	load    [$2 + 5], $7
 	load    [$2 + 5], $8
 	load    [$2 + 5], $9
-	load    [$7 + 2], $7
+	load    [$7 + 0], $7
 	load    [$8 + 1], $8
-	load    [$9 + 0], $9
+	load    [$9 + 2], $9
 	load    [$2 + 1], $10
-	fsub    $6, $7, $7
+	fsub    $4, $7, $7
 	fsub    $5, $8, $8
-	fsub    $4, $9, $9
+	fsub    $6, $9, $9
 	cmp     $10, 1
-	bne     be_else.31234
-be_then.31234:
+	bne     be_else.31151
+be_then.31151:
 	load    [$2 + 4], $10
-	fabs    $9, $9
-	load    [$10 + 0], $10
-	fcmp    $10, $9
-	bg      ble_else.31235
-ble_then.31235:
-	load    [$2 + 6], $2
-	cmp     $2, 0
-	bne     be_else.31236
-be_then.31236:
-	li      1, $2
-	b       be_cont.31234
-be_else.31236:
-	li      0, $2
-	b       be_cont.31234
-ble_else.31235:
-	load    [$2 + 4], $9
-	fabs    $8, $8
-	load    [$9 + 1], $9
-	fcmp    $9, $8
-	bg      ble_else.31237
-ble_then.31237:
-	load    [$2 + 6], $2
-	cmp     $2, 0
-	bne     be_else.31238
-be_then.31238:
-	li      1, $2
-	b       be_cont.31234
-be_else.31238:
-	li      0, $2
-	b       be_cont.31234
-ble_else.31237:
-	load    [$2 + 4], $8
 	fabs    $7, $7
-	load    [$2 + 6], $2
-	load    [$8 + 2], $8
-	fcmp    $8, $7
-	bg      be_cont.31234
-ble_then.31239:
-	cmp     $2, 0
-	bne     be_else.31240
-be_then.31240:
-	li      1, $2
-	b       be_cont.31234
-be_else.31240:
-	li      0, $2
-	b       be_cont.31234
-be_else.31234:
-	cmp     $10, 2
-	load    [$2 + 4], $10
-	bne     be_else.31241
-be_then.31241:
-	load    [$10 + 2], $11
-	load    [$2 + 6], $2
-	fmul    $11, $7, $7
-	load    [$10 + 1], $11
 	load    [$10 + 0], $10
-	fmul    $11, $8, $8
-	fmul    $10, $9, $9
-	fadd    $9, $8, $8
-	fadd    $8, $7, $7
-	fcmp    $zero, $7
-	bg      ble_else.31242
-ble_then.31242:
-	cmp     $2, 0
-	bne     be_else.31243
-be_then.31243:
-	li      1, $2
-	b       be_cont.31241
-be_else.31243:
-	li      0, $2
-	b       be_cont.31241
-ble_else.31242:
-	cmp     $2, 0
-	bne     be_else.31244
-be_then.31244:
-	li      0, $2
-	b       be_cont.31241
-be_else.31244:
-	li      1, $2
-	b       be_cont.31241
-be_else.31241:
-	fmul    $7, $7, $14
-	load    [$10 + 2], $10
-	load    [$2 + 4], $11
-	load    [$2 + 4], $12
-	load    [$2 + 3], $13
-	fmul    $14, $10, $10
-	load    [$11 + 1], $11
-	fmul    $8, $8, $14
-	load    [$12 + 0], $12
-	cmp     $13, 0
-	fmul    $14, $11, $11
-	fmul    $9, $9, $14
-	fmul    $14, $12, $12
-	fadd    $12, $11, $11
-	fadd    $11, $10, $10
-	bne     be_else.31245
-be_then.31245:
-	mov     $10, $7
-	b       be_cont.31245
-be_else.31245:
-	fmul    $9, $8, $14
-	load    [$2 + 9], $12
-	fmul    $7, $9, $9
-	load    [$2 + 9], $13
-	load    [$12 + 1], $12
-	fmul    $8, $7, $7
-	load    [$2 + 9], $11
-	fmul    $9, $12, $9
-	load    [$13 + 0], $12
-	load    [$11 + 2], $11
-	fmul    $7, $12, $7
-	fmul    $14, $11, $11
-	fadd    $10, $7, $7
-	fadd    $7, $9, $7
-	fadd    $7, $11, $7
-be_cont.31245:
-	load    [$2 + 1], $8
-	cmp     $8, 3
-	bne     be_cont.31246
-be_then.31246:
-	fsub    $7, $36, $7
-be_cont.31246:
-	fcmp    $zero, $7
+	fcmp    $10, $7
+	bg      ble_else.31152
+ble_then.31152:
 	load    [$2 + 6], $2
-	bg      ble_else.31247
-ble_then.31247:
 	cmp     $2, 0
-	bne     be_else.31248
-be_then.31248:
+	bne     be_else.31153
+be_then.31153:
 	li      1, $2
-	b       ble_cont.31247
-be_else.31248:
+.count b_cont
+	b       be_cont.31151
+be_else.31153:
 	li      0, $2
-	b       ble_cont.31247
-ble_else.31247:
+.count b_cont
+	b       be_cont.31151
+ble_else.31152:
+	load    [$2 + 4], $7
+	fabs    $8, $8
+	load    [$7 + 1], $7
+	fcmp    $7, $8
+	bg      ble_else.31154
+ble_then.31154:
+	load    [$2 + 6], $2
 	cmp     $2, 0
-	bne     be_else.31249
-be_then.31249:
-	li      0, $2
-	b       be_cont.31249
-be_else.31249:
+	bne     be_else.31155
+be_then.31155:
 	li      1, $2
-be_cont.31249:
-ble_cont.31247:
-be_cont.31241:
-be_cont.31234:
-	cmp     $2, 0
-	bne     be_else.31250
-be_then.31250:
-	add     $1, 1, $1
-	load    [$3 + $1], $2
-	cmp     $2, -1
-	bne     be_else.31251
-be_then.31251:
-	li      1, $1
-	ret
-be_else.31251:
-	load    [min_caml_objects + $2], $2
-	load    [$2 + 5], $7
-	load    [$2 + 5], $8
-	load    [$2 + 5], $9
+.count b_cont
+	b       be_cont.31151
+be_else.31155:
+	li      0, $2
+.count b_cont
+	b       be_cont.31151
+ble_else.31154:
+	load    [$2 + 4], $7
+	fabs    $9, $8
+	load    [$2 + 6], $2
 	load    [$7 + 2], $7
-	load    [$8 + 1], $8
-	load    [$9 + 0], $9
-	load    [$2 + 1], $10
-	fsub    $6, $7, $7
-	fsub    $5, $8, $8
-	fsub    $4, $9, $9
-	cmp     $10, 1
-	bne     be_else.31252
-be_then.31252:
-	load    [$2 + 4], $10
-	fabs    $9, $9
-	load    [$10 + 0], $10
-	fcmp    $10, $9
-	bg      ble_else.31253
-ble_then.31253:
-	load    [$2 + 6], $2
+	fcmp    $7, $8
+	bg      be_cont.31151
+ble_then.31156:
 	cmp     $2, 0
-	bne     be_else.31254
-be_then.31254:
+	bne     be_else.31157
+be_then.31157:
 	li      1, $2
-	b       be_cont.31252
-be_else.31254:
+.count b_cont
+	b       be_cont.31151
+be_else.31157:
 	li      0, $2
-	b       be_cont.31252
-ble_else.31253:
-	load    [$2 + 4], $9
-	fabs    $8, $8
-	load    [$9 + 1], $9
-	fcmp    $9, $8
-	bg      ble_else.31255
-ble_then.31255:
-	load    [$2 + 6], $2
-	cmp     $2, 0
-	bne     be_else.31256
-be_then.31256:
-	li      1, $2
-	b       be_cont.31252
-be_else.31256:
-	li      0, $2
-	b       be_cont.31252
-ble_else.31255:
-	load    [$2 + 4], $8
-	fabs    $7, $7
-	load    [$2 + 6], $2
-	load    [$8 + 2], $8
-	fcmp    $8, $7
-	bg      be_cont.31252
-ble_then.31257:
-	cmp     $2, 0
-	bne     be_else.31258
-be_then.31258:
-	li      1, $2
-	b       be_cont.31252
-be_else.31258:
-	li      0, $2
-	b       be_cont.31252
-be_else.31252:
+.count b_cont
+	b       be_cont.31151
+be_else.31151:
 	cmp     $10, 2
-	bne     be_else.31259
-be_then.31259:
-	load    [$2 + 4], $10
-	load    [$2 + 6], $2
-	load    [$10 + 2], $11
+	load    [$2 + 6], $10
+	bne     be_else.31158
+be_then.31158:
+	load    [$2 + 4], $2
+	load    [$2 + 1], $12
+	load    [$2 + 0], $11
+	fmul    $12, $8, $8
 	fmul    $11, $7, $7
-	load    [$10 + 1], $11
-	load    [$10 + 0], $10
-	fmul    $11, $8, $8
-	fmul    $10, $9, $9
-	fadd    $9, $8, $8
-	fadd    $8, $7, $7
-	fcmp    $zero, $7
-	bg      ble_else.31260
-ble_then.31260:
-	cmp     $2, 0
-	bne     be_else.31261
-be_then.31261:
-	li      1, $2
-	b       be_cont.31259
-be_else.31261:
-	li      0, $2
-	b       be_cont.31259
-ble_else.31260:
-	cmp     $2, 0
-	bne     be_else.31262
-be_then.31262:
-	li      0, $2
-	b       be_cont.31259
-be_else.31262:
-	li      1, $2
-	b       be_cont.31259
-be_else.31259:
-	load    [$2 + 4], $12
-	fmul    $7, $7, $13
-	fmul    $8, $8, $14
-	load    [$12 + 2], $12
-	fmul    $9, $9, $15
-	load    [$2 + 1], $10
-	fmul    $13, $12, $12
-	load    [$2 + 6], $11
-	load    [$2 + 4], $13
-	load    [$13 + 1], $13
-	fmul    $14, $13, $13
-	load    [$2 + 4], $14
-	load    [$14 + 0], $14
-	fmul    $15, $14, $14
-	fadd    $14, $13, $13
-	fadd    $13, $12, $12
-	load    [$2 + 3], $13
-	cmp     $13, 0
-	bne     be_else.31263
-be_then.31263:
-	mov     $12, $2
-	b       be_cont.31263
-be_else.31263:
-	load    [$2 + 9], $14
-	fmul    $8, $7, $13
-	load    [$14 + 0], $14
-	fmul    $7, $9, $7
-	fmul    $9, $8, $8
-	fmul    $13, $14, $13
-	fadd    $12, $13, $12
-	load    [$2 + 9], $13
-	load    [$2 + 9], $2
-	load    [$13 + 1], $13
 	load    [$2 + 2], $2
-	fmul    $7, $13, $7
-	fmul    $8, $2, $2
-	fadd    $12, $7, $7
+	fmul    $2, $9, $2
+	fadd    $7, $8, $7
 	fadd    $7, $2, $2
-be_cont.31263:
-	cmp     $10, 3
-	bne     be_cont.31264
-be_then.31264:
-	fsub    $2, $36, $2
-be_cont.31264:
 	fcmp    $zero, $2
-	bg      ble_else.31265
-ble_then.31265:
-	cmp     $11, 0
-	bne     be_else.31266
-be_then.31266:
+	bg      ble_else.31159
+ble_then.31159:
+	cmp     $10, 0
+	bne     be_else.31160
+be_then.31160:
 	li      1, $2
-	b       ble_cont.31265
-be_else.31266:
+.count b_cont
+	b       be_cont.31158
+be_else.31160:
 	li      0, $2
-	b       ble_cont.31265
-ble_else.31265:
-	cmp     $11, 0
-	bne     be_else.31267
-be_then.31267:
+.count b_cont
+	b       be_cont.31158
+ble_else.31159:
+	cmp     $10, 0
+	bne     be_else.31161
+be_then.31161:
 	li      0, $2
-	b       be_cont.31267
-be_else.31267:
+.count b_cont
+	b       be_cont.31158
+be_else.31161:
 	li      1, $2
-be_cont.31267:
-ble_cont.31265:
-be_cont.31259:
-be_cont.31252:
-	cmp     $2, 0
-	bne     be_else.31268
-be_then.31268:
-	add     $1, 1, $1
-	load    [$3 + $1], $2
-	cmp     $2, -1
-	bne     be_else.31269
-be_then.31269:
-	li      1, $1
-	ret
-be_else.31269:
-	load    [min_caml_objects + $2], $2
-	load    [$2 + 5], $7
-	load    [$2 + 5], $8
-	load    [$2 + 5], $9
-	load    [$7 + 2], $7
-	load    [$8 + 1], $8
-	load    [$9 + 0], $9
-	load    [$2 + 1], $10
-	fsub    $6, $7, $7
-	fsub    $5, $8, $8
-	fsub    $4, $9, $9
-	cmp     $10, 1
-	bne     be_else.31270
-be_then.31270:
-	load    [$2 + 4], $10
-	fabs    $9, $9
-	load    [$10 + 0], $10
-	fcmp    $10, $9
-	bg      ble_else.31271
-ble_then.31271:
-	li      0, $7
-	b       ble_cont.31271
-ble_else.31271:
-	load    [$2 + 4], $9
-	fabs    $8, $8
-	load    [$9 + 1], $9
-	fcmp    $9, $8
-	bg      ble_else.31272
-ble_then.31272:
-	li      0, $7
-	b       ble_cont.31272
-ble_else.31272:
-	load    [$2 + 4], $8
-	fabs    $7, $7
-	load    [$8 + 2], $8
-	fcmp    $8, $7
-	bg      ble_else.31273
-ble_then.31273:
-	li      0, $7
-	b       ble_cont.31273
-ble_else.31273:
-	li      1, $7
-ble_cont.31273:
-ble_cont.31272:
-ble_cont.31271:
-	cmp     $7, 0
-	load    [$2 + 6], $2
-	bne     be_else.31274
-be_then.31274:
-	cmp     $2, 0
-	bne     be_else.31275
-be_then.31275:
-	li      0, $1
-	ret
-be_else.31275:
-	add     $1, 1, $2
-	b       check_all_inside.2856
-be_else.31274:
-	cmp     $2, 0
-	bne     be_else.31276
-be_then.31276:
-	add     $1, 1, $2
-	b       check_all_inside.2856
-be_else.31276:
-	li      0, $1
-	ret
-be_else.31270:
-	cmp     $10, 2
-	bne     be_else.31277
-be_then.31277:
-	load    [$2 + 4], $10
-	load    [$2 + 6], $2
-	load    [$10 + 2], $11
-	fmul    $11, $7, $7
-	load    [$10 + 1], $11
-	load    [$10 + 0], $10
-	fmul    $11, $8, $8
-	fmul    $10, $9, $9
-	fadd    $9, $8, $8
-	fadd    $8, $7, $7
-	fcmp    $zero, $7
-	bg      ble_else.31278
-ble_then.31278:
-	li      0, $7
-	b       ble_cont.31278
-ble_else.31278:
-	li      1, $7
-ble_cont.31278:
-	cmp     $2, 0
-	bne     be_else.31279
-be_then.31279:
-	cmp     $7, 0
-	bne     be_else.31280
-be_then.31280:
-	li      0, $1
-	ret
-be_else.31280:
-	add     $1, 1, $2
-	b       check_all_inside.2856
-be_else.31279:
-	cmp     $7, 0
-	bne     be_else.31281
-be_then.31281:
-	add     $1, 1, $2
-	b       check_all_inside.2856
-be_else.31281:
-	li      0, $1
-	ret
-be_else.31277:
-	load    [$2 + 4], $11
-	fmul    $7, $7, $16
+.count b_cont
+	b       be_cont.31158
+be_else.31158:
 	load    [$2 + 4], $12
-	load    [$11 + 2], $11
 	load    [$2 + 4], $13
-	load    [$12 + 1], $12
-	fmul    $16, $11, $11
-	load    [$13 + 0], $13
-	fmul    $8, $8, $16
-	load    [$2 + 3], $14
-	load    [$2 + 6], $15
-	cmp     $14, 0
-	fmul    $16, $12, $12
-	fmul    $9, $9, $16
-	fmul    $16, $13, $13
-	fadd    $13, $12, $12
-	fadd    $12, $11, $11
-	bne     be_else.31282
-be_then.31282:
-	mov     $11, $2
-	b       be_cont.31282
-be_else.31282:
-	load    [$2 + 9], $12
-	fmul    $9, $8, $13
-	load    [$12 + 2], $12
-	fmul    $7, $9, $9
-	fmul    $13, $12, $12
-	fmul    $8, $7, $7
-	load    [$2 + 9], $13
-	load    [$2 + 9], $2
+	fmul    $7, $7, $16
+	fmul    $8, $8, $17
+	load    [$12 + 0], $12
 	load    [$13 + 1], $13
-	load    [$2 + 0], $2
+	load    [$2 + 4], $14
+	fmul    $9, $9, $18
+	fmul    $16, $12, $12
+	fmul    $17, $13, $13
+	load    [$14 + 2], $14
+	load    [$2 + 3], $15
+	load    [$2 + 1], $11
+	fmul    $18, $14, $14
+	fadd    $12, $13, $12
+	cmp     $15, 0
+	fadd    $12, $14, $12
+	bne     be_else.31162
+be_then.31162:
+	mov     $12, $2
+.count b_cont
+	b       be_cont.31162
+be_else.31162:
+	fmul    $8, $9, $15
+	load    [$2 + 9], $13
+	fmul    $9, $7, $9
+	load    [$2 + 9], $14
+	load    [$13 + 0], $13
+	fmul    $7, $8, $7
+	load    [$2 + 9], $2
+	fmul    $15, $13, $8
+	load    [$14 + 1], $13
+	load    [$2 + 2], $2
+	fadd    $12, $8, $8
 	fmul    $9, $13, $9
 	fmul    $7, $2, $2
-	fadd    $11, $2, $2
-	fadd    $2, $9, $2
-	fadd    $2, $12, $2
-be_cont.31282:
-	cmp     $10, 3
-	bne     be_cont.31283
-be_then.31283:
+	fadd    $8, $9, $7
+	fadd    $7, $2, $2
+be_cont.31162:
+	cmp     $11, 3
+	bne     be_cont.31163
+be_then.31163:
 	fsub    $2, $36, $2
-be_cont.31283:
+be_cont.31163:
 	fcmp    $zero, $2
-	bg      ble_else.31284
-ble_then.31284:
-	li      0, $2
-	b       ble_cont.31284
-ble_else.31284:
+	bg      ble_else.31164
+ble_then.31164:
+	cmp     $10, 0
+	bne     be_else.31165
+be_then.31165:
 	li      1, $2
-ble_cont.31284:
+.count b_cont
+	b       ble_cont.31164
+be_else.31165:
+	li      0, $2
+.count b_cont
+	b       ble_cont.31164
+ble_else.31164:
+	cmp     $10, 0
+	bne     be_else.31166
+be_then.31166:
+	li      0, $2
+.count b_cont
+	b       be_cont.31166
+be_else.31166:
+	li      1, $2
+be_cont.31166:
+ble_cont.31164:
+be_cont.31158:
+be_cont.31151:
+	cmp     $2, 0
+	bne     be_else.31167
+be_then.31167:
+	add     $1, 1, $1
+	load    [$3 + $1], $2
+	cmp     $2, -1
+	bne     be_else.31168
+be_then.31168:
+	li      1, $1
+	ret
+be_else.31168:
+	load    [min_caml_objects + $2], $2
+	load    [$2 + 5], $8
+	load    [$2 + 5], $9
+	load    [$2 + 5], $10
+	load    [$8 + 0], $8
+	load    [$9 + 1], $9
+	load    [$10 + 2], $10
+	load    [$2 + 1], $7
+	fsub    $4, $8, $8
+	fsub    $5, $9, $9
+	fsub    $6, $10, $10
+	cmp     $7, 1
+	bne     be_else.31169
+be_then.31169:
+	load    [$2 + 4], $7
+	fabs    $8, $8
+	load    [$7 + 0], $7
+	fcmp    $7, $8
+	bg      ble_else.31170
+ble_then.31170:
+	load    [$2 + 6], $2
+	cmp     $2, 0
+	bne     be_else.31171
+be_then.31171:
+	li      1, $2
+.count b_cont
+	b       be_cont.31169
+be_else.31171:
+	li      0, $2
+.count b_cont
+	b       be_cont.31169
+ble_else.31170:
+	load    [$2 + 4], $7
+	fabs    $9, $8
+	load    [$7 + 1], $7
+	fcmp    $7, $8
+	bg      ble_else.31172
+ble_then.31172:
+	load    [$2 + 6], $2
+	cmp     $2, 0
+	bne     be_else.31173
+be_then.31173:
+	li      1, $2
+.count b_cont
+	b       be_cont.31169
+be_else.31173:
+	li      0, $2
+.count b_cont
+	b       be_cont.31169
+ble_else.31172:
+	load    [$2 + 4], $7
+	fabs    $10, $8
+	load    [$2 + 6], $2
+	load    [$7 + 2], $7
+	fcmp    $7, $8
+	bg      be_cont.31169
+ble_then.31174:
+	cmp     $2, 0
+	bne     be_else.31175
+be_then.31175:
+	li      1, $2
+.count b_cont
+	b       be_cont.31169
+be_else.31175:
+	li      0, $2
+.count b_cont
+	b       be_cont.31169
+be_else.31169:
+	cmp     $7, 2
+	load    [$2 + 6], $7
+	bne     be_else.31176
+be_then.31176:
+	load    [$2 + 4], $2
+	load    [$2 + 1], $12
+	load    [$2 + 0], $11
+	fmul    $12, $9, $9
+	fmul    $11, $8, $8
+	load    [$2 + 2], $2
+	fmul    $2, $10, $2
+	fadd    $8, $9, $8
+	fadd    $8, $2, $2
+	fcmp    $zero, $2
+	bg      ble_else.31177
+ble_then.31177:
+	cmp     $7, 0
+	bne     be_else.31178
+be_then.31178:
+	li      1, $2
+.count b_cont
+	b       be_cont.31176
+be_else.31178:
+	li      0, $2
+.count b_cont
+	b       be_cont.31176
+ble_else.31177:
+	cmp     $7, 0
+	bne     be_else.31179
+be_then.31179:
+	li      0, $2
+.count b_cont
+	b       be_cont.31176
+be_else.31179:
+	li      1, $2
+.count b_cont
+	b       be_cont.31176
+be_else.31176:
+	load    [$2 + 4], $14
+	fmul    $8, $8, $13
+	load    [$2 + 4], $16
+	load    [$14 + 0], $14
+	fmul    $9, $9, $15
+	load    [$2 + 4], $17
+	fmul    $13, $14, $13
+	load    [$2 + 3], $12
+	load    [$16 + 1], $14
+	load    [$2 + 1], $11
+	fmul    $10, $10, $16
+	fmul    $15, $14, $14
+	cmp     $12, 0
+	load    [$17 + 2], $15
+	fadd    $13, $14, $13
+	fmul    $16, $15, $14
+	fadd    $13, $14, $13
+	bne     be_else.31180
+be_then.31180:
+	mov     $13, $2
+.count b_cont
+	b       be_cont.31180
+be_else.31180:
+	load    [$2 + 9], $14
+	fmul    $9, $10, $12
+	load    [$2 + 9], $15
+	load    [$14 + 0], $14
+	fmul    $10, $8, $10
+	load    [$2 + 9], $2
+	fmul    $12, $14, $12
+	fmul    $8, $9, $8
+	load    [$15 + 1], $14
+	load    [$2 + 2], $2
+	fmul    $10, $14, $9
+	fmul    $8, $2, $2
+	fadd    $13, $12, $10
+	fadd    $10, $9, $9
+	fadd    $9, $2, $2
+be_cont.31180:
+	cmp     $11, 3
+	bne     be_cont.31181
+be_then.31181:
+	fsub    $2, $36, $2
+be_cont.31181:
+	fcmp    $zero, $2
+	bg      ble_else.31182
+ble_then.31182:
+	cmp     $7, 0
+	bne     be_else.31183
+be_then.31183:
+	li      1, $2
+.count b_cont
+	b       ble_cont.31182
+be_else.31183:
+	li      0, $2
+.count b_cont
+	b       ble_cont.31182
+ble_else.31182:
+	cmp     $7, 0
+	bne     be_else.31184
+be_then.31184:
+	li      0, $2
+.count b_cont
+	b       be_cont.31184
+be_else.31184:
+	li      1, $2
+be_cont.31184:
+ble_cont.31182:
+be_cont.31176:
+be_cont.31169:
+	cmp     $2, 0
+	bne     be_else.31185
+be_then.31185:
+	add     $1, 1, $1
+	load    [$3 + $1], $2
+	cmp     $2, -1
+	bne     be_else.31186
+be_then.31186:
+	li      1, $1
+	ret
+be_else.31186:
+	load    [min_caml_objects + $2], $2
+	load    [$2 + 5], $7
+	load    [$2 + 5], $8
+	load    [$2 + 5], $9
+	load    [$7 + 0], $7
+	load    [$8 + 1], $8
+	load    [$9 + 2], $9
+	load    [$2 + 1], $10
+	fsub    $4, $7, $7
+	fsub    $5, $8, $8
+	fsub    $6, $9, $9
+	cmp     $10, 1
+	bne     be_else.31187
+be_then.31187:
+	load    [$2 + 4], $10
+	fabs    $7, $7
+	load    [$10 + 0], $10
+	fcmp    $10, $7
+	bg      ble_else.31188
+ble_then.31188:
+	li      0, $7
+.count b_cont
+	b       ble_cont.31188
+ble_else.31188:
+	load    [$2 + 4], $7
+	fabs    $8, $8
+	load    [$7 + 1], $7
+	fcmp    $7, $8
+	bg      ble_else.31189
+ble_then.31189:
+	li      0, $7
+.count b_cont
+	b       ble_cont.31189
+ble_else.31189:
+	load    [$2 + 4], $7
+	fabs    $9, $8
+	load    [$7 + 2], $7
+	fcmp    $7, $8
+	bg      ble_else.31190
+ble_then.31190:
+	li      0, $7
+.count b_cont
+	b       ble_cont.31190
+ble_else.31190:
+	li      1, $7
+ble_cont.31190:
+ble_cont.31189:
+ble_cont.31188:
+	cmp     $7, 0
+	load    [$2 + 6], $2
+	bne     be_else.31191
+be_then.31191:
+	cmp     $2, 0
+	bne     be_else.31192
+be_then.31192:
+	li      0, $1
+	ret
+be_else.31192:
+	add     $1, 1, $2
+	b       check_all_inside.2856
+be_else.31191:
+	cmp     $2, 0
+	bne     be_else.31193
+be_then.31193:
+	add     $1, 1, $2
+	b       check_all_inside.2856
+be_else.31193:
+	li      0, $1
+	ret
+be_else.31187:
+	cmp     $10, 2
+	bne     be_else.31194
+be_then.31194:
+	load    [$2 + 6], $10
+	load    [$2 + 4], $2
+	load    [$2 + 1], $12
+	load    [$2 + 0], $11
+	fmul    $12, $8, $8
+	fmul    $11, $7, $7
+	load    [$2 + 2], $2
+	fmul    $2, $9, $2
+	fadd    $7, $8, $7
+	fadd    $7, $2, $2
+	fcmp    $zero, $2
+	bg      ble_else.31195
+ble_then.31195:
+	cmp     $10, 0
+	bne     be_else.31196
+be_then.31196:
+	li      0, $1
+	ret
+be_else.31196:
+	add     $1, 1, $2
+	b       check_all_inside.2856
+ble_else.31195:
+	cmp     $10, 0
+	bne     be_else.31197
+be_then.31197:
+	add     $1, 1, $2
+	b       check_all_inside.2856
+be_else.31197:
+	li      0, $1
+	ret
+be_else.31194:
+	load    [$2 + 4], $12
+	load    [$2 + 4], $13
+	fmul    $7, $7, $16
+	fmul    $8, $8, $17
+	load    [$12 + 0], $12
+	load    [$13 + 1], $13
+	load    [$2 + 4], $14
+	fmul    $9, $9, $18
+	fmul    $16, $12, $12
+	fmul    $17, $13, $13
+	load    [$14 + 2], $14
+	load    [$2 + 3], $15
+	load    [$2 + 6], $11
+	fmul    $18, $14, $14
+	fadd    $12, $13, $12
 	cmp     $15, 0
-	bne     be_else.31285
-be_then.31285:
-	cmp     $2, 0
-	bne     be_else.31286
-be_then.31286:
+	fadd    $12, $14, $12
+	bne     be_else.31198
+be_then.31198:
+	mov     $12, $2
+.count b_cont
+	b       be_cont.31198
+be_else.31198:
+	load    [$2 + 9], $14
+	fmul    $8, $9, $13
+	load    [$2 + 9], $15
+	load    [$14 + 0], $14
+	fmul    $9, $7, $9
+	load    [$2 + 9], $2
+	fmul    $13, $14, $13
+	fmul    $7, $8, $7
+	load    [$15 + 1], $14
+	load    [$2 + 2], $2
+	fmul    $9, $14, $8
+	fmul    $7, $2, $2
+	fadd    $12, $13, $9
+	fadd    $9, $8, $8
+	fadd    $8, $2, $2
+be_cont.31198:
+	cmp     $10, 3
+	bne     be_cont.31199
+be_then.31199:
+	fsub    $2, $36, $2
+be_cont.31199:
+	fcmp    $zero, $2
+	bg      ble_else.31200
+ble_then.31200:
+	cmp     $11, 0
+	bne     be_else.31201
+be_then.31201:
 	li      0, $1
 	ret
-be_else.31286:
+be_else.31201:
 	add     $1, 1, $2
 	b       check_all_inside.2856
-be_else.31285:
-	cmp     $2, 0
-	bne     be_else.31287
-be_then.31287:
+ble_else.31200:
+	cmp     $11, 0
+	bne     be_else.31202
+be_then.31202:
 	add     $1, 1, $2
 	b       check_all_inside.2856
-be_else.31287:
+be_else.31202:
 	li      0, $1
 	ret
-be_else.31268:
+be_else.31185:
 	li      0, $1
 	ret
-be_else.31250:
+be_else.31167:
 	li      0, $1
 	ret
-be_else.31232:
+be_else.31149:
 	li      0, $1
 	ret
 .end check_all_inside
@@ -4416,513 +4525,551 @@ be_else.31232:
 ######################################################################
 .begin shadow_check_and_group
 shadow_check_and_group.2862:
-	load    [$3 + $2], $17
-	cmp     $17, -1
-	bne     be_else.31288
-be_then.31288:
+	load    [$3 + $2], $19
+	cmp     $19, -1
+	bne     be_else.31203
+be_then.31203:
 	li      0, $1
 	ret
-be_else.31288:
-	load    [min_caml_objects + $17], $18
-	load    [min_caml_intersection_point + 2], $24
-	load    [min_caml_light_dirvec + 1], $20
-	load    [$18 + 5], $21
-	load    [$18 + 5], $22
-	load    [$18 + 5], $23
-	load    [$21 + 2], $21
-	load    [$22 + 1], $22
-	load    [$18 + 1], $19
-	fsub    $24, $21, $21
-	load    [$23 + 0], $23
-	load    [min_caml_intersection_point + 1], $24
-	load    [$20 + $17], $20
-	cmp     $19, 1
-	fsub    $24, $22, $22
-	load    [min_caml_intersection_point + 0], $24
-	fsub    $24, $23, $23
-	bne     be_else.31289
-be_then.31289:
-	load    [$20 + 0], $25
-	load    [$20 + 1], $24
-	load    [min_caml_light_dirvec + 0], $19
-	fsub    $25, $23, $25
-	load    [$18 + 4], $26
-	load    [$26 + 1], $26
-	fmul    $25, $24, $24
-	load    [$19 + 1], $25
-	fmul    $24, $25, $25
-	fadd    $25, $22, $25
-	fabs    $25, $25
-	fcmp    $26, $25
-	bg      ble_else.31290
-ble_then.31290:
-	li      0, $25
-	b       ble_cont.31290
-ble_else.31290:
-	load    [$19 + 2], $26
-	load    [$18 + 4], $25
-	fmul    $24, $26, $26
-	load    [$25 + 2], $25
-	fadd    $26, $21, $26
-	fabs    $26, $26
-	fcmp    $25, $26
-	bg      ble_else.31291
-ble_then.31291:
-	li      0, $25
-	b       ble_cont.31291
-ble_else.31291:
-	load    [$20 + 1], $25
-	fcmp    $25, $zero
-	bne     be_else.31292
-be_then.31292:
-	li      0, $25
-	b       be_cont.31292
-be_else.31292:
-	li      1, $25
-be_cont.31292:
-ble_cont.31291:
-ble_cont.31290:
-	cmp     $25, 0
-	bne     be_else.31293
-be_then.31293:
-	load    [$20 + 2], $25
-	load    [$20 + 3], $24
-	load    [$18 + 4], $26
-	fsub    $25, $22, $25
-	load    [$26 + 0], $26
-	fmul    $25, $24, $24
-	load    [$19 + 0], $25
-	fmul    $24, $25, $25
-	fadd    $25, $23, $25
-	fabs    $25, $25
-	fcmp    $26, $25
-	bg      ble_else.31294
-ble_then.31294:
-	li      0, $25
-	b       ble_cont.31294
-ble_else.31294:
-	load    [$19 + 2], $26
-	load    [$18 + 4], $25
-	fmul    $24, $26, $26
-	load    [$25 + 2], $25
-	fadd    $26, $21, $26
-	fabs    $26, $26
-	fcmp    $25, $26
-	bg      ble_else.31295
-ble_then.31295:
-	li      0, $25
-	b       ble_cont.31295
-ble_else.31295:
-	load    [$20 + 3], $25
-	fcmp    $25, $zero
-	bne     be_else.31296
-be_then.31296:
-	li      0, $25
-	b       be_cont.31296
-be_else.31296:
-	li      1, $25
-be_cont.31296:
-ble_cont.31295:
-ble_cont.31294:
-	cmp     $25, 0
-	bne     be_else.31297
-be_then.31297:
-	load    [$20 + 4], $25
+be_else.31203:
+	load    [min_caml_objects + $19], $20
+	load    [min_caml_intersection_point + 0], $26
+	load    [min_caml_light_dirvec + 1], $21
+	load    [$20 + 5], $22
+	load    [$20 + 5], $23
 	load    [$20 + 5], $24
-	fsub    $25, $21, $21
-	fmul    $21, $24, $21
-	load    [$19 + 0], $24
-	fmul    $21, $24, $24
-	fadd    $24, $23, $23
-	load    [$18 + 4], $24
-	load    [$24 + 0], $24
-	fabs    $23, $23
-	fcmp    $24, $23
-	bg      ble_else.31298
-ble_then.31298:
-	li      0, $18
-	b       be_cont.31289
-ble_else.31298:
-	load    [$19 + 1], $19
-	load    [$18 + 4], $18
-	fmul    $21, $19, $19
-	load    [$18 + 1], $18
-	fadd    $19, $22, $19
-	fabs    $19, $19
-	fcmp    $18, $19
-	bg      ble_else.31299
-ble_then.31299:
-	li      0, $18
-	b       be_cont.31289
-ble_else.31299:
-	load    [$20 + 5], $18
-	fcmp    $18, $zero
-	bne     be_else.31300
-be_then.31300:
-	li      0, $18
-	b       be_cont.31289
-be_else.31300:
-.count move_float
-	mov     $21, $42
-	li      3, $18
-	b       be_cont.31289
-be_else.31297:
-.count move_float
-	mov     $24, $42
-	li      2, $18
-	b       be_cont.31289
-be_else.31293:
-.count move_float
-	mov     $24, $42
-	li      1, $18
-	b       be_cont.31289
-be_else.31289:
-	cmp     $19, 2
-	bne     be_else.31301
-be_then.31301:
-	load    [$20 + 0], $18
-	fcmp    $zero, $18
-	bg      ble_else.31302
-ble_then.31302:
-	li      0, $18
-	b       be_cont.31301
-ble_else.31302:
-	load    [$20 + 2], $19
-	load    [$20 + 3], $18
-	load    [$20 + 1], $20
-	fmul    $19, $22, $19
-	fmul    $18, $21, $18
-	fmul    $20, $23, $20
-	fadd    $20, $19, $19
-	fadd    $19, $18, $18
-.count move_float
-	mov     $18, $42
-	li      1, $18
-	b       be_cont.31301
-be_else.31301:
-	load    [$20 + 0], $24
-	fcmp    $24, $zero
-	bne     be_else.31303
-be_then.31303:
-	li      0, $18
-	b       be_cont.31303
-be_else.31303:
-	load    [$18 + 4], $26
-	fmul    $23, $23, $25
-	load    [$18 + 4], $27
-	load    [$26 + 0], $26
-	load    [$27 + 1], $27
-	fmul    $25, $26, $25
-	fmul    $22, $22, $26
-	fmul    $26, $27, $26
-	load    [$18 + 4], $27
-	fadd    $25, $26, $25
-	load    [$27 + 2], $27
-	fmul    $21, $21, $26
-	fmul    $26, $27, $26
-	fadd    $25, $26, $25
-	load    [$18 + 3], $26
+	load    [$22 + 0], $22
+	load    [$23 + 1], $23
+	load    [$24 + 2], $24
+	fsub    $26, $22, $22
+	load    [$20 + 1], $25
+	load    [min_caml_intersection_point + 1], $26
+	load    [$21 + $19], $21
+	cmp     $25, 1
+	fsub    $26, $23, $23
+	load    [min_caml_intersection_point + 2], $26
+	fsub    $26, $24, $24
+	bne     be_else.31204
+be_then.31204:
+	load    [$21 + 0], $28
+	load    [$21 + 1], $29
+	load    [min_caml_light_dirvec + 0], $25
+	fsub    $28, $22, $28
+	load    [$20 + 4], $26
+	load    [$25 + 1], $27
+	load    [$26 + 1], $26
+	fmul    $28, $29, $28
+	fmul    $28, $27, $27
+	fadd    $27, $23, $27
+	fabs    $27, $27
+	fcmp    $26, $27
+	bg      ble_else.31205
+ble_then.31205:
+	li      0, $26
+.count b_cont
+	b       ble_cont.31205
+ble_else.31205:
+	load    [$25 + 2], $27
+	load    [$20 + 4], $26
+	fmul    $28, $27, $27
+	load    [$26 + 2], $26
+	fadd    $27, $24, $27
+	fabs    $27, $27
+	fcmp    $26, $27
+	bg      ble_else.31206
+ble_then.31206:
+	li      0, $26
+.count b_cont
+	b       ble_cont.31206
+ble_else.31206:
+	load    [$21 + 1], $26
+	fcmp    $26, $zero
+	bne     be_else.31207
+be_then.31207:
+	li      0, $26
+.count b_cont
+	b       be_cont.31207
+be_else.31207:
+	li      1, $26
+be_cont.31207:
+ble_cont.31206:
+ble_cont.31205:
 	cmp     $26, 0
-	be      bne_cont.31304
-bne_then.31304:
-	load    [$18 + 9], $27
-	fmul    $22, $21, $26
-	load    [$27 + 0], $27
-	fmul    $26, $27, $26
-	load    [$18 + 9], $27
-	fadd    $25, $26, $25
-	load    [$27 + 1], $27
-	fmul    $21, $23, $26
-	fmul    $26, $27, $26
-	load    [$18 + 9], $27
-	fadd    $25, $26, $25
-	load    [$27 + 2], $27
-	fmul    $23, $22, $26
-	fmul    $26, $27, $26
-	fadd    $25, $26, $25
-bne_cont.31304:
-	cmp     $19, 3
-	bne     be_else.31305
-be_then.31305:
-	fsub    $25, $36, $19
-	b       be_cont.31305
-be_else.31305:
-	mov     $25, $19
-be_cont.31305:
-	fmul    $24, $19, $19
-	load    [$20 + 3], $24
-	fmul    $24, $21, $21
-	load    [$20 + 2], $24
+	bne     be_else.31208
+be_then.31208:
+	load    [$21 + 2], $28
+	load    [$21 + 3], $29
+	load    [$25 + 0], $27
+	fsub    $28, $23, $28
+	load    [$20 + 4], $26
+	load    [$26 + 0], $26
+	fmul    $28, $29, $28
+	fmul    $28, $27, $27
+	fadd    $27, $22, $27
+	fabs    $27, $27
+	fcmp    $26, $27
+	bg      ble_else.31209
+ble_then.31209:
+	li      0, $26
+.count b_cont
+	b       ble_cont.31209
+ble_else.31209:
+	load    [$25 + 2], $27
+	load    [$20 + 4], $26
+	fmul    $28, $27, $27
+	load    [$26 + 2], $26
+	fadd    $27, $24, $27
+	fabs    $27, $27
+	fcmp    $26, $27
+	bg      ble_else.31210
+ble_then.31210:
+	li      0, $26
+.count b_cont
+	b       ble_cont.31210
+ble_else.31210:
+	load    [$21 + 3], $26
+	fcmp    $26, $zero
+	bne     be_else.31211
+be_then.31211:
+	li      0, $26
+.count b_cont
+	b       be_cont.31211
+be_else.31211:
+	li      1, $26
+be_cont.31211:
+ble_cont.31210:
+ble_cont.31209:
+	cmp     $26, 0
+	bne     be_else.31212
+be_then.31212:
+	load    [$21 + 4], $28
+	load    [$21 + 5], $29
+	load    [$25 + 0], $27
+	fsub    $28, $24, $24
+	load    [$20 + 4], $26
+	load    [$26 + 0], $26
+	fmul    $24, $29, $24
+	fmul    $24, $27, $27
+	fadd    $27, $22, $22
+	fabs    $22, $22
+	fcmp    $26, $22
+	bg      ble_else.31213
+ble_then.31213:
+	li      0, $20
+.count b_cont
+	b       be_cont.31204
+ble_else.31213:
+	load    [$25 + 1], $22
+	load    [$20 + 4], $20
 	fmul    $24, $22, $22
-	load    [$20 + 1], $24
-	fmul    $24, $23, $23
-	fadd    $23, $22, $22
-	fadd    $22, $21, $21
-	fmul    $21, $21, $22
-	fsub    $22, $19, $19
-	fcmp    $19, $zero
-	bg      ble_else.31306
-ble_then.31306:
-	li      0, $18
-	b       ble_cont.31306
-ble_else.31306:
-	load    [$18 + 6], $18
-	fsqrt   $19, $19
-	cmp     $18, 0
-	load    [$20 + 4], $18
-	bne     be_else.31307
-be_then.31307:
-	fsub    $21, $19, $19
-	fmul    $19, $18, $18
+	load    [$20 + 1], $20
+	fadd    $22, $23, $22
+	fabs    $22, $22
+	fcmp    $20, $22
+	bg      ble_else.31214
+ble_then.31214:
+	li      0, $20
+.count b_cont
+	b       be_cont.31204
+ble_else.31214:
+	load    [$21 + 5], $20
+	fcmp    $20, $zero
+	bne     be_else.31215
+be_then.31215:
+	li      0, $20
+.count b_cont
+	b       be_cont.31204
+be_else.31215:
 .count move_float
-	mov     $18, $42
-	li      1, $18
-	b       be_cont.31307
-be_else.31307:
-	fadd    $21, $19, $19
-	fmul    $19, $18, $18
+	mov     $24, $42
+	li      3, $20
+.count b_cont
+	b       be_cont.31204
+be_else.31212:
 .count move_float
-	mov     $18, $42
-	li      1, $18
-be_cont.31307:
-ble_cont.31306:
-be_cont.31303:
-be_cont.31301:
-be_cont.31289:
-	cmp     $18, 0
-	bne     be_else.31308
-be_then.31308:
-	li      0, $18
-	b       be_cont.31308
-be_else.31308:
+	mov     $28, $42
+	li      2, $20
+.count b_cont
+	b       be_cont.31204
+be_else.31208:
+.count move_float
+	mov     $28, $42
+	li      1, $20
+.count b_cont
+	b       be_cont.31204
+be_else.31204:
+	cmp     $25, 2
+	bne     be_else.31216
+be_then.31216:
+	load    [$21 + 0], $20
+	fcmp    $zero, $20
+	bg      ble_else.31217
+ble_then.31217:
+	li      0, $20
+.count b_cont
+	b       be_cont.31216
+ble_else.31217:
+	load    [$21 + 1], $20
+	load    [$21 + 2], $25
+	fmul    $20, $22, $20
+	load    [$21 + 3], $21
+	fmul    $25, $23, $22
+	fmul    $21, $24, $21
+	fadd    $20, $22, $20
+	fadd    $20, $21, $20
+.count move_float
+	mov     $20, $42
+	li      1, $20
+.count b_cont
+	b       be_cont.31216
+be_else.31216:
+	load    [$21 + 0], $26
+	fcmp    $26, $zero
+	bne     be_else.31218
+be_then.31218:
+	li      0, $20
+.count b_cont
+	b       be_cont.31218
+be_else.31218:
+	load    [$21 + 2], $28
+	load    [$21 + 1], $27
+	load    [$21 + 3], $29
+	fmul    $28, $23, $28
+	fmul    $27, $22, $27
+	fmul    $29, $24, $29
+	fmul    $22, $22, $30
+	fmul    $23, $23, $31
+	load    [$20 + 4], $33
+	fadd    $27, $28, $27
+	load    [$20 + 4], $28
+	fadd    $27, $29, $27
+	load    [$28 + 0], $28
+	load    [$20 + 4], $29
+	fmul    $30, $28, $28
+	load    [$29 + 1], $29
+	fmul    $24, $24, $30
+	fmul    $27, $27, $32
+	fmul    $31, $29, $29
+	load    [$33 + 2], $31
+	load    [$20 + 3], $33
+	fmul    $30, $31, $30
+	fadd    $28, $29, $28
+	cmp     $33, 0
+	fadd    $28, $30, $28
+	bne     be_else.31219
+be_then.31219:
+	mov     $28, $22
+.count b_cont
+	b       be_cont.31219
+be_else.31219:
+	load    [$20 + 9], $30
+	fmul    $23, $24, $29
+	load    [$20 + 9], $31
+	load    [$30 + 0], $30
+	fmul    $24, $22, $24
+	fmul    $29, $30, $29
+	fmul    $22, $23, $22
+	load    [$31 + 1], $30
+	load    [$20 + 9], $23
+	fadd    $28, $29, $28
+	fmul    $24, $30, $24
+	load    [$23 + 2], $23
+	fmul    $22, $23, $22
+	fadd    $28, $24, $24
+	fadd    $24, $22, $22
+be_cont.31219:
+	cmp     $25, 3
+	bne     be_cont.31220
+be_then.31220:
+	fsub    $22, $36, $22
+be_cont.31220:
+	fmul    $26, $22, $22
+	fsub    $32, $22, $22
+	fcmp    $22, $zero
+	bg      ble_else.31221
+ble_then.31221:
+	li      0, $20
+.count b_cont
+	b       ble_cont.31221
+ble_else.31221:
+	load    [$20 + 6], $20
+	load    [$21 + 4], $21
+	cmp     $20, 0
+	fsqrt   $22, $20
+	bne     be_else.31222
+be_then.31222:
+	fsub    $27, $20, $20
+	fmul    $20, $21, $20
+.count move_float
+	mov     $20, $42
+	li      1, $20
+.count b_cont
+	b       be_cont.31222
+be_else.31222:
+	fadd    $27, $20, $20
+	fmul    $20, $21, $20
+.count move_float
+	mov     $20, $42
+	li      1, $20
+be_cont.31222:
+ble_cont.31221:
+be_cont.31218:
+be_cont.31216:
+be_cont.31204:
+	cmp     $20, 0
+	bne     be_else.31223
+be_then.31223:
+	li      0, $20
+.count b_cont
+	b       be_cont.31223
+be_else.31223:
 .count load_float
-	load    [f.27181], $18
-	fcmp    $18, $42
-	bg      ble_else.31309
-ble_then.31309:
-	li      0, $18
-	b       ble_cont.31309
-ble_else.31309:
-	li      1, $18
-ble_cont.31309:
-be_cont.31308:
-	cmp     $18, 0
-	bne     be_else.31310
-be_then.31310:
-	load    [min_caml_objects + $17], $1
+	load    [f.27087], $20
+	fcmp    $20, $42
+	bg      ble_else.31224
+ble_then.31224:
+	li      0, $20
+.count b_cont
+	b       ble_cont.31224
+ble_else.31224:
+	li      1, $20
+ble_cont.31224:
+be_cont.31223:
+	cmp     $20, 0
+	bne     be_else.31225
+be_then.31225:
+	load    [min_caml_objects + $19], $1
 	load    [$1 + 6], $1
 	cmp     $1, 0
-	bne     be_else.31311
-be_then.31311:
+	bne     be_else.31226
+be_then.31226:
 	li      0, $1
 	ret
-be_else.31311:
+be_else.31226:
 	add     $2, 1, $2
 	b       shadow_check_and_group.2862
-be_else.31310:
-	load    [$3 + 0], $17
-	cmp     $17, -1
-	bne     be_else.31312
-be_then.31312:
+be_else.31225:
+	load    [$3 + 0], $19
+	cmp     $19, -1
+	bne     be_else.31227
+be_then.31227:
 	li      1, $1
 	ret
-be_else.31312:
+be_else.31227:
 .count load_float
-	load    [f.27182], $23
-	load    [min_caml_intersection_point + 2], $22
-	load    [min_caml_objects + $17], $17
-	fadd    $42, $23, $23
-	load    [$17 + 5], $18
-	load    [$17 + 5], $19
-	load    [$17 + 5], $20
-	fmul    $57, $23, $24
-	load    [$17 + 1], $21
-	load    [$18 + 2], $18
-	load    [$19 + 1], $19
+	load    [f.27088], $24
+	load    [min_caml_intersection_point + 0], $25
+	load    [min_caml_intersection_point + 1], $27
+	fadd    $42, $24, $24
+	load    [min_caml_objects + $19], $19
+	load    [$19 + 5], $20
+	fmul    $55, $24, $26
+	load    [$19 + 5], $21
+	load    [$19 + 5], $22
 	load    [$20 + 0], $20
-	fadd    $24, $22, $6
-	cmp     $21, 1
-	fmul    $56, $23, $24
-	load    [min_caml_intersection_point + 1], $22
-	fmul    $55, $23, $23
-	fsub    $6, $18, $18
-	fadd    $24, $22, $5
-	load    [min_caml_intersection_point + 0], $22
-	fadd    $23, $22, $4
-	fsub    $5, $19, $19
-	fsub    $4, $20, $20
-	bne     be_else.31313
-be_then.31313:
-	load    [$17 + 4], $21
-	fabs    $20, $20
-	load    [$21 + 0], $21
-	fcmp    $21, $20
-	bg      ble_else.31314
-ble_then.31314:
-	load    [$17 + 6], $17
-	cmp     $17, 0
-	bne     be_else.31315
-be_then.31315:
-	li      1, $17
-	b       be_cont.31313
-be_else.31315:
-	li      0, $17
-	b       be_cont.31313
-ble_else.31314:
-	load    [$17 + 4], $20
-	fabs    $19, $19
-	load    [$20 + 1], $20
-	fcmp    $20, $19
-	bg      ble_else.31316
-ble_then.31316:
-	load    [$17 + 6], $17
-	cmp     $17, 0
-	bne     be_else.31317
-be_then.31317:
-	li      1, $17
-	b       be_cont.31313
-be_else.31317:
-	li      0, $17
-	b       be_cont.31313
-ble_else.31316:
-	load    [$17 + 4], $19
-	fabs    $18, $18
-	load    [$17 + 6], $17
-	load    [$19 + 2], $19
-	fcmp    $19, $18
-	bg      be_cont.31313
-ble_then.31318:
-	cmp     $17, 0
-	bne     be_else.31319
-be_then.31319:
-	li      1, $17
-	b       be_cont.31313
-be_else.31319:
-	li      0, $17
-	b       be_cont.31313
-be_else.31313:
-	cmp     $21, 2
-	bne     be_else.31320
-be_then.31320:
-	load    [$17 + 4], $21
-	load    [$17 + 6], $17
-	load    [$21 + 2], $22
-	fmul    $22, $18, $18
-	load    [$21 + 1], $22
-	load    [$21 + 0], $21
-	fmul    $22, $19, $19
-	fmul    $21, $20, $20
-	fadd    $20, $19, $19
-	fadd    $19, $18, $18
-	fcmp    $zero, $18
-	bg      ble_else.31321
-ble_then.31321:
-	cmp     $17, 0
-	bne     be_else.31322
-be_then.31322:
-	li      1, $17
-	b       be_cont.31320
-be_else.31322:
-	li      0, $17
-	b       be_cont.31320
-ble_else.31321:
-	cmp     $17, 0
-	bne     be_else.31323
-be_then.31323:
-	li      0, $17
-	b       be_cont.31320
-be_else.31323:
-	li      1, $17
-	b       be_cont.31320
-be_else.31320:
-	load    [$17 + 4], $22
-	fmul    $18, $18, $23
-	fmul    $19, $19, $24
+	load    [$21 + 1], $21
+	fadd    $26, $25, $4
 	load    [$22 + 2], $22
-	fmul    $20, $20, $25
-	fmul    $23, $22, $22
-	load    [$17 + 4], $23
-	load    [$23 + 1], $23
-	fmul    $24, $23, $23
-	load    [$17 + 4], $24
-	load    [$24 + 0], $24
-	fmul    $25, $24, $24
-	fadd    $24, $23, $23
-	fadd    $23, $22, $22
-	load    [$17 + 3], $23
+	fmul    $56, $24, $25
+	load    [$19 + 1], $23
+	fmul    $57, $24, $24
+	fsub    $4, $20, $20
+	cmp     $23, 1
+	fadd    $25, $27, $5
+	load    [min_caml_intersection_point + 2], $25
+	fadd    $24, $25, $6
+	fsub    $5, $21, $21
+	fsub    $6, $22, $22
+	bne     be_else.31228
+be_then.31228:
+	load    [$19 + 4], $23
+	fabs    $20, $20
+	load    [$23 + 0], $23
+	fcmp    $23, $20
+	bg      ble_else.31229
+ble_then.31229:
+	load    [$19 + 6], $19
+	cmp     $19, 0
+	bne     be_else.31230
+be_then.31230:
+	li      1, $19
+.count b_cont
+	b       be_cont.31228
+be_else.31230:
+	li      0, $19
+.count b_cont
+	b       be_cont.31228
+ble_else.31229:
+	load    [$19 + 4], $20
+	fabs    $21, $21
+	load    [$20 + 1], $20
+	fcmp    $20, $21
+	bg      ble_else.31231
+ble_then.31231:
+	load    [$19 + 6], $19
+	cmp     $19, 0
+	bne     be_else.31232
+be_then.31232:
+	li      1, $19
+.count b_cont
+	b       be_cont.31228
+be_else.31232:
+	li      0, $19
+.count b_cont
+	b       be_cont.31228
+ble_else.31231:
+	load    [$19 + 4], $20
+	fabs    $22, $21
+	load    [$19 + 6], $19
+	load    [$20 + 2], $20
+	fcmp    $20, $21
+	bg      be_cont.31228
+ble_then.31233:
+	cmp     $19, 0
+	bne     be_else.31234
+be_then.31234:
+	li      1, $19
+.count b_cont
+	b       be_cont.31228
+be_else.31234:
+	li      0, $19
+.count b_cont
+	b       be_cont.31228
+be_else.31228:
+	cmp     $23, 2
+	bne     be_else.31235
+be_then.31235:
+	load    [$19 + 6], $23
+	load    [$19 + 4], $19
+	load    [$19 + 1], $25
+	load    [$19 + 0], $24
+	fmul    $25, $21, $21
+	fmul    $24, $20, $20
+	load    [$19 + 2], $19
+	fmul    $19, $22, $19
+	fadd    $20, $21, $20
+	fadd    $20, $19, $19
+	fcmp    $zero, $19
+	bg      ble_else.31236
+ble_then.31236:
 	cmp     $23, 0
-	bne     be_else.31324
-be_then.31324:
-	mov     $22, $18
-	b       be_cont.31324
-be_else.31324:
-	load    [$17 + 9], $23
-	fmul    $20, $19, $24
-	load    [$23 + 2], $23
-	fmul    $18, $20, $20
-	fmul    $24, $23, $23
-	fmul    $19, $18, $18
-	load    [$17 + 9], $24
-	load    [$24 + 1], $24
-	fmul    $20, $24, $20
-	load    [$17 + 9], $24
-	load    [$24 + 0], $24
-	fmul    $18, $24, $18
-	fadd    $22, $18, $18
-	fadd    $18, $20, $18
-	fadd    $18, $23, $18
-be_cont.31324:
-	cmp     $21, 3
-	bne     be_cont.31325
-be_then.31325:
-	fsub    $18, $36, $18
-be_cont.31325:
-	fcmp    $zero, $18
-	load    [$17 + 6], $17
-	bg      ble_else.31326
-ble_then.31326:
-	cmp     $17, 0
-	bne     be_else.31327
-be_then.31327:
-	li      1, $17
-	b       ble_cont.31326
-be_else.31327:
-	li      0, $17
-	b       ble_cont.31326
-ble_else.31326:
-	cmp     $17, 0
-	bne     be_else.31328
-be_then.31328:
-	li      0, $17
-	b       be_cont.31328
-be_else.31328:
-	li      1, $17
-be_cont.31328:
-ble_cont.31326:
-be_cont.31320:
-be_cont.31313:
-	cmp     $17, 0
-	bne     be_else.31329
-be_then.31329:
+	bne     be_else.31237
+be_then.31237:
+	li      1, $19
+.count b_cont
+	b       be_cont.31235
+be_else.31237:
+	li      0, $19
+.count b_cont
+	b       be_cont.31235
+ble_else.31236:
+	cmp     $23, 0
+	bne     be_else.31238
+be_then.31238:
+	li      0, $19
+.count b_cont
+	b       be_cont.31235
+be_else.31238:
+	li      1, $19
+.count b_cont
+	b       be_cont.31235
+be_else.31235:
+	load    [$19 + 4], $26
+	fmul    $20, $20, $25
+	load    [$19 + 4], $28
+	load    [$26 + 0], $26
+	fmul    $21, $21, $27
+	load    [$19 + 4], $29
+	fmul    $25, $26, $25
+	load    [$19 + 6], $24
+	load    [$28 + 1], $26
+	load    [$29 + 2], $29
+	fmul    $22, $22, $28
+	fmul    $27, $26, $26
+	load    [$19 + 3], $27
+	fadd    $25, $26, $25
+	cmp     $27, 0
+	fmul    $28, $29, $26
+	fadd    $25, $26, $25
+	bne     be_else.31239
+be_then.31239:
+	mov     $25, $19
+.count b_cont
+	b       be_cont.31239
+be_else.31239:
+	load    [$19 + 9], $27
+	fmul    $21, $22, $26
+	load    [$19 + 9], $28
+	load    [$27 + 0], $27
+	fmul    $22, $20, $22
+	load    [$19 + 9], $19
+	fmul    $26, $27, $26
+	fmul    $20, $21, $20
+	load    [$28 + 1], $27
+	load    [$19 + 2], $19
+	fmul    $22, $27, $21
+	fmul    $20, $19, $19
+	fadd    $25, $26, $22
+	fadd    $22, $21, $21
+	fadd    $21, $19, $19
+be_cont.31239:
+	cmp     $23, 3
+	bne     be_cont.31240
+be_then.31240:
+	fsub    $19, $36, $19
+be_cont.31240:
+	fcmp    $zero, $19
+	bg      ble_else.31241
+ble_then.31241:
+	cmp     $24, 0
+	bne     be_else.31242
+be_then.31242:
+	li      1, $19
+.count b_cont
+	b       ble_cont.31241
+be_else.31242:
+	li      0, $19
+.count b_cont
+	b       ble_cont.31241
+ble_else.31241:
+	cmp     $24, 0
+	bne     be_else.31243
+be_then.31243:
+	li      0, $19
+.count b_cont
+	b       be_cont.31243
+be_else.31243:
+	li      1, $19
+be_cont.31243:
+ble_cont.31241:
+be_cont.31235:
+be_cont.31228:
+	cmp     $19, 0
+	bne     be_else.31244
+be_then.31244:
 .count stack_move
 	sub     $sp, 2, $sp
+.count stack_store
 	store   $3, [$sp + 0]
+.count stack_store
 	store   $2, [$sp + 1]
 	li      1, $2
 	call    check_all_inside.2856
 .count stack_move
 	add     $sp, 2, $sp
 	cmp     $1, 0
-	bne     be_else.31330
-be_then.31330:
+	bne     be_else.31245
+be_then.31245:
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 2], $3
 	add     $1, 1, $2
 	b       shadow_check_and_group.2862
-be_else.31330:
+be_else.31245:
 	li      1, $1
 	ret
-be_else.31329:
+be_else.31244:
 	add     $2, 1, $2
 	b       shadow_check_and_group.2862
 .end shadow_check_and_group
@@ -4930,191 +5077,183 @@ be_else.31329:
 ######################################################################
 .begin shadow_check_one_or_group
 shadow_check_one_or_group.2865:
-	load    [$3 + $2], $28
-	cmp     $28, -1
-	bne     be_else.31331
-be_then.31331:
+	load    [$3 + $2], $34
+	cmp     $34, -1
+	bne     be_else.31246
+be_then.31246:
 	li      0, $1
 	ret
-be_else.31331:
+be_else.31246:
 .count stack_move
 	sub     $sp, 2, $sp
+.count stack_store
 	store   $3, [$sp + 0]
+.count stack_store
 	store   $2, [$sp + 1]
-	load    [min_caml_and_net + $28], $3
+	load    [min_caml_and_net + $34], $3
 	li      0, $2
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31332
-be_then.31332:
-	load    [$sp + 1], $28
-	load    [$sp + 0], $29
-	add     $28, 1, $28
-	load    [$29 + $28], $30
-	cmp     $30, -1
-	bne     be_else.31333
-be_then.31333:
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31247
+be_then.31247:
+.count stack_load
+	load    [$sp + 1], $34
+.count stack_load
+	load    [$sp + 0], $35
+	add     $34, 1, $34
+	load    [$35 + $34], $1
+	cmp     $1, -1
+	bne     be_else.31248
+be_then.31248:
 .count stack_move
 	add     $sp, 2, $sp
 	li      0, $1
 	ret
-be_else.31333:
-	load    [min_caml_and_net + $30], $3
+be_else.31248:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
 	call    shadow_check_and_group.2862
-.count move_ret
-	mov     $1, $30
-	cmp     $30, 0
-	bne     be_else.31334
-be_then.31334:
-	add     $28, 1, $28
-	load    [$29 + $28], $30
-	cmp     $30, -1
-	bne     be_else.31335
-be_then.31335:
+	cmp     $1, 0
+	bne     be_else.31249
+be_then.31249:
+	add     $34, 1, $34
+	load    [$35 + $34], $1
+	cmp     $1, -1
+	bne     be_else.31250
+be_then.31250:
 .count stack_move
 	add     $sp, 2, $sp
 	li      0, $1
 	ret
-be_else.31335:
-	load    [min_caml_and_net + $30], $3
+be_else.31250:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
 	call    shadow_check_and_group.2862
-.count move_ret
-	mov     $1, $30
-	cmp     $30, 0
-	bne     be_else.31336
-be_then.31336:
-	add     $28, 1, $28
-	load    [$29 + $28], $30
-	cmp     $30, -1
-	bne     be_else.31337
-be_then.31337:
+	cmp     $1, 0
+	bne     be_else.31251
+be_then.31251:
+	add     $34, 1, $34
+	load    [$35 + $34], $1
+	cmp     $1, -1
+	bne     be_else.31252
+be_then.31252:
 .count stack_move
 	add     $sp, 2, $sp
 	li      0, $1
 	ret
-be_else.31337:
-	load    [min_caml_and_net + $30], $3
+be_else.31252:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
 	call    shadow_check_and_group.2862
-.count move_ret
-	mov     $1, $30
-	cmp     $30, 0
-	bne     be_else.31338
-be_then.31338:
-	add     $28, 1, $28
-	load    [$29 + $28], $30
-	cmp     $30, -1
-	bne     be_else.31339
-be_then.31339:
+	cmp     $1, 0
+	bne     be_else.31253
+be_then.31253:
+	add     $34, 1, $34
+	load    [$35 + $34], $1
+	cmp     $1, -1
+	bne     be_else.31254
+be_then.31254:
 .count stack_move
 	add     $sp, 2, $sp
 	li      0, $1
 	ret
-be_else.31339:
-	load    [min_caml_and_net + $30], $3
+be_else.31254:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
 	call    shadow_check_and_group.2862
-.count move_ret
-	mov     $1, $30
-	cmp     $30, 0
-	bne     be_else.31340
-be_then.31340:
-	add     $28, 1, $28
-	load    [$29 + $28], $30
-	cmp     $30, -1
-	bne     be_else.31341
-be_then.31341:
+	cmp     $1, 0
+	bne     be_else.31255
+be_then.31255:
+	add     $34, 1, $34
+	load    [$35 + $34], $1
+	cmp     $1, -1
+	bne     be_else.31256
+be_then.31256:
 .count stack_move
 	add     $sp, 2, $sp
 	li      0, $1
 	ret
-be_else.31341:
-	load    [min_caml_and_net + $30], $3
+be_else.31256:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
 	call    shadow_check_and_group.2862
-.count move_ret
-	mov     $1, $30
-	cmp     $30, 0
-	bne     be_else.31342
-be_then.31342:
-	add     $28, 1, $28
-	load    [$29 + $28], $30
-	cmp     $30, -1
-	bne     be_else.31343
-be_then.31343:
+	cmp     $1, 0
+	bne     be_else.31257
+be_then.31257:
+	add     $34, 1, $34
+	load    [$35 + $34], $1
+	cmp     $1, -1
+	bne     be_else.31258
+be_then.31258:
 .count stack_move
 	add     $sp, 2, $sp
 	li      0, $1
 	ret
-be_else.31343:
-	load    [min_caml_and_net + $30], $3
+be_else.31258:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
 	call    shadow_check_and_group.2862
-.count move_ret
-	mov     $1, $30
-	cmp     $30, 0
-	bne     be_else.31344
-be_then.31344:
-	add     $28, 1, $28
-	load    [$29 + $28], $30
-	cmp     $30, -1
-	bne     be_else.31345
-be_then.31345:
+	cmp     $1, 0
+	bne     be_else.31259
+be_then.31259:
+	add     $34, 1, $34
+	load    [$35 + $34], $1
+	cmp     $1, -1
+	bne     be_else.31260
+be_then.31260:
 .count stack_move
 	add     $sp, 2, $sp
 	li      0, $1
 	ret
-be_else.31345:
-	load    [min_caml_and_net + $30], $3
+be_else.31260:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
 	call    shadow_check_and_group.2862
 .count stack_move
 	add     $sp, 2, $sp
 	cmp     $1, 0
-	bne     be_else.31346
-be_then.31346:
-	add     $28, 1, $2
+	bne     be_else.31261
+be_then.31261:
+	add     $34, 1, $2
 .count move_args
-	mov     $29, $3
+	mov     $35, $3
 	b       shadow_check_one_or_group.2865
-be_else.31346:
+be_else.31261:
 	li      1, $1
 	ret
-be_else.31344:
+be_else.31259:
 .count stack_move
 	add     $sp, 2, $sp
 	li      1, $1
 	ret
-be_else.31342:
+be_else.31257:
 .count stack_move
 	add     $sp, 2, $sp
 	li      1, $1
 	ret
-be_else.31340:
+be_else.31255:
 .count stack_move
 	add     $sp, 2, $sp
 	li      1, $1
 	ret
-be_else.31338:
+be_else.31253:
 .count stack_move
 	add     $sp, 2, $sp
 	li      1, $1
 	ret
-be_else.31336:
+be_else.31251:
 .count stack_move
 	add     $sp, 2, $sp
 	li      1, $1
 	ret
-be_else.31334:
+be_else.31249:
 .count stack_move
 	add     $sp, 2, $sp
 	li      1, $1
 	ret
-be_else.31332:
+be_else.31247:
 .count stack_move
 	add     $sp, 2, $sp
 	li      1, $1
@@ -5124,820 +5263,902 @@ be_else.31332:
 ######################################################################
 .begin shadow_check_one_or_matrix
 shadow_check_one_or_matrix.2868:
-	load    [$3 + $2], $28
-	load    [$28 + 0], $29
-	cmp     $29, -1
-	bne     be_else.31347
-be_then.31347:
+	load    [$3 + $2], $34
+	load    [$34 + 0], $35
+	cmp     $35, -1
+	bne     be_else.31262
+be_then.31262:
 	li      0, $1
 	ret
-be_else.31347:
+be_else.31262:
 .count stack_move
 	sub     $sp, 7, $sp
-	cmp     $29, 99
-	store   $28, [$sp + 0]
+	cmp     $35, 99
+.count stack_store
+	store   $34, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
+.count stack_store
 	store   $2, [$sp + 2]
-	bne     be_else.31348
-be_then.31348:
-	li      1, $13
-	b       be_cont.31348
-be_else.31348:
-	load    [min_caml_objects + $29], $30
-	load    [min_caml_intersection_point + 0], $31
-	load    [$30 + 5], $32
-	load    [$30 + 5], $33
-	load    [$30 + 5], $34
-	load    [$32 + 0], $32
-	load    [$33 + 1], $33
-	load    [$34 + 2], $34
-	fsub    $31, $32, $31
-	load    [min_caml_intersection_point + 1], $32
-	fsub    $32, $33, $32
-	load    [min_caml_intersection_point + 2], $33
-	fsub    $33, $34, $33
-	load    [min_caml_light_dirvec + 1], $34
-	load    [$34 + $29], $29
-	load    [$30 + 1], $34
-	cmp     $34, 1
-	bne     be_else.31349
-be_then.31349:
-	load    [$29 + 0], $13
-	load    [$29 + 1], $35
-	load    [min_caml_light_dirvec + 0], $34
-	fsub    $13, $31, $13
-	load    [$30 + 4], $14
-	load    [$14 + 1], $14
-	fmul    $13, $35, $35
-	load    [$34 + 1], $13
-	fmul    $35, $13, $13
-	fadd    $13, $32, $13
-	fabs    $13, $13
-	fcmp    $14, $13
-	bg      ble_else.31350
-ble_then.31350:
-	li      0, $13
-	b       ble_cont.31350
-ble_else.31350:
-	load    [$34 + 2], $14
-	load    [$30 + 4], $13
-	fmul    $35, $14, $14
-	load    [$13 + 2], $13
-	fadd    $14, $33, $14
-	fabs    $14, $14
-	fcmp    $13, $14
-	bg      ble_else.31351
-ble_then.31351:
-	li      0, $13
-	b       ble_cont.31351
-ble_else.31351:
-	load    [$29 + 1], $13
-	fcmp    $13, $zero
-	bne     be_else.31352
-be_then.31352:
-	li      0, $13
-	b       be_cont.31352
-be_else.31352:
-	li      1, $13
-be_cont.31352:
-ble_cont.31351:
-ble_cont.31350:
-	cmp     $13, 0
-	bne     be_else.31353
-be_then.31353:
-	load    [$29 + 2], $13
-	load    [$29 + 3], $35
-	load    [$30 + 4], $14
-	fsub    $13, $32, $13
-	load    [$14 + 0], $14
-	fmul    $13, $35, $35
-	load    [$34 + 0], $13
-	fmul    $35, $13, $13
-	fadd    $13, $31, $13
-	fabs    $13, $13
-	fcmp    $14, $13
-	bg      ble_else.31354
-ble_then.31354:
-	li      0, $13
-	b       ble_cont.31354
-ble_else.31354:
-	load    [$34 + 2], $14
-	load    [$30 + 4], $13
-	fmul    $35, $14, $14
-	load    [$13 + 2], $13
-	fadd    $14, $33, $14
-	fabs    $14, $14
-	fcmp    $13, $14
-	bg      ble_else.31355
-ble_then.31355:
-	li      0, $13
-	b       ble_cont.31355
-ble_else.31355:
-	load    [$29 + 3], $13
-	fcmp    $13, $zero
-	bne     be_else.31356
-be_then.31356:
-	li      0, $13
-	b       be_cont.31356
-be_else.31356:
-	li      1, $13
-be_cont.31356:
-ble_cont.31355:
-ble_cont.31354:
-	cmp     $13, 0
-	bne     be_else.31357
-be_then.31357:
-	load    [$29 + 4], $13
-	load    [$29 + 5], $35
-	fsub    $13, $33, $33
-	fmul    $33, $35, $33
-	load    [$34 + 0], $35
-	fmul    $33, $35, $35
-	fadd    $35, $31, $31
-	load    [$30 + 4], $35
-	load    [$35 + 0], $35
-	fabs    $31, $31
-	fcmp    $35, $31
-	bg      ble_else.31358
-ble_then.31358:
-	li      0, $29
-	b       be_cont.31349
-ble_else.31358:
-	load    [$34 + 1], $31
-	load    [$30 + 4], $30
-	fmul    $33, $31, $31
-	load    [$30 + 1], $30
-	fadd    $31, $32, $31
-	fabs    $31, $31
-	fcmp    $30, $31
-	bg      ble_else.31359
-ble_then.31359:
-	li      0, $29
-	b       be_cont.31349
-ble_else.31359:
-	load    [$29 + 5], $29
-	fcmp    $29, $zero
-	bne     be_else.31360
-be_then.31360:
-	li      0, $29
-	b       be_cont.31349
-be_else.31360:
-.count move_float
-	mov     $33, $42
-	li      3, $29
-	b       be_cont.31349
-be_else.31357:
-.count move_float
-	mov     $35, $42
-	li      2, $29
-	b       be_cont.31349
-be_else.31353:
-.count move_float
-	mov     $35, $42
-	li      1, $29
-	b       be_cont.31349
-be_else.31349:
-	cmp     $34, 2
-	bne     be_else.31361
-be_then.31361:
-	load    [$29 + 0], $30
-	fcmp    $zero, $30
-	bg      ble_else.31362
-ble_then.31362:
-	li      0, $29
-	b       be_cont.31361
-ble_else.31362:
-	load    [$29 + 3], $30
-	fmul    $30, $33, $30
-	load    [$29 + 2], $33
-	load    [$29 + 1], $29
-	fmul    $33, $32, $32
-	fmul    $29, $31, $29
-	fadd    $29, $32, $29
-	fadd    $29, $30, $29
-.count move_float
-	mov     $29, $42
-	li      1, $29
-	b       be_cont.31361
-be_else.31361:
-	load    [$29 + 0], $35
+	bne     be_else.31263
+be_then.31263:
+	li      1, $16
+.count b_cont
+	b       be_cont.31263
+be_else.31263:
+	load    [min_caml_objects + $35], $16
+	load    [min_caml_intersection_point + 0], $17
+	load    [min_caml_intersection_point + 1], $20
+	load    [$16 + 5], $18
+	load    [$16 + 5], $19
+	load    [min_caml_light_dirvec + 1], $21
+	load    [$18 + 0], $18
+	load    [$16 + 1], $22
+	load    [$21 + $35], $35
+	fsub    $17, $18, $17
+	cmp     $22, 1
+	load    [$19 + 1], $18
+	load    [$16 + 5], $19
+	fsub    $20, $18, $18
+	load    [$19 + 2], $19
+	load    [min_caml_intersection_point + 2], $20
+	fsub    $20, $19, $19
+	bne     be_else.31264
+be_then.31264:
+	load    [$35 + 0], $23
+	load    [$35 + 1], $24
+	load    [min_caml_light_dirvec + 0], $20
+	fsub    $23, $17, $23
+	load    [$16 + 4], $21
+	load    [$20 + 1], $22
+	load    [$21 + 1], $21
+	fmul    $23, $24, $23
+	fmul    $23, $22, $22
+	fadd    $22, $18, $22
+	fabs    $22, $22
+	fcmp    $21, $22
+	bg      ble_else.31265
+ble_then.31265:
+	li      0, $21
+.count b_cont
+	b       ble_cont.31265
+ble_else.31265:
+	load    [$20 + 2], $22
+	load    [$16 + 4], $21
+	fmul    $23, $22, $22
+	load    [$21 + 2], $21
+	fadd    $22, $19, $22
+	fabs    $22, $22
+	fcmp    $21, $22
+	bg      ble_else.31266
+ble_then.31266:
+	li      0, $21
+.count b_cont
+	b       ble_cont.31266
+ble_else.31266:
+	load    [$35 + 1], $21
+	fcmp    $21, $zero
+	bne     be_else.31267
+be_then.31267:
+	li      0, $21
+.count b_cont
+	b       be_cont.31267
+be_else.31267:
+	li      1, $21
+be_cont.31267:
+ble_cont.31266:
+ble_cont.31265:
+	cmp     $21, 0
+	bne     be_else.31268
+be_then.31268:
+	load    [$35 + 2], $23
+	load    [$35 + 3], $24
+	load    [$20 + 0], $22
+	fsub    $23, $18, $23
+	load    [$16 + 4], $21
+	load    [$21 + 0], $21
+	fmul    $23, $24, $23
+	fmul    $23, $22, $22
+	fadd    $22, $17, $22
+	fabs    $22, $22
+	fcmp    $21, $22
+	bg      ble_else.31269
+ble_then.31269:
+	li      0, $21
+.count b_cont
+	b       ble_cont.31269
+ble_else.31269:
+	load    [$20 + 2], $22
+	load    [$16 + 4], $21
+	fmul    $23, $22, $22
+	load    [$21 + 2], $21
+	fadd    $22, $19, $22
+	fabs    $22, $22
+	fcmp    $21, $22
+	bg      ble_else.31270
+ble_then.31270:
+	li      0, $21
+.count b_cont
+	b       ble_cont.31270
+ble_else.31270:
+	load    [$35 + 3], $21
+	fcmp    $21, $zero
+	bne     be_else.31271
+be_then.31271:
+	li      0, $21
+.count b_cont
+	b       be_cont.31271
+be_else.31271:
+	li      1, $21
+be_cont.31271:
+ble_cont.31270:
+ble_cont.31269:
+	cmp     $21, 0
+	bne     be_else.31272
+be_then.31272:
+	load    [$35 + 4], $23
+	load    [$35 + 5], $24
+	load    [$20 + 0], $22
+	fsub    $23, $19, $19
+	load    [$16 + 4], $21
+	load    [$21 + 0], $21
+	fmul    $19, $24, $19
+	fmul    $19, $22, $22
+	fadd    $22, $17, $17
+	fabs    $17, $17
+	fcmp    $21, $17
+	bg      ble_else.31273
+ble_then.31273:
+	li      0, $35
+.count b_cont
+	b       be_cont.31264
+ble_else.31273:
+	load    [$20 + 1], $17
+	load    [$16 + 4], $16
+	fmul    $19, $17, $17
+	load    [$16 + 1], $16
+	fadd    $17, $18, $17
+	fabs    $17, $17
+	fcmp    $16, $17
+	bg      ble_else.31274
+ble_then.31274:
+	li      0, $35
+.count b_cont
+	b       be_cont.31264
+ble_else.31274:
+	load    [$35 + 5], $35
 	fcmp    $35, $zero
-	bne     be_else.31363
-be_then.31363:
-	li      0, $29
-	b       be_cont.31363
-be_else.31363:
-	load    [$30 + 4], $14
-	fmul    $31, $31, $13
-	load    [$30 + 4], $15
-	load    [$14 + 0], $14
-	load    [$15 + 1], $15
-	fmul    $13, $14, $13
-	fmul    $32, $32, $14
-	fmul    $14, $15, $14
-	load    [$30 + 4], $15
-	fadd    $13, $14, $13
-	load    [$15 + 2], $15
-	fmul    $33, $33, $14
-	fmul    $14, $15, $14
-	fadd    $13, $14, $13
-	load    [$30 + 3], $14
-	cmp     $14, 0
-	be      bne_cont.31364
-bne_then.31364:
-	load    [$30 + 9], $15
-	fmul    $32, $33, $14
-	load    [$15 + 0], $15
-	fmul    $14, $15, $14
-	load    [$30 + 9], $15
-	fadd    $13, $14, $13
-	load    [$15 + 1], $15
-	fmul    $33, $31, $14
-	fmul    $14, $15, $14
-	load    [$30 + 9], $15
-	fadd    $13, $14, $13
-	load    [$15 + 2], $15
-	fmul    $31, $32, $14
-	fmul    $14, $15, $14
-	fadd    $13, $14, $13
-bne_cont.31364:
-	cmp     $34, 3
-	bne     be_else.31365
-be_then.31365:
-	fsub    $13, $36, $34
-	b       be_cont.31365
-be_else.31365:
-	mov     $13, $34
-be_cont.31365:
-	fmul    $35, $34, $34
-	load    [$29 + 3], $35
-	fmul    $35, $33, $33
-	load    [$29 + 2], $35
-	fmul    $35, $32, $32
-	load    [$29 + 1], $35
-	fmul    $35, $31, $31
-	fadd    $31, $32, $31
-	fadd    $31, $33, $31
-	fmul    $31, $31, $32
-	fsub    $32, $34, $32
-	fcmp    $32, $zero
-	bg      ble_else.31366
-ble_then.31366:
-	li      0, $29
-	b       ble_cont.31366
-ble_else.31366:
-	load    [$30 + 6], $30
-	load    [$29 + 4], $29
-	cmp     $30, 0
-	fsqrt   $32, $30
-	bne     be_else.31367
-be_then.31367:
-	fsub    $31, $30, $30
-	fmul    $30, $29, $29
+	bne     be_else.31275
+be_then.31275:
+	li      0, $35
+.count b_cont
+	b       be_cont.31264
+be_else.31275:
 .count move_float
-	mov     $29, $42
-	li      1, $29
-	b       be_cont.31367
-be_else.31367:
-	fadd    $31, $30, $30
-	fmul    $30, $29, $29
+	mov     $19, $42
+	li      3, $35
+.count b_cont
+	b       be_cont.31264
+be_else.31272:
 .count move_float
-	mov     $29, $42
-	li      1, $29
-be_cont.31367:
-ble_cont.31366:
-be_cont.31363:
-be_cont.31361:
-be_cont.31349:
-	cmp     $29, 0
-	bne     be_else.31368
-be_then.31368:
-	li      0, $13
-	b       be_cont.31368
-be_else.31368:
+	mov     $23, $42
+	li      2, $35
+.count b_cont
+	b       be_cont.31264
+be_else.31268:
+.count move_float
+	mov     $23, $42
+	li      1, $35
+.count b_cont
+	b       be_cont.31264
+be_else.31264:
+	cmp     $22, 2
+	bne     be_else.31276
+be_then.31276:
+	load    [$35 + 0], $16
+	fcmp    $zero, $16
+	bg      ble_else.31277
+ble_then.31277:
+	li      0, $35
+.count b_cont
+	b       be_cont.31276
+ble_else.31277:
+	load    [$35 + 1], $16
+	load    [$35 + 2], $20
+	fmul    $16, $17, $16
+	load    [$35 + 3], $35
+	fmul    $20, $18, $17
+	fmul    $35, $19, $35
+	fadd    $16, $17, $16
+	fadd    $16, $35, $35
+.count move_float
+	mov     $35, $42
+	li      1, $35
+.count b_cont
+	b       be_cont.31276
+be_else.31276:
+	load    [$35 + 0], $20
+	fcmp    $20, $zero
+	bne     be_else.31278
+be_then.31278:
+	li      0, $35
+.count b_cont
+	b       be_cont.31278
+be_else.31278:
+	load    [$35 + 2], $23
+	load    [$35 + 1], $21
+	load    [$35 + 3], $24
+	fmul    $23, $18, $23
+	fmul    $21, $17, $21
+	fmul    $24, $19, $24
+	fmul    $17, $17, $25
+	fmul    $18, $18, $26
+	load    [$16 + 4], $28
+	fadd    $21, $23, $21
+	load    [$16 + 4], $23
+	fadd    $21, $24, $21
+	load    [$23 + 0], $23
+	load    [$16 + 4], $24
+	fmul    $25, $23, $23
+	load    [$24 + 1], $24
+	fmul    $19, $19, $25
+	fmul    $21, $21, $27
+	fmul    $26, $24, $24
+	load    [$28 + 2], $26
+	load    [$16 + 3], $28
+	fmul    $25, $26, $25
+	fadd    $23, $24, $23
+	cmp     $28, 0
+	fadd    $23, $25, $23
+	bne     be_else.31279
+be_then.31279:
+	mov     $23, $17
+.count b_cont
+	b       be_cont.31279
+be_else.31279:
+	load    [$16 + 9], $25
+	fmul    $18, $19, $24
+	load    [$16 + 9], $26
+	load    [$25 + 0], $25
+	fmul    $19, $17, $19
+	fmul    $24, $25, $24
+	fmul    $17, $18, $17
+	load    [$26 + 1], $25
+	load    [$16 + 9], $18
+	fadd    $23, $24, $23
+	fmul    $19, $25, $19
+	load    [$18 + 2], $18
+	fmul    $17, $18, $17
+	fadd    $23, $19, $19
+	fadd    $19, $17, $17
+be_cont.31279:
+	cmp     $22, 3
+	bne     be_cont.31280
+be_then.31280:
+	fsub    $17, $36, $17
+be_cont.31280:
+	fmul    $20, $17, $17
+	fsub    $27, $17, $17
+	fcmp    $17, $zero
+	bg      ble_else.31281
+ble_then.31281:
+	li      0, $35
+.count b_cont
+	b       ble_cont.31281
+ble_else.31281:
+	load    [$16 + 6], $16
+	load    [$35 + 4], $35
+	cmp     $16, 0
+	fsqrt   $17, $16
+	bne     be_else.31282
+be_then.31282:
+	fsub    $21, $16, $16
+	fmul    $16, $35, $35
+.count move_float
+	mov     $35, $42
+	li      1, $35
+.count b_cont
+	b       be_cont.31282
+be_else.31282:
+	fadd    $21, $16, $16
+	fmul    $16, $35, $35
+.count move_float
+	mov     $35, $42
+	li      1, $35
+be_cont.31282:
+ble_cont.31281:
+be_cont.31278:
+be_cont.31276:
+be_cont.31264:
+	cmp     $35, 0
+	bne     be_else.31283
+be_then.31283:
+	li      0, $16
+.count b_cont
+	b       be_cont.31283
+be_else.31283:
 .count load_float
-	load    [f.27183], $29
-	fcmp    $29, $42
-	bg      ble_else.31369
-ble_then.31369:
-	li      0, $13
-	b       ble_cont.31369
-ble_else.31369:
-	load    [$28 + 1], $29
-	cmp     $29, -1
-	bne     be_else.31370
-be_then.31370:
-	li      0, $13
-	b       be_cont.31370
-be_else.31370:
-	load    [min_caml_and_net + $29], $3
+	load    [f.27089], $35
+	fcmp    $35, $42
+	bg      ble_else.31284
+ble_then.31284:
+	li      0, $16
+.count b_cont
+	b       ble_cont.31284
+ble_else.31284:
+	load    [$34 + 1], $35
+	cmp     $35, -1
+	bne     be_else.31285
+be_then.31285:
+	li      0, $16
+.count b_cont
+	b       be_cont.31285
+be_else.31285:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31371
-be_then.31371:
+	mov     $1, $16
+	cmp     $16, 0
+	bne     be_else.31286
+be_then.31286:
 	li      2, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 .count move_ret
-	mov     $1, $13
-	cmp     $13, 0
-	bne     be_else.31372
-be_then.31372:
-	li      0, $13
-	b       be_cont.31371
-be_else.31372:
-	li      1, $13
-	b       be_cont.31371
-be_else.31371:
-	li      1, $13
-be_cont.31371:
-be_cont.31370:
-ble_cont.31369:
-be_cont.31368:
-be_cont.31348:
-	cmp     $13, 0
-	bne     be_else.31373
-be_then.31373:
-	load    [$sp + 2], $13
-	load    [$sp + 1], $14
-	add     $13, 1, $13
-	load    [$14 + $13], $15
-	load    [$15 + 0], $2
+	mov     $1, $16
+	cmp     $16, 0
+	bne     be_else.31287
+be_then.31287:
+	li      0, $16
+.count b_cont
+	b       be_cont.31286
+be_else.31287:
+	li      1, $16
+.count b_cont
+	b       be_cont.31286
+be_else.31286:
+	li      1, $16
+be_cont.31286:
+be_cont.31285:
+ble_cont.31284:
+be_cont.31283:
+be_cont.31263:
+	cmp     $16, 0
+	bne     be_else.31288
+be_then.31288:
+.count stack_load
+	load    [$sp + 2], $16
+.count stack_load
+	load    [$sp + 1], $17
+	add     $16, 1, $16
+	load    [$17 + $16], $18
+	load    [$18 + 0], $2
 	cmp     $2, -1
-	bne     be_else.31374
-be_then.31374:
+	bne     be_else.31289
+be_then.31289:
 .count stack_move
 	add     $sp, 7, $sp
 	li      0, $1
 	ret
-be_else.31374:
-	store   $15, [$sp + 3]
+be_else.31289:
+.count stack_store
+	store   $18, [$sp + 3]
 	cmp     $2, 99
-	store   $13, [$sp + 4]
-	bne     be_else.31375
-be_then.31375:
-	li      1, $28
-	b       be_cont.31375
-be_else.31375:
+.count stack_store
+	store   $16, [$sp + 4]
+	bne     be_else.31290
+be_then.31290:
+	li      1, $34
+.count b_cont
+	b       be_cont.31290
+be_else.31290:
 	call    solver_fast.2796
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31376
-be_then.31376:
-	li      0, $28
-	b       be_cont.31376
-be_else.31376:
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31291
+be_then.31291:
+	li      0, $34
+.count b_cont
+	b       be_cont.31291
+be_else.31291:
 .count load_float
-	load    [f.27183], $28
-	fcmp    $28, $42
-	bg      ble_else.31377
-ble_then.31377:
-	li      0, $28
-	b       ble_cont.31377
-ble_else.31377:
-	load    [$15 + 1], $28
-	cmp     $28, -1
-	bne     be_else.31378
-be_then.31378:
-	li      0, $28
-	b       be_cont.31378
-be_else.31378:
-	load    [min_caml_and_net + $28], $3
+	load    [f.27089], $34
+	fcmp    $34, $42
+	bg      ble_else.31292
+ble_then.31292:
+	li      0, $34
+.count b_cont
+	b       ble_cont.31292
+ble_else.31292:
+	load    [$18 + 1], $34
+	cmp     $34, -1
+	bne     be_else.31293
+be_then.31293:
+	li      0, $34
+.count b_cont
+	b       be_cont.31293
+be_else.31293:
 	li      0, $2
+	load    [min_caml_and_net + $34], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31379
-be_then.31379:
-	load    [$sp + 3], $28
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31380
-be_then.31380:
-	li      0, $28
-	b       be_cont.31379
-be_else.31380:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31294
+be_then.31294:
+.count stack_load
+	load    [$sp + 3], $34
+	load    [$34 + 2], $35
+	cmp     $35, -1
+	bne     be_else.31295
+be_then.31295:
+	li      0, $34
+.count b_cont
+	b       be_cont.31294
+be_else.31295:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31381
-be_then.31381:
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31296
+be_then.31296:
 	li      3, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31382
-be_then.31382:
-	li      0, $28
-	b       be_cont.31379
-be_else.31382:
-	li      1, $28
-	b       be_cont.31379
-be_else.31381:
-	li      1, $28
-	b       be_cont.31379
-be_else.31379:
-	li      1, $28
-be_cont.31379:
-be_cont.31378:
-ble_cont.31377:
-be_cont.31376:
-be_cont.31375:
-	cmp     $28, 0
-	bne     be_else.31383
-be_then.31383:
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31297
+be_then.31297:
+	li      0, $34
+.count b_cont
+	b       be_cont.31294
+be_else.31297:
+	li      1, $34
+.count b_cont
+	b       be_cont.31294
+be_else.31296:
+	li      1, $34
+.count b_cont
+	b       be_cont.31294
+be_else.31294:
+	li      1, $34
+be_cont.31294:
+be_cont.31293:
+ble_cont.31292:
+be_cont.31291:
+be_cont.31290:
+	cmp     $34, 0
+	bne     be_else.31298
+be_then.31298:
 .count stack_move
 	add     $sp, 7, $sp
+.count stack_load
 	load    [$sp - 3], $1
+.count stack_load
 	load    [$sp - 6], $3
 	add     $1, 1, $2
 	b       shadow_check_one_or_matrix.2868
-be_else.31383:
-	load    [$sp + 3], $28
-	load    [$28 + 1], $29
-	cmp     $29, -1
-	bne     be_else.31384
-be_then.31384:
+be_else.31298:
+.count stack_load
+	load    [$sp + 3], $34
+	load    [$34 + 1], $35
+	cmp     $35, -1
+	bne     be_else.31299
+be_then.31299:
 .count stack_move
 	add     $sp, 7, $sp
+.count stack_load
 	load    [$sp - 3], $1
+.count stack_load
 	load    [$sp - 6], $3
 	add     $1, 1, $2
 	b       shadow_check_one_or_matrix.2868
-be_else.31384:
-	load    [min_caml_and_net + $29], $3
+be_else.31299:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31385
-be_then.31385:
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31386
-be_then.31386:
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31300
+be_then.31300:
+	load    [$34 + 2], $35
+	cmp     $35, -1
+	bne     be_else.31301
+be_then.31301:
 .count stack_move
 	add     $sp, 7, $sp
+.count stack_load
 	load    [$sp - 3], $1
+.count stack_load
 	load    [$sp - 6], $3
 	add     $1, 1, $2
 	b       shadow_check_one_or_matrix.2868
-be_else.31386:
-	load    [min_caml_and_net + $29], $3
+be_else.31301:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
-.count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31387
-be_then.31387:
+	cmp     $1, 0
+	bne     be_else.31302
+be_then.31302:
 	li      3, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 .count stack_move
 	add     $sp, 7, $sp
 	cmp     $1, 0
-	bne     be_else.31388
-be_then.31388:
+	bne     be_else.31303
+be_then.31303:
+.count stack_load
 	load    [$sp - 3], $1
+.count stack_load
 	load    [$sp - 6], $3
 	add     $1, 1, $2
 	b       shadow_check_one_or_matrix.2868
-be_else.31388:
+be_else.31303:
 	li      1, $1
 	ret
-be_else.31387:
+be_else.31302:
 .count stack_move
 	add     $sp, 7, $sp
 	li      1, $1
 	ret
-be_else.31385:
+be_else.31300:
 .count stack_move
 	add     $sp, 7, $sp
 	li      1, $1
 	ret
-be_else.31373:
-	load    [$sp + 0], $28
-	load    [$28 + 1], $29
-	cmp     $29, -1
-	bne     be_else.31389
-be_then.31389:
-	li      0, $13
-	b       be_cont.31389
-be_else.31389:
-	load    [min_caml_and_net + $29], $3
+be_else.31288:
+.count stack_load
+	load    [$sp + 0], $34
+	load    [$34 + 1], $35
+	cmp     $35, -1
+	bne     be_else.31304
+be_then.31304:
+	li      0, $16
+.count b_cont
+	b       be_cont.31304
+be_else.31304:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31390
-be_then.31390:
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31391
-be_then.31391:
-	li      0, $13
-	b       be_cont.31390
-be_else.31391:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31305
+be_then.31305:
+	load    [$34 + 2], $35
+	cmp     $35, -1
+	bne     be_else.31306
+be_then.31306:
+	li      0, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31306:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31392
-be_then.31392:
-	load    [$28 + 3], $29
-	cmp     $29, -1
-	bne     be_else.31393
-be_then.31393:
-	li      0, $13
-	b       be_cont.31390
-be_else.31393:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31307
+be_then.31307:
+	load    [$34 + 3], $35
+	cmp     $35, -1
+	bne     be_else.31308
+be_then.31308:
+	li      0, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31308:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31394
-be_then.31394:
-	load    [$28 + 4], $29
-	cmp     $29, -1
-	bne     be_else.31395
-be_then.31395:
-	li      0, $13
-	b       be_cont.31390
-be_else.31395:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31309
+be_then.31309:
+	load    [$34 + 4], $35
+	cmp     $35, -1
+	bne     be_else.31310
+be_then.31310:
+	li      0, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31310:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31396
-be_then.31396:
-	load    [$28 + 5], $29
-	cmp     $29, -1
-	bne     be_else.31397
-be_then.31397:
-	li      0, $13
-	b       be_cont.31390
-be_else.31397:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31311
+be_then.31311:
+	load    [$34 + 5], $35
+	cmp     $35, -1
+	bne     be_else.31312
+be_then.31312:
+	li      0, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31312:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31398
-be_then.31398:
-	load    [$28 + 6], $29
-	cmp     $29, -1
-	bne     be_else.31399
-be_then.31399:
-	li      0, $13
-	b       be_cont.31390
-be_else.31399:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31313
+be_then.31313:
+	load    [$34 + 6], $35
+	cmp     $35, -1
+	bne     be_else.31314
+be_then.31314:
+	li      0, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31314:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31400
-be_then.31400:
-	load    [$28 + 7], $29
-	cmp     $29, -1
-	bne     be_else.31401
-be_then.31401:
-	li      0, $13
-	b       be_cont.31390
-be_else.31401:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31315
+be_then.31315:
+	load    [$34 + 7], $35
+	cmp     $35, -1
+	bne     be_else.31316
+be_then.31316:
+	li      0, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31316:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31402
-be_then.31402:
+	mov     $1, $16
+	cmp     $16, 0
+	bne     be_else.31317
+be_then.31317:
 	li      8, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 .count move_ret
-	mov     $1, $13
-	b       be_cont.31390
-be_else.31402:
-	li      1, $13
-	b       be_cont.31390
-be_else.31400:
-	li      1, $13
-	b       be_cont.31390
-be_else.31398:
-	li      1, $13
-	b       be_cont.31390
-be_else.31396:
-	li      1, $13
-	b       be_cont.31390
-be_else.31394:
-	li      1, $13
-	b       be_cont.31390
-be_else.31392:
-	li      1, $13
-	b       be_cont.31390
-be_else.31390:
-	li      1, $13
-be_cont.31390:
-be_cont.31389:
-	cmp     $13, 0
-	bne     be_else.31403
-be_then.31403:
-	load    [$sp + 2], $13
-	load    [$sp + 1], $14
-	add     $13, 1, $13
-	load    [$14 + $13], $15
-	load    [$15 + 0], $2
+	mov     $1, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31317:
+	li      1, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31315:
+	li      1, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31313:
+	li      1, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31311:
+	li      1, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31309:
+	li      1, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31307:
+	li      1, $16
+.count b_cont
+	b       be_cont.31305
+be_else.31305:
+	li      1, $16
+be_cont.31305:
+be_cont.31304:
+	cmp     $16, 0
+	bne     be_else.31318
+be_then.31318:
+.count stack_load
+	load    [$sp + 2], $16
+.count stack_load
+	load    [$sp + 1], $17
+	add     $16, 1, $16
+	load    [$17 + $16], $18
+	load    [$18 + 0], $2
 	cmp     $2, -1
-	bne     be_else.31404
-be_then.31404:
+	bne     be_else.31319
+be_then.31319:
 .count stack_move
 	add     $sp, 7, $sp
 	li      0, $1
 	ret
-be_else.31404:
-	store   $15, [$sp + 5]
+be_else.31319:
+.count stack_store
+	store   $18, [$sp + 5]
 	cmp     $2, 99
-	store   $13, [$sp + 6]
-	bne     be_else.31405
-be_then.31405:
-	li      1, $28
-	b       be_cont.31405
-be_else.31405:
+.count stack_store
+	store   $16, [$sp + 6]
+	bne     be_else.31320
+be_then.31320:
+	li      1, $34
+.count b_cont
+	b       be_cont.31320
+be_else.31320:
 	call    solver_fast.2796
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31406
-be_then.31406:
-	li      0, $28
-	b       be_cont.31406
-be_else.31406:
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31321
+be_then.31321:
+	li      0, $34
+.count b_cont
+	b       be_cont.31321
+be_else.31321:
 .count load_float
-	load    [f.27183], $28
-	fcmp    $28, $42
-	bg      ble_else.31407
-ble_then.31407:
-	li      0, $28
-	b       ble_cont.31407
-ble_else.31407:
-	load    [$15 + 1], $28
-	cmp     $28, -1
-	bne     be_else.31408
-be_then.31408:
-	li      0, $28
-	b       be_cont.31408
-be_else.31408:
-	load    [min_caml_and_net + $28], $3
+	load    [f.27089], $34
+	fcmp    $34, $42
+	bg      ble_else.31322
+ble_then.31322:
+	li      0, $34
+.count b_cont
+	b       ble_cont.31322
+ble_else.31322:
+	load    [$18 + 1], $34
+	cmp     $34, -1
+	bne     be_else.31323
+be_then.31323:
+	li      0, $34
+.count b_cont
+	b       be_cont.31323
+be_else.31323:
 	li      0, $2
+	load    [min_caml_and_net + $34], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31409
-be_then.31409:
-	load    [$sp + 5], $28
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31410
-be_then.31410:
-	li      0, $28
-	b       be_cont.31409
-be_else.31410:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31324
+be_then.31324:
+.count stack_load
+	load    [$sp + 5], $34
+	load    [$34 + 2], $35
+	cmp     $35, -1
+	bne     be_else.31325
+be_then.31325:
+	li      0, $34
+.count b_cont
+	b       be_cont.31324
+be_else.31325:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31411
-be_then.31411:
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31326
+be_then.31326:
 	li      3, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31412
-be_then.31412:
-	li      0, $28
-	b       be_cont.31409
-be_else.31412:
-	li      1, $28
-	b       be_cont.31409
-be_else.31411:
-	li      1, $28
-	b       be_cont.31409
-be_else.31409:
-	li      1, $28
-be_cont.31409:
-be_cont.31408:
-ble_cont.31407:
-be_cont.31406:
-be_cont.31405:
-	cmp     $28, 0
-	bne     be_else.31413
-be_then.31413:
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31327
+be_then.31327:
+	li      0, $34
+.count b_cont
+	b       be_cont.31324
+be_else.31327:
+	li      1, $34
+.count b_cont
+	b       be_cont.31324
+be_else.31326:
+	li      1, $34
+.count b_cont
+	b       be_cont.31324
+be_else.31324:
+	li      1, $34
+be_cont.31324:
+be_cont.31323:
+ble_cont.31322:
+be_cont.31321:
+be_cont.31320:
+	cmp     $34, 0
+	bne     be_else.31328
+be_then.31328:
 .count stack_move
 	add     $sp, 7, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 6], $3
 	add     $1, 1, $2
 	b       shadow_check_one_or_matrix.2868
-be_else.31413:
-	load    [$sp + 5], $28
-	load    [$28 + 1], $29
-	cmp     $29, -1
-	bne     be_else.31414
-be_then.31414:
+be_else.31328:
+.count stack_load
+	load    [$sp + 5], $34
+	load    [$34 + 1], $35
+	cmp     $35, -1
+	bne     be_else.31329
+be_then.31329:
 .count stack_move
 	add     $sp, 7, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 6], $3
 	add     $1, 1, $2
 	b       shadow_check_one_or_matrix.2868
-be_else.31414:
-	load    [min_caml_and_net + $29], $3
+be_else.31329:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31415
-be_then.31415:
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31416
-be_then.31416:
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31330
+be_then.31330:
+	load    [$34 + 2], $35
+	cmp     $35, -1
+	bne     be_else.31331
+be_then.31331:
 .count stack_move
 	add     $sp, 7, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 6], $3
 	add     $1, 1, $2
 	b       shadow_check_one_or_matrix.2868
-be_else.31416:
-	load    [min_caml_and_net + $29], $3
+be_else.31331:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
-.count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31417
-be_then.31417:
+	cmp     $1, 0
+	bne     be_else.31332
+be_then.31332:
 	li      3, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 .count stack_move
 	add     $sp, 7, $sp
 	cmp     $1, 0
-	bne     be_else.31418
-be_then.31418:
+	bne     be_else.31333
+be_then.31333:
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 6], $3
 	add     $1, 1, $2
 	b       shadow_check_one_or_matrix.2868
-be_else.31418:
+be_else.31333:
 	li      1, $1
 	ret
-be_else.31417:
+be_else.31332:
 .count stack_move
 	add     $sp, 7, $sp
 	li      1, $1
 	ret
-be_else.31415:
+be_else.31330:
 .count stack_move
 	add     $sp, 7, $sp
 	li      1, $1
 	ret
-be_else.31403:
+be_else.31318:
 .count stack_move
 	add     $sp, 7, $sp
 	li      1, $1
@@ -5947,510 +6168,558 @@ be_else.31403:
 ######################################################################
 .begin solve_each_element
 solve_each_element.2871:
-	load    [$3 + $2], $17
-	cmp     $17, -1
-	bne     be_else.31419
-be_then.31419:
+	load    [$3 + $2], $19
+	cmp     $19, -1
+	bne     be_else.31334
+be_then.31334:
 	ret
-be_else.31419:
-	load    [min_caml_objects + $17], $18
-	load    [min_caml_startp + 2], $23
-	load    [$18 + 5], $20
-	load    [$18 + 5], $21
-	load    [$18 + 5], $22
-	load    [$20 + 2], $20
-	load    [$21 + 1], $21
-	load    [$18 + 1], $19
-	fsub    $23, $20, $20
-	load    [$22 + 0], $22
-	load    [min_caml_startp + 1], $23
-	cmp     $19, 1
-	fsub    $23, $21, $21
-	load    [min_caml_startp + 0], $23
-	fsub    $23, $22, $22
-	bne     be_else.31420
-be_then.31420:
-	load    [$4 + 0], $19
-	fcmp    $19, $zero
-	bne     be_else.31421
-be_then.31421:
-	li      0, $19
-	b       be_cont.31421
-be_else.31421:
-	load    [$18 + 4], $23
-	load    [$18 + 6], $24
-	fcmp    $zero, $19
-	bg      ble_else.31422
-ble_then.31422:
-	li      0, $25
-	b       ble_cont.31422
-ble_else.31422:
-	li      1, $25
-ble_cont.31422:
-	cmp     $24, 0
-	bne     be_else.31423
-be_then.31423:
-	mov     $25, $24
-	b       be_cont.31423
-be_else.31423:
-	cmp     $25, 0
-	bne     be_else.31424
-be_then.31424:
-	li      1, $24
-	b       be_cont.31424
-be_else.31424:
-	li      0, $24
-be_cont.31424:
-be_cont.31423:
-	load    [$23 + 0], $25
-	cmp     $24, 0
-	bne     be_else.31425
-be_then.31425:
-	fneg    $25, $24
-	b       be_cont.31425
-be_else.31425:
-	mov     $25, $24
-be_cont.31425:
-	finv    $19, $19
-	fsub    $24, $22, $24
-	load    [$4 + 1], $25
-	fmul    $24, $19, $19
-	load    [$23 + 1], $24
-	fmul    $19, $25, $25
-	fadd    $25, $21, $25
-	fabs    $25, $25
-	fcmp    $24, $25
-	bg      ble_else.31426
-ble_then.31426:
-	li      0, $19
-	b       ble_cont.31426
-ble_else.31426:
-	load    [$4 + 2], $24
+be_else.31334:
+	load    [min_caml_objects + $19], $20
+	load    [min_caml_startp + 0], $25
+	load    [min_caml_startp + 1], $26
+	load    [$20 + 5], $21
+	load    [$20 + 5], $22
+	load    [$20 + 5], $23
+	load    [$21 + 0], $21
+	load    [$22 + 1], $22
 	load    [$23 + 2], $23
-	fmul    $19, $24, $24
-	fadd    $24, $20, $24
-	fabs    $24, $24
-	fcmp    $23, $24
-	bg      ble_else.31427
-ble_then.31427:
-	li      0, $19
-	b       ble_cont.31427
-ble_else.31427:
-.count move_float
-	mov     $19, $42
-	li      1, $19
-ble_cont.31427:
-ble_cont.31426:
-be_cont.31421:
-	cmp     $19, 0
-	bne     be_else.31428
-be_then.31428:
-	load    [$4 + 1], $19
-	fcmp    $19, $zero
-	bne     be_else.31429
-be_then.31429:
-	li      0, $19
-	b       be_cont.31429
-be_else.31429:
-	load    [$18 + 4], $23
-	load    [$18 + 6], $24
-	fcmp    $zero, $19
-	bg      ble_else.31430
-ble_then.31430:
-	li      0, $25
-	b       ble_cont.31430
-ble_else.31430:
-	li      1, $25
-ble_cont.31430:
-	cmp     $24, 0
-	bne     be_else.31431
-be_then.31431:
-	mov     $25, $24
-	b       be_cont.31431
-be_else.31431:
-	cmp     $25, 0
-	bne     be_else.31432
-be_then.31432:
-	li      1, $24
-	b       be_cont.31432
-be_else.31432:
-	li      0, $24
-be_cont.31432:
-be_cont.31431:
-	load    [$23 + 1], $25
-	cmp     $24, 0
-	bne     be_else.31433
-be_then.31433:
-	fneg    $25, $24
-	b       be_cont.31433
-be_else.31433:
-	mov     $25, $24
-be_cont.31433:
-	finv    $19, $19
-	fsub    $24, $21, $24
-	load    [$4 + 2], $25
-	fmul    $24, $19, $19
-	load    [$23 + 2], $24
-	fmul    $19, $25, $25
-	fadd    $25, $20, $25
-	fabs    $25, $25
-	fcmp    $24, $25
-	bg      ble_else.31434
-ble_then.31434:
-	li      0, $19
-	b       ble_cont.31434
-ble_else.31434:
+	fsub    $25, $21, $21
+	load    [$20 + 1], $24
+	load    [min_caml_startp + 2], $25
+	fsub    $26, $22, $22
+	cmp     $24, 1
+	fsub    $25, $23, $23
+	bne     be_else.31335
+be_then.31335:
 	load    [$4 + 0], $24
-	load    [$23 + 0], $23
-	fmul    $19, $24, $24
-	fadd    $24, $22, $24
-	fabs    $24, $24
-	fcmp    $23, $24
-	bg      ble_else.31435
-ble_then.31435:
-	li      0, $19
-	b       ble_cont.31435
-ble_else.31435:
-.count move_float
-	mov     $19, $42
-	li      1, $19
-ble_cont.31435:
-ble_cont.31434:
-be_cont.31429:
-	cmp     $19, 0
-	bne     be_else.31436
-be_then.31436:
-	load    [$4 + 2], $19
-	fcmp    $19, $zero
-	bne     be_else.31437
-be_then.31437:
-	li      0, $18
-	b       be_cont.31420
-be_else.31437:
-	load    [$18 + 4], $24
-	finv    $19, $23
-	fcmp    $zero, $19
-	load    [$24 + 2], $25
-	bg      ble_else.31438
-ble_then.31438:
-	li      0, $19
-	b       ble_cont.31438
-ble_else.31438:
-	li      1, $19
-ble_cont.31438:
-	load    [$18 + 6], $18
-	cmp     $18, 0
-	bne     be_else.31439
-be_then.31439:
-	mov     $19, $18
-	b       be_cont.31439
-be_else.31439:
-	cmp     $19, 0
-	bne     be_else.31440
-be_then.31440:
-	li      1, $18
-	b       be_cont.31440
-be_else.31440:
-	li      0, $18
-be_cont.31440:
-be_cont.31439:
-	cmp     $18, 0
-	bne     be_else.31441
-be_then.31441:
-	fneg    $25, $18
-	b       be_cont.31441
-be_else.31441:
-	mov     $25, $18
-be_cont.31441:
-	fsub    $18, $20, $18
-	load    [$4 + 0], $19
-	load    [$24 + 0], $20
-	fmul    $18, $23, $18
-	fmul    $18, $19, $19
-	fadd    $19, $22, $19
-	fabs    $19, $19
-	fcmp    $20, $19
-	bg      ble_else.31442
-ble_then.31442:
-	li      0, $18
-	b       be_cont.31420
-ble_else.31442:
-	load    [$4 + 1], $19
-	load    [$24 + 1], $20
-	fmul    $18, $19, $19
-	fadd    $19, $21, $19
-	fabs    $19, $19
-	fcmp    $20, $19
-	bg      ble_else.31443
-ble_then.31443:
-	li      0, $18
-	b       be_cont.31420
-ble_else.31443:
-.count move_float
-	mov     $18, $42
-	li      3, $18
-	b       be_cont.31420
-be_else.31436:
-	li      2, $18
-	b       be_cont.31420
-be_else.31428:
-	li      1, $18
-	b       be_cont.31420
-be_else.31420:
-	cmp     $19, 2
-	bne     be_else.31444
-be_then.31444:
-	load    [$18 + 4], $18
-	load    [$4 + 1], $24
-	load    [$4 + 0], $19
-	load    [$18 + 1], $25
-	load    [$18 + 0], $23
-	fmul    $24, $25, $24
-	fmul    $19, $23, $19
-	load    [$18 + 2], $18
-	fadd    $19, $24, $19
-	load    [$4 + 2], $24
-	fmul    $24, $18, $24
-	fadd    $19, $24, $19
-	fcmp    $19, $zero
-	bg      ble_else.31445
-ble_then.31445:
-	li      0, $18
-	b       be_cont.31444
-ble_else.31445:
-	fmul    $25, $21, $21
-	fmul    $23, $22, $22
-	fmul    $18, $20, $18
-	finv    $19, $19
-	fadd    $22, $21, $21
-	fadd    $21, $18, $18
-	fneg    $18, $18
-	fmul    $18, $19, $18
-.count move_float
-	mov     $18, $42
-	li      1, $18
-	b       be_cont.31444
-be_else.31444:
-	load    [$4 + 0], $30
+	fcmp    $24, $zero
+	bne     be_else.31336
+be_then.31336:
+	li      0, $24
+.count b_cont
+	b       be_cont.31336
+be_else.31336:
+	load    [$20 + 4], $25
+	load    [$20 + 6], $26
+	fcmp    $zero, $24
+	bg      ble_else.31337
+ble_then.31337:
+	li      0, $27
+.count b_cont
+	b       ble_cont.31337
+ble_else.31337:
+	li      1, $27
+ble_cont.31337:
+	cmp     $26, 0
+	bne     be_else.31338
+be_then.31338:
+	mov     $27, $26
+.count b_cont
+	b       be_cont.31338
+be_else.31338:
+	cmp     $27, 0
+	bne     be_else.31339
+be_then.31339:
+	li      1, $26
+.count b_cont
+	b       be_cont.31339
+be_else.31339:
+	li      0, $26
+be_cont.31339:
+be_cont.31338:
+	load    [$25 + 0], $27
+	cmp     $26, 0
+	bne     be_else.31340
+be_then.31340:
+	fneg    $27, $26
+.count b_cont
+	b       be_cont.31340
+be_else.31340:
+	mov     $27, $26
+be_cont.31340:
+	fsub    $26, $21, $26
+	finv    $24, $24
 	load    [$4 + 1], $28
-	load    [$18 + 4], $24
-	load    [$18 + 4], $23
-	fmul    $30, $30, $31
-	fmul    $28, $28, $29
+	load    [$25 + 1], $27
+	fmul    $26, $24, $24
+	fmul    $24, $28, $26
+	fadd    $26, $22, $26
+	fabs    $26, $26
+	fcmp    $27, $26
+	bg      ble_else.31341
+ble_then.31341:
+	li      0, $24
+.count b_cont
+	b       ble_cont.31341
+ble_else.31341:
 	load    [$4 + 2], $26
-	load    [$24 + 0], $24
-	load    [$23 + 1], $23
-	load    [$18 + 4], $19
-	fmul    $26, $26, $27
-	fmul    $31, $24, $31
-	fmul    $29, $23, $29
-	load    [$19 + 2], $19
-	load    [$18 + 3], $25
-	fmul    $27, $19, $27
-	fadd    $31, $29, $29
-	cmp     $25, 0
-	fadd    $29, $27, $27
-	be      bne_cont.31446
-bne_then.31446:
-	load    [$18 + 9], $31
-	fmul    $28, $26, $29
-	load    [$31 + 0], $31
-	fmul    $29, $31, $29
-	load    [$18 + 9], $31
-	fadd    $27, $29, $27
-	load    [$31 + 1], $31
-	fmul    $26, $30, $29
-	fmul    $29, $31, $29
-	load    [$18 + 9], $31
-	fadd    $27, $29, $27
-	load    [$31 + 2], $31
-	fmul    $30, $28, $29
-	fmul    $29, $31, $29
-	fadd    $27, $29, $27
-bne_cont.31446:
-	fcmp    $27, $zero
-	bne     be_else.31447
-be_then.31447:
-	li      0, $18
-	b       be_cont.31447
-be_else.31447:
-	fmul    $22, $22, $33
-	fmul    $21, $21, $32
-	fmul    $20, $20, $31
-	load    [$18 + 1], $29
-	cmp     $25, 0
-	fmul    $33, $24, $33
-	fmul    $32, $23, $32
-	fmul    $31, $19, $31
-	fadd    $33, $32, $32
-	fadd    $32, $31, $31
-	be      bne_cont.31448
-bne_then.31448:
-	load    [$18 + 9], $33
-	fmul    $21, $20, $32
-	load    [$33 + 0], $33
-	fmul    $32, $33, $32
-	load    [$18 + 9], $33
-	fadd    $31, $32, $31
-	load    [$33 + 1], $33
-	fmul    $20, $22, $32
-	fmul    $32, $33, $32
-	load    [$18 + 9], $33
-	fadd    $31, $32, $31
-	load    [$33 + 2], $33
-	fmul    $22, $21, $32
-	fmul    $32, $33, $32
-	fadd    $31, $32, $31
-bne_cont.31448:
-	cmp     $29, 3
-	bne     be_else.31449
-be_then.31449:
-	fsub    $31, $36, $29
-	b       be_cont.31449
-be_else.31449:
-	mov     $31, $29
-be_cont.31449:
-	fmul    $26, $20, $31
-	fmul    $27, $29, $29
-	cmp     $25, 0
-	fmul    $31, $19, $19
-	fmul    $28, $21, $31
-	fmul    $31, $23, $23
-	fmul    $30, $22, $31
-	fmul    $31, $24, $24
-	fadd    $24, $23, $23
-	fadd    $23, $19, $19
-	be      bne_cont.31450
-bne_then.31450:
-	fmul    $26, $21, $23
-	fmul    $28, $20, $24
-	fmul    $30, $21, $21
-	fmul    $30, $20, $20
-	fadd    $23, $24, $23
-	load    [$18 + 9], $24
-	load    [$24 + 0], $24
-	fmul    $23, $24, $23
-	fmul    $26, $22, $24
-	fmul    $28, $22, $22
-	fadd    $20, $24, $20
-	load    [$18 + 9], $24
+	load    [$25 + 2], $25
+	fmul    $24, $26, $26
+	fadd    $26, $23, $26
+	fabs    $26, $26
+	fcmp    $25, $26
+	bg      ble_else.31342
+ble_then.31342:
+	li      0, $24
+.count b_cont
+	b       ble_cont.31342
+ble_else.31342:
+.count move_float
+	mov     $24, $42
+	li      1, $24
+ble_cont.31342:
+ble_cont.31341:
+be_cont.31336:
+	cmp     $24, 0
+	bne     be_else.31343
+be_then.31343:
+	load    [$4 + 1], $24
+	fcmp    $24, $zero
+	bne     be_else.31344
+be_then.31344:
+	li      0, $24
+.count b_cont
+	b       be_cont.31344
+be_else.31344:
+	load    [$20 + 4], $25
+	load    [$20 + 6], $26
+	fcmp    $zero, $24
+	bg      ble_else.31345
+ble_then.31345:
+	li      0, $27
+.count b_cont
+	b       ble_cont.31345
+ble_else.31345:
+	li      1, $27
+ble_cont.31345:
+	cmp     $26, 0
+	bne     be_else.31346
+be_then.31346:
+	mov     $27, $26
+.count b_cont
+	b       be_cont.31346
+be_else.31346:
+	cmp     $27, 0
+	bne     be_else.31347
+be_then.31347:
+	li      1, $26
+.count b_cont
+	b       be_cont.31347
+be_else.31347:
+	li      0, $26
+be_cont.31347:
+be_cont.31346:
+	load    [$25 + 1], $27
+	cmp     $26, 0
+	bne     be_else.31348
+be_then.31348:
+	fneg    $27, $26
+.count b_cont
+	b       be_cont.31348
+be_else.31348:
+	mov     $27, $26
+be_cont.31348:
+	fsub    $26, $22, $26
+	finv    $24, $24
+	load    [$4 + 2], $28
+	load    [$25 + 2], $27
+	fmul    $26, $24, $24
+	fmul    $24, $28, $26
+	fadd    $26, $23, $26
+	fabs    $26, $26
+	fcmp    $27, $26
+	bg      ble_else.31349
+ble_then.31349:
+	li      0, $24
+.count b_cont
+	b       ble_cont.31349
+ble_else.31349:
+	load    [$4 + 0], $26
+	load    [$25 + 0], $25
+	fmul    $24, $26, $26
+	fadd    $26, $21, $26
+	fabs    $26, $26
+	fcmp    $25, $26
+	bg      ble_else.31350
+ble_then.31350:
+	li      0, $24
+.count b_cont
+	b       ble_cont.31350
+ble_else.31350:
+.count move_float
+	mov     $24, $42
+	li      1, $24
+ble_cont.31350:
+ble_cont.31349:
+be_cont.31344:
+	cmp     $24, 0
+	bne     be_else.31351
+be_then.31351:
+	load    [$4 + 2], $24
+	fcmp    $24, $zero
+	bne     be_else.31352
+be_then.31352:
+	li      0, $20
+.count b_cont
+	b       be_cont.31335
+be_else.31352:
+	load    [$20 + 4], $25
+	load    [$4 + 0], $26
+	load    [$20 + 6], $20
+	load    [$25 + 0], $27
+	fcmp    $zero, $24
+	bg      ble_else.31353
+ble_then.31353:
+	li      0, $28
+.count b_cont
+	b       ble_cont.31353
+ble_else.31353:
+	li      1, $28
+ble_cont.31353:
+	cmp     $20, 0
+	bne     be_else.31354
+be_then.31354:
+	mov     $28, $20
+.count b_cont
+	b       be_cont.31354
+be_else.31354:
+	cmp     $28, 0
+	bne     be_else.31355
+be_then.31355:
+	li      1, $20
+.count b_cont
+	b       be_cont.31355
+be_else.31355:
+	li      0, $20
+be_cont.31355:
+be_cont.31354:
+	load    [$25 + 2], $28
+	cmp     $20, 0
+	bne     be_else.31356
+be_then.31356:
+	fneg    $28, $20
+.count b_cont
+	b       be_cont.31356
+be_else.31356:
+	mov     $28, $20
+be_cont.31356:
+	fsub    $20, $23, $20
+	finv    $24, $23
+	fmul    $20, $23, $20
+	fmul    $20, $26, $23
+	fadd    $23, $21, $21
+	fabs    $21, $21
+	fcmp    $27, $21
+	bg      ble_else.31357
+ble_then.31357:
+	li      0, $20
+.count b_cont
+	b       be_cont.31335
+ble_else.31357:
+	load    [$4 + 1], $23
+	load    [$25 + 1], $21
+	fmul    $20, $23, $23
+	fadd    $23, $22, $22
+	fabs    $22, $22
+	fcmp    $21, $22
+	bg      ble_else.31358
+ble_then.31358:
+	li      0, $20
+.count b_cont
+	b       be_cont.31335
+ble_else.31358:
+.count move_float
+	mov     $20, $42
+	li      3, $20
+.count b_cont
+	b       be_cont.31335
+be_else.31351:
+	li      2, $20
+.count b_cont
+	b       be_cont.31335
+be_else.31343:
+	li      1, $20
+.count b_cont
+	b       be_cont.31335
+be_else.31335:
+	cmp     $24, 2
+	bne     be_else.31359
+be_then.31359:
+	load    [$20 + 4], $20
+	load    [$4 + 1], $26
+	load    [$4 + 0], $24
+	load    [$20 + 1], $27
+	load    [$20 + 0], $25
+	load    [$4 + 2], $28
+	fmul    $26, $27, $26
+	fmul    $24, $25, $24
+	load    [$20 + 2], $20
+	fadd    $24, $26, $24
+	fmul    $28, $20, $26
+	fadd    $24, $26, $24
+	fcmp    $24, $zero
+	bg      ble_else.31360
+ble_then.31360:
+	li      0, $20
+.count b_cont
+	b       be_cont.31359
+ble_else.31360:
+	fmul    $27, $22, $22
+	fmul    $25, $21, $21
+	fmul    $20, $23, $20
+	finv    $24, $23
 	fadd    $21, $22, $21
-	load    [$24 + 1], $24
-	load    [$18 + 9], $22
-	fmul    $20, $24, $20
+	fadd    $21, $20, $20
+	fneg    $20, $20
+	fmul    $20, $23, $20
+.count move_float
+	mov     $20, $42
+	li      1, $20
+.count b_cont
+	b       be_cont.31359
+be_else.31359:
+	load    [$4 + 0], $28
+	load    [$4 + 1], $29
+	load    [$20 + 4], $25
+	load    [$20 + 4], $26
+	fmul    $28, $28, $31
+	fmul    $29, $29, $32
+	load    [$4 + 2], $30
+	load    [$25 + 0], $25
+	load    [$26 + 1], $26
+	load    [$20 + 4], $27
+	fmul    $30, $30, $33
+	fmul    $31, $25, $31
+	fmul    $32, $26, $32
+	load    [$27 + 2], $27
+	load    [$20 + 3], $24
+	fmul    $33, $27, $33
+	fadd    $31, $32, $31
+	cmp     $24, 0
+	fadd    $31, $33, $31
+	be      bne_cont.31361
+bne_then.31361:
+	load    [$20 + 9], $33
+	fmul    $29, $30, $32
+	load    [$20 + 9], $35
+	load    [$33 + 0], $33
+	fmul    $30, $28, $34
+	load    [$20 + 9], $1
+	fmul    $32, $33, $32
+	load    [$35 + 1], $33
+	fmul    $28, $29, $35
+	fadd    $31, $32, $31
+	fmul    $34, $33, $33
+	load    [$1 + 2], $32
+	fmul    $35, $32, $32
+	fadd    $31, $33, $31
+	fadd    $31, $32, $31
+bne_cont.31361:
+	fcmp    $31, $zero
+	bne     be_else.31362
+be_then.31362:
+	li      0, $20
+.count b_cont
+	b       be_cont.31362
+be_else.31362:
+	fmul    $28, $21, $33
+	fmul    $29, $22, $34
+	fmul    $30, $23, $35
+	load    [$20 + 1], $32
+	cmp     $24, 0
+	fmul    $33, $25, $33
+	fmul    $34, $26, $34
+	fmul    $35, $27, $35
+	fadd    $33, $34, $33
+	fadd    $33, $35, $33
+	bne     be_else.31363
+be_then.31363:
+	mov     $33, $28
+.count b_cont
+	b       be_cont.31363
+be_else.31363:
+	fmul    $29, $23, $35
+	fmul    $30, $22, $34
+	fmul    $28, $23, $5
+	fmul    $30, $21, $30
+	load    [$20 + 9], $1
+	fmul    $29, $21, $29
+	fadd    $34, $35, $34
+	load    [$1 + 0], $1
+	load    [$20 + 9], $35
+	fmul    $28, $22, $28
+	fadd    $5, $30, $30
+	fmul    $34, $1, $34
+	load    [$35 + 1], $35
+	load    [$20 + 9], $1
+	fadd    $28, $29, $28
+	fmul    $30, $35, $30
+	load    [$1 + 2], $35
+	fmul    $28, $35, $28
+	fadd    $34, $30, $29
+	fadd    $29, $28, $28
+	fmul    $28, $39, $28
+	fadd    $33, $28, $28
+be_cont.31363:
+	fmul    $21, $21, $30
+	fmul    $22, $22, $33
+	fmul    $23, $23, $34
+	fmul    $28, $28, $29
+	cmp     $24, 0
+	fmul    $30, $25, $25
+	fmul    $33, $26, $26
+	fmul    $34, $27, $27
+	fadd    $25, $26, $25
+	fadd    $25, $27, $25
+	bne     be_else.31364
+be_then.31364:
+	mov     $25, $21
+.count b_cont
+	b       be_cont.31364
+be_else.31364:
+	load    [$20 + 9], $26
+	fmul    $22, $23, $24
+	load    [$20 + 9], $27
+	load    [$26 + 0], $26
+	fmul    $23, $21, $23
+	fmul    $24, $26, $24
+	fmul    $21, $22, $21
+	load    [$27 + 1], $26
+	load    [$20 + 9], $22
+	fadd    $25, $24, $24
+	fmul    $23, $26, $23
 	load    [$22 + 2], $22
 	fmul    $21, $22, $21
-	fadd    $23, $20, $20
-	fadd    $20, $21, $20
-	fmul    $20, $39, $20
-	fadd    $19, $20, $19
-bne_cont.31450:
-	fmul    $19, $19, $20
-	fsub    $20, $29, $20
-	fcmp    $20, $zero
-	bg      ble_else.31451
-ble_then.31451:
-	li      0, $18
-	b       ble_cont.31451
-ble_else.31451:
-	load    [$18 + 6], $18
-	fsqrt   $20, $20
-	cmp     $18, 0
-	finv    $27, $18
-	bne     be_else.31452
-be_then.31452:
-	fneg    $20, $20
-	fsub    $20, $19, $19
-	fmul    $19, $18, $18
+	fadd    $24, $23, $23
+	fadd    $23, $21, $21
+be_cont.31364:
+	cmp     $32, 3
+	bne     be_cont.31365
+be_then.31365:
+	fsub    $21, $36, $21
+be_cont.31365:
+	fmul    $31, $21, $21
+	fsub    $29, $21, $21
+	fcmp    $21, $zero
+	bg      ble_else.31366
+ble_then.31366:
+	li      0, $20
+.count b_cont
+	b       ble_cont.31366
+ble_else.31366:
+	load    [$20 + 6], $20
+	fsqrt   $21, $21
+	cmp     $20, 0
+	bne     be_else.31367
+be_then.31367:
+	fneg    $21, $20
+	fsub    $20, $28, $20
+	finv    $31, $21
+	fmul    $20, $21, $20
 .count move_float
-	mov     $18, $42
-	li      1, $18
-	b       be_cont.31452
-be_else.31452:
-	fsub    $20, $19, $19
-	fmul    $19, $18, $18
+	mov     $20, $42
+	li      1, $20
+.count b_cont
+	b       be_cont.31367
+be_else.31367:
+	fsub    $21, $28, $20
+	finv    $31, $21
+	fmul    $20, $21, $20
 .count move_float
-	mov     $18, $42
-	li      1, $18
-be_cont.31452:
-ble_cont.31451:
-be_cont.31447:
-be_cont.31444:
-be_cont.31420:
-	cmp     $18, 0
-	bne     be_else.31453
-be_then.31453:
-	load    [min_caml_objects + $17], $1
+	mov     $20, $42
+	li      1, $20
+be_cont.31367:
+ble_cont.31366:
+be_cont.31362:
+be_cont.31359:
+be_cont.31335:
+	cmp     $20, 0
+	bne     be_else.31368
+be_then.31368:
+	load    [min_caml_objects + $19], $1
 	load    [$1 + 6], $1
 	cmp     $1, 0
-	bne     be_else.31454
-be_then.31454:
+	bne     be_else.31369
+be_then.31369:
 	ret
-be_else.31454:
+be_else.31369:
 	add     $2, 1, $2
 	b       solve_each_element.2871
-be_else.31453:
+be_else.31368:
 	fcmp    $42, $zero
-	bg      ble_else.31455
-ble_then.31455:
+	bg      ble_else.31370
+ble_then.31370:
 	add     $2, 1, $2
 	b       solve_each_element.2871
-ble_else.31455:
+ble_else.31370:
 	fcmp    $49, $42
-	bg      ble_else.31456
-ble_then.31456:
+	bg      ble_else.31371
+ble_then.31371:
 	add     $2, 1, $2
 	b       solve_each_element.2871
-ble_else.31456:
+ble_else.31371:
 .count stack_move
-	sub     $sp, 6, $sp
+	sub     $sp, 5, $sp
 .count load_float
-	load    [f.27182], $20
+	load    [f.27088], $21
+.count stack_store
 	store   $4, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
-	fadd    $42, $20, $20
+	fadd    $42, $21, $21
+.count stack_store
 	store   $2, [$sp + 2]
-	load    [$4 + 2], $21
-	load    [min_caml_startp + 2], $19
+	load    [$4 + 0], $22
+	load    [$4 + 1], $24
+	load    [min_caml_startp + 0], $23
+	fmul    $22, $21, $22
+	fmul    $24, $21, $24
+	load    [min_caml_startp + 1], $25
 	li      0, $2
-	fmul    $21, $20, $21
-	fadd    $21, $19, $6
-	store   $6, [$sp + 3]
-	load    [$4 + 1], $21
-	load    [min_caml_startp + 1], $19
-	fmul    $21, $20, $21
-	fadd    $21, $19, $5
-	store   $5, [$sp + 4]
-	load    [$4 + 0], $21
-	load    [min_caml_startp + 0], $19
-	fmul    $21, $20, $21
-	fadd    $21, $19, $4
-	store   $4, [$sp + 5]
+	fadd    $22, $23, $22
+	fadd    $24, $25, $5
+	load    [$4 + 2], $23
+	fmul    $23, $21, $23
+.count stack_store
+	store   $5, [$sp + 3]
+	load    [min_caml_startp + 2], $24
+.count move_args
+	mov     $22, $4
+	fadd    $23, $24, $6
+.count stack_store
+	store   $6, [$sp + 4]
 	call    check_all_inside.2856
 .count stack_move
-	add     $sp, 6, $sp
+	add     $sp, 5, $sp
 	cmp     $1, 0
-	bne     be_else.31457
-be_then.31457:
-	load    [$sp - 4], $1
-	load    [$sp - 5], $3
-	load    [$sp - 6], $4
+	bne     be_else.31372
+be_then.31372:
+.count stack_load
+	load    [$sp - 3], $1
+.count stack_load
+	load    [$sp - 4], $3
+.count stack_load
+	load    [$sp - 5], $4
 	add     $1, 1, $2
 	b       solve_each_element.2871
-be_else.31457:
-	load    [$sp - 1], $1
-.count move_float
-	mov     $20, $49
-	store   $1, [min_caml_intersection_point + 0]
+be_else.31372:
+	store   $22, [min_caml_intersection_point + 0]
+.count stack_load
 	load    [$sp - 2], $1
+.count move_float
+	mov     $21, $49
 	store   $1, [min_caml_intersection_point + 1]
-	load    [$sp - 3], $1
+.count stack_load
+	load    [$sp - 1], $1
 	store   $1, [min_caml_intersection_point + 2]
-	store   $17, [min_caml_intersected_object_id + 0]
-	store   $18, [min_caml_intsec_rectside + 0]
-	load    [$sp - 4], $1
-	load    [$sp - 5], $3
-	load    [$sp - 6], $4
+	store   $19, [min_caml_intersected_object_id + 0]
+	store   $20, [min_caml_intsec_rectside + 0]
+.count stack_load
+	load    [$sp - 3], $1
+.count stack_load
+	load    [$sp - 4], $3
+.count stack_load
+	load    [$sp - 5], $4
 	add     $1, 1, $2
 	b       solve_each_element.2871
 .end solve_each_element
@@ -6458,359 +6727,499 @@ be_else.31457:
 ######################################################################
 .begin solve_one_or_network
 solve_one_or_network.2875:
-	load    [$3 + $2], $34
-	cmp     $34, -1
-	bne     be_else.31458
-be_then.31458:
+	load    [$3 + $2], $1
+	cmp     $1, -1
+	bne     be_else.31373
+be_then.31373:
 	ret
-be_else.31458:
+be_else.31373:
 .count stack_move
-	sub     $sp, 3, $sp
+	sub     $sp, 10, $sp
+.count stack_store
 	store   $4, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
+.count stack_store
 	store   $2, [$sp + 2]
-	load    [min_caml_and_net + $34], $3
-	li      0, $2
-	call    solve_each_element.2871
-	load    [$sp + 2], $34
-	load    [$sp + 1], $35
-	add     $34, 1, $34
-	load    [$35 + $34], $1
-	cmp     $1, -1
-	bne     be_else.31459
-be_then.31459:
-.count stack_move
-	add     $sp, 3, $sp
-	ret
-be_else.31459:
 	load    [min_caml_and_net + $1], $3
 	li      0, $2
-	load    [$sp + 0], $4
 	call    solve_each_element.2871
-	add     $34, 1, $34
-	load    [$35 + $34], $1
-	cmp     $1, -1
-	bne     be_else.31460
-be_then.31460:
+.count stack_load
+	load    [$sp + 2], $1
+.count stack_load
+	load    [$sp + 1], $3
+	add     $1, 1, $1
+	load    [$3 + $1], $2
+	cmp     $2, -1
+	bne     be_else.31374
+be_then.31374:
 .count stack_move
-	add     $sp, 3, $sp
+	add     $sp, 10, $sp
 	ret
-be_else.31460:
-	load    [min_caml_and_net + $1], $3
-	li      0, $2
+be_else.31374:
+.count stack_store
+	store   $1, [$sp + 3]
+	load    [min_caml_and_net + $2], $3
+	li      0, $1
+.count stack_load
 	load    [$sp + 0], $4
-	call    solve_each_element.2871
-	add     $34, 1, $34
-	load    [$35 + $34], $1
-	cmp     $1, -1
-	bne     be_else.31461
-be_then.31461:
-.count stack_move
-	add     $sp, 3, $sp
-	ret
-be_else.31461:
-	load    [min_caml_and_net + $1], $3
-	li      0, $2
-	load    [$sp + 0], $4
-	call    solve_each_element.2871
-	add     $34, 1, $34
-	load    [$35 + $34], $1
-	cmp     $1, -1
-	bne     be_else.31462
-be_then.31462:
-.count stack_move
-	add     $sp, 3, $sp
-	ret
-be_else.31462:
-	load    [min_caml_and_net + $1], $3
-	li      0, $2
-	load    [$sp + 0], $4
-	call    solve_each_element.2871
-	add     $34, 1, $34
-	load    [$35 + $34], $1
-	cmp     $1, -1
-	bne     be_else.31463
-be_then.31463:
-.count stack_move
-	add     $sp, 3, $sp
-	ret
-be_else.31463:
-	load    [min_caml_and_net + $1], $3
-	li      0, $2
-	load    [$sp + 0], $4
-	call    solve_each_element.2871
-	add     $34, 1, $34
-	load    [$35 + $34], $1
-	cmp     $1, -1
-	bne     be_else.31464
-be_then.31464:
-.count stack_move
-	add     $sp, 3, $sp
-	ret
-be_else.31464:
-	load    [min_caml_and_net + $1], $3
-	li      0, $2
-	load    [$sp + 0], $4
-	call    solve_each_element.2871
-	add     $34, 1, $34
-	load    [$35 + $34], $1
-	cmp     $1, -1
-	bne     be_else.31465
-be_then.31465:
-.count stack_move
-	add     $sp, 3, $sp
-	ret
-be_else.31465:
-	load    [min_caml_and_net + $1], $3
-	li      0, $2
-	load    [$sp + 0], $4
-	call    solve_each_element.2871
-.count stack_move
-	add     $sp, 3, $sp
-	add     $34, 1, $2
-	load    [$sp - 3], $4
 .count move_args
-	mov     $35, $3
+	mov     $1, $2
+	call    solve_each_element.2871
+.count stack_load
+	load    [$sp + 3], $1
+.count stack_load
+	load    [$sp + 1], $3
+	add     $1, 1, $1
+	load    [$3 + $1], $2
+	cmp     $2, -1
+	bne     be_else.31375
+be_then.31375:
+.count stack_move
+	add     $sp, 10, $sp
+	ret
+be_else.31375:
+.count stack_store
+	store   $1, [$sp + 4]
+	load    [min_caml_and_net + $2], $3
+	li      0, $1
+.count stack_load
+	load    [$sp + 0], $4
+.count move_args
+	mov     $1, $2
+	call    solve_each_element.2871
+.count stack_load
+	load    [$sp + 4], $1
+.count stack_load
+	load    [$sp + 1], $3
+	add     $1, 1, $1
+	load    [$3 + $1], $2
+	cmp     $2, -1
+	bne     be_else.31376
+be_then.31376:
+.count stack_move
+	add     $sp, 10, $sp
+	ret
+be_else.31376:
+.count stack_store
+	store   $1, [$sp + 5]
+	load    [min_caml_and_net + $2], $3
+	li      0, $1
+.count stack_load
+	load    [$sp + 0], $4
+.count move_args
+	mov     $1, $2
+	call    solve_each_element.2871
+.count stack_load
+	load    [$sp + 5], $1
+.count stack_load
+	load    [$sp + 1], $3
+	add     $1, 1, $1
+	load    [$3 + $1], $2
+	cmp     $2, -1
+	bne     be_else.31377
+be_then.31377:
+.count stack_move
+	add     $sp, 10, $sp
+	ret
+be_else.31377:
+.count stack_store
+	store   $1, [$sp + 6]
+	load    [min_caml_and_net + $2], $3
+	li      0, $1
+.count stack_load
+	load    [$sp + 0], $4
+.count move_args
+	mov     $1, $2
+	call    solve_each_element.2871
+.count stack_load
+	load    [$sp + 6], $1
+.count stack_load
+	load    [$sp + 1], $3
+	add     $1, 1, $1
+	load    [$3 + $1], $2
+	cmp     $2, -1
+	bne     be_else.31378
+be_then.31378:
+.count stack_move
+	add     $sp, 10, $sp
+	ret
+be_else.31378:
+.count stack_store
+	store   $1, [$sp + 7]
+	load    [min_caml_and_net + $2], $3
+	li      0, $1
+.count stack_load
+	load    [$sp + 0], $4
+.count move_args
+	mov     $1, $2
+	call    solve_each_element.2871
+.count stack_load
+	load    [$sp + 7], $1
+.count stack_load
+	load    [$sp + 1], $3
+	add     $1, 1, $1
+	load    [$3 + $1], $2
+	cmp     $2, -1
+	bne     be_else.31379
+be_then.31379:
+.count stack_move
+	add     $sp, 10, $sp
+	ret
+be_else.31379:
+.count stack_store
+	store   $1, [$sp + 8]
+	load    [min_caml_and_net + $2], $3
+	li      0, $1
+.count stack_load
+	load    [$sp + 0], $4
+.count move_args
+	mov     $1, $2
+	call    solve_each_element.2871
+.count stack_load
+	load    [$sp + 8], $1
+.count stack_load
+	load    [$sp + 1], $3
+	add     $1, 1, $1
+	load    [$3 + $1], $2
+	cmp     $2, -1
+	bne     be_else.31380
+be_then.31380:
+.count stack_move
+	add     $sp, 10, $sp
+	ret
+be_else.31380:
+.count stack_store
+	store   $1, [$sp + 9]
+	load    [min_caml_and_net + $2], $3
+	li      0, $1
+.count stack_load
+	load    [$sp + 0], $4
+.count move_args
+	mov     $1, $2
+	call    solve_each_element.2871
+.count stack_move
+	add     $sp, 10, $sp
+.count stack_load
+	load    [$sp - 1], $1
+.count stack_load
+	load    [$sp - 9], $3
+.count stack_load
+	load    [$sp - 10], $4
+	add     $1, 1, $2
 	b       solve_one_or_network.2875
 .end solve_one_or_network
 
 ######################################################################
 .begin trace_or_matrix
 trace_or_matrix.2879:
-	load    [$3 + $2], $34
-	load    [$34 + 0], $35
-	cmp     $35, -1
-	bne     be_else.31466
-be_then.31466:
+	load    [$3 + $2], $19
+	load    [$19 + 0], $20
+	cmp     $20, -1
+	bne     be_else.31381
+be_then.31381:
 	ret
-be_else.31466:
+be_else.31381:
 .count stack_move
-	sub     $sp, 4, $sp
-	cmp     $35, 99
+	sub     $sp, 6, $sp
+	cmp     $20, 99
+.count stack_store
 	store   $4, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
+.count stack_store
 	store   $2, [$sp + 2]
-	bne     be_else.31467
-be_then.31467:
-	load    [$34 + 1], $35
-	cmp     $35, -1
-	be      bne_cont.31468
-bne_then.31468:
-	load    [min_caml_and_net + $35], $3
+	bne     be_else.31382
+be_then.31382:
+	load    [$19 + 1], $20
+	cmp     $20, -1
+	be      bne_cont.31383
+bne_then.31383:
+.count stack_store
+	store   $19, [$sp + 3]
 	li      0, $2
+	load    [min_caml_and_net + $20], $3
 	call    solve_each_element.2871
-	load    [$34 + 2], $35
-	cmp     $35, -1
-	be      bne_cont.31469
-bne_then.31469:
-	load    [min_caml_and_net + $35], $3
+.count stack_load
+	load    [$sp + 3], $3
+	load    [$3 + 2], $19
+	cmp     $19, -1
+	be      bne_cont.31384
+bne_then.31384:
 	li      0, $2
+	load    [min_caml_and_net + $19], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element.2871
-	load    [$34 + 3], $35
-	cmp     $35, -1
-	be      bne_cont.31470
-bne_then.31470:
-	load    [min_caml_and_net + $35], $3
+.count stack_load
+	load    [$sp + 3], $3
+	load    [$3 + 3], $19
+	cmp     $19, -1
+	be      bne_cont.31385
+bne_then.31385:
 	li      0, $2
+	load    [min_caml_and_net + $19], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element.2871
-	load    [$34 + 4], $35
-	cmp     $35, -1
-	be      bne_cont.31471
-bne_then.31471:
-	load    [min_caml_and_net + $35], $3
+.count stack_load
+	load    [$sp + 3], $3
+	load    [$3 + 4], $19
+	cmp     $19, -1
+	be      bne_cont.31386
+bne_then.31386:
 	li      0, $2
+	load    [min_caml_and_net + $19], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element.2871
-	load    [$34 + 5], $35
-	cmp     $35, -1
-	be      bne_cont.31472
-bne_then.31472:
-	load    [min_caml_and_net + $35], $3
+.count stack_load
+	load    [$sp + 3], $3
+	load    [$3 + 5], $19
+	cmp     $19, -1
+	be      bne_cont.31387
+bne_then.31387:
 	li      0, $2
+	load    [min_caml_and_net + $19], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element.2871
-	load    [$34 + 6], $35
-	cmp     $35, -1
-	be      bne_cont.31473
-bne_then.31473:
-	load    [min_caml_and_net + $35], $3
+.count stack_load
+	load    [$sp + 3], $3
+	load    [$3 + 6], $19
+	cmp     $19, -1
+	be      bne_cont.31388
+bne_then.31388:
 	li      0, $2
+	load    [min_caml_and_net + $19], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element.2871
 	li      7, $2
+.count stack_load
+	load    [$sp + 3], $3
+.count stack_load
 	load    [$sp + 0], $4
-.count move_args
-	mov     $34, $3
 	call    solve_one_or_network.2875
-bne_cont.31473:
-bne_cont.31472:
-bne_cont.31471:
-bne_cont.31470:
-bne_cont.31469:
-bne_cont.31468:
-	load    [$sp + 2], $34
+bne_cont.31388:
+bne_cont.31387:
+bne_cont.31386:
+bne_cont.31385:
+bne_cont.31384:
+bne_cont.31383:
+.count stack_load
+	load    [$sp + 2], $19
+.count stack_load
 	load    [$sp + 1], $3
-	add     $34, 1, $34
-	load    [$3 + $34], $35
-	load    [$35 + 0], $2
+	add     $19, 1, $19
+	load    [$3 + $19], $20
+	load    [$20 + 0], $2
 	cmp     $2, -1
-	bne     be_else.31474
-be_then.31474:
+	bne     be_else.31389
+be_then.31389:
 .count stack_move
-	add     $sp, 4, $sp
+	add     $sp, 6, $sp
 	ret
-be_else.31474:
+be_else.31389:
 	cmp     $2, 99
-	bne     be_else.31475
-be_then.31475:
-	load    [$35 + 1], $1
+	bne     be_else.31390
+be_then.31390:
+	load    [$20 + 1], $1
 	cmp     $1, -1
-	bne     be_else.31476
-be_then.31476:
+	bne     be_else.31391
+be_then.31391:
 .count stack_move
-	add     $sp, 4, $sp
-	add     $34, 1, $2
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+	add     $19, 1, $2
+.count stack_load
+	load    [$sp - 6], $4
 	b       trace_or_matrix.2879
-be_else.31476:
-	load    [min_caml_and_net + $1], $3
+be_else.31391:
+.count stack_store
+	store   $19, [$sp + 4]
 	li      0, $2
+.count stack_store
+	store   $20, [$sp + 5]
+	load    [min_caml_and_net + $1], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element.2871
-	load    [$35 + 2], $1
+.count stack_load
+	load    [$sp + 5], $3
+	load    [$3 + 2], $1
 	cmp     $1, -1
-	bne     be_else.31477
-be_then.31477:
+	bne     be_else.31392
+be_then.31392:
 .count stack_move
-	add     $sp, 4, $sp
-	add     $34, 1, $2
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+.count stack_load
+	load    [$sp - 2], $1
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
+	add     $1, 1, $2
 	b       trace_or_matrix.2879
-be_else.31477:
-	load    [min_caml_and_net + $1], $3
+be_else.31392:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element.2871
-	load    [$35 + 3], $1
+.count stack_load
+	load    [$sp + 5], $3
+	load    [$3 + 3], $1
 	cmp     $1, -1
-	bne     be_else.31478
-be_then.31478:
+	bne     be_else.31393
+be_then.31393:
 .count stack_move
-	add     $sp, 4, $sp
-	add     $34, 1, $2
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+.count stack_load
+	load    [$sp - 2], $1
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
+	add     $1, 1, $2
 	b       trace_or_matrix.2879
-be_else.31478:
-	load    [min_caml_and_net + $1], $3
+be_else.31393:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element.2871
-	load    [$35 + 4], $1
+.count stack_load
+	load    [$sp + 5], $3
+	load    [$3 + 4], $1
 	cmp     $1, -1
-	bne     be_else.31479
-be_then.31479:
+	bne     be_else.31394
+be_then.31394:
 .count stack_move
-	add     $sp, 4, $sp
-	add     $34, 1, $2
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+.count stack_load
+	load    [$sp - 2], $1
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
+	add     $1, 1, $2
 	b       trace_or_matrix.2879
-be_else.31479:
-	store   $34, [$sp + 3]
-	load    [min_caml_and_net + $1], $3
+be_else.31394:
 	li      0, $2
+	load    [min_caml_and_net + $1], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element.2871
 	li      5, $2
+.count stack_load
+	load    [$sp + 5], $3
+.count stack_load
 	load    [$sp + 0], $4
-.count move_args
-	mov     $35, $3
 	call    solve_one_or_network.2875
 .count stack_move
-	add     $sp, 4, $sp
-	load    [$sp - 1], $1
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+.count stack_load
+	load    [$sp - 2], $1
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
 	add     $1, 1, $2
 	b       trace_or_matrix.2879
-be_else.31475:
+be_else.31390:
+.count stack_load
 	load    [$sp + 0], $3
 	call    solver.2773
 	cmp     $1, 0
-	bne     be_else.31480
-be_then.31480:
+	bne     be_else.31395
+be_then.31395:
 .count stack_move
-	add     $sp, 4, $sp
-	add     $34, 1, $2
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+	add     $19, 1, $2
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
 	b       trace_or_matrix.2879
-be_else.31480:
+be_else.31395:
 	fcmp    $49, $42
-	bg      ble_else.31481
-ble_then.31481:
+	bg      ble_else.31396
+ble_then.31396:
 .count stack_move
-	add     $sp, 4, $sp
-	add     $34, 1, $2
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+	add     $19, 1, $2
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
 	b       trace_or_matrix.2879
-ble_else.31481:
-	store   $34, [$sp + 3]
+ble_else.31396:
+.count stack_store
+	store   $19, [$sp + 4]
 	li      1, $2
+.count stack_load
 	load    [$sp + 0], $4
 .count move_args
-	mov     $35, $3
+	mov     $20, $3
 	call    solve_one_or_network.2875
 .count stack_move
-	add     $sp, 4, $sp
-	load    [$sp - 1], $1
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+.count stack_load
+	load    [$sp - 2], $1
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
 	add     $1, 1, $2
 	b       trace_or_matrix.2879
-be_else.31467:
+be_else.31382:
 .count move_args
 	mov     $4, $3
 .count move_args
-	mov     $35, $2
+	mov     $20, $2
 	call    solver.2773
 	cmp     $1, 0
-	bne     be_else.31482
-be_then.31482:
+	bne     be_else.31397
+be_then.31397:
 .count stack_move
-	add     $sp, 4, $sp
-	load    [$sp - 2], $1
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+.count stack_load
+	load    [$sp - 4], $1
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
 	add     $1, 1, $2
 	b       trace_or_matrix.2879
-be_else.31482:
+be_else.31397:
 	fcmp    $49, $42
-	bg      ble_else.31483
-ble_then.31483:
+	bg      ble_else.31398
+ble_then.31398:
 .count stack_move
-	add     $sp, 4, $sp
-	load    [$sp - 2], $1
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+.count stack_load
+	load    [$sp - 4], $1
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
 	add     $1, 1, $2
 	b       trace_or_matrix.2879
-ble_else.31483:
+ble_else.31398:
 	li      1, $2
+.count stack_load
 	load    [$sp + 0], $4
 .count move_args
-	mov     $34, $3
+	mov     $19, $3
 	call    solve_one_or_network.2875
 .count stack_move
-	add     $sp, 4, $sp
-	load    [$sp - 2], $1
-	load    [$sp - 3], $3
-	load    [$sp - 4], $4
+	add     $sp, 6, $sp
+.count stack_load
+	load    [$sp - 4], $1
+.count stack_load
+	load    [$sp - 5], $3
+.count stack_load
+	load    [$sp - 6], $4
 	add     $1, 1, $2
 	b       trace_or_matrix.2879
 .end trace_or_matrix
@@ -6818,294 +7227,326 @@ ble_else.31483:
 ######################################################################
 .begin solve_each_element_fast
 solve_each_element_fast.2885:
-	load    [$3 + $2], $17
-	cmp     $17, -1
-	bne     be_else.31484
-be_then.31484:
+	load    [$3 + $2], $19
+	cmp     $19, -1
+	bne     be_else.31399
+be_then.31399:
 	ret
-be_else.31484:
-	load    [min_caml_objects + $17], $18
-	load    [$4 + 1], $21
-	load    [$18 + 10], $19
-	load    [$18 + 1], $20
-	load    [$21 + $17], $21
-	load    [$19 + 2], $22
-	load    [$19 + 1], $23
-	load    [$19 + 0], $24
-	cmp     $20, 1
-	bne     be_else.31485
-be_then.31485:
-	load    [$21 + 0], $25
-	load    [$21 + 1], $20
-	load    [$4 + 0], $19
-	fsub    $25, $24, $25
-	load    [$18 + 4], $26
-	load    [$26 + 1], $26
-	fmul    $25, $20, $20
-	load    [$19 + 1], $25
-	fmul    $20, $25, $25
-	fadd    $25, $23, $25
-	fabs    $25, $25
-	fcmp    $26, $25
-	bg      ble_else.31486
-ble_then.31486:
-	li      0, $25
-	b       ble_cont.31486
-ble_else.31486:
-	load    [$19 + 2], $26
-	load    [$18 + 4], $25
-	fmul    $20, $26, $26
-	load    [$25 + 2], $25
-	fadd    $26, $22, $26
-	fabs    $26, $26
-	fcmp    $25, $26
-	bg      ble_else.31487
-ble_then.31487:
-	li      0, $25
-	b       ble_cont.31487
-ble_else.31487:
-	load    [$21 + 1], $25
-	fcmp    $25, $zero
-	bne     be_else.31488
-be_then.31488:
-	li      0, $25
-	b       be_cont.31488
-be_else.31488:
-	li      1, $25
-be_cont.31488:
-ble_cont.31487:
-ble_cont.31486:
-	cmp     $25, 0
-	bne     be_else.31489
-be_then.31489:
-	load    [$21 + 2], $25
-	load    [$21 + 3], $20
-	load    [$18 + 4], $26
-	fsub    $25, $23, $25
-	load    [$26 + 0], $26
-	fmul    $25, $20, $20
-	load    [$19 + 0], $25
-	fmul    $20, $25, $25
-	fadd    $25, $24, $25
-	fabs    $25, $25
-	fcmp    $26, $25
-	bg      ble_else.31490
-ble_then.31490:
-	li      0, $25
-	b       ble_cont.31490
-ble_else.31490:
-	load    [$19 + 2], $26
-	load    [$18 + 4], $25
-	fmul    $20, $26, $26
-	load    [$25 + 2], $25
-	fadd    $26, $22, $26
-	fabs    $26, $26
-	fcmp    $25, $26
-	bg      ble_else.31491
-ble_then.31491:
-	li      0, $25
-	b       ble_cont.31491
-ble_else.31491:
-	load    [$21 + 3], $25
-	fcmp    $25, $zero
-	bne     be_else.31492
-be_then.31492:
-	li      0, $25
-	b       be_cont.31492
-be_else.31492:
-	li      1, $25
-be_cont.31492:
-ble_cont.31491:
-ble_cont.31490:
-	cmp     $25, 0
-	bne     be_else.31493
-be_then.31493:
-	load    [$21 + 4], $25
-	load    [$21 + 5], $20
-	fsub    $25, $22, $22
-	fmul    $22, $20, $20
-	load    [$19 + 0], $22
-	fmul    $20, $22, $22
-	fadd    $22, $24, $22
-	load    [$18 + 4], $24
-	load    [$24 + 0], $24
-	fabs    $22, $22
-	fcmp    $24, $22
-	bg      ble_else.31494
-ble_then.31494:
-	li      0, $18
-	b       be_cont.31485
-ble_else.31494:
-	load    [$19 + 1], $19
-	load    [$18 + 4], $18
-	fmul    $20, $19, $19
-	load    [$18 + 1], $18
-	fadd    $19, $23, $19
-	fabs    $19, $19
-	fcmp    $18, $19
-	bg      ble_else.31495
-ble_then.31495:
-	li      0, $18
-	b       be_cont.31485
-ble_else.31495:
-	load    [$21 + 5], $18
-	fcmp    $18, $zero
-	bne     be_else.31496
-be_then.31496:
-	li      0, $18
-	b       be_cont.31485
-be_else.31496:
-.count move_float
-	mov     $20, $42
-	li      3, $18
-	b       be_cont.31485
-be_else.31493:
-.count move_float
-	mov     $20, $42
-	li      2, $18
-	b       be_cont.31485
-be_else.31489:
-.count move_float
-	mov     $20, $42
-	li      1, $18
-	b       be_cont.31485
-be_else.31485:
-	cmp     $20, 2
-	bne     be_else.31497
-be_then.31497:
-	load    [$21 + 0], $18
-	fcmp    $zero, $18
-	bg      ble_else.31498
-ble_then.31498:
-	li      0, $18
-	b       be_cont.31497
-ble_else.31498:
-	load    [$19 + 3], $19
-	fmul    $18, $19, $18
-.count move_float
-	mov     $18, $42
-	li      1, $18
-	b       be_cont.31497
-be_else.31497:
-	load    [$21 + 0], $20
-	fcmp    $20, $zero
-	bne     be_else.31499
-be_then.31499:
-	li      0, $18
-	b       be_cont.31499
-be_else.31499:
-	load    [$19 + 3], $19
-	fmul    $20, $19, $19
-	load    [$21 + 3], $20
-	fmul    $20, $22, $20
-	load    [$21 + 2], $22
-	fmul    $22, $23, $22
+be_else.31399:
+	load    [min_caml_objects + $19], $21
+	load    [$4 + 1], $20
+	load    [$21 + 10], $22
 	load    [$21 + 1], $23
-	fmul    $23, $24, $23
-	fadd    $23, $22, $22
-	fadd    $22, $20, $20
-	fmul    $20, $20, $22
-	fsub    $22, $19, $19
-	fcmp    $19, $zero
-	bg      ble_else.31500
-ble_then.31500:
-	li      0, $18
-	b       ble_cont.31500
-ble_else.31500:
-	load    [$18 + 6], $18
-	fsqrt   $19, $19
-	cmp     $18, 0
-	load    [$21 + 4], $18
-	bne     be_else.31501
-be_then.31501:
-	fsub    $20, $19, $19
-	fmul    $19, $18, $18
+	load    [$20 + $19], $20
+	load    [$22 + 0], $24
+	load    [$22 + 1], $25
+	load    [$22 + 2], $26
+	cmp     $23, 1
+	bne     be_else.31400
+be_then.31400:
+	load    [$20 + 0], $28
+	load    [$20 + 1], $29
+	load    [$4 + 0], $22
+	fsub    $28, $24, $28
+	load    [$21 + 4], $23
+	load    [$22 + 1], $27
+	load    [$23 + 1], $23
+	fmul    $28, $29, $28
+	fmul    $28, $27, $27
+	fadd    $27, $25, $27
+	fabs    $27, $27
+	fcmp    $23, $27
+	bg      ble_else.31401
+ble_then.31401:
+	li      0, $23
+.count b_cont
+	b       ble_cont.31401
+ble_else.31401:
+	load    [$22 + 2], $27
+	load    [$21 + 4], $23
+	fmul    $28, $27, $27
+	load    [$23 + 2], $23
+	fadd    $27, $26, $27
+	fabs    $27, $27
+	fcmp    $23, $27
+	bg      ble_else.31402
+ble_then.31402:
+	li      0, $23
+.count b_cont
+	b       ble_cont.31402
+ble_else.31402:
+	load    [$20 + 1], $23
+	fcmp    $23, $zero
+	bne     be_else.31403
+be_then.31403:
+	li      0, $23
+.count b_cont
+	b       be_cont.31403
+be_else.31403:
+	li      1, $23
+be_cont.31403:
+ble_cont.31402:
+ble_cont.31401:
+	cmp     $23, 0
+	bne     be_else.31404
+be_then.31404:
+	load    [$20 + 2], $28
+	load    [$20 + 3], $29
+	load    [$22 + 0], $27
+	fsub    $28, $25, $28
+	load    [$21 + 4], $23
+	load    [$23 + 0], $23
+	fmul    $28, $29, $28
+	fmul    $28, $27, $27
+	fadd    $27, $24, $27
+	fabs    $27, $27
+	fcmp    $23, $27
+	bg      ble_else.31405
+ble_then.31405:
+	li      0, $23
+.count b_cont
+	b       ble_cont.31405
+ble_else.31405:
+	load    [$22 + 2], $27
+	load    [$21 + 4], $23
+	fmul    $28, $27, $27
+	load    [$23 + 2], $23
+	fadd    $27, $26, $27
+	fabs    $27, $27
+	fcmp    $23, $27
+	bg      ble_else.31406
+ble_then.31406:
+	li      0, $23
+.count b_cont
+	b       ble_cont.31406
+ble_else.31406:
+	load    [$20 + 3], $23
+	fcmp    $23, $zero
+	bne     be_else.31407
+be_then.31407:
+	li      0, $23
+.count b_cont
+	b       be_cont.31407
+be_else.31407:
+	li      1, $23
+be_cont.31407:
+ble_cont.31406:
+ble_cont.31405:
+	cmp     $23, 0
+	bne     be_else.31408
+be_then.31408:
+	load    [$20 + 4], $28
+	load    [$20 + 5], $29
+	load    [$22 + 0], $27
+	fsub    $28, $26, $26
+	load    [$21 + 4], $23
+	load    [$23 + 0], $23
+	fmul    $26, $29, $26
+	fmul    $26, $27, $27
+	fadd    $27, $24, $24
+	fabs    $24, $24
+	fcmp    $23, $24
+	bg      ble_else.31409
+ble_then.31409:
+	li      0, $20
+.count b_cont
+	b       be_cont.31400
+ble_else.31409:
+	load    [$22 + 1], $22
+	load    [$21 + 4], $21
+	fmul    $26, $22, $22
+	load    [$21 + 1], $21
+	fadd    $22, $25, $22
+	fabs    $22, $22
+	fcmp    $21, $22
+	bg      ble_else.31410
+ble_then.31410:
+	li      0, $20
+.count b_cont
+	b       be_cont.31400
+ble_else.31410:
+	load    [$20 + 5], $20
+	fcmp    $20, $zero
+	bne     be_else.31411
+be_then.31411:
+	li      0, $20
+.count b_cont
+	b       be_cont.31400
+be_else.31411:
 .count move_float
-	mov     $18, $42
-	li      1, $18
-	b       be_cont.31501
-be_else.31501:
-	fadd    $20, $19, $19
-	fmul    $19, $18, $18
+	mov     $26, $42
+	li      3, $20
+.count b_cont
+	b       be_cont.31400
+be_else.31408:
 .count move_float
-	mov     $18, $42
-	li      1, $18
-be_cont.31501:
-ble_cont.31500:
-be_cont.31499:
-be_cont.31497:
-be_cont.31485:
-	cmp     $18, 0
-	bne     be_else.31502
-be_then.31502:
-	load    [min_caml_objects + $17], $1
+	mov     $28, $42
+	li      2, $20
+.count b_cont
+	b       be_cont.31400
+be_else.31404:
+.count move_float
+	mov     $28, $42
+	li      1, $20
+.count b_cont
+	b       be_cont.31400
+be_else.31400:
+	cmp     $23, 2
+	bne     be_else.31412
+be_then.31412:
+	load    [$20 + 0], $20
+	fcmp    $zero, $20
+	bg      ble_else.31413
+ble_then.31413:
+	li      0, $20
+.count b_cont
+	b       be_cont.31412
+ble_else.31413:
+	load    [$22 + 3], $21
+	fmul    $20, $21, $20
+.count move_float
+	mov     $20, $42
+	li      1, $20
+.count b_cont
+	b       be_cont.31412
+be_else.31412:
+	load    [$20 + 0], $23
+	fcmp    $23, $zero
+	bne     be_else.31414
+be_then.31414:
+	li      0, $20
+.count b_cont
+	b       be_cont.31414
+be_else.31414:
+	load    [$20 + 1], $27
+	load    [$20 + 2], $28
+	load    [$22 + 3], $22
+	fmul    $27, $24, $24
+	fmul    $28, $25, $25
+	load    [$20 + 3], $27
+	fmul    $23, $22, $22
+	fmul    $27, $26, $26
+	fadd    $24, $25, $24
+	fadd    $24, $26, $23
+	fmul    $23, $23, $24
+	fsub    $24, $22, $22
+	fcmp    $22, $zero
+	bg      ble_else.31415
+ble_then.31415:
+	li      0, $20
+.count b_cont
+	b       ble_cont.31415
+ble_else.31415:
+	load    [$21 + 6], $21
+	load    [$20 + 4], $20
+	cmp     $21, 0
+	fsqrt   $22, $21
+	bne     be_else.31416
+be_then.31416:
+	fsub    $23, $21, $21
+	fmul    $21, $20, $20
+.count move_float
+	mov     $20, $42
+	li      1, $20
+.count b_cont
+	b       be_cont.31416
+be_else.31416:
+	fadd    $23, $21, $21
+	fmul    $21, $20, $20
+.count move_float
+	mov     $20, $42
+	li      1, $20
+be_cont.31416:
+ble_cont.31415:
+be_cont.31414:
+be_cont.31412:
+be_cont.31400:
+	cmp     $20, 0
+	bne     be_else.31417
+be_then.31417:
+	load    [min_caml_objects + $19], $1
 	load    [$1 + 6], $1
 	cmp     $1, 0
-	bne     be_else.31503
-be_then.31503:
+	bne     be_else.31418
+be_then.31418:
 	ret
-be_else.31503:
+be_else.31418:
 	add     $2, 1, $2
 	b       solve_each_element_fast.2885
-be_else.31502:
+be_else.31417:
 	fcmp    $42, $zero
-	bg      ble_else.31504
-ble_then.31504:
+	bg      ble_else.31419
+ble_then.31419:
 	add     $2, 1, $2
 	b       solve_each_element_fast.2885
-ble_else.31504:
-	load    [$4 + 0], $19
+ble_else.31419:
+	load    [$4 + 0], $21
 	fcmp    $49, $42
-	bg      ble_else.31505
-ble_then.31505:
+	bg      ble_else.31420
+ble_then.31420:
 	add     $2, 1, $2
 	b       solve_each_element_fast.2885
-ble_else.31505:
+ble_else.31420:
 .count stack_move
 	sub     $sp, 6, $sp
 .count load_float
-	load    [f.27182], $20
+	load    [f.27088], $22
+.count stack_store
 	store   $4, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
-	fadd    $42, $20, $20
+	fadd    $42, $22, $22
+.count stack_store
 	store   $2, [$sp + 2]
-	load    [$19 + 2], $21
+	load    [$21 + 0], $23
+	load    [$21 + 1], $24
 	li      0, $2
-	fmul    $21, $20, $21
-	fadd    $21, $52, $6
-	store   $6, [$sp + 3]
-	load    [$19 + 1], $21
-	fmul    $21, $20, $21
-	fadd    $21, $51, $5
+	fmul    $23, $22, $23
+	fmul    $24, $22, $24
+	fadd    $23, $51, $4
+	fadd    $24, $52, $5
+.count stack_store
+	store   $4, [$sp + 3]
+	load    [$21 + 2], $21
+.count stack_store
 	store   $5, [$sp + 4]
-	load    [$19 + 0], $19
-	fmul    $19, $20, $19
-	fadd    $19, $50, $4
-	store   $4, [$sp + 5]
+	fmul    $21, $22, $21
+	fadd    $21, $53, $6
+.count stack_store
+	store   $6, [$sp + 5]
 	call    check_all_inside.2856
 .count stack_move
 	add     $sp, 6, $sp
 	cmp     $1, 0
-	bne     be_else.31506
-be_then.31506:
+	bne     be_else.31421
+be_then.31421:
+.count stack_load
 	load    [$sp - 4], $1
+.count stack_load
 	load    [$sp - 5], $3
+.count stack_load
 	load    [$sp - 6], $4
 	add     $1, 1, $2
 	b       solve_each_element_fast.2885
-be_else.31506:
-	load    [$sp - 1], $1
+be_else.31421:
+.count stack_load
+	load    [$sp - 3], $1
 .count move_float
-	mov     $20, $49
+	mov     $22, $49
 	store   $1, [min_caml_intersection_point + 0]
+.count stack_load
 	load    [$sp - 2], $1
 	store   $1, [min_caml_intersection_point + 1]
-	load    [$sp - 3], $1
+.count stack_load
+	load    [$sp - 1], $1
 	store   $1, [min_caml_intersection_point + 2]
-	store   $17, [min_caml_intersected_object_id + 0]
-	store   $18, [min_caml_intsec_rectside + 0]
+	store   $19, [min_caml_intersected_object_id + 0]
+	store   $20, [min_caml_intsec_rectside + 0]
+.count stack_load
 	load    [$sp - 4], $1
+.count stack_load
 	load    [$sp - 5], $3
+.count stack_load
 	load    [$sp - 6], $4
 	add     $1, 1, $2
 	b       solve_each_element_fast.2885
@@ -7114,364 +7555,424 @@ be_else.31506:
 ######################################################################
 .begin solve_one_or_network_fast
 solve_one_or_network_fast.2889:
-	load    [$3 + $2], $27
-	cmp     $27, -1
-	bne     be_else.31507
-be_then.31507:
+	load    [$3 + $2], $30
+	cmp     $30, -1
+	bne     be_else.31422
+be_then.31422:
 	ret
-be_else.31507:
+be_else.31422:
 .count stack_move
 	sub     $sp, 3, $sp
+.count stack_store
 	store   $4, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
+.count stack_store
 	store   $2, [$sp + 2]
-	load    [min_caml_and_net + $27], $3
+	load    [min_caml_and_net + $30], $3
 	li      0, $2
 	call    solve_each_element_fast.2885
-	load    [$sp + 2], $27
-	load    [$sp + 1], $28
-	add     $27, 1, $27
-	load    [$28 + $27], $29
-	cmp     $29, -1
-	bne     be_else.31508
-be_then.31508:
+.count stack_load
+	load    [$sp + 2], $30
+.count stack_load
+	load    [$sp + 1], $31
+	add     $30, 1, $30
+	load    [$31 + $30], $32
+	cmp     $32, -1
+	bne     be_else.31423
+be_then.31423:
 .count stack_move
 	add     $sp, 3, $sp
 	ret
-be_else.31508:
-	load    [min_caml_and_net + $29], $3
+be_else.31423:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	add     $27, 1, $27
-	load    [$28 + $27], $29
-	cmp     $29, -1
-	bne     be_else.31509
-be_then.31509:
+	add     $30, 1, $30
+	load    [$31 + $30], $32
+	cmp     $32, -1
+	bne     be_else.31424
+be_then.31424:
 .count stack_move
 	add     $sp, 3, $sp
 	ret
-be_else.31509:
-	load    [min_caml_and_net + $29], $3
+be_else.31424:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	add     $27, 1, $27
-	load    [$28 + $27], $29
-	cmp     $29, -1
-	bne     be_else.31510
-be_then.31510:
+	add     $30, 1, $30
+	load    [$31 + $30], $32
+	cmp     $32, -1
+	bne     be_else.31425
+be_then.31425:
 .count stack_move
 	add     $sp, 3, $sp
 	ret
-be_else.31510:
-	load    [min_caml_and_net + $29], $3
+be_else.31425:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	add     $27, 1, $27
-	load    [$28 + $27], $29
-	cmp     $29, -1
-	bne     be_else.31511
-be_then.31511:
+	add     $30, 1, $30
+	load    [$31 + $30], $32
+	cmp     $32, -1
+	bne     be_else.31426
+be_then.31426:
 .count stack_move
 	add     $sp, 3, $sp
 	ret
-be_else.31511:
-	load    [min_caml_and_net + $29], $3
+be_else.31426:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	add     $27, 1, $27
-	load    [$28 + $27], $29
-	cmp     $29, -1
-	bne     be_else.31512
-be_then.31512:
+	add     $30, 1, $30
+	load    [$31 + $30], $32
+	cmp     $32, -1
+	bne     be_else.31427
+be_then.31427:
 .count stack_move
 	add     $sp, 3, $sp
 	ret
-be_else.31512:
-	load    [min_caml_and_net + $29], $3
+be_else.31427:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	add     $27, 1, $27
-	load    [$28 + $27], $29
-	cmp     $29, -1
-	bne     be_else.31513
-be_then.31513:
+	add     $30, 1, $30
+	load    [$31 + $30], $32
+	cmp     $32, -1
+	bne     be_else.31428
+be_then.31428:
 .count stack_move
 	add     $sp, 3, $sp
 	ret
-be_else.31513:
-	load    [min_caml_and_net + $29], $3
+be_else.31428:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	add     $27, 1, $27
-	load    [$28 + $27], $29
-	cmp     $29, -1
-	bne     be_else.31514
-be_then.31514:
+	add     $30, 1, $30
+	load    [$31 + $30], $32
+	cmp     $32, -1
+	bne     be_else.31429
+be_then.31429:
 .count stack_move
 	add     $sp, 3, $sp
 	ret
-be_else.31514:
-	load    [min_caml_and_net + $29], $3
+be_else.31429:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
 .count stack_move
 	add     $sp, 3, $sp
-	add     $27, 1, $2
+	add     $30, 1, $2
+.count stack_load
 	load    [$sp - 3], $4
 .count move_args
-	mov     $28, $3
+	mov     $31, $3
 	b       solve_one_or_network_fast.2889
 .end solve_one_or_network_fast
 
 ######################################################################
 .begin trace_or_matrix_fast
 trace_or_matrix_fast.2893:
-	load    [$3 + $2], $27
-	load    [$27 + 0], $28
-	cmp     $28, -1
-	bne     be_else.31515
-be_then.31515:
+	load    [$3 + $2], $30
+	load    [$30 + 0], $31
+	cmp     $31, -1
+	bne     be_else.31430
+be_then.31430:
 	ret
-be_else.31515:
+be_else.31430:
 .count stack_move
 	sub     $sp, 4, $sp
-	cmp     $28, 99
+	cmp     $31, 99
+.count stack_store
 	store   $4, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
+.count stack_store
 	store   $2, [$sp + 2]
-	bne     be_else.31516
-be_then.31516:
-	load    [$27 + 1], $28
-	cmp     $28, -1
-	be      bne_cont.31517
-bne_then.31517:
-	load    [min_caml_and_net + $28], $3
+	bne     be_else.31431
+be_then.31431:
+	load    [$30 + 1], $31
+	cmp     $31, -1
+	be      bne_cont.31432
+bne_then.31432:
 	li      0, $2
+	load    [min_caml_and_net + $31], $3
 	call    solve_each_element_fast.2885
-	load    [$27 + 2], $28
-	cmp     $28, -1
-	be      bne_cont.31518
-bne_then.31518:
-	load    [min_caml_and_net + $28], $3
+	load    [$30 + 2], $31
+	cmp     $31, -1
+	be      bne_cont.31433
+bne_then.31433:
 	li      0, $2
+	load    [min_caml_and_net + $31], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	load    [$27 + 3], $28
-	cmp     $28, -1
-	be      bne_cont.31519
-bne_then.31519:
-	load    [min_caml_and_net + $28], $3
+	load    [$30 + 3], $31
+	cmp     $31, -1
+	be      bne_cont.31434
+bne_then.31434:
 	li      0, $2
+	load    [min_caml_and_net + $31], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	load    [$27 + 4], $28
-	cmp     $28, -1
-	be      bne_cont.31520
-bne_then.31520:
-	load    [min_caml_and_net + $28], $3
+	load    [$30 + 4], $31
+	cmp     $31, -1
+	be      bne_cont.31435
+bne_then.31435:
 	li      0, $2
+	load    [min_caml_and_net + $31], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	load    [$27 + 5], $28
-	cmp     $28, -1
-	be      bne_cont.31521
-bne_then.31521:
-	load    [min_caml_and_net + $28], $3
+	load    [$30 + 5], $31
+	cmp     $31, -1
+	be      bne_cont.31436
+bne_then.31436:
 	li      0, $2
+	load    [min_caml_and_net + $31], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	load    [$27 + 6], $28
-	cmp     $28, -1
-	be      bne_cont.31522
-bne_then.31522:
-	load    [min_caml_and_net + $28], $3
+	load    [$30 + 6], $31
+	cmp     $31, -1
+	be      bne_cont.31437
+bne_then.31437:
 	li      0, $2
+	load    [min_caml_and_net + $31], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
 	li      7, $2
+.count stack_load
 	load    [$sp + 0], $4
 .count move_args
-	mov     $27, $3
+	mov     $30, $3
 	call    solve_one_or_network_fast.2889
-bne_cont.31522:
-bne_cont.31521:
-bne_cont.31520:
-bne_cont.31519:
-bne_cont.31518:
-bne_cont.31517:
-	load    [$sp + 2], $27
+bne_cont.31437:
+bne_cont.31436:
+bne_cont.31435:
+bne_cont.31434:
+bne_cont.31433:
+bne_cont.31432:
+.count stack_load
+	load    [$sp + 2], $30
+.count stack_load
 	load    [$sp + 1], $3
-	add     $27, 1, $27
-	load    [$3 + $27], $28
-	load    [$28 + 0], $29
-	cmp     $29, -1
-	bne     be_else.31523
-be_then.31523:
+	add     $30, 1, $30
+	load    [$3 + $30], $31
+	load    [$31 + 0], $32
+	cmp     $32, -1
+	bne     be_else.31438
+be_then.31438:
 .count stack_move
 	add     $sp, 4, $sp
 	ret
-be_else.31523:
-	cmp     $29, 99
-	bne     be_else.31524
-be_then.31524:
-	load    [$28 + 1], $29
-	cmp     $29, -1
-	bne     be_else.31525
-be_then.31525:
+be_else.31438:
+	cmp     $32, 99
+	bne     be_else.31439
+be_then.31439:
+	load    [$31 + 1], $32
+	cmp     $32, -1
+	bne     be_else.31440
+be_then.31440:
 .count stack_move
 	add     $sp, 4, $sp
-	add     $27, 1, $2
+	add     $30, 1, $2
+.count stack_load
 	load    [$sp - 4], $4
 	b       trace_or_matrix_fast.2893
-be_else.31525:
-	load    [min_caml_and_net + $29], $3
+be_else.31440:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31526
-be_then.31526:
+	load    [$31 + 2], $32
+	cmp     $32, -1
+	bne     be_else.31441
+be_then.31441:
 .count stack_move
 	add     $sp, 4, $sp
-	add     $27, 1, $2
+	add     $30, 1, $2
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	b       trace_or_matrix_fast.2893
-be_else.31526:
-	load    [min_caml_and_net + $29], $3
+be_else.31441:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	load    [$28 + 3], $29
-	cmp     $29, -1
-	bne     be_else.31527
-be_then.31527:
+	load    [$31 + 3], $32
+	cmp     $32, -1
+	bne     be_else.31442
+be_then.31442:
 .count stack_move
 	add     $sp, 4, $sp
-	add     $27, 1, $2
+	add     $30, 1, $2
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	b       trace_or_matrix_fast.2893
-be_else.31527:
-	load    [min_caml_and_net + $29], $3
+be_else.31442:
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
-	load    [$28 + 4], $29
-	cmp     $29, -1
-	bne     be_else.31528
-be_then.31528:
+	load    [$31 + 4], $32
+	cmp     $32, -1
+	bne     be_else.31443
+be_then.31443:
 .count stack_move
 	add     $sp, 4, $sp
-	add     $27, 1, $2
+	add     $30, 1, $2
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	b       trace_or_matrix_fast.2893
-be_else.31528:
-	store   $27, [$sp + 3]
-	load    [min_caml_and_net + $29], $3
+be_else.31443:
+.count stack_store
+	store   $30, [$sp + 3]
 	li      0, $2
+	load    [min_caml_and_net + $32], $3
+.count stack_load
 	load    [$sp + 0], $4
 	call    solve_each_element_fast.2885
 	li      5, $2
+.count stack_load
 	load    [$sp + 0], $4
 .count move_args
-	mov     $28, $3
+	mov     $31, $3
 	call    solve_one_or_network_fast.2889
 .count stack_move
 	add     $sp, 4, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	add     $1, 1, $2
 	b       trace_or_matrix_fast.2893
-be_else.31524:
+be_else.31439:
+.count stack_load
 	load    [$sp + 0], $3
 .count move_args
-	mov     $29, $2
+	mov     $32, $2
 	call    solver_fast2.2814
 .count move_ret
-	mov     $1, $30
-	cmp     $30, 0
-	bne     be_else.31529
-be_then.31529:
+	mov     $1, $33
+	cmp     $33, 0
+	bne     be_else.31444
+be_then.31444:
 .count stack_move
 	add     $sp, 4, $sp
-	add     $27, 1, $2
+	add     $30, 1, $2
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	b       trace_or_matrix_fast.2893
-be_else.31529:
+be_else.31444:
 	fcmp    $49, $42
-	bg      ble_else.31530
-ble_then.31530:
+	bg      ble_else.31445
+ble_then.31445:
 .count stack_move
 	add     $sp, 4, $sp
-	add     $27, 1, $2
+	add     $30, 1, $2
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	b       trace_or_matrix_fast.2893
-ble_else.31530:
-	store   $27, [$sp + 3]
+ble_else.31445:
+.count stack_store
+	store   $30, [$sp + 3]
 	li      1, $2
+.count stack_load
 	load    [$sp + 0], $4
 .count move_args
-	mov     $28, $3
+	mov     $31, $3
 	call    solve_one_or_network_fast.2889
 .count stack_move
 	add     $sp, 4, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	add     $1, 1, $2
 	b       trace_or_matrix_fast.2893
-be_else.31516:
+be_else.31431:
 .count move_args
 	mov     $4, $3
 .count move_args
-	mov     $28, $2
+	mov     $31, $2
 	call    solver_fast2.2814
 .count move_ret
-	mov     $1, $30
-	cmp     $30, 0
-	bne     be_else.31531
-be_then.31531:
+	mov     $1, $33
+	cmp     $33, 0
+	bne     be_else.31446
+be_then.31446:
 .count stack_move
 	add     $sp, 4, $sp
+.count stack_load
 	load    [$sp - 2], $1
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	add     $1, 1, $2
 	b       trace_or_matrix_fast.2893
-be_else.31531:
+be_else.31446:
 	fcmp    $49, $42
-	bg      ble_else.31532
-ble_then.31532:
+	bg      ble_else.31447
+ble_then.31447:
 .count stack_move
 	add     $sp, 4, $sp
+.count stack_load
 	load    [$sp - 2], $1
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	add     $1, 1, $2
 	b       trace_or_matrix_fast.2893
-ble_else.31532:
+ble_else.31447:
 	li      1, $2
+.count stack_load
 	load    [$sp + 0], $4
 .count move_args
-	mov     $27, $3
+	mov     $30, $3
 	call    solve_one_or_network_fast.2889
 .count stack_move
 	add     $sp, 4, $sp
+.count stack_load
 	load    [$sp - 2], $1
+.count stack_load
 	load    [$sp - 3], $3
+.count stack_load
 	load    [$sp - 4], $4
 	add     $1, 1, $2
 	b       trace_or_matrix_fast.2893
@@ -7482,8 +7983,7 @@ ble_else.31532:
 utexture.2908:
 	load    [$2 + 8], $10
 	load    [$10 + 0], $10
-.count move_float
-	mov     $10, $60
+	store   $10, [min_caml_texture_color + 0]
 	load    [$2 + 8], $10
 	load    [$10 + 1], $10
 .count move_float
@@ -7494,132 +7994,134 @@ utexture.2908:
 	mov     $10, $58
 	load    [$2 + 0], $10
 	cmp     $10, 1
-	bne     be_else.31533
-be_then.31533:
+	bne     be_else.31448
+be_then.31448:
 	load    [$2 + 5], $10
 	load    [min_caml_intersection_point + 0], $12
 .count load_float
-	load    [f.27195], $13
+	load    [f.27100], $13
 	load    [$10 + 0], $10
 	load    [$2 + 5], $11
 .count stack_move
-	sub     $sp, 3, $sp
+	sub     $sp, 2, $sp
 	fsub    $12, $10, $10
-.count load_float
-	load    [f.27194], $12
 	fmul    $10, $13, $2
 	call    min_caml_floor
-.count move_ret
-	mov     $1, $14
-	fmul    $14, $12, $14
-	fsub    $10, $14, $10
 .count load_float
-	load    [f.27196], $14
-	fcmp    $14, $10
-	bg      ble_else.31534
-ble_then.31534:
-	li      0, $10
-	b       ble_cont.31534
-ble_else.31534:
-	li      1, $10
-ble_cont.31534:
-	load    [min_caml_intersection_point + 2], $15
+	load    [f.27101], $14
+	load    [min_caml_intersection_point + 2], $16
 	load    [$11 + 2], $11
-	fsub    $15, $11, $11
+.count move_ret
+	mov     $1, $12
+.count load_float
+	load    [f.27102], $15
+	fmul    $12, $14, $12
+	fsub    $16, $11, $11
+	fsub    $10, $12, $10
 	fmul    $11, $13, $2
 	call    min_caml_floor
-	fmul    $1, $12, $1
+	fmul    $1, $14, $1
 .count stack_move
-	add     $sp, 3, $sp
+	add     $sp, 2, $sp
+	fcmp    $15, $10
 	fsub    $11, $1, $1
-	fcmp    $14, $1
-	bg      ble_else.31535
-ble_then.31535:
-	cmp     $10, 0
-	bne     be_else.31536
-be_then.31536:
+	bg      ble_else.31449
+ble_then.31449:
+	li      0, $2
+.count b_cont
+	b       ble_cont.31449
+ble_else.31449:
+	li      1, $2
+ble_cont.31449:
+	fcmp    $15, $1
+	bg      ble_else.31450
+ble_then.31450:
+	cmp     $2, 0
+	bne     be_else.31451
+be_then.31451:
 .count load_float
-	load    [f.27191], $1
+	load    [f.27096], $1
 .count move_float
 	mov     $1, $54
 	ret
-be_else.31536:
+be_else.31451:
 .count move_float
 	mov     $zero, $54
 	ret
-ble_else.31535:
-	cmp     $10, 0
-	bne     be_else.31537
-be_then.31537:
+ble_else.31450:
+	cmp     $2, 0
+	bne     be_else.31452
+be_then.31452:
 .count move_float
 	mov     $zero, $54
 	ret
-be_else.31537:
+be_else.31452:
 .count load_float
-	load    [f.27191], $1
+	load    [f.27096], $1
 .count move_float
 	mov     $1, $54
 	ret
-be_else.31533:
+be_else.31448:
 	cmp     $10, 2
-	bne     be_else.31538
-be_then.31538:
+	bne     be_else.31453
+be_then.31453:
 .count load_float
-	load    [f.27193], $11
+	load    [f.27099], $11
 	load    [min_caml_intersection_point + 1], $12
 .count stack_move
-	sub     $sp, 3, $sp
+	sub     $sp, 2, $sp
 	fmul    $12, $11, $2
 	call    min_caml_sin
 	fmul    $1, $1, $1
 .count load_float
-	load    [f.27191], $2
+	load    [f.27096], $2
 .count stack_move
-	add     $sp, 3, $sp
+	add     $sp, 2, $sp
 	fmul    $2, $1, $3
 	fsub    $36, $1, $1
-.count move_float
-	mov     $3, $60
+	store   $3, [min_caml_texture_color + 0]
 	fmul    $2, $1, $1
 .count move_float
 	mov     $1, $54
 	ret
-be_else.31538:
+be_else.31453:
 	cmp     $10, 3
-	bne     be_else.31539
-be_then.31539:
+	bne     be_else.31454
+be_then.31454:
 	load    [$2 + 5], $10
-	load    [min_caml_intersection_point + 2], $14
+	load    [min_caml_intersection_point + 0], $12
 	load    [$2 + 5], $11
-	load    [$10 + 2], $10
+	load    [$10 + 0], $10
 .count load_float
-	load    [f.27192], $13
-	load    [$11 + 0], $11
-	fsub    $14, $10, $10
+	load    [f.27098], $13
+	load    [$11 + 2], $11
+	fsub    $12, $10, $10
 .count stack_move
-	sub     $sp, 3, $sp
-	load    [min_caml_intersection_point + 0], $14
-.count load_float
-	load    [f.27187], $12
-	fsub    $14, $11, $11
+	sub     $sp, 2, $sp
+	load    [min_caml_intersection_point + 2], $12
+	fsub    $12, $11, $11
 	fmul    $10, $10, $10
 	fmul    $11, $11, $11
-	fadd    $11, $10, $10
+	fadd    $10, $11, $10
 	fsqrt   $10, $10
 	fmul    $10, $13, $2
+.count stack_store
 	store   $2, [$sp + 0]
 	call    min_caml_floor
-	load    [$sp + 0], $13
+.count stack_load
+	load    [$sp + 0], $12
 .count move_ret
 	mov     $1, $11
-	fsub    $13, $11, $11
+	fsub    $12, $11, $11
+.count load_float
+	load    [f.27093], $12
 	fmul    $11, $12, $2
 	call    min_caml_cos
 	fmul    $1, $1, $1
 .count load_float
-	load    [f.27191], $2
+	load    [f.27096], $2
 .count stack_move
-	add     $sp, 3, $sp
+	add     $sp, 2, $sp
 	fmul    $1, $2, $3
 	fsub    $36, $1, $1
 .count move_float
@@ -7628,126 +8130,130 @@ be_then.31539:
 .count move_float
 	mov     $1, $58
 	ret
-be_else.31539:
+be_else.31454:
 	cmp     $10, 4
-	bne     be_else.31540
-be_then.31540:
+	bne     be_else.31455
+be_then.31455:
 .count stack_move
-	sub     $sp, 3, $sp
-	store   $2, [$sp + 1]
-	load    [$2 + 5], $12
-	load    [$2 + 4], $11
-	load    [min_caml_intersection_point + 2], $15
-	load    [$12 + 2], $12
-	load    [$11 + 2], $11
-	load    [$2 + 4], $13
-	fsub    $15, $12, $12
-	fsqrt   $11, $11
-	load    [$2 + 5], $14
-	fmul    $12, $11, $11
-	load    [$13 + 0], $12
-	load    [$14 + 0], $13
-	fsqrt   $12, $12
-	load    [min_caml_intersection_point + 0], $14
-	fsub    $14, $13, $13
+	sub     $sp, 2, $sp
 .count load_float
-	load    [f.27184], $14
+	load    [f.27090], $15
+.count stack_store
+	store   $2, [$sp + 1]
+	load    [$2 + 4], $12
+	load    [$2 + 5], $11
+	load    [min_caml_intersection_point + 0], $16
+	load    [$12 + 0], $12
+	load    [$11 + 0], $11
+	load    [$2 + 4], $14
+	fsqrt   $12, $12
+	fsub    $16, $11, $11
+	load    [$2 + 5], $13
+	load    [min_caml_intersection_point + 2], $16
+	load    [$13 + 2], $13
+	fmul    $11, $12, $11
+	load    [$14 + 2], $12
+	fsub    $16, $13, $13
+	fsqrt   $12, $12
+	fabs    $11, $14
+	fcmp    $15, $14
 	fmul    $13, $12, $12
-	fabs    $12, $13
-	fcmp    $14, $13
-	bg      ble_else.31541
-ble_then.31541:
-	finv    $12, $13
-	fmul    $11, $13, $13
+	bg      ble_else.31456
+ble_then.31456:
+	finv    $11, $13
+	fmul    $12, $13, $13
 	fabs    $13, $2
 	call    min_caml_atan
 .count load_float
-	load    [f.27186], $15
+	load    [f.27092], $14
 .count move_ret
 	mov     $1, $13
-	fmul    $13, $15, $13
 .count load_float
-	load    [f.27187], $15
+	load    [f.27093], $16
+	fmul    $13, $14, $13
 .count load_float
-	load    [f.27188], $15
-	fmul    $13, $15, $13
-	b       ble_cont.31541
-ble_else.31541:
+	load    [f.27094], $16
+	fmul    $13, $16, $13
+.count b_cont
+	b       ble_cont.31456
+ble_else.31456:
 .count load_float
-	load    [f.27185], $13
-ble_cont.31541:
-	fmul    $11, $11, $11
+	load    [f.27091], $13
+ble_cont.31456:
+.count stack_load
+	load    [$sp + 1], $14
 	fmul    $12, $12, $12
-	load    [$sp + 1], $15
-	load    [$15 + 4], $16
-	fadd    $12, $11, $11
-	load    [$15 + 5], $15
-	load    [$16 + 1], $12
-	load    [$15 + 1], $15
-	load    [min_caml_intersection_point + 1], $16
-	fsqrt   $12, $12
-	fsub    $16, $15, $15
-	fmul    $15, $12, $12
-	fabs    $11, $15
-	fcmp    $14, $15
-	bg      ble_else.31542
-ble_then.31542:
+	fmul    $11, $11, $11
+	load    [$14 + 5], $16
+	load    [min_caml_intersection_point + 1], $17
+	load    [$14 + 4], $14
+	load    [$16 + 1], $16
+	fadd    $11, $12, $11
+	load    [$14 + 1], $14
+	fsub    $17, $16, $12
+	fsqrt   $14, $14
+	fabs    $11, $16
+	fcmp    $15, $16
+	fmul    $12, $14, $12
+	bg      ble_else.31457
+ble_then.31457:
 	finv    $11, $11
 	fmul    $12, $11, $11
 	fabs    $11, $2
 	call    min_caml_atan
 .count load_float
-	load    [f.27186], $11
+	load    [f.27092], $11
 .count move_ret
 	mov     $1, $10
+.count load_float
+	load    [f.27093], $12
 	fmul    $10, $11, $10
 .count load_float
-	load    [f.27187], $11
+	load    [f.27094], $12
+	fmul    $10, $12, $10
+.count b_cont
+	b       ble_cont.31457
+ble_else.31457:
 .count load_float
-	load    [f.27188], $11
-	fmul    $10, $11, $2
-	b       ble_cont.31542
-ble_else.31542:
+	load    [f.27091], $10
+ble_cont.31457:
 .count load_float
-	load    [f.27185], $2
-ble_cont.31542:
-	store   $2, [$sp + 2]
-	call    min_caml_floor
-	load    [$sp + 2], $11
-.count move_ret
-	mov     $1, $10
+	load    [f.27095], $11
 .count move_args
 	mov     $13, $2
-	fsub    $11, $10, $10
-	fsub    $39, $10, $10
-	fmul    $10, $10, $10
 	call    min_caml_floor
-	fsub    $13, $1, $1
-.count load_float
-	load    [f.27189], $2
+.count move_ret
+	mov     $1, $12
+.count move_args
+	mov     $10, $2
+	fsub    $13, $12, $12
+	fsub    $39, $12, $12
+	fmul    $12, $12, $12
+	fsub    $11, $12, $11
+	call    min_caml_floor
+	fsub    $10, $1, $1
 .count stack_move
-	add     $sp, 3, $sp
+	add     $sp, 2, $sp
 	fsub    $39, $1, $1
 	fmul    $1, $1, $1
-	fsub    $2, $1, $1
-	fsub    $1, $10, $1
+	fsub    $11, $1, $1
 	fcmp    $zero, $1
-	bg      ble_else.31543
-ble_then.31543:
+	bg      ble_else.31458
+ble_then.31458:
 .count load_float
-	load    [f.27191], $3
+	load    [f.27096], $2
 .count load_float
-	load    [f.27190], $2
-	fmul    $3, $1, $1
-	fmul    $1, $2, $1
+	load    [f.27097], $3
+	fmul    $2, $1, $1
+	fmul    $1, $3, $1
 .count move_float
 	mov     $1, $58
 	ret
-ble_else.31543:
+ble_else.31458:
 .count move_float
 	mov     $zero, $58
 	ret
-be_else.31540:
+be_else.31455:
 	ret
 .end utexture
 
@@ -7755,173 +8261,199 @@ be_else.31540:
 .begin trace_reflections
 trace_reflections.2915:
 	cmp     $2, 0
-	bl      bge_else.31544
-bge_then.31544:
+	bl      bge_else.31459
+bge_then.31459:
 .count stack_move
 	sub     $sp, 6, $sp
 .count load_float
-	load    [f.27197], $32
+	load    [f.27103], $35
+.count stack_store
 	store   $5, [$sp + 0]
+.count stack_store
 	store   $4, [$sp + 1]
 .count move_float
-	mov     $32, $49
+	mov     $35, $49
+.count stack_store
 	store   $3, [$sp + 2]
+.count stack_store
 	store   $2, [$sp + 3]
-	load    [min_caml_reflections + $2], $31
-	load    [$31 + 1], $4
+	load    [min_caml_reflections + $2], $34
+	load    [$34 + 1], $4
+.count stack_store
 	store   $4, [$sp + 4]
-	load    [$59 + 0], $32
-	load    [$32 + 0], $33
-	cmp     $33, -1
-	be      bne_cont.31545
-bne_then.31545:
-	cmp     $33, 99
-	bne     be_else.31546
-be_then.31546:
-	load    [$32 + 1], $33
-	cmp     $33, -1
-	bne     be_else.31547
-be_then.31547:
+	load    [$59 + 0], $35
+	load    [$35 + 0], $30
+	cmp     $30, -1
+	be      bne_cont.31460
+bne_then.31460:
+	cmp     $30, 99
+	bne     be_else.31461
+be_then.31461:
+	load    [$35 + 1], $30
+	cmp     $30, -1
+	bne     be_else.31462
+be_then.31462:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31546
-be_else.31547:
-	load    [min_caml_and_net + $33], $3
+.count b_cont
+	b       be_cont.31461
+be_else.31462:
 	li      0, $2
+	load    [min_caml_and_net + $30], $3
 	call    solve_each_element_fast.2885
-	load    [$32 + 2], $33
+	load    [$35 + 2], $30
+.count stack_load
 	load    [$sp + 4], $4
-	cmp     $33, -1
-	bne     be_else.31548
-be_then.31548:
+	cmp     $30, -1
+	bne     be_else.31463
+be_then.31463:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31546
-be_else.31548:
-	load    [min_caml_and_net + $33], $3
+.count b_cont
+	b       be_cont.31461
+be_else.31463:
 	li      0, $2
+	load    [min_caml_and_net + $30], $3
 	call    solve_each_element_fast.2885
-	load    [$32 + 3], $33
+	load    [$35 + 3], $30
+.count stack_load
 	load    [$sp + 4], $4
-	cmp     $33, -1
-	bne     be_else.31549
-be_then.31549:
+	cmp     $30, -1
+	bne     be_else.31464
+be_then.31464:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31546
-be_else.31549:
-	load    [min_caml_and_net + $33], $3
+.count b_cont
+	b       be_cont.31461
+be_else.31464:
 	li      0, $2
+	load    [min_caml_and_net + $30], $3
 	call    solve_each_element_fast.2885
-	load    [$32 + 4], $33
+	load    [$35 + 4], $30
+.count stack_load
 	load    [$sp + 4], $4
-	cmp     $33, -1
-	bne     be_else.31550
-be_then.31550:
+	cmp     $30, -1
+	bne     be_else.31465
+be_then.31465:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31546
-be_else.31550:
-	load    [min_caml_and_net + $33], $3
+.count b_cont
+	b       be_cont.31461
+be_else.31465:
 	li      0, $2
+	load    [min_caml_and_net + $30], $3
 	call    solve_each_element_fast.2885
 	li      5, $2
+.count stack_load
 	load    [$sp + 4], $4
 .count move_args
-	mov     $32, $3
+	mov     $35, $3
 	call    solve_one_or_network_fast.2889
 	li      1, $2
+.count stack_load
 	load    [$sp + 4], $4
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31546
-be_else.31546:
+.count b_cont
+	b       be_cont.31461
+be_else.31461:
 .count move_args
 	mov     $4, $3
 .count move_args
-	mov     $33, $2
+	mov     $30, $2
 	call    solver_fast2.2814
 .count move_ret
 	mov     $1, $33
 	cmp     $33, 0
+.count stack_load
 	load    [$sp + 4], $4
 	li      1, $2
-	bne     be_else.31551
-be_then.31551:
+	bne     be_else.31466
+be_then.31466:
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31551
-be_else.31551:
+.count b_cont
+	b       be_cont.31466
+be_else.31466:
 	fcmp    $49, $42
-	bg      ble_else.31552
-ble_then.31552:
+	bg      ble_else.31467
+ble_then.31467:
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       ble_cont.31552
-ble_else.31552:
+.count b_cont
+	b       ble_cont.31467
+ble_else.31467:
 .count move_args
-	mov     $32, $3
+	mov     $35, $3
 	call    solve_one_or_network_fast.2889
 	li      1, $2
+.count stack_load
 	load    [$sp + 4], $4
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-ble_cont.31552:
-be_cont.31551:
-be_cont.31546:
-bne_cont.31545:
+ble_cont.31467:
+be_cont.31466:
+be_cont.31461:
+bne_cont.31460:
 .count load_float
-	load    [f.27183], $1
+	load    [f.27089], $1
 	fcmp    $49, $1
-	bg      ble_else.31553
-ble_then.31553:
+	bg      ble_else.31468
+ble_then.31468:
 	li      0, $1
-	b       ble_cont.31553
-ble_else.31553:
+.count b_cont
+	b       ble_cont.31468
+ble_else.31468:
 .count load_float
-	load    [f.27198], $1
+	load    [f.27104], $1
 	fcmp    $1, $49
-	bg      ble_else.31554
-ble_then.31554:
+	bg      ble_else.31469
+ble_then.31469:
 	li      0, $1
-	b       ble_cont.31554
-ble_else.31554:
+.count b_cont
+	b       ble_cont.31469
+ble_else.31469:
 	li      1, $1
-ble_cont.31554:
-ble_cont.31553:
+ble_cont.31469:
+ble_cont.31468:
 	cmp     $1, 0
-	bne     be_else.31555
-be_then.31555:
+	bne     be_else.31470
+be_then.31470:
 .count stack_move
 	add     $sp, 6, $sp
+.count stack_load
 	load    [$sp - 3], $1
+.count stack_load
 	load    [$sp - 4], $3
+.count stack_load
 	load    [$sp - 5], $4
 	sub     $1, 1, $2
+.count stack_load
 	load    [$sp - 6], $5
 	b       trace_reflections.2915
-be_else.31555:
-	load    [min_caml_intersected_object_id + 0], $3
-	load    [min_caml_intsec_rectside + 0], $2
-	load    [$31 + 0], $1
-	sll     $3, 2, $3
-	add     $3, $2, $2
+be_else.31470:
+	load    [min_caml_intersected_object_id + 0], $2
+	load    [min_caml_intsec_rectside + 0], $3
+	load    [$34 + 0], $1
+	sll     $2, 2, $2
+	add     $2, $3, $2
 	cmp     $2, $1
-	bne     be_else.31556
-be_then.31556:
-	store   $31, [$sp + 5]
+	bne     be_else.31471
+be_then.31471:
+.count stack_store
+	store   $34, [$sp + 5]
 	li      0, $2
 .count move_args
 	mov     $59, $3
@@ -7929,105 +8461,106 @@ be_then.31556:
 .count stack_move
 	add     $sp, 6, $sp
 	cmp     $1, 0
-	bne     be_else.31557
-be_then.31557:
+.count stack_load
+	load    [$sp - 4], $3
+	bne     be_else.31472
+be_then.31472:
+.count stack_load
 	load    [$sp - 2], $2
-	load    [min_caml_nvector + 1], $6
-	load    [min_caml_nvector + 0], $7
+	load    [min_caml_nvector + 0], $5
+	load    [min_caml_nvector + 1], $7
 	load    [$2 + 0], $2
-	load    [min_caml_nvector + 2], $4
+	load    [min_caml_nvector + 2], $9
+.count stack_load
 	load    [$sp - 1], $1
-	load    [$2 + 1], $5
-	load    [$2 + 2], $3
+	load    [$2 + 0], $6
+	load    [$2 + 1], $8
 	load    [$1 + 2], $1
-	load    [$2 + 0], $2
-	fmul    $6, $5, $6
-	fmul    $4, $3, $4
-	fmul    $7, $2, $7
-	fadd    $7, $6, $6
-	fadd    $6, $4, $4
-	load    [$sp - 4], $6
-	fmul    $1, $6, $7
-	fmul    $7, $4, $4
+	fmul    $5, $6, $5
+	fmul    $7, $8, $7
+	load    [$2 + 2], $2
+	fmul    $1, $3, $4
+	fadd    $5, $7, $5
+	fmul    $9, $2, $7
+	fadd    $5, $7, $5
+	fmul    $4, $5, $4
 	fcmp    $4, $zero
-	ble     bg_cont.31558
-bg_then.31558:
-	fmul    $4, $60, $7
-	fadd    $46, $7, $7
+	ble     bg_cont.31473
+bg_then.31473:
+	load    [min_caml_texture_color + 0], $5
+	fmul    $4, $5, $5
+	fadd    $46, $5, $5
 .count move_float
-	mov     $7, $46
-	fmul    $4, $54, $7
+	mov     $5, $46
+	fmul    $4, $54, $5
 	fmul    $4, $58, $4
-	fadd    $47, $7, $7
+	fadd    $47, $5, $5
 	fadd    $48, $4, $4
 .count move_float
-	mov     $7, $47
+	mov     $5, $47
 .count move_float
 	mov     $4, $48
-bg_cont.31558:
-	load    [$sp - 6], $4
-	load    [$4 + 2], $7
-	fmul    $7, $3, $3
-	load    [$4 + 1], $7
-	fmul    $7, $5, $5
-	load    [$4 + 0], $7
+bg_cont.31473:
+.count stack_load
+	load    [$sp - 6], $5
+	load    [$5 + 0], $4
+	load    [$5 + 1], $7
+	fmul    $4, $6, $4
+	fmul    $7, $8, $6
+	load    [$5 + 2], $7
 	fmul    $7, $2, $2
-	fadd    $2, $5, $2
-.count move_args
-	mov     $4, $5
-	fadd    $2, $3, $2
+	fadd    $4, $6, $4
+	fadd    $4, $2, $2
+.count stack_load
+	load    [$sp - 5], $4
 	fmul    $1, $2, $1
 	fcmp    $1, $zero
-	bg      ble_else.31559
-ble_then.31559:
+	bg      ble_else.31474
+ble_then.31474:
+.count stack_load
 	load    [$sp - 3], $1
-.count move_args
-	mov     $6, $3
 	sub     $1, 1, $2
-	load    [$sp - 5], $1
-.count move_args
-	mov     $1, $4
 	b       trace_reflections.2915
-ble_else.31559:
+ble_else.31474:
 	fmul    $1, $1, $1
-	load    [$sp - 5], $2
-.count move_args
-	mov     $2, $4
 	fmul    $1, $1, $1
-	fmul    $1, $2, $1
-	fadd    $46, $1, $3
+	fmul    $1, $4, $1
+	fadd    $46, $1, $2
 .count move_float
-	mov     $3, $46
-	fadd    $47, $1, $3
+	mov     $2, $46
+	fadd    $47, $1, $2
 	fadd    $48, $1, $1
 .count move_float
-	mov     $3, $47
+	mov     $2, $47
 .count move_float
 	mov     $1, $48
-.count move_args
-	mov     $6, $3
+.count stack_load
 	load    [$sp - 3], $1
-	sub     $1, 1, $1
-.count move_args
-	mov     $1, $2
-	b       trace_reflections.2915
-be_else.31557:
-	load    [$sp - 3], $1
-	load    [$sp - 4], $3
-	load    [$sp - 5], $4
 	sub     $1, 1, $2
-	load    [$sp - 6], $5
 	b       trace_reflections.2915
-be_else.31556:
+be_else.31472:
+.count stack_load
+	load    [$sp - 3], $1
+.count stack_load
+	load    [$sp - 5], $4
+.count stack_load
+	load    [$sp - 6], $5
+	sub     $1, 1, $2
+	b       trace_reflections.2915
+be_else.31471:
 .count stack_move
 	add     $sp, 6, $sp
+.count stack_load
 	load    [$sp - 3], $1
+.count stack_load
 	load    [$sp - 4], $3
+.count stack_load
 	load    [$sp - 5], $4
 	sub     $1, 1, $2
+.count stack_load
 	load    [$sp - 6], $5
 	b       trace_reflections.2915
-bge_else.31544:
+bge_else.31459:
 	ret
 .end trace_reflections
 
@@ -8035,186 +8568,219 @@ bge_else.31544:
 .begin trace_ray
 trace_ray.2920:
 	cmp     $2, 4
-	bg      ble_else.31560
-ble_then.31560:
+	bg      ble_else.31475
+ble_then.31475:
 .count stack_move
-	sub     $sp, 9, $sp
+	sub     $sp, 10, $sp
 .count load_float
-	load    [f.27197], $34
+	load    [f.27103], $19
+.count stack_store
 	store   $6, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
 .count move_float
-	mov     $34, $49
+	mov     $19, $49
+.count stack_store
 	store   $4, [$sp + 2]
+.count stack_store
 	store   $2, [$sp + 3]
+.count stack_store
 	store   $5, [$sp + 4]
-	load    [$59 + 0], $34
-	load    [$34 + 0], $35
-	cmp     $35, -1
-	be      bne_cont.31561
-bne_then.31561:
-	cmp     $35, 99
-	bne     be_else.31562
-be_then.31562:
-	load    [$34 + 1], $35
-	cmp     $35, -1
-	bne     be_else.31563
-be_then.31563:
+	load    [$59 + 0], $3
+	load    [$3 + 0], $2
+	cmp     $2, -1
+	be      bne_cont.31476
+bne_then.31476:
+	cmp     $2, 99
+	bne     be_else.31477
+be_then.31477:
+	load    [$3 + 1], $18
+	cmp     $18, -1
+	bne     be_else.31478
+be_then.31478:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix.2879
-	b       be_cont.31562
-be_else.31563:
-	load    [min_caml_and_net + $35], $3
+.count b_cont
+	b       be_cont.31477
+be_else.31478:
+.count stack_store
+	store   $3, [$sp + 5]
 	li      0, $2
+	load    [min_caml_and_net + $18], $3
 	call    solve_each_element.2871
-	load    [$34 + 2], $35
+.count stack_load
+	load    [$sp + 5], $3
+.count stack_load
 	load    [$sp + 2], $4
-	cmp     $35, -1
-	bne     be_else.31564
-be_then.31564:
+	load    [$3 + 2], $18
+	cmp     $18, -1
+	bne     be_else.31479
+be_then.31479:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix.2879
-	b       be_cont.31562
-be_else.31564:
-	load    [min_caml_and_net + $35], $3
+.count b_cont
+	b       be_cont.31477
+be_else.31479:
 	li      0, $2
+	load    [min_caml_and_net + $18], $3
 	call    solve_each_element.2871
-	load    [$34 + 3], $35
+.count stack_load
+	load    [$sp + 5], $3
+.count stack_load
 	load    [$sp + 2], $4
-	cmp     $35, -1
-	bne     be_else.31565
-be_then.31565:
+	load    [$3 + 3], $18
+	cmp     $18, -1
+	bne     be_else.31480
+be_then.31480:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix.2879
-	b       be_cont.31562
-be_else.31565:
-	load    [min_caml_and_net + $35], $3
+.count b_cont
+	b       be_cont.31477
+be_else.31480:
 	li      0, $2
+	load    [min_caml_and_net + $18], $3
 	call    solve_each_element.2871
-	load    [$34 + 4], $35
+.count stack_load
+	load    [$sp + 5], $3
+.count stack_load
 	load    [$sp + 2], $4
-	cmp     $35, -1
-	bne     be_else.31566
-be_then.31566:
+	load    [$3 + 4], $18
+	cmp     $18, -1
+	bne     be_else.31481
+be_then.31481:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix.2879
-	b       be_cont.31562
-be_else.31566:
-	load    [min_caml_and_net + $35], $3
+.count b_cont
+	b       be_cont.31477
+be_else.31481:
 	li      0, $2
+	load    [min_caml_and_net + $18], $3
 	call    solve_each_element.2871
 	li      5, $2
+.count stack_load
+	load    [$sp + 5], $3
+.count stack_load
 	load    [$sp + 2], $4
-.count move_args
-	mov     $34, $3
 	call    solve_one_or_network.2875
 	li      1, $2
+.count stack_load
 	load    [$sp + 2], $4
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix.2879
-	b       be_cont.31562
-be_else.31562:
+.count b_cont
+	b       be_cont.31477
+be_else.31477:
+.count stack_store
+	store   $3, [$sp + 5]
 .count move_args
 	mov     $4, $3
-.count move_args
-	mov     $35, $2
 	call    solver.2773
 .count move_ret
-	mov     $1, $17
-	cmp     $17, 0
+	mov     $1, $18
+	cmp     $18, 0
+.count stack_load
 	load    [$sp + 2], $4
 	li      1, $2
-	bne     be_else.31567
-be_then.31567:
+	bne     be_else.31482
+be_then.31482:
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix.2879
-	b       be_cont.31567
-be_else.31567:
+.count b_cont
+	b       be_cont.31482
+be_else.31482:
 	fcmp    $49, $42
-	bg      ble_else.31568
-ble_then.31568:
+	bg      ble_else.31483
+ble_then.31483:
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix.2879
-	b       ble_cont.31568
-ble_else.31568:
-.count move_args
-	mov     $34, $3
+.count b_cont
+	b       ble_cont.31483
+ble_else.31483:
+.count stack_load
+	load    [$sp + 5], $3
 	call    solve_one_or_network.2875
 	li      1, $2
+.count stack_load
 	load    [$sp + 2], $4
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix.2879
-ble_cont.31568:
-be_cont.31567:
-be_cont.31562:
-bne_cont.31561:
-	load    [$sp + 4], $17
+ble_cont.31483:
+be_cont.31482:
+be_cont.31477:
+bne_cont.31476:
+.count stack_load
+	load    [$sp + 4], $18
 .count load_float
-	load    [f.27183], $19
-	load    [$17 + 2], $18
-	fcmp    $49, $19
-	bg      ble_else.31569
-ble_then.31569:
-	li      0, $20
-	b       ble_cont.31569
-ble_else.31569:
+	load    [f.27089], $20
+	load    [$18 + 2], $19
+	fcmp    $49, $20
+	bg      ble_else.31484
+ble_then.31484:
+	li      0, $21
+.count b_cont
+	b       ble_cont.31484
+ble_else.31484:
 .count load_float
-	load    [f.27198], $20
-	fcmp    $20, $49
-	bg      ble_else.31570
-ble_then.31570:
-	li      0, $20
-	b       ble_cont.31570
-ble_else.31570:
-	li      1, $20
-ble_cont.31570:
-ble_cont.31569:
-	cmp     $20, 0
-	bne     be_else.31571
-be_then.31571:
+	load    [f.27104], $21
+	fcmp    $21, $49
+	bg      ble_else.31485
+ble_then.31485:
+	li      0, $21
+.count b_cont
+	b       ble_cont.31485
+ble_else.31485:
+	li      1, $21
+ble_cont.31485:
+ble_cont.31484:
+	cmp     $21, 0
+	bne     be_else.31486
+be_then.31486:
 .count stack_move
-	add     $sp, 9, $sp
+	add     $sp, 10, $sp
 	add     $zero, -1, $1
-	load    [$sp - 6], $2
+.count stack_load
+	load    [$sp - 7], $2
 .count storer
-	add     $18, $2, $tmp
+	add     $19, $2, $tmp
 	cmp     $2, 0
 	store   $1, [$tmp + 0]
-	bne     be_else.31572
-be_then.31572:
+	bne     be_else.31487
+be_then.31487:
 	ret
-be_else.31572:
-	load    [$sp - 7], $1
-	load    [$1 + 2], $2
+be_else.31487:
+.count stack_load
+	load    [$sp - 8], $1
+	load    [$1 + 0], $2
 	load    [$1 + 1], $3
-	load    [$1 + 0], $1
+	fmul    $2, $55, $2
 	fmul    $3, $56, $3
-	fmul    $2, $57, $2
-	fmul    $1, $55, $1
-	fadd    $1, $3, $1
-	fadd    $1, $2, $1
+	load    [$1 + 2], $1
+	fmul    $1, $57, $1
+	fadd    $2, $3, $2
+	fadd    $2, $1, $1
 	fneg    $1, $1
 	fcmp    $1, $zero
-	bg      ble_else.31573
-ble_then.31573:
+	bg      ble_else.31488
+ble_then.31488:
 	ret
-ble_else.31573:
-	fmul    $1, $1, $3
+ble_else.31488:
+	fmul    $1, $1, $2
+.count stack_load
+	load    [$sp - 9], $3
+	fmul    $2, $1, $1
 	load    [min_caml_beam + 0], $2
-	fmul    $3, $1, $1
-	load    [$sp - 8], $3
 	fmul    $1, $3, $1
 	fmul    $1, $2, $1
 	fadd    $46, $1, $2
@@ -8227,532 +8793,584 @@ ble_else.31573:
 .count move_float
 	mov     $1, $48
 	ret
-be_else.31571:
-	store   $18, [$sp + 5]
-	load    [min_caml_intersected_object_id + 0], $20
-	load    [min_caml_objects + $20], $2
-	store   $2, [$sp + 6]
-	load    [$2 + 1], $21
-	cmp     $21, 1
-	bne     be_else.31574
-be_then.31574:
+be_else.31486:
+.count stack_store
+	store   $19, [$sp + 6]
+	load    [min_caml_intersected_object_id + 0], $21
+	load    [min_caml_objects + $21], $2
+.count stack_store
+	store   $2, [$sp + 7]
+	load    [$2 + 1], $22
+	cmp     $22, 1
+	bne     be_else.31489
+be_then.31489:
 	store   $zero, [min_caml_nvector + 0]
 	store   $zero, [min_caml_nvector + 1]
 	store   $zero, [min_caml_nvector + 2]
-	load    [min_caml_intsec_rectside + 0], $21
-	load    [$sp + 2], $22
-	sub     $21, 1, $21
-	load    [$22 + $21], $22
-	fcmp    $22, $zero
-	bne     be_else.31575
-be_then.31575:
-	store   $zero, [min_caml_nvector + $21]
-	b       be_cont.31574
-be_else.31575:
-	fcmp    $22, $zero
-	bg      ble_else.31576
-ble_then.31576:
-	store   $36, [min_caml_nvector + $21]
-	b       be_cont.31574
-ble_else.31576:
-	store   $40, [min_caml_nvector + $21]
-	b       be_cont.31574
-be_else.31574:
-	cmp     $21, 2
-	bne     be_else.31577
-be_then.31577:
-	load    [$2 + 4], $21
-	load    [$21 + 0], $21
-	fneg    $21, $21
-	store   $21, [min_caml_nvector + 0]
-	load    [$2 + 4], $21
-	load    [$21 + 1], $21
-	fneg    $21, $21
-	store   $21, [min_caml_nvector + 1]
-	load    [$2 + 4], $21
-	load    [$21 + 2], $21
-	fneg    $21, $21
-	store   $21, [min_caml_nvector + 2]
-	b       be_cont.31577
-be_else.31577:
-	load    [$2 + 5], $21
-	load    [min_caml_intersection_point + 2], $22
-	load    [min_caml_intersection_point + 1], $23
-	load    [$21 + 2], $21
-	load    [min_caml_intersection_point + 0], $24
-	load    [$2 + 4], $25
-	fsub    $22, $21, $21
-	load    [$2 + 4], $26
-	load    [$2 + 5], $22
-	load    [$2 + 3], $27
-	load    [$25 + 1], $25
-	load    [$22 + 1], $22
-	load    [$26 + 0], $26
-	cmp     $27, 0
-	fsub    $23, $22, $22
-	load    [$2 + 5], $23
-	load    [$23 + 0], $23
-	fmul    $22, $25, $25
-	fsub    $24, $23, $23
-	load    [$2 + 4], $24
-	load    [$24 + 2], $24
-	fmul    $23, $26, $26
-	fmul    $21, $24, $24
-	bne     be_else.31578
-be_then.31578:
-	store   $26, [min_caml_nvector + 0]
-	store   $25, [min_caml_nvector + 1]
-	store   $24, [min_caml_nvector + 2]
-	b       be_cont.31578
-be_else.31578:
-	load    [$2 + 9], $28
-	load    [$2 + 9], $27
-	load    [$28 + 1], $28
-	load    [$27 + 2], $27
-	fmul    $21, $28, $28
-	fmul    $22, $27, $27
-	fadd    $27, $28, $27
-	fmul    $27, $39, $27
-	fadd    $26, $27, $26
-	store   $26, [min_caml_nvector + 0]
-	load    [$2 + 9], $27
-	load    [$2 + 9], $26
-	load    [$27 + 0], $27
-	load    [$26 + 2], $26
-	fmul    $21, $27, $21
-	fmul    $23, $26, $26
-	fadd    $26, $21, $21
-	fmul    $21, $39, $21
-	fadd    $25, $21, $21
-	store   $21, [min_caml_nvector + 1]
-	load    [$2 + 9], $21
-	load    [$21 + 1], $21
-	fmul    $23, $21, $21
-	load    [$2 + 9], $23
-	load    [$23 + 0], $23
-	fmul    $22, $23, $22
-	fadd    $21, $22, $21
-	fmul    $21, $39, $21
-	fadd    $24, $21, $21
-	store   $21, [min_caml_nvector + 2]
-be_cont.31578:
-	load    [min_caml_nvector + 0], $23
-	load    [min_caml_nvector + 1], $22
-	load    [min_caml_nvector + 2], $21
-	fmul    $23, $23, $23
-	fmul    $22, $22, $22
-	fmul    $21, $21, $21
-	fadd    $23, $22, $22
-	fadd    $22, $21, $21
-	load    [$2 + 6], $22
-	fsqrt   $21, $21
-	fcmp    $21, $zero
-	bne     be_else.31579
-be_then.31579:
-	mov     $36, $21
-	b       be_cont.31579
-be_else.31579:
-	cmp     $22, 0
-	finv    $21, $21
-	be      bne_cont.31580
-bne_then.31580:
-	fneg    $21, $21
-bne_cont.31580:
-be_cont.31579:
-	load    [min_caml_nvector + 0], $22
-	fmul    $22, $21, $22
+	load    [min_caml_intsec_rectside + 0], $22
+.count stack_load
+	load    [$sp + 2], $23
+	sub     $22, 1, $22
+	load    [$23 + $22], $23
+	fcmp    $23, $zero
+	bne     be_else.31490
+be_then.31490:
+	store   $zero, [min_caml_nvector + $22]
+.count b_cont
+	b       be_cont.31489
+be_else.31490:
+	fcmp    $23, $zero
+	bg      ble_else.31491
+ble_then.31491:
+	store   $36, [min_caml_nvector + $22]
+.count b_cont
+	b       be_cont.31489
+ble_else.31491:
+	store   $40, [min_caml_nvector + $22]
+.count b_cont
+	b       be_cont.31489
+be_else.31489:
+	cmp     $22, 2
+	bne     be_else.31492
+be_then.31492:
+	load    [$2 + 4], $22
+	load    [$22 + 0], $22
+	fneg    $22, $22
 	store   $22, [min_caml_nvector + 0]
-	load    [min_caml_nvector + 1], $22
-	fmul    $22, $21, $22
+	load    [$2 + 4], $22
+	load    [$22 + 1], $22
+	fneg    $22, $22
 	store   $22, [min_caml_nvector + 1]
-	load    [min_caml_nvector + 2], $22
-	fmul    $22, $21, $21
-	store   $21, [min_caml_nvector + 2]
-be_cont.31577:
-be_cont.31574:
-	load    [min_caml_intersection_point + 0], $21
-	store   $21, [min_caml_startp + 0]
-	load    [min_caml_intersection_point + 1], $21
-	store   $21, [min_caml_startp + 1]
-	load    [min_caml_intersection_point + 2], $21
-	store   $21, [min_caml_startp + 2]
+	load    [$2 + 4], $22
+	load    [$22 + 2], $22
+	fneg    $22, $22
+	store   $22, [min_caml_nvector + 2]
+.count b_cont
+	b       be_cont.31492
+be_else.31492:
+	load    [$2 + 5], $24
+	load    [min_caml_intersection_point + 0], $25
+	load    [$2 + 4], $26
+	load    [$24 + 0], $24
+	load    [$2 + 5], $27
+	load    [$2 + 4], $28
+	fsub    $25, $24, $24
+	load    [$27 + 1], $27
+	load    [$26 + 1], $25
+	load    [min_caml_intersection_point + 2], $29
+	load    [min_caml_intersection_point + 1], $26
+	load    [$2 + 4], $23
+	load    [$2 + 3], $22
+	fsub    $26, $27, $26
+	load    [$23 + 0], $23
+	load    [$28 + 2], $27
+	cmp     $22, 0
+	load    [$2 + 5], $28
+	fmul    $24, $23, $23
+	fmul    $26, $25, $25
+	load    [$28 + 2], $28
+	fsub    $29, $28, $28
+	fmul    $28, $27, $27
+	bne     be_else.31493
+be_then.31493:
+	store   $23, [min_caml_nvector + 0]
+	store   $25, [min_caml_nvector + 1]
+	store   $27, [min_caml_nvector + 2]
+.count b_cont
+	b       be_cont.31493
+be_else.31493:
+	load    [$2 + 9], $29
+	load    [$2 + 9], $22
+	load    [$29 + 1], $29
+	load    [$22 + 2], $22
+	fmul    $28, $29, $29
+	fmul    $26, $22, $22
+	fadd    $22, $29, $22
+	fmul    $22, $39, $22
+	fadd    $23, $22, $22
+	store   $22, [min_caml_nvector + 0]
+	load    [$2 + 9], $23
+	load    [$2 + 9], $22
+	load    [$23 + 0], $23
+	load    [$22 + 2], $22
+	fmul    $28, $23, $23
+	fmul    $24, $22, $22
+	fadd    $22, $23, $22
+	fmul    $22, $39, $22
+	fadd    $25, $22, $22
+	store   $22, [min_caml_nvector + 1]
+	load    [$2 + 9], $23
+	load    [$2 + 9], $22
+	load    [$23 + 0], $23
+	load    [$22 + 1], $22
+	fmul    $26, $23, $23
+	fmul    $24, $22, $22
+	fadd    $22, $23, $22
+	fmul    $22, $39, $22
+	fadd    $27, $22, $22
+	store   $22, [min_caml_nvector + 2]
+be_cont.31493:
+	load    [min_caml_nvector + 0], $23
+	load    [min_caml_nvector + 1], $25
+	load    [min_caml_nvector + 2], $26
+	fmul    $23, $23, $24
+	fmul    $25, $25, $25
+	fmul    $26, $26, $26
+	load    [$2 + 6], $22
+	fadd    $24, $25, $24
+	fadd    $24, $26, $24
+	fsqrt   $24, $24
+	fcmp    $24, $zero
+	bne     be_else.31494
+be_then.31494:
+	mov     $36, $22
+.count b_cont
+	b       be_cont.31494
+be_else.31494:
+	cmp     $22, 0
+	finv    $24, $22
+	be      bne_cont.31495
+bne_then.31495:
+	fneg    $22, $22
+bne_cont.31495:
+be_cont.31494:
+	fmul    $23, $22, $23
+	store   $23, [min_caml_nvector + 0]
+	load    [min_caml_nvector + 1], $23
+	fmul    $23, $22, $23
+	store   $23, [min_caml_nvector + 1]
+	load    [min_caml_nvector + 2], $23
+	fmul    $23, $22, $22
+	store   $22, [min_caml_nvector + 2]
+be_cont.31492:
+be_cont.31489:
+	load    [min_caml_intersection_point + 0], $22
+	store   $22, [min_caml_startp + 0]
+	load    [min_caml_intersection_point + 1], $22
+	store   $22, [min_caml_startp + 1]
+	load    [min_caml_intersection_point + 2], $22
+	store   $22, [min_caml_startp + 2]
 	call    utexture.2908
-	load    [min_caml_intsec_rectside + 0], $13
-	sll     $20, 2, $14
-	add     $14, $13, $13
-	load    [$sp + 3], $14
+	load    [min_caml_intsec_rectside + 0], $17
+	sll     $21, 2, $16
+	add     $16, $17, $16
+.count stack_load
+	load    [$sp + 3], $17
 .count storer
-	add     $18, $14, $tmp
-	store   $13, [$tmp + 0]
-	load    [min_caml_intersection_point + 0], $15
-	load    [$17 + 1], $13
-	load    [$13 + $14], $13
-	store   $15, [$13 + 0]
-	load    [min_caml_intersection_point + 1], $15
-	store   $15, [$13 + 1]
-	load    [min_caml_intersection_point + 2], $15
-	store   $15, [$13 + 2]
-	load    [$sp + 1], $16
-	load    [$sp + 6], $13
-	load    [$17 + 3], $15
-	load    [$13 + 7], $13
+	add     $19, $17, $tmp
+	store   $16, [$tmp + 0]
+	load    [min_caml_intersection_point + 0], $19
+	load    [$18 + 1], $16
+	load    [$16 + $17], $16
+	store   $19, [$16 + 0]
+	load    [min_caml_intersection_point + 1], $19
+	store   $19, [$16 + 1]
+	load    [min_caml_intersection_point + 2], $19
+	store   $19, [$16 + 2]
+.count stack_load
+	load    [$sp + 1], $21
+.count stack_load
+	load    [$sp + 7], $16
+	load    [$18 + 3], $19
+	load    [$16 + 7], $16
 .count storer
-	add     $15, $14, $tmp
-	load    [$13 + 0], $13
-	fmul    $13, $16, $16
-	fcmp    $39, $13
-	store   $16, [$sp + 7]
-	bg      ble_else.31581
-ble_then.31581:
-	li      1, $13
-	store   $13, [$tmp + 0]
-	load    [$17 + 4], $13
-	load    [$13 + $14], $15
-	store   $60, [$15 + 0]
-	store   $54, [$15 + 1]
-	store   $58, [$15 + 2]
-	load    [$13 + $14], $13
+	add     $19, $17, $tmp
+	load    [$16 + 0], $16
+	fmul    $16, $21, $21
+	fcmp    $39, $16
+.count stack_store
+	store   $21, [$sp + 8]
+	bg      ble_else.31496
+ble_then.31496:
+	li      1, $16
+	store   $16, [$tmp + 0]
+	load    [min_caml_texture_color + 0], $22
+	load    [$18 + 4], $16
+	load    [$16 + $17], $19
+	store   $22, [$19 + 0]
+	store   $54, [$19 + 1]
+	store   $58, [$19 + 2]
+	load    [$16 + $17], $16
 .count load_float
-	load    [f.27199], $15
+	load    [f.27105], $19
 .count load_float
-	load    [f.27200], $15
-	fmul    $15, $16, $15
-	load    [$13 + 0], $16
-	fmul    $16, $15, $16
-	store   $16, [$13 + 0]
-	load    [$13 + 1], $16
-	fmul    $16, $15, $16
-	store   $16, [$13 + 1]
-	load    [$13 + 2], $16
-	fmul    $16, $15, $15
-	store   $15, [$13 + 2]
-	load    [$17 + 7], $13
-	load    [$13 + $14], $13
-	load    [min_caml_nvector + 0], $14
-	store   $14, [$13 + 0]
-	load    [min_caml_nvector + 1], $14
-	store   $14, [$13 + 1]
-	load    [min_caml_nvector + 2], $14
-	store   $14, [$13 + 2]
-	b       ble_cont.31581
-ble_else.31581:
-	li      0, $13
-	store   $13, [$tmp + 0]
-ble_cont.31581:
-	load    [$sp + 2], $13
-	load    [min_caml_nvector + 2], $15
-	load    [$13 + 2], $16
-	load    [$13 + 1], $17
-	load    [$13 + 0], $14
-	fmul    $16, $15, $15
-	load    [min_caml_nvector + 1], $16
-	fmul    $17, $16, $16
+	load    [f.27106], $19
+	fmul    $19, $21, $19
+	load    [$16 + 0], $21
+	fmul    $21, $19, $21
+	store   $21, [$16 + 0]
+	load    [$16 + 1], $21
+	fmul    $21, $19, $21
+	store   $21, [$16 + 1]
+	load    [$16 + 2], $21
+	fmul    $21, $19, $19
+	store   $19, [$16 + 2]
+	load    [$18 + 7], $16
+	load    [$16 + $17], $16
 	load    [min_caml_nvector + 0], $17
-	fmul    $14, $17, $18
-	fadd    $18, $16, $16
-	fadd    $16, $15, $15
+	store   $17, [$16 + 0]
+	load    [min_caml_nvector + 1], $17
+	store   $17, [$16 + 1]
+	load    [min_caml_nvector + 2], $17
+	store   $17, [$16 + 2]
+.count b_cont
+	b       ble_cont.31496
+ble_else.31496:
+	li      0, $16
+	store   $16, [$tmp + 0]
+ble_cont.31496:
+.count stack_load
+	load    [$sp + 2], $18
+	load    [min_caml_nvector + 1], $23
+	load    [min_caml_nvector + 0], $17
+	load    [$18 + 1], $21
+	load    [$18 + 0], $19
+	load    [min_caml_nvector + 2], $24
+	fmul    $21, $23, $21
+	fmul    $19, $17, $22
+	load    [$18 + 2], $23
 .count load_float
-	load    [f.27201], $16
-	fmul    $16, $15, $15
-	fmul    $15, $17, $16
-	fadd    $14, $16, $14
-	store   $14, [$13 + 0]
-	load    [$13 + 1], $16
-	load    [min_caml_nvector + 1], $14
-	fmul    $15, $14, $14
-	fadd    $16, $14, $14
-	store   $14, [$13 + 1]
-	load    [min_caml_nvector + 2], $14
-	fmul    $15, $14, $14
-	load    [$13 + 2], $15
-	fadd    $15, $14, $14
-	store   $14, [$13 + 2]
-	load    [$59 + 0], $13
-	load    [$13 + 0], $2
+	load    [f.27107], $16
+	fadd    $22, $21, $21
+	fmul    $23, $24, $22
+	fadd    $21, $22, $21
+	fmul    $16, $21, $16
+	fmul    $16, $17, $17
+	fadd    $19, $17, $17
+	store   $17, [$18 + 0]
+	load    [min_caml_nvector + 1], $19
+	load    [$18 + 1], $17
+	fmul    $16, $19, $19
+	fadd    $17, $19, $17
+	store   $17, [$18 + 1]
+	load    [min_caml_nvector + 2], $19
+	load    [$18 + 2], $17
+	fmul    $16, $19, $16
+	fadd    $17, $16, $16
+	store   $16, [$18 + 2]
+	load    [$59 + 0], $16
+	load    [$16 + 0], $2
 	cmp     $2, -1
-	bne     be_else.31582
-be_then.31582:
-	li      0, $14
-	b       be_cont.31582
-be_else.31582:
-	store   $13, [$sp + 8]
+	bne     be_else.31497
+be_then.31497:
+	li      0, $16
+.count b_cont
+	b       be_cont.31497
+be_else.31497:
+.count stack_store
+	store   $16, [$sp + 9]
 	cmp     $2, 99
-	bne     be_else.31583
-be_then.31583:
-	li      1, $28
-	b       be_cont.31583
-be_else.31583:
+	bne     be_else.31498
+be_then.31498:
+	li      1, $34
+.count b_cont
+	b       be_cont.31498
+be_else.31498:
 	call    solver_fast.2796
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31584
-be_then.31584:
-	li      0, $28
-	b       be_cont.31584
-be_else.31584:
-	fcmp    $19, $42
-	bg      ble_else.31585
-ble_then.31585:
-	li      0, $28
-	b       ble_cont.31585
-ble_else.31585:
-	load    [$13 + 1], $28
-	cmp     $28, -1
-	bne     be_else.31586
-be_then.31586:
-	li      0, $28
-	b       be_cont.31586
-be_else.31586:
-	load    [min_caml_and_net + $28], $3
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31499
+be_then.31499:
+	li      0, $34
+.count b_cont
+	b       be_cont.31499
+be_else.31499:
+	fcmp    $20, $42
+	bg      ble_else.31500
+ble_then.31500:
+	li      0, $34
+.count b_cont
+	b       ble_cont.31500
+ble_else.31500:
+	load    [$16 + 1], $34
+	cmp     $34, -1
+	bne     be_else.31501
+be_then.31501:
+	li      0, $34
+.count b_cont
+	b       be_cont.31501
+be_else.31501:
 	li      0, $2
+	load    [min_caml_and_net + $34], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31587
-be_then.31587:
-	load    [$sp + 8], $28
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31588
-be_then.31588:
-	li      0, $28
-	b       be_cont.31587
-be_else.31588:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31502
+be_then.31502:
+.count stack_load
+	load    [$sp + 9], $34
+	load    [$34 + 2], $35
+	cmp     $35, -1
+	bne     be_else.31503
+be_then.31503:
+	li      0, $34
+.count b_cont
+	b       be_cont.31502
+be_else.31503:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31589
-be_then.31589:
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31504
+be_then.31504:
 	li      3, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31590
-be_then.31590:
-	li      0, $28
-	b       be_cont.31587
-be_else.31590:
-	li      1, $28
-	b       be_cont.31587
-be_else.31589:
-	li      1, $28
-	b       be_cont.31587
-be_else.31587:
-	li      1, $28
-be_cont.31587:
-be_cont.31586:
-ble_cont.31585:
-be_cont.31584:
-be_cont.31583:
-	cmp     $28, 0
-	bne     be_else.31591
-be_then.31591:
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31505
+be_then.31505:
+	li      0, $34
+.count b_cont
+	b       be_cont.31502
+be_else.31505:
+	li      1, $34
+.count b_cont
+	b       be_cont.31502
+be_else.31504:
+	li      1, $34
+.count b_cont
+	b       be_cont.31502
+be_else.31502:
+	li      1, $34
+be_cont.31502:
+be_cont.31501:
+ble_cont.31500:
+be_cont.31499:
+be_cont.31498:
+	cmp     $34, 0
+	bne     be_else.31506
+be_then.31506:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    shadow_check_one_or_matrix.2868
 .count move_ret
-	mov     $1, $14
-	b       be_cont.31591
-be_else.31591:
-	load    [$sp + 8], $28
-	load    [$28 + 1], $29
-	cmp     $29, -1
-	bne     be_else.31592
-be_then.31592:
+	mov     $1, $16
+.count b_cont
+	b       be_cont.31506
+be_else.31506:
+.count stack_load
+	load    [$sp + 9], $34
+	load    [$34 + 1], $35
+	cmp     $35, -1
+	bne     be_else.31507
+be_then.31507:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    shadow_check_one_or_matrix.2868
 .count move_ret
-	mov     $1, $14
-	b       be_cont.31592
-be_else.31592:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $16
+.count b_cont
+	b       be_cont.31507
+be_else.31507:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31593
-be_then.31593:
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31594
-be_then.31594:
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31508
+be_then.31508:
+	load    [$34 + 2], $35
+	cmp     $35, -1
+	bne     be_else.31509
+be_then.31509:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    shadow_check_one_or_matrix.2868
 .count move_ret
-	mov     $1, $14
-	b       be_cont.31593
-be_else.31594:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $16
+.count b_cont
+	b       be_cont.31508
+be_else.31509:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31595
-be_then.31595:
+	mov     $1, $16
+	cmp     $16, 0
+	bne     be_else.31510
+be_then.31510:
 	li      3, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 .count move_ret
-	mov     $1, $14
-	cmp     $14, 0
-	bne     be_else.31596
-be_then.31596:
+	mov     $1, $16
+	cmp     $16, 0
+	bne     be_else.31511
+be_then.31511:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    shadow_check_one_or_matrix.2868
 .count move_ret
-	mov     $1, $14
-	b       be_cont.31593
-be_else.31596:
-	li      1, $14
-	b       be_cont.31593
-be_else.31595:
-	li      1, $14
-	b       be_cont.31593
-be_else.31593:
-	li      1, $14
-be_cont.31593:
-be_cont.31592:
-be_cont.31591:
-be_cont.31582:
-	load    [$sp + 6], $15
-	load    [$sp + 1], $16
-	cmp     $14, 0
-	load    [$15 + 7], $15
-	load    [$15 + 1], $15
-	fmul    $16, $15, $15
-	bne     be_cont.31597
-be_then.31597:
-	load    [min_caml_nvector + 1], $16
-	load    [min_caml_nvector + 0], $14
-	fmul    $16, $56, $16
-	fmul    $14, $55, $14
-	fadd    $14, $16, $14
-	load    [min_caml_nvector + 2], $16
-	fmul    $16, $57, $16
-	fadd    $14, $16, $14
-	load    [$sp + 7], $16
-	fneg    $14, $14
-	fmul    $14, $16, $14
-	load    [$sp + 2], $16
-	load    [$16 + 1], $18
-	load    [$16 + 0], $17
-	fcmp    $14, $zero
+	mov     $1, $16
+.count b_cont
+	b       be_cont.31508
+be_else.31511:
+	li      1, $16
+.count b_cont
+	b       be_cont.31508
+be_else.31510:
+	li      1, $16
+.count b_cont
+	b       be_cont.31508
+be_else.31508:
+	li      1, $16
+be_cont.31508:
+be_cont.31507:
+be_cont.31506:
+be_cont.31497:
+.count stack_load
+	load    [$sp + 7], $17
+.count stack_load
+	load    [$sp + 1], $18
+	cmp     $16, 0
+	load    [$17 + 7], $17
+	load    [$17 + 1], $17
+	fmul    $18, $17, $17
+	bne     be_cont.31512
+be_then.31512:
+	load    [min_caml_nvector + 0], $16
+	load    [min_caml_nvector + 1], $18
+	load    [min_caml_nvector + 2], $19
+	fmul    $16, $55, $16
 	fmul    $18, $56, $18
-	fmul    $17, $55, $17
-	load    [$16 + 2], $16
-	fmul    $16, $57, $16
-	fadd    $17, $18, $17
-	fadd    $17, $16, $16
+.count stack_load
+	load    [$sp + 8], $21
+	fadd    $16, $18, $16
+	fmul    $19, $57, $18
+.count stack_load
+	load    [$sp + 2], $19
+	fadd    $16, $18, $16
+	load    [$19 + 0], $20
+	load    [$19 + 1], $18
+	fmul    $20, $55, $20
+	fmul    $18, $56, $18
+	load    [$19 + 2], $19
 	fneg    $16, $16
-	ble     bg_cont.31598
-bg_then.31598:
-	fmul    $14, $60, $17
-	fadd    $46, $17, $17
-.count move_float
-	mov     $17, $46
-	fmul    $14, $54, $17
-	fmul    $14, $58, $14
-	fadd    $47, $17, $17
-	fadd    $48, $14, $14
-.count move_float
-	mov     $17, $47
-.count move_float
-	mov     $14, $48
-bg_cont.31598:
+	fmul    $19, $57, $19
+	fadd    $20, $18, $18
+	fmul    $16, $21, $16
+	fadd    $18, $19, $18
 	fcmp    $16, $zero
-	ble     bg_cont.31599
-bg_then.31599:
-	fmul    $16, $16, $14
-	fmul    $14, $14, $14
-	fmul    $14, $15, $14
-	fadd    $46, $14, $16
+	fneg    $18, $18
+	ble     bg_cont.31513
+bg_then.31513:
+	load    [min_caml_texture_color + 0], $19
+	fmul    $16, $19, $19
+	fadd    $46, $19, $19
 .count move_float
-	mov     $16, $46
-	fadd    $47, $14, $16
-	fadd    $48, $14, $14
+	mov     $19, $46
+	fmul    $16, $54, $19
+	fmul    $16, $58, $16
+	fadd    $47, $19, $19
+	fadd    $48, $16, $16
 .count move_float
-	mov     $16, $47
+	mov     $19, $47
 .count move_float
-	mov     $14, $48
-bg_cont.31599:
-be_cont.31597:
-	load    [min_caml_intersection_point + 0], $14
+	mov     $16, $48
+bg_cont.31513:
+	fcmp    $18, $zero
+	ble     bg_cont.31514
+bg_then.31514:
+	fmul    $18, $18, $16
+	fmul    $16, $16, $16
+	fmul    $16, $17, $16
+	fadd    $46, $16, $18
+.count move_float
+	mov     $18, $46
+	fadd    $47, $16, $18
+	fadd    $48, $16, $16
+.count move_float
+	mov     $18, $47
+.count move_float
+	mov     $16, $48
+bg_cont.31514:
+be_cont.31512:
+	load    [min_caml_intersection_point + 0], $16
 	li      min_caml_intersection_point, $2
 	sub     $41, 1, $3
 .count move_float
-	mov     $14, $50
-	load    [min_caml_intersection_point + 1], $14
+	mov     $16, $51
+	load    [min_caml_intersection_point + 1], $16
 .count move_float
-	mov     $14, $51
-	load    [min_caml_intersection_point + 2], $14
+	mov     $16, $52
+	load    [min_caml_intersection_point + 2], $16
 .count move_float
-	mov     $14, $52
+	mov     $16, $53
 	call    setup_startp_constants.2831
 	load    [min_caml_n_reflections + 0], $1
-	load    [$sp + 7], $3
+.count stack_load
+	load    [$sp + 8], $3
+.count stack_load
 	load    [$sp + 2], $5
 	sub     $1, 1, $2
 .count move_args
-	mov     $15, $4
+	mov     $17, $4
 	call    trace_reflections.2915
 .count stack_move
-	add     $sp, 9, $sp
+	add     $sp, 10, $sp
 .count load_float
-	load    [f.27192], $1
-	load    [$sp - 8], $2
+	load    [f.27098], $1
+.count stack_load
+	load    [$sp - 9], $2
 	fcmp    $2, $1
-	bg      ble_else.31600
-ble_then.31600:
+	bg      ble_else.31515
+ble_then.31515:
 	ret
-ble_else.31600:
-	load    [$sp - 6], $1
+ble_else.31515:
+.count stack_load
+	load    [$sp - 7], $1
 	cmp     $1, 4
-	bge     bl_cont.31601
-bl_then.31601:
+	bge     bl_cont.31516
+bl_then.31516:
+.count stack_load
 	load    [$sp - 4], $4
 	add     $1, 1, $1
 	add     $zero, -1, $3
 .count storer
 	add     $4, $1, $tmp
 	store   $3, [$tmp + 0]
-bl_cont.31601:
+bl_cont.31516:
+.count stack_load
 	load    [$sp - 3], $1
 	load    [$1 + 2], $3
 	cmp     $3, 2
-	bne     be_else.31602
-be_then.31602:
+	bne     be_else.31517
+be_then.31517:
 	load    [$1 + 7], $1
-	load    [$sp - 7], $4
-	load    [$sp - 5], $5
+.count stack_load
+	load    [$sp - 7], $3
+.count stack_load
+	load    [$sp - 10], $4
 	load    [$1 + 0], $1
+	add     $3, 1, $3
+	fadd    $4, $49, $6
 	fsub    $36, $1, $1
-	fmul    $2, $1, $3
-	load    [$sp - 6], $1
-	add     $1, 1, $2
-	load    [$sp - 9], $1
-	fadd    $1, $49, $6
+.count stack_load
+	load    [$sp - 8], $4
+.count stack_load
+	load    [$sp - 6], $5
+	fmul    $2, $1, $1
+.count move_args
+	mov     $3, $2
+.count move_args
+	mov     $1, $3
 	b       trace_ray.2920
-be_else.31602:
+be_else.31517:
 	ret
-ble_else.31560:
+ble_else.31475:
 	ret
 .end trace_ray
 
@@ -8762,479 +9380,523 @@ trace_diffuse_ray.2926:
 .count stack_move
 	sub     $sp, 4, $sp
 .count load_float
-	load    [f.27197], $31
+	load    [f.27103], $34
+.count stack_store
 	store   $3, [$sp + 0]
 .count move_float
-	mov     $31, $49
+	mov     $34, $49
+.count stack_store
 	store   $2, [$sp + 1]
-	load    [$59 + 0], $31
-	load    [$31 + 0], $32
-	cmp     $32, -1
-	be      bne_cont.31603
-bne_then.31603:
-	cmp     $32, 99
-	bne     be_else.31604
-be_then.31604:
-	load    [$31 + 1], $32
+	load    [$59 + 0], $34
+	load    [$34 + 0], $35
+	cmp     $35, -1
+	be      bne_cont.31518
+bne_then.31518:
+	cmp     $35, 99
+	bne     be_else.31519
+be_then.31519:
+	load    [$34 + 1], $35
 .count move_args
 	mov     $2, $4
-	cmp     $32, -1
-	bne     be_else.31605
-be_then.31605:
-	li      1, $31
+	cmp     $35, -1
+	bne     be_else.31520
+be_then.31520:
+	li      1, $34
 .count move_args
 	mov     $59, $3
 .count move_args
-	mov     $31, $2
+	mov     $34, $2
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31604
-be_else.31605:
-	li      0, $27
-	load    [min_caml_and_net + $32], $3
+.count b_cont
+	b       be_cont.31519
+be_else.31520:
+	li      0, $30
+	load    [min_caml_and_net + $35], $3
 .count move_args
-	mov     $27, $2
+	mov     $30, $2
 	call    solve_each_element_fast.2885
-	load    [$31 + 2], $32
+	load    [$34 + 2], $35
+.count stack_load
 	load    [$sp + 1], $4
-	cmp     $32, -1
-	bne     be_else.31606
-be_then.31606:
+	cmp     $35, -1
+	bne     be_else.31521
+be_then.31521:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31604
-be_else.31606:
-	load    [min_caml_and_net + $32], $3
+.count b_cont
+	b       be_cont.31519
+be_else.31521:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    solve_each_element_fast.2885
-	load    [$31 + 3], $32
+	load    [$34 + 3], $35
+.count stack_load
 	load    [$sp + 1], $4
-	cmp     $32, -1
-	bne     be_else.31607
-be_then.31607:
+	cmp     $35, -1
+	bne     be_else.31522
+be_then.31522:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31604
-be_else.31607:
-	load    [min_caml_and_net + $32], $3
+.count b_cont
+	b       be_cont.31519
+be_else.31522:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    solve_each_element_fast.2885
-	load    [$31 + 4], $32
+	load    [$34 + 4], $35
+.count stack_load
 	load    [$sp + 1], $4
-	cmp     $32, -1
-	bne     be_else.31608
-be_then.31608:
+	cmp     $35, -1
+	bne     be_else.31523
+be_then.31523:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31604
-be_else.31608:
-	load    [min_caml_and_net + $32], $3
+.count b_cont
+	b       be_cont.31519
+be_else.31523:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    solve_each_element_fast.2885
 	li      5, $2
+.count stack_load
 	load    [$sp + 1], $4
 .count move_args
-	mov     $31, $3
+	mov     $34, $3
 	call    solve_one_or_network_fast.2889
 	li      1, $2
+.count stack_load
 	load    [$sp + 1], $4
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31604
-be_else.31604:
+.count b_cont
+	b       be_cont.31519
+be_else.31519:
 .count move_args
 	mov     $2, $3
 .count move_args
-	mov     $32, $2
+	mov     $35, $2
 	call    solver_fast2.2814
 .count move_ret
-	mov     $1, $32
-	cmp     $32, 0
+	mov     $1, $35
+	cmp     $35, 0
+.count stack_load
 	load    [$sp + 1], $4
 	li      1, $2
-	bne     be_else.31609
-be_then.31609:
+	bne     be_else.31524
+be_then.31524:
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       be_cont.31609
-be_else.31609:
+.count b_cont
+	b       be_cont.31524
+be_else.31524:
 	fcmp    $49, $42
-	bg      ble_else.31610
-ble_then.31610:
+	bg      ble_else.31525
+ble_then.31525:
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-	b       ble_cont.31610
-ble_else.31610:
+.count b_cont
+	b       ble_cont.31525
+ble_else.31525:
 .count move_args
-	mov     $31, $3
+	mov     $34, $3
 	call    solve_one_or_network_fast.2889
 	li      1, $2
+.count stack_load
 	load    [$sp + 1], $4
 .count move_args
 	mov     $59, $3
 	call    trace_or_matrix_fast.2893
-ble_cont.31610:
-be_cont.31609:
-be_cont.31604:
-bne_cont.31603:
+ble_cont.31525:
+be_cont.31524:
+be_cont.31519:
+bne_cont.31518:
 .count load_float
-	load    [f.27183], $17
-	fcmp    $49, $17
-	bg      ble_else.31611
-ble_then.31611:
-	li      0, $18
-	b       ble_cont.31611
-ble_else.31611:
+	load    [f.27089], $18
+	fcmp    $49, $18
+	bg      ble_else.31526
+ble_then.31526:
+	li      0, $19
+.count b_cont
+	b       ble_cont.31526
+ble_else.31526:
 .count load_float
-	load    [f.27198], $18
-	fcmp    $18, $49
-	bg      ble_else.31612
-ble_then.31612:
-	li      0, $18
-	b       ble_cont.31612
-ble_else.31612:
-	li      1, $18
-ble_cont.31612:
-ble_cont.31611:
-	cmp     $18, 0
-	bne     be_else.31613
-be_then.31613:
+	load    [f.27104], $19
+	fcmp    $19, $49
+	bg      ble_else.31527
+ble_then.31527:
+	li      0, $19
+.count b_cont
+	b       ble_cont.31527
+ble_else.31527:
+	li      1, $19
+ble_cont.31527:
+ble_cont.31526:
+	cmp     $19, 0
+	bne     be_else.31528
+be_then.31528:
 .count stack_move
 	add     $sp, 4, $sp
 	ret
-be_else.31613:
-	load    [min_caml_intersected_object_id + 0], $19
-	load    [$sp + 1], $18
-	load    [min_caml_objects + $19], $2
-	load    [$18 + 0], $18
+be_else.31528:
+	load    [min_caml_intersected_object_id + 0], $20
+.count stack_load
+	load    [$sp + 1], $19
+	load    [min_caml_objects + $20], $2
+	load    [$19 + 0], $19
+.count stack_store
 	store   $2, [$sp + 2]
-	load    [$2 + 1], $19
-	cmp     $19, 1
-	bne     be_else.31614
-be_then.31614:
+	load    [$2 + 1], $20
+	cmp     $20, 1
+	bne     be_else.31529
+be_then.31529:
 	store   $zero, [min_caml_nvector + 0]
 	store   $zero, [min_caml_nvector + 1]
 	store   $zero, [min_caml_nvector + 2]
-	load    [min_caml_intsec_rectside + 0], $19
-	sub     $19, 1, $19
-	load    [$18 + $19], $18
-	fcmp    $18, $zero
-	bne     be_else.31615
-be_then.31615:
-	store   $zero, [min_caml_nvector + $19]
-	b       be_cont.31614
-be_else.31615:
-	fcmp    $18, $zero
-	bg      ble_else.31616
-ble_then.31616:
-	store   $36, [min_caml_nvector + $19]
-	b       be_cont.31614
-ble_else.31616:
-	store   $40, [min_caml_nvector + $19]
-	b       be_cont.31614
-be_else.31614:
-	cmp     $19, 2
-	bne     be_else.31617
-be_then.31617:
-	load    [$2 + 4], $18
-	load    [$18 + 0], $18
-	fneg    $18, $18
-	store   $18, [min_caml_nvector + 0]
-	load    [$2 + 4], $18
-	load    [$18 + 1], $18
-	fneg    $18, $18
-	store   $18, [min_caml_nvector + 1]
-	load    [$2 + 4], $18
-	load    [$18 + 2], $18
-	fneg    $18, $18
-	store   $18, [min_caml_nvector + 2]
-	b       be_cont.31617
-be_else.31617:
-	load    [$2 + 5], $18
-	load    [min_caml_intersection_point + 2], $19
-	load    [min_caml_intersection_point + 1], $20
-	load    [$18 + 2], $18
-	load    [min_caml_intersection_point + 0], $21
-	load    [$2 + 4], $22
-	fsub    $19, $18, $18
-	load    [$2 + 4], $23
-	load    [$2 + 5], $19
-	load    [$2 + 3], $24
-	load    [$22 + 1], $22
-	load    [$19 + 1], $19
-	load    [$23 + 0], $23
-	cmp     $24, 0
-	fsub    $20, $19, $19
-	load    [$2 + 5], $20
-	load    [$20 + 0], $20
-	fmul    $19, $22, $22
-	fsub    $21, $20, $20
-	load    [$2 + 4], $21
-	load    [$21 + 2], $21
-	fmul    $20, $23, $23
-	fmul    $18, $21, $21
-	bne     be_else.31618
-be_then.31618:
-	store   $23, [min_caml_nvector + 0]
-	store   $22, [min_caml_nvector + 1]
-	store   $21, [min_caml_nvector + 2]
-	b       be_cont.31618
-be_else.31618:
-	load    [$2 + 9], $25
-	load    [$2 + 9], $24
-	load    [$25 + 1], $25
-	load    [$24 + 2], $24
-	fmul    $18, $25, $25
-	fmul    $19, $24, $24
-	fadd    $24, $25, $24
-	fmul    $24, $39, $24
-	fadd    $23, $24, $23
-	store   $23, [min_caml_nvector + 0]
-	load    [$2 + 9], $24
-	load    [$2 + 9], $23
-	load    [$24 + 0], $24
-	load    [$23 + 2], $23
-	fmul    $18, $24, $18
-	fmul    $20, $23, $23
-	fadd    $23, $18, $18
-	fmul    $18, $39, $18
-	fadd    $22, $18, $18
-	store   $18, [min_caml_nvector + 1]
-	load    [$2 + 9], $18
-	load    [$18 + 1], $18
-	fmul    $20, $18, $18
-	load    [$2 + 9], $20
-	load    [$20 + 0], $20
-	fmul    $19, $20, $19
-	fadd    $18, $19, $18
-	fmul    $18, $39, $18
-	fadd    $21, $18, $18
-	store   $18, [min_caml_nvector + 2]
-be_cont.31618:
-	load    [min_caml_nvector + 0], $20
-	load    [min_caml_nvector + 1], $19
-	load    [min_caml_nvector + 2], $18
-	fmul    $20, $20, $20
-	fmul    $19, $19, $19
-	fmul    $18, $18, $18
-	fadd    $20, $19, $19
-	fadd    $19, $18, $18
-	load    [$2 + 6], $19
-	fsqrt   $18, $18
-	fcmp    $18, $zero
-	bne     be_else.31619
-be_then.31619:
-	mov     $36, $18
-	b       be_cont.31619
-be_else.31619:
-	cmp     $19, 0
-	finv    $18, $18
-	be      bne_cont.31620
-bne_then.31620:
-	fneg    $18, $18
-bne_cont.31620:
-be_cont.31619:
-	load    [min_caml_nvector + 0], $19
-	fmul    $19, $18, $19
+	load    [min_caml_intsec_rectside + 0], $20
+	sub     $20, 1, $20
+	load    [$19 + $20], $19
+	fcmp    $19, $zero
+	bne     be_else.31530
+be_then.31530:
+	store   $zero, [min_caml_nvector + $20]
+.count b_cont
+	b       be_cont.31529
+be_else.31530:
+	fcmp    $19, $zero
+	bg      ble_else.31531
+ble_then.31531:
+	store   $36, [min_caml_nvector + $20]
+.count b_cont
+	b       be_cont.31529
+ble_else.31531:
+	store   $40, [min_caml_nvector + $20]
+.count b_cont
+	b       be_cont.31529
+be_else.31529:
+	cmp     $20, 2
+	bne     be_else.31532
+be_then.31532:
+	load    [$2 + 4], $19
+	load    [$19 + 0], $19
+	fneg    $19, $19
 	store   $19, [min_caml_nvector + 0]
-	load    [min_caml_nvector + 1], $19
-	fmul    $19, $18, $19
+	load    [$2 + 4], $19
+	load    [$19 + 1], $19
+	fneg    $19, $19
 	store   $19, [min_caml_nvector + 1]
-	load    [min_caml_nvector + 2], $19
-	fmul    $19, $18, $18
-	store   $18, [min_caml_nvector + 2]
-be_cont.31617:
-be_cont.31614:
+	load    [$2 + 4], $19
+	load    [$19 + 2], $19
+	fneg    $19, $19
+	store   $19, [min_caml_nvector + 2]
+.count b_cont
+	b       be_cont.31532
+be_else.31532:
+	load    [$2 + 5], $21
+	load    [min_caml_intersection_point + 0], $22
+	load    [$2 + 4], $23
+	load    [$21 + 0], $21
+	load    [$2 + 5], $24
+	load    [$2 + 4], $25
+	fsub    $22, $21, $21
+	load    [$24 + 1], $24
+	load    [$23 + 1], $22
+	load    [min_caml_intersection_point + 2], $26
+	load    [min_caml_intersection_point + 1], $23
+	load    [$2 + 4], $20
+	load    [$2 + 3], $19
+	fsub    $23, $24, $23
+	load    [$20 + 0], $20
+	load    [$25 + 2], $24
+	cmp     $19, 0
+	load    [$2 + 5], $25
+	fmul    $21, $20, $20
+	fmul    $23, $22, $22
+	load    [$25 + 2], $25
+	fsub    $26, $25, $25
+	fmul    $25, $24, $24
+	bne     be_else.31533
+be_then.31533:
+	store   $20, [min_caml_nvector + 0]
+	store   $22, [min_caml_nvector + 1]
+	store   $24, [min_caml_nvector + 2]
+.count b_cont
+	b       be_cont.31533
+be_else.31533:
+	load    [$2 + 9], $26
+	load    [$2 + 9], $19
+	load    [$26 + 1], $26
+	load    [$19 + 2], $19
+	fmul    $25, $26, $26
+	fmul    $23, $19, $19
+	fadd    $19, $26, $19
+	fmul    $19, $39, $19
+	fadd    $20, $19, $19
+	store   $19, [min_caml_nvector + 0]
+	load    [$2 + 9], $20
+	load    [$2 + 9], $19
+	load    [$20 + 0], $20
+	load    [$19 + 2], $19
+	fmul    $25, $20, $20
+	fmul    $21, $19, $19
+	fadd    $19, $20, $19
+	fmul    $19, $39, $19
+	fadd    $22, $19, $19
+	store   $19, [min_caml_nvector + 1]
+	load    [$2 + 9], $20
+	load    [$2 + 9], $19
+	load    [$20 + 0], $20
+	load    [$19 + 1], $19
+	fmul    $23, $20, $20
+	fmul    $21, $19, $19
+	fadd    $19, $20, $19
+	fmul    $19, $39, $19
+	fadd    $24, $19, $19
+	store   $19, [min_caml_nvector + 2]
+be_cont.31533:
+	load    [min_caml_nvector + 0], $20
+	load    [min_caml_nvector + 1], $22
+	load    [min_caml_nvector + 2], $23
+	fmul    $20, $20, $21
+	fmul    $22, $22, $22
+	fmul    $23, $23, $23
+	load    [$2 + 6], $19
+	fadd    $21, $22, $21
+	fadd    $21, $23, $21
+	fsqrt   $21, $21
+	fcmp    $21, $zero
+	bne     be_else.31534
+be_then.31534:
+	mov     $36, $19
+.count b_cont
+	b       be_cont.31534
+be_else.31534:
+	cmp     $19, 0
+	finv    $21, $19
+	be      bne_cont.31535
+bne_then.31535:
+	fneg    $19, $19
+bne_cont.31535:
+be_cont.31534:
+	fmul    $20, $19, $20
+	store   $20, [min_caml_nvector + 0]
+	load    [min_caml_nvector + 1], $20
+	fmul    $20, $19, $20
+	store   $20, [min_caml_nvector + 1]
+	load    [min_caml_nvector + 2], $20
+	fmul    $20, $19, $19
+	store   $19, [min_caml_nvector + 2]
+be_cont.31532:
+be_cont.31529:
 	call    utexture.2908
-	load    [$59 + 0], $13
-	load    [$13 + 0], $2
+	load    [$59 + 0], $16
+	load    [$16 + 0], $2
 	cmp     $2, -1
-	bne     be_else.31621
-be_then.31621:
+	bne     be_else.31536
+be_then.31536:
 	li      0, $1
-	b       be_cont.31621
-be_else.31621:
-	store   $13, [$sp + 3]
+.count b_cont
+	b       be_cont.31536
+be_else.31536:
+.count stack_store
+	store   $16, [$sp + 3]
 	cmp     $2, 99
-	bne     be_else.31622
-be_then.31622:
-	li      1, $28
-	b       be_cont.31622
-be_else.31622:
+	bne     be_else.31537
+be_then.31537:
+	li      1, $34
+.count b_cont
+	b       be_cont.31537
+be_else.31537:
 	call    solver_fast.2796
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31623
-be_then.31623:
-	li      0, $28
-	b       be_cont.31623
-be_else.31623:
-	fcmp    $17, $42
-	bg      ble_else.31624
-ble_then.31624:
-	li      0, $28
-	b       ble_cont.31624
-ble_else.31624:
-	load    [$13 + 1], $28
-	cmp     $28, -1
-	bne     be_else.31625
-be_then.31625:
-	li      0, $28
-	b       be_cont.31625
-be_else.31625:
-	load    [min_caml_and_net + $28], $3
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31538
+be_then.31538:
+	li      0, $34
+.count b_cont
+	b       be_cont.31538
+be_else.31538:
+	fcmp    $18, $42
+	bg      ble_else.31539
+ble_then.31539:
+	li      0, $34
+.count b_cont
+	b       ble_cont.31539
+ble_else.31539:
+	load    [$16 + 1], $34
+	cmp     $34, -1
+	bne     be_else.31540
+be_then.31540:
+	li      0, $34
+.count b_cont
+	b       be_cont.31540
+be_else.31540:
 	li      0, $2
+	load    [min_caml_and_net + $34], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31626
-be_then.31626:
-	load    [$sp + 3], $28
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31627
-be_then.31627:
-	li      0, $28
-	b       be_cont.31626
-be_else.31627:
-	load    [min_caml_and_net + $29], $3
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31541
+be_then.31541:
+.count stack_load
+	load    [$sp + 3], $34
+	load    [$34 + 2], $35
+	cmp     $35, -1
+	bne     be_else.31542
+be_then.31542:
+	li      0, $34
+.count b_cont
+	b       be_cont.31541
+be_else.31542:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31628
-be_then.31628:
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31543
+be_then.31543:
 	li      3, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 .count move_ret
-	mov     $1, $28
-	cmp     $28, 0
-	bne     be_else.31629
-be_then.31629:
-	li      0, $28
-	b       be_cont.31626
-be_else.31629:
-	li      1, $28
-	b       be_cont.31626
-be_else.31628:
-	li      1, $28
-	b       be_cont.31626
-be_else.31626:
-	li      1, $28
-be_cont.31626:
-be_cont.31625:
-ble_cont.31624:
-be_cont.31623:
-be_cont.31622:
-	cmp     $28, 0
-	bne     be_else.31630
-be_then.31630:
+	mov     $1, $34
+	cmp     $34, 0
+	bne     be_else.31544
+be_then.31544:
+	li      0, $34
+.count b_cont
+	b       be_cont.31541
+be_else.31544:
+	li      1, $34
+.count b_cont
+	b       be_cont.31541
+be_else.31543:
+	li      1, $34
+.count b_cont
+	b       be_cont.31541
+be_else.31541:
+	li      1, $34
+be_cont.31541:
+be_cont.31540:
+ble_cont.31539:
+be_cont.31538:
+be_cont.31537:
+	cmp     $34, 0
+	bne     be_else.31545
+be_then.31545:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    shadow_check_one_or_matrix.2868
-	b       be_cont.31630
-be_else.31630:
-	load    [$sp + 3], $28
-	load    [$28 + 1], $29
-	cmp     $29, -1
-	bne     be_else.31631
-be_then.31631:
+.count b_cont
+	b       be_cont.31545
+be_else.31545:
+.count stack_load
+	load    [$sp + 3], $34
+	load    [$34 + 1], $35
+	cmp     $35, -1
+	bne     be_else.31546
+be_then.31546:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    shadow_check_one_or_matrix.2868
-	b       be_cont.31631
-be_else.31631:
-	load    [min_caml_and_net + $29], $3
+.count b_cont
+	b       be_cont.31546
+be_else.31546:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
 .count move_ret
-	mov     $1, $29
-	cmp     $29, 0
-	bne     be_else.31632
-be_then.31632:
-	load    [$28 + 2], $29
-	cmp     $29, -1
-	bne     be_else.31633
-be_then.31633:
+	mov     $1, $35
+	cmp     $35, 0
+	bne     be_else.31547
+be_then.31547:
+	load    [$34 + 2], $35
+	cmp     $35, -1
+	bne     be_else.31548
+be_then.31548:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    shadow_check_one_or_matrix.2868
-	b       be_cont.31632
-be_else.31633:
-	load    [min_caml_and_net + $29], $3
+.count b_cont
+	b       be_cont.31547
+be_else.31548:
 	li      0, $2
+	load    [min_caml_and_net + $35], $3
 	call    shadow_check_and_group.2862
-.count move_ret
-	mov     $1, $31
-	cmp     $31, 0
-	bne     be_else.31634
-be_then.31634:
+	cmp     $1, 0
+	bne     be_else.31549
+be_then.31549:
 	li      3, $2
 .count move_args
-	mov     $28, $3
+	mov     $34, $3
 	call    shadow_check_one_or_group.2865
 	cmp     $1, 0
-	bne     be_else.31635
-be_then.31635:
+	bne     be_else.31550
+be_then.31550:
 	li      1, $2
 .count move_args
 	mov     $59, $3
 	call    shadow_check_one_or_matrix.2868
-	b       be_cont.31632
-be_else.31635:
+.count b_cont
+	b       be_cont.31547
+be_else.31550:
 	li      1, $1
-	b       be_cont.31632
-be_else.31634:
+.count b_cont
+	b       be_cont.31547
+be_else.31549:
 	li      1, $1
-	b       be_cont.31632
-be_else.31632:
+.count b_cont
+	b       be_cont.31547
+be_else.31547:
 	li      1, $1
-be_cont.31632:
-be_cont.31631:
-be_cont.31630:
-be_cont.31621:
+be_cont.31547:
+be_cont.31546:
+be_cont.31545:
+be_cont.31536:
 .count stack_move
 	add     $sp, 4, $sp
 	cmp     $1, 0
-	bne     be_else.31636
-be_then.31636:
-	load    [min_caml_nvector + 0], $4
-	load    [min_caml_nvector + 1], $3
-	load    [min_caml_nvector + 2], $2
-	fmul    $4, $55, $4
-	fmul    $3, $56, $3
-	fmul    $2, $57, $2
+	bne     be_else.31551
+be_then.31551:
+	load    [min_caml_nvector + 0], $3
+	load    [min_caml_nvector + 1], $4
+	load    [min_caml_nvector + 2], $5
+	fmul    $3, $55, $3
+	fmul    $4, $56, $4
+.count stack_load
 	load    [$sp - 2], $1
-	fadd    $4, $3, $3
+	load    [min_caml_texture_color + 0], $2
 	load    [$1 + 7], $1
+	fadd    $3, $4, $3
+	fmul    $5, $57, $4
+	fadd    $3, $4, $3
+	fneg    $3, $3
+	fcmp    $3, $zero
+	bg      ble_cont.31552
+ble_then.31552:
+	mov     $zero, $3
+ble_cont.31552:
+.count stack_load
+	load    [$sp - 4], $4
 	load    [$1 + 0], $1
-	fadd    $3, $2, $2
-	fneg    $2, $2
-	fcmp    $2, $zero
-	bg      ble_cont.31637
-ble_then.31637:
-	mov     $zero, $2
-ble_cont.31637:
-	load    [$sp - 4], $3
-	fmul    $3, $2, $2
-	fmul    $2, $1, $1
-	fmul    $1, $60, $2
+	fmul    $4, $3, $3
+	fmul    $3, $1, $1
+	fmul    $1, $2, $2
 	fadd    $43, $2, $2
 .count move_float
 	mov     $2, $43
@@ -9247,7 +9909,7 @@ ble_cont.31637:
 .count move_float
 	mov     $1, $45
 	ret
-be_else.31636:
+be_else.31551:
 	ret
 .end trace_diffuse_ray
 
@@ -9255,138 +9917,161 @@ be_else.31636:
 .begin iter_trace_diffuse_rays
 iter_trace_diffuse_rays.2929:
 	cmp     $4, 0
-	bl      bge_else.31638
-bge_then.31638:
+	bl      bge_else.31553
+bge_then.31553:
 	load    [$2 + $4], $1
-	load    [$3 + 2], $5
+	load    [$3 + 0], $5
 .count stack_move
 	sub     $sp, 4, $sp
 	load    [$1 + 0], $1
-	load    [$1 + 2], $6
+	load    [$1 + 0], $6
 	load    [$1 + 1], $7
 	fmul    $6, $5, $5
-	load    [$1 + 0], $1
+	load    [$1 + 2], $1
 	load    [$3 + 1], $6
 	fmul    $7, $6, $6
-	load    [$3 + 0], $7
+	load    [$3 + 2], $7
+.count stack_store
 	store   $3, [$sp + 0]
+	fadd    $5, $6, $5
 	fmul    $1, $7, $1
+.count stack_store
 	store   $2, [$sp + 1]
+.count stack_store
 	store   $4, [$sp + 2]
-	fadd    $1, $6, $1
-	fadd    $1, $5, $1
+	fadd    $5, $1, $1
 	fcmp    $zero, $1
-	bg      ble_else.31639
-ble_then.31639:
+	bg      ble_else.31554
+ble_then.31554:
 	load    [$2 + $4], $2
 	fmul    $1, $37, $3
 	call    trace_diffuse_ray.2926
+.count stack_load
 	load    [$sp + 2], $1
 	sub     $1, 2, $1
 	cmp     $1, 0
-	bl      bge_else.31640
-bge_then.31640:
+	bl      bge_else.31555
+bge_then.31555:
+.count stack_load
 	load    [$sp + 1], $2
+.count stack_load
 	load    [$sp + 0], $4
 	load    [$2 + $1], $3
-	load    [$4 + 2], $5
+	load    [$4 + 0], $5
 	load    [$3 + 0], $3
-	load    [$3 + 2], $6
+	load    [$3 + 0], $6
 	load    [$3 + 1], $7
 	fmul    $6, $5, $5
-	load    [$3 + 0], $3
+	load    [$3 + 2], $3
 	load    [$4 + 1], $6
 	fmul    $7, $6, $6
-	load    [$4 + 0], $7
+	load    [$4 + 2], $7
+.count stack_store
 	store   $1, [$sp + 3]
+	fadd    $5, $6, $5
 	fmul    $3, $7, $3
-	fadd    $3, $6, $3
-	fadd    $3, $5, $3
+	fadd    $5, $3, $3
 	fcmp    $zero, $3
-	bg      ble_else.31641
-ble_then.31641:
-	load    [$2 + $1], $2
+	bg      ble_else.31556
+ble_then.31556:
 	fmul    $3, $37, $3
+	load    [$2 + $1], $2
 	call    trace_diffuse_ray.2926
 .count stack_move
 	add     $sp, 4, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 3], $2
+.count stack_load
 	load    [$sp - 4], $3
 	sub     $1, 2, $4
 	b       iter_trace_diffuse_rays.2929
-ble_else.31641:
+ble_else.31556:
 	add     $1, 1, $1
 	fmul    $3, $38, $3
 	load    [$2 + $1], $2
 	call    trace_diffuse_ray.2926
 .count stack_move
 	add     $sp, 4, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 3], $2
+.count stack_load
 	load    [$sp - 4], $3
 	sub     $1, 2, $4
 	b       iter_trace_diffuse_rays.2929
-bge_else.31640:
+bge_else.31555:
 .count stack_move
 	add     $sp, 4, $sp
 	ret
-ble_else.31639:
-	add     $4, 1, $3
-	load    [$2 + $3], $2
+ble_else.31554:
 	fmul    $1, $38, $3
+	add     $4, 1, $1
+	load    [$2 + $1], $2
 	call    trace_diffuse_ray.2926
+.count stack_load
 	load    [$sp + 2], $1
 	sub     $1, 2, $1
 	cmp     $1, 0
-	bl      bge_else.31642
-bge_then.31642:
+	bl      bge_else.31557
+bge_then.31557:
+.count stack_load
 	load    [$sp + 1], $2
+.count stack_load
 	load    [$sp + 0], $4
 	load    [$2 + $1], $3
-	load    [$4 + 2], $5
+	load    [$4 + 0], $5
 	load    [$3 + 0], $3
-	load    [$3 + 2], $6
+	load    [$3 + 0], $6
 	load    [$3 + 1], $7
 	fmul    $6, $5, $5
-	load    [$3 + 0], $3
+	load    [$3 + 2], $3
 	load    [$4 + 1], $6
 	fmul    $7, $6, $6
-	load    [$4 + 0], $7
+	load    [$4 + 2], $7
+.count stack_store
 	store   $1, [$sp + 3]
+	fadd    $5, $6, $5
 	fmul    $3, $7, $3
-	fadd    $3, $6, $3
-	fadd    $3, $5, $3
+	fadd    $5, $3, $3
 	fcmp    $zero, $3
-	bg      ble_else.31643
-ble_then.31643:
+	bg      ble_else.31558
+ble_then.31558:
 	load    [$2 + $1], $2
 	fmul    $3, $37, $3
 	call    trace_diffuse_ray.2926
 .count stack_move
 	add     $sp, 4, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 3], $2
+.count stack_load
 	load    [$sp - 4], $3
 	sub     $1, 2, $4
 	b       iter_trace_diffuse_rays.2929
-ble_else.31643:
+ble_else.31558:
 	add     $1, 1, $1
 	fmul    $3, $38, $3
 	load    [$2 + $1], $2
 	call    trace_diffuse_ray.2926
 .count stack_move
 	add     $sp, 4, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 3], $2
+.count stack_load
 	load    [$sp - 4], $3
 	sub     $1, 2, $4
 	b       iter_trace_diffuse_rays.2929
-bge_else.31642:
+bge_else.31557:
 .count stack_move
 	add     $sp, 4, $sp
 	ret
-bge_else.31638:
+bge_else.31553:
 	ret
 .end iter_trace_diffuse_rays
 
@@ -9395,313 +10080,362 @@ bge_else.31638:
 calc_diffuse_using_1point.2942:
 .count stack_move
 	sub     $sp, 10, $sp
+.count stack_store
 	store   $3, [$sp + 0]
+.count stack_store
 	store   $2, [$sp + 1]
-	load    [$2 + 5], $14
+	load    [$2 + 5], $16
+	load    [$2 + 6], $18
+	load    [$16 + $3], $16
+	load    [$16 + 0], $17
+.count move_float
+	mov     $17, $43
+	load    [$16 + 1], $17
+	load    [$16 + 2], $16
+.count move_float
+	mov     $17, $44
+.count move_float
+	mov     $16, $45
+	load    [$2 + 1], $17
 	load    [$2 + 7], $16
-	load    [$14 + $3], $14
-	load    [$14 + 0], $15
-.count move_float
-	mov     $15, $43
-	load    [$14 + 1], $15
-	load    [$14 + 2], $14
-.count move_float
-	mov     $15, $44
-.count move_float
-	mov     $14, $45
-	load    [$2 + 1], $15
-	load    [$2 + 6], $14
-	load    [$14 + 0], $14
-	store   $14, [$sp + 2]
-	load    [$15 + $3], $2
-	cmp     $14, 0
+	load    [$16 + $3], $16
+.count stack_store
+	store   $16, [$sp + 2]
+	load    [$17 + $3], $2
+.count stack_store
 	store   $2, [$sp + 3]
-	load    [$16 + $3], $15
-	store   $15, [$sp + 4]
-	be      bne_cont.31644
-bne_then.31644:
-	load    [$2 + 0], $16
-	load    [min_caml_dirvecs + 0], $14
+	load    [$18 + 0], $17
+.count stack_store
+	store   $17, [$sp + 4]
+	cmp     $17, 0
+	be      bne_cont.31559
+bne_then.31559:
+	load    [$2 + 0], $18
+	load    [min_caml_dirvecs + 0], $17
 	sub     $41, 1, $3
 .count move_float
-	mov     $16, $50
-	load    [$2 + 1], $16
+	mov     $18, $51
+	load    [$2 + 1], $18
 .count move_float
-	mov     $16, $51
-	load    [$2 + 2], $16
+	mov     $18, $52
+	load    [$2 + 2], $18
 .count move_float
-	mov     $16, $52
+	mov     $18, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 118], $16
-	load    [$15 + 2], $17
-	load    [$16 + 0], $16
-	load    [$16 + 2], $18
-	load    [$16 + 1], $19
-	fmul    $18, $17, $17
-	load    [$16 + 0], $16
-	load    [$15 + 1], $18
+	load    [$17 + 118], $18
+	load    [$16 + 0], $19
+	load    [$16 + 1], $22
+	load    [$18 + 0], $18
+	load    [$18 + 0], $20
+	load    [$18 + 1], $21
+	fmul    $20, $19, $19
+	load    [$18 + 2], $18
+	fmul    $21, $22, $20
+	load    [$16 + 2], $21
+.count stack_store
+	store   $17, [$sp + 5]
+	fadd    $19, $20, $19
+	fmul    $18, $21, $18
+	fadd    $19, $18, $18
+	fcmp    $zero, $18
+	bg      ble_else.31560
+ble_then.31560:
+	load    [$17 + 118], $2
+.count load_float
+	load    [f.27111], $16
+	fmul    $18, $37, $3
+	call    trace_diffuse_ray.2926
+	li      116, $4
+.count stack_load
+	load    [$sp + 5], $2
+.count stack_load
+	load    [$sp + 2], $3
+	call    iter_trace_diffuse_rays.2929
+.count b_cont
+	b       ble_cont.31560
+ble_else.31560:
+.count load_float
+	load    [f.27110], $16
+	load    [$17 + 119], $2
+	fmul    $18, $38, $3
+	call    trace_diffuse_ray.2926
+	li      116, $4
+.count stack_load
+	load    [$sp + 5], $2
+.count stack_load
+	load    [$sp + 2], $3
+	call    iter_trace_diffuse_rays.2929
+ble_cont.31560:
+bne_cont.31559:
+.count stack_load
+	load    [$sp + 4], $16
+	cmp     $16, 1
+	be      bne_cont.31561
+bne_then.31561:
+.count stack_load
+	load    [$sp + 3], $2
+	load    [min_caml_dirvecs + 1], $16
+	sub     $41, 1, $3
+	load    [$2 + 0], $17
+.count move_float
+	mov     $17, $51
+	load    [$2 + 1], $17
+.count move_float
+	mov     $17, $52
+	load    [$2 + 2], $17
+.count move_float
+	mov     $17, $53
+	call    setup_startp_constants.2831
+	load    [$16 + 118], $17
+.count stack_load
+	load    [$sp + 2], $3
+	load    [$17 + 0], $17
+	load    [$3 + 0], $18
+	load    [$3 + 1], $21
+	load    [$17 + 0], $19
+	load    [$17 + 1], $20
 	fmul    $19, $18, $18
-	load    [$15 + 0], $19
-	store   $14, [$sp + 5]
-	fmul    $16, $19, $16
-	fadd    $16, $18, $16
-	fadd    $16, $17, $16
-	fcmp    $zero, $16
-	bg      ble_else.31645
-ble_then.31645:
-	load    [$14 + 118], $2
-	fmul    $16, $37, $3
+	load    [$17 + 2], $17
+	fmul    $20, $21, $19
+	load    [$3 + 2], $20
+.count stack_store
+	store   $16, [$sp + 6]
+	fadd    $18, $19, $18
+	fmul    $17, $20, $17
+	fadd    $18, $17, $17
+	fcmp    $zero, $17
+	bg      ble_else.31562
+ble_then.31562:
+	load    [$16 + 118], $2
+	fmul    $17, $37, $3
 .count load_float
-	load    [f.27205], $14
+	load    [f.27111], $16
 	call    trace_diffuse_ray.2926
 	li      116, $4
-	load    [$sp + 5], $2
-	load    [$sp + 4], $3
-	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31645
-ble_else.31645:
-	load    [$14 + 119], $2
-	fmul    $16, $38, $3
-.count load_float
-	load    [f.27204], $14
-	call    trace_diffuse_ray.2926
-	li      116, $4
-	load    [$sp + 5], $2
-	load    [$sp + 4], $3
-	call    iter_trace_diffuse_rays.2929
-ble_cont.31645:
-bne_cont.31644:
-	load    [$sp + 2], $14
-	cmp     $14, 1
-	be      bne_cont.31646
-bne_then.31646:
-	load    [$sp + 3], $2
-	load    [min_caml_dirvecs + 1], $14
-	sub     $41, 1, $3
-	load    [$2 + 0], $15
-.count move_float
-	mov     $15, $50
-	load    [$2 + 1], $15
-.count move_float
-	mov     $15, $51
-	load    [$2 + 2], $15
-.count move_float
-	mov     $15, $52
-	call    setup_startp_constants.2831
-	load    [$14 + 118], $15
-	load    [$sp + 4], $3
-	load    [$15 + 0], $15
-	load    [$3 + 2], $16
-	load    [$15 + 2], $17
-	load    [$15 + 1], $18
-	fmul    $17, $16, $16
-	load    [$15 + 0], $15
-	load    [$3 + 1], $17
-	fmul    $18, $17, $17
-	load    [$3 + 0], $18
-	store   $14, [$sp + 6]
-	fmul    $15, $18, $15
-	fadd    $15, $17, $15
-	fadd    $15, $16, $15
-	fcmp    $zero, $15
-	bg      ble_else.31647
-ble_then.31647:
-	load    [$14 + 118], $2
-	fmul    $15, $37, $3
-.count load_float
-	load    [f.27205], $14
-	call    trace_diffuse_ray.2926
-	li      116, $4
+.count stack_load
 	load    [$sp + 6], $2
-	load    [$sp + 4], $3
+.count stack_load
+	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31647
-ble_else.31647:
-	load    [$14 + 119], $2
-	fmul    $15, $38, $3
+.count b_cont
+	b       ble_cont.31562
+ble_else.31562:
 .count load_float
-	load    [f.27204], $14
+	load    [f.27110], $18
+	load    [$16 + 119], $2
+	fmul    $17, $38, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 6], $2
-	load    [$sp + 4], $3
+.count stack_load
+	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31647:
-bne_cont.31646:
-	load    [$sp + 2], $14
-	cmp     $14, 2
-	be      bne_cont.31648
-bne_then.31648:
+ble_cont.31562:
+bne_cont.31561:
+.count stack_load
+	load    [$sp + 4], $16
+	cmp     $16, 2
+	be      bne_cont.31563
+bne_then.31563:
+.count stack_load
 	load    [$sp + 3], $2
-	load    [min_caml_dirvecs + 2], $14
+	load    [min_caml_dirvecs + 2], $16
 	sub     $41, 1, $3
-	load    [$2 + 0], $15
+	load    [$2 + 0], $17
 .count move_float
-	mov     $15, $50
-	load    [$2 + 1], $15
+	mov     $17, $51
+	load    [$2 + 1], $17
 .count move_float
-	mov     $15, $51
-	load    [$2 + 2], $15
+	mov     $17, $52
+	load    [$2 + 2], $17
 .count move_float
-	mov     $15, $52
+	mov     $17, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 118], $15
-	load    [$sp + 4], $3
-	load    [$15 + 0], $15
-	load    [$3 + 2], $16
-	load    [$15 + 2], $17
-	load    [$15 + 1], $18
-	fmul    $17, $16, $16
-	load    [$15 + 0], $15
-	load    [$3 + 1], $17
-	fmul    $18, $17, $17
+	load    [$16 + 118], $17
+.count stack_load
+	load    [$sp + 2], $3
+	load    [$17 + 0], $17
 	load    [$3 + 0], $18
-	store   $14, [$sp + 7]
-	fmul    $15, $18, $15
-	fadd    $15, $17, $15
-	fadd    $15, $16, $15
-	fcmp    $zero, $15
-	bg      ble_else.31649
-ble_then.31649:
-	load    [$14 + 118], $2
-	fmul    $15, $37, $3
+	load    [$3 + 1], $21
+	load    [$17 + 0], $19
+	load    [$17 + 1], $20
+	fmul    $19, $18, $18
+	load    [$17 + 2], $17
+	fmul    $20, $21, $19
+	load    [$3 + 2], $20
+.count stack_store
+	store   $16, [$sp + 7]
+	fadd    $18, $19, $18
+	fmul    $17, $20, $17
+	fadd    $18, $17, $17
+	fcmp    $zero, $17
+	bg      ble_else.31564
+ble_then.31564:
+	load    [$16 + 118], $2
+	fmul    $17, $37, $3
 .count load_float
-	load    [f.27205], $14
+	load    [f.27111], $16
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 7], $2
-	load    [$sp + 4], $3
+.count stack_load
+	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31649
-ble_else.31649:
-	load    [$14 + 119], $2
-	fmul    $15, $38, $3
+.count b_cont
+	b       ble_cont.31564
+ble_else.31564:
 .count load_float
-	load    [f.27204], $14
+	load    [f.27110], $18
+	load    [$16 + 119], $2
+	fmul    $17, $38, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 7], $2
-	load    [$sp + 4], $3
+.count stack_load
+	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31649:
-bne_cont.31648:
-	load    [$sp + 2], $14
-	cmp     $14, 3
-	be      bne_cont.31650
-bne_then.31650:
+ble_cont.31564:
+bne_cont.31563:
+.count stack_load
+	load    [$sp + 4], $16
+	cmp     $16, 3
+	be      bne_cont.31565
+bne_then.31565:
+.count stack_load
 	load    [$sp + 3], $2
-	load    [min_caml_dirvecs + 3], $14
+	load    [min_caml_dirvecs + 3], $16
 	sub     $41, 1, $3
-	load    [$2 + 0], $15
+	load    [$2 + 0], $17
 .count move_float
-	mov     $15, $50
-	load    [$2 + 1], $15
+	mov     $17, $51
+	load    [$2 + 1], $17
 .count move_float
-	mov     $15, $51
-	load    [$2 + 2], $15
+	mov     $17, $52
+	load    [$2 + 2], $17
 .count move_float
-	mov     $15, $52
+	mov     $17, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 118], $15
-	load    [$sp + 4], $3
-	load    [$15 + 0], $15
-	load    [$3 + 2], $16
-	load    [$15 + 2], $17
-	load    [$15 + 1], $18
-	fmul    $17, $16, $16
-	load    [$15 + 0], $15
-	load    [$3 + 1], $17
-	fmul    $18, $17, $17
+	load    [$16 + 118], $17
+.count stack_load
+	load    [$sp + 2], $3
+	load    [$17 + 0], $17
 	load    [$3 + 0], $18
-	store   $14, [$sp + 8]
-	fmul    $15, $18, $15
-	fadd    $15, $17, $15
-	fadd    $15, $16, $15
-	fcmp    $zero, $15
-	bg      ble_else.31651
-ble_then.31651:
-	load    [$14 + 118], $2
-	fmul    $15, $37, $3
+	load    [$3 + 1], $21
+	load    [$17 + 0], $19
+	load    [$17 + 1], $20
+	fmul    $19, $18, $18
+	load    [$17 + 2], $17
+	fmul    $20, $21, $19
+	load    [$3 + 2], $20
+.count stack_store
+	store   $16, [$sp + 8]
+	fadd    $18, $19, $18
+	fmul    $17, $20, $17
+	fadd    $18, $17, $17
+	fcmp    $zero, $17
+	bg      ble_else.31566
+ble_then.31566:
+	load    [$16 + 118], $2
+	fmul    $17, $37, $3
 .count load_float
-	load    [f.27205], $14
+	load    [f.27111], $16
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 8], $2
-	load    [$sp + 4], $3
+.count stack_load
+	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31651
-ble_else.31651:
-	load    [$14 + 119], $2
-	fmul    $15, $38, $3
+.count b_cont
+	b       ble_cont.31566
+ble_else.31566:
 .count load_float
-	load    [f.27204], $14
+	load    [f.27110], $18
+	load    [$16 + 119], $2
+	fmul    $17, $38, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 8], $2
-	load    [$sp + 4], $3
+.count stack_load
+	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31651:
-bne_cont.31650:
-	load    [$sp + 2], $14
-	cmp     $14, 4
-	be      bne_cont.31652
-bne_then.31652:
+ble_cont.31566:
+bne_cont.31565:
+.count stack_load
+	load    [$sp + 4], $16
+	cmp     $16, 4
+	be      bne_cont.31567
+bne_then.31567:
+.count stack_load
 	load    [$sp + 3], $2
-	load    [min_caml_dirvecs + 4], $14
+	load    [min_caml_dirvecs + 4], $16
 	sub     $41, 1, $3
-	load    [$2 + 0], $15
+	load    [$2 + 0], $17
 .count move_float
-	mov     $15, $50
-	load    [$2 + 1], $15
+	mov     $17, $51
+	load    [$2 + 1], $17
 .count move_float
-	mov     $15, $51
-	load    [$2 + 2], $15
+	mov     $17, $52
+	load    [$2 + 2], $17
 .count move_float
-	mov     $15, $52
+	mov     $17, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 118], $1
-	load    [$sp + 4], $3
+	load    [$16 + 118], $1
+.count stack_load
+	load    [$sp + 2], $3
 	load    [$1 + 0], $1
-	load    [$3 + 2], $2
-	load    [$1 + 2], $4
+	load    [$3 + 0], $2
+	load    [$3 + 1], $6
+	load    [$1 + 0], $4
 	load    [$1 + 1], $5
 	fmul    $4, $2, $2
-	load    [$1 + 0], $1
-	load    [$3 + 1], $4
-	fmul    $5, $4, $4
-	load    [$3 + 0], $5
-	store   $14, [$sp + 9]
+	load    [$1 + 2], $1
+	fmul    $5, $6, $4
+	load    [$3 + 2], $5
+.count stack_store
+	store   $16, [$sp + 9]
+	fadd    $2, $4, $2
 	fmul    $1, $5, $1
-	fadd    $1, $4, $1
-	fadd    $1, $2, $1
+	fadd    $2, $1, $1
 	fcmp    $zero, $1
-	bg      ble_else.31653
-ble_then.31653:
+	bg      ble_else.31568
+ble_then.31568:
 .count load_float
-	load    [f.27205], $3
-	load    [$14 + 118], $2
+	load    [f.27111], $3
+	load    [$16 + 118], $2
 	fmul    $1, $37, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 9], $2
-	load    [$sp + 4], $3
+.count stack_load
+	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31653
-ble_else.31653:
+.count b_cont
+	b       ble_cont.31568
+ble_else.31568:
 .count load_float
-	load    [f.27204], $3
-	load    [$14 + 119], $2
+	load    [f.27110], $2
 	fmul    $1, $38, $3
+	load    [$16 + 119], $2
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 9], $2
-	load    [$sp + 4], $3
+.count stack_load
+	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31653:
-bne_cont.31652:
+ble_cont.31568:
+bne_cont.31567:
 .count stack_move
 	add     $sp, 10, $sp
+.count stack_load
 	load    [$sp - 9], $1
+.count stack_load
 	load    [$sp - 10], $2
 	load    [$1 + 4], $1
 	load    [$1 + $2], $1
@@ -9727,338 +10461,393 @@ bne_cont.31652:
 .begin do_without_neighbors
 do_without_neighbors.2951:
 	cmp     $3, 4
-	bg      ble_else.31654
-ble_then.31654:
-	load    [$2 + 2], $14
-	load    [$14 + $3], $15
-	cmp     $15, 0
-	bl      bge_else.31655
-bge_then.31655:
-	load    [$2 + 3], $15
-	load    [$15 + $3], $16
-	cmp     $16, 0
-	bne     be_else.31656
-be_then.31656:
+	bg      ble_else.31569
+ble_then.31569:
+	load    [$2 + 2], $16
+	load    [$16 + $3], $17
+	cmp     $17, 0
+	bl      bge_else.31570
+bge_then.31570:
+	load    [$2 + 3], $17
+	load    [$17 + $3], $18
+	cmp     $18, 0
+	bne     be_else.31571
+be_then.31571:
 	add     $3, 1, $3
 	cmp     $3, 4
-	bg      ble_else.31657
-ble_then.31657:
-	load    [$14 + $3], $1
+	bg      ble_else.31572
+ble_then.31572:
+	load    [$16 + $3], $1
 	cmp     $1, 0
-	bl      bge_else.31658
-bge_then.31658:
-	load    [$15 + $3], $1
+	bl      bge_else.31573
+bge_then.31573:
+	load    [$17 + $3], $1
 	cmp     $1, 0
-	bne     be_else.31659
-be_then.31659:
+	bne     be_else.31574
+be_then.31574:
 	add     $3, 1, $3
 	b       do_without_neighbors.2951
-be_else.31659:
+be_else.31574:
 .count stack_move
 	sub     $sp, 13, $sp
+.count stack_store
 	store   $2, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
 	call    calc_diffuse_using_1point.2942
 .count stack_move
 	add     $sp, 13, $sp
+.count stack_load
 	load    [$sp - 12], $1
+.count stack_load
 	load    [$sp - 13], $2
 	add     $1, 1, $3
 	b       do_without_neighbors.2951
-bge_else.31658:
+bge_else.31573:
 	ret
-ble_else.31657:
+ble_else.31572:
 	ret
-be_else.31656:
+be_else.31571:
 .count stack_move
 	sub     $sp, 13, $sp
-	store   $15, [$sp + 2]
-	store   $14, [$sp + 3]
+.count stack_store
+	store   $17, [$sp + 2]
+.count stack_store
+	store   $16, [$sp + 3]
+.count stack_store
 	store   $3, [$sp + 4]
+.count stack_store
 	store   $2, [$sp + 0]
-	load    [$2 + 5], $14
+	load    [$2 + 5], $16
+	load    [$2 + 6], $18
+	load    [$16 + $3], $16
+	load    [$16 + 0], $17
+.count move_float
+	mov     $17, $43
+	load    [$16 + 1], $17
+	load    [$16 + 2], $16
+.count move_float
+	mov     $17, $44
+.count move_float
+	mov     $16, $45
+	load    [$2 + 1], $17
 	load    [$2 + 7], $16
-	load    [$14 + $3], $14
-	load    [$14 + 0], $15
-.count move_float
-	mov     $15, $43
-	load    [$14 + 1], $15
-	load    [$14 + 2], $14
-.count move_float
-	mov     $15, $44
-.count move_float
-	mov     $14, $45
-	load    [$2 + 1], $15
-	load    [$2 + 6], $14
-	load    [$14 + 0], $14
-	store   $14, [$sp + 5]
-	load    [$15 + $3], $2
-	cmp     $14, 0
+	load    [$16 + $3], $16
+.count stack_store
+	store   $16, [$sp + 5]
+	load    [$17 + $3], $2
+.count stack_store
 	store   $2, [$sp + 6]
-	load    [$16 + $3], $15
-	store   $15, [$sp + 7]
-	be      bne_cont.31660
-bne_then.31660:
-	load    [$2 + 0], $16
-	load    [min_caml_dirvecs + 0], $14
+	load    [$18 + 0], $17
+.count stack_store
+	store   $17, [$sp + 7]
+	cmp     $17, 0
+	be      bne_cont.31575
+bne_then.31575:
+	load    [$2 + 0], $18
+	load    [min_caml_dirvecs + 0], $17
 	sub     $41, 1, $3
 .count move_float
-	mov     $16, $50
-	load    [$2 + 1], $16
+	mov     $18, $51
+	load    [$2 + 1], $18
 .count move_float
-	mov     $16, $51
-	load    [$2 + 2], $16
+	mov     $18, $52
+	load    [$2 + 2], $18
 .count move_float
-	mov     $16, $52
+	mov     $18, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 118], $16
-	load    [$15 + 2], $17
-	load    [$16 + 0], $16
-	load    [$16 + 2], $18
-	load    [$16 + 1], $19
-	fmul    $18, $17, $17
-	load    [$16 + 0], $16
-	load    [$15 + 1], $18
+	load    [$17 + 118], $18
+	load    [$16 + 0], $19
+	load    [$18 + 0], $18
+	load    [$18 + 0], $20
+	load    [$18 + 1], $21
+	fmul    $20, $19, $19
+	load    [$18 + 2], $18
+	load    [$16 + 1], $20
+	fmul    $21, $20, $20
+	load    [$16 + 2], $21
+.count stack_store
+	store   $17, [$sp + 8]
+	fadd    $19, $20, $19
+	fmul    $18, $21, $18
+	fadd    $19, $18, $18
+	fcmp    $zero, $18
+	bg      ble_else.31576
+ble_then.31576:
+	load    [$17 + 118], $2
+	fmul    $18, $37, $3
+	call    trace_diffuse_ray.2926
+	li      116, $4
+.count stack_load
+	load    [$sp + 8], $2
+.count stack_load
+	load    [$sp + 5], $3
+	call    iter_trace_diffuse_rays.2929
+.count b_cont
+	b       ble_cont.31576
+ble_else.31576:
+	fmul    $18, $38, $3
+	load    [$17 + 119], $2
+	call    trace_diffuse_ray.2926
+	li      116, $4
+.count stack_load
+	load    [$sp + 8], $2
+.count stack_load
+	load    [$sp + 5], $3
+	call    iter_trace_diffuse_rays.2929
+ble_cont.31576:
+bne_cont.31575:
+.count stack_load
+	load    [$sp + 7], $16
+	cmp     $16, 1
+	be      bne_cont.31577
+bne_then.31577:
+.count stack_load
+	load    [$sp + 6], $2
+	load    [min_caml_dirvecs + 1], $16
+	sub     $41, 1, $3
+	load    [$2 + 0], $17
+.count move_float
+	mov     $17, $51
+	load    [$2 + 1], $17
+.count move_float
+	mov     $17, $52
+	load    [$2 + 2], $17
+.count move_float
+	mov     $17, $53
+	call    setup_startp_constants.2831
+	load    [$16 + 118], $17
+.count stack_load
+	load    [$sp + 5], $3
+	load    [$17 + 0], $17
+	load    [$3 + 0], $18
+	load    [$17 + 0], $19
+	load    [$17 + 1], $20
 	fmul    $19, $18, $18
-	load    [$15 + 0], $19
-	store   $14, [$sp + 8]
-	fmul    $16, $19, $16
-	fadd    $16, $18, $16
-	fadd    $16, $17, $16
-	fcmp    $zero, $16
-	bg      ble_else.31661
-ble_then.31661:
-	load    [$14 + 118], $2
-	fmul    $16, $37, $3
+	load    [$17 + 2], $17
+	load    [$3 + 1], $19
+	fmul    $20, $19, $19
+	load    [$3 + 2], $20
+.count stack_store
+	store   $16, [$sp + 9]
+	fadd    $18, $19, $18
+	fmul    $17, $20, $17
+	fadd    $18, $17, $17
+	fcmp    $zero, $17
+	bg      ble_else.31578
+ble_then.31578:
+	load    [$16 + 118], $2
+	fmul    $17, $37, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
-	load    [$sp + 8], $2
-	load    [$sp + 7], $3
-	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31661
-ble_else.31661:
-	load    [$14 + 119], $2
-	fmul    $16, $38, $3
-	call    trace_diffuse_ray.2926
-	li      116, $4
-	load    [$sp + 8], $2
-	load    [$sp + 7], $3
-	call    iter_trace_diffuse_rays.2929
-ble_cont.31661:
-bne_cont.31660:
-	load    [$sp + 5], $14
-	cmp     $14, 1
-	be      bne_cont.31662
-bne_then.31662:
-	load    [$sp + 6], $2
-	load    [min_caml_dirvecs + 1], $14
-	sub     $41, 1, $3
-	load    [$2 + 0], $15
-.count move_float
-	mov     $15, $50
-	load    [$2 + 1], $15
-.count move_float
-	mov     $15, $51
-	load    [$2 + 2], $15
-.count move_float
-	mov     $15, $52
-	call    setup_startp_constants.2831
-	load    [$14 + 118], $15
-	load    [$sp + 7], $3
-	load    [$15 + 0], $15
-	load    [$3 + 2], $16
-	load    [$15 + 2], $17
-	load    [$15 + 1], $18
-	fmul    $17, $16, $16
-	load    [$15 + 0], $15
-	load    [$3 + 1], $17
-	fmul    $18, $17, $17
-	load    [$3 + 0], $18
-	store   $14, [$sp + 9]
-	fmul    $15, $18, $15
-	fadd    $15, $17, $15
-	fadd    $15, $16, $15
-	fcmp    $zero, $15
-	bg      ble_else.31663
-ble_then.31663:
-	load    [$14 + 118], $2
-	fmul    $15, $37, $3
-	call    trace_diffuse_ray.2926
-	li      116, $4
+.count stack_load
 	load    [$sp + 9], $2
-	load    [$sp + 7], $3
+.count stack_load
+	load    [$sp + 5], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31663
-ble_else.31663:
-	load    [$14 + 119], $2
-	fmul    $15, $38, $3
+.count b_cont
+	b       ble_cont.31578
+ble_else.31578:
+	fmul    $17, $38, $3
+	load    [$16 + 119], $2
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 9], $2
-	load    [$sp + 7], $3
+.count stack_load
+	load    [$sp + 5], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31663:
-bne_cont.31662:
-	load    [$sp + 5], $14
-	cmp     $14, 2
-	be      bne_cont.31664
-bne_then.31664:
+ble_cont.31578:
+bne_cont.31577:
+.count stack_load
+	load    [$sp + 7], $16
+	cmp     $16, 2
+	be      bne_cont.31579
+bne_then.31579:
+.count stack_load
 	load    [$sp + 6], $2
-	load    [min_caml_dirvecs + 2], $14
+	load    [min_caml_dirvecs + 2], $16
 	sub     $41, 1, $3
-	load    [$2 + 0], $15
+	load    [$2 + 0], $17
 .count move_float
-	mov     $15, $50
-	load    [$2 + 1], $15
+	mov     $17, $51
+	load    [$2 + 1], $17
 .count move_float
-	mov     $15, $51
-	load    [$2 + 2], $15
+	mov     $17, $52
+	load    [$2 + 2], $17
 .count move_float
-	mov     $15, $52
+	mov     $17, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 118], $15
-	load    [$sp + 7], $3
-	load    [$15 + 0], $15
-	load    [$3 + 2], $16
-	load    [$15 + 2], $17
-	load    [$15 + 1], $18
-	fmul    $17, $16, $16
-	load    [$15 + 0], $15
-	load    [$3 + 1], $17
-	fmul    $18, $17, $17
+	load    [$16 + 118], $17
+.count stack_load
+	load    [$sp + 5], $3
+	load    [$17 + 0], $17
 	load    [$3 + 0], $18
-	store   $14, [$sp + 10]
-	fmul    $15, $18, $15
-	fadd    $15, $17, $15
-	fadd    $15, $16, $15
-	fcmp    $zero, $15
-	bg      ble_else.31665
-ble_then.31665:
-	load    [$14 + 118], $2
-	fmul    $15, $37, $3
+	load    [$17 + 0], $19
+	load    [$17 + 1], $20
+	fmul    $19, $18, $18
+	load    [$17 + 2], $17
+	load    [$3 + 1], $19
+	fmul    $20, $19, $19
+	load    [$3 + 2], $20
+.count stack_store
+	store   $16, [$sp + 10]
+	fadd    $18, $19, $18
+	fmul    $17, $20, $17
+	fadd    $18, $17, $17
+	fcmp    $zero, $17
+	bg      ble_else.31580
+ble_then.31580:
+	load    [$16 + 118], $2
+	fmul    $17, $37, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 10], $2
-	load    [$sp + 7], $3
+.count stack_load
+	load    [$sp + 5], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31665
-ble_else.31665:
-	load    [$14 + 119], $2
-	fmul    $15, $38, $3
+.count b_cont
+	b       ble_cont.31580
+ble_else.31580:
+	fmul    $17, $38, $3
+	load    [$16 + 119], $2
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 10], $2
-	load    [$sp + 7], $3
+.count stack_load
+	load    [$sp + 5], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31665:
-bne_cont.31664:
-	load    [$sp + 5], $14
-	cmp     $14, 3
-	be      bne_cont.31666
-bne_then.31666:
+ble_cont.31580:
+bne_cont.31579:
+.count stack_load
+	load    [$sp + 7], $16
+	cmp     $16, 3
+	be      bne_cont.31581
+bne_then.31581:
+.count stack_load
 	load    [$sp + 6], $2
-	load    [min_caml_dirvecs + 3], $14
+	load    [min_caml_dirvecs + 3], $16
 	sub     $41, 1, $3
-	load    [$2 + 0], $15
+	load    [$2 + 0], $17
 .count move_float
-	mov     $15, $50
-	load    [$2 + 1], $15
+	mov     $17, $51
+	load    [$2 + 1], $17
 .count move_float
-	mov     $15, $51
-	load    [$2 + 2], $15
+	mov     $17, $52
+	load    [$2 + 2], $17
 .count move_float
-	mov     $15, $52
+	mov     $17, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 118], $15
-	load    [$sp + 7], $3
-	load    [$15 + 0], $15
-	load    [$3 + 2], $16
-	load    [$15 + 2], $17
-	load    [$15 + 1], $18
-	fmul    $17, $16, $16
-	load    [$15 + 0], $15
-	load    [$3 + 1], $17
-	fmul    $18, $17, $17
+	load    [$16 + 118], $17
+.count stack_load
+	load    [$sp + 5], $3
+	load    [$17 + 0], $17
 	load    [$3 + 0], $18
-	store   $14, [$sp + 11]
-	fmul    $15, $18, $15
-	fadd    $15, $17, $15
-	fadd    $15, $16, $15
-	fcmp    $zero, $15
-	bg      ble_else.31667
-ble_then.31667:
-	load    [$14 + 118], $2
-	fmul    $15, $37, $3
+	load    [$17 + 0], $19
+	load    [$17 + 1], $20
+	fmul    $19, $18, $18
+	load    [$17 + 2], $17
+	load    [$3 + 1], $19
+	fmul    $20, $19, $19
+	load    [$3 + 2], $20
+.count stack_store
+	store   $16, [$sp + 11]
+	fadd    $18, $19, $18
+	fmul    $17, $20, $17
+	fadd    $18, $17, $17
+	fcmp    $zero, $17
+	bg      ble_else.31582
+ble_then.31582:
+	load    [$16 + 118], $2
+	fmul    $17, $37, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 11], $2
-	load    [$sp + 7], $3
+.count stack_load
+	load    [$sp + 5], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31667
-ble_else.31667:
-	load    [$14 + 119], $2
-	fmul    $15, $38, $3
+.count b_cont
+	b       ble_cont.31582
+ble_else.31582:
+	fmul    $17, $38, $3
+	load    [$16 + 119], $2
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 11], $2
-	load    [$sp + 7], $3
+.count stack_load
+	load    [$sp + 5], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31667:
-bne_cont.31666:
-	load    [$sp + 5], $14
-	cmp     $14, 4
-	be      bne_cont.31668
-bne_then.31668:
+ble_cont.31582:
+bne_cont.31581:
+.count stack_load
+	load    [$sp + 7], $16
+	cmp     $16, 4
+	be      bne_cont.31583
+bne_then.31583:
+.count stack_load
 	load    [$sp + 6], $2
-	load    [min_caml_dirvecs + 4], $14
+	load    [min_caml_dirvecs + 4], $16
 	sub     $41, 1, $3
-	load    [$2 + 0], $15
+	load    [$2 + 0], $17
 .count move_float
-	mov     $15, $50
-	load    [$2 + 1], $15
+	mov     $17, $51
+	load    [$2 + 1], $17
 .count move_float
-	mov     $15, $51
-	load    [$2 + 2], $15
+	mov     $17, $52
+	load    [$2 + 2], $17
 .count move_float
-	mov     $15, $52
+	mov     $17, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 118], $1
-	load    [$sp + 7], $3
+	load    [$16 + 118], $1
+.count stack_load
+	load    [$sp + 5], $3
 	load    [$1 + 0], $1
-	load    [$3 + 2], $2
-	load    [$1 + 2], $4
+	load    [$3 + 0], $2
+	load    [$1 + 0], $4
 	load    [$1 + 1], $5
 	fmul    $4, $2, $2
-	load    [$1 + 0], $1
+	load    [$1 + 2], $1
 	load    [$3 + 1], $4
 	fmul    $5, $4, $4
-	load    [$3 + 0], $5
-	store   $14, [$sp + 12]
+	load    [$3 + 2], $5
+.count stack_store
+	store   $16, [$sp + 12]
+	fadd    $2, $4, $2
 	fmul    $1, $5, $1
-	fadd    $1, $4, $1
-	fadd    $1, $2, $1
+	fadd    $2, $1, $1
 	fcmp    $zero, $1
-	bg      ble_else.31669
-ble_then.31669:
-	load    [$14 + 118], $2
+	bg      ble_else.31584
+ble_then.31584:
+	load    [$16 + 118], $2
 	fmul    $1, $37, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 12], $2
-	load    [$sp + 7], $3
+.count stack_load
+	load    [$sp + 5], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31669
-ble_else.31669:
-	load    [$14 + 119], $2
+.count b_cont
+	b       ble_cont.31584
+ble_else.31584:
 	fmul    $1, $38, $3
+	load    [$16 + 119], $2
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 12], $2
-	load    [$sp + 7], $3
+.count stack_load
+	load    [$sp + 5], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31669:
-bne_cont.31668:
+ble_cont.31584:
+bne_cont.31583:
+.count stack_load
 	load    [$sp + 0], $2
+.count stack_load
 	load    [$sp + 4], $3
 	load    [$2 + 4], $1
 	load    [$1 + $3], $1
@@ -10079,42 +10868,47 @@ bne_cont.31668:
 	mov     $4, $47
 .count move_float
 	mov     $1, $48
-	bg      ble_else.31670
-ble_then.31670:
+	bg      ble_else.31585
+ble_then.31585:
+.count stack_load
 	load    [$sp + 3], $1
 	load    [$1 + $3], $1
 	cmp     $1, 0
-	bl      bge_else.31671
-bge_then.31671:
+	bl      bge_else.31586
+bge_then.31586:
+.count stack_load
 	load    [$sp + 2], $1
 	load    [$1 + $3], $1
 	cmp     $1, 0
-	bne     be_else.31672
-be_then.31672:
+	bne     be_else.31587
+be_then.31587:
 .count stack_move
 	add     $sp, 13, $sp
 	add     $3, 1, $3
 	b       do_without_neighbors.2951
-be_else.31672:
+be_else.31587:
+.count stack_store
 	store   $3, [$sp + 1]
 	call    calc_diffuse_using_1point.2942
 .count stack_move
 	add     $sp, 13, $sp
+.count stack_load
 	load    [$sp - 12], $1
+.count stack_load
 	load    [$sp - 13], $2
 	add     $1, 1, $3
 	b       do_without_neighbors.2951
-bge_else.31671:
+bge_else.31586:
 .count stack_move
 	add     $sp, 13, $sp
 	ret
-ble_else.31670:
+ble_else.31585:
 .count stack_move
 	add     $sp, 13, $sp
 	ret
-bge_else.31655:
+bge_else.31570:
 	ret
-ble_else.31654:
+ble_else.31569:
 	ret
 .end do_without_neighbors
 
@@ -10122,100 +10916,108 @@ ble_else.31654:
 .begin try_exploit_neighbors
 try_exploit_neighbors.2967:
 	cmp     $6, 4
-	bg      ble_else.31673
-ble_then.31673:
+	bg      ble_else.31588
+ble_then.31588:
 	load    [$4 + $2], $1
 	load    [$1 + 2], $7
 	load    [$7 + $6], $7
 	cmp     $7, 0
-	bl      bge_else.31674
-bge_then.31674:
+	bl      bge_else.31589
+bge_then.31589:
 	load    [$3 + $2], $8
 	load    [$8 + 2], $9
 	load    [$9 + $6], $9
 	cmp     $9, $7
-	bne     be_else.31675
-be_then.31675:
+	bne     be_else.31590
+be_then.31590:
 	load    [$5 + $2], $9
 	load    [$9 + 2], $9
 	load    [$9 + $6], $9
 	cmp     $9, $7
-	bne     be_else.31676
-be_then.31676:
+	bne     be_else.31591
+be_then.31591:
 	sub     $2, 1, $9
 	load    [$4 + $9], $9
 	load    [$9 + 2], $9
 	load    [$9 + $6], $9
 	cmp     $9, $7
-	bne     be_else.31677
-be_then.31677:
+	bne     be_else.31592
+be_then.31592:
 	add     $2, 1, $9
 	load    [$4 + $9], $9
 	load    [$9 + 2], $9
 	load    [$9 + $6], $9
 	cmp     $9, $7
-	bne     be_else.31678
-be_then.31678:
+	bne     be_else.31593
+be_then.31593:
 	li      1, $7
-	b       be_cont.31675
-be_else.31678:
+.count b_cont
+	b       be_cont.31590
+be_else.31593:
 	li      0, $7
-	b       be_cont.31675
-be_else.31677:
+.count b_cont
+	b       be_cont.31590
+be_else.31592:
 	li      0, $7
-	b       be_cont.31675
-be_else.31676:
+.count b_cont
+	b       be_cont.31590
+be_else.31591:
 	li      0, $7
-	b       be_cont.31675
-be_else.31675:
+.count b_cont
+	b       be_cont.31590
+be_else.31590:
 	li      0, $7
-be_cont.31675:
+be_cont.31590:
 	cmp     $7, 0
-	bne     be_else.31679
-be_then.31679:
+	bne     be_else.31594
+be_then.31594:
 	cmp     $6, 4
-	bg      ble_else.31680
-ble_then.31680:
+	bg      ble_else.31595
+ble_then.31595:
 	load    [$4 + $2], $2
 	load    [$2 + 2], $1
 	load    [$1 + $6], $1
 	cmp     $1, 0
-	bl      bge_else.31681
-bge_then.31681:
+	bl      bge_else.31596
+bge_then.31596:
 	load    [$2 + 3], $1
 	load    [$1 + $6], $1
 	cmp     $1, 0
-	bne     be_else.31682
-be_then.31682:
+	bne     be_else.31597
+be_then.31597:
 	add     $6, 1, $3
 	b       do_without_neighbors.2951
-be_else.31682:
+be_else.31597:
 .count stack_move
 	sub     $sp, 2, $sp
 .count move_args
 	mov     $6, $3
+.count stack_store
 	store   $2, [$sp + 0]
+.count stack_store
 	store   $6, [$sp + 1]
 	call    calc_diffuse_using_1point.2942
 .count stack_move
 	add     $sp, 2, $sp
+.count stack_load
 	load    [$sp - 1], $1
+.count stack_load
 	load    [$sp - 2], $2
 	add     $1, 1, $3
 	b       do_without_neighbors.2951
-bge_else.31681:
+bge_else.31596:
 	ret
-ble_else.31680:
+ble_else.31595:
 	ret
-be_else.31679:
+be_else.31594:
 	load    [$1 + 3], $1
 	load    [$1 + $6], $1
 	cmp     $1, 0
-	bne     be_else.31683
-be_then.31683:
+	bne     be_else.31598
+be_then.31598:
 	add     $6, 1, $6
 	b       try_exploit_neighbors.2967
-be_else.31683:
+be_else.31598:
 	load    [$8 + 5], $1
 	load    [$1 + $6], $1
 	load    [$1 + 0], $7
@@ -10309,9 +11111,9 @@ be_else.31683:
 .count move_float
 	mov     $1, $48
 	b       try_exploit_neighbors.2967
-bge_else.31674:
+bge_else.31589:
 	ret
-ble_else.31673:
+ble_else.31588:
 	ret
 .end try_exploit_neighbors
 
@@ -10319,99 +11121,110 @@ ble_else.31673:
 .begin pretrace_diffuse_rays
 pretrace_diffuse_rays.2980:
 	cmp     $3, 4
-	bg      ble_else.31684
-ble_then.31684:
-	load    [$2 + 2], $14
-	load    [$14 + $3], $15
-	cmp     $15, 0
-	bl      bge_else.31685
-bge_then.31685:
-	load    [$2 + 3], $15
-	load    [$15 + $3], $16
+	bg      ble_else.31599
+ble_then.31599:
+	load    [$2 + 2], $16
+	load    [$16 + $3], $17
+	cmp     $17, 0
+	bl      bge_else.31600
+bge_then.31600:
+	load    [$2 + 3], $17
+	load    [$17 + $3], $18
+	cmp     $18, 0
+	bne     be_else.31601
+be_then.31601:
+	add     $3, 1, $18
+	cmp     $18, 4
+	bg      ble_else.31602
+ble_then.31602:
+	load    [$16 + $18], $16
 	cmp     $16, 0
-	bne     be_else.31686
-be_then.31686:
-	add     $3, 1, $16
-	cmp     $16, 4
-	bg      ble_else.31687
-ble_then.31687:
-	load    [$14 + $16], $14
-	cmp     $14, 0
-	bl      bge_else.31688
-bge_then.31688:
-	load    [$15 + $16], $14
-	cmp     $14, 0
-	bne     be_else.31689
-be_then.31689:
-	add     $16, 1, $3
+	bl      bge_else.31603
+bge_then.31603:
+	load    [$17 + $18], $16
+	cmp     $16, 0
+	bne     be_else.31604
+be_then.31604:
+	add     $18, 1, $3
 	b       pretrace_diffuse_rays.2980
-be_else.31689:
+be_else.31604:
 .count stack_move
 	sub     $sp, 14, $sp
 .count move_float
 	mov     $zero, $43
-	store   $16, [$sp + 0]
+.count stack_store
+	store   $18, [$sp + 0]
 .count move_float
 	mov     $zero, $44
+.count stack_store
 	store   $2, [$sp + 1]
-	load    [$2 + 1], $14
-	load    [$2 + 6], $17
-	load    [$2 + 7], $15
+	load    [$2 + 1], $19
+	load    [$2 + 7], $17
+	load    [$2 + 6], $16
 .count move_float
 	mov     $zero, $45
-	load    [$14 + $16], $2
+	load    [$19 + $18], $2
 	sub     $41, 1, $3
-	load    [$2 + 0], $14
+	load    [$2 + 0], $19
 .count move_float
-	mov     $14, $50
-	load    [$2 + 1], $14
+	mov     $19, $51
+	load    [$2 + 1], $19
 .count move_float
-	mov     $14, $51
-	load    [$2 + 2], $14
+	mov     $19, $52
+	load    [$2 + 2], $19
 .count move_float
-	mov     $14, $52
+	mov     $19, $53
 	call    setup_startp_constants.2831
-	load    [$17 + 0], $1
-	load    [$15 + $16], $3
+	load    [$16 + 0], $1
+	load    [$17 + $18], $3
 	load    [min_caml_dirvecs + $1], $2
-	load    [$3 + 2], $4
+	load    [$3 + 1], $5
+	load    [$3 + 0], $4
 	load    [$2 + 118], $1
 	load    [$1 + 0], $1
-	load    [$1 + 2], $5
-	load    [$1 + 1], $6
-	fmul    $5, $4, $4
-	load    [$1 + 0], $1
-	load    [$3 + 1], $5
-	fmul    $6, $5, $5
-	load    [$3 + 0], $6
+	load    [$1 + 1], $7
+	load    [$1 + 0], $6
+	fmul    $7, $5, $5
+	fmul    $6, $4, $4
+	load    [$1 + 2], $1
+	load    [$3 + 2], $6
+.count stack_store
 	store   $3, [$sp + 2]
+	fadd    $4, $5, $4
 	fmul    $1, $6, $1
+.count stack_store
 	store   $2, [$sp + 3]
-	fadd    $1, $5, $1
-	fadd    $1, $4, $1
+	fadd    $4, $1, $1
 	fcmp    $zero, $1
-	bg      ble_else.31690
-ble_then.31690:
+	bg      ble_else.31605
+ble_then.31605:
 	load    [$2 + 118], $2
 	fmul    $1, $37, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 3], $2
+.count stack_load
 	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31690
-ble_else.31690:
-	load    [$2 + 119], $2
+.count b_cont
+	b       ble_cont.31605
+ble_else.31605:
 	fmul    $1, $38, $3
+	load    [$2 + 119], $2
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 3], $2
+.count stack_load
 	load    [$sp + 2], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31690:
+ble_cont.31605:
 .count stack_move
 	add     $sp, 14, $sp
+.count stack_load
 	load    [$sp - 13], $2
+.count stack_load
 	load    [$sp - 14], $3
 	load    [$2 + 5], $1
 	load    [$1 + $3], $1
@@ -10420,188 +11233,218 @@ ble_cont.31690:
 	store   $44, [$1 + 1]
 	store   $45, [$1 + 2]
 	b       pretrace_diffuse_rays.2980
-bge_else.31688:
+bge_else.31603:
 	ret
-ble_else.31687:
+ble_else.31602:
 	ret
-be_else.31686:
+be_else.31601:
 .count stack_move
 	sub     $sp, 14, $sp
 .count move_float
 	mov     $zero, $43
-	store   $15, [$sp + 4]
+.count stack_store
+	store   $17, [$sp + 4]
 .count move_float
 	mov     $zero, $44
-	store   $14, [$sp + 5]
+.count stack_store
+	store   $16, [$sp + 5]
 .count move_float
 	mov     $zero, $45
+.count stack_store
 	store   $2, [$sp + 1]
+.count stack_store
 	store   $3, [$sp + 6]
-	load    [$2 + 1], $14
-	store   $14, [$sp + 7]
-	load    [$2 + 7], $15
-	store   $15, [$sp + 8]
+	load    [$2 + 7], $17
 	load    [$2 + 6], $16
-	load    [$14 + $3], $2
+.count stack_store
+	store   $17, [$sp + 7]
+	load    [$2 + 1], $18
+.count stack_store
+	store   $18, [$sp + 8]
+	load    [$18 + $3], $2
 	sub     $41, 1, $3
-	load    [$2 + 0], $14
+	load    [$2 + 0], $18
 .count move_float
-	mov     $14, $50
-	load    [$2 + 1], $14
+	mov     $18, $51
+	load    [$2 + 1], $18
 .count move_float
-	mov     $14, $51
-	load    [$2 + 2], $14
+	mov     $18, $52
+	load    [$2 + 2], $18
 .count move_float
-	mov     $14, $52
+	mov     $18, $53
 	call    setup_startp_constants.2831
-	load    [$16 + 0], $14
-	load    [min_caml_dirvecs + $14], $2
-	store   $2, [$sp + 9]
-	load    [$sp + 6], $16
-	load    [$2 + 118], $14
-	load    [$15 + $16], $3
-	load    [$14 + 0], $14
-	store   $3, [$sp + 10]
-	load    [$14 + 2], $16
-	load    [$3 + 2], $15
-	load    [$14 + 1], $17
-	fmul    $16, $15, $15
-	load    [$14 + 0], $14
-	load    [$3 + 1], $16
-	fmul    $17, $16, $16
+.count stack_load
+	load    [$sp + 6], $18
+	load    [$16 + 0], $16
+	load    [$17 + $18], $3
+.count stack_store
+	store   $3, [$sp + 9]
+	load    [min_caml_dirvecs + $16], $2
+.count stack_store
+	store   $2, [$sp + 10]
+	load    [$2 + 118], $16
+	load    [$3 + 1], $18
 	load    [$3 + 0], $17
-	fmul    $14, $17, $14
-	fadd    $14, $16, $14
-	fadd    $14, $15, $14
-	fcmp    $zero, $14
-	bg      ble_else.31691
-ble_then.31691:
+	load    [$16 + 0], $16
+	load    [$16 + 1], $20
+	load    [$16 + 0], $19
+	fmul    $20, $18, $18
+	fmul    $19, $17, $17
+	load    [$16 + 2], $16
+	load    [$3 + 2], $19
+	fadd    $17, $18, $17
+	fmul    $16, $19, $16
+	fadd    $17, $16, $16
+	fcmp    $zero, $16
+	bg      ble_else.31606
+ble_then.31606:
 	load    [$2 + 118], $2
 .count load_float
-	load    [f.27205], $15
-	fmul    $14, $37, $3
+	load    [f.27111], $17
+	fmul    $16, $37, $3
 	call    trace_diffuse_ray.2926
-	b       ble_cont.31691
-ble_else.31691:
-	load    [$2 + 119], $2
+.count b_cont
+	b       ble_cont.31606
+ble_else.31606:
 .count load_float
-	load    [f.27204], $15
-	fmul    $14, $38, $3
+	load    [f.27110], $17
+	load    [$2 + 119], $2
+	fmul    $16, $38, $3
 	call    trace_diffuse_ray.2926
-ble_cont.31691:
+ble_cont.31606:
 	li      116, $4
-	load    [$sp + 9], $2
-	load    [$sp + 10], $3
+.count stack_load
+	load    [$sp + 10], $2
+.count stack_load
+	load    [$sp + 9], $3
 	call    iter_trace_diffuse_rays.2929
+.count stack_load
 	load    [$sp + 1], $2
-	load    [$sp + 6], $15
-	load    [$2 + 5], $14
-	load    [$14 + $15], $16
-	add     $15, 1, $15
-	store   $43, [$16 + 0]
-	cmp     $15, 4
-	store   $44, [$16 + 1]
-	store   $45, [$16 + 2]
-	bg      ble_else.31692
-ble_then.31692:
-	load    [$sp + 5], $16
-	load    [$16 + $15], $16
-	cmp     $16, 0
-	bl      bge_else.31693
-bge_then.31693:
-	load    [$sp + 4], $16
-	load    [$16 + $15], $16
-	cmp     $16, 0
-	bne     be_else.31694
-be_then.31694:
+.count stack_load
+	load    [$sp + 6], $17
+	load    [$2 + 5], $16
+	load    [$16 + $17], $18
+	add     $17, 1, $17
+	store   $43, [$18 + 0]
+	cmp     $17, 4
+	store   $44, [$18 + 1]
+	store   $45, [$18 + 2]
+	bg      ble_else.31607
+ble_then.31607:
+.count stack_load
+	load    [$sp + 5], $18
+	load    [$18 + $17], $18
+	cmp     $18, 0
+	bl      bge_else.31608
+bge_then.31608:
+.count stack_load
+	load    [$sp + 4], $18
+	load    [$18 + $17], $18
+	cmp     $18, 0
+	bne     be_else.31609
+be_then.31609:
 .count stack_move
 	add     $sp, 14, $sp
-	add     $15, 1, $3
+	add     $17, 1, $3
 	b       pretrace_diffuse_rays.2980
-be_else.31694:
-	store   $15, [$sp + 0]
+be_else.31609:
+.count stack_store
+	store   $17, [$sp + 0]
 .count move_float
 	mov     $zero, $43
-	store   $14, [$sp + 11]
-	load    [$sp + 7], $16
-	load    [$2 + 6], $14
+.count stack_store
+	store   $16, [$sp + 11]
+.count stack_load
+	load    [$sp + 8], $18
+	load    [$2 + 6], $16
 .count move_float
 	mov     $zero, $44
-	load    [$16 + $15], $2
+	load    [$18 + $17], $2
 .count move_float
 	mov     $zero, $45
 	sub     $41, 1, $3
-	load    [$2 + 0], $16
+	load    [$2 + 0], $18
 .count move_float
-	mov     $16, $50
-	load    [$2 + 1], $16
+	mov     $18, $51
+	load    [$2 + 1], $18
 .count move_float
-	mov     $16, $51
-	load    [$2 + 2], $16
+	mov     $18, $52
+	load    [$2 + 2], $18
 .count move_float
-	mov     $16, $52
+	mov     $18, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 0], $1
-	load    [$sp + 8], $3
+.count stack_load
+	load    [$sp + 7], $2
+	load    [$16 + 0], $1
+	load    [$2 + $17], $3
 	load    [min_caml_dirvecs + $1], $2
-	load    [$3 + $15], $3
-	load    [$2 + 118], $1
-	load    [$3 + 2], $4
-	load    [$1 + 0], $1
-	load    [$1 + 2], $5
-	load    [$1 + 1], $6
-	fmul    $5, $4, $4
-	load    [$1 + 0], $1
 	load    [$3 + 1], $5
-	fmul    $6, $5, $5
-	load    [$3 + 0], $6
+	load    [$3 + 0], $4
+	load    [$2 + 118], $1
+	load    [$1 + 0], $1
+	load    [$1 + 1], $7
+	load    [$1 + 0], $6
+	fmul    $7, $5, $5
+	fmul    $6, $4, $4
+	load    [$1 + 2], $1
+	load    [$3 + 2], $6
+.count stack_store
 	store   $3, [$sp + 12]
+	fadd    $4, $5, $4
 	fmul    $1, $6, $1
+.count stack_store
 	store   $2, [$sp + 13]
-	fadd    $1, $5, $1
-	fadd    $1, $4, $1
+	fadd    $4, $1, $1
 	fcmp    $zero, $1
-	bg      ble_else.31695
-ble_then.31695:
+	bg      ble_else.31610
+ble_then.31610:
 	load    [$2 + 118], $2
 	fmul    $1, $37, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 13], $2
+.count stack_load
 	load    [$sp + 12], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31695
-ble_else.31695:
-	load    [$2 + 119], $2
+.count b_cont
+	b       ble_cont.31610
+ble_else.31610:
 	fmul    $1, $38, $3
+	load    [$2 + 119], $2
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 13], $2
+.count stack_load
 	load    [$sp + 12], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31695:
+ble_cont.31610:
 .count stack_move
 	add     $sp, 14, $sp
+.count stack_load
 	load    [$sp - 14], $1
+.count stack_load
 	load    [$sp - 3], $2
 	add     $1, 1, $3
 	load    [$2 + $1], $2
 	store   $43, [$2 + 0]
 	store   $44, [$2 + 1]
 	store   $45, [$2 + 2]
+.count stack_load
 	load    [$sp - 13], $2
 	b       pretrace_diffuse_rays.2980
-bge_else.31693:
+bge_else.31608:
 .count stack_move
 	add     $sp, 14, $sp
 	ret
-ble_else.31692:
+ble_else.31607:
 .count stack_move
 	add     $sp, 14, $sp
 	ret
-bge_else.31685:
+bge_else.31600:
 	ret
-ble_else.31684:
+ble_else.31599:
 	ret
 .end pretrace_diffuse_rays
 
@@ -10609,172 +11452,196 @@ ble_else.31684:
 .begin pretrace_pixels
 pretrace_pixels.2983:
 	cmp     $3, 0
-	bl      bge_else.31696
-bge_then.31696:
+	bl      bge_else.31611
+bge_then.31611:
 .count stack_move
 	sub     $sp, 9, $sp
+.count stack_store
 	store   $4, [$sp + 0]
+.count stack_store
 	store   $3, [$sp + 1]
+.count stack_store
 	store   $2, [$sp + 2]
+.count stack_store
 	store   $7, [$sp + 3]
+.count stack_store
 	store   $6, [$sp + 4]
+.count stack_store
 	store   $5, [$sp + 5]
-	load    [min_caml_image_center + 0], $10
-	sub     $3, $10, $2
+	load    [min_caml_image_center + 0], $12
+	load    [min_caml_screenx_dir + 0], $10
+	load    [min_caml_scan_pitch + 0], $11
+	sub     $3, $12, $2
 	call    min_caml_float_of_int
-	load    [min_caml_scan_pitch + 0], $15
 .count move_ret
-	mov     $1, $14
-	load    [$sp + 5], $16
-	fmul    $15, $14, $14
-	load    [min_caml_screenx_dir + 0], $15
-	fmul    $14, $15, $15
-	fadd    $15, $16, $15
-	store   $15, [min_caml_ptrace_dirvec + 0]
-	load    [$sp + 4], $16
-	load    [min_caml_screenx_dir + 1], $15
-	fmul    $14, $15, $15
-	fadd    $15, $16, $15
-	store   $15, [min_caml_ptrace_dirvec + 1]
-	load    [min_caml_screenx_dir + 2], $15
-	fmul    $14, $15, $14
-	load    [$sp + 3], $15
-	fadd    $14, $15, $14
-	store   $14, [min_caml_ptrace_dirvec + 2]
+	mov     $1, $16
+.count stack_load
+	load    [$sp + 5], $18
+	fmul    $11, $16, $16
+	fmul    $16, $10, $17
+	fadd    $17, $18, $17
+	store   $17, [min_caml_ptrace_dirvec + 0]
+.count stack_load
+	load    [$sp + 4], $18
+	load    [min_caml_screenx_dir + 1], $17
+	fmul    $16, $17, $17
+	fadd    $17, $18, $17
+	store   $17, [min_caml_ptrace_dirvec + 1]
+	load    [min_caml_screenx_dir + 2], $17
+	fmul    $16, $17, $16
+.count stack_load
+	load    [$sp + 3], $17
+	fadd    $16, $17, $16
+	store   $16, [min_caml_ptrace_dirvec + 2]
+	load    [min_caml_ptrace_dirvec + 1], $18
 	load    [min_caml_ptrace_dirvec + 0], $16
-	load    [min_caml_ptrace_dirvec + 1], $15
-	load    [min_caml_ptrace_dirvec + 2], $14
-	fmul    $16, $16, $16
-	fmul    $15, $15, $15
-	fmul    $14, $14, $14
-	fadd    $16, $15, $15
-	fadd    $15, $14, $14
-	fsqrt   $14, $14
-	fcmp    $14, $zero
-	bne     be_else.31697
-be_then.31697:
-	mov     $36, $14
-	b       be_cont.31697
-be_else.31697:
-	finv    $14, $14
-be_cont.31697:
-	load    [min_caml_ptrace_dirvec + 0], $15
+	load    [min_caml_ptrace_dirvec + 2], $19
+	fmul    $18, $18, $18
+	fmul    $16, $16, $17
+	fmul    $19, $19, $19
+	fadd    $17, $18, $17
+	fadd    $17, $19, $17
+	fsqrt   $17, $17
+	fcmp    $17, $zero
+	bne     be_else.31612
+be_then.31612:
+	mov     $36, $17
+.count b_cont
+	b       be_cont.31612
+be_else.31612:
+	finv    $17, $17
+be_cont.31612:
+	fmul    $16, $17, $16
 .count move_float
 	mov     $zero, $46
 .count move_float
 	mov     $zero, $47
-	fmul    $15, $14, $15
 .count move_float
 	mov     $zero, $48
-	li      0, $2
 	li      min_caml_ptrace_dirvec, $4
+	store   $16, [min_caml_ptrace_dirvec + 0]
+	li      0, $2
+	load    [min_caml_ptrace_dirvec + 1], $16
 .count move_args
 	mov     $zero, $6
-	store   $15, [min_caml_ptrace_dirvec + 0]
 .count move_args
 	mov     $36, $3
-	load    [min_caml_ptrace_dirvec + 1], $15
-	fmul    $15, $14, $15
-	store   $15, [min_caml_ptrace_dirvec + 1]
-	load    [min_caml_ptrace_dirvec + 2], $15
-	fmul    $15, $14, $14
-	store   $14, [min_caml_ptrace_dirvec + 2]
-	load    [min_caml_viewpoint + 0], $14
-	store   $14, [min_caml_startp + 0]
-	load    [min_caml_viewpoint + 1], $14
-	store   $14, [min_caml_startp + 1]
-	load    [min_caml_viewpoint + 2], $14
-	store   $14, [min_caml_startp + 2]
-	load    [$sp + 2], $15
-	load    [$sp + 1], $14
-	load    [$15 + $14], $5
+	fmul    $16, $17, $16
+	store   $16, [min_caml_ptrace_dirvec + 1]
+	load    [min_caml_ptrace_dirvec + 2], $16
+	fmul    $16, $17, $16
+	store   $16, [min_caml_ptrace_dirvec + 2]
+	load    [min_caml_viewpoint + 0], $16
+	store   $16, [min_caml_startp + 0]
+	load    [min_caml_viewpoint + 1], $16
+	store   $16, [min_caml_startp + 1]
+	load    [min_caml_viewpoint + 2], $16
+	store   $16, [min_caml_startp + 2]
+.count stack_load
+	load    [$sp + 2], $17
+.count stack_load
+	load    [$sp + 1], $16
+	load    [$17 + $16], $5
 	call    trace_ray.2920
-	load    [$sp + 1], $14
-	load    [$sp + 2], $15
-	load    [$15 + $14], $16
+.count stack_load
+	load    [$sp + 1], $16
+.count stack_load
+	load    [$sp + 2], $17
+	load    [$17 + $16], $18
+	load    [$18 + 0], $18
+	store   $46, [$18 + 0]
+	store   $47, [$18 + 1]
+	store   $48, [$18 + 2]
+.count stack_load
+	load    [$sp + 0], $19
+	load    [$17 + $16], $18
+	load    [$18 + 6], $18
+	store   $19, [$18 + 0]
+	load    [$17 + $16], $2
+	load    [$2 + 2], $16
 	load    [$16 + 0], $16
-	store   $46, [$16 + 0]
-	store   $47, [$16 + 1]
-	store   $48, [$16 + 2]
-	load    [$sp + 0], $17
-	load    [$15 + $14], $16
-	load    [$16 + 6], $16
-	store   $17, [$16 + 0]
-	load    [$15 + $14], $2
-	load    [$2 + 2], $14
-	load    [$14 + 0], $14
-	cmp     $14, 0
-	bl      bge_cont.31698
-bge_then.31698:
-	load    [$2 + 3], $14
-	load    [$14 + 0], $14
-	cmp     $14, 0
-	bne     be_else.31699
-be_then.31699:
+	cmp     $16, 0
+	bl      bge_cont.31613
+bge_then.31613:
+	load    [$2 + 3], $16
+	load    [$16 + 0], $16
+	cmp     $16, 0
+	bne     be_else.31614
+be_then.31614:
 	li      1, $3
 	call    pretrace_diffuse_rays.2980
-	b       be_cont.31699
-be_else.31699:
+.count b_cont
+	b       be_cont.31614
+be_else.31614:
+.count stack_store
 	store   $2, [$sp + 6]
-	load    [$2 + 1], $16
-	load    [$2 + 6], $14
-	load    [$2 + 7], $15
+	load    [$2 + 1], $18
+	load    [$2 + 7], $17
+	load    [$2 + 6], $16
 .count move_float
 	mov     $zero, $43
-	load    [$16 + 0], $2
-	load    [$14 + 0], $14
+	load    [$18 + 0], $2
+	load    [$16 + 0], $16
 .count move_float
 	mov     $zero, $44
-	load    [$2 + 0], $16
+	load    [$2 + 0], $18
 .count move_float
 	mov     $zero, $45
-	load    [min_caml_dirvecs + $14], $14
+	load    [$17 + 0], $17
 .count move_float
-	mov     $16, $50
-	load    [$15 + 0], $15
-	load    [$2 + 1], $16
+	mov     $18, $51
+	load    [min_caml_dirvecs + $16], $16
+	load    [$2 + 1], $18
 	sub     $41, 1, $3
 .count move_float
-	mov     $16, $51
-	load    [$2 + 2], $16
+	mov     $18, $52
+	load    [$2 + 2], $18
 .count move_float
-	mov     $16, $52
+	mov     $18, $53
 	call    setup_startp_constants.2831
-	load    [$14 + 118], $1
-	load    [$15 + 2], $2
+	load    [$16 + 118], $1
+	load    [$17 + 0], $2
+	load    [$17 + 1], $5
 	load    [$1 + 0], $1
-	load    [$1 + 2], $3
+	load    [$1 + 0], $3
 	load    [$1 + 1], $4
 	fmul    $3, $2, $2
-	load    [$1 + 0], $1
-	load    [$15 + 1], $3
-	fmul    $4, $3, $3
-	load    [$15 + 0], $4
-	store   $15, [$sp + 7]
+	load    [$1 + 2], $1
+	fmul    $4, $5, $3
+	load    [$17 + 2], $4
+.count stack_store
+	store   $17, [$sp + 7]
+	fadd    $2, $3, $2
 	fmul    $1, $4, $1
-	store   $14, [$sp + 8]
-	fadd    $1, $3, $1
-	fadd    $1, $2, $1
+.count stack_store
+	store   $16, [$sp + 8]
+	fadd    $2, $1, $1
 	fcmp    $zero, $1
-	bg      ble_else.31700
-ble_then.31700:
-	load    [$14 + 118], $2
+	bg      ble_else.31615
+ble_then.31615:
+	load    [$16 + 118], $2
 	fmul    $1, $37, $3
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 8], $2
+.count stack_load
 	load    [$sp + 7], $3
 	call    iter_trace_diffuse_rays.2929
-	b       ble_cont.31700
-ble_else.31700:
-	load    [$14 + 119], $2
+.count b_cont
+	b       ble_cont.31615
+ble_else.31615:
 	fmul    $1, $38, $3
+	load    [$16 + 119], $2
 	call    trace_diffuse_ray.2926
 	li      116, $4
+.count stack_load
 	load    [$sp + 8], $2
+.count stack_load
 	load    [$sp + 7], $3
 	call    iter_trace_diffuse_rays.2929
-ble_cont.31700:
+ble_cont.31615:
+.count stack_load
 	load    [$sp + 6], $2
 	li      1, $3
 	load    [$2 + 5], $1
@@ -10783,40 +11650,51 @@ ble_cont.31700:
 	store   $44, [$1 + 1]
 	store   $45, [$1 + 2]
 	call    pretrace_diffuse_rays.2980
-be_cont.31699:
-bge_cont.31698:
+be_cont.31614:
+bge_cont.31613:
 .count stack_move
 	add     $sp, 9, $sp
-	load    [$sp - 9], $1
-	load    [$sp - 6], $7
-	load    [$sp - 5], $6
-	add     $1, 1, $4
-	load    [$sp - 4], $5
+.count stack_load
 	load    [$sp - 8], $1
-	cmp     $4, 5
-	load    [$sp - 7], $2
+.count stack_load
+	load    [$sp - 6], $7
+.count stack_load
+	load    [$sp - 5], $6
 	sub     $1, 1, $3
+.count stack_load
+	load    [$sp - 4], $5
+.count stack_load
+	load    [$sp - 9], $1
+.count stack_load
+	load    [$sp - 7], $2
+	add     $1, 1, $4
+	cmp     $4, 5
 	bl      pretrace_pixels.2983
 	sub     $4, 5, $4
 	b       pretrace_pixels.2983
-bge_else.31696:
+bge_else.31611:
 	ret
 .end pretrace_pixels
 
 ######################################################################
 .begin scan_pixel
 scan_pixel.2994:
-	cmp     $53, $2
-	bg      ble_else.31702
-ble_then.31702:
+	cmp     $50, $2
+	bg      ble_else.31617
+ble_then.31617:
 	ret
-ble_else.31702:
+ble_else.31617:
 .count stack_move
 	sub     $sp, 10, $sp
+.count stack_store
 	store   $6, [$sp + 0]
+.count stack_store
 	store   $4, [$sp + 1]
+.count stack_store
 	store   $3, [$sp + 2]
+.count stack_store
 	store   $5, [$sp + 3]
+.count stack_store
 	store   $2, [$sp + 4]
 	load    [$5 + $2], $10
 	load    [$10 + 0], $10
@@ -10830,135 +11708,151 @@ ble_else.31702:
 .count move_float
 	mov     $10, $48
 	add     $3, 1, $10
+.count stack_store
 	store   $10, [$sp + 5]
-	load    [min_caml_image_size + 1], $11
-	cmp     $11, $10
-	bg      ble_else.31703
-ble_then.31703:
+	cmp     $60, $10
+	bg      ble_else.31618
+ble_then.31618:
 	li      0, $10
-	b       ble_cont.31703
-ble_else.31703:
+.count b_cont
+	b       ble_cont.31618
+ble_else.31618:
 	cmp     $3, 0
-	bg      ble_else.31704
-ble_then.31704:
+	bg      ble_else.31619
+ble_then.31619:
 	li      0, $10
-	b       ble_cont.31704
-ble_else.31704:
+.count b_cont
+	b       ble_cont.31619
+ble_else.31619:
 	add     $2, 1, $10
-	cmp     $53, $10
-	bg      ble_else.31705
-ble_then.31705:
+	cmp     $50, $10
+	bg      ble_else.31620
+ble_then.31620:
 	li      0, $10
-	b       ble_cont.31705
-ble_else.31705:
+.count b_cont
+	b       ble_cont.31620
+ble_else.31620:
 	cmp     $2, 0
-	bg      ble_else.31706
-ble_then.31706:
+	bg      ble_else.31621
+ble_then.31621:
 	li      0, $10
-	b       ble_cont.31706
-ble_else.31706:
+.count b_cont
+	b       ble_cont.31621
+ble_else.31621:
 	li      1, $10
-ble_cont.31706:
-ble_cont.31705:
-ble_cont.31704:
-ble_cont.31703:
+ble_cont.31621:
+ble_cont.31620:
+ble_cont.31619:
+ble_cont.31618:
 	cmp     $10, 0
 	li      0, $3
-	bne     be_else.31707
-be_then.31707:
+	bne     be_else.31622
+be_then.31622:
 	load    [$5 + $2], $2
 	load    [$2 + 2], $10
 	load    [$10 + 0], $10
 	cmp     $10, 0
-	bl      be_cont.31707
-bge_then.31708:
+	bl      be_cont.31622
+bge_then.31623:
 	load    [$2 + 3], $10
 	load    [$10 + 0], $10
 	cmp     $10, 0
-	bne     be_else.31709
-be_then.31709:
+	bne     be_else.31624
+be_then.31624:
 	li      1, $3
 	call    do_without_neighbors.2951
-	b       be_cont.31707
-be_else.31709:
+.count b_cont
+	b       be_cont.31622
+be_else.31624:
+.count stack_store
 	store   $2, [$sp + 6]
 	call    calc_diffuse_using_1point.2942
 	li      1, $3
+.count stack_load
 	load    [$sp + 6], $2
 	call    do_without_neighbors.2951
-	b       be_cont.31707
-be_else.31707:
+.count b_cont
+	b       be_cont.31622
+be_else.31622:
 	load    [$5 + $2], $10
 	load    [$10 + 2], $11
 	load    [$11 + 0], $11
 	cmp     $11, 0
-	bl      bge_cont.31710
-bge_then.31710:
+	bl      bge_cont.31625
+bge_then.31625:
 	load    [$4 + $2], $12
 	load    [$12 + 2], $13
 	load    [$13 + 0], $13
 	cmp     $13, $11
-	bne     be_else.31711
-be_then.31711:
+	bne     be_else.31626
+be_then.31626:
 	load    [$6 + $2], $13
 	load    [$13 + 2], $13
 	load    [$13 + 0], $13
 	cmp     $13, $11
-	bne     be_else.31712
-be_then.31712:
+	bne     be_else.31627
+be_then.31627:
 	sub     $2, 1, $13
 	load    [$5 + $13], $13
 	load    [$13 + 2], $13
 	load    [$13 + 0], $13
 	cmp     $13, $11
-	bne     be_else.31713
-be_then.31713:
+	bne     be_else.31628
+be_then.31628:
 	add     $2, 1, $13
 	load    [$5 + $13], $13
 	load    [$13 + 2], $13
 	load    [$13 + 0], $13
 	cmp     $13, $11
-	bne     be_else.31714
-be_then.31714:
+	bne     be_else.31629
+be_then.31629:
 	li      1, $11
-	b       be_cont.31711
-be_else.31714:
+.count b_cont
+	b       be_cont.31626
+be_else.31629:
 	li      0, $11
-	b       be_cont.31711
-be_else.31713:
+.count b_cont
+	b       be_cont.31626
+be_else.31628:
 	li      0, $11
-	b       be_cont.31711
-be_else.31712:
+.count b_cont
+	b       be_cont.31626
+be_else.31627:
 	li      0, $11
-	b       be_cont.31711
-be_else.31711:
+.count b_cont
+	b       be_cont.31626
+be_else.31626:
 	li      0, $11
-be_cont.31711:
+be_cont.31626:
 	cmp     $11, 0
-	bne     be_else.31715
-be_then.31715:
+	bne     be_else.31630
+be_then.31630:
 	load    [$5 + $2], $2
 	load    [$2 + 2], $10
 	load    [$10 + 0], $10
 	cmp     $10, 0
-	bl      be_cont.31715
-bge_then.31716:
+	bl      be_cont.31630
+bge_then.31631:
 	load    [$2 + 3], $10
 	load    [$10 + 0], $10
 	cmp     $10, 0
-	bne     be_else.31717
-be_then.31717:
+	bne     be_else.31632
+be_then.31632:
 	li      1, $3
 	call    do_without_neighbors.2951
-	b       be_cont.31715
-be_else.31717:
+.count b_cont
+	b       be_cont.31630
+be_else.31632:
+.count stack_store
 	store   $2, [$sp + 7]
 	call    calc_diffuse_using_1point.2942
 	li      1, $3
+.count stack_load
 	load    [$sp + 7], $2
 	call    do_without_neighbors.2951
-	b       be_cont.31715
-be_else.31715:
+.count b_cont
+	b       be_cont.31630
+be_else.31630:
 	load    [$10 + 3], $10
 .count move_args
 	mov     $4, $3
@@ -10966,16 +11860,17 @@ be_else.31715:
 .count move_args
 	mov     $5, $4
 	cmp     $10, 0
-	bne     be_else.31718
-be_then.31718:
+	bne     be_else.31633
+be_then.31633:
 	li      1, $10
 .count move_args
 	mov     $6, $5
 .count move_args
 	mov     $10, $6
 	call    try_exploit_neighbors.2967
-	b       be_cont.31718
-be_else.31718:
+.count b_cont
+	b       be_cont.31633
+be_else.31633:
 	load    [$12 + 5], $10
 	load    [$10 + 0], $10
 	load    [$10 + 0], $11
@@ -11073,80 +11968,89 @@ be_else.31718:
 .count move_args
 	mov     $10, $6
 	call    try_exploit_neighbors.2967
-be_cont.31718:
-be_cont.31715:
-bge_cont.31710:
-be_cont.31707:
+be_cont.31633:
+be_cont.31630:
+bge_cont.31625:
+be_cont.31622:
 .count move_args
 	mov     $46, $2
 	call    min_caml_int_of_float
 	mov     $1, $2
 	cmp     $2, 255
-	bg      ble_else.31719
-ble_then.31719:
+	bg      ble_else.31634
+ble_then.31634:
 	cmp     $2, 0
-	bl      bge_else.31720
-bge_then.31720:
+	bl      bge_else.31635
+bge_then.31635:
 	call    min_caml_write
-	b       ble_cont.31719
-bge_else.31720:
+.count b_cont
+	b       ble_cont.31634
+bge_else.31635:
 	li      0, $2
 	call    min_caml_write
-	b       ble_cont.31719
-ble_else.31719:
+.count b_cont
+	b       ble_cont.31634
+ble_else.31634:
 	li      255, $2
 	call    min_caml_write
-ble_cont.31719:
+ble_cont.31634:
 .count move_args
 	mov     $47, $2
 	call    min_caml_int_of_float
 	mov     $1, $2
 	cmp     $2, 255
-	bg      ble_else.31721
-ble_then.31721:
+	bg      ble_else.31636
+ble_then.31636:
 	cmp     $2, 0
-	bl      bge_else.31722
-bge_then.31722:
+	bl      bge_else.31637
+bge_then.31637:
 	call    min_caml_write
-	b       ble_cont.31721
-bge_else.31722:
+.count b_cont
+	b       ble_cont.31636
+bge_else.31637:
 	li      0, $2
 	call    min_caml_write
-	b       ble_cont.31721
-ble_else.31721:
+.count b_cont
+	b       ble_cont.31636
+ble_else.31636:
 	li      255, $2
 	call    min_caml_write
-ble_cont.31721:
+ble_cont.31636:
 .count move_args
 	mov     $48, $2
 	call    min_caml_int_of_float
 	mov     $1, $2
 	cmp     $2, 255
-	bg      ble_else.31723
-ble_then.31723:
+	bg      ble_else.31638
+ble_then.31638:
 	cmp     $2, 0
-	bl      bge_else.31724
-bge_then.31724:
+	bl      bge_else.31639
+bge_then.31639:
 	call    min_caml_write
-	b       ble_cont.31723
-bge_else.31724:
+.count b_cont
+	b       ble_cont.31638
+bge_else.31639:
 	li      0, $2
 	call    min_caml_write
-	b       ble_cont.31723
-ble_else.31723:
+.count b_cont
+	b       ble_cont.31638
+ble_else.31638:
 	li      255, $2
 	call    min_caml_write
-ble_cont.31723:
+ble_cont.31638:
+.count stack_load
 	load    [$sp + 4], $10
 	add     $10, 1, $2
-	cmp     $53, $2
-	bg      ble_else.31725
-ble_then.31725:
+	cmp     $50, $2
+	bg      ble_else.31640
+ble_then.31640:
 .count stack_move
 	add     $sp, 10, $sp
 	ret
-ble_else.31725:
+ble_else.31640:
+.count stack_store
 	store   $2, [$sp + 8]
+.count stack_load
 	load    [$sp + 3], $4
 	load    [$4 + $2], $10
 	load    [$10 + 0], $10
@@ -11159,125 +12063,144 @@ ble_else.31725:
 	mov     $11, $47
 .count move_float
 	mov     $10, $48
-	load    [$sp + 5], $11
-	load    [min_caml_image_size + 1], $10
-	cmp     $10, $11
-	bg      ble_else.31726
-ble_then.31726:
+.count stack_load
+	load    [$sp + 5], $10
+	cmp     $60, $10
+	bg      ble_else.31641
+ble_then.31641:
 	li      0, $10
-	b       ble_cont.31726
-ble_else.31726:
+.count b_cont
+	b       ble_cont.31641
+ble_else.31641:
+.count stack_load
 	load    [$sp + 2], $10
 	cmp     $10, 0
-	bg      ble_else.31727
-ble_then.31727:
+	bg      ble_else.31642
+ble_then.31642:
 	li      0, $10
-	b       ble_cont.31727
-ble_else.31727:
+.count b_cont
+	b       ble_cont.31642
+ble_else.31642:
 	add     $2, 1, $10
-	cmp     $53, $10
-	bg      ble_else.31728
-ble_then.31728:
+	cmp     $50, $10
+	bg      ble_else.31643
+ble_then.31643:
 	li      0, $10
-	b       ble_cont.31728
-ble_else.31728:
+.count b_cont
+	b       ble_cont.31643
+ble_else.31643:
 	cmp     $2, 0
-	bg      ble_else.31729
-ble_then.31729:
+	bg      ble_else.31644
+ble_then.31644:
 	li      0, $10
-	b       ble_cont.31729
-ble_else.31729:
+.count b_cont
+	b       ble_cont.31644
+ble_else.31644:
 	li      1, $10
-ble_cont.31729:
-ble_cont.31728:
-ble_cont.31727:
-ble_cont.31726:
+ble_cont.31644:
+ble_cont.31643:
+ble_cont.31642:
+ble_cont.31641:
 	cmp     $10, 0
-	bne     be_else.31730
-be_then.31730:
+	bne     be_else.31645
+be_then.31645:
 	load    [$4 + $2], $2
 	li      0, $3
 	load    [$2 + 2], $10
 	load    [$10 + 0], $10
 	cmp     $10, 0
-	bl      be_cont.31730
-bge_then.31731:
+	bl      be_cont.31645
+bge_then.31646:
 	load    [$2 + 3], $10
 	load    [$10 + 0], $10
 	cmp     $10, 0
-	bne     be_else.31732
-be_then.31732:
+	bne     be_else.31647
+be_then.31647:
 	li      1, $3
 	call    do_without_neighbors.2951
-	b       be_cont.31730
-be_else.31732:
+.count b_cont
+	b       be_cont.31645
+be_else.31647:
+.count stack_store
 	store   $2, [$sp + 9]
 	call    calc_diffuse_using_1point.2942
 	li      1, $3
+.count stack_load
 	load    [$sp + 9], $2
 	call    do_without_neighbors.2951
-	b       be_cont.31730
-be_else.31730:
+.count b_cont
+	b       be_cont.31645
+be_else.31645:
 	li      0, $6
+.count stack_load
 	load    [$sp + 1], $3
+.count stack_load
 	load    [$sp + 0], $5
 	call    try_exploit_neighbors.2967
-be_cont.31730:
+be_cont.31645:
 .count move_args
 	mov     $46, $2
 	call    min_caml_int_of_float
 	cmp     $1, 255
-	bg      ble_else.31733
-ble_then.31733:
+	bg      ble_else.31648
+ble_then.31648:
 	cmp     $1, 0
-	bge     ble_cont.31733
-bl_then.31734:
+	bge     ble_cont.31648
+bl_then.31649:
 	li      0, $1
-	b       ble_cont.31733
-ble_else.31733:
+.count b_cont
+	b       ble_cont.31648
+ble_else.31648:
 	li      255, $1
-ble_cont.31733:
+ble_cont.31648:
 	mov     $1, $2
 	call    min_caml_write
 .count move_args
 	mov     $47, $2
 	call    min_caml_int_of_float
 	cmp     $1, 255
-	bg      ble_else.31735
-ble_then.31735:
+	bg      ble_else.31650
+ble_then.31650:
 	cmp     $1, 0
-	bge     ble_cont.31735
-bl_then.31736:
+	bge     ble_cont.31650
+bl_then.31651:
 	li      0, $1
-	b       ble_cont.31735
-ble_else.31735:
+.count b_cont
+	b       ble_cont.31650
+ble_else.31650:
 	li      255, $1
-ble_cont.31735:
+ble_cont.31650:
 	mov     $1, $2
 	call    min_caml_write
 .count move_args
 	mov     $48, $2
 	call    min_caml_int_of_float
 	cmp     $1, 255
-	bg      ble_else.31737
-ble_then.31737:
+	bg      ble_else.31652
+ble_then.31652:
 	cmp     $1, 0
-	bge     ble_cont.31737
-bl_then.31738:
+	bge     ble_cont.31652
+bl_then.31653:
 	li      0, $1
-	b       ble_cont.31737
-ble_else.31737:
+.count b_cont
+	b       ble_cont.31652
+ble_else.31652:
 	li      255, $1
-ble_cont.31737:
+ble_cont.31652:
 	mov     $1, $2
 	call    min_caml_write
 .count stack_move
 	add     $sp, 10, $sp
+.count stack_load
 	load    [$sp - 2], $1
+.count stack_load
 	load    [$sp - 8], $3
+.count stack_load
 	load    [$sp - 9], $4
 	add     $1, 1, $2
+.count stack_load
 	load    [$sp - 7], $5
+.count stack_load
 	load    [$sp - 10], $6
 	b       scan_pixel.2994
 .end scan_pixel
@@ -11285,23 +12208,27 @@ ble_cont.31737:
 ######################################################################
 .begin scan_line
 scan_line.3000:
-	load    [min_caml_image_size + 1], $10
-	cmp     $10, $2
-	bg      ble_else.31739
-ble_then.31739:
+	cmp     $60, $2
+	bg      ble_else.31654
+ble_then.31654:
 	ret
-ble_else.31739:
+ble_else.31654:
 .count stack_move
 	sub     $sp, 8, $sp
-	sub     $10, 1, $10
+	sub     $60, 1, $10
+.count stack_store
 	store   $6, [$sp + 0]
 	cmp     $10, $2
+.count stack_store
 	store   $5, [$sp + 1]
+.count stack_store
 	store   $3, [$sp + 2]
+.count stack_store
 	store   $2, [$sp + 3]
+.count stack_store
 	store   $4, [$sp + 4]
-	ble     bg_cont.31740
-bg_then.31740:
+	ble     bg_cont.31655
+bg_then.31655:
 	load    [min_caml_image_center + 1], $12
 	add     $2, 1, $10
 	load    [min_caml_scan_pitch + 0], $11
@@ -11311,28 +12238,30 @@ bg_then.31740:
 	mov     $1, $10
 	load    [min_caml_screenz_dir + 0], $12
 	fmul    $11, $10, $10
-	sub     $53, 1, $3
+	load    [min_caml_screeny_dir + 1], $13
 	load    [min_caml_screeny_dir + 0], $11
+	sub     $50, 1, $3
+.count stack_load
 	load    [$sp + 1], $2
+	fmul    $10, $11, $11
+.count stack_load
 	load    [$sp + 0], $4
-	fmul    $10, $11, $11
 	fadd    $11, $12, $5
-	load    [min_caml_screeny_dir + 1], $11
+	fmul    $10, $13, $11
 	load    [min_caml_screenz_dir + 1], $12
-	fmul    $10, $11, $11
+	load    [min_caml_screeny_dir + 2], $13
+	fmul    $10, $13, $10
 	fadd    $11, $12, $6
-	load    [min_caml_screeny_dir + 2], $11
-	fmul    $10, $11, $10
 	load    [min_caml_screenz_dir + 2], $11
 	fadd    $10, $11, $7
 	call    pretrace_pixels.2983
-bg_cont.31740:
+bg_cont.31655:
 	li      0, $2
-	cmp     $53, 0
-	ble     bg_cont.31741
-bg_then.31741:
+	cmp     $50, 0
+	ble     bg_cont.31656
+bg_then.31656:
+.count stack_load
 	load    [$sp + 4], $4
-	load    [min_caml_image_size + 1], $12
 	load    [$4 + 0], $10
 	load    [$10 + 0], $10
 	load    [$10 + 0], $11
@@ -11344,170 +12273,200 @@ bg_then.31741:
 	mov     $11, $47
 .count move_float
 	mov     $10, $48
+.count stack_load
 	load    [$sp + 3], $10
 	add     $10, 1, $11
-	cmp     $12, $11
-	bg      ble_else.31742
-ble_then.31742:
+	cmp     $60, $11
+	bg      ble_else.31657
+ble_then.31657:
 	li      0, $10
-	b       ble_cont.31742
-ble_else.31742:
+.count b_cont
+	b       ble_cont.31657
+ble_else.31657:
 	cmp     $10, 0
 	li      0, $10
-	ble     bg_cont.31743
-bg_then.31743:
-	cmp     $53, 1
-bg_cont.31743:
-ble_cont.31742:
+	ble     bg_cont.31658
+bg_then.31658:
+	cmp     $50, 1
+bg_cont.31658:
+ble_cont.31657:
 	cmp     $10, 0
-	bne     be_else.31744
-be_then.31744:
+	bne     be_else.31659
+be_then.31659:
 	load    [$4 + 0], $2
 	li      0, $3
 	load    [$2 + 2], $10
 	load    [$10 + 0], $10
 	cmp     $10, 0
-	bl      be_cont.31744
-bge_then.31745:
+	bl      be_cont.31659
+bge_then.31660:
 	load    [$2 + 3], $10
 	load    [$10 + 0], $10
 	cmp     $10, 0
-	bne     be_else.31746
-be_then.31746:
+	bne     be_else.31661
+be_then.31661:
 	li      1, $3
 	call    do_without_neighbors.2951
-	b       be_cont.31744
-be_else.31746:
+.count b_cont
+	b       be_cont.31659
+be_else.31661:
+.count stack_store
 	store   $2, [$sp + 5]
 	call    calc_diffuse_using_1point.2942
 	li      1, $3
+.count stack_load
 	load    [$sp + 5], $2
 	call    do_without_neighbors.2951
-	b       be_cont.31744
-be_else.31744:
+.count b_cont
+	b       be_cont.31659
+be_else.31659:
 	li      0, $6
+.count stack_load
 	load    [$sp + 2], $3
+.count stack_load
 	load    [$sp + 1], $5
 	call    try_exploit_neighbors.2967
-be_cont.31744:
+be_cont.31659:
 .count move_args
 	mov     $46, $2
 	call    min_caml_int_of_float
 	cmp     $1, 255
-	bg      ble_else.31747
-ble_then.31747:
+	bg      ble_else.31662
+ble_then.31662:
 	cmp     $1, 0
-	bge     ble_cont.31747
-bl_then.31748:
+	bge     ble_cont.31662
+bl_then.31663:
 	li      0, $1
-	b       ble_cont.31747
-ble_else.31747:
+.count b_cont
+	b       ble_cont.31662
+ble_else.31662:
 	li      255, $1
-ble_cont.31747:
+ble_cont.31662:
 	mov     $1, $2
 	call    min_caml_write
 .count move_args
 	mov     $47, $2
 	call    min_caml_int_of_float
 	cmp     $1, 255
-	bg      ble_else.31749
-ble_then.31749:
+	bg      ble_else.31664
+ble_then.31664:
 	cmp     $1, 0
-	bge     ble_cont.31749
-bl_then.31750:
+	bge     ble_cont.31664
+bl_then.31665:
 	li      0, $1
-	b       ble_cont.31749
-ble_else.31749:
+.count b_cont
+	b       ble_cont.31664
+ble_else.31664:
 	li      255, $1
-ble_cont.31749:
+ble_cont.31664:
 	mov     $1, $2
 	call    min_caml_write
 .count move_args
 	mov     $48, $2
 	call    min_caml_int_of_float
 	cmp     $1, 255
-	bg      ble_else.31751
-ble_then.31751:
+	bg      ble_else.31666
+ble_then.31666:
 	cmp     $1, 0
-	bge     ble_cont.31751
-bl_then.31752:
+	bge     ble_cont.31666
+bl_then.31667:
 	li      0, $1
-	b       ble_cont.31751
-ble_else.31751:
+.count b_cont
+	b       ble_cont.31666
+ble_else.31666:
 	li      255, $1
-ble_cont.31751:
+ble_cont.31666:
 	mov     $1, $2
 	call    min_caml_write
 	li      1, $2
+.count stack_load
 	load    [$sp + 3], $3
+.count stack_load
 	load    [$sp + 2], $4
+.count stack_load
 	load    [$sp + 4], $5
+.count stack_load
 	load    [$sp + 1], $6
 	call    scan_pixel.2994
-bg_cont.31741:
+bg_cont.31656:
+.count stack_load
 	load    [$sp + 3], $10
-	load    [min_caml_image_size + 1], $11
 	add     $10, 1, $10
-	cmp     $11, $10
-	bg      ble_else.31753
-ble_then.31753:
+	cmp     $60, $10
+	bg      ble_else.31668
+ble_then.31668:
 .count stack_move
 	add     $sp, 8, $sp
 	ret
-ble_else.31753:
+ble_else.31668:
+.count stack_store
 	store   $10, [$sp + 6]
+.count stack_load
 	load    [$sp + 0], $12
+	sub     $60, 1, $11
 	add     $12, 2, $12
 	cmp     $12, 5
-	bl      bge_cont.31754
-bge_then.31754:
+	bl      bge_cont.31669
+bge_then.31669:
 	sub     $12, 5, $12
-bge_cont.31754:
-	sub     $11, 1, $11
+bge_cont.31669:
+.count stack_store
 	store   $12, [$sp + 7]
 	cmp     $11, $10
-	ble     bg_cont.31755
-bg_then.31755:
-	load    [min_caml_image_center + 1], $13
+	ble     bg_cont.31670
+bg_then.31670:
+	load    [min_caml_image_center + 1], $15
 	add     $10, 1, $10
-	load    [min_caml_screenz_dir + 2], $11
-	sub     $10, $13, $2
+	sub     $50, 1, $11
+	load    [min_caml_screeny_dir + 0], $13
+	load    [min_caml_scan_pitch + 0], $14
+	sub     $10, $15, $2
 	call    min_caml_float_of_int
-	load    [min_caml_scan_pitch + 0], $2
-	load    [min_caml_screeny_dir + 1], $3
+	fmul    $14, $1, $1
+	load    [min_caml_screenz_dir + 0], $2
+	load    [min_caml_screeny_dir + 1], $4
+	fmul    $1, $13, $3
+	fmul    $1, $4, $4
+	fadd    $3, $2, $5
+	load    [min_caml_screeny_dir + 2], $3
+	load    [min_caml_screenz_dir + 1], $2
+	fmul    $1, $3, $1
+	fadd    $4, $2, $6
+.count move_args
+	mov     $11, $3
+	load    [min_caml_screenz_dir + 2], $2
 .count move_args
 	mov     $12, $4
-	fmul    $2, $1, $1
-	load    [min_caml_screeny_dir + 2], $2
-	fmul    $1, $2, $2
-	fmul    $1, $3, $3
-	fadd    $2, $11, $7
-	load    [min_caml_screenz_dir + 1], $2
-	fadd    $3, $2, $6
-	load    [min_caml_screeny_dir + 0], $3
-	load    [min_caml_screenz_dir + 0], $2
-	fmul    $1, $3, $1
-	sub     $53, 1, $3
-	fadd    $1, $2, $5
+	fadd    $1, $2, $7
+.count stack_load
 	load    [$sp + 2], $2
 	call    pretrace_pixels.2983
-bg_cont.31755:
+bg_cont.31670:
 	li      0, $2
+.count stack_load
 	load    [$sp + 6], $3
+.count stack_load
 	load    [$sp + 4], $4
+.count stack_load
 	load    [$sp + 1], $5
+.count stack_load
 	load    [$sp + 2], $6
 	call    scan_pixel.2994
 .count stack_move
 	add     $sp, 8, $sp
-	load    [$sp - 1], $1
-	load    [$sp - 4], $5
-	load    [$sp - 6], $4
-	add     $1, 2, $6
-	load    [$sp - 7], $3
+.count stack_load
 	load    [$sp - 2], $1
-	cmp     $6, 5
+.count stack_load
+	load    [$sp - 4], $5
+.count stack_load
+	load    [$sp - 6], $4
 	add     $1, 1, $2
+.count stack_load
+	load    [$sp - 7], $3
+.count stack_load
+	load    [$sp - 1], $1
+	add     $1, 2, $6
+	cmp     $6, 5
 	bl      scan_line.3000
 	sub     $6, 5, $6
 	b       scan_line.3000
@@ -11560,13 +12519,13 @@ create_pixel.3008:
 .count move_ret
 	mov     $1, $12
 	store   $12, [$11 + 4]
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $12
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $13
@@ -11646,8 +12605,8 @@ create_pixel.3008:
 .count move_ret
 	mov     $1, $16
 	store   $16, [$15 + 4]
-	li      0, $3
 	li      1, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $16
@@ -11704,11 +12663,13 @@ create_pixel.3008:
 .begin init_line_elements
 init_line_elements.3010:
 	cmp     $3, 0
-	bl      bge_else.31757
-bge_then.31757:
+	bl      bge_else.31672
+bge_then.31672:
 .count stack_move
 	sub     $sp, 2, $sp
+.count stack_store
 	store   $3, [$sp + 0]
+.count stack_store
 	store   $2, [$sp + 1]
 .count move_args
 	mov     $zero, $3
@@ -11755,13 +12716,13 @@ bge_then.31757:
 .count move_ret
 	mov     $1, $12
 	store   $12, [$11 + 4]
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $12
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $13
@@ -11843,8 +12804,8 @@ bge_then.31757:
 .count move_ret
 	mov     $1, $16
 	store   $16, [$15 + 4]
-	li      0, $3
 	li      1, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $16
@@ -11897,15 +12858,17 @@ bge_then.31757:
 	store   $12, [$19 + 2]
 	store   $11, [$19 + 1]
 	store   $10, [$19 + 0]
+.count stack_load
 	load    [$sp + 1], $21
+.count stack_load
 	load    [$sp + 0], $20
 .count storer
 	add     $21, $20, $tmp
 	store   $19, [$tmp + 0]
 	sub     $20, 1, $19
 	cmp     $19, 0
-	bl      bge_else.31758
-bge_then.31758:
+	bl      bge_else.31673
+bge_then.31673:
 	call    create_pixel.3008
 .count storer
 	add     $21, $19, $tmp
@@ -11914,8 +12877,8 @@ bge_then.31758:
 	store   $10, [$tmp + 0]
 	sub     $19, 1, $10
 	cmp     $10, 0
-	bl      bge_else.31759
-bge_then.31759:
+	bl      bge_else.31674
+bge_then.31674:
 	li      3, $2
 .count move_args
 	mov     $zero, $3
@@ -11960,13 +12923,13 @@ bge_then.31759:
 .count move_ret
 	mov     $1, $13
 	store   $13, [$12 + 4]
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $13
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $14
@@ -12046,8 +13009,8 @@ bge_then.31759:
 .count move_ret
 	mov     $1, $17
 	store   $17, [$16 + 4]
-	li      0, $3
 	li      1, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $17
@@ -12104,34 +13067,34 @@ bge_then.31759:
 	store   $19, [$tmp + 0]
 	sub     $10, 1, $19
 	cmp     $19, 0
-	bl      bge_else.31760
-bge_then.31760:
+	bl      bge_else.31675
+bge_then.31675:
 	call    create_pixel.3008
 .count storer
 	add     $21, $19, $tmp
 .count stack_move
 	add     $sp, 2, $sp
-	sub     $19, 1, $3
 	store   $1, [$tmp + 0]
+	sub     $19, 1, $3
 .count move_args
 	mov     $21, $2
 	b       init_line_elements.3010
-bge_else.31760:
+bge_else.31675:
 .count stack_move
 	add     $sp, 2, $sp
 	mov     $21, $1
 	ret
-bge_else.31759:
+bge_else.31674:
 .count stack_move
 	add     $sp, 2, $sp
 	mov     $21, $1
 	ret
-bge_else.31758:
+bge_else.31673:
 .count stack_move
 	add     $sp, 2, $sp
 	mov     $21, $1
 	ret
-bge_else.31757:
+bge_else.31672:
 	mov     $2, $1
 	ret
 .end init_line_elements
@@ -12140,99 +13103,110 @@ bge_else.31757:
 .begin calc_dirvec
 calc_dirvec.3020:
 	cmp     $2, 5
-	bl      bge_else.31761
-bge_then.31761:
+	bl      bge_else.31676
+bge_then.31676:
 	fmul    $4, $4, $5
-	fmul    $3, $3, $6
+	fmul    $3, $3, $2
 	load    [min_caml_dirvecs + $7], $1
-	load    [$1 + $8], $2
-	fadd    $6, $5, $5
-	load    [$2 + 0], $2
-	fadd    $5, $36, $5
-	fsqrt   $5, $5
-	finv    $5, $5
-	fmul    $3, $5, $3
-	fmul    $4, $5, $4
-	store   $3, [$2 + 0]
-	fneg    $4, $6
-	store   $4, [$2 + 1]
+	load    [$1 + $8], $6
+	fadd    $2, $5, $2
+	load    [$6 + 0], $6
+	add     $8, 40, $5
+	fadd    $2, $36, $2
+	fsqrt   $2, $2
+	finv    $2, $2
+	fmul    $3, $2, $3
+	fmul    $4, $2, $4
+	store   $3, [$6 + 0]
 	fneg    $3, $7
-	store   $5, [$2 + 2]
-	add     $8, 40, $2
-	load    [$1 + $2], $2
-	load    [$2 + 0], $2
-	store   $3, [$2 + 0]
-	store   $5, [$2 + 1]
-	store   $6, [$2 + 2]
-	add     $8, 80, $2
-	load    [$1 + $2], $2
-	load    [$2 + 0], $2
-	store   $5, [$2 + 0]
-	store   $7, [$2 + 1]
-	fneg    $5, $5
-	store   $6, [$2 + 2]
-	add     $8, 1, $2
-	load    [$1 + $2], $2
-	load    [$2 + 0], $2
-	store   $7, [$2 + 0]
-	store   $6, [$2 + 1]
-	store   $5, [$2 + 2]
-	add     $8, 41, $2
-	load    [$1 + $2], $2
-	load    [$2 + 0], $2
-	store   $7, [$2 + 0]
-	store   $5, [$2 + 1]
-	store   $4, [$2 + 2]
-	add     $8, 81, $2
-	load    [$1 + $2], $1
+	store   $4, [$6 + 1]
+	store   $2, [$6 + 2]
+	load    [$1 + $5], $5
+	fneg    $4, $6
+	load    [$5 + 0], $5
+	store   $3, [$5 + 0]
+	store   $2, [$5 + 1]
+	store   $6, [$5 + 2]
+	add     $8, 80, $5
+	load    [$1 + $5], $5
+	load    [$5 + 0], $5
+	store   $2, [$5 + 0]
+	store   $7, [$5 + 1]
+	fneg    $2, $2
+	store   $6, [$5 + 2]
+	add     $8, 1, $5
+	load    [$1 + $5], $5
+	load    [$5 + 0], $5
+	store   $7, [$5 + 0]
+	store   $6, [$5 + 1]
+	store   $2, [$5 + 2]
+	add     $8, 41, $5
+	load    [$1 + $5], $5
+	load    [$5 + 0], $5
+	store   $7, [$5 + 0]
+	store   $2, [$5 + 1]
+	store   $4, [$5 + 2]
+	add     $8, 81, $5
+	load    [$1 + $5], $1
 	load    [$1 + 0], $1
-	store   $5, [$1 + 0]
+	store   $2, [$1 + 0]
 	store   $3, [$1 + 1]
 	store   $4, [$1 + 2]
 	ret
-bge_else.31761:
-	fmul    $4, $4, $12
+bge_else.31676:
+	fmul    $4, $4, $11
 .count load_float
-	load    [f.27192], $11
+	load    [f.27098], $12
 .count stack_move
 	sub     $sp, 7, $sp
+.count stack_store
 	store   $8, [$sp + 0]
-	fadd    $12, $11, $12
+	fadd    $11, $12, $11
+.count stack_store
 	store   $7, [$sp + 1]
+.count stack_store
 	store   $2, [$sp + 2]
-	fsqrt   $12, $12
+	fsqrt   $11, $11
+.count stack_store
 	store   $6, [$sp + 3]
+.count stack_store
 	store   $5, [$sp + 4]
-	finv    $12, $2
+	finv    $11, $2
 	call    min_caml_atan
+.count stack_load
 	load    [$sp + 4], $14
 .count move_ret
 	mov     $1, $13
 	fmul    $13, $14, $2
+.count stack_store
 	store   $2, [$sp + 5]
 	call    min_caml_sin
 .count move_ret
 	mov     $1, $13
+.count stack_load
 	load    [$sp + 5], $2
 	call    min_caml_cos
 .count move_ret
 	mov     $1, $15
 	finv    $15, $15
 	fmul    $13, $15, $13
-	fmul    $13, $12, $12
-	fmul    $12, $12, $13
-	fadd    $13, $11, $11
-	fsqrt   $11, $11
-	finv    $11, $2
+	fmul    $13, $11, $11
+	fmul    $11, $11, $13
+	fadd    $13, $12, $12
+	fsqrt   $12, $12
+	finv    $12, $2
 	call    min_caml_atan
+.count stack_load
 	load    [$sp + 3], $15
 .count move_ret
 	mov     $1, $13
 	fmul    $13, $15, $2
+.count stack_store
 	store   $2, [$sp + 6]
 	call    min_caml_sin
 .count move_ret
 	mov     $1, $13
+.count stack_load
 	load    [$sp + 6], $2
 	call    min_caml_cos
 	finv    $1, $1
@@ -12240,16 +13214,19 @@ bge_else.31761:
 	add     $sp, 7, $sp
 .count move_args
 	mov     $15, $6
+.count stack_load
 	load    [$sp - 5], $2
+.count stack_load
 	load    [$sp - 6], $7
 	fmul    $13, $1, $1
-	load    [$sp - 7], $8
 	add     $2, 1, $2
+.count stack_load
+	load    [$sp - 7], $8
 .count move_args
 	mov     $14, $5
 .count move_args
-	mov     $12, $3
-	fmul    $1, $11, $4
+	mov     $11, $3
+	fmul    $1, $12, $4
 	b       calc_dirvec.3020
 .end calc_dirvec
 
@@ -12257,193 +13234,238 @@ bge_else.31761:
 .begin calc_dirvecs
 calc_dirvecs.3028:
 	cmp     $2, 0
-	bl      bge_else.31762
-bge_then.31762:
+	bl      bge_else.31677
+bge_then.31677:
 .count stack_move
-	sub     $sp, 13, $sp
-.count load_float
-	load    [f.27233], $10
+	sub     $sp, 11, $sp
+	li      0, $10
+.count stack_store
 	store   $2, [$sp + 0]
-.count load_float
-	load    [f.27234], $11
+.count stack_store
 	store   $5, [$sp + 1]
+.count stack_store
 	store   $4, [$sp + 2]
+.count stack_store
 	store   $3, [$sp + 3]
-	store   $10, [$sp + 4]
-	store   $11, [$sp + 5]
 	call    min_caml_float_of_int
+.count load_float
+	load    [f.27139], $17
 .count move_ret
 	mov     $1, $16
-	li      0, $2
-	fmul    $16, $11, $16
+.count load_float
+	load    [f.27140], $18
+	fmul    $16, $17, $16
+.count stack_load
 	load    [$sp + 3], $6
+.count stack_load
 	load    [$sp + 2], $7
+.count stack_load
 	load    [$sp + 1], $8
 .count move_args
 	mov     $zero, $4
-	fsub    $16, $10, $5
+	fsub    $16, $18, $5
 .count move_args
 	mov     $zero, $3
+.count move_args
+	mov     $10, $2
 	call    calc_dirvec.3020
+.count stack_load
+	load    [$sp + 1], $20
 .count load_float
-	load    [f.27192], $17
+	load    [f.27098], $19
 	li      0, $2
+	add     $20, 2, $8
+	fadd    $16, $19, $5
+.count stack_store
+	store   $8, [$sp + 4]
+.count stack_load
+	load    [$sp + 3], $6
+.count stack_load
+	load    [$sp + 2], $7
 .count move_args
 	mov     $zero, $4
-	fadd    $16, $17, $5
 .count move_args
 	mov     $zero, $3
-	load    [$sp + 1], $16
-	add     $16, 2, $8
-	store   $8, [$sp + 6]
-	load    [$sp + 3], $6
-	load    [$sp + 2], $7
 	call    calc_dirvec.3020
+.count stack_load
 	load    [$sp + 0], $10
 	sub     $10, 1, $2
 	cmp     $2, 0
-	bl      bge_else.31763
-bge_then.31763:
-	store   $2, [$sp + 7]
+	bl      bge_else.31678
+bge_then.31678:
+.count stack_store
+	store   $2, [$sp + 5]
+.count stack_load
+	load    [$sp + 2], $11
+	li      0, $10
+	add     $11, 1, $11
+	cmp     $11, 5
+	bl      bge_cont.31679
+bge_then.31679:
+	sub     $11, 5, $11
+bge_cont.31679:
+.count stack_store
+	store   $11, [$sp + 6]
 	call    min_caml_float_of_int
-	load    [$sp + 5], $19
 .count move_ret
-	mov     $1, $18
-	load    [$sp + 2], $21
-	fmul    $18, $19, $18
-	load    [$sp + 4], $20
-	add     $21, 1, $21
-	cmp     $21, 5
-	fsub    $18, $20, $5
-	bl      bge_cont.31764
-bge_then.31764:
-	sub     $21, 5, $21
-bge_cont.31764:
-	mov     $21, $7
-	store   $7, [$sp + 8]
-	li      0, $2
+	mov     $1, $16
+.count stack_load
 	load    [$sp + 3], $6
+	fmul    $16, $17, $16
 .count move_args
-	mov     $16, $8
+	mov     $20, $8
+.count move_args
+	mov     $11, $7
+.count move_args
+	mov     $zero, $4
+.count move_args
+	mov     $zero, $3
+	fsub    $16, $18, $5
+.count move_args
+	mov     $10, $2
+	call    calc_dirvec.3020
+	li      0, $2
+	fadd    $16, $19, $5
+.count stack_load
+	load    [$sp + 3], $6
+.count stack_load
+	load    [$sp + 6], $7
+.count stack_load
+	load    [$sp + 4], $8
 .count move_args
 	mov     $zero, $4
 .count move_args
 	mov     $zero, $3
 	call    calc_dirvec.3020
-	fadd    $18, $17, $5
-	li      0, $2
+.count stack_load
+	load    [$sp + 5], $10
+	sub     $10, 1, $2
+	cmp     $2, 0
+	bl      bge_else.31680
+bge_then.31680:
+.count stack_store
+	store   $2, [$sp + 7]
+.count stack_load
+	load    [$sp + 6], $11
+	li      0, $10
+	add     $11, 1, $11
+	cmp     $11, 5
+	bl      bge_cont.31681
+bge_then.31681:
+	sub     $11, 5, $11
+bge_cont.31681:
+.count stack_store
+	store   $11, [$sp + 8]
+	call    min_caml_float_of_int
+.count move_ret
+	mov     $1, $16
+.count stack_load
 	load    [$sp + 3], $6
+	fmul    $16, $17, $16
+.count move_args
+	mov     $20, $8
+.count move_args
+	mov     $11, $7
+.count move_args
+	mov     $zero, $4
+.count move_args
+	mov     $zero, $3
+	fsub    $16, $18, $5
+.count move_args
+	mov     $10, $2
+	call    calc_dirvec.3020
+	li      0, $2
+	fadd    $16, $19, $5
+.count stack_load
+	load    [$sp + 3], $6
+.count stack_load
 	load    [$sp + 8], $7
-	load    [$sp + 6], $8
+.count stack_load
+	load    [$sp + 4], $8
 .count move_args
 	mov     $zero, $4
 .count move_args
 	mov     $zero, $3
 	call    calc_dirvec.3020
+.count stack_load
 	load    [$sp + 7], $10
 	sub     $10, 1, $2
 	cmp     $2, 0
-	bl      bge_else.31765
-bge_then.31765:
+	bl      bge_else.31682
+bge_then.31682:
+.count stack_store
 	store   $2, [$sp + 9]
+.count stack_load
+	load    [$sp + 8], $11
+	li      0, $10
+	add     $11, 1, $11
+	cmp     $11, 5
+	bl      bge_cont.31683
+bge_then.31683:
+	sub     $11, 5, $11
+bge_cont.31683:
+.count stack_store
+	store   $11, [$sp + 10]
 	call    min_caml_float_of_int
 .count move_ret
-	mov     $1, $18
-	load    [$sp + 8], $21
-	fmul    $18, $19, $18
-	add     $21, 1, $21
-	cmp     $21, 5
-	fsub    $18, $20, $5
-	bl      bge_cont.31766
-bge_then.31766:
-	sub     $21, 5, $21
-bge_cont.31766:
-	mov     $21, $7
-	store   $7, [$sp + 10]
-	li      0, $2
+	mov     $1, $16
+.count stack_load
 	load    [$sp + 3], $6
+	fmul    $16, $17, $16
 .count move_args
-	mov     $16, $8
+	mov     $20, $8
+.count move_args
+	mov     $11, $7
 .count move_args
 	mov     $zero, $4
 .count move_args
 	mov     $zero, $3
+	fsub    $16, $18, $5
+.count move_args
+	mov     $10, $2
 	call    calc_dirvec.3020
-	fadd    $18, $17, $5
 	li      0, $2
+	fadd    $16, $19, $5
+.count stack_load
 	load    [$sp + 3], $6
+.count stack_load
 	load    [$sp + 10], $7
-	load    [$sp + 6], $8
-.count move_args
-	mov     $zero, $4
-.count move_args
-	mov     $zero, $3
-	call    calc_dirvec.3020
-	load    [$sp + 9], $10
-	sub     $10, 1, $2
-	cmp     $2, 0
-	bl      bge_else.31767
-bge_then.31767:
-	store   $2, [$sp + 11]
-	call    min_caml_float_of_int
-.count move_ret
-	mov     $1, $18
-	fmul    $18, $19, $18
-	load    [$sp + 10], $19
-	add     $19, 1, $19
-	fsub    $18, $20, $5
-	cmp     $19, 5
-	bl      bge_cont.31768
-bge_then.31768:
-	sub     $19, 5, $19
-bge_cont.31768:
-	mov     $19, $7
-	store   $7, [$sp + 12]
-	li      0, $2
-	load    [$sp + 3], $6
-.count move_args
-	mov     $16, $8
-.count move_args
-	mov     $zero, $4
-.count move_args
-	mov     $zero, $3
-	call    calc_dirvec.3020
-	fadd    $18, $17, $5
-	li      0, $2
-	load    [$sp + 3], $6
-	load    [$sp + 12], $7
-	load    [$sp + 6], $8
+.count stack_load
+	load    [$sp + 4], $8
 .count move_args
 	mov     $zero, $4
 .count move_args
 	mov     $zero, $3
 	call    calc_dirvec.3020
 .count stack_move
-	add     $sp, 13, $sp
+	add     $sp, 11, $sp
 .count move_args
-	mov     $16, $5
-	load    [$sp - 1], $1
-	load    [$sp - 10], $3
-	add     $1, 1, $4
+	mov     $20, $5
+.count stack_load
 	load    [$sp - 2], $1
-	cmp     $4, 5
+.count stack_load
+	load    [$sp - 8], $3
 	sub     $1, 1, $2
+.count stack_load
+	load    [$sp - 1], $1
+	add     $1, 1, $4
+	cmp     $4, 5
 	bl      calc_dirvecs.3028
 	sub     $4, 5, $4
 	b       calc_dirvecs.3028
-bge_else.31767:
+bge_else.31682:
 .count stack_move
-	add     $sp, 13, $sp
+	add     $sp, 11, $sp
 	ret
-bge_else.31765:
+bge_else.31680:
 .count stack_move
-	add     $sp, 13, $sp
+	add     $sp, 11, $sp
 	ret
-bge_else.31763:
+bge_else.31678:
 .count stack_move
-	add     $sp, 13, $sp
+	add     $sp, 11, $sp
 	ret
-bge_else.31762:
+bge_else.31677:
 	ret
 .end calc_dirvecs
 
@@ -12451,199 +13473,269 @@ bge_else.31762:
 .begin calc_dirvec_rows
 calc_dirvec_rows.3033:
 	cmp     $2, 0
-	bl      bge_else.31770
-bge_then.31770:
+	bl      bge_else.31685
+bge_then.31685:
 .count stack_move
-	sub     $sp, 19, $sp
+	sub     $sp, 20, $sp
 .count load_float
-	load    [f.27233], $10
-	store   $2, [$sp + 0]
+	load    [f.27140], $11
+.count stack_store
+	store   $4, [$sp + 0]
 .count load_float
-	load    [f.27234], $11
-	store   $4, [$sp + 1]
-	store   $3, [$sp + 2]
-	store   $10, [$sp + 3]
-	store   $11, [$sp + 4]
+	load    [f.27139], $12
+.count stack_store
+	store   $3, [$sp + 1]
+	li      0, $10
+.count stack_store
+	store   $2, [$sp + 2]
+.count stack_store
+	store   $11, [$sp + 3]
+	li      4, $2
+.count stack_store
+	store   $12, [$sp + 4]
 	call    min_caml_float_of_int
 .count move_ret
-	mov     $1, $12
-	li      4, $2
-	fmul    $12, $11, $12
-	fsub    $12, $10, $12
-	store   $12, [$sp + 5]
+	mov     $1, $13
+	fmul    $13, $12, $13
+.count stack_store
+	store   $13, [$sp + 5]
+	fsub    $13, $11, $13
+.count stack_store
+	store   $13, [$sp + 6]
+.count stack_load
+	load    [$sp + 2], $2
 	call    min_caml_float_of_int
 .count move_ret
 	mov     $1, $16
-	li      0, $2
-	fmul    $16, $11, $16
 .count move_args
-	mov     $12, $6
+	mov     $13, $5
+	fmul    $16, $12, $16
 .count move_args
 	mov     $zero, $4
 .count move_args
 	mov     $zero, $3
-	fsub    $16, $10, $5
-	store   $5, [$sp + 6]
-	load    [$sp + 2], $7
-	load    [$sp + 1], $8
+.count move_args
+	mov     $10, $2
+	fsub    $16, $11, $6
+.count stack_store
+	store   $6, [$sp + 7]
+.count stack_load
+	load    [$sp + 1], $7
+.count stack_load
+	load    [$sp + 0], $8
 	call    calc_dirvec.3020
+.count stack_load
+	load    [$sp + 0], $17
 .count load_float
-	load    [f.27192], $17
+	load    [f.27098], $16
 	li      0, $2
+	add     $17, 2, $8
 .count move_args
 	mov     $zero, $4
-	fadd    $16, $17, $5
+.count stack_store
+	store   $8, [$sp + 8]
+.count stack_load
+	load    [$sp + 5], $18
 .count move_args
 	mov     $zero, $3
-	store   $5, [$sp + 7]
-	load    [$sp + 1], $16
-	add     $16, 2, $8
-	store   $8, [$sp + 8]
-	load    [$sp + 5], $6
-	load    [$sp + 2], $7
+	fadd    $18, $16, $5
+.count stack_store
+	store   $5, [$sp + 9]
+.count stack_load
+	load    [$sp + 7], $6
+.count stack_load
+	load    [$sp + 1], $7
 	call    calc_dirvec.3020
+.count stack_load
+	load    [$sp + 1], $11
+	li      0, $10
+	add     $11, 1, $11
+	cmp     $11, 5
+	bl      bge_cont.31686
+bge_then.31686:
+	sub     $11, 5, $11
+bge_cont.31686:
+.count stack_store
+	store   $11, [$sp + 10]
 	li      3, $2
 	call    min_caml_float_of_int
+.count stack_load
 	load    [$sp + 4], $19
 .count move_ret
 	mov     $1, $18
+.count stack_load
 	load    [$sp + 3], $20
 	fmul    $18, $19, $18
+.count move_args
+	mov     $17, $8
+.count move_args
+	mov     $11, $7
+.count move_args
+	mov     $zero, $4
+.count move_args
+	mov     $zero, $3
 	fsub    $18, $20, $5
-	store   $5, [$sp + 9]
-	load    [$sp + 2], $21
-	add     $21, 1, $21
-	cmp     $21, 5
-	bl      bge_cont.31771
-bge_then.31771:
-	sub     $21, 5, $21
-bge_cont.31771:
-	mov     $21, $7
-	store   $7, [$sp + 10]
-	li      0, $2
-	load    [$sp + 5], $6
 .count move_args
-	mov     $16, $8
-.count move_args
-	mov     $zero, $4
-.count move_args
-	mov     $zero, $3
-	call    calc_dirvec.3020
-	fadd    $18, $17, $5
-	li      0, $2
-.count move_args
-	mov     $zero, $4
-.count move_args
-	mov     $zero, $3
+	mov     $10, $2
+.count stack_store
 	store   $5, [$sp + 11]
-	load    [$sp + 5], $6
+.count stack_load
+	load    [$sp + 7], $6
+	call    calc_dirvec.3020
+	fadd    $18, $16, $5
+	li      0, $2
+.count move_args
+	mov     $zero, $4
+.count move_args
+	mov     $zero, $3
+.count stack_store
+	store   $5, [$sp + 12]
+.count stack_load
+	load    [$sp + 7], $6
+.count stack_load
 	load    [$sp + 10], $7
+.count stack_load
 	load    [$sp + 8], $8
 	call    calc_dirvec.3020
+.count stack_load
+	load    [$sp + 10], $11
+	li      0, $10
+	add     $11, 1, $11
+	cmp     $11, 5
+	bl      bge_cont.31687
+bge_then.31687:
+	sub     $11, 5, $11
+bge_cont.31687:
+.count stack_store
+	store   $11, [$sp + 13]
 	li      2, $2
 	call    min_caml_float_of_int
 .count move_ret
 	mov     $1, $18
+.count stack_load
+	load    [$sp + 7], $6
 	fmul    $18, $19, $18
-	load    [$sp + 10], $19
-	add     $19, 1, $19
-	fsub    $18, $20, $5
-	cmp     $19, 5
-	bl      bge_cont.31772
-bge_then.31772:
-	sub     $19, 5, $19
-bge_cont.31772:
-	mov     $19, $7
-	store   $7, [$sp + 12]
-	li      0, $2
-	load    [$sp + 5], $6
 .count move_args
-	mov     $16, $8
+	mov     $17, $8
+.count move_args
+	mov     $11, $7
 .count move_args
 	mov     $zero, $4
 .count move_args
 	mov     $zero, $3
+	fsub    $18, $20, $5
+.count move_args
+	mov     $10, $2
 	call    calc_dirvec.3020
-	fadd    $18, $17, $5
 	li      0, $2
-	load    [$sp + 5], $6
-	load    [$sp + 12], $7
+	fadd    $18, $16, $5
+.count stack_load
+	load    [$sp + 7], $6
+.count stack_load
+	load    [$sp + 13], $7
+.count stack_load
 	load    [$sp + 8], $8
 .count move_args
 	mov     $zero, $4
 .count move_args
 	mov     $zero, $3
 	call    calc_dirvec.3020
-	load    [$sp + 12], $22
-	add     $22, 1, $22
-	cmp     $22, 5
-	bl      bge_cont.31773
-bge_then.31773:
-	sub     $22, 5, $22
-bge_cont.31773:
-	mov     $22, $4
+.count stack_load
+	load    [$sp + 13], $21
 	li      1, $2
-	load    [$sp + 5], $3
+	add     $21, 1, $21
+	cmp     $21, 5
+	bl      bge_cont.31688
+bge_then.31688:
+	sub     $21, 5, $21
+bge_cont.31688:
+	mov     $21, $4
+.count stack_load
+	load    [$sp + 7], $3
 .count move_args
-	mov     $16, $5
+	mov     $17, $5
 	call    calc_dirvecs.3028
-	load    [$sp + 0], $10
+.count stack_load
+	load    [$sp + 2], $10
 	sub     $10, 1, $2
 	cmp     $2, 0
-	bl      bge_else.31774
-bge_then.31774:
-	store   $2, [$sp + 13]
+	bl      bge_else.31689
+bge_then.31689:
+.count stack_store
+	store   $2, [$sp + 14]
+.count stack_load
+	load    [$sp + 1], $10
+	add     $10, 2, $10
+	cmp     $10, 5
+	bl      bge_cont.31690
+bge_then.31690:
+	sub     $10, 5, $10
+bge_cont.31690:
+.count stack_store
+	store   $10, [$sp + 15]
+.count stack_load
+	load    [$sp + 0], $12
+	li      0, $11
+	add     $12, 4, $12
+.count stack_store
+	store   $12, [$sp + 16]
 	call    min_caml_float_of_int
+.count stack_load
 	load    [$sp + 4], $17
 .count move_ret
 	mov     $1, $16
-	li      0, $2
+.count move_args
+	mov     $12, $8
 	fmul    $16, $17, $16
+.count move_args
+	mov     $10, $7
+.count stack_load
 	load    [$sp + 3], $17
-	fsub    $16, $17, $6
-	store   $6, [$sp + 14]
-	load    [$sp + 1], $16
-	add     $16, 4, $8
-	store   $8, [$sp + 15]
-	load    [$sp + 2], $16
-	add     $16, 2, $16
-	cmp     $16, 5
-	bl      bge_cont.31775
-bge_then.31775:
-	sub     $16, 5, $16
-bge_cont.31775:
-	mov     $16, $7
-	store   $7, [$sp + 16]
-	load    [$sp + 6], $5
 .count move_args
 	mov     $zero, $4
 .count move_args
 	mov     $zero, $3
+	fsub    $16, $17, $6
+.count move_args
+	mov     $11, $2
+.count stack_store
+	store   $6, [$sp + 17]
+.count stack_load
+	load    [$sp + 6], $5
 	call    calc_dirvec.3020
-	load    [$sp + 15], $16
+.count stack_load
+	load    [$sp + 16], $16
 	li      0, $2
 .count move_args
 	mov     $zero, $4
 	add     $16, 2, $8
 .count move_args
 	mov     $zero, $3
-	store   $8, [$sp + 17]
-	load    [$sp + 7], $5
-	load    [$sp + 14], $6
-	load    [$sp + 16], $7
+.count stack_store
+	store   $8, [$sp + 18]
+.count stack_load
+	load    [$sp + 9], $5
+.count stack_load
+	load    [$sp + 17], $6
+.count stack_load
+	load    [$sp + 15], $7
 	call    calc_dirvec.3020
-	load    [$sp + 16], $17
+.count stack_load
+	load    [$sp + 15], $17
+	li      0, $2
 	add     $17, 1, $17
 	cmp     $17, 5
-	bl      bge_cont.31776
-bge_then.31776:
+	bl      bge_cont.31691
+bge_then.31691:
 	sub     $17, 5, $17
-bge_cont.31776:
+bge_cont.31691:
 	mov     $17, $7
-	store   $7, [$sp + 18]
-	li      0, $2
-	load    [$sp + 9], $5
-	load    [$sp + 14], $6
+.count stack_store
+	store   $7, [$sp + 19]
+.count stack_load
+	load    [$sp + 11], $5
+.count stack_load
+	load    [$sp + 17], $6
 .count move_args
 	mov     $16, $8
 .count move_args
@@ -12652,45 +13744,54 @@ bge_cont.31776:
 	mov     $zero, $3
 	call    calc_dirvec.3020
 	li      0, $2
-	load    [$sp + 11], $5
-	load    [$sp + 14], $6
-	load    [$sp + 18], $7
-	load    [$sp + 17], $8
+.count stack_load
+	load    [$sp + 12], $5
+.count stack_load
+	load    [$sp + 17], $6
+.count stack_load
+	load    [$sp + 19], $7
+.count stack_load
+	load    [$sp + 18], $8
 .count move_args
 	mov     $zero, $4
 .count move_args
 	mov     $zero, $3
 	call    calc_dirvec.3020
-	load    [$sp + 18], $22
-	add     $22, 1, $22
-	cmp     $22, 5
-	bl      bge_cont.31777
-bge_then.31777:
-	sub     $22, 5, $22
-bge_cont.31777:
-	mov     $22, $4
+.count stack_load
+	load    [$sp + 19], $21
 	li      2, $2
-	load    [$sp + 14], $3
+	add     $21, 1, $21
+	cmp     $21, 5
+	bl      bge_cont.31692
+bge_then.31692:
+	sub     $21, 5, $21
+bge_cont.31692:
+	mov     $21, $4
+.count stack_load
+	load    [$sp + 17], $3
 .count move_args
 	mov     $16, $5
 	call    calc_dirvecs.3028
 .count stack_move
-	add     $sp, 19, $sp
-	load    [$sp - 3], $1
+	add     $sp, 20, $sp
+.count stack_load
+	load    [$sp - 6], $1
+	sub     $1, 1, $2
+.count stack_load
+	load    [$sp - 5], $1
 	add     $1, 2, $3
+.count stack_load
 	load    [$sp - 4], $1
 	cmp     $3, 5
 	add     $1, 4, $4
-	load    [$sp - 6], $1
-	sub     $1, 1, $2
 	bl      calc_dirvec_rows.3033
 	sub     $3, 5, $3
 	b       calc_dirvec_rows.3033
-bge_else.31774:
+bge_else.31689:
 .count stack_move
-	add     $sp, 19, $sp
+	add     $sp, 20, $sp
 	ret
-bge_else.31770:
+bge_else.31685:
 	ret
 .end calc_dirvec_rows
 
@@ -12698,11 +13799,13 @@ bge_else.31770:
 .begin create_dirvec_elements
 create_dirvec_elements.3039:
 	cmp     $3, 0
-	bl      bge_else.31779
-bge_then.31779:
+	bl      bge_else.31694
+bge_then.31694:
 .count stack_move
 	sub     $sp, 6, $sp
+.count stack_store
 	store   $3, [$sp + 0]
+.count stack_store
 	store   $2, [$sp + 1]
 .count move_args
 	mov     $zero, $3
@@ -12711,6 +13814,7 @@ bge_then.31779:
 .count move_ret
 	mov     $1, $10
 	mov     $10, $3
+.count stack_store
 	store   $3, [$sp + 2]
 .count move_args
 	mov     $41, $2
@@ -12720,24 +13824,28 @@ bge_then.31779:
 	mov     $1, $10
 	store   $10, [$11 + 1]
 	add     $hp, 2, $hp
+.count stack_load
 	load    [$sp + 2], $10
 	store   $10, [$11 + 0]
+.count stack_load
 	load    [$sp + 1], $12
 	mov     $11, $10
+.count stack_load
 	load    [$sp + 0], $11
 .count storer
 	add     $12, $11, $tmp
 	store   $10, [$tmp + 0]
 	sub     $11, 1, $10
 	cmp     $10, 0
-	bl      bge_else.31780
-bge_then.31780:
+	bl      bge_else.31695
+bge_then.31695:
 	li      3, $2
 .count move_args
 	mov     $zero, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 3]
 .count move_args
 	mov     $41, $2
@@ -12748,6 +13856,7 @@ bge_then.31780:
 	store   $11, [$13 + 1]
 .count storer
 	add     $12, $10, $tmp
+.count stack_load
 	load    [$sp + 3], $11
 	sub     $10, 1, $10
 	add     $hp, 2, $hp
@@ -12755,14 +13864,15 @@ bge_then.31780:
 	cmp     $10, 0
 	mov     $13, $11
 	store   $11, [$tmp + 0]
-	bl      bge_else.31781
-bge_then.31781:
+	bl      bge_else.31696
+bge_then.31696:
 	li      3, $2
 .count move_args
 	mov     $zero, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 4]
 .count move_args
 	mov     $41, $2
@@ -12773,6 +13883,7 @@ bge_then.31781:
 	store   $11, [$13 + 1]
 .count storer
 	add     $12, $10, $tmp
+.count stack_load
 	load    [$sp + 4], $11
 	sub     $10, 1, $10
 	add     $hp, 2, $hp
@@ -12780,14 +13891,15 @@ bge_then.31781:
 	cmp     $10, 0
 	mov     $13, $11
 	store   $11, [$tmp + 0]
-	bl      bge_else.31782
-bge_then.31782:
+	bl      bge_else.31697
+bge_then.31697:
 	li      3, $2
 .count move_args
 	mov     $zero, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 5]
 .count move_args
 	mov     $41, $2
@@ -12798,6 +13910,7 @@ bge_then.31782:
 	store   $1, [$2 + 1]
 .count storer
 	add     $12, $10, $tmp
+.count stack_load
 	load    [$sp - 1], $1
 	add     $hp, 2, $hp
 	sub     $10, 1, $3
@@ -12807,19 +13920,19 @@ bge_then.31782:
 .count move_args
 	mov     $12, $2
 	b       create_dirvec_elements.3039
-bge_else.31782:
+bge_else.31697:
 .count stack_move
 	add     $sp, 6, $sp
 	ret
-bge_else.31781:
+bge_else.31696:
 .count stack_move
 	add     $sp, 6, $sp
 	ret
-bge_else.31780:
+bge_else.31695:
 .count stack_move
 	add     $sp, 6, $sp
 	ret
-bge_else.31779:
+bge_else.31694:
 	ret
 .end create_dirvec_elements
 
@@ -12827,18 +13940,20 @@ bge_else.31779:
 .begin create_dirvecs
 create_dirvecs.3042:
 	cmp     $2, 0
-	bl      bge_else.31783
-bge_then.31783:
+	bl      bge_else.31698
+bge_then.31698:
 .count stack_move
 	sub     $sp, 9, $sp
 .count move_args
 	mov     $zero, $3
+.count stack_store
 	store   $2, [$sp + 0]
 	li      3, $2
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $10
 	mov     $10, $3
+.count stack_store
 	store   $3, [$sp + 1]
 .count move_args
 	mov     $41, $2
@@ -12847,42 +13962,47 @@ bge_then.31783:
 .count move_ret
 	mov     $1, $10
 	store   $10, [$11 + 1]
-	add     $hp, 2, $hp
-	load    [$sp + 1], $10
-	mov     $11, $3
 	li      120, $2
+.count stack_load
+	load    [$sp + 1], $10
+	add     $hp, 2, $hp
+	mov     $11, $3
 	store   $10, [$11 + 0]
 	call    min_caml_create_array
+.count stack_load
 	load    [$sp + 0], $11
 .count move_ret
 	mov     $1, $10
 	li      3, $2
+	store   $10, [min_caml_dirvecs + $11]
 .count move_args
 	mov     $zero, $3
-	store   $10, [min_caml_dirvecs + $11]
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 2]
 .count move_args
 	mov     $41, $2
 	call    min_caml_create_array
+	load    [min_caml_dirvecs + $11], $11
 	mov     $hp, $12
 .count move_ret
 	mov     $1, $10
 	store   $10, [$12 + 1]
 	add     $hp, 2, $hp
+.count stack_load
 	load    [$sp + 2], $10
 	li      3, $2
 .count move_args
 	mov     $zero, $3
 	store   $10, [$12 + 0]
-	load    [min_caml_dirvecs + $11], $11
 	mov     $12, $10
 	store   $10, [$11 + 118]
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 3]
 .count move_args
 	mov     $41, $2
@@ -12892,6 +14012,7 @@ bge_then.31783:
 	mov     $1, $10
 	store   $10, [$12 + 1]
 	add     $hp, 2, $hp
+.count stack_load
 	load    [$sp + 3], $10
 	li      3, $2
 .count move_args
@@ -12902,6 +14023,7 @@ bge_then.31783:
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 4]
 .count move_args
 	mov     $41, $2
@@ -12911,6 +14033,7 @@ bge_then.31783:
 	mov     $1, $14
 	store   $14, [$15 + 1]
 	add     $hp, 2, $hp
+.count stack_load
 	load    [$sp + 4], $14
 	li      115, $3
 .count move_args
@@ -12919,11 +14042,13 @@ bge_then.31783:
 	mov     $15, $14
 	store   $14, [$11 + 116]
 	call    create_dirvec_elements.3039
+.count stack_load
 	load    [$sp + 0], $10
 	sub     $10, 1, $10
 	cmp     $10, 0
-	bl      bge_else.31784
-bge_then.31784:
+	bl      bge_else.31699
+bge_then.31699:
+.count stack_store
 	store   $10, [$sp + 5]
 	li      3, $2
 .count move_args
@@ -12931,6 +14056,7 @@ bge_then.31784:
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 6]
 .count move_args
 	mov     $41, $2
@@ -12939,10 +14065,11 @@ bge_then.31784:
 .count move_ret
 	mov     $1, $11
 	store   $11, [$12 + 1]
-	add     $hp, 2, $hp
-	load    [$sp + 6], $11
-	mov     $12, $3
 	li      120, $2
+.count stack_load
+	load    [$sp + 6], $11
+	add     $hp, 2, $hp
+	mov     $12, $3
 	store   $11, [$12 + 0]
 	call    min_caml_create_array
 .count move_ret
@@ -12954,26 +14081,29 @@ bge_then.31784:
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 7]
 .count move_args
 	mov     $41, $2
 	call    min_caml_create_array
+	load    [min_caml_dirvecs + $10], $10
 	mov     $hp, $12
 .count move_ret
 	mov     $1, $11
 	store   $11, [$12 + 1]
 	add     $hp, 2, $hp
+.count stack_load
 	load    [$sp + 7], $11
 	li      3, $2
 .count move_args
 	mov     $zero, $3
 	store   $11, [$12 + 0]
-	load    [min_caml_dirvecs + $10], $10
 	mov     $12, $11
 	store   $11, [$10 + 118]
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 8]
 .count move_args
 	mov     $41, $2
@@ -12983,6 +14113,7 @@ bge_then.31784:
 	mov     $1, $14
 	store   $14, [$15 + 1]
 	add     $hp, 2, $hp
+.count stack_load
 	load    [$sp + 8], $14
 	li      116, $3
 .count move_args
@@ -12993,14 +14124,15 @@ bge_then.31784:
 	call    create_dirvec_elements.3039
 .count stack_move
 	add     $sp, 9, $sp
+.count stack_load
 	load    [$sp - 4], $1
 	sub     $1, 1, $2
 	b       create_dirvecs.3042
-bge_else.31784:
+bge_else.31699:
 .count stack_move
 	add     $sp, 9, $sp
 	ret
-bge_else.31783:
+bge_else.31698:
 	ret
 .end create_dirvecs
 
@@ -13008,171 +14140,185 @@ bge_else.31783:
 .begin init_dirvec_constants
 init_dirvec_constants.3044:
 	cmp     $3, 0
-	bl      bge_else.31785
-bge_then.31785:
+	bl      bge_else.31700
+bge_then.31700:
 .count stack_move
 	sub     $sp, 4, $sp
 	sub     $41, 1, $11
+.count stack_store
 	store   $2, [$sp + 0]
 	cmp     $11, 0
+.count stack_store
 	store   $3, [$sp + 1]
 	load    [$2 + $3], $10
-	bl      bge_cont.31786
-bge_then.31786:
+	bl      bge_cont.31701
+bge_then.31701:
 	load    [min_caml_objects + $11], $13
-	load    [$10 + 0], $12
-	load    [$10 + 1], $15
-	load    [$13 + 1], $14
+	load    [$10 + 1], $12
+	load    [$10 + 0], $14
+	load    [$13 + 1], $15
 .count move_args
 	mov     $zero, $3
-	cmp     $14, 1
-	bne     be_else.31787
-be_then.31787:
+	cmp     $15, 1
+	bne     be_else.31702
+be_then.31702:
 	li      6, $2
 	call    min_caml_create_array
-	load    [$12 + 0], $17
+	load    [$14 + 0], $17
 .count move_ret
 	mov     $1, $16
 	fcmp    $17, $zero
-	bne     be_else.31788
-be_then.31788:
+	bne     be_else.31703
+be_then.31703:
 	store   $zero, [$16 + 1]
-	b       be_cont.31788
-be_else.31788:
+.count b_cont
+	b       be_cont.31703
+be_else.31703:
 	load    [$13 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31789
-ble_then.31789:
+	bg      ble_else.31704
+ble_then.31704:
 	li      0, $17
-	b       ble_cont.31789
-ble_else.31789:
+.count b_cont
+	b       ble_cont.31704
+ble_else.31704:
 	li      1, $17
-ble_cont.31789:
+ble_cont.31704:
 	cmp     $18, 0
-	be      bne_cont.31790
-bne_then.31790:
+	be      bne_cont.31705
+bne_then.31705:
 	cmp     $17, 0
-	bne     be_else.31791
-be_then.31791:
+	bne     be_else.31706
+be_then.31706:
 	li      1, $17
-	b       be_cont.31791
-be_else.31791:
+.count b_cont
+	b       be_cont.31706
+be_else.31706:
 	li      0, $17
-be_cont.31791:
-bne_cont.31790:
+be_cont.31706:
+bne_cont.31705:
 	load    [$13 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 0], $18
-	bne     be_else.31792
-be_then.31792:
+	bne     be_else.31707
+be_then.31707:
 	fneg    $18, $17
 	store   $17, [$16 + 0]
-	load    [$12 + 0], $17
+	load    [$14 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-	b       be_cont.31792
-be_else.31792:
+.count b_cont
+	b       be_cont.31707
+be_else.31707:
 	store   $18, [$16 + 0]
-	load    [$12 + 0], $17
+	load    [$14 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-be_cont.31792:
-be_cont.31788:
-	load    [$12 + 1], $17
+be_cont.31707:
+be_cont.31703:
+	load    [$14 + 1], $17
 	fcmp    $17, $zero
-	bne     be_else.31793
-be_then.31793:
+	bne     be_else.31708
+be_then.31708:
 	store   $zero, [$16 + 3]
-	b       be_cont.31793
-be_else.31793:
+.count b_cont
+	b       be_cont.31708
+be_else.31708:
 	load    [$13 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31794
-ble_then.31794:
+	bg      ble_else.31709
+ble_then.31709:
 	li      0, $17
-	b       ble_cont.31794
-ble_else.31794:
+.count b_cont
+	b       ble_cont.31709
+ble_else.31709:
 	li      1, $17
-ble_cont.31794:
+ble_cont.31709:
 	cmp     $18, 0
-	be      bne_cont.31795
-bne_then.31795:
+	be      bne_cont.31710
+bne_then.31710:
 	cmp     $17, 0
-	bne     be_else.31796
-be_then.31796:
+	bne     be_else.31711
+be_then.31711:
 	li      1, $17
-	b       be_cont.31796
-be_else.31796:
+.count b_cont
+	b       be_cont.31711
+be_else.31711:
 	li      0, $17
-be_cont.31796:
-bne_cont.31795:
+be_cont.31711:
+bne_cont.31710:
 	load    [$13 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 1], $18
-	bne     be_else.31797
-be_then.31797:
+	bne     be_else.31712
+be_then.31712:
 	fneg    $18, $17
 	store   $17, [$16 + 2]
-	load    [$12 + 1], $17
+	load    [$14 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-	b       be_cont.31797
-be_else.31797:
+.count b_cont
+	b       be_cont.31712
+be_else.31712:
 	store   $18, [$16 + 2]
-	load    [$12 + 1], $17
+	load    [$14 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-be_cont.31797:
-be_cont.31793:
-	load    [$12 + 2], $17
+be_cont.31712:
+be_cont.31708:
+	load    [$14 + 2], $17
 	fcmp    $17, $zero
-	bne     be_else.31798
-be_then.31798:
+	bne     be_else.31713
+be_then.31713:
 .count storer
-	add     $15, $11, $tmp
+	add     $12, $11, $tmp
 	store   $zero, [$16 + 5]
 	sub     $11, 1, $3
 	store   $16, [$tmp + 0]
 .count move_args
 	mov     $10, $2
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31787
-be_else.31798:
-	load    [$13 + 4], $18
+.count b_cont
+	b       be_cont.31702
+be_else.31713:
+	load    [$13 + 6], $18
 	fcmp    $zero, $17
+	bg      ble_else.31714
+ble_then.31714:
+	li      0, $17
+.count b_cont
+	b       ble_cont.31714
+ble_else.31714:
+	li      1, $17
+ble_cont.31714:
+	cmp     $18, 0
+	be      bne_cont.31715
+bne_then.31715:
+	cmp     $17, 0
+	bne     be_else.31716
+be_then.31716:
+	li      1, $17
+.count b_cont
+	b       be_cont.31716
+be_else.31716:
+	li      0, $17
+be_cont.31716:
+bne_cont.31715:
+	load    [$13 + 4], $18
+	cmp     $17, 0
 	load    [$18 + 2], $18
-	bg      ble_else.31799
-ble_then.31799:
-	li      0, $17
-	b       ble_cont.31799
-ble_else.31799:
-	li      1, $17
-ble_cont.31799:
-	load    [$13 + 6], $19
-	cmp     $19, 0
-	be      bne_cont.31800
-bne_then.31800:
-	cmp     $17, 0
-	bne     be_else.31801
-be_then.31801:
-	li      1, $17
-	b       be_cont.31801
-be_else.31801:
-	li      0, $17
-be_cont.31801:
-bne_cont.31800:
-	cmp     $17, 0
-	bne     be_else.31802
-be_then.31802:
+	bne     be_else.31717
+be_then.31717:
 	fneg    $18, $17
-	b       be_cont.31802
-be_else.31802:
+.count b_cont
+	b       be_cont.31717
+be_else.31717:
 	mov     $18, $17
-be_cont.31802:
+be_cont.31717:
 	store   $17, [$16 + 4]
 .count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $17
+	add     $12, $11, $tmp
+	load    [$14 + 2], $17
 	sub     $11, 1, $3
 .count move_args
 	mov     $10, $2
@@ -13180,42 +14326,44 @@ be_cont.31802:
 	store   $17, [$16 + 5]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31787
-be_else.31787:
-	cmp     $14, 2
-	bne     be_else.31803
-be_then.31803:
+.count b_cont
+	b       be_cont.31702
+be_else.31702:
+	cmp     $15, 2
+	bne     be_else.31718
+be_then.31718:
 	li      4, $2
 	call    min_caml_create_array
 	load    [$13 + 4], $17
-	load    [$12 + 2], $20
+	load    [$14 + 0], $20
 	load    [$13 + 4], $18
-	load    [$17 + 2], $17
+	load    [$17 + 0], $17
 	load    [$13 + 4], $19
 	load    [$18 + 1], $18
 	fmul    $20, $17, $17
-	load    [$19 + 0], $19
-	load    [$12 + 1], $20
+	load    [$19 + 2], $19
+	load    [$14 + 1], $20
 .count move_ret
 	mov     $1, $16
 .count move_args
 	mov     $10, $2
 	fmul    $20, $18, $18
 	sub     $11, 1, $3
-	load    [$12 + 0], $20
+	load    [$14 + 2], $20
 .count storer
-	add     $15, $11, $tmp
-	fmul    $20, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
+	add     $12, $11, $tmp
+	fadd    $17, $18, $17
+	fmul    $20, $19, $18
+	fadd    $17, $18, $17
 	fcmp    $17, $zero
-	bg      ble_else.31804
-ble_then.31804:
+	bg      ble_else.31719
+ble_then.31719:
 	store   $zero, [$16 + 0]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31803
-ble_else.31804:
+.count b_cont
+	b       be_cont.31718
+ble_else.31719:
 	finv    $17, $17
 	fneg    $17, $18
 	store   $18, [$16 + 0]
@@ -13236,691 +14384,707 @@ ble_else.31804:
 	store   $17, [$16 + 3]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31803
-be_else.31803:
+.count b_cont
+	b       be_cont.31718
+be_else.31718:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$12 + 2], $21
-	load    [$13 + 4], $17
+	load    [$14 + 0], $21
+	load    [$14 + 1], $22
 	load    [$13 + 4], $18
-	fmul    $21, $21, $22
-	load    [$17 + 2], $17
-	load    [$18 + 1], $18
 	load    [$13 + 4], $19
-	load    [$13 + 3], $20
-	fmul    $22, $17, $17
-	load    [$19 + 0], $19
-	load    [$12 + 1], $22
+	fmul    $21, $21, $24
+	fmul    $22, $22, $25
+	load    [$14 + 2], $23
+	load    [$18 + 0], $18
+	load    [$19 + 1], $19
+	load    [$13 + 4], $20
+	fmul    $23, $23, $26
+	fmul    $24, $18, $18
+	fmul    $25, $19, $19
+	load    [$20 + 2], $20
+	load    [$13 + 3], $17
 .count move_ret
 	mov     $1, $16
-	cmp     $20, 0
-	fmul    $22, $22, $23
-	fmul    $23, $18, $18
-	load    [$12 + 0], $23
-	fmul    $23, $23, $24
-	fmul    $24, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
-	be      bne_cont.31805
-bne_then.31805:
-	load    [$13 + 9], $19
-	fmul    $22, $21, $18
-	load    [$19 + 0], $19
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 1], $19
-	fmul    $21, $23, $18
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 2], $19
-	fmul    $23, $22, $18
-	fmul    $18, $19, $18
-	fadd    $17, $18, $17
-bne_cont.31805:
-	store   $17, [$16 + 0]
-	load    [$13 + 4], $18
+	fmul    $26, $20, $20
+	fadd    $18, $19, $18
+	cmp     $17, 0
+	fadd    $18, $20, $18
+	be      bne_cont.31720
+bne_then.31720:
+	load    [$13 + 9], $20
+	fmul    $22, $23, $19
+	load    [$13 + 9], $24
+	load    [$20 + 0], $20
+	fmul    $23, $21, $23
+	fmul    $19, $20, $19
+	fmul    $21, $22, $21
+	load    [$24 + 1], $20
+	load    [$13 + 9], $22
+	fadd    $18, $19, $18
+	fmul    $23, $20, $20
+	load    [$22 + 2], $19
+	fmul    $21, $19, $19
+	fadd    $18, $20, $18
+	fadd    $18, $19, $18
+bne_cont.31720:
+	store   $18, [$16 + 0]
 	load    [$13 + 4], $19
+	load    [$14 + 0], $22
+	load    [$13 + 4], $20
+	load    [$19 + 0], $19
 	load    [$13 + 4], $21
-	load    [$12 + 2], $22
-	load    [$18 + 2], $18
-	load    [$12 + 1], $23
-	load    [$19 + 1], $19
-	load    [$12 + 0], $24
-	load    [$21 + 0], $21
-	fmul    $22, $18, $18
-	fmul    $23, $19, $19
-	fmul    $24, $21, $21
-	cmp     $20, 0
-.count storer
-	add     $15, $11, $tmp
-	fneg    $18, $18
+	load    [$20 + 1], $20
+	fmul    $22, $19, $19
+	load    [$14 + 2], $23
+	load    [$14 + 1], $22
+	load    [$21 + 2], $21
+	cmp     $17, 0
+	fmul    $22, $20, $20
+	fmul    $23, $21, $21
 	fneg    $19, $19
+.count storer
+	add     $12, $11, $tmp
 	sub     $11, 1, $3
+	fneg    $20, $20
+	fneg    $21, $21
 .count move_args
 	mov     $10, $2
-	fneg    $21, $21
-	bne     be_else.31806
-be_then.31806:
-	store   $21, [$16 + 1]
-	fcmp    $17, $zero
-	store   $19, [$16 + 2]
-	store   $18, [$16 + 3]
-	bne     be_else.31807
-be_then.31807:
+	bne     be_else.31721
+be_then.31721:
+	store   $19, [$16 + 1]
+	fcmp    $18, $zero
+	store   $20, [$16 + 2]
+	store   $21, [$16 + 3]
+	bne     be_else.31722
+be_then.31722:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31806
-be_else.31807:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31721
+be_else.31722:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31806
-be_else.31806:
+.count b_cont
+	b       be_cont.31721
+be_else.31721:
 	load    [$13 + 9], $24
-	load    [$13 + 9], $20
-	fcmp    $17, $zero
-	load    [$24 + 1], $24
-	load    [$20 + 2], $20
+	load    [$13 + 9], $17
+	fcmp    $18, $zero
+	load    [$24 + 2], $24
+	load    [$17 + 1], $17
 	fmul    $22, $24, $22
-	fmul    $23, $20, $23
+	fmul    $23, $17, $23
+	fadd    $23, $22, $22
+	fmul    $22, $39, $22
+	fsub    $19, $22, $19
+	store   $19, [$16 + 1]
+	load    [$14 + 2], $22
+	load    [$13 + 9], $19
+	load    [$14 + 0], $23
+	load    [$19 + 0], $19
+	fmul    $23, $24, $23
+	fmul    $22, $19, $22
 	fadd    $22, $23, $22
 	fmul    $22, $39, $22
-	fsub    $21, $22, $21
-	store   $21, [$16 + 1]
-	load    [$12 + 0], $22
-	load    [$13 + 9], $21
-	fmul    $22, $20, $20
-	load    [$21 + 0], $21
-	load    [$12 + 2], $22
-	fmul    $22, $21, $22
-	fadd    $22, $20, $20
-	fmul    $20, $39, $20
-	fsub    $19, $20, $19
-	store   $19, [$16 + 2]
-	load    [$12 + 1], $20
-	load    [$12 + 0], $19
-	fmul    $20, $21, $20
-	fmul    $19, $24, $19
-	fadd    $20, $19, $19
-	fmul    $19, $39, $19
-	fsub    $18, $19, $18
-	store   $18, [$16 + 3]
-	bne     be_else.31808
-be_then.31808:
+	fsub    $20, $22, $20
+	store   $20, [$16 + 2]
+	load    [$14 + 0], $22
+	load    [$14 + 1], $20
+	fmul    $22, $17, $17
+	fmul    $20, $19, $19
+	fadd    $19, $17, $17
+	fmul    $17, $39, $17
+	fsub    $21, $17, $17
+	store   $17, [$16 + 3]
+	bne     be_else.31723
+be_then.31723:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31808
-be_else.31808:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31723
+be_else.31723:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-be_cont.31808:
-be_cont.31806:
-be_cont.31803:
-be_cont.31787:
-bge_cont.31786:
+be_cont.31723:
+be_cont.31721:
+be_cont.31718:
+be_cont.31702:
+bge_cont.31701:
+.count stack_load
 	load    [$sp + 1], $10
 	sub     $10, 1, $10
 	cmp     $10, 0
-	bl      bge_else.31809
-bge_then.31809:
+	bl      bge_else.31724
+bge_then.31724:
+.count stack_store
 	store   $10, [$sp + 2]
+.count stack_load
 	load    [$sp + 0], $11
 	load    [$11 + $10], $10
 	sub     $41, 1, $11
 	cmp     $11, 0
-	bl      bge_cont.31810
-bge_then.31810:
-	load    [min_caml_objects + $11], $13
-	load    [$10 + 0], $12
-	load    [$10 + 1], $15
-	load    [$13 + 1], $14
+	bl      bge_cont.31725
+bge_then.31725:
+	load    [min_caml_objects + $11], $14
+	load    [$10 + 1], $12
+	load    [$10 + 0], $13
+	load    [$14 + 1], $15
 .count move_args
 	mov     $zero, $3
-	cmp     $14, 1
-	bne     be_else.31811
-be_then.31811:
+	cmp     $15, 1
+	bne     be_else.31726
+be_then.31726:
 	li      6, $2
 	call    min_caml_create_array
-	load    [$12 + 0], $17
+	load    [$13 + 0], $17
 .count move_ret
 	mov     $1, $16
 	fcmp    $17, $zero
-	bne     be_else.31812
-be_then.31812:
+	bne     be_else.31727
+be_then.31727:
 	store   $zero, [$16 + 1]
-	b       be_cont.31812
-be_else.31812:
-	load    [$13 + 6], $18
+.count b_cont
+	b       be_cont.31727
+be_else.31727:
+	load    [$14 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31813
-ble_then.31813:
+	bg      ble_else.31728
+ble_then.31728:
 	li      0, $17
-	b       ble_cont.31813
-ble_else.31813:
+.count b_cont
+	b       ble_cont.31728
+ble_else.31728:
 	li      1, $17
-ble_cont.31813:
+ble_cont.31728:
 	cmp     $18, 0
-	be      bne_cont.31814
-bne_then.31814:
+	be      bne_cont.31729
+bne_then.31729:
 	cmp     $17, 0
-	bne     be_else.31815
-be_then.31815:
+	bne     be_else.31730
+be_then.31730:
 	li      1, $17
-	b       be_cont.31815
-be_else.31815:
+.count b_cont
+	b       be_cont.31730
+be_else.31730:
 	li      0, $17
-be_cont.31815:
-bne_cont.31814:
-	load    [$13 + 4], $18
+be_cont.31730:
+bne_cont.31729:
+	load    [$14 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 0], $18
-	bne     be_else.31816
-be_then.31816:
+	bne     be_else.31731
+be_then.31731:
 	fneg    $18, $17
 	store   $17, [$16 + 0]
-	load    [$12 + 0], $17
+	load    [$13 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-	b       be_cont.31816
-be_else.31816:
+.count b_cont
+	b       be_cont.31731
+be_else.31731:
 	store   $18, [$16 + 0]
-	load    [$12 + 0], $17
+	load    [$13 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-be_cont.31816:
-be_cont.31812:
-	load    [$12 + 1], $17
+be_cont.31731:
+be_cont.31727:
+	load    [$13 + 1], $17
 	fcmp    $17, $zero
-	bne     be_else.31817
-be_then.31817:
+	bne     be_else.31732
+be_then.31732:
 	store   $zero, [$16 + 3]
-	b       be_cont.31817
-be_else.31817:
-	load    [$13 + 6], $18
+.count b_cont
+	b       be_cont.31732
+be_else.31732:
+	load    [$14 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31818
-ble_then.31818:
+	bg      ble_else.31733
+ble_then.31733:
 	li      0, $17
-	b       ble_cont.31818
-ble_else.31818:
+.count b_cont
+	b       ble_cont.31733
+ble_else.31733:
 	li      1, $17
-ble_cont.31818:
+ble_cont.31733:
 	cmp     $18, 0
-	be      bne_cont.31819
-bne_then.31819:
+	be      bne_cont.31734
+bne_then.31734:
 	cmp     $17, 0
-	bne     be_else.31820
-be_then.31820:
+	bne     be_else.31735
+be_then.31735:
 	li      1, $17
-	b       be_cont.31820
-be_else.31820:
+.count b_cont
+	b       be_cont.31735
+be_else.31735:
 	li      0, $17
-be_cont.31820:
-bne_cont.31819:
-	load    [$13 + 4], $18
+be_cont.31735:
+bne_cont.31734:
+	load    [$14 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 1], $18
-	bne     be_else.31821
-be_then.31821:
+	bne     be_else.31736
+be_then.31736:
 	fneg    $18, $17
 	store   $17, [$16 + 2]
-	load    [$12 + 1], $17
+	load    [$13 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-	b       be_cont.31821
-be_else.31821:
+.count b_cont
+	b       be_cont.31736
+be_else.31736:
 	store   $18, [$16 + 2]
-	load    [$12 + 1], $17
+	load    [$13 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-be_cont.31821:
-be_cont.31817:
-	load    [$12 + 2], $17
+be_cont.31736:
+be_cont.31732:
+	load    [$13 + 2], $17
 	fcmp    $17, $zero
-	bne     be_else.31822
-be_then.31822:
+	bne     be_else.31737
+be_then.31737:
 .count storer
-	add     $15, $11, $tmp
+	add     $12, $11, $tmp
 	store   $zero, [$16 + 5]
 	sub     $11, 1, $3
 	store   $16, [$tmp + 0]
 .count move_args
 	mov     $10, $2
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31811
-be_else.31822:
-	load    [$13 + 4], $18
-	load    [$13 + 6], $19
+.count b_cont
+	b       be_cont.31726
+be_else.31737:
+	load    [$14 + 6], $18
+	load    [$14 + 4], $19
 	fcmp    $zero, $17
-	bg      ble_else.31823
-ble_then.31823:
+	bg      ble_else.31738
+ble_then.31738:
 	li      0, $17
-	b       ble_cont.31823
-ble_else.31823:
+.count b_cont
+	b       ble_cont.31738
+ble_else.31738:
 	li      1, $17
-ble_cont.31823:
-	load    [$18 + 2], $18
-	cmp     $19, 0
-	bne     be_else.31824
-be_then.31824:
+ble_cont.31738:
+	cmp     $18, 0
+	be      bne_cont.31739
+bne_then.31739:
 	cmp     $17, 0
-	bne     be_else.31825
-be_then.31825:
-	fneg    $18, $17
-	b       be_cont.31825
-be_else.31825:
-	mov     $18, $17
-be_cont.31825:
-	store   $17, [$16 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $17
-	sub     $11, 1, $3
+	bne     be_else.31740
+be_then.31740:
+	li      1, $17
+.count b_cont
+	b       be_cont.31740
+be_else.31740:
+	li      0, $17
+be_cont.31740:
+bne_cont.31739:
+	load    [$19 + 2], $18
+	cmp     $17, 0
 .count move_args
 	mov     $10, $2
+	sub     $11, 1, $3
+.count storer
+	add     $12, $11, $tmp
+	bne     be_else.31741
+be_then.31741:
+	fneg    $18, $17
+	store   $17, [$16 + 4]
+	load    [$13 + 2], $17
 	finv    $17, $17
 	store   $17, [$16 + 5]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31811
-be_else.31824:
-	cmp     $17, 0
-	bne     be_else.31826
-be_then.31826:
-	li      1, $17
-	b       be_cont.31826
-be_else.31826:
-	li      0, $17
-be_cont.31826:
-	cmp     $17, 0
-	bne     be_else.31827
-be_then.31827:
-	fneg    $18, $17
-	b       be_cont.31827
-be_else.31827:
-	mov     $18, $17
-be_cont.31827:
-	store   $17, [$16 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $17
-	sub     $11, 1, $3
-.count move_args
-	mov     $10, $2
+.count b_cont
+	b       be_cont.31726
+be_else.31741:
+	store   $18, [$16 + 4]
+	load    [$13 + 2], $17
 	finv    $17, $17
 	store   $17, [$16 + 5]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31811
-be_else.31811:
-	cmp     $14, 2
-	bne     be_else.31828
-be_then.31828:
+.count b_cont
+	b       be_cont.31726
+be_else.31726:
+	cmp     $15, 2
+	bne     be_else.31742
+be_then.31742:
 	li      4, $2
 	call    min_caml_create_array
-	load    [$13 + 4], $17
-	load    [$12 + 2], $20
-	load    [$13 + 4], $18
-	load    [$17 + 2], $17
-	load    [$13 + 4], $19
+	load    [$14 + 4], $17
+	load    [$13 + 0], $20
+	load    [$14 + 4], $18
+	load    [$17 + 0], $17
+	load    [$14 + 4], $19
 	load    [$18 + 1], $18
 	fmul    $20, $17, $17
-	load    [$19 + 0], $19
-	load    [$12 + 1], $20
+	load    [$19 + 2], $19
+	load    [$13 + 1], $20
 .count move_ret
 	mov     $1, $16
 .count move_args
 	mov     $10, $2
 	fmul    $20, $18, $18
 	sub     $11, 1, $3
-	load    [$12 + 0], $20
+	load    [$13 + 2], $20
 .count storer
-	add     $15, $11, $tmp
-	fmul    $20, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
+	add     $12, $11, $tmp
+	fadd    $17, $18, $17
+	fmul    $20, $19, $18
+	fadd    $17, $18, $17
 	fcmp    $17, $zero
-	bg      ble_else.31829
-ble_then.31829:
+	bg      ble_else.31743
+ble_then.31743:
 	store   $zero, [$16 + 0]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31828
-ble_else.31829:
+.count b_cont
+	b       be_cont.31742
+ble_else.31743:
 	finv    $17, $17
 	fneg    $17, $18
 	store   $18, [$16 + 0]
-	load    [$13 + 4], $18
+	load    [$14 + 4], $18
 	load    [$18 + 0], $18
 	fmul    $18, $17, $18
 	fneg    $18, $18
 	store   $18, [$16 + 1]
-	load    [$13 + 4], $18
+	load    [$14 + 4], $18
 	load    [$18 + 1], $18
 	fmul    $18, $17, $18
 	fneg    $18, $18
 	store   $18, [$16 + 2]
-	load    [$13 + 4], $18
+	load    [$14 + 4], $18
 	load    [$18 + 2], $18
 	fmul    $18, $17, $17
 	fneg    $17, $17
 	store   $17, [$16 + 3]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31828
-be_else.31828:
+.count b_cont
+	b       be_cont.31742
+be_else.31742:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$12 + 2], $21
-	load    [$13 + 4], $17
-	load    [$13 + 4], $18
-	fmul    $21, $21, $22
-	load    [$17 + 2], $17
-	load    [$18 + 1], $18
-	load    [$13 + 4], $19
-	load    [$13 + 3], $20
-	fmul    $22, $17, $17
-	load    [$19 + 0], $19
-	load    [$12 + 1], $22
+	load    [$13 + 0], $21
+	load    [$13 + 1], $22
+	load    [$14 + 4], $18
+	load    [$14 + 4], $19
+	fmul    $21, $21, $24
+	fmul    $22, $22, $25
+	load    [$13 + 2], $23
+	load    [$18 + 0], $18
+	load    [$19 + 1], $19
+	load    [$14 + 4], $20
+	fmul    $23, $23, $26
+	fmul    $24, $18, $18
+	fmul    $25, $19, $19
+	load    [$20 + 2], $20
+	load    [$14 + 3], $17
 .count move_ret
 	mov     $1, $16
-	cmp     $20, 0
-	fmul    $22, $22, $23
-	fmul    $23, $18, $18
-	load    [$12 + 0], $23
-	fmul    $23, $23, $24
-	fmul    $24, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
-	be      bne_cont.31830
-bne_then.31830:
-	load    [$13 + 9], $19
-	fmul    $22, $21, $18
+	fmul    $26, $20, $20
+	fadd    $18, $19, $18
+	cmp     $17, 0
+	fadd    $18, $20, $18
+	be      bne_cont.31744
+bne_then.31744:
+	load    [$14 + 9], $20
+	fmul    $22, $23, $19
+	load    [$14 + 9], $24
+	load    [$20 + 0], $20
+	fmul    $23, $21, $23
+	fmul    $19, $20, $19
+	fmul    $21, $22, $21
+	load    [$24 + 1], $20
+	load    [$14 + 9], $22
+	fadd    $18, $19, $18
+	fmul    $23, $20, $20
+	load    [$22 + 2], $19
+	fmul    $21, $19, $19
+	fadd    $18, $20, $18
+	fadd    $18, $19, $18
+bne_cont.31744:
+	store   $18, [$16 + 0]
+	load    [$14 + 4], $19
+	load    [$13 + 0], $22
+	load    [$14 + 4], $20
 	load    [$19 + 0], $19
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 1], $19
-	fmul    $21, $23, $18
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 2], $19
-	fmul    $23, $22, $18
-	fmul    $18, $19, $18
-	fadd    $17, $18, $17
-bne_cont.31830:
-	store   $17, [$16 + 0]
-	load    [$13 + 4], $18
-	load    [$13 + 4], $19
-	load    [$13 + 4], $21
-	load    [$12 + 2], $22
-	load    [$18 + 2], $18
-	load    [$12 + 1], $23
-	load    [$19 + 1], $19
-	load    [$12 + 0], $24
-	load    [$21 + 0], $21
-	fmul    $22, $18, $18
-	fmul    $23, $19, $19
-	fmul    $24, $21, $21
-	cmp     $20, 0
-.count storer
-	add     $15, $11, $tmp
-	fneg    $18, $18
+	load    [$14 + 4], $21
+	load    [$20 + 1], $20
+	fmul    $22, $19, $19
+	load    [$13 + 2], $23
+	load    [$13 + 1], $22
+	load    [$21 + 2], $21
+	cmp     $17, 0
+	fmul    $22, $20, $20
+	fmul    $23, $21, $21
 	fneg    $19, $19
+.count storer
+	add     $12, $11, $tmp
 	sub     $11, 1, $3
+	fneg    $20, $20
+	fneg    $21, $21
 .count move_args
 	mov     $10, $2
-	fneg    $21, $21
-	bne     be_else.31831
-be_then.31831:
-	store   $21, [$16 + 1]
-	fcmp    $17, $zero
-	store   $19, [$16 + 2]
-	store   $18, [$16 + 3]
-	bne     be_else.31832
-be_then.31832:
+	bne     be_else.31745
+be_then.31745:
+	store   $19, [$16 + 1]
+	fcmp    $18, $zero
+	store   $20, [$16 + 2]
+	store   $21, [$16 + 3]
+	bne     be_else.31746
+be_then.31746:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31831
-be_else.31832:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31745
+be_else.31746:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31831
-be_else.31831:
-	load    [$13 + 9], $24
-	load    [$13 + 9], $20
-	fcmp    $17, $zero
-	load    [$24 + 1], $24
-	load    [$20 + 2], $20
+.count b_cont
+	b       be_cont.31745
+be_else.31745:
+	load    [$14 + 9], $24
+	load    [$14 + 9], $17
+	fcmp    $18, $zero
+	load    [$24 + 2], $24
+	load    [$17 + 1], $17
 	fmul    $22, $24, $22
-	fmul    $23, $20, $23
+	fmul    $23, $17, $23
+	fadd    $23, $22, $22
+	fmul    $22, $39, $22
+	fsub    $19, $22, $19
+	store   $19, [$16 + 1]
+	load    [$13 + 2], $22
+	load    [$14 + 9], $19
+	load    [$13 + 0], $23
+	load    [$19 + 0], $19
+	fmul    $23, $24, $23
+	fmul    $22, $19, $22
 	fadd    $22, $23, $22
 	fmul    $22, $39, $22
-	fsub    $21, $22, $21
-	store   $21, [$16 + 1]
-	load    [$12 + 0], $22
-	load    [$13 + 9], $21
-	fmul    $22, $20, $20
-	load    [$21 + 0], $21
-	load    [$12 + 2], $22
-	fmul    $22, $21, $22
-	fadd    $22, $20, $20
-	fmul    $20, $39, $20
-	fsub    $19, $20, $19
-	store   $19, [$16 + 2]
-	load    [$12 + 1], $20
-	load    [$12 + 0], $19
-	fmul    $20, $21, $20
-	fmul    $19, $24, $19
-	fadd    $20, $19, $19
-	fmul    $19, $39, $19
-	fsub    $18, $19, $18
-	store   $18, [$16 + 3]
-	bne     be_else.31833
-be_then.31833:
+	fsub    $20, $22, $20
+	store   $20, [$16 + 2]
+	load    [$13 + 0], $22
+	load    [$13 + 1], $20
+	fmul    $22, $17, $17
+	fmul    $20, $19, $19
+	fadd    $19, $17, $17
+	fmul    $17, $39, $17
+	fsub    $21, $17, $17
+	store   $17, [$16 + 3]
+	bne     be_else.31747
+be_then.31747:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31833
-be_else.31833:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31747
+be_else.31747:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-be_cont.31833:
-be_cont.31831:
-be_cont.31828:
-be_cont.31811:
-bge_cont.31810:
+be_cont.31747:
+be_cont.31745:
+be_cont.31742:
+be_cont.31726:
+bge_cont.31725:
+.count stack_load
 	load    [$sp + 2], $16
 	sub     $16, 1, $16
 	cmp     $16, 0
-	bl      bge_else.31834
-bge_then.31834:
+	bl      bge_else.31748
+bge_then.31748:
+.count stack_load
 	load    [$sp + 0], $17
 	sub     $41, 1, $3
 	load    [$17 + $16], $2
 	call    iter_setup_dirvec_constants.2826
 	sub     $16, 1, $10
 	cmp     $10, 0
-	bl      bge_else.31835
-bge_then.31835:
+	bl      bge_else.31749
+bge_then.31749:
 	sub     $41, 1, $11
 	cmp     $11, 0
-	bl      bge_else.31836
-bge_then.31836:
+	bl      bge_else.31750
+bge_then.31750:
 	load    [min_caml_objects + $11], $14
 	load    [$17 + $10], $12
 .count move_args
 	mov     $zero, $3
-	load    [$14 + 1], $15
-	load    [$12 + 1], $16
-	load    [$12 + 0], $13
-	cmp     $15, 1
+	load    [$14 + 1], $16
+	load    [$12 + 0], $15
+	load    [$12 + 1], $13
+	cmp     $16, 1
+.count stack_store
 	store   $10, [$sp + 3]
-	bne     be_else.31837
-be_then.31837:
+	bne     be_else.31751
+be_then.31751:
 	li      6, $2
 	call    min_caml_create_array
-	load    [$13 + 0], $19
+	load    [$15 + 0], $18
 .count move_ret
-	mov     $1, $18
-	fcmp    $19, $zero
-	bne     be_else.31838
-be_then.31838:
-	store   $zero, [$18 + 1]
-	b       be_cont.31838
-be_else.31838:
-	load    [$14 + 6], $20
-	fcmp    $zero, $19
-	bg      ble_else.31839
-ble_then.31839:
-	li      0, $19
-	b       ble_cont.31839
-ble_else.31839:
-	li      1, $19
-ble_cont.31839:
-	cmp     $20, 0
-	be      bne_cont.31840
-bne_then.31840:
+	mov     $1, $16
+	fcmp    $18, $zero
+	bne     be_else.31752
+be_then.31752:
+	store   $zero, [$16 + 1]
+.count b_cont
+	b       be_cont.31752
+be_else.31752:
+	load    [$14 + 6], $19
+	fcmp    $zero, $18
+	bg      ble_else.31753
+ble_then.31753:
+	li      0, $18
+.count b_cont
+	b       ble_cont.31753
+ble_else.31753:
+	li      1, $18
+ble_cont.31753:
 	cmp     $19, 0
-	bne     be_else.31841
-be_then.31841:
-	li      1, $19
-	b       be_cont.31841
-be_else.31841:
-	li      0, $19
-be_cont.31841:
-bne_cont.31840:
+	be      bne_cont.31754
+bne_then.31754:
+	cmp     $18, 0
+	bne     be_else.31755
+be_then.31755:
+	li      1, $18
+.count b_cont
+	b       be_cont.31755
+be_else.31755:
+	li      0, $18
+be_cont.31755:
+bne_cont.31754:
+	load    [$14 + 4], $19
+	cmp     $18, 0
+	load    [$19 + 0], $19
+	bne     be_else.31756
+be_then.31756:
+	fneg    $19, $18
+	store   $18, [$16 + 0]
+	load    [$15 + 0], $18
+	finv    $18, $18
+	store   $18, [$16 + 1]
+.count b_cont
+	b       be_cont.31756
+be_else.31756:
+	store   $19, [$16 + 0]
+	load    [$15 + 0], $18
+	finv    $18, $18
+	store   $18, [$16 + 1]
+be_cont.31756:
+be_cont.31752:
+	load    [$15 + 1], $18
+	fcmp    $18, $zero
+	bne     be_else.31757
+be_then.31757:
+	store   $zero, [$16 + 3]
+.count b_cont
+	b       be_cont.31757
+be_else.31757:
+	load    [$14 + 6], $19
+	fcmp    $zero, $18
+	bg      ble_else.31758
+ble_then.31758:
+	li      0, $18
+.count b_cont
+	b       ble_cont.31758
+ble_else.31758:
+	li      1, $18
+ble_cont.31758:
+	cmp     $19, 0
+	be      bne_cont.31759
+bne_then.31759:
+	cmp     $18, 0
+	bne     be_else.31760
+be_then.31760:
+	li      1, $18
+.count b_cont
+	b       be_cont.31760
+be_else.31760:
+	li      0, $18
+be_cont.31760:
+bne_cont.31759:
+	load    [$14 + 4], $19
+	cmp     $18, 0
+	load    [$19 + 1], $19
+	bne     be_else.31761
+be_then.31761:
+	fneg    $19, $18
+	store   $18, [$16 + 2]
+	load    [$15 + 1], $18
+	finv    $18, $18
+	store   $18, [$16 + 3]
+.count b_cont
+	b       be_cont.31761
+be_else.31761:
+	store   $19, [$16 + 2]
+	load    [$15 + 1], $18
+	finv    $18, $18
+	store   $18, [$16 + 3]
+be_cont.31761:
+be_cont.31757:
+	load    [$15 + 2], $18
+	fcmp    $18, $zero
+	bne     be_else.31762
+be_then.31762:
+	store   $zero, [$16 + 5]
+.count b_cont
+	b       be_cont.31762
+be_else.31762:
+	load    [$14 + 6], $19
 	load    [$14 + 4], $20
+	fcmp    $zero, $18
+	bg      ble_else.31763
+ble_then.31763:
+	li      0, $18
+.count b_cont
+	b       ble_cont.31763
+ble_else.31763:
+	li      1, $18
+ble_cont.31763:
 	cmp     $19, 0
-	load    [$20 + 0], $20
-	bne     be_else.31842
-be_then.31842:
-	fneg    $20, $19
-	store   $19, [$18 + 0]
-	load    [$13 + 0], $19
-	finv    $19, $19
-	store   $19, [$18 + 1]
-	b       be_cont.31842
-be_else.31842:
-	store   $20, [$18 + 0]
-	load    [$13 + 0], $19
-	finv    $19, $19
-	store   $19, [$18 + 1]
-be_cont.31842:
-be_cont.31838:
-	load    [$13 + 1], $19
-	fcmp    $19, $zero
-	bne     be_else.31843
-be_then.31843:
-	store   $zero, [$18 + 3]
-	b       be_cont.31843
-be_else.31843:
-	load    [$14 + 6], $20
-	fcmp    $zero, $19
-	bg      ble_else.31844
-ble_then.31844:
-	li      0, $19
-	b       ble_cont.31844
-ble_else.31844:
-	li      1, $19
-ble_cont.31844:
-	cmp     $20, 0
-	be      bne_cont.31845
-bne_then.31845:
-	cmp     $19, 0
-	bne     be_else.31846
-be_then.31846:
-	li      1, $19
-	b       be_cont.31846
-be_else.31846:
-	li      0, $19
-be_cont.31846:
-bne_cont.31845:
-	load    [$14 + 4], $20
-	cmp     $19, 0
-	load    [$20 + 1], $20
-	bne     be_else.31847
-be_then.31847:
-	fneg    $20, $19
-	store   $19, [$18 + 2]
-	load    [$13 + 1], $19
-	finv    $19, $19
-	store   $19, [$18 + 3]
-	b       be_cont.31847
-be_else.31847:
-	store   $20, [$18 + 2]
-	load    [$13 + 1], $19
-	finv    $19, $19
-	store   $19, [$18 + 3]
-be_cont.31847:
-be_cont.31843:
-	load    [$13 + 2], $19
-	fcmp    $19, $zero
-	bne     be_else.31848
-be_then.31848:
-	store   $zero, [$18 + 5]
-	b       be_cont.31848
-be_else.31848:
-	load    [$14 + 4], $20
-	load    [$14 + 6], $21
-	fcmp    $zero, $19
-	bg      ble_else.31849
-ble_then.31849:
-	li      0, $19
-	b       ble_cont.31849
-ble_else.31849:
-	li      1, $19
-ble_cont.31849:
-	load    [$20 + 2], $20
-	cmp     $21, 0
-	bne     be_else.31850
-be_then.31850:
-	cmp     $19, 0
-	bne     be_else.31851
-be_then.31851:
-	fneg    $20, $19
-	store   $19, [$18 + 4]
-	load    [$13 + 2], $19
-	finv    $19, $19
-	store   $19, [$18 + 5]
-	b       be_cont.31850
-be_else.31851:
-	store   $20, [$18 + 4]
-	load    [$13 + 2], $19
-	finv    $19, $19
-	store   $19, [$18 + 5]
-	b       be_cont.31850
-be_else.31850:
-	cmp     $19, 0
-	bne     be_else.31852
-be_then.31852:
-	store   $20, [$18 + 4]
-	load    [$13 + 2], $19
-	finv    $19, $19
-	store   $19, [$18 + 5]
-	b       be_cont.31852
-be_else.31852:
-	fneg    $20, $19
-	store   $19, [$18 + 4]
-	load    [$13 + 2], $19
-	finv    $19, $19
-	store   $19, [$18 + 5]
-be_cont.31852:
-be_cont.31850:
-be_cont.31848:
+	be      bne_cont.31764
+bne_then.31764:
+	cmp     $18, 0
+	bne     be_else.31765
+be_then.31765:
+	li      1, $18
+.count b_cont
+	b       be_cont.31765
+be_else.31765:
+	li      0, $18
+be_cont.31765:
+bne_cont.31764:
+	load    [$20 + 2], $19
+	cmp     $18, 0
+	bne     be_else.31766
+be_then.31766:
+	fneg    $19, $18
+	store   $18, [$16 + 4]
+	load    [$15 + 2], $18
+	finv    $18, $18
+	store   $18, [$16 + 5]
+.count b_cont
+	b       be_cont.31766
+be_else.31766:
+	store   $19, [$16 + 4]
+	load    [$15 + 2], $18
+	finv    $18, $18
+	store   $18, [$16 + 5]
+be_cont.31766:
+be_cont.31762:
 .count storer
-	add     $16, $11, $tmp
+	add     $13, $11, $tmp
 	sub     $11, 1, $3
-	store   $18, [$tmp + 0]
+	store   $16, [$tmp + 0]
 .count move_args
 	mov     $12, $2
 	call    iter_setup_dirvec_constants.2826
@@ -13928,177 +15092,183 @@ be_cont.31848:
 	add     $sp, 4, $sp
 .count move_args
 	mov     $17, $2
+.count stack_load
 	load    [$sp - 1], $1
 	sub     $1, 1, $3
 	b       init_dirvec_constants.3044
-be_else.31837:
-	cmp     $15, 2
-	bne     be_else.31853
-be_then.31853:
+be_else.31751:
+	cmp     $16, 2
+	bne     be_else.31767
+be_then.31767:
 	li      4, $2
 	call    min_caml_create_array
+	load    [$14 + 4], $18
+	load    [$15 + 0], $21
 	load    [$14 + 4], $19
-	load    [$13 + 2], $22
+	load    [$18 + 0], $18
 	load    [$14 + 4], $20
-	load    [$19 + 2], $19
-	load    [$14 + 4], $21
-	load    [$20 + 1], $20
-	fmul    $22, $19, $19
-	load    [$21 + 0], $21
-	load    [$13 + 1], $22
-.count move_ret
-	mov     $1, $18
-.count storer
-	add     $16, $11, $tmp
-	fmul    $22, $20, $20
-	load    [$13 + 0], $22
-	fmul    $22, $21, $21
-	fadd    $21, $20, $20
-	fadd    $20, $19, $19
-	fcmp    $19, $zero
-	bg      ble_else.31854
-ble_then.31854:
-	store   $zero, [$18 + 0]
-	store   $18, [$tmp + 0]
-	b       be_cont.31853
-ble_else.31854:
-	finv    $19, $19
-	fneg    $19, $20
-	store   $20, [$18 + 0]
-	load    [$14 + 4], $20
-	load    [$20 + 0], $20
-	fmul    $20, $19, $20
-	fneg    $20, $20
-	store   $20, [$18 + 1]
-	load    [$14 + 4], $20
-	load    [$20 + 1], $20
-	fmul    $20, $19, $20
-	fneg    $20, $20
-	store   $20, [$18 + 2]
-	load    [$14 + 4], $20
+	load    [$19 + 1], $19
+	fmul    $21, $18, $18
 	load    [$20 + 2], $20
-	fmul    $20, $19, $19
+	load    [$15 + 1], $21
+.count move_ret
+	mov     $1, $16
+.count storer
+	add     $13, $11, $tmp
+	fmul    $21, $19, $19
+	load    [$15 + 2], $21
+	fadd    $18, $19, $18
+	fmul    $21, $20, $19
+	fadd    $18, $19, $18
+	fcmp    $18, $zero
+	bg      ble_else.31768
+ble_then.31768:
+	store   $zero, [$16 + 0]
+	store   $16, [$tmp + 0]
+.count b_cont
+	b       be_cont.31767
+ble_else.31768:
+	finv    $18, $18
+	fneg    $18, $19
+	store   $19, [$16 + 0]
+	load    [$14 + 4], $19
+	load    [$19 + 0], $19
+	fmul    $19, $18, $19
 	fneg    $19, $19
-	store   $19, [$18 + 3]
-	store   $18, [$tmp + 0]
-	b       be_cont.31853
-be_else.31853:
+	store   $19, [$16 + 1]
+	load    [$14 + 4], $19
+	load    [$19 + 1], $19
+	fmul    $19, $18, $19
+	fneg    $19, $19
+	store   $19, [$16 + 2]
+	load    [$14 + 4], $19
+	load    [$19 + 2], $19
+	fmul    $19, $18, $18
+	fneg    $18, $18
+	store   $18, [$16 + 3]
+	store   $16, [$tmp + 0]
+.count b_cont
+	b       be_cont.31767
+be_else.31767:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$13 + 2], $23
+	load    [$15 + 0], $22
+	load    [$15 + 1], $23
 	load    [$14 + 4], $19
 	load    [$14 + 4], $20
-	fmul    $23, $23, $24
-	load    [$19 + 2], $19
+	fmul    $22, $22, $25
+	fmul    $23, $23, $26
+	load    [$15 + 2], $24
+	load    [$19 + 0], $19
 	load    [$20 + 1], $20
 	load    [$14 + 4], $21
-	load    [$14 + 3], $22
-	fmul    $24, $19, $19
-	load    [$21 + 0], $21
-	load    [$13 + 1], $24
-.count move_ret
-	mov     $1, $18
-	cmp     $22, 0
-	fmul    $24, $24, $25
-	fmul    $25, $20, $20
-	load    [$13 + 0], $25
-	fmul    $25, $25, $26
-	fmul    $26, $21, $21
-	fadd    $21, $20, $20
-	fadd    $20, $19, $19
-	be      bne_cont.31855
-bne_then.31855:
-	load    [$14 + 9], $21
-	fmul    $24, $23, $20
-	load    [$21 + 0], $21
-	fmul    $20, $21, $20
-	load    [$14 + 9], $21
-	fadd    $19, $20, $19
-	load    [$21 + 1], $21
-	fmul    $23, $25, $20
-	fmul    $20, $21, $20
-	load    [$14 + 9], $21
-	fadd    $19, $20, $19
+	fmul    $24, $24, $27
+	fmul    $25, $19, $19
+	fmul    $26, $20, $20
 	load    [$21 + 2], $21
-	fmul    $25, $24, $20
-	fmul    $20, $21, $20
+	load    [$14 + 3], $18
+.count move_ret
+	mov     $1, $16
+	fmul    $27, $21, $21
 	fadd    $19, $20, $19
-bne_cont.31855:
-	store   $19, [$18 + 0]
-	load    [$14 + 4], $20
-	load    [$14 + 4], $21
-	load    [$14 + 4], $23
-	load    [$13 + 2], $24
-	load    [$20 + 2], $20
-	load    [$13 + 1], $25
-	load    [$21 + 1], $21
-	load    [$13 + 0], $26
-	load    [$23 + 0], $23
-	fmul    $24, $20, $20
-	fmul    $25, $21, $21
-	fmul    $26, $23, $23
-	cmp     $22, 0
-.count storer
-	add     $16, $11, $tmp
-	fneg    $20, $20
-	fneg    $21, $21
-	fneg    $23, $23
-	bne     be_else.31856
-be_then.31856:
-	store   $23, [$18 + 1]
-	fcmp    $19, $zero
-	store   $21, [$18 + 2]
-	store   $20, [$18 + 3]
-	bne     be_else.31857
-be_then.31857:
-	store   $18, [$tmp + 0]
-	b       be_cont.31856
-be_else.31857:
-	finv    $19, $19
-	store   $19, [$18 + 4]
-	store   $18, [$tmp + 0]
-	b       be_cont.31856
-be_else.31856:
-	load    [$14 + 9], $26
-	load    [$14 + 9], $22
-	fcmp    $19, $zero
-	load    [$26 + 1], $26
-	load    [$22 + 2], $22
-	fmul    $24, $26, $24
-	fmul    $25, $22, $25
-	fadd    $24, $25, $24
-	fmul    $24, $39, $24
-	fsub    $23, $24, $23
-	store   $23, [$18 + 1]
-	load    [$13 + 0], $24
-	load    [$14 + 9], $23
-	fmul    $24, $22, $22
-	load    [$23 + 0], $23
-	load    [$13 + 2], $24
-	fmul    $24, $23, $24
-	fadd    $24, $22, $22
-	fmul    $22, $39, $22
-	fsub    $21, $22, $21
-	store   $21, [$18 + 2]
-	load    [$13 + 1], $22
-	load    [$13 + 0], $21
+	cmp     $18, 0
+	fadd    $19, $21, $19
+	be      bne_cont.31769
+bne_then.31769:
+	load    [$14 + 9], $21
+	fmul    $23, $24, $20
+	load    [$14 + 9], $25
+	load    [$21 + 0], $21
+	fmul    $24, $22, $24
+	fmul    $20, $21, $20
 	fmul    $22, $23, $22
-	fmul    $21, $26, $21
-	fadd    $22, $21, $21
-	fmul    $21, $39, $21
-	fsub    $20, $21, $20
-	store   $20, [$18 + 3]
-	bne     be_else.31858
-be_then.31858:
-	store   $18, [$tmp + 0]
-	b       be_cont.31858
-be_else.31858:
-	finv    $19, $19
-	store   $19, [$18 + 4]
-	store   $18, [$tmp + 0]
-be_cont.31858:
-be_cont.31856:
-be_cont.31853:
+	load    [$25 + 1], $21
+	load    [$14 + 9], $23
+	fadd    $19, $20, $19
+	fmul    $24, $21, $21
+	load    [$23 + 2], $20
+	fmul    $22, $20, $20
+	fadd    $19, $21, $19
+	fadd    $19, $20, $19
+bne_cont.31769:
+	store   $19, [$16 + 0]
+	load    [$14 + 4], $20
+	load    [$15 + 0], $23
+	load    [$14 + 4], $21
+	load    [$20 + 0], $20
+	load    [$14 + 4], $22
+	load    [$21 + 1], $21
+	fmul    $23, $20, $20
+	load    [$15 + 2], $24
+	load    [$15 + 1], $23
+	load    [$22 + 2], $22
+	cmp     $18, 0
+	fmul    $23, $21, $21
+	fmul    $24, $22, $22
+	fneg    $20, $20
+.count storer
+	add     $13, $11, $tmp
+	fneg    $21, $21
+	fneg    $22, $22
+	bne     be_else.31770
+be_then.31770:
+	store   $20, [$16 + 1]
+	fcmp    $19, $zero
+	store   $21, [$16 + 2]
+	store   $22, [$16 + 3]
+	bne     be_else.31771
+be_then.31771:
+	store   $16, [$tmp + 0]
+.count b_cont
+	b       be_cont.31770
+be_else.31771:
+	finv    $19, $18
+	store   $18, [$16 + 4]
+	store   $16, [$tmp + 0]
+.count b_cont
+	b       be_cont.31770
+be_else.31770:
+	load    [$14 + 9], $25
+	load    [$14 + 9], $18
+	fcmp    $19, $zero
+	load    [$25 + 2], $25
+	load    [$18 + 1], $18
+	fmul    $23, $25, $23
+	fmul    $24, $18, $24
+	fadd    $24, $23, $23
+	fmul    $23, $39, $23
+	fsub    $20, $23, $20
+	store   $20, [$16 + 1]
+	load    [$15 + 2], $23
+	load    [$14 + 9], $20
+	load    [$15 + 0], $24
+	load    [$20 + 0], $20
+	fmul    $24, $25, $24
+	fmul    $23, $20, $23
+	fadd    $23, $24, $23
+	fmul    $23, $39, $23
+	fsub    $21, $23, $21
+	store   $21, [$16 + 2]
+	load    [$15 + 0], $23
+	load    [$15 + 1], $21
+	fmul    $23, $18, $18
+	fmul    $21, $20, $20
+	fadd    $20, $18, $18
+	fmul    $18, $39, $18
+	fsub    $22, $18, $18
+	store   $18, [$16 + 3]
+	bne     be_else.31772
+be_then.31772:
+	store   $16, [$tmp + 0]
+.count b_cont
+	b       be_cont.31772
+be_else.31772:
+	finv    $19, $18
+	store   $18, [$16 + 4]
+	store   $16, [$tmp + 0]
+be_cont.31772:
+be_cont.31770:
+be_cont.31767:
 	sub     $11, 1, $3
 .count move_args
 	mov     $12, $2
@@ -14107,29 +15277,30 @@ be_cont.31853:
 	add     $sp, 4, $sp
 .count move_args
 	mov     $17, $2
+.count stack_load
 	load    [$sp - 1], $1
 	sub     $1, 1, $3
 	b       init_dirvec_constants.3044
-bge_else.31836:
+bge_else.31750:
 .count stack_move
 	add     $sp, 4, $sp
 	sub     $10, 1, $3
 .count move_args
 	mov     $17, $2
 	b       init_dirvec_constants.3044
-bge_else.31835:
+bge_else.31749:
 .count stack_move
 	add     $sp, 4, $sp
 	ret
-bge_else.31834:
+bge_else.31748:
 .count stack_move
 	add     $sp, 4, $sp
 	ret
-bge_else.31809:
+bge_else.31724:
 .count stack_move
 	add     $sp, 4, $sp
 	ret
-bge_else.31785:
+bge_else.31700:
 	ret
 .end init_dirvec_constants
 
@@ -14137,608 +15308,611 @@ bge_else.31785:
 .begin init_vecset_constants
 init_vecset_constants.3047:
 	cmp     $2, 0
-	bl      bge_else.31859
-bge_then.31859:
+	bl      bge_else.31773
+bge_then.31773:
 .count stack_move
 	sub     $sp, 5, $sp
-	sub     $41, 1, $11
+	sub     $41, 1, $10
+.count stack_store
 	store   $2, [$sp + 0]
-	load    [min_caml_dirvecs + $2], $10
-	cmp     $11, 0
-	store   $10, [$sp + 1]
-	load    [$10 + 119], $10
-	bl      bge_cont.31860
-bge_then.31860:
-	load    [min_caml_objects + $11], $13
-	load    [$10 + 0], $12
-	load    [$10 + 1], $15
-	load    [$13 + 1], $14
+	load    [min_caml_dirvecs + $2], $11
+	cmp     $10, 0
+.count stack_store
+	store   $11, [$sp + 1]
+	load    [$11 + 119], $11
+	bl      bge_cont.31774
+bge_then.31774:
+	load    [min_caml_objects + $10], $14
+	load    [$11 + 1], $12
+	load    [$11 + 0], $13
+	load    [$14 + 1], $15
 .count move_args
 	mov     $zero, $3
-	cmp     $14, 1
-	bne     be_else.31861
-be_then.31861:
+	cmp     $15, 1
+	bne     be_else.31775
+be_then.31775:
 	li      6, $2
 	call    min_caml_create_array
-	load    [$12 + 0], $17
+	load    [$13 + 0], $17
 .count move_ret
 	mov     $1, $16
 	fcmp    $17, $zero
-	bne     be_else.31862
-be_then.31862:
+	bne     be_else.31776
+be_then.31776:
 	store   $zero, [$16 + 1]
-	b       be_cont.31862
-be_else.31862:
-	load    [$13 + 6], $18
+.count b_cont
+	b       be_cont.31776
+be_else.31776:
+	load    [$14 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31863
-ble_then.31863:
+	bg      ble_else.31777
+ble_then.31777:
 	li      0, $17
-	b       ble_cont.31863
-ble_else.31863:
+.count b_cont
+	b       ble_cont.31777
+ble_else.31777:
 	li      1, $17
-ble_cont.31863:
+ble_cont.31777:
 	cmp     $18, 0
-	be      bne_cont.31864
-bne_then.31864:
+	be      bne_cont.31778
+bne_then.31778:
 	cmp     $17, 0
-	bne     be_else.31865
-be_then.31865:
+	bne     be_else.31779
+be_then.31779:
 	li      1, $17
-	b       be_cont.31865
-be_else.31865:
+.count b_cont
+	b       be_cont.31779
+be_else.31779:
 	li      0, $17
-be_cont.31865:
-bne_cont.31864:
-	load    [$13 + 4], $18
+be_cont.31779:
+bne_cont.31778:
+	load    [$14 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 0], $18
-	bne     be_else.31866
-be_then.31866:
+	bne     be_else.31780
+be_then.31780:
 	fneg    $18, $17
 	store   $17, [$16 + 0]
-	load    [$12 + 0], $17
+	load    [$13 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-	b       be_cont.31866
-be_else.31866:
+.count b_cont
+	b       be_cont.31780
+be_else.31780:
 	store   $18, [$16 + 0]
-	load    [$12 + 0], $17
+	load    [$13 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-be_cont.31866:
-be_cont.31862:
-	load    [$12 + 1], $17
+be_cont.31780:
+be_cont.31776:
+	load    [$13 + 1], $17
 	fcmp    $17, $zero
-	bne     be_else.31867
-be_then.31867:
+	bne     be_else.31781
+be_then.31781:
 	store   $zero, [$16 + 3]
-	b       be_cont.31867
-be_else.31867:
-	load    [$13 + 6], $18
+.count b_cont
+	b       be_cont.31781
+be_else.31781:
+	load    [$14 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31868
-ble_then.31868:
+	bg      ble_else.31782
+ble_then.31782:
 	li      0, $17
-	b       ble_cont.31868
-ble_else.31868:
+.count b_cont
+	b       ble_cont.31782
+ble_else.31782:
 	li      1, $17
-ble_cont.31868:
+ble_cont.31782:
 	cmp     $18, 0
-	be      bne_cont.31869
-bne_then.31869:
+	be      bne_cont.31783
+bne_then.31783:
 	cmp     $17, 0
-	bne     be_else.31870
-be_then.31870:
+	bne     be_else.31784
+be_then.31784:
 	li      1, $17
-	b       be_cont.31870
-be_else.31870:
+.count b_cont
+	b       be_cont.31784
+be_else.31784:
 	li      0, $17
-be_cont.31870:
-bne_cont.31869:
-	load    [$13 + 4], $18
+be_cont.31784:
+bne_cont.31783:
+	load    [$14 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 1], $18
-	bne     be_else.31871
-be_then.31871:
+	bne     be_else.31785
+be_then.31785:
 	fneg    $18, $17
 	store   $17, [$16 + 2]
-	load    [$12 + 1], $17
+	load    [$13 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-	b       be_cont.31871
-be_else.31871:
+.count b_cont
+	b       be_cont.31785
+be_else.31785:
 	store   $18, [$16 + 2]
-	load    [$12 + 1], $17
+	load    [$13 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-be_cont.31871:
-be_cont.31867:
-	load    [$12 + 2], $17
+be_cont.31785:
+be_cont.31781:
+	load    [$13 + 2], $17
 	fcmp    $17, $zero
-	bne     be_else.31872
-be_then.31872:
+	bne     be_else.31786
+be_then.31786:
 .count storer
-	add     $15, $11, $tmp
+	add     $12, $10, $tmp
 	store   $zero, [$16 + 5]
-	sub     $11, 1, $3
+	sub     $10, 1, $3
 	store   $16, [$tmp + 0]
 .count move_args
-	mov     $10, $2
+	mov     $11, $2
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31861
-be_else.31872:
-	load    [$13 + 4], $18
-	load    [$13 + 6], $19
+.count b_cont
+	b       be_cont.31775
+be_else.31786:
+	load    [$14 + 6], $18
+	load    [$14 + 4], $19
 	fcmp    $zero, $17
-	bg      ble_else.31873
-ble_then.31873:
+	bg      ble_else.31787
+ble_then.31787:
 	li      0, $17
-	b       ble_cont.31873
-ble_else.31873:
+.count b_cont
+	b       ble_cont.31787
+ble_else.31787:
 	li      1, $17
-ble_cont.31873:
-	load    [$18 + 2], $18
-	cmp     $19, 0
-	bne     be_else.31874
-be_then.31874:
+ble_cont.31787:
+	cmp     $18, 0
+	be      bne_cont.31788
+bne_then.31788:
 	cmp     $17, 0
-	bne     be_else.31875
-be_then.31875:
-	fneg    $18, $17
-	b       be_cont.31875
-be_else.31875:
-	mov     $18, $17
-be_cont.31875:
-	store   $17, [$16 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $17
-	sub     $11, 1, $3
+	bne     be_else.31789
+be_then.31789:
+	li      1, $17
+.count b_cont
+	b       be_cont.31789
+be_else.31789:
+	li      0, $17
+be_cont.31789:
+bne_cont.31788:
+	load    [$19 + 2], $18
+	cmp     $17, 0
 .count move_args
-	mov     $10, $2
+	mov     $11, $2
+	sub     $10, 1, $3
+.count storer
+	add     $12, $10, $tmp
+	bne     be_else.31790
+be_then.31790:
+	fneg    $18, $17
+	store   $17, [$16 + 4]
+	load    [$13 + 2], $17
 	finv    $17, $17
 	store   $17, [$16 + 5]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31861
-be_else.31874:
-	cmp     $17, 0
-	bne     be_else.31876
-be_then.31876:
-	li      1, $17
-	b       be_cont.31876
-be_else.31876:
-	li      0, $17
-be_cont.31876:
-	cmp     $17, 0
-	bne     be_else.31877
-be_then.31877:
-	fneg    $18, $17
-	b       be_cont.31877
-be_else.31877:
-	mov     $18, $17
-be_cont.31877:
-	store   $17, [$16 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $17
-	sub     $11, 1, $3
-.count move_args
-	mov     $10, $2
+.count b_cont
+	b       be_cont.31775
+be_else.31790:
+	store   $18, [$16 + 4]
+	load    [$13 + 2], $17
 	finv    $17, $17
 	store   $17, [$16 + 5]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31861
-be_else.31861:
-	cmp     $14, 2
-	bne     be_else.31878
-be_then.31878:
+.count b_cont
+	b       be_cont.31775
+be_else.31775:
+	cmp     $15, 2
+	bne     be_else.31791
+be_then.31791:
 	li      4, $2
 	call    min_caml_create_array
-	load    [$13 + 4], $17
-	load    [$12 + 2], $20
-	load    [$13 + 4], $18
-	load    [$17 + 2], $17
-	load    [$13 + 4], $19
+	load    [$14 + 4], $17
+	load    [$13 + 0], $20
+	load    [$14 + 4], $18
+	load    [$17 + 0], $17
+	load    [$14 + 4], $19
 	load    [$18 + 1], $18
 	fmul    $20, $17, $17
-	load    [$19 + 0], $19
-	load    [$12 + 1], $20
+	load    [$19 + 2], $19
+	load    [$13 + 1], $20
 .count move_ret
 	mov     $1, $16
 .count move_args
-	mov     $10, $2
+	mov     $11, $2
 	fmul    $20, $18, $18
-	sub     $11, 1, $3
-	load    [$12 + 0], $20
+	sub     $10, 1, $3
+	load    [$13 + 2], $20
 .count storer
-	add     $15, $11, $tmp
-	fmul    $20, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
+	add     $12, $10, $tmp
+	fadd    $17, $18, $17
+	fmul    $20, $19, $18
+	fadd    $17, $18, $17
 	fcmp    $17, $zero
-	bg      ble_else.31879
-ble_then.31879:
+	bg      ble_else.31792
+ble_then.31792:
 	store   $zero, [$16 + 0]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31878
-ble_else.31879:
+.count b_cont
+	b       be_cont.31791
+ble_else.31792:
 	finv    $17, $17
 	fneg    $17, $18
 	store   $18, [$16 + 0]
-	load    [$13 + 4], $18
+	load    [$14 + 4], $18
 	load    [$18 + 0], $18
 	fmul    $18, $17, $18
 	fneg    $18, $18
 	store   $18, [$16 + 1]
-	load    [$13 + 4], $18
+	load    [$14 + 4], $18
 	load    [$18 + 1], $18
 	fmul    $18, $17, $18
 	fneg    $18, $18
 	store   $18, [$16 + 2]
-	load    [$13 + 4], $18
+	load    [$14 + 4], $18
 	load    [$18 + 2], $18
 	fmul    $18, $17, $17
 	fneg    $17, $17
 	store   $17, [$16 + 3]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31878
-be_else.31878:
+.count b_cont
+	b       be_cont.31791
+be_else.31791:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$12 + 2], $21
-	load    [$13 + 4], $17
-	load    [$13 + 4], $18
-	fmul    $21, $21, $22
-	load    [$17 + 2], $17
-	load    [$18 + 1], $18
-	load    [$13 + 4], $19
-	load    [$13 + 3], $20
-	fmul    $22, $17, $17
-	load    [$19 + 0], $19
-	load    [$12 + 1], $22
+	load    [$13 + 0], $21
+	load    [$13 + 1], $22
+	load    [$14 + 4], $18
+	load    [$14 + 4], $19
+	fmul    $21, $21, $24
+	fmul    $22, $22, $25
+	load    [$13 + 2], $23
+	load    [$18 + 0], $18
+	load    [$19 + 1], $19
+	load    [$14 + 4], $20
+	fmul    $23, $23, $26
+	fmul    $24, $18, $18
+	fmul    $25, $19, $19
+	load    [$20 + 2], $20
+	load    [$14 + 3], $17
 .count move_ret
 	mov     $1, $16
-	cmp     $20, 0
-	fmul    $22, $22, $23
-	fmul    $23, $18, $18
-	load    [$12 + 0], $23
-	fmul    $23, $23, $24
-	fmul    $24, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
-	be      bne_cont.31880
-bne_then.31880:
-	load    [$13 + 9], $19
-	fmul    $22, $21, $18
+	fmul    $26, $20, $20
+	fadd    $18, $19, $18
+	cmp     $17, 0
+	fadd    $18, $20, $18
+	be      bne_cont.31793
+bne_then.31793:
+	load    [$14 + 9], $20
+	fmul    $22, $23, $19
+	load    [$14 + 9], $24
+	load    [$20 + 0], $20
+	fmul    $23, $21, $23
+	fmul    $19, $20, $19
+	fmul    $21, $22, $21
+	load    [$24 + 1], $20
+	load    [$14 + 9], $22
+	fadd    $18, $19, $18
+	fmul    $23, $20, $20
+	load    [$22 + 2], $19
+	fmul    $21, $19, $19
+	fadd    $18, $20, $18
+	fadd    $18, $19, $18
+bne_cont.31793:
+	store   $18, [$16 + 0]
+	load    [$14 + 4], $19
+	load    [$13 + 0], $22
+	load    [$14 + 4], $20
 	load    [$19 + 0], $19
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 1], $19
-	fmul    $21, $23, $18
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 2], $19
-	fmul    $23, $22, $18
-	fmul    $18, $19, $18
-	fadd    $17, $18, $17
-bne_cont.31880:
-	store   $17, [$16 + 0]
-	load    [$13 + 4], $18
-	load    [$13 + 4], $19
-	load    [$13 + 4], $21
-	load    [$12 + 2], $22
-	load    [$18 + 2], $18
-	load    [$12 + 1], $23
-	load    [$19 + 1], $19
-	load    [$12 + 0], $24
-	load    [$21 + 0], $21
-	fmul    $22, $18, $18
-	fmul    $23, $19, $19
-	fmul    $24, $21, $21
-	cmp     $20, 0
-.count storer
-	add     $15, $11, $tmp
-	fneg    $18, $18
+	load    [$14 + 4], $21
+	load    [$20 + 1], $20
+	fmul    $22, $19, $19
+	load    [$13 + 2], $23
+	load    [$13 + 1], $22
+	load    [$21 + 2], $21
+	cmp     $17, 0
+	fmul    $22, $20, $20
+	fmul    $23, $21, $21
 	fneg    $19, $19
-	sub     $11, 1, $3
-.count move_args
-	mov     $10, $2
+.count storer
+	add     $12, $10, $tmp
+	sub     $10, 1, $3
+	fneg    $20, $20
 	fneg    $21, $21
-	bne     be_else.31881
-be_then.31881:
-	store   $21, [$16 + 1]
-	fcmp    $17, $zero
-	store   $19, [$16 + 2]
-	store   $18, [$16 + 3]
-	bne     be_else.31882
-be_then.31882:
+.count move_args
+	mov     $11, $2
+	bne     be_else.31794
+be_then.31794:
+	store   $19, [$16 + 1]
+	fcmp    $18, $zero
+	store   $20, [$16 + 2]
+	store   $21, [$16 + 3]
+	bne     be_else.31795
+be_then.31795:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31881
-be_else.31882:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31794
+be_else.31795:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31881
-be_else.31881:
-	load    [$13 + 9], $24
-	load    [$13 + 9], $20
-	fcmp    $17, $zero
-	load    [$24 + 1], $24
-	load    [$20 + 2], $20
+.count b_cont
+	b       be_cont.31794
+be_else.31794:
+	load    [$14 + 9], $24
+	load    [$14 + 9], $17
+	fcmp    $18, $zero
+	load    [$24 + 2], $24
+	load    [$17 + 1], $17
 	fmul    $22, $24, $22
-	fmul    $23, $20, $23
+	fmul    $23, $17, $23
+	fadd    $23, $22, $22
+	fmul    $22, $39, $22
+	fsub    $19, $22, $19
+	store   $19, [$16 + 1]
+	load    [$13 + 2], $22
+	load    [$14 + 9], $19
+	load    [$13 + 0], $23
+	load    [$19 + 0], $19
+	fmul    $23, $24, $23
+	fmul    $22, $19, $22
 	fadd    $22, $23, $22
 	fmul    $22, $39, $22
-	fsub    $21, $22, $21
-	store   $21, [$16 + 1]
-	load    [$12 + 0], $22
-	load    [$13 + 9], $21
-	fmul    $22, $20, $20
-	load    [$21 + 0], $21
-	load    [$12 + 2], $22
-	fmul    $22, $21, $22
-	fadd    $22, $20, $20
-	fmul    $20, $39, $20
-	fsub    $19, $20, $19
-	store   $19, [$16 + 2]
-	load    [$12 + 1], $20
-	load    [$12 + 0], $19
-	fmul    $20, $21, $20
-	fmul    $19, $24, $19
-	fadd    $20, $19, $19
-	fmul    $19, $39, $19
-	fsub    $18, $19, $18
-	store   $18, [$16 + 3]
-	bne     be_else.31883
-be_then.31883:
+	fsub    $20, $22, $20
+	store   $20, [$16 + 2]
+	load    [$13 + 0], $22
+	load    [$13 + 1], $20
+	fmul    $22, $17, $17
+	fmul    $20, $19, $19
+	fadd    $19, $17, $17
+	fmul    $17, $39, $17
+	fsub    $21, $17, $17
+	store   $17, [$16 + 3]
+	bne     be_else.31796
+be_then.31796:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31883
-be_else.31883:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31796
+be_else.31796:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-be_cont.31883:
-be_cont.31881:
-be_cont.31878:
-be_cont.31861:
-bge_cont.31860:
+be_cont.31796:
+be_cont.31794:
+be_cont.31791:
+be_cont.31775:
+bge_cont.31774:
+.count stack_load
 	load    [$sp + 1], $16
 	sub     $41, 1, $3
 	load    [$16 + 118], $2
 	call    iter_setup_dirvec_constants.2826
-	sub     $41, 1, $11
-	load    [$16 + 117], $10
-	cmp     $11, 0
-	bl      bge_cont.31884
-bge_then.31884:
-	load    [min_caml_objects + $11], $13
-	load    [$10 + 0], $12
-	load    [$10 + 1], $15
-	load    [$13 + 1], $14
+	sub     $41, 1, $10
+	load    [$16 + 117], $11
+	cmp     $10, 0
+	bl      bge_cont.31797
+bge_then.31797:
+	load    [min_caml_objects + $10], $13
+	load    [$11 + 1], $12
+	load    [$11 + 0], $14
+	load    [$13 + 1], $15
 .count move_args
 	mov     $zero, $3
-	cmp     $14, 1
-	bne     be_else.31885
-be_then.31885:
+	cmp     $15, 1
+	bne     be_else.31798
+be_then.31798:
 	li      6, $2
 	call    min_caml_create_array
-	load    [$12 + 0], $18
+	load    [$14 + 0], $18
 .count move_ret
 	mov     $1, $17
 	fcmp    $18, $zero
-	bne     be_else.31886
-be_then.31886:
+	bne     be_else.31799
+be_then.31799:
 	store   $zero, [$17 + 1]
-	b       be_cont.31886
-be_else.31886:
+.count b_cont
+	b       be_cont.31799
+be_else.31799:
 	load    [$13 + 6], $19
 	fcmp    $zero, $18
-	bg      ble_else.31887
-ble_then.31887:
+	bg      ble_else.31800
+ble_then.31800:
 	li      0, $18
-	b       ble_cont.31887
-ble_else.31887:
+.count b_cont
+	b       ble_cont.31800
+ble_else.31800:
 	li      1, $18
-ble_cont.31887:
+ble_cont.31800:
 	cmp     $19, 0
-	be      bne_cont.31888
-bne_then.31888:
+	be      bne_cont.31801
+bne_then.31801:
 	cmp     $18, 0
-	bne     be_else.31889
-be_then.31889:
+	bne     be_else.31802
+be_then.31802:
 	li      1, $18
-	b       be_cont.31889
-be_else.31889:
+.count b_cont
+	b       be_cont.31802
+be_else.31802:
 	li      0, $18
-be_cont.31889:
-bne_cont.31888:
+be_cont.31802:
+bne_cont.31801:
 	load    [$13 + 4], $19
 	cmp     $18, 0
 	load    [$19 + 0], $19
-	bne     be_else.31890
-be_then.31890:
+	bne     be_else.31803
+be_then.31803:
 	fneg    $19, $18
 	store   $18, [$17 + 0]
-	load    [$12 + 0], $18
+	load    [$14 + 0], $18
 	finv    $18, $18
 	store   $18, [$17 + 1]
-	b       be_cont.31890
-be_else.31890:
+.count b_cont
+	b       be_cont.31803
+be_else.31803:
 	store   $19, [$17 + 0]
-	load    [$12 + 0], $18
+	load    [$14 + 0], $18
 	finv    $18, $18
 	store   $18, [$17 + 1]
-be_cont.31890:
-be_cont.31886:
-	load    [$12 + 1], $18
+be_cont.31803:
+be_cont.31799:
+	load    [$14 + 1], $18
 	fcmp    $18, $zero
-	bne     be_else.31891
-be_then.31891:
+	bne     be_else.31804
+be_then.31804:
 	store   $zero, [$17 + 3]
-	b       be_cont.31891
-be_else.31891:
+.count b_cont
+	b       be_cont.31804
+be_else.31804:
 	load    [$13 + 6], $19
 	fcmp    $zero, $18
-	bg      ble_else.31892
-ble_then.31892:
+	bg      ble_else.31805
+ble_then.31805:
 	li      0, $18
-	b       ble_cont.31892
-ble_else.31892:
+.count b_cont
+	b       ble_cont.31805
+ble_else.31805:
 	li      1, $18
-ble_cont.31892:
+ble_cont.31805:
 	cmp     $19, 0
-	be      bne_cont.31893
-bne_then.31893:
+	be      bne_cont.31806
+bne_then.31806:
 	cmp     $18, 0
-	bne     be_else.31894
-be_then.31894:
+	bne     be_else.31807
+be_then.31807:
 	li      1, $18
-	b       be_cont.31894
-be_else.31894:
+.count b_cont
+	b       be_cont.31807
+be_else.31807:
 	li      0, $18
-be_cont.31894:
-bne_cont.31893:
+be_cont.31807:
+bne_cont.31806:
 	load    [$13 + 4], $19
 	cmp     $18, 0
 	load    [$19 + 1], $19
-	bne     be_else.31895
-be_then.31895:
+	bne     be_else.31808
+be_then.31808:
 	fneg    $19, $18
 	store   $18, [$17 + 2]
-	load    [$12 + 1], $18
+	load    [$14 + 1], $18
 	finv    $18, $18
 	store   $18, [$17 + 3]
-	b       be_cont.31895
-be_else.31895:
+.count b_cont
+	b       be_cont.31808
+be_else.31808:
 	store   $19, [$17 + 2]
-	load    [$12 + 1], $18
+	load    [$14 + 1], $18
 	finv    $18, $18
 	store   $18, [$17 + 3]
-be_cont.31895:
-be_cont.31891:
-	load    [$12 + 2], $18
+be_cont.31808:
+be_cont.31804:
+	load    [$14 + 2], $18
 	fcmp    $18, $zero
-	bne     be_else.31896
-be_then.31896:
+	bne     be_else.31809
+be_then.31809:
 .count storer
-	add     $15, $11, $tmp
+	add     $12, $10, $tmp
 	store   $zero, [$17 + 5]
-	sub     $11, 1, $3
+	sub     $10, 1, $3
 	store   $17, [$tmp + 0]
 .count move_args
-	mov     $10, $2
+	mov     $11, $2
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31885
-be_else.31896:
-	load    [$13 + 4], $19
-	load    [$13 + 6], $20
+.count b_cont
+	b       be_cont.31798
+be_else.31809:
+	load    [$13 + 6], $19
+	load    [$13 + 4], $20
 	fcmp    $zero, $18
-	bg      ble_else.31897
-ble_then.31897:
+	bg      ble_else.31810
+ble_then.31810:
 	li      0, $18
-	b       ble_cont.31897
-ble_else.31897:
+.count b_cont
+	b       ble_cont.31810
+ble_else.31810:
 	li      1, $18
-ble_cont.31897:
-	load    [$19 + 2], $19
-	cmp     $20, 0
-	bne     be_else.31898
-be_then.31898:
+ble_cont.31810:
+	cmp     $19, 0
+	be      bne_cont.31811
+bne_then.31811:
 	cmp     $18, 0
-	bne     be_else.31899
-be_then.31899:
-	fneg    $19, $18
-	b       be_cont.31899
-be_else.31899:
-	mov     $19, $18
-be_cont.31899:
-	store   $18, [$17 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $18
-	sub     $11, 1, $3
+	bne     be_else.31812
+be_then.31812:
+	li      1, $18
+.count b_cont
+	b       be_cont.31812
+be_else.31812:
+	li      0, $18
+be_cont.31812:
+bne_cont.31811:
+	load    [$20 + 2], $19
+	cmp     $18, 0
 .count move_args
-	mov     $10, $2
+	mov     $11, $2
+	sub     $10, 1, $3
+.count storer
+	add     $12, $10, $tmp
+	bne     be_else.31813
+be_then.31813:
+	fneg    $19, $18
+	store   $18, [$17 + 4]
+	load    [$14 + 2], $18
 	finv    $18, $18
 	store   $18, [$17 + 5]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31885
-be_else.31898:
-	cmp     $18, 0
-	bne     be_else.31900
-be_then.31900:
-	li      1, $18
-	b       be_cont.31900
-be_else.31900:
-	li      0, $18
-be_cont.31900:
-	cmp     $18, 0
-	bne     be_else.31901
-be_then.31901:
-	fneg    $19, $18
-	b       be_cont.31901
-be_else.31901:
-	mov     $19, $18
-be_cont.31901:
-	store   $18, [$17 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $18
-	sub     $11, 1, $3
-.count move_args
-	mov     $10, $2
+.count b_cont
+	b       be_cont.31798
+be_else.31813:
+	store   $19, [$17 + 4]
+	load    [$14 + 2], $18
 	finv    $18, $18
 	store   $18, [$17 + 5]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31885
-be_else.31885:
-	cmp     $14, 2
-	bne     be_else.31902
-be_then.31902:
+.count b_cont
+	b       be_cont.31798
+be_else.31798:
+	cmp     $15, 2
+	bne     be_else.31814
+be_then.31814:
 	li      4, $2
 	call    min_caml_create_array
 	load    [$13 + 4], $18
-	load    [$12 + 2], $21
+	load    [$14 + 0], $21
 	load    [$13 + 4], $19
-	load    [$18 + 2], $18
+	load    [$18 + 0], $18
 	load    [$13 + 4], $20
 	load    [$19 + 1], $19
 	fmul    $21, $18, $18
-	load    [$20 + 0], $20
-	load    [$12 + 1], $21
+	load    [$20 + 2], $20
+	load    [$14 + 1], $21
 .count move_ret
 	mov     $1, $17
 .count move_args
-	mov     $10, $2
+	mov     $11, $2
 	fmul    $21, $19, $19
-	sub     $11, 1, $3
-	load    [$12 + 0], $21
+	sub     $10, 1, $3
+	load    [$14 + 2], $21
 .count storer
-	add     $15, $11, $tmp
-	fmul    $21, $20, $20
-	fadd    $20, $19, $19
-	fadd    $19, $18, $18
+	add     $12, $10, $tmp
+	fadd    $18, $19, $18
+	fmul    $21, $20, $19
+	fadd    $18, $19, $18
 	fcmp    $18, $zero
-	bg      ble_else.31903
-ble_then.31903:
+	bg      ble_else.31815
+ble_then.31815:
 	store   $zero, [$17 + 0]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31902
-ble_else.31903:
+.count b_cont
+	b       be_cont.31814
+ble_else.31815:
 	finv    $18, $18
 	fneg    $18, $19
 	store   $19, [$17 + 0]
@@ -14759,369 +15933,373 @@ ble_else.31903:
 	store   $18, [$17 + 3]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31902
-be_else.31902:
+.count b_cont
+	b       be_cont.31814
+be_else.31814:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$12 + 2], $22
-	load    [$13 + 4], $18
+	load    [$14 + 0], $22
+	load    [$14 + 1], $23
 	load    [$13 + 4], $19
-	fmul    $22, $22, $23
-	load    [$18 + 2], $18
-	load    [$19 + 1], $19
 	load    [$13 + 4], $20
-	load    [$13 + 3], $21
-	fmul    $23, $18, $18
-	load    [$20 + 0], $20
-	load    [$12 + 1], $23
+	fmul    $22, $22, $25
+	fmul    $23, $23, $26
+	load    [$14 + 2], $24
+	load    [$19 + 0], $19
+	load    [$20 + 1], $20
+	load    [$13 + 4], $21
+	fmul    $24, $24, $27
+	fmul    $25, $19, $19
+	fmul    $26, $20, $20
+	load    [$21 + 2], $21
+	load    [$13 + 3], $18
 .count move_ret
 	mov     $1, $17
-	cmp     $21, 0
-	fmul    $23, $23, $24
-	fmul    $24, $19, $19
-	load    [$12 + 0], $24
-	fmul    $24, $24, $25
-	fmul    $25, $20, $20
-	fadd    $20, $19, $19
-	fadd    $19, $18, $18
-	be      bne_cont.31904
-bne_then.31904:
-	load    [$13 + 9], $20
-	fmul    $23, $22, $19
-	load    [$20 + 0], $20
-	fmul    $19, $20, $19
-	load    [$13 + 9], $20
-	fadd    $18, $19, $18
-	load    [$20 + 1], $20
-	fmul    $22, $24, $19
-	fmul    $19, $20, $19
-	load    [$13 + 9], $20
-	fadd    $18, $19, $18
-	load    [$20 + 2], $20
-	fmul    $24, $23, $19
-	fmul    $19, $20, $19
-	fadd    $18, $19, $18
-bne_cont.31904:
-	store   $18, [$17 + 0]
-	load    [$13 + 4], $19
+	fmul    $27, $21, $21
+	fadd    $19, $20, $19
+	cmp     $18, 0
+	fadd    $19, $21, $19
+	be      bne_cont.31816
+bne_then.31816:
+	load    [$13 + 9], $21
+	fmul    $23, $24, $20
+	load    [$13 + 9], $25
+	load    [$21 + 0], $21
+	fmul    $24, $22, $24
+	fmul    $20, $21, $20
+	fmul    $22, $23, $22
+	load    [$25 + 1], $21
+	load    [$13 + 9], $23
+	fadd    $19, $20, $19
+	fmul    $24, $21, $21
+	load    [$23 + 2], $20
+	fmul    $22, $20, $20
+	fadd    $19, $21, $19
+	fadd    $19, $20, $19
+bne_cont.31816:
+	store   $19, [$17 + 0]
 	load    [$13 + 4], $20
+	load    [$14 + 0], $23
+	load    [$13 + 4], $21
+	load    [$20 + 0], $20
 	load    [$13 + 4], $22
-	load    [$12 + 2], $23
-	load    [$19 + 2], $19
-	load    [$12 + 1], $24
-	load    [$20 + 1], $20
-	load    [$12 + 0], $25
-	load    [$22 + 0], $22
-	fmul    $23, $19, $19
-	fmul    $24, $20, $20
-	fmul    $25, $22, $22
-	cmp     $21, 0
-.count storer
-	add     $15, $11, $tmp
-	fneg    $19, $19
+	load    [$21 + 1], $21
+	fmul    $23, $20, $20
+	load    [$14 + 2], $24
+	load    [$14 + 1], $23
+	load    [$22 + 2], $22
+	cmp     $18, 0
+	fmul    $23, $21, $21
+	fmul    $24, $22, $22
 	fneg    $20, $20
-	sub     $11, 1, $3
-.count move_args
-	mov     $10, $2
+.count storer
+	add     $12, $10, $tmp
+	sub     $10, 1, $3
+	fneg    $21, $21
 	fneg    $22, $22
-	bne     be_else.31905
-be_then.31905:
-	store   $22, [$17 + 1]
-	fcmp    $18, $zero
-	store   $20, [$17 + 2]
-	store   $19, [$17 + 3]
-	bne     be_else.31906
-be_then.31906:
+.count move_args
+	mov     $11, $2
+	bne     be_else.31817
+be_then.31817:
+	store   $20, [$17 + 1]
+	fcmp    $19, $zero
+	store   $21, [$17 + 2]
+	store   $22, [$17 + 3]
+	bne     be_else.31818
+be_then.31818:
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31905
-be_else.31906:
-	finv    $18, $18
+.count b_cont
+	b       be_cont.31817
+be_else.31818:
+	finv    $19, $18
 	store   $18, [$17 + 4]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31905
-be_else.31905:
+.count b_cont
+	b       be_cont.31817
+be_else.31817:
 	load    [$13 + 9], $25
-	load    [$13 + 9], $21
-	fcmp    $18, $zero
-	load    [$25 + 1], $25
-	load    [$21 + 2], $21
+	load    [$13 + 9], $18
+	fcmp    $19, $zero
+	load    [$25 + 2], $25
+	load    [$18 + 1], $18
 	fmul    $23, $25, $23
-	fmul    $24, $21, $24
+	fmul    $24, $18, $24
+	fadd    $24, $23, $23
+	fmul    $23, $39, $23
+	fsub    $20, $23, $20
+	store   $20, [$17 + 1]
+	load    [$14 + 2], $23
+	load    [$13 + 9], $20
+	load    [$14 + 0], $24
+	load    [$20 + 0], $20
+	fmul    $24, $25, $24
+	fmul    $23, $20, $23
 	fadd    $23, $24, $23
 	fmul    $23, $39, $23
-	fsub    $22, $23, $22
-	store   $22, [$17 + 1]
-	load    [$12 + 0], $23
-	load    [$13 + 9], $22
-	fmul    $23, $21, $21
-	load    [$22 + 0], $22
-	load    [$12 + 2], $23
-	fmul    $23, $22, $23
-	fadd    $23, $21, $21
-	fmul    $21, $39, $21
-	fsub    $20, $21, $20
-	store   $20, [$17 + 2]
-	load    [$12 + 1], $21
-	load    [$12 + 0], $20
-	fmul    $21, $22, $21
-	fmul    $20, $25, $20
-	fadd    $21, $20, $20
-	fmul    $20, $39, $20
-	fsub    $19, $20, $19
-	store   $19, [$17 + 3]
-	bne     be_else.31907
-be_then.31907:
+	fsub    $21, $23, $21
+	store   $21, [$17 + 2]
+	load    [$14 + 0], $23
+	load    [$14 + 1], $21
+	fmul    $23, $18, $18
+	fmul    $21, $20, $20
+	fadd    $20, $18, $18
+	fmul    $18, $39, $18
+	fsub    $22, $18, $18
+	store   $18, [$17 + 3]
+	bne     be_else.31819
+be_then.31819:
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31907
-be_else.31907:
-	finv    $18, $18
+.count b_cont
+	b       be_cont.31819
+be_else.31819:
+	finv    $19, $18
 	store   $18, [$17 + 4]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-be_cont.31907:
-be_cont.31905:
-be_cont.31902:
-be_cont.31885:
-bge_cont.31884:
+be_cont.31819:
+be_cont.31817:
+be_cont.31814:
+be_cont.31798:
+bge_cont.31797:
 	li      116, $3
 .count move_args
 	mov     $16, $2
 	call    init_dirvec_constants.3044
+.count stack_load
 	load    [$sp + 0], $16
 	sub     $16, 1, $16
 	cmp     $16, 0
-	bl      bge_else.31908
-bge_then.31908:
+	bl      bge_else.31820
+bge_then.31820:
+.count stack_store
 	store   $16, [$sp + 2]
 	sub     $41, 1, $3
 	load    [min_caml_dirvecs + $16], $16
 	load    [$16 + 119], $2
 	call    iter_setup_dirvec_constants.2826
-	sub     $41, 1, $11
-	load    [$16 + 118], $10
-	cmp     $11, 0
-	bl      bge_cont.31909
-bge_then.31909:
-	load    [min_caml_objects + $11], $13
-	load    [$10 + 0], $12
-	load    [$10 + 1], $15
-	load    [$13 + 1], $14
+	sub     $41, 1, $10
+	load    [$16 + 118], $11
+	cmp     $10, 0
+	bl      bge_cont.31821
+bge_then.31821:
+	load    [min_caml_objects + $10], $13
+	load    [$11 + 1], $12
+	load    [$11 + 0], $14
+	load    [$13 + 1], $15
 .count move_args
 	mov     $zero, $3
-	cmp     $14, 1
-	bne     be_else.31910
-be_then.31910:
+	cmp     $15, 1
+	bne     be_else.31822
+be_then.31822:
 	li      6, $2
 	call    min_caml_create_array
-	load    [$12 + 0], $18
+	load    [$14 + 0], $18
 .count move_ret
 	mov     $1, $17
 	fcmp    $18, $zero
-	bne     be_else.31911
-be_then.31911:
+	bne     be_else.31823
+be_then.31823:
 	store   $zero, [$17 + 1]
-	b       be_cont.31911
-be_else.31911:
+.count b_cont
+	b       be_cont.31823
+be_else.31823:
 	load    [$13 + 6], $19
 	fcmp    $zero, $18
-	bg      ble_else.31912
-ble_then.31912:
+	bg      ble_else.31824
+ble_then.31824:
 	li      0, $18
-	b       ble_cont.31912
-ble_else.31912:
+.count b_cont
+	b       ble_cont.31824
+ble_else.31824:
 	li      1, $18
-ble_cont.31912:
+ble_cont.31824:
 	cmp     $19, 0
-	be      bne_cont.31913
-bne_then.31913:
+	be      bne_cont.31825
+bne_then.31825:
 	cmp     $18, 0
-	bne     be_else.31914
-be_then.31914:
+	bne     be_else.31826
+be_then.31826:
 	li      1, $18
-	b       be_cont.31914
-be_else.31914:
+.count b_cont
+	b       be_cont.31826
+be_else.31826:
 	li      0, $18
-be_cont.31914:
-bne_cont.31913:
+be_cont.31826:
+bne_cont.31825:
 	load    [$13 + 4], $19
 	cmp     $18, 0
 	load    [$19 + 0], $19
-	bne     be_else.31915
-be_then.31915:
+	bne     be_else.31827
+be_then.31827:
 	fneg    $19, $18
 	store   $18, [$17 + 0]
-	load    [$12 + 0], $18
+	load    [$14 + 0], $18
 	finv    $18, $18
 	store   $18, [$17 + 1]
-	b       be_cont.31915
-be_else.31915:
+.count b_cont
+	b       be_cont.31827
+be_else.31827:
 	store   $19, [$17 + 0]
-	load    [$12 + 0], $18
+	load    [$14 + 0], $18
 	finv    $18, $18
 	store   $18, [$17 + 1]
-be_cont.31915:
-be_cont.31911:
-	load    [$12 + 1], $18
+be_cont.31827:
+be_cont.31823:
+	load    [$14 + 1], $18
 	fcmp    $18, $zero
-	bne     be_else.31916
-be_then.31916:
+	bne     be_else.31828
+be_then.31828:
 	store   $zero, [$17 + 3]
-	b       be_cont.31916
-be_else.31916:
+.count b_cont
+	b       be_cont.31828
+be_else.31828:
 	load    [$13 + 6], $19
 	fcmp    $zero, $18
-	bg      ble_else.31917
-ble_then.31917:
+	bg      ble_else.31829
+ble_then.31829:
 	li      0, $18
-	b       ble_cont.31917
-ble_else.31917:
+.count b_cont
+	b       ble_cont.31829
+ble_else.31829:
 	li      1, $18
-ble_cont.31917:
+ble_cont.31829:
 	cmp     $19, 0
-	be      bne_cont.31918
-bne_then.31918:
+	be      bne_cont.31830
+bne_then.31830:
 	cmp     $18, 0
-	bne     be_else.31919
-be_then.31919:
+	bne     be_else.31831
+be_then.31831:
 	li      1, $18
-	b       be_cont.31919
-be_else.31919:
+.count b_cont
+	b       be_cont.31831
+be_else.31831:
 	li      0, $18
-be_cont.31919:
-bne_cont.31918:
+be_cont.31831:
+bne_cont.31830:
 	load    [$13 + 4], $19
 	cmp     $18, 0
 	load    [$19 + 1], $19
-	bne     be_else.31920
-be_then.31920:
+	bne     be_else.31832
+be_then.31832:
 	fneg    $19, $18
 	store   $18, [$17 + 2]
-	load    [$12 + 1], $18
+	load    [$14 + 1], $18
 	finv    $18, $18
 	store   $18, [$17 + 3]
-	b       be_cont.31920
-be_else.31920:
+.count b_cont
+	b       be_cont.31832
+be_else.31832:
 	store   $19, [$17 + 2]
-	load    [$12 + 1], $18
+	load    [$14 + 1], $18
 	finv    $18, $18
 	store   $18, [$17 + 3]
-be_cont.31920:
-be_cont.31916:
-	load    [$12 + 2], $18
+be_cont.31832:
+be_cont.31828:
+	load    [$14 + 2], $18
 	fcmp    $18, $zero
-	bne     be_else.31921
-be_then.31921:
+	bne     be_else.31833
+be_then.31833:
 .count storer
-	add     $15, $11, $tmp
+	add     $12, $10, $tmp
 	store   $zero, [$17 + 5]
-	sub     $11, 1, $3
+	sub     $10, 1, $3
 	store   $17, [$tmp + 0]
 .count move_args
-	mov     $10, $2
+	mov     $11, $2
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31910
-be_else.31921:
-	load    [$13 + 4], $19
-	load    [$13 + 6], $20
+.count b_cont
+	b       be_cont.31822
+be_else.31833:
+	load    [$13 + 6], $19
+	load    [$13 + 4], $20
 	fcmp    $zero, $18
-	bg      ble_else.31922
-ble_then.31922:
+	bg      ble_else.31834
+ble_then.31834:
 	li      0, $18
-	b       ble_cont.31922
-ble_else.31922:
+.count b_cont
+	b       ble_cont.31834
+ble_else.31834:
 	li      1, $18
-ble_cont.31922:
-	load    [$19 + 2], $19
-	cmp     $20, 0
-	bne     be_else.31923
-be_then.31923:
+ble_cont.31834:
+	cmp     $19, 0
+	be      bne_cont.31835
+bne_then.31835:
 	cmp     $18, 0
-	bne     be_else.31924
-be_then.31924:
-	fneg    $19, $18
-	b       be_cont.31924
-be_else.31924:
-	mov     $19, $18
-be_cont.31924:
-	store   $18, [$17 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $18
-	sub     $11, 1, $3
+	bne     be_else.31836
+be_then.31836:
+	li      1, $18
+.count b_cont
+	b       be_cont.31836
+be_else.31836:
+	li      0, $18
+be_cont.31836:
+bne_cont.31835:
+	load    [$20 + 2], $19
+	cmp     $18, 0
 .count move_args
-	mov     $10, $2
+	mov     $11, $2
+	sub     $10, 1, $3
+.count storer
+	add     $12, $10, $tmp
+	bne     be_else.31837
+be_then.31837:
+	fneg    $19, $18
+	store   $18, [$17 + 4]
+	load    [$14 + 2], $18
 	finv    $18, $18
 	store   $18, [$17 + 5]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31910
-be_else.31923:
-	cmp     $18, 0
-	bne     be_else.31925
-be_then.31925:
-	li      1, $18
-	b       be_cont.31925
-be_else.31925:
-	li      0, $18
-be_cont.31925:
-	cmp     $18, 0
-	bne     be_else.31926
-be_then.31926:
-	fneg    $19, $18
-	b       be_cont.31926
-be_else.31926:
-	mov     $19, $18
-be_cont.31926:
-	store   $18, [$17 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $18
-	sub     $11, 1, $3
-.count move_args
-	mov     $10, $2
+.count b_cont
+	b       be_cont.31822
+be_else.31837:
+	store   $19, [$17 + 4]
+	load    [$14 + 2], $18
 	finv    $18, $18
 	store   $18, [$17 + 5]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31910
-be_else.31910:
-	cmp     $14, 2
-	bne     be_else.31927
-be_then.31927:
+.count b_cont
+	b       be_cont.31822
+be_else.31822:
+	cmp     $15, 2
+	bne     be_else.31838
+be_then.31838:
 	li      4, $2
 	call    min_caml_create_array
 	load    [$13 + 4], $18
-	load    [$12 + 2], $21
+	load    [$14 + 0], $21
 	load    [$13 + 4], $19
-	load    [$18 + 2], $18
+	load    [$18 + 0], $18
 	load    [$13 + 4], $20
 	load    [$19 + 1], $19
 	fmul    $21, $18, $18
-	load    [$20 + 0], $20
-	load    [$12 + 1], $21
+	load    [$20 + 2], $20
+	load    [$14 + 1], $21
 .count move_ret
 	mov     $1, $17
 .count move_args
-	mov     $10, $2
+	mov     $11, $2
 	fmul    $21, $19, $19
-	sub     $11, 1, $3
-	load    [$12 + 0], $21
+	sub     $10, 1, $3
+	load    [$14 + 2], $21
 .count storer
-	add     $15, $11, $tmp
-	fmul    $21, $20, $20
-	fadd    $20, $19, $19
-	fadd    $19, $18, $18
+	add     $12, $10, $tmp
+	fadd    $18, $19, $18
+	fmul    $21, $20, $19
+	fadd    $18, $19, $18
 	fcmp    $18, $zero
-	bg      ble_else.31928
-ble_then.31928:
+	bg      ble_else.31839
+ble_then.31839:
 	store   $zero, [$17 + 0]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31927
-ble_else.31928:
+.count b_cont
+	b       be_cont.31838
+ble_else.31839:
 	finv    $18, $18
 	fneg    $18, $19
 	store   $19, [$17 + 0]
@@ -15142,367 +16320,372 @@ ble_else.31928:
 	store   $18, [$17 + 3]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31927
-be_else.31927:
+.count b_cont
+	b       be_cont.31838
+be_else.31838:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$12 + 2], $22
-	load    [$13 + 4], $18
+	load    [$14 + 0], $22
+	load    [$14 + 1], $23
 	load    [$13 + 4], $19
-	fmul    $22, $22, $23
-	load    [$18 + 2], $18
-	load    [$19 + 1], $19
 	load    [$13 + 4], $20
-	load    [$13 + 3], $21
-	fmul    $23, $18, $18
-	load    [$20 + 0], $20
-	load    [$12 + 1], $23
+	fmul    $22, $22, $25
+	fmul    $23, $23, $26
+	load    [$14 + 2], $24
+	load    [$19 + 0], $19
+	load    [$20 + 1], $20
+	load    [$13 + 4], $21
+	fmul    $24, $24, $27
+	fmul    $25, $19, $19
+	fmul    $26, $20, $20
+	load    [$21 + 2], $21
+	load    [$13 + 3], $18
 .count move_ret
 	mov     $1, $17
-	cmp     $21, 0
-	fmul    $23, $23, $24
-	fmul    $24, $19, $19
-	load    [$12 + 0], $24
-	fmul    $24, $24, $25
-	fmul    $25, $20, $20
-	fadd    $20, $19, $19
-	fadd    $19, $18, $18
-	be      bne_cont.31929
-bne_then.31929:
-	load    [$13 + 9], $20
-	fmul    $23, $22, $19
-	load    [$20 + 0], $20
-	fmul    $19, $20, $19
-	load    [$13 + 9], $20
-	fadd    $18, $19, $18
-	load    [$20 + 1], $20
-	fmul    $22, $24, $19
-	fmul    $19, $20, $19
-	load    [$13 + 9], $20
-	fadd    $18, $19, $18
-	load    [$20 + 2], $20
-	fmul    $24, $23, $19
-	fmul    $19, $20, $19
-	fadd    $18, $19, $18
-bne_cont.31929:
-	store   $18, [$17 + 0]
-	load    [$13 + 4], $19
+	fmul    $27, $21, $21
+	fadd    $19, $20, $19
+	cmp     $18, 0
+	fadd    $19, $21, $19
+	be      bne_cont.31840
+bne_then.31840:
+	load    [$13 + 9], $21
+	fmul    $23, $24, $20
+	load    [$13 + 9], $25
+	load    [$21 + 0], $21
+	fmul    $24, $22, $24
+	fmul    $20, $21, $20
+	fmul    $22, $23, $22
+	load    [$25 + 1], $21
+	load    [$13 + 9], $23
+	fadd    $19, $20, $19
+	fmul    $24, $21, $21
+	load    [$23 + 2], $20
+	fmul    $22, $20, $20
+	fadd    $19, $21, $19
+	fadd    $19, $20, $19
+bne_cont.31840:
+	store   $19, [$17 + 0]
 	load    [$13 + 4], $20
+	load    [$14 + 0], $23
+	load    [$13 + 4], $21
+	load    [$20 + 0], $20
 	load    [$13 + 4], $22
-	load    [$12 + 2], $23
-	load    [$19 + 2], $19
-	load    [$12 + 1], $24
-	load    [$20 + 1], $20
-	load    [$12 + 0], $25
-	load    [$22 + 0], $22
-	fmul    $23, $19, $19
-	fmul    $24, $20, $20
-	fmul    $25, $22, $22
-	cmp     $21, 0
-.count storer
-	add     $15, $11, $tmp
-	fneg    $19, $19
+	load    [$21 + 1], $21
+	fmul    $23, $20, $20
+	load    [$14 + 2], $24
+	load    [$14 + 1], $23
+	load    [$22 + 2], $22
+	cmp     $18, 0
+	fmul    $23, $21, $21
+	fmul    $24, $22, $22
 	fneg    $20, $20
-	sub     $11, 1, $3
-.count move_args
-	mov     $10, $2
+.count storer
+	add     $12, $10, $tmp
+	sub     $10, 1, $3
+	fneg    $21, $21
 	fneg    $22, $22
-	bne     be_else.31930
-be_then.31930:
-	store   $22, [$17 + 1]
-	fcmp    $18, $zero
-	store   $20, [$17 + 2]
-	store   $19, [$17 + 3]
-	bne     be_else.31931
-be_then.31931:
+.count move_args
+	mov     $11, $2
+	bne     be_else.31841
+be_then.31841:
+	store   $20, [$17 + 1]
+	fcmp    $19, $zero
+	store   $21, [$17 + 2]
+	store   $22, [$17 + 3]
+	bne     be_else.31842
+be_then.31842:
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31930
-be_else.31931:
-	finv    $18, $18
+.count b_cont
+	b       be_cont.31841
+be_else.31842:
+	finv    $19, $18
 	store   $18, [$17 + 4]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31930
-be_else.31930:
+.count b_cont
+	b       be_cont.31841
+be_else.31841:
 	load    [$13 + 9], $25
-	load    [$13 + 9], $21
-	fcmp    $18, $zero
-	load    [$25 + 1], $25
-	load    [$21 + 2], $21
+	load    [$13 + 9], $18
+	fcmp    $19, $zero
+	load    [$25 + 2], $25
+	load    [$18 + 1], $18
 	fmul    $23, $25, $23
-	fmul    $24, $21, $24
+	fmul    $24, $18, $24
+	fadd    $24, $23, $23
+	fmul    $23, $39, $23
+	fsub    $20, $23, $20
+	store   $20, [$17 + 1]
+	load    [$14 + 2], $23
+	load    [$13 + 9], $20
+	load    [$14 + 0], $24
+	load    [$20 + 0], $20
+	fmul    $24, $25, $24
+	fmul    $23, $20, $23
 	fadd    $23, $24, $23
 	fmul    $23, $39, $23
-	fsub    $22, $23, $22
-	store   $22, [$17 + 1]
-	load    [$12 + 0], $23
-	load    [$13 + 9], $22
-	fmul    $23, $21, $21
-	load    [$22 + 0], $22
-	load    [$12 + 2], $23
-	fmul    $23, $22, $23
-	fadd    $23, $21, $21
-	fmul    $21, $39, $21
-	fsub    $20, $21, $20
-	store   $20, [$17 + 2]
-	load    [$12 + 1], $21
-	load    [$12 + 0], $20
-	fmul    $21, $22, $21
-	fmul    $20, $25, $20
-	fadd    $21, $20, $20
-	fmul    $20, $39, $20
-	fsub    $19, $20, $19
-	store   $19, [$17 + 3]
-	bne     be_else.31932
-be_then.31932:
+	fsub    $21, $23, $21
+	store   $21, [$17 + 2]
+	load    [$14 + 0], $23
+	load    [$14 + 1], $21
+	fmul    $23, $18, $18
+	fmul    $21, $20, $20
+	fadd    $20, $18, $18
+	fmul    $18, $39, $18
+	fsub    $22, $18, $18
+	store   $18, [$17 + 3]
+	bne     be_else.31843
+be_then.31843:
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31932
-be_else.31932:
-	finv    $18, $18
+.count b_cont
+	b       be_cont.31843
+be_else.31843:
+	finv    $19, $18
 	store   $18, [$17 + 4]
 	store   $17, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-be_cont.31932:
-be_cont.31930:
-be_cont.31927:
-be_cont.31910:
-bge_cont.31909:
+be_cont.31843:
+be_cont.31841:
+be_cont.31838:
+be_cont.31822:
+bge_cont.31821:
 	li      117, $3
 .count move_args
 	mov     $16, $2
 	call    init_dirvec_constants.3044
+.count stack_load
 	load    [$sp + 2], $10
 	sub     $10, 1, $10
 	cmp     $10, 0
-	bl      bge_else.31933
-bge_then.31933:
+	bl      bge_else.31844
+bge_then.31844:
+.count stack_store
 	store   $10, [$sp + 3]
 	sub     $41, 1, $11
 	load    [min_caml_dirvecs + $10], $10
 	cmp     $11, 0
+.count stack_store
 	store   $10, [$sp + 4]
 	load    [$10 + 119], $10
-	bl      bge_cont.31934
-bge_then.31934:
+	bl      bge_cont.31845
+bge_then.31845:
 	load    [min_caml_objects + $11], $13
-	load    [$10 + 0], $12
-	load    [$10 + 1], $15
-	load    [$13 + 1], $14
+	load    [$10 + 1], $12
+	load    [$10 + 0], $14
+	load    [$13 + 1], $15
 .count move_args
 	mov     $zero, $3
-	cmp     $14, 1
-	bne     be_else.31935
-be_then.31935:
+	cmp     $15, 1
+	bne     be_else.31846
+be_then.31846:
 	li      6, $2
 	call    min_caml_create_array
-	load    [$12 + 0], $17
+	load    [$14 + 0], $17
 .count move_ret
 	mov     $1, $16
 	fcmp    $17, $zero
-	bne     be_else.31936
-be_then.31936:
+	bne     be_else.31847
+be_then.31847:
 	store   $zero, [$16 + 1]
-	b       be_cont.31936
-be_else.31936:
+.count b_cont
+	b       be_cont.31847
+be_else.31847:
 	load    [$13 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31937
-ble_then.31937:
+	bg      ble_else.31848
+ble_then.31848:
 	li      0, $17
-	b       ble_cont.31937
-ble_else.31937:
+.count b_cont
+	b       ble_cont.31848
+ble_else.31848:
 	li      1, $17
-ble_cont.31937:
+ble_cont.31848:
 	cmp     $18, 0
-	be      bne_cont.31938
-bne_then.31938:
+	be      bne_cont.31849
+bne_then.31849:
 	cmp     $17, 0
-	bne     be_else.31939
-be_then.31939:
+	bne     be_else.31850
+be_then.31850:
 	li      1, $17
-	b       be_cont.31939
-be_else.31939:
+.count b_cont
+	b       be_cont.31850
+be_else.31850:
 	li      0, $17
-be_cont.31939:
-bne_cont.31938:
+be_cont.31850:
+bne_cont.31849:
 	load    [$13 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 0], $18
-	bne     be_else.31940
-be_then.31940:
+	bne     be_else.31851
+be_then.31851:
 	fneg    $18, $17
 	store   $17, [$16 + 0]
-	load    [$12 + 0], $17
+	load    [$14 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-	b       be_cont.31940
-be_else.31940:
+.count b_cont
+	b       be_cont.31851
+be_else.31851:
 	store   $18, [$16 + 0]
-	load    [$12 + 0], $17
+	load    [$14 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-be_cont.31940:
-be_cont.31936:
-	load    [$12 + 1], $17
+be_cont.31851:
+be_cont.31847:
+	load    [$14 + 1], $17
 	fcmp    $17, $zero
-	bne     be_else.31941
-be_then.31941:
+	bne     be_else.31852
+be_then.31852:
 	store   $zero, [$16 + 3]
-	b       be_cont.31941
-be_else.31941:
+.count b_cont
+	b       be_cont.31852
+be_else.31852:
 	load    [$13 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31942
-ble_then.31942:
+	bg      ble_else.31853
+ble_then.31853:
 	li      0, $17
-	b       ble_cont.31942
-ble_else.31942:
+.count b_cont
+	b       ble_cont.31853
+ble_else.31853:
 	li      1, $17
-ble_cont.31942:
+ble_cont.31853:
 	cmp     $18, 0
-	be      bne_cont.31943
-bne_then.31943:
+	be      bne_cont.31854
+bne_then.31854:
 	cmp     $17, 0
-	bne     be_else.31944
-be_then.31944:
+	bne     be_else.31855
+be_then.31855:
 	li      1, $17
-	b       be_cont.31944
-be_else.31944:
+.count b_cont
+	b       be_cont.31855
+be_else.31855:
 	li      0, $17
-be_cont.31944:
-bne_cont.31943:
+be_cont.31855:
+bne_cont.31854:
 	load    [$13 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 1], $18
-	bne     be_else.31945
-be_then.31945:
+	bne     be_else.31856
+be_then.31856:
 	fneg    $18, $17
 	store   $17, [$16 + 2]
-	load    [$12 + 1], $17
+	load    [$14 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-	b       be_cont.31945
-be_else.31945:
+.count b_cont
+	b       be_cont.31856
+be_else.31856:
 	store   $18, [$16 + 2]
-	load    [$12 + 1], $17
+	load    [$14 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-be_cont.31945:
-be_cont.31941:
-	load    [$12 + 2], $17
+be_cont.31856:
+be_cont.31852:
+	load    [$14 + 2], $17
 	fcmp    $17, $zero
-	bne     be_else.31946
-be_then.31946:
+	bne     be_else.31857
+be_then.31857:
 .count storer
-	add     $15, $11, $tmp
+	add     $12, $11, $tmp
 	store   $zero, [$16 + 5]
 	sub     $11, 1, $3
 	store   $16, [$tmp + 0]
 .count move_args
 	mov     $10, $2
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31935
-be_else.31946:
-	load    [$13 + 4], $18
-	load    [$13 + 6], $19
+.count b_cont
+	b       be_cont.31846
+be_else.31857:
+	load    [$13 + 6], $18
+	load    [$13 + 4], $19
 	fcmp    $zero, $17
-	bg      ble_else.31947
-ble_then.31947:
+	bg      ble_else.31858
+ble_then.31858:
 	li      0, $17
-	b       ble_cont.31947
-ble_else.31947:
+.count b_cont
+	b       ble_cont.31858
+ble_else.31858:
 	li      1, $17
-ble_cont.31947:
-	load    [$18 + 2], $18
-	cmp     $19, 0
-	bne     be_else.31948
-be_then.31948:
+ble_cont.31858:
+	cmp     $18, 0
+	be      bne_cont.31859
+bne_then.31859:
 	cmp     $17, 0
-	bne     be_else.31949
-be_then.31949:
-	fneg    $18, $17
-	b       be_cont.31949
-be_else.31949:
-	mov     $18, $17
-be_cont.31949:
-	store   $17, [$16 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $17
-	sub     $11, 1, $3
+	bne     be_else.31860
+be_then.31860:
+	li      1, $17
+.count b_cont
+	b       be_cont.31860
+be_else.31860:
+	li      0, $17
+be_cont.31860:
+bne_cont.31859:
+	load    [$19 + 2], $18
+	cmp     $17, 0
 .count move_args
 	mov     $10, $2
+	sub     $11, 1, $3
+.count storer
+	add     $12, $11, $tmp
+	bne     be_else.31861
+be_then.31861:
+	fneg    $18, $17
+	store   $17, [$16 + 4]
+	load    [$14 + 2], $17
 	finv    $17, $17
 	store   $17, [$16 + 5]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31935
-be_else.31948:
-	cmp     $17, 0
-	bne     be_else.31950
-be_then.31950:
-	li      1, $17
-	b       be_cont.31950
-be_else.31950:
-	li      0, $17
-be_cont.31950:
-	cmp     $17, 0
-	bne     be_else.31951
-be_then.31951:
-	fneg    $18, $17
-	b       be_cont.31951
-be_else.31951:
-	mov     $18, $17
-be_cont.31951:
-	store   $17, [$16 + 4]
-.count storer
-	add     $15, $11, $tmp
-	load    [$12 + 2], $17
-	sub     $11, 1, $3
-.count move_args
-	mov     $10, $2
+.count b_cont
+	b       be_cont.31846
+be_else.31861:
+	store   $18, [$16 + 4]
+	load    [$14 + 2], $17
 	finv    $17, $17
 	store   $17, [$16 + 5]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31935
-be_else.31935:
-	cmp     $14, 2
-	bne     be_else.31952
-be_then.31952:
+.count b_cont
+	b       be_cont.31846
+be_else.31846:
+	cmp     $15, 2
+	bne     be_else.31862
+be_then.31862:
 	li      4, $2
 	call    min_caml_create_array
 	load    [$13 + 4], $17
-	load    [$12 + 2], $20
+	load    [$14 + 0], $20
 	load    [$13 + 4], $18
-	load    [$17 + 2], $17
+	load    [$17 + 0], $17
 	load    [$13 + 4], $19
 	load    [$18 + 1], $18
 	fmul    $20, $17, $17
-	load    [$19 + 0], $19
-	load    [$12 + 1], $20
+	load    [$19 + 2], $19
+	load    [$14 + 1], $20
 .count move_ret
 	mov     $1, $16
 .count move_args
 	mov     $10, $2
 	fmul    $20, $18, $18
 	sub     $11, 1, $3
-	load    [$12 + 0], $20
+	load    [$14 + 2], $20
 .count storer
-	add     $15, $11, $tmp
-	fmul    $20, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
+	add     $12, $11, $tmp
+	fadd    $17, $18, $17
+	fmul    $20, $19, $18
+	fadd    $17, $18, $17
 	fcmp    $17, $zero
-	bg      ble_else.31953
-ble_then.31953:
+	bg      ble_else.31863
+ble_then.31863:
 	store   $zero, [$16 + 0]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31952
-ble_else.31953:
+.count b_cont
+	b       be_cont.31862
+ble_else.31863:
 	finv    $17, $17
 	fneg    $17, $18
 	store   $18, [$16 + 0]
@@ -15523,161 +16706,167 @@ ble_else.31953:
 	store   $17, [$16 + 3]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31952
-be_else.31952:
+.count b_cont
+	b       be_cont.31862
+be_else.31862:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$12 + 2], $21
-	load    [$13 + 4], $17
+	load    [$14 + 0], $21
+	load    [$14 + 1], $22
 	load    [$13 + 4], $18
-	fmul    $21, $21, $22
-	load    [$17 + 2], $17
-	load    [$18 + 1], $18
 	load    [$13 + 4], $19
-	load    [$13 + 3], $20
-	fmul    $22, $17, $17
-	load    [$19 + 0], $19
-	load    [$12 + 1], $22
+	fmul    $21, $21, $24
+	fmul    $22, $22, $25
+	load    [$14 + 2], $23
+	load    [$18 + 0], $18
+	load    [$19 + 1], $19
+	load    [$13 + 4], $20
+	fmul    $23, $23, $26
+	fmul    $24, $18, $18
+	fmul    $25, $19, $19
+	load    [$20 + 2], $20
+	load    [$13 + 3], $17
 .count move_ret
 	mov     $1, $16
-	cmp     $20, 0
-	fmul    $22, $22, $23
-	fmul    $23, $18, $18
-	load    [$12 + 0], $23
-	fmul    $23, $23, $24
-	fmul    $24, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
-	be      bne_cont.31954
-bne_then.31954:
-	load    [$13 + 9], $19
-	fmul    $22, $21, $18
-	load    [$19 + 0], $19
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 1], $19
-	fmul    $21, $23, $18
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 2], $19
-	fmul    $23, $22, $18
-	fmul    $18, $19, $18
-	fadd    $17, $18, $17
-bne_cont.31954:
-	store   $17, [$16 + 0]
-	load    [$13 + 4], $18
+	fmul    $26, $20, $20
+	fadd    $18, $19, $18
+	cmp     $17, 0
+	fadd    $18, $20, $18
+	be      bne_cont.31864
+bne_then.31864:
+	load    [$13 + 9], $20
+	fmul    $22, $23, $19
+	load    [$13 + 9], $24
+	load    [$20 + 0], $20
+	fmul    $23, $21, $23
+	fmul    $19, $20, $19
+	fmul    $21, $22, $21
+	load    [$24 + 1], $20
+	load    [$13 + 9], $22
+	fadd    $18, $19, $18
+	fmul    $23, $20, $20
+	load    [$22 + 2], $19
+	fmul    $21, $19, $19
+	fadd    $18, $20, $18
+	fadd    $18, $19, $18
+bne_cont.31864:
+	store   $18, [$16 + 0]
 	load    [$13 + 4], $19
+	load    [$14 + 0], $22
+	load    [$13 + 4], $20
+	load    [$19 + 0], $19
 	load    [$13 + 4], $21
-	load    [$12 + 2], $22
-	load    [$18 + 2], $18
-	load    [$12 + 1], $23
-	load    [$19 + 1], $19
-	load    [$12 + 0], $24
-	load    [$21 + 0], $21
-	fmul    $22, $18, $18
-	fmul    $23, $19, $19
-	fmul    $24, $21, $21
-	cmp     $20, 0
-.count storer
-	add     $15, $11, $tmp
-	fneg    $18, $18
+	load    [$20 + 1], $20
+	fmul    $22, $19, $19
+	load    [$14 + 2], $23
+	load    [$14 + 1], $22
+	load    [$21 + 2], $21
+	cmp     $17, 0
+	fmul    $22, $20, $20
+	fmul    $23, $21, $21
 	fneg    $19, $19
+.count storer
+	add     $12, $11, $tmp
 	sub     $11, 1, $3
+	fneg    $20, $20
+	fneg    $21, $21
 .count move_args
 	mov     $10, $2
-	fneg    $21, $21
-	bne     be_else.31955
-be_then.31955:
-	store   $21, [$16 + 1]
-	fcmp    $17, $zero
-	store   $19, [$16 + 2]
-	store   $18, [$16 + 3]
-	bne     be_else.31956
-be_then.31956:
+	bne     be_else.31865
+be_then.31865:
+	store   $19, [$16 + 1]
+	fcmp    $18, $zero
+	store   $20, [$16 + 2]
+	store   $21, [$16 + 3]
+	bne     be_else.31866
+be_then.31866:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31955
-be_else.31956:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31865
+be_else.31866:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31955
-be_else.31955:
+.count b_cont
+	b       be_cont.31865
+be_else.31865:
 	load    [$13 + 9], $24
-	load    [$13 + 9], $20
-	fcmp    $17, $zero
-	load    [$24 + 1], $24
-	load    [$20 + 2], $20
+	load    [$13 + 9], $17
+	fcmp    $18, $zero
+	load    [$24 + 2], $24
+	load    [$17 + 1], $17
 	fmul    $22, $24, $22
-	fmul    $23, $20, $23
+	fmul    $23, $17, $23
+	fadd    $23, $22, $22
+	fmul    $22, $39, $22
+	fsub    $19, $22, $19
+	store   $19, [$16 + 1]
+	load    [$14 + 2], $22
+	load    [$13 + 9], $19
+	load    [$14 + 0], $23
+	load    [$19 + 0], $19
+	fmul    $23, $24, $23
+	fmul    $22, $19, $22
 	fadd    $22, $23, $22
 	fmul    $22, $39, $22
-	fsub    $21, $22, $21
-	store   $21, [$16 + 1]
-	load    [$12 + 0], $22
-	load    [$13 + 9], $21
-	fmul    $22, $20, $20
-	load    [$21 + 0], $21
-	load    [$12 + 2], $22
-	fmul    $22, $21, $22
-	fadd    $22, $20, $20
-	fmul    $20, $39, $20
-	fsub    $19, $20, $19
-	store   $19, [$16 + 2]
-	load    [$12 + 1], $20
-	load    [$12 + 0], $19
-	fmul    $20, $21, $20
-	fmul    $19, $24, $19
-	fadd    $20, $19, $19
-	fmul    $19, $39, $19
-	fsub    $18, $19, $18
-	store   $18, [$16 + 3]
-	bne     be_else.31957
-be_then.31957:
+	fsub    $20, $22, $20
+	store   $20, [$16 + 2]
+	load    [$14 + 0], $22
+	load    [$14 + 1], $20
+	fmul    $22, $17, $17
+	fmul    $20, $19, $19
+	fadd    $19, $17, $17
+	fmul    $17, $39, $17
+	fsub    $21, $17, $17
+	store   $17, [$16 + 3]
+	bne     be_else.31867
+be_then.31867:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31957
-be_else.31957:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31867
+be_else.31867:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-be_cont.31957:
-be_cont.31955:
-be_cont.31952:
-be_cont.31935:
-bge_cont.31934:
+be_cont.31867:
+be_cont.31865:
+be_cont.31862:
+be_cont.31846:
+bge_cont.31845:
 	li      118, $3
+.count stack_load
 	load    [$sp + 4], $2
 	call    init_dirvec_constants.3044
-	load    [$sp + 3], $27
-	sub     $27, 1, $27
-	cmp     $27, 0
-	bl      bge_else.31958
-bge_then.31958:
+.count stack_load
+	load    [$sp + 3], $28
+	sub     $28, 1, $28
+	cmp     $28, 0
+	bl      bge_else.31868
+bge_then.31868:
 	li      119, $3
-	load    [min_caml_dirvecs + $27], $2
+	load    [min_caml_dirvecs + $28], $2
 	call    init_dirvec_constants.3044
 .count stack_move
 	add     $sp, 5, $sp
-	sub     $27, 1, $2
+	sub     $28, 1, $2
 	b       init_vecset_constants.3047
-bge_else.31958:
+bge_else.31868:
 .count stack_move
 	add     $sp, 5, $sp
 	ret
-bge_else.31933:
+bge_else.31844:
 .count stack_move
 	add     $sp, 5, $sp
 	ret
-bge_else.31908:
+bge_else.31820:
 .count stack_move
 	add     $sp, 5, $sp
 	ret
-bge_else.31859:
+bge_else.31773:
 	ret
 .end init_vecset_constants
 
@@ -15685,40 +16874,44 @@ bge_else.31859:
 .begin setup_reflections
 setup_reflections.3064:
 	cmp     $2, 0
-	bl      bge_else.31959
-bge_then.31959:
+	bl      bge_else.31869
+bge_then.31869:
 	load    [min_caml_objects + $2], $10
 	load    [$10 + 2], $11
 	cmp     $11, 2
-	bne     be_else.31960
-be_then.31960:
+	bne     be_else.31870
+be_then.31870:
 	load    [$10 + 7], $11
 	load    [$11 + 0], $11
 	fcmp    $36, $11
-	bg      ble_else.31961
-ble_then.31961:
+	bg      ble_else.31871
+ble_then.31871:
 	ret
-ble_else.31961:
+ble_else.31871:
 	load    [$10 + 1], $12
 	cmp     $12, 1
-	bne     be_else.31962
-be_then.31962:
+	bne     be_else.31872
+be_then.31872:
 .count stack_move
 	sub     $sp, 14, $sp
 .count move_args
 	mov     $zero, $3
+.count stack_store
 	store   $2, [$sp + 0]
 	load    [$10 + 7], $10
 	li      3, $2
+.count stack_store
 	store   $10, [$sp + 1]
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $10
 	mov     $10, $3
+.count stack_store
 	store   $3, [$sp + 2]
 .count move_args
 	mov     $41, $2
 	call    min_caml_create_array
+.count stack_load
 	load    [$sp + 2], $17
 	fneg    $56, $18
 	fneg    $57, $19
@@ -15733,36 +16926,45 @@ be_then.31962:
 	add     $hp, 2, $hp
 	store   $17, [$20 + 0]
 	sub     $41, 1, $3
+.count stack_store
 	store   $2, [$sp + 3]
 	call    iter_setup_dirvec_constants.2826
-	load    [min_caml_n_reflections + 0], $10
-	mov     $hp, $13
+.count stack_load
+	load    [$sp + 0], $10
+	mov     $hp, $12
 	li      3, $2
-	store   $10, [$sp + 4]
-	load    [$sp + 1], $11
+	sll     $10, 2, $10
 	add     $hp, 3, $hp
+.count stack_store
+	store   $10, [$sp + 4]
+.count stack_load
+	load    [$sp + 1], $11
+	add     $10, 1, $10
 .count move_args
 	mov     $zero, $3
 	load    [$11 + 0], $11
 	fsub    $36, $11, $11
+.count stack_store
 	store   $11, [$sp + 5]
-	load    [$sp + 0], $12
-	sll     $12, 2, $12
-	store   $12, [$sp + 6]
-	store   $11, [$13 + 2]
-	add     $12, 1, $12
+	store   $11, [$12 + 2]
+.count stack_load
 	load    [$sp + 3], $11
-	store   $11, [$13 + 1]
-	store   $12, [$13 + 0]
-	mov     $13, $11
-	store   $11, [min_caml_reflections + $10]
+	store   $11, [$12 + 1]
+	store   $10, [$12 + 0]
+	load    [min_caml_n_reflections + 0], $11
+	mov     $12, $10
+.count stack_store
+	store   $11, [$sp + 6]
+	store   $10, [min_caml_reflections + $11]
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 7]
 .count move_args
 	mov     $41, $2
 	call    min_caml_create_array
+.count stack_load
 	load    [$sp + 7], $20
 	fneg    $55, $17
 .count move_ret
@@ -15776,31 +16978,38 @@ be_then.31962:
 	mov     $19, $2
 	store   $20, [$19 + 0]
 	add     $hp, 2, $hp
+.count stack_store
 	store   $2, [$sp + 8]
 	call    iter_setup_dirvec_constants.2826
-	load    [$sp + 5], $12
+.count stack_load
+	load    [$sp + 5], $13
+.count stack_load
+	load    [$sp + 4], $11
+.count stack_load
 	load    [$sp + 6], $10
-	mov     $hp, $11
-	store   $12, [$11 + 2]
-	add     $10, 2, $10
-	load    [$sp + 8], $12
+	mov     $hp, $12
+	store   $13, [$12 + 2]
+	add     $11, 2, $11
+.count stack_load
+	load    [$sp + 8], $13
+	add     $10, 1, $10
 	add     $hp, 3, $hp
+	store   $13, [$12 + 1]
 	li      3, $2
-	store   $12, [$11 + 1]
+	store   $11, [$12 + 0]
 .count move_args
 	mov     $zero, $3
-	store   $10, [$11 + 0]
-	mov     $11, $10
-	load    [$sp + 4], $11
-	add     $11, 1, $11
-	store   $10, [min_caml_reflections + $11]
+	mov     $12, $11
+	store   $11, [min_caml_reflections + $10]
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $3
+.count stack_store
 	store   $3, [$sp + 9]
 .count move_args
 	mov     $41, $2
 	call    min_caml_create_array
+.count stack_load
 	load    [$sp + 9], $19
 .count move_ret
 	mov     $1, $16
@@ -15813,126 +17022,143 @@ be_then.31962:
 	store   $16, [$17 + 1]
 	add     $hp, 2, $hp
 	store   $19, [$17 + 0]
+.count stack_store
 	store   $2, [$sp + 10]
 	call    iter_setup_dirvec_constants.2826
 .count stack_move
 	add     $sp, 14, $sp
-	mov     $hp, $2
-	load    [$sp - 9], $3
+	mov     $hp, $4
+.count stack_load
+	load    [$sp - 9], $5
+.count stack_load
 	load    [$sp - 8], $1
+.count stack_load
+	load    [$sp - 10], $3
 	add     $hp, 3, $hp
-	store   $3, [$2 + 2]
+	store   $5, [$4 + 2]
+	add     $3, 3, $3
+.count stack_load
+	load    [$sp - 4], $5
+	add     $1, 2, $2
+	store   $5, [$4 + 1]
 	add     $1, 3, $1
-	load    [$sp - 4], $3
-	store   $3, [$2 + 1]
-	store   $1, [$2 + 0]
-	mov     $2, $1
-	load    [$sp - 10], $2
-	add     $2, 2, $3
-	store   $1, [min_caml_reflections + $3]
-	add     $2, 3, $1
+	store   $3, [$4 + 0]
+	mov     $4, $3
+	store   $3, [min_caml_reflections + $2]
 	store   $1, [min_caml_n_reflections + 0]
 	ret
-be_else.31962:
+be_else.31872:
 	cmp     $12, 2
-	bne     be_else.31963
-be_then.31963:
+	bne     be_else.31873
+be_then.31873:
 .count stack_move
 	sub     $sp, 14, $sp
 .count move_args
 	mov     $zero, $3
+.count stack_store
 	store   $11, [$sp + 11]
+.count stack_store
 	store   $2, [$sp + 0]
-	load    [$10 + 4], $10
+	load    [$10 + 4], $11
 	li      3, $2
+	load    [$10 + 4], $10
 	call    min_caml_create_array
 .count move_ret
-	mov     $1, $11
-	mov     $11, $3
+	mov     $1, $12
+	mov     $12, $3
+.count stack_store
 	store   $3, [$sp + 12]
 .count move_args
 	mov     $41, $2
 	call    min_caml_create_array
-	load    [$10 + 1], $19
-	load    [$10 + 0], $21
-	load    [$10 + 2], $17
-	fmul    $56, $19, $20
-	fmul    $55, $21, $22
-	fmul    $57, $17, $18
+.count load_float
+	load    [f.27083], $17
+	load    [$11 + 0], $18
+	load    [$10 + 1], $20
+	load    [$10 + 2], $22
+	fmul    $17, $18, $19
+	fmul    $56, $20, $21
+	fmul    $55, $18, $18
 .count move_ret
 	mov     $1, $16
 	sub     $41, 1, $3
-	fadd    $22, $20, $20
-	load    [$sp + 12], $22
-	fadd    $20, $18, $18
-.count load_float
-	load    [f.27177], $20
-	fmul    $20, $21, $21
-	fmul    $20, $19, $19
-	fmul    $20, $17, $17
-	fmul    $21, $18, $21
+	fadd    $18, $21, $18
+	fmul    $57, $22, $21
+	fadd    $18, $21, $18
+.count stack_load
+	load    [$sp + 12], $21
+	fmul    $19, $18, $19
+	fsub    $19, $55, $19
+	store   $19, [$21 + 0]
+	fmul    $17, $20, $19
+	fmul    $17, $22, $17
 	fmul    $19, $18, $19
 	fmul    $17, $18, $17
-	fsub    $21, $55, $21
 	fsub    $19, $56, $19
 	fsub    $17, $57, $17
-	store   $21, [$22 + 0]
-	store   $19, [$22 + 1]
-	store   $17, [$22 + 2]
+	store   $19, [$21 + 1]
+	store   $17, [$21 + 2]
 	mov     $hp, $17
 	store   $16, [$17 + 1]
 	mov     $17, $2
-	store   $22, [$17 + 0]
+	store   $21, [$17 + 0]
 	add     $hp, 2, $hp
+.count stack_store
 	store   $2, [$sp + 13]
 	call    iter_setup_dirvec_constants.2826
 .count stack_move
 	add     $sp, 14, $sp
-	load    [min_caml_n_reflections + 0], $1
-	load    [$sp - 3], $3
+	mov     $hp, $3
+.count stack_load
+	load    [$sp - 3], $1
+.count stack_load
 	load    [$sp - 14], $2
-	mov     $hp, $4
-	fsub    $36, $3, $3
-	sll     $2, 2, $2
 	add     $hp, 3, $hp
+	fsub    $36, $1, $1
+	sll     $2, 2, $2
 	add     $2, 1, $2
-	store   $3, [$4 + 2]
-	load    [$sp - 1], $3
-	store   $3, [$4 + 1]
-	store   $2, [$4 + 0]
-	mov     $4, $2
-	store   $2, [min_caml_reflections + $1]
-	add     $1, 1, $1
+	store   $1, [$3 + 2]
+.count stack_load
+	load    [$sp - 1], $1
+	store   $1, [$3 + 1]
+	store   $2, [$3 + 0]
+	mov     $3, $1
+	load    [min_caml_n_reflections + 0], $2
+	store   $1, [min_caml_reflections + $2]
+	add     $2, 1, $1
 	store   $1, [min_caml_n_reflections + 0]
 	ret
-be_else.31963:
+be_else.31873:
 	ret
-be_else.31960:
+be_else.31870:
 	ret
-bge_else.31959:
+bge_else.31869:
 	ret
 .end setup_reflections
 
 ######################################################################
 .begin main
 min_caml_main:
-	load    [min_caml_image_size + 0], $53
+	load    [min_caml_image_size + 1], $60
 	li      128, $10
-	load    [f.27178 + 0], $40
-	load    [f.27180 + 0], $39
-	load    [f.27202 + 0], $38
-	load    [f.27203 + 0], $37
-	load    [f.27179 + 0], $36
-	load    [min_caml_texture_color + 0], $60
+	load    [min_caml_image_size + 0], $50
+.count move_float
+	mov     $10, $60
+	load    [f.27084 + 0], $40
+	li      64, $10
+	load    [f.27086 + 0], $39
+	load    [f.27108 + 0], $38
+	load    [f.27109 + 0], $37
+	load    [f.27085 + 0], $36
 	load    [min_caml_or_net + 0], $59
 	load    [min_caml_texture_color + 2], $58
 	load    [min_caml_light + 2], $57
 	load    [min_caml_light + 1], $56
 	load    [min_caml_light + 0], $55
 	load    [min_caml_texture_color + 1], $54
-	load    [min_caml_startp_fast + 2], $52
-	load    [min_caml_startp_fast + 1], $51
-	load    [min_caml_startp_fast + 0], $50
+	load    [min_caml_startp_fast + 2], $53
+	load    [min_caml_startp_fast + 1], $52
+	load    [min_caml_startp_fast + 0], $51
 	load    [min_caml_tmin + 0], $49
 	load    [min_caml_rgb + 2], $48
 	load    [min_caml_rgb + 1], $47
@@ -15943,25 +17169,23 @@ min_caml_main:
 	load    [min_caml_solver_dist + 0], $42
 	load    [min_caml_n_objects + 0], $41
 	li      128, $2
-	store   $10, [min_caml_image_size + 1]
+	store   $10, [min_caml_image_center + 0]
 .count stack_move
 	sub     $sp, 18, $sp
 	li      64, $10
 .count move_float
-	mov     $2, $53
-	store   $10, [min_caml_image_center + 0]
-	li      64, $10
+	mov     $2, $50
 	store   $10, [min_caml_image_center + 1]
+.count load_float
+	load    [f.27202], $10
 	call    min_caml_float_of_int
 .count move_ret
-	mov     $1, $10
-.count load_float
-	load    [f.27296], $11
-	finv    $10, $10
+	mov     $1, $11
 	li      3, $2
+	finv    $11, $11
 .count move_args
 	mov     $zero, $3
-	fmul    $11, $10, $10
+	fmul    $10, $11, $10
 	store   $10, [min_caml_scan_pitch + 0]
 	call    min_caml_create_array
 .count move_ret
@@ -16004,13 +17228,13 @@ min_caml_main:
 .count move_ret
 	mov     $1, $12
 	store   $12, [$11 + 4]
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $12
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $13
@@ -16090,8 +17314,8 @@ min_caml_main:
 .count move_ret
 	mov     $1, $16
 	store   $16, [$15 + 4]
-	li      0, $3
 	li      1, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $16
@@ -16134,7 +17358,7 @@ min_caml_main:
 	mov     $1, $18
 	store   $18, [$17 + 4]
 .count move_args
-	mov     $53, $2
+	mov     $50, $2
 	mov     $hp, $18
 	store   $17, [$18 + 7]
 	add     $hp, 8, $hp
@@ -16147,28 +17371,30 @@ min_caml_main:
 	store   $11, [$18 + 1]
 	store   $10, [$18 + 0]
 	call    min_caml_create_array
-	sub     $53, 2, $20
+	sub     $50, 2, $20
 .count move_ret
 	mov     $1, $19
 	cmp     $20, 0
-	bl      bge_else.31964
-bge_then.31964:
+	bl      bge_else.31874
+bge_then.31874:
 	call    create_pixel.3008
 .count storer
 	add     $19, $20, $tmp
 .count move_ret
 	mov     $1, $22
-	sub     $20, 1, $3
 	store   $22, [$tmp + 0]
+	sub     $20, 1, $3
 .count move_args
 	mov     $19, $2
 	call    init_line_elements.3010
 .count move_ret
 	mov     $1, $10
-	b       bge_cont.31964
-bge_else.31964:
+.count b_cont
+	b       bge_cont.31874
+bge_else.31874:
 	mov     $19, $10
-bge_cont.31964:
+bge_cont.31874:
+.count stack_store
 	store   $10, [$sp + 0]
 	li      3, $2
 .count move_args
@@ -16214,13 +17440,13 @@ bge_cont.31964:
 .count move_ret
 	mov     $1, $12
 	store   $12, [$11 + 4]
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $12
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $13
@@ -16300,8 +17526,8 @@ bge_cont.31964:
 .count move_ret
 	mov     $1, $16
 	store   $16, [$15 + 4]
-	li      0, $3
 	li      1, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $16
@@ -16344,7 +17570,7 @@ bge_cont.31964:
 	mov     $1, $18
 	store   $18, [$17 + 4]
 .count move_args
-	mov     $53, $2
+	mov     $50, $2
 	mov     $hp, $18
 	store   $17, [$18 + 7]
 	add     $hp, 8, $hp
@@ -16357,28 +17583,30 @@ bge_cont.31964:
 	store   $11, [$18 + 1]
 	store   $10, [$18 + 0]
 	call    min_caml_create_array
-	sub     $53, 2, $20
+	sub     $50, 2, $20
 .count move_ret
 	mov     $1, $19
 	cmp     $20, 0
-	bl      bge_else.31965
-bge_then.31965:
+	bl      bge_else.31875
+bge_then.31875:
 	call    create_pixel.3008
 .count storer
 	add     $19, $20, $tmp
 .count move_ret
 	mov     $1, $22
-	sub     $20, 1, $3
 	store   $22, [$tmp + 0]
+	sub     $20, 1, $3
 .count move_args
 	mov     $19, $2
 	call    init_line_elements.3010
 .count move_ret
 	mov     $1, $10
-	b       bge_cont.31965
-bge_else.31965:
+.count b_cont
+	b       bge_cont.31875
+bge_else.31875:
 	mov     $19, $10
-bge_cont.31965:
+bge_cont.31875:
+.count stack_store
 	store   $10, [$sp + 1]
 	li      3, $2
 .count move_args
@@ -16425,13 +17653,13 @@ bge_cont.31965:
 .count move_ret
 	mov     $1, $12
 	store   $12, [$11 + 4]
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $12
-	li      0, $3
 	li      5, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $13
@@ -16513,8 +17741,8 @@ bge_cont.31965:
 .count move_ret
 	mov     $1, $16
 	store   $16, [$15 + 4]
-	li      0, $3
 	li      1, $2
+	li      0, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $16
@@ -16558,7 +17786,7 @@ bge_cont.31965:
 	mov     $1, $18
 	store   $18, [$17 + 4]
 .count move_args
-	mov     $53, $2
+	mov     $50, $2
 	mov     $hp, $18
 	store   $17, [$18 + 7]
 	add     $hp, 8, $hp
@@ -16571,28 +17799,30 @@ bge_cont.31965:
 	store   $11, [$18 + 1]
 	store   $10, [$18 + 0]
 	call    min_caml_create_array
-	sub     $53, 2, $20
+	sub     $50, 2, $20
 .count move_ret
 	mov     $1, $19
 	cmp     $20, 0
-	bl      bge_else.31966
-bge_then.31966:
+	bl      bge_else.31876
+bge_then.31876:
 	call    create_pixel.3008
 .count storer
 	add     $19, $20, $tmp
 .count move_ret
 	mov     $1, $22
-	sub     $20, 1, $3
 	store   $22, [$tmp + 0]
+	sub     $20, 1, $3
 .count move_args
 	mov     $19, $2
 	call    init_line_elements.3010
 .count move_ret
 	mov     $1, $10
-	b       bge_cont.31966
-bge_else.31966:
+.count b_cont
+	b       bge_cont.31876
+bge_else.31876:
 	mov     $19, $10
-bge_cont.31966:
+bge_cont.31876:
+.count stack_store
 	store   $10, [$sp + 2]
 	call    min_caml_read_float
 .count move_ret
@@ -16608,43 +17838,49 @@ bge_cont.31966:
 	store   $10, [min_caml_screen + 2]
 	call    min_caml_read_float
 .count load_float
-	load    [f.27164], $12
+	load    [f.27070], $12
 .count move_ret
 	mov     $1, $11
 	fmul    $11, $12, $2
+.count stack_store
 	store   $2, [$sp + 3]
 	call    min_caml_cos
 .count move_ret
 	mov     $1, $11
+.count stack_load
 	load    [$sp + 3], $2
 	call    min_caml_sin
 .count move_ret
 	mov     $1, $10
+.count stack_store
 	store   $10, [$sp + 4]
 	call    min_caml_read_float
 .count move_ret
 	mov     $1, $13
 	fmul    $13, $12, $2
+.count stack_store
 	store   $2, [$sp + 5]
 	call    min_caml_cos
 .count move_ret
 	mov     $1, $13
+.count stack_load
 	load    [$sp + 5], $2
 	call    min_caml_sin
 .count move_ret
 	mov     $1, $10
-	fmul    $11, $10, $15
+	fmul    $11, $10, $14
 .count load_float
-	load    [f.27324], $14
-	fmul    $15, $14, $15
-	store   $15, [min_caml_screenz_dir + 0]
+	load    [f.27230], $15
+	fmul    $14, $15, $14
+	store   $14, [min_caml_screenz_dir + 0]
+.count stack_load
 	load    [$sp + 4], $16
 .count load_float
-	load    [f.27325], $15
-	fmul    $16, $15, $15
-	store   $15, [min_caml_screenz_dir + 1]
-	fmul    $11, $13, $15
-	fmul    $15, $14, $14
+	load    [f.27231], $14
+	fmul    $16, $14, $14
+	store   $14, [min_caml_screenz_dir + 1]
+	fmul    $11, $13, $14
+	fmul    $14, $15, $14
 	store   $14, [min_caml_screenz_dir + 2]
 	store   $13, [min_caml_screenx_dir + 0]
 	fneg    $10, $14
@@ -16657,17 +17893,17 @@ bge_cont.31966:
 	store   $10, [min_caml_screeny_dir + 1]
 	fmul    $14, $13, $10
 	store   $10, [min_caml_screeny_dir + 2]
-	load    [min_caml_screen + 0], $11
-	load    [min_caml_screenz_dir + 0], $10
-	fsub    $11, $10, $10
+	load    [min_caml_screenz_dir + 0], $11
+	load    [min_caml_screen + 0], $10
+	fsub    $10, $11, $10
 	store   $10, [min_caml_viewpoint + 0]
-	load    [min_caml_screen + 1], $11
-	load    [min_caml_screenz_dir + 1], $10
-	fsub    $11, $10, $10
+	load    [min_caml_screenz_dir + 1], $11
+	load    [min_caml_screen + 1], $10
+	fsub    $10, $11, $10
 	store   $10, [min_caml_viewpoint + 1]
-	load    [min_caml_screen + 2], $11
-	load    [min_caml_screenz_dir + 2], $10
-	fsub    $11, $10, $10
+	load    [min_caml_screenz_dir + 2], $11
+	load    [min_caml_screen + 2], $10
+	fsub    $10, $11, $10
 	store   $10, [min_caml_viewpoint + 2]
 	call    min_caml_read_int
 .count move_ret
@@ -16676,6 +17912,7 @@ bge_cont.31966:
 .count move_ret
 	mov     $1, $11
 	fmul    $11, $12, $2
+.count stack_store
 	store   $2, [$sp + 6]
 	call    min_caml_sin
 .count move_ret
@@ -16686,15 +17923,18 @@ bge_cont.31966:
 	call    min_caml_read_float
 .count move_ret
 	mov     $1, $11
+.count stack_load
 	load    [$sp + 6], $2
 	call    min_caml_cos
 	fmul    $11, $12, $2
 .count move_ret
 	mov     $1, $13
+.count stack_store
 	store   $2, [$sp + 7]
 	call    min_caml_sin
 .count move_ret
 	mov     $1, $11
+.count stack_load
 	load    [$sp + 7], $2
 	fmul    $13, $11, $11
 .count move_float
@@ -16710,162 +17950,189 @@ bge_cont.31966:
 	mov     $1, $23
 	li      0, $2
 	store   $23, [min_caml_beam + 0]
+.count stack_store
 	store   $2, [$sp + 8]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31967
-be_then.31967:
+	bne     be_else.31877
+be_then.31877:
+.count stack_load
 	load    [$sp + 8], $10
 .count move_float
 	mov     $10, $41
-	b       be_cont.31967
-be_else.31967:
+.count b_cont
+	b       be_cont.31877
+be_else.31877:
 	li      1, $2
+.count stack_store
 	store   $2, [$sp + 9]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31968
-be_then.31968:
+	bne     be_else.31878
+be_then.31878:
+.count stack_load
 	load    [$sp + 9], $10
 .count move_float
 	mov     $10, $41
-	b       be_cont.31968
-be_else.31968:
+.count b_cont
+	b       be_cont.31878
+be_else.31878:
 	li      2, $2
+.count stack_store
 	store   $2, [$sp + 10]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $23
 	cmp     $23, 0
-	bne     be_else.31969
-be_then.31969:
+	bne     be_else.31879
+be_then.31879:
+.count stack_load
 	load    [$sp + 10], $10
 .count move_float
 	mov     $10, $41
-	b       be_cont.31969
-be_else.31969:
+.count b_cont
+	b       be_cont.31879
+be_else.31879:
 	li      3, $2
+.count stack_store
 	store   $2, [$sp + 11]
 	call    read_nth_object.2719
 .count move_ret
 	mov     $1, $24
 	cmp     $24, 0
-	bne     be_else.31970
-be_then.31970:
+	bne     be_else.31880
+be_then.31880:
+.count stack_load
 	load    [$sp + 11], $10
 .count move_float
 	mov     $10, $41
-	b       be_cont.31970
-be_else.31970:
+.count b_cont
+	b       be_cont.31880
+be_else.31880:
 	li      4, $2
 	call    read_object.2721
-be_cont.31970:
-be_cont.31969:
-be_cont.31968:
-be_cont.31967:
+be_cont.31880:
+be_cont.31879:
+be_cont.31878:
+be_cont.31877:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31971
-be_then.31971:
-	add     $zero, -1, $3
+	bne     be_else.31881
+be_then.31881:
 	li      1, $2
+	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $18
-	b       be_cont.31971
-be_else.31971:
+.count b_cont
+	b       be_cont.31881
+be_else.31881:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $11
 	cmp     $11, -1
 	li      2, $2
-	bne     be_else.31972
-be_then.31972:
+	bne     be_else.31882
+be_then.31882:
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $18
 	store   $10, [$18 + 0]
-	b       be_cont.31972
-be_else.31972:
+.count b_cont
+	b       be_cont.31882
+be_else.31882:
+.count stack_store
 	store   $10, [$sp + 12]
+.count stack_store
 	store   $11, [$sp + 13]
 	call    read_net_item.2725
+.count stack_load
 	load    [$sp + 13], $19
 .count move_ret
 	mov     $1, $18
 	store   $19, [$18 + 1]
+.count stack_load
 	load    [$sp + 12], $19
 	store   $19, [$18 + 0]
-be_cont.31972:
-be_cont.31971:
+be_cont.31882:
+be_cont.31881:
 	load    [$18 + 0], $19
 	cmp     $19, -1
-	be      bne_cont.31973
-bne_then.31973:
+	be      bne_cont.31883
+bne_then.31883:
 	store   $18, [min_caml_and_net + 0]
 	li      1, $2
 	call    read_and_network.2729
-bne_cont.31973:
+bne_cont.31883:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $10
 	cmp     $10, -1
-	bne     be_else.31974
-be_then.31974:
-	add     $zero, -1, $3
+	bne     be_else.31884
+be_then.31884:
 	li      1, $2
+	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $10
-	b       be_cont.31974
-be_else.31974:
+.count b_cont
+	b       be_cont.31884
+be_else.31884:
 	call    min_caml_read_int
 .count move_ret
 	mov     $1, $11
 	cmp     $11, -1
 	li      2, $2
-	bne     be_else.31975
-be_then.31975:
+	bne     be_else.31885
+be_then.31885:
 	add     $zero, -1, $3
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $11
 	store   $10, [$11 + 0]
 	mov     $11, $10
-	b       be_cont.31975
-be_else.31975:
+.count b_cont
+	b       be_cont.31885
+be_else.31885:
+.count stack_store
 	store   $10, [$sp + 14]
+.count stack_store
 	store   $11, [$sp + 15]
 	call    read_net_item.2725
+.count stack_load
 	load    [$sp + 15], $11
 .count move_ret
 	mov     $1, $10
 	store   $11, [$10 + 1]
+.count stack_load
 	load    [$sp + 14], $11
 	store   $11, [$10 + 0]
-be_cont.31975:
-be_cont.31974:
+be_cont.31885:
+be_cont.31884:
 	mov     $10, $3
 	li      1, $2
 	load    [$3 + 0], $10
 	cmp     $10, -1
-	bne     be_else.31976
-be_then.31976:
+	bne     be_else.31886
+be_then.31886:
 	call    min_caml_create_array
-	b       be_cont.31976
-be_else.31976:
+.count b_cont
+	b       be_cont.31886
+be_else.31886:
+.count stack_store
 	store   $3, [$sp + 16]
 	call    read_or_network.2727
+.count stack_load
 	load    [$sp + 16], $10
 	store   $10, [$1 + 0]
-be_cont.31976:
+be_cont.31886:
 .count move_float
 	mov     $1, $59
 	li      80, $2
@@ -16905,6 +18172,7 @@ be_cont.31976:
 .count move_ret
 	mov     $1, $10
 	mov     $10, $3
+.count stack_store
 	store   $3, [$sp + 17]
 .count move_args
 	mov     $41, $2
@@ -16913,37 +18181,44 @@ be_cont.31976:
 .count move_ret
 	mov     $1, $10
 	store   $10, [$11 + 1]
-	add     $hp, 2, $hp
-	load    [$sp + 17], $10
-	mov     $11, $3
 	li      120, $2
+.count stack_load
+	load    [$sp + 17], $10
+	add     $hp, 2, $hp
+	mov     $11, $3
 	store   $10, [$11 + 0]
 	call    min_caml_create_array
 .count move_ret
 	mov     $1, $14
 	store   $14, [min_caml_dirvecs + 4]
-	li      118, $3
 	load    [min_caml_dirvecs + 4], $2
+	li      118, $3
 	call    create_dirvec_elements.3039
 	li      3, $2
 	call    create_dirvecs.3042
-.count load_float
-	load    [f.27233], $10
-.count load_float
-	load    [f.27234], $11
+	li      0, $10
+	li      0, $11
+	li      4, $12
 	li      9, $2
 	call    min_caml_float_of_int
+.count load_float
+	load    [f.27139], $22
 .count move_ret
-	mov     $1, $22
-	li      4, $2
-	fmul    $22, $11, $22
-	li      0, $5
-	li      0, $4
-	fsub    $22, $10, $3
+	mov     $1, $21
+.count load_float
+	load    [f.27140], $23
+	fmul    $21, $22, $21
+.count move_args
+	mov     $11, $5
+.count move_args
+	mov     $10, $4
+.count move_args
+	mov     $12, $2
+	fsub    $21, $23, $3
 	call    calc_dirvecs.3028
-	li      4, $4
-	li      2, $3
 	li      8, $2
+	li      2, $3
+	li      4, $4
 	call    calc_dirvec_rows.3033
 	li      119, $3
 	load    [min_caml_dirvecs + 4], $2
@@ -16957,203 +18232,200 @@ be_cont.31976:
 	cmp     $12, 0
 	store   $56, [$11 + 1]
 	store   $57, [$11 + 2]
-	bl      bge_cont.31977
-bge_then.31977:
-	load    [min_caml_objects + $12], $13
-	load    [min_caml_light_dirvec + 1], $15
+	bl      bge_cont.31887
+bge_then.31887:
+	load    [min_caml_objects + $12], $14
+	load    [min_caml_light_dirvec + 1], $13
 .count move_args
 	mov     $zero, $3
-	load    [$13 + 1], $14
-	cmp     $14, 1
-	bne     be_else.31978
-be_then.31978:
+	load    [$14 + 1], $15
+	cmp     $15, 1
+	bne     be_else.31888
+be_then.31888:
 	li      6, $2
 	call    min_caml_create_array
 	load    [$11 + 0], $17
 .count move_ret
 	mov     $1, $16
 	fcmp    $17, $zero
-	bne     be_else.31979
-be_then.31979:
+	bne     be_else.31889
+be_then.31889:
 	store   $zero, [$16 + 1]
-	b       be_cont.31979
-be_else.31979:
-	load    [$13 + 6], $18
+.count b_cont
+	b       be_cont.31889
+be_else.31889:
+	load    [$14 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31980
-ble_then.31980:
+	bg      ble_else.31890
+ble_then.31890:
 	li      0, $17
-	b       ble_cont.31980
-ble_else.31980:
+.count b_cont
+	b       ble_cont.31890
+ble_else.31890:
 	li      1, $17
-ble_cont.31980:
+ble_cont.31890:
 	cmp     $18, 0
-	be      bne_cont.31981
-bne_then.31981:
+	be      bne_cont.31891
+bne_then.31891:
 	cmp     $17, 0
-	bne     be_else.31982
-be_then.31982:
+	bne     be_else.31892
+be_then.31892:
 	li      1, $17
-	b       be_cont.31982
-be_else.31982:
+.count b_cont
+	b       be_cont.31892
+be_else.31892:
 	li      0, $17
-be_cont.31982:
-bne_cont.31981:
-	load    [$13 + 4], $18
+be_cont.31892:
+bne_cont.31891:
+	load    [$14 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 0], $18
-	bne     be_else.31983
-be_then.31983:
+	bne     be_else.31893
+be_then.31893:
 	fneg    $18, $17
 	store   $17, [$16 + 0]
 	load    [$11 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-	b       be_cont.31983
-be_else.31983:
+.count b_cont
+	b       be_cont.31893
+be_else.31893:
 	store   $18, [$16 + 0]
 	load    [$11 + 0], $17
 	finv    $17, $17
 	store   $17, [$16 + 1]
-be_cont.31983:
-be_cont.31979:
+be_cont.31893:
+be_cont.31889:
 	load    [$11 + 1], $17
 	fcmp    $17, $zero
-	bne     be_else.31984
-be_then.31984:
+	bne     be_else.31894
+be_then.31894:
 	store   $zero, [$16 + 3]
-	b       be_cont.31984
-be_else.31984:
-	load    [$13 + 6], $18
+.count b_cont
+	b       be_cont.31894
+be_else.31894:
+	load    [$14 + 6], $18
 	fcmp    $zero, $17
-	bg      ble_else.31985
-ble_then.31985:
+	bg      ble_else.31895
+ble_then.31895:
 	li      0, $17
-	b       ble_cont.31985
-ble_else.31985:
+.count b_cont
+	b       ble_cont.31895
+ble_else.31895:
 	li      1, $17
-ble_cont.31985:
+ble_cont.31895:
 	cmp     $18, 0
-	be      bne_cont.31986
-bne_then.31986:
+	be      bne_cont.31896
+bne_then.31896:
 	cmp     $17, 0
-	bne     be_else.31987
-be_then.31987:
+	bne     be_else.31897
+be_then.31897:
 	li      1, $17
-	b       be_cont.31987
-be_else.31987:
+.count b_cont
+	b       be_cont.31897
+be_else.31897:
 	li      0, $17
-be_cont.31987:
-bne_cont.31986:
-	load    [$13 + 4], $18
+be_cont.31897:
+bne_cont.31896:
+	load    [$14 + 4], $18
 	cmp     $17, 0
 	load    [$18 + 1], $18
-	bne     be_else.31988
-be_then.31988:
+	bne     be_else.31898
+be_then.31898:
 	fneg    $18, $17
 	store   $17, [$16 + 2]
 	load    [$11 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-	b       be_cont.31988
-be_else.31988:
+.count b_cont
+	b       be_cont.31898
+be_else.31898:
 	store   $18, [$16 + 2]
 	load    [$11 + 1], $17
 	finv    $17, $17
 	store   $17, [$16 + 3]
-be_cont.31988:
-be_cont.31984:
+be_cont.31898:
+be_cont.31894:
 	load    [$11 + 2], $17
 	fcmp    $17, $zero
-	bne     be_else.31989
-be_then.31989:
+	bne     be_else.31899
+be_then.31899:
 .count storer
-	add     $15, $12, $tmp
+	add     $13, $12, $tmp
 	store   $zero, [$16 + 5]
 	sub     $12, 1, $3
 	store   $16, [$tmp + 0]
 .count move_args
 	mov     $10, $2
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31978
-be_else.31989:
-	load    [$13 + 4], $18
-	load    [$13 + 6], $19
+.count b_cont
+	b       be_cont.31888
+be_else.31899:
+	load    [$14 + 6], $18
+	load    [$14 + 4], $19
 	fcmp    $zero, $17
-	bg      ble_else.31990
-ble_then.31990:
+	bg      ble_else.31900
+ble_then.31900:
 	li      0, $17
-	b       ble_cont.31990
-ble_else.31990:
+.count b_cont
+	b       ble_cont.31900
+ble_else.31900:
 	li      1, $17
-ble_cont.31990:
-	load    [$18 + 2], $18
-	cmp     $19, 0
-	bne     be_else.31991
-be_then.31991:
+ble_cont.31900:
+	cmp     $18, 0
+	be      bne_cont.31901
+bne_then.31901:
 	cmp     $17, 0
-	bne     be_else.31992
-be_then.31992:
-	fneg    $18, $17
-	b       be_cont.31992
-be_else.31992:
-	mov     $18, $17
-be_cont.31992:
-	store   $17, [$16 + 4]
-.count storer
-	add     $15, $12, $tmp
-	load    [$11 + 2], $17
-	sub     $12, 1, $3
+	bne     be_else.31902
+be_then.31902:
+	li      1, $17
+.count b_cont
+	b       be_cont.31902
+be_else.31902:
+	li      0, $17
+be_cont.31902:
+bne_cont.31901:
+	load    [$19 + 2], $18
+	cmp     $17, 0
 .count move_args
 	mov     $10, $2
+	sub     $12, 1, $3
+.count storer
+	add     $13, $12, $tmp
+	bne     be_else.31903
+be_then.31903:
+	fneg    $18, $17
+	store   $17, [$16 + 4]
+	load    [$11 + 2], $17
 	finv    $17, $17
 	store   $17, [$16 + 5]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31978
-be_else.31991:
-	cmp     $17, 0
-	bne     be_else.31993
-be_then.31993:
-	li      1, $17
-	b       be_cont.31993
-be_else.31993:
-	li      0, $17
-be_cont.31993:
-	cmp     $17, 0
-	bne     be_else.31994
-be_then.31994:
-	fneg    $18, $17
-	b       be_cont.31994
-be_else.31994:
-	mov     $18, $17
-be_cont.31994:
-	store   $17, [$16 + 4]
-.count storer
-	add     $15, $12, $tmp
+.count b_cont
+	b       be_cont.31888
+be_else.31903:
+	store   $18, [$16 + 4]
 	load    [$11 + 2], $17
-	sub     $12, 1, $3
-.count move_args
-	mov     $10, $2
 	finv    $17, $17
 	store   $17, [$16 + 5]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31978
-be_else.31978:
-	cmp     $14, 2
-	bne     be_else.31995
-be_then.31995:
+.count b_cont
+	b       be_cont.31888
+be_else.31888:
+	cmp     $15, 2
+	bne     be_else.31904
+be_then.31904:
 	li      4, $2
 	call    min_caml_create_array
-	load    [$13 + 4], $17
-	load    [$11 + 2], $20
-	load    [$13 + 4], $18
-	load    [$17 + 2], $17
-	load    [$13 + 4], $19
+	load    [$14 + 4], $17
+	load    [$11 + 0], $20
+	load    [$14 + 4], $18
+	load    [$17 + 0], $17
+	load    [$14 + 4], $19
 	load    [$18 + 1], $18
 	fmul    $20, $17, $17
-	load    [$19 + 0], $19
+	load    [$19 + 2], $19
 	load    [$11 + 1], $20
 .count move_ret
 	mov     $1, $16
@@ -17161,194 +18433,207 @@ be_then.31995:
 	mov     $10, $2
 	fmul    $20, $18, $18
 	sub     $12, 1, $3
-	load    [$11 + 0], $20
+	load    [$11 + 2], $20
 .count storer
-	add     $15, $12, $tmp
-	fmul    $20, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
+	add     $13, $12, $tmp
+	fadd    $17, $18, $17
+	fmul    $20, $19, $18
+	fadd    $17, $18, $17
 	fcmp    $17, $zero
-	bg      ble_else.31996
-ble_then.31996:
+	bg      ble_else.31905
+ble_then.31905:
 	store   $zero, [$16 + 0]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31995
-ble_else.31996:
+.count b_cont
+	b       be_cont.31904
+ble_else.31905:
 	finv    $17, $17
 	fneg    $17, $18
 	store   $18, [$16 + 0]
-	load    [$13 + 4], $18
+	load    [$14 + 4], $18
 	load    [$18 + 0], $18
 	fmul    $18, $17, $18
 	fneg    $18, $18
 	store   $18, [$16 + 1]
-	load    [$13 + 4], $18
+	load    [$14 + 4], $18
 	load    [$18 + 1], $18
 	fmul    $18, $17, $18
 	fneg    $18, $18
 	store   $18, [$16 + 2]
-	load    [$13 + 4], $18
+	load    [$14 + 4], $18
 	load    [$18 + 2], $18
 	fmul    $18, $17, $17
 	fneg    $17, $17
 	store   $17, [$16 + 3]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31995
-be_else.31995:
+.count b_cont
+	b       be_cont.31904
+be_else.31904:
 	li      5, $2
 	call    min_caml_create_array
-	load    [$11 + 2], $21
-	load    [$13 + 4], $17
-	load    [$13 + 4], $18
-	fmul    $21, $21, $22
-	load    [$17 + 2], $17
-	load    [$18 + 1], $18
-	load    [$13 + 4], $19
-	load    [$13 + 3], $20
-	fmul    $22, $17, $17
-	load    [$19 + 0], $19
+	load    [$11 + 0], $21
 	load    [$11 + 1], $22
+	load    [$14 + 4], $18
+	load    [$14 + 4], $19
+	fmul    $21, $21, $24
+	fmul    $22, $22, $25
+	load    [$11 + 2], $23
+	load    [$18 + 0], $18
+	load    [$19 + 1], $19
+	load    [$14 + 4], $20
+	fmul    $23, $23, $26
+	fmul    $24, $18, $18
+	fmul    $25, $19, $19
+	load    [$20 + 2], $20
+	load    [$14 + 3], $17
 .count move_ret
 	mov     $1, $16
-	cmp     $20, 0
-	fmul    $22, $22, $23
-	fmul    $23, $18, $18
-	load    [$11 + 0], $23
-	fmul    $23, $23, $24
-	fmul    $24, $19, $19
-	fadd    $19, $18, $18
-	fadd    $18, $17, $17
-	be      bne_cont.31997
-bne_then.31997:
-	load    [$13 + 9], $19
-	fmul    $22, $21, $18
+	fmul    $26, $20, $20
+	fadd    $18, $19, $18
+	cmp     $17, 0
+	fadd    $18, $20, $18
+	be      bne_cont.31906
+bne_then.31906:
+	load    [$14 + 9], $20
+	fmul    $22, $23, $19
+	load    [$14 + 9], $24
+	load    [$20 + 0], $20
+	fmul    $23, $21, $23
+	fmul    $19, $20, $19
+	fmul    $21, $22, $21
+	load    [$24 + 1], $20
+	load    [$14 + 9], $22
+	fadd    $18, $19, $18
+	fmul    $23, $20, $20
+	load    [$22 + 2], $19
+	fmul    $21, $19, $19
+	fadd    $18, $20, $18
+	fadd    $18, $19, $18
+bne_cont.31906:
+	store   $18, [$16 + 0]
+	load    [$14 + 4], $19
+	load    [$11 + 0], $22
+	load    [$14 + 4], $20
 	load    [$19 + 0], $19
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 1], $19
-	fmul    $21, $23, $18
-	fmul    $18, $19, $18
-	load    [$13 + 9], $19
-	fadd    $17, $18, $17
-	load    [$19 + 2], $19
-	fmul    $23, $22, $18
-	fmul    $18, $19, $18
-	fadd    $17, $18, $17
-bne_cont.31997:
-	store   $17, [$16 + 0]
-	load    [$13 + 4], $18
-	load    [$13 + 4], $19
-	load    [$13 + 4], $21
-	load    [$11 + 2], $22
-	load    [$18 + 2], $18
-	load    [$11 + 1], $23
-	load    [$19 + 1], $19
-	load    [$11 + 0], $24
-	load    [$21 + 0], $21
-	fmul    $22, $18, $18
-	fmul    $23, $19, $19
-	fmul    $24, $21, $21
-	cmp     $20, 0
-.count storer
-	add     $15, $12, $tmp
-	fneg    $18, $18
+	load    [$14 + 4], $21
+	load    [$20 + 1], $20
+	fmul    $22, $19, $19
+	load    [$11 + 2], $23
+	load    [$11 + 1], $22
+	load    [$21 + 2], $21
+	cmp     $17, 0
+	fmul    $22, $20, $20
+	fmul    $23, $21, $21
 	fneg    $19, $19
+.count storer
+	add     $13, $12, $tmp
 	sub     $12, 1, $3
+	fneg    $20, $20
+	fneg    $21, $21
 .count move_args
 	mov     $10, $2
-	fneg    $21, $21
-	bne     be_else.31998
-be_then.31998:
-	store   $21, [$16 + 1]
-	fcmp    $17, $zero
-	store   $19, [$16 + 2]
-	store   $18, [$16 + 3]
-	bne     be_else.31999
-be_then.31999:
+	bne     be_else.31907
+be_then.31907:
+	store   $19, [$16 + 1]
+	fcmp    $18, $zero
+	store   $20, [$16 + 2]
+	store   $21, [$16 + 3]
+	bne     be_else.31908
+be_then.31908:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31998
-be_else.31999:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31907
+be_else.31908:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.31998
-be_else.31998:
-	load    [$13 + 9], $24
-	load    [$13 + 9], $20
-	fcmp    $17, $zero
-	load    [$24 + 1], $24
-	load    [$20 + 2], $20
+.count b_cont
+	b       be_cont.31907
+be_else.31907:
+	load    [$14 + 9], $24
+	load    [$14 + 9], $17
+	fcmp    $18, $zero
+	load    [$24 + 2], $24
+	load    [$17 + 1], $17
 	fmul    $22, $24, $22
-	fmul    $23, $20, $23
+	fmul    $23, $17, $23
+	fadd    $23, $22, $22
+	fmul    $22, $39, $22
+	fsub    $19, $22, $19
+	store   $19, [$16 + 1]
+	load    [$11 + 2], $22
+	load    [$14 + 9], $19
+	load    [$11 + 0], $23
+	load    [$19 + 0], $19
+	fmul    $23, $24, $23
+	fmul    $22, $19, $22
 	fadd    $22, $23, $22
 	fmul    $22, $39, $22
-	fsub    $21, $22, $21
-	store   $21, [$16 + 1]
+	fsub    $20, $22, $20
+	store   $20, [$16 + 2]
 	load    [$11 + 0], $22
-	load    [$13 + 9], $21
-	fmul    $22, $20, $20
-	load    [$21 + 0], $21
-	load    [$11 + 2], $22
-	fmul    $22, $21, $22
-	fadd    $22, $20, $20
-	fmul    $20, $39, $20
-	fsub    $19, $20, $19
-	store   $19, [$16 + 2]
 	load    [$11 + 1], $20
-	load    [$11 + 0], $19
-	fmul    $20, $21, $20
-	fmul    $19, $24, $19
-	fadd    $20, $19, $19
-	fmul    $19, $39, $19
-	fsub    $18, $19, $18
-	store   $18, [$16 + 3]
-	bne     be_else.32000
-be_then.32000:
+	fmul    $22, $17, $17
+	fmul    $20, $19, $19
+	fadd    $19, $17, $17
+	fmul    $17, $39, $17
+	fsub    $21, $17, $17
+	store   $17, [$16 + 3]
+	bne     be_else.31909
+be_then.31909:
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-	b       be_cont.32000
-be_else.32000:
-	finv    $17, $17
+.count b_cont
+	b       be_cont.31909
+be_else.31909:
+	finv    $18, $17
 	store   $17, [$16 + 4]
 	store   $16, [$tmp + 0]
 	call    iter_setup_dirvec_constants.2826
-be_cont.32000:
-be_cont.31998:
-be_cont.31995:
-be_cont.31978:
-bge_cont.31977:
+be_cont.31909:
+be_cont.31907:
+be_cont.31904:
+be_cont.31888:
+bge_cont.31887:
 	sub     $41, 1, $2
 	call    setup_reflections.3064
-	load    [min_caml_image_center + 1], $11
-	load    [min_caml_screenz_dir + 2], $10
-	neg     $11, $2
+	load    [min_caml_image_center + 1], $14
+	li      0, $10
+	sub     $50, 1, $11
+	load    [min_caml_screeny_dir + 0], $12
+	load    [min_caml_scan_pitch + 0], $13
+	neg     $14, $2
 	call    min_caml_float_of_int
-	load    [min_caml_scan_pitch + 0], $2
-	load    [min_caml_screeny_dir + 1], $3
-	li      0, $4
-	fmul    $2, $1, $1
-	load    [min_caml_screeny_dir + 2], $2
-	fmul    $1, $2, $2
-	fmul    $1, $3, $3
-	fadd    $2, $10, $7
-	load    [min_caml_screenz_dir + 1], $2
-	fadd    $3, $2, $6
-	load    [min_caml_screeny_dir + 0], $3
+	fmul    $13, $1, $1
 	load    [min_caml_screenz_dir + 0], $2
+	load    [min_caml_screeny_dir + 1], $4
+	fmul    $1, $12, $3
+	fmul    $1, $4, $4
+	fadd    $3, $2, $5
+	load    [min_caml_screeny_dir + 2], $3
+	load    [min_caml_screenz_dir + 1], $2
 	fmul    $1, $3, $1
-	sub     $53, 1, $3
-	fadd    $1, $2, $5
+	fadd    $4, $2, $6
+.count move_args
+	mov     $11, $3
+	load    [min_caml_screenz_dir + 2], $2
+.count move_args
+	mov     $10, $4
+	fadd    $1, $2, $7
+.count stack_load
 	load    [$sp + 1], $2
 	call    pretrace_pixels.2983
-	li      2, $6
 	li      0, $2
+	li      2, $6
+.count stack_load
 	load    [$sp + 0], $3
+.count stack_load
 	load    [$sp + 1], $4
+.count stack_load
 	load    [$sp + 2], $5
 	call    scan_line.3000
 .count stack_move

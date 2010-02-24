@@ -17,8 +17,6 @@ let getDelay exp =
     M.find inst delay
   with Not_found -> print_string inst; assert false
 
-
-
 let getRead = function
   | Exp(_, _, read, _) -> read
 
@@ -39,6 +37,13 @@ let rec remove exp = function
   | Seq(exp', e) -> Seq(exp', remove exp e)
   | _ -> assert false
 
+let rec addLast e = function
+  | End -> e
+  | Call(s, e') -> Call(s, addLast e e')
+  | Seq(exp, e') -> Seq(exp, addLast e e')
+  | If(b, bn, e1, e2, e3) -> If(b, bn, e1, e2, addLast e e3)
+  | _ -> assert false
+
 let rec g = function
   | End | Ret _ | Jmp _ as e -> e
   | Call(s, e) -> Call(s, g e)
@@ -52,6 +57,20 @@ let rec g = function
         ((*Format.eprintf "MoveFirst@.";*) Seq(exp, g (If(b, bn, remove exp e1, remove exp e2, e3))))
       else
         If(b, bn, g e1, g e2, g e3)
+        (*
+        (*let exps = getFirst [] [] e3 in*)
+        let exps = getFirst ["cond"] [] e3 in
+        if exps <> [] then
+          let exp = List.hd exps in
+          g (If (b, bn, addLast (Seq(exp, End)) e1, addLast (Seq(exp, End)) e2, remove exp e3))
+        else
+          If(b, bn, g e1, g e2, g e3)
+        (*
+        match e3 with
+          | Call(s, e) -> g (If(b, bn, addLast (Call(s, End)) e1, addLast (Call(s, End)) e2, e))
+          | Seq(exp, e) -> g (If (b, bn, addLast (Seq(exp, End)) e1, addLast (Seq(exp, End)) e2, remove exp e3))
+          | e3 -> If(b, bn, g e1, g e2, g e3)
+        *)*)
 
 let aging write =
   let write' = List.map (fun (x, y) -> (x - 1, y)) write in
@@ -75,12 +94,12 @@ let rec schedule awrite = function
 
 let rec h e =
   let e' = g e in
-  if e' = e then schedule [] e'
+  if e' = e then e(*schedule [] e'*)
   else h e'
 
 let f (Prog(data, fundefs, e)) =
-  let fundefs = List.map (fun (f, e) -> (f, h e)) fundefs in
   miss := 0;
+  let fundefs = List.map (fun (f, e) -> (f, h e)) fundefs in
   let e = h e in
   Format.eprintf "MissCount: %d@." !miss;
   Prog(data, fundefs, e)
