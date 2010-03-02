@@ -116,9 +116,11 @@ and maketree wenv renv eenv root n =  function
       maketree wenv' renv' eenv' root (n + 1) e
 
 
-let f (Prog(data, fundefs, e)) =
+let f' (Prog(data, fundefs, e)) =
   miss := 0;
   let fundefs' = List.map (fun (id, e) -> id, g e) fundefs in
   let e = g e in
   Format.eprintf "miss: %d@." !miss;
   Prog(data, fundefs', e)
+
+let f x = x

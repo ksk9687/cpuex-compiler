@@ -26,11 +26,32 @@ let getWrite = function
 let inter xs ys =
   List.fold_left (fun zs x -> if List.mem x ys then x :: zs else zs) [] xs
 
+let addMax x y xs =
+  if M.mem x xs then M.add x (max (M.find x xs) y) xs
+  else M.add x y xs
+
 let rec getFirst reads writes = function
   | Seq(Exp(_, _, read, write) as exp, e) ->
       if (inter (reads @ writes) write) <> [] || (inter writes read) <> [] then getFirst (read@reads) (write@writes) e
       else exp :: (getFirst (read@reads) (write@writes) e)
   | _ -> []
+
+let rec getCritical time = function
+  | Seq(exp, e) ->
+      let t = List.fold_left
+        (fun t r ->
+          if M.mem r time then max t (M.find r time)
+          else t
+        ) 0 (getRead exp) in
+      let d = t + (getDelay exp) + 1 in
+      let time = List.fold_left
+        (fun time r -> addMax r d time
+        ) time (getWrite exp) in
+      max t (getCritical time e)
+  | If _ ->
+      if M.mem "cond" time then (M.find "cond" time)
+      else 0
+  | _ -> 0
 
 let rec remove exp = function
   | Seq(exp', e) when exp' = exp -> e
@@ -43,6 +64,43 @@ let rec addLast e = function
   | Seq(exp, e') -> Seq(exp, addLast e e')
   | If(b, bn, e1, e2, e3) -> If(b, bn, e1, e2, addLast e e3)
   | _ -> assert false
+
+let aging write =
+  let write' = List.map (fun (x, y) -> (x - 1, y)) write in
+  List.filter (fun (x, _) -> x >= 0) write'
+
+let miss = ref 0
+
+let rec schedule awrite = function
+  | End | Ret _ | Jmp _ as e -> e
+  | Call(s, e) -> Call(s, schedule [] e)
+  | If(b, bn, e1, e2, e3) -> If(b, bn, schedule [] e1, schedule [] e2, schedule [] e3)
+  | Seq(exp, e) as es ->
+      let awrite = aging awrite in
+      let write = List.fold_left (fun x (_, y) -> y @ x) [] awrite in
+      let exps = getFirst [] write es in
+      if exps <> [] then
+        let time = List.fold_left
+          (fun time (t, rs) -> List.fold_left
+            (fun time r -> addMax r t time
+            ) time rs
+          ) M.empty awrite in
+        let ts = List.map
+          (fun exp ->
+            let t = getDelay exp in
+            let time = List.fold_left
+              (fun time r -> addMax r t time
+              ) time (getWrite exp) in
+            (getCritical time (remove exp es), exp)
+          ) exps in
+        let (_, exp) = List.fold_left
+          (fun (t, exp) (t', exp') ->
+            if t > t' then (t', exp')
+            else (t, exp)
+          ) (List.hd ts) (List.tl ts) in
+        Seq(exp, schedule ((getDelay exp, getWrite exp) :: awrite) (remove exp es))
+      else
+        (incr miss; schedule awrite es)
 
 let rec g = function
   | End | Ret _ | Jmp _ as e -> e
@@ -72,29 +130,9 @@ let rec g = function
           | e3 -> If(b, bn, g e1, g e2, g e3)
         *)*)
 
-let aging write =
-  let write' = List.map (fun (x, y) -> (x - 1, y)) write in
-  List.filter (fun (x, _) -> x >= 0) write'
-
-let miss = ref 0
-
-let rec schedule awrite = function
-  | End | Ret _ | Jmp _ as e -> e
-  | Call(s, e) -> Call(s, schedule [] e)
-  | If(b, bn, e1, e2, e3) -> If(b, bn, schedule (aging awrite) e1, schedule (aging awrite) e2, schedule [] e3)
-  | Seq(exp, e) as es ->
-      let awrite = aging awrite in
-      let write = List.fold_left (fun x (_, y) -> y @ x) [] awrite in
-      let exps = getFirst [] write es in
-      if exps <> [] then
-        let exp = List.hd exps in
-        Seq(exp, schedule ((getDelay exp, getWrite exp) :: awrite) (remove exp es))
-      else
-        (incr miss; schedule awrite es)
-
 let rec h e =
   let e' = g e in
-  if e' = e then e(*schedule [] e'*)
+  if e' = e then schedule [] e'
   else h e'
 
 let f (Prog(data, fundefs, e)) =

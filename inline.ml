@@ -20,10 +20,12 @@ let rec seq dest e1 e2 =
 let rec g env = function
   | Let(xt, IfEq(x, y, e1, e2), cont) when size cont < !threshold2 ->
       (*Format.eprintf "InlineCont %d@." (size cont);*)
-      IfEq(x, y, seq xt e1 cont, seq xt e2 cont)
+      IfEq(x, y, seq xt e1 cont, Alpha.g M.empty (seq xt e2 cont))
+      (*IfEq(x, y, seq xt e1 cont, seq xt e2 cont)*)
   | Let(xt, IfLE(x, y, e1, e2), cont) when size cont < !threshold2 ->
       (*Format.eprintf "InlineCont %d@." (size cont);*)
-      IfLE(x, y, seq xt e1 cont, seq xt e2 cont)
+      IfLE(x, y, seq xt e1 cont, Alpha.g M.empty (seq xt e2 cont))
+      (*IfLE(x, y, seq xt e1 cont, seq xt e2 cont)*)
   | IfEq(x, y, e1, e2) -> IfEq(x, y, g env e1, g env e2)
   | IfLE(x, y, e1, e2) -> IfLE(x, y, g env e1, g env e2)
   | Let(xt, e1, e2) -> Let(xt, g env e1, g env e2)
