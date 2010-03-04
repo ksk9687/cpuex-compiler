@@ -27,7 +27,7 @@ type t =
 type fundef = { name : Id.l * Type.t;
                 args : (Id.t * Type.t) list;
                 body : t }
-type prog = Prog of fundef list * t
+type prog = Prog of (Id.t * Type.t) list * fundef list * t
 
 val fv : t -> S.t
 val f : KNormal.t -> prog

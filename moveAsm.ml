@@ -5,6 +5,9 @@ let delay =
     (fun m (n,list) ->
        List.fold_left (fun m x -> M.add x n m) m list)
     M.empty
+(*    [(0,["store";"mov";"li";"add";"addi";"sub";"subi";"sll";"cmp";"cmpi";"fcmp";"fabs";"fneg"]);
+     (1,["load";"loadr";"read";"write"]);
+     (2,["fadd";"fsub";"fmul";"finv";"fsqrt"])]*)
     [(0,["store";"mov"]);
      (1,["li";"add";"addi";"sub";"subi";"sll";"cmp";"cmpi";"fcmp";"fabs";"fneg";"read";"write"]);
      (2,["load";"loadr"]);
@@ -132,7 +135,7 @@ let rec g = function
 
 let rec h e =
   let e' = g e in
-  if e' = e then schedule [] e'
+  if e' = e then e (*schedule [] e'*)
   else h e'
 
 let f (Prog(data, fundefs, e)) =

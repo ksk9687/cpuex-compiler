@@ -3,13 +3,13 @@ MIN_CAML = ../min-caml.opt
 SIM = ../../sim/sim.jar
 FAST_SIM = ../../sim/fastsim/fastsim.exe
 MIN_CAML_OPTION = -inline 150 -inline_cont 20
-CPU = SuperScalar
+CPU = MasterScalar
 RUN_SIM = java -jar -Xmx256M -Xss32M $(SIM) -cpu $(CPU)
 
 .PHONY: run fast stat fpu cui inline0 clean
 
 run: min-rt.s
-	$(RUN_SIM).NoStat -asm min-rt.bin -in contest.sldb -out contest.ppm -gui min-rt.s
+	$(RUN_SIM).NoStat -asm min-rt.bin < contest.sldb > contest.ppm -gui min-rt.s
 	diff contest.ppm old/contest.ppm
 
 fast: $(FAST_SIM) min-rt.bin
@@ -17,15 +17,15 @@ fast: $(FAST_SIM) min-rt.bin
 	diff contest.ppm old/contest.ppm
 
 stat: min-rt.s
-	$(RUN_SIM) -asm min-rt.bin -in contest.sldb -out contest.ppm -gui min-rt.s
+	$(RUN_SIM) -asm min-rt.bin < contest.sldb > contest.ppm -gui min-rt.s
 	diff contest.ppm old/contest.ppm
 
 fpu: min-rt.s
-	$(RUN_SIM).FPU -asm min-rt.bin -in contest.sldb -out contest_fpu.ppm -gui min-rt.s
+	$(RUN_SIM).FPU -asm min-rt.bin < contest.sldb > contest_fpu.ppm -gui min-rt.s
 	diff contest_fpu.ppm old/contest_fpu.ppm
 
 cui: min-rt.s
-	$(RUN_SIM).NoStat -asm min-rt.bin -in contest.sldb -out contest.ppm -cui min-rt.s
+	$(RUN_SIM).NoStat -asm min-rt.bin < contest.sldb > contest.ppm -cui min-rt.s
 	diff contest.ppm old/contest.ppm
 
 min-rt.bin: $(SIM) min-rt.s
@@ -44,4 +44,4 @@ inline0:
 	rm tmp.ml tmp.s
 
 clean:
-	rm -f min-rt.s min-rt.bin contest.ppm tmp.ml tmp.s
+	rm -f min-rt.s min-rt.bin contest.ppm contest_fpu.ppm tmp.ml tmp.s

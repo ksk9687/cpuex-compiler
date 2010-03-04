@@ -103,14 +103,24 @@ let rec g env = function
   | Closure.ExtArray(Id.L(x)) -> Ans(SetL(Id.L("min_caml_" ^ x)))
 
 let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.body = e } =
-  let xts = separate yts in
+  let (_, _, xs, rs) = List.fold_left
+    (fun (iregs, fregs, xs, rs) (x, t) -> match t with
+      | Type.Unit -> (iregs, fregs, xs, rs)
+      | Type.Float -> (iregs, List.tl fregs, xs @ [x], rs @ [List.hd fregs])
+      | _ -> (List.tl iregs, fregs, xs @ [x], rs @ [List.hd iregs])
+    ) (List.tl alliregs, List.tl allfregs, [], []) yts in
   match t with
   | Type.Fun(_, t2) ->
-      { name = Id.L(x); args = xts; body = g (M.add x t (M.add_list yts M.empty)) e; ret = t2 }
+      let ret_reg = (match t2 with
+        | Type.Unit -> "$dummy"
+        | Type.Float -> List.hd allfregs
+        | _ -> List.hd alliregs
+      ) in
+      { name = Id.L(x); args = xs; arg_regs = rs; body = g (M.add x t (M.add_list yts M.empty)) e; ret = t2; ret_reg = ret_reg }
   | _ -> assert false
 
-let f (Closure.Prog(fundefs, e)) =
+let f (Closure.Prog(global, fundefs, e)) =
   data := [];
   let fundefs = List.map h fundefs in
   let e = g M.empty e in
-  Prog(!data, fundefs, e)
+  Prog(global, !data, fundefs, e)

@@ -86,26 +86,40 @@ and g' env = function
   | CallDir(l, ys) -> CallDir(l, List.map (fun y -> replace y env) ys)
   | e -> e
 
-let h { name = l; args = xs; body = e; ret = t } =
-  { name = l; args = xs; body = g M.empty e; ret = t }
+let h { name = l; args = xs; arg_regs = rs; body = e; ret = t; ret_reg = r } =
+  { name = l; args = xs; arg_regs = rs; body = g M.empty e; ret = t; ret_reg = r }
 
-let f (Prog(data, fundefs, e)) =
+let f (Prog(global, data, fundefs, e)) =
 	let counts = List.fold_left (fun env { name = l; args = xs; body = e; ret = t} -> count env e) M.empty fundefs in
 	let counts = count counts e in
   let gls = M.fold (fun l env' ls -> List.fold_left (fun ls (i, n) -> (l, i, n) :: ls) ls env') counts [] in
   let gls = List.sort (fun (_, _, n1) (_, _, n2) -> n2 - n1) gls in
   let _  = List.fold_left
-	  (fun n (l, i, _) ->
-	      if n >= List.length reg_gls then n
-	      else
-	        let reg = List.nth reg_gls n in
-	        Format.eprintf "Allocate %s.(%d) -> %s@." l i reg;
-          gtable := ((Id.L(l), i), reg) :: !gtable;
-          n + 1
+	  (fun (ni, nf) (l, i, _) ->
+      let t = match (List.assoc l global) with
+        | Type.Array(t) -> t
+        | Type.Tuple(ts) -> List.nth ts i
+        | _ -> assert false
+      in
+      match t with
+        | Type.Float ->
+            if nf >= List.length reg_fgls then (ni, nf)
+            else
+              let reg = List.nth reg_fgls nf in
+			          Format.eprintf "Allocate %s.(%d) -> %s@." l i reg;
+		            gtable := ((Id.L(l), i), reg) :: !gtable;
+		            (ni, nf + 1)
+        | _ ->
+            if ni >= List.length reg_igls then (ni, nf)
+            else
+              let reg = List.nth reg_igls ni in
+			          Format.eprintf "Allocate %s.(%d) -> %s@." l i reg;
+		            gtable := ((Id.L(l), i), reg) :: !gtable;
+		            (ni + 1, nf)
 	  )
-	  0 gls
+	  (0, 0) gls
   in
-	Prog(data, List.map h fundefs,
+	Prog(global, data, List.map h fundefs,
         List.fold_left
           (fun e ((l, i), reg) -> Let((reg, Type.Int), Ld(L(l), C(i)), e))
           (g M.empty e)

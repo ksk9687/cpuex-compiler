@@ -14,24 +14,22 @@ let lexbuf outchan l =
   Id.counter := 0;
   Typing.extenv := M.empty;
   Emit.f outchan
-    (Schedule.f
-	    (MoveAsm.f
-		    (Scalar.f
-				  (RegAlloc.f
-	  			  (Sglobal.f
-              (PreSchedule.f
-  		  	        (Sfl.f
-	    	  		      (Slabel.f
-  	    				       (Simm.f
-                          (Balance.f
-									          (Virtual.f
-									             (Closure.f
-									                (iter !limit
-									                   (Alpha.f
-									                      (KNormal.f
-									                         (BuiltIn.f
-									                           (Typing.f
-									                              (Parser.exp Lexer.token l))))))))))))))))))
+    (MoveAsm.f
+      (Scalar.f
+        (RegAlloc.f
+          (Sglobal.f
+            (PreSchedule.f
+              (Sfl.f
+                (Slabel.f
+                  (Simm.f
+                    (Virtual.f
+                      (Closure.f
+                        (iter !limit
+                          (Alpha.f
+                            (KNormal.f
+                              (BuiltIn.f
+                                (Typing.f
+                                  (Parser.exp Lexer.token l))))))))))))))))
 
 let string s = lexbuf stdout (Lexing.from_string s)
 

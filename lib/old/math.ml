@@ -1,7 +1,3 @@
-(* 浮動小数基本演算 *)
-let rec fhalf a = a *. 0.5 in
-let rec fsqr a = a *. a in
-let rec fneg a = -. a in
 let rec atan a =
   let rec cordic_rec i x y z p =
     if i = 25 then z
@@ -31,3 +27,4 @@ let rec sin a =
 in
 let rec cos a = sin (1.570796326794895 -. a)
 in
+(atan x.(0)) +. (cos x.(0))

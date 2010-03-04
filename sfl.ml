@@ -53,10 +53,10 @@ and g' env = function
   | CallDir(l, ys) -> CallDir(l, List.map (fun y -> replace y env) ys)
   | e -> e
 
-let h { name = l; args = xs; body = e; ret = t } =
-  { name = l; args = xs; body = g M.empty e; ret = t }
+let h { name = l; args = xs; arg_regs = rs; body = e; ret = t; ret_reg = r } =
+  { name = l; args = xs; arg_regs = rs; body = g M.empty e; ret = t; ret_reg = r }
 
-let f (Prog(data, fundefs, e)) =
+let f (Prog(global, data, fundefs, e)) =
 	let counts = List.fold_left (fun env (Id.L(l), _) -> M.add l 0 env) M.empty data in
 	let counts = List.fold_left (fun env { name = l; args = xs; body = e; ret = t} -> count env e) counts fundefs in
 	let counts = count counts e in
@@ -65,15 +65,15 @@ let f (Prog(data, fundefs, e)) =
 	  (fun n (l, f) ->
 	      if f <> 0.0 && n >= List.length reg_fls then n
 	      else
-	        let (reg, n') = if f = 0.0 then (reg_zero, n) else (List.nth reg_fls n, n + 1) in
+	        let (reg, n') = if f = 0.0 then (reg_f0, n) else (List.nth reg_fls n, n + 1) in
 	        Format.eprintf "Allocate %f -> %s@." f reg;
           ftable := (l, reg) :: !ftable;
           n'
 	  )
 	  0 fls
 	in
-	Prog(data, List.map h fundefs,
+	Prog(global, data, List.map h fundefs,
         List.fold_left
-          (fun e (l, reg) -> if reg = reg_zero then e else Let((reg, Type.Float), Ld(L(l), C(0)), e))
+          (fun e (l, reg) -> if reg = reg_f0 then e else Let((reg, Type.Float), Ld(L(l), C(0)), e))
           (g M.empty e)
           !ftable)

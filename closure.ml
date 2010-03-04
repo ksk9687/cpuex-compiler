@@ -27,7 +27,7 @@ type t =
 type fundef = { name : Id.l * Type.t;
                 args : (Id.t * Type.t) list;
                 body : t }
-type prog = Prog of fundef list * t
+type prog = Prog of (Id.t * Type.t) list * fundef list * t
 
 let rec fv = function
   | Unit | Int(_) | Float(_) | ExtArray(_) -> S.empty
@@ -40,7 +40,8 @@ let rec fv = function
   | LetTuple(xts, y, e) -> S.add y (S.diff (fv e) (S.of_list (List.map fst xts)))
   | Put(x, y, z) -> S.of_list [x; y; z]
 
-let toplevel : fundef list ref = ref []
+let global = ref []
+let toplevel = ref []
 
 let rec g env known = function
   | KNormal.Unit -> Unit
@@ -83,7 +84,9 @@ let rec g env known = function
   | KNormal.LetTuple(xts, y, e) -> LetTuple(xts, y, g (M.add_list xts env) known e)
   | KNormal.Get(x, y) -> Get(x, y)
   | KNormal.Put(x, y, z) -> Put(x, y, z)
-  | KNormal.ExtArray(x) -> ExtArray(Id.L(x))
+  | KNormal.ExtArray(x, t) ->
+      if List.mem_assoc x !global then global := (x, t) :: !global;
+      ExtArray(Id.L(x))
   | KNormal.ExtFunApp(x, ys) ->
       match x with
         | "sqrt" -> FSqrt(List.hd ys)
@@ -93,4 +96,5 @@ let rec g env known = function
 let f e =
   toplevel := [];
   let e' = g M.empty S.empty e in
-  Prog(List.rev !toplevel, e')
+  List.iter (fun (name, t) -> Printf.printf "%s: %s\n" name (Type.string_of_t t)) !global;
+  Prog(!global, List.rev !toplevel, e')

@@ -42,7 +42,13 @@ let getDelay = function
   | Ld _ | LdFL _ -> 2
   | FInv _ | FSqrt _ | FAdd _ | FSub _ | FMul _ -> 4
   | _ -> 0
-
+(*
+let getDelay = function
+  | Set _ | SetL _ | Neg _ | Add _ | Sub _ | SLL _ | FNeg _ | FAbs _ -> 0
+  | Ld _ | LdFL _ -> 1
+  | FInv _ | FSqrt _ | FAdd _ | FSub _ | FMul _ -> 2
+  | _ -> 0
+*)
 let getRead exp = fv' exp
 
 let getWrite (id, t) = [id]
@@ -192,17 +198,19 @@ let rec g awrite e =
 			  else
 			    (incr miss; g awrite e)
 
-let h { name = l; args = xs; body = e; ret = t } =
-  { name = l; args = xs; body = g [] e; ret = t }
+let h { name = l; args = xs; arg_regs = rs; body = e; ret = t; ret_reg = r } =
+  { name = l; args = xs; arg_regs = rs; body = g [] e; ret = t; ret_reg = r }
 
-let f' (Prog(data, fundefs, e)) =
+let f' (Prog(global, data, fundefs, e)) =
   miss := 0;
   let fundefs = List.map h fundefs in
   let e = g [] e in
   Format.eprintf "MissCount: %d@." !miss;
-  Prog(data, fundefs, e)
+  Prog(global, data, fundefs, e)
 
 let rec f e =
   let e' = f' e in
   if e = e' then e
   else f e'
+
+let f e = e

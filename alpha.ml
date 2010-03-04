@@ -39,7 +39,7 @@ let rec g env = function
                g env' e)
   | Get(x, y) -> Get(find x env, find y env)
   | Put(x, y, z) -> Put(find x env, find y env, find z env)
-  | ExtArray(x) -> ExtArray(x)
+  | ExtArray(x, t) -> ExtArray(x, t)
   | ExtFunApp(x, ys) -> ExtFunApp(x, List.map (fun y -> find y env) ys)
 
 let f = g M.empty

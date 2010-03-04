@@ -4,9 +4,8 @@ let rec fn f n =
   if n > 1 then (fun x -> (fn f (n-1)) (f x))
   else f
 
-
 let safe_regs =
-  let regs = ((fn List.tl 10) allregs) in
+  let regs = ((fn List.tl 10) alliregs) @ ((fn List.tl 10) allfregs) in
   ref
     (List.fold_left
        (fun map (id,regs) -> M.add ("min_caml_" ^ id) (S.of_list regs) map) 
@@ -24,6 +23,10 @@ let get_safe_regs x =
   try M.find x !safe_regs
   with Not_found -> S.empty
 
+let fundefs = ref M.empty
+
+let get_arg_regs x = (M.find x !fundefs).arg_regs
+
 let rec target' src (dest, t) = function
   | Mov(x) when x = src && is_reg dest ->
       assert (t <> Type.Unit);
@@ -34,7 +37,7 @@ let rec target' src (dest, t) = function
       let c2, rs2 = target src (dest, t) e2 in
       c1 && c2, rs1 @ rs2
   | CallDir(Id.L(x), ys) ->
-      true, (target_args src regs 1 ys @
+      true, (target_args src (get_arg_regs x) ys @
          S.elements (get_safe_regs x))
   | _ -> false, []
 and target src dest = function
@@ -44,10 +47,10 @@ and target src dest = function
       let c2, rs2 = target src dest e in
         c2, rs1 @ rs2
   | Forget(_, e) -> target src dest e
-and target_args src all n = function
+and target_args src regs = function
   | [] -> []
-  | y :: ys when src = y -> all.(n) :: target_args src all (n + 1) ys
-  | _ :: ys -> target_args src all (n + 1) ys
+  | y :: ys when src = y -> (List.hd regs) :: target_args src (List.tl regs) ys
+  | _ :: ys -> target_args src (List.tl regs) ys
 
 type alloc_result =
   | Alloc of Id.t
@@ -57,7 +60,8 @@ let rec alloc dest cont regenv x t =
   let all =
     match t with
     | Type.Unit -> ["$dummy"]
-    | _ -> allregs in
+    | Type.Float -> allfregs
+    | _ -> alliregs in
   if all = ["$dummy"] then Alloc("$dummy") else
   if is_reg x then Alloc(x) else
   let free = fv cont in
@@ -230,41 +234,31 @@ and set_safe_regs_exp env = function
   | IfFEq (_, _, t1, t2) | IfFLE (_, _, t1, t2) ->
       S.inter (set_safe_regs_t env t1) (set_safe_regs_t env t2)
   | _ -> env
-let rec set_safe_regs   { name = Id.L(x); args = arg_regs; body = e; ret = t} =
+let rec set_safe_regs   { name = Id.L(x); args = args; arg_regs = arg_regs; body = e; ret = t; ret_reg = ret_reg } =
   let env = S.of_list allregs in
   let env = S.diff env (S.of_list arg_regs) in
-  let env =
-    if t = Type.Unit then env
-    else S.remove regs.(0) env in
+  let env = S.remove ret_reg env in
   safe_regs := M.add x env !safe_regs;
   let env = set_safe_regs_t env e in
     List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "o" else "x")) allregs;
     Format.eprintf "@.";
     safe_regs := M.add x env !safe_regs
 
-let h { name = Id.L(x); args = ys; body = e; ret = t } =
+let h { name = Id.L(x); args = xs; arg_regs = rs; body = e; ret = t; ret_reg = r } =
   Format.eprintf "Allocating: %s@." x;
-  let regenv = M.empty in
-  let (i, arg_regs, regenv) =
-    List.fold_left
-      (fun (i, arg_regs, regenv) y ->
-        let r = regs.(i) in
-        (i + 1,
-         arg_regs @ [r],
-         (assert (not (is_reg y));
-          M.add y r regenv)))
-      (1, [], regenv)
-      ys in
-  let a =
-    match t with
-    | Type.Unit -> Id.gentmp Type.Unit
-    | _ -> regs.(0) in
-  let (e', regenv') = g_repeat (a, t) (Ans(Mov(a))) regenv e in
-    set_safe_regs   { name = Id.L(x); args = arg_regs; body = e'; ret = t };
-    { name = Id.L(x); args = arg_regs; body = e'; ret = t }
+  let regenv = List.fold_left2
+    (fun env x r -> M.add x r env
+    ) M.empty xs rs in
+  let (e', regenv') = g_repeat (r, t) (Ans(Mov(r))) regenv e in
+  let func = { name = Id.L(x); args = rs; arg_regs = rs; body = e'; ret = t; ret_reg = r } in
+  set_safe_regs func;
+  func
 
-let f (Prog(data, fundefs, e)) =
+let f (Prog(global, data, funs, e)) =
   Format.eprintf "register allocation: may take some time (up to a few minutes, depending on the size of functions)@.";
-  let fundefs' = List.map h fundefs in
+  fundefs := List.fold_left
+    (fun fundefs f -> let Id.L(s) = f.name in M.add s f fundefs
+    ) M.empty funs;
+  let funs' = List.map h funs in
   let e', regenv' = g_repeat (Id.gentmp Type.Unit, Type.Unit) (Ans(Nop)) M.empty e in
-  Prog(data, fundefs', e')
+  Prog(global, data, funs', e')

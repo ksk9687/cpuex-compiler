@@ -21,7 +21,7 @@ type t =
   | LetTuple of (Id.t * Type.t) list * Id.t * t
   | Get of Id.t * Id.t
   | Put of Id.t * Id.t * Id.t
-  | ExtArray of Id.t
+  | ExtArray of Id.t * Type.t
   | ExtFunApp of Id.t * Id.t list
 and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 
@@ -111,7 +111,7 @@ let rec g env = function
   | Syntax.Var(x) when M.mem x env -> Var(x), M.find x env
   | Syntax.Var(x) ->
       (match M.find x !Typing.extenv with
-      | Type.Array _ | Type.Tuple _ as t -> ExtArray x, t
+      | Type.Array _ | Type.Tuple _ as t -> ExtArray(x, t), t
       | _ -> failwith (Printf.sprintf "external variable %s does not have an array type" x))
   | Syntax.LetRec({ Syntax.name = (x, t); Syntax.args = yts; Syntax.body = e1 }, e2) ->
       let env' = M.add x t env in
@@ -216,7 +216,7 @@ let rec string_t indent knormal =
         indent ^ i ^ ".(" ^ j ^ ")\n"
     | Put (i,j,k) ->
         indent ^ i ^ ".(" ^ j ^ ") <- " ^ k ^ "\n"
-    | ExtArray (i) -> indent ^ "ExtArray(" ^ i ^ ")\n"
+    | ExtArray (i, _) -> indent ^ "ExtArray(" ^ i ^ ")\n"
     | ExtFunApp (i, list) ->
         indent ^ i ^ "("
         ^ (List.fold_left (fun x y -> x ^ " " ^ y) "" list)

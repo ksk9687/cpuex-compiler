@@ -31,23 +31,31 @@ and exp =
   | CallDir of Id.l * Id.t list
   | Save of Id.t * Id.t
   | Restore of Id.t
-type fundef = { name : Id.l; args : Id.t list; body : t; ret : Type.t }
-type prog = Prog of (Id.l * float) list * fundef list * t
+type fundef = { name : Id.l; args : Id.t list; arg_regs : Id.t list; body : t; ret : Type.t; ret_reg : Id.t }
+type prog = Prog of (Id.t * Type.t) list * (Id.l * float) list * fundef list * t
 
 let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
-let nregs = 35
-let nfl = 5
-let ngl = 20
-let regs = Array.init nregs (fun i -> Printf.sprintf "$%d" (i + 1))
-let allregs = Array.to_list regs
+let niregs = 40
+let nfregs = 35
+let nfl = 9
+let nigl = 19
+let nfgl = 19
+let iregs = Array.init niregs (fun i -> Printf.sprintf "$i%d" (i + 1))
+let fregs = Array.init niregs (fun i -> Printf.sprintf "$f%d" (i + 1))
+let alliregs = Array.to_list iregs
+let allfregs = Array.to_list fregs
+let allregs = alliregs @ allfregs
+let reg_ra = "$ra"
 let reg_tmp = "$tmp"
 let reg_sp = "$sp"
 let reg_hp = "$hp"
-let reg_zero = "$zero"
+let reg_i0 = "$i0"
+let reg_f0 = "$f0"
 let is_reg x = (x.[0] = '$')
-let reg_fls = Array.to_list (Array.init nfl (fun i -> Printf.sprintf "$%d" (i + 1 + nregs)))
-let reg_gls = Array.to_list (Array.init ngl (fun i -> Printf.sprintf "$%d" (i + 1 + nregs + nfl)))
+let reg_fls = Array.to_list (Array.init nfl (fun i -> Printf.sprintf "$f%d" (i + 1 + nfregs)))
+let reg_igls = Array.to_list (Array.init nigl (fun i -> Printf.sprintf "$i%d" (i + 1 + niregs)))
+let reg_fgls = Array.to_list (Array.init nfgl (fun i -> Printf.sprintf "$f%d" (i + 1 + nfregs + nfl)))
 
 let rec remove_and_uniq xs = function
   | [] -> []

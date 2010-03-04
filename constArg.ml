@@ -11,7 +11,7 @@ let constArgs = ref M.empty
 let str = function
   | Int(i) -> string_of_int i
   | Float(f) -> string_of_float f
-  | ExtArray(a) -> a
+  | ExtArray(a, _) -> a
   | _ -> assert false
 
 let mem x env =

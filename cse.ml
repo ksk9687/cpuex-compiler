@@ -84,7 +84,7 @@ let rec number e =
 	  find (App(v x, List.map (fun y -> v y) ys))
 	else newtag()
     | Tuple(xs) -> find (Tuple(List.map (fun x -> v x) xs))
-    | ExtArray(x) -> find (ExtArray(v x))
+    | ExtArray(x, t) -> find (ExtArray(v x, t))
     | ExtFunApp(x, ys) ->
 	if S.mem x !no_effect_fun then
 	  find (ExtFunApp(v x, List.map (fun y -> v y) ys))
