@@ -10,18 +10,9 @@ and count' env = function
   | LdFL(Id.L(l)) when M.mem l env ->
       let n = M.find l env in
       M.add l (n + 1) env
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) 
-  | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) -> count (count env e1) e2
+  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+      count (count env e1) e2
   | _ -> env
-
-let replace x env =
-  if M.mem x env then M.find x env
-  else x
-
-let replace' x' env =
-  match x' with
-    | V(x) when M.mem x env -> V(M.find x env)
-    | x' -> x'
 
 let rec g env = function
   | Ans(exp) -> Ans(g' env exp)
@@ -31,29 +22,7 @@ let rec g env = function
   | Forget(x, e) -> Forget(x, g env e)
 and g' env = function
   | LdFL(l) when List.mem_assoc l !ftable -> FMov(List.assoc l !ftable)
-  | Mov(x) -> Mov(replace x env)
-  | FMov(x) -> FMov(replace x env)
-  | Neg(x) -> Neg(replace x env)
-  | Add(x, y') -> Add(replace x env, replace' y' env)
-  | Sub(x, y') -> Sub(replace x env, replace' y' env)
-  | Ld(x', y') -> Ld(replace' x' env, replace' y' env)
-  | St(x, y', z') -> St(replace x env, replace' y' env, replace' z' env)
-  | FNeg(x) -> FNeg(replace x env)
-  | FInv(x) -> FInv(replace x env)
-  | FSqrt(x) -> FSqrt(replace x env)
-  | FAbs(x) -> FAbs(replace x env)
-  | FAdd(x, y) -> FAdd(replace x env, replace y env)
-  | FSub(x, y) -> FSub(replace x env, replace y env)
-  | FMul(x, y) -> FMul(replace x env, replace y env)
-  | MovR(x, y) -> MovR(replace x env, replace y env)
-  | FMovR(x, y) -> FMovR(replace x env, replace y env)
-  | IfEq(x, y', e1, e2) -> IfEq(replace x env, replace' y' env, g env e1, g env e2)
-  | IfLE(x, y', e1, e2) -> IfLE(replace x env, replace' y' env, g env e1, g env e2)
-  | IfGE(x, y', e1, e2) -> IfGE(replace x env, replace' y' env, g env e1, g env e2)
-  | IfFEq(x, y, e1, e2) -> IfFEq(replace x env, replace y env, g env e1, g env e2)
-  | IfFLE(x, y, e1, e2) -> IfFLE(replace x env, replace y env, g env e1, g env e2)
-  | CallDir(l, ys) -> CallDir(l, List.map (fun y -> replace y env) ys)
-  | e -> e
+  | e -> apply (g env) (applyId (replace env) e)
 
 let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }

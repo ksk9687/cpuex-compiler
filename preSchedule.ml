@@ -37,7 +37,7 @@ and str' = function
   | _ -> assert false
 *)
 let getDelay = function
-  | Set _ | SetL _ | Neg _ | Add _ | Sub _ | FNeg _ | FAbs _ -> 1
+  | Set _ | SetL _ | Add _ | Sub _ | FNeg _ | FAbs _ -> 1
   | Ld _ | LdFL _ -> 2
   | FInv _ | FSqrt _ | FAdd _ | FSub _ | FMul _ -> 4
   | _ -> 0

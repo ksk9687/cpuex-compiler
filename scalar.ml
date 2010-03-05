@@ -31,6 +31,11 @@ let instr s = function
   | V(x) -> s
   | _ -> s ^ "i"
 
+let flg = function
+  | Non -> ""
+  | Abs -> "_a"
+  | Neg -> "_n"
+
 let cmp x y' = Printf.sprintf "%s, %s" x (pp_id_or_imm y')
 let fcmp x y = Printf.sprintf "%s, %s" x y
 
@@ -148,7 +153,6 @@ and g' saved s = function
   | NonTail(x), SetL(Id.L(y)) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "li" y x, "li", [], [x]), End)
   | NonTail(x), (Mov(y) | FMov(y)) when x = y -> End
   | NonTail(x), (Mov(y) | FMov(y)) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "mov" y x, "mov", [y], [x]), End)
-  | NonTail(x), Neg(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "neg" y x, "sub", [y], [x]), End)
   | NonTail(x), Add(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "add" y (pp_id_or_imm z') x, instr "add" z', y :: (reg z'), [x]), End)
   | NonTail(x), Sub(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "sub" y (pp_id_or_imm z') x, instr "sub" z', y :: (reg z'), [x]), End)
   | NonTail(x), Ld(y', C(z)) when z < 0 -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s - %d], %s\n" s "load" (pp_id_or_imm y') (-z) x, "load", "memory" :: (reg y'), [x]), End)
@@ -159,12 +163,12 @@ and g' saved s = function
   | NonTail(_), St(x, y', C(z)) when z < 0 -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, [%s - %d]\n" s "store" x (pp_id_or_imm y') (-z), "store", x :: (reg y'), ["memory"]), End)
   | NonTail(_), St(x, y', z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, [%s + %s]\n" s "store" x (pp_id_or_imm y') (pp_id_or_imm z'), "store", x :: (reg y')@(reg z'), ["memory"]), End)
   | NonTail(x), FNeg(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "fneg" y x, "fneg", [y], [x]), End)
-  | NonTail(x), FInv(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "finv" y x, "finv", [y], [x]), End)
-  | NonTail(x), FSqrt(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "fsqrt" y x, "fsqrt", [y], [x]), End)
+  | NonTail(x), FInv(y, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s ("finv" ^ (flg f)) y x, "finv", [y], [x]), End)
+  | NonTail(x), FSqrt(y, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s ("fsqrt" ^ (flg f)) y x, "fsqrt", [y], [x]), End)
   | NonTail(x), FAbs(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "fabs" y x, "fabs", [y], [x]), End)
-  | NonTail(x), FAdd(y, z) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "fadd" y z x, "fadd", [y; z], [x]), End)
-  | NonTail(x), FSub(y, z) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "fsub" y z x, "fsub", [y; z], [x]), End)
-  | NonTail(x), FMul(y, z) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "fmul" y z x, "fmul", [y; z], [x]), End)
+  | NonTail(x), FAdd(y, z, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s ("fadd" ^ (flg f)) y z x, "fadd", [y; z], [x]), End)
+  | NonTail(x), FSub(y, z, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s ("fsub" ^ (flg f)) y z x, "fsub", [y; z], [x]), End)
+  | NonTail(x), FMul(y, z, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s ("fmul" ^ (flg f)) y z x, "fmul", [y; z], [x]), End)
   | NonTail(x), LdFL(Id.L(l)) -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s], %s\n" (s ^ ".count load_float\n") "load" l x, "load", [], [x]), End)
   | NonTail(_), (MovR(x, y) | FMovR(x, y)) -> g' saved (s ^ ".count move_float\n") (NonTail(y), Mov(x))
   | NonTail(r), Save(x, y) when List.mem x allregs && not (S.mem y !stackset) ->
@@ -176,7 +180,7 @@ and g' saved s = function
       g' saved (s ^ ".count stack_load\n") (NonTail(x), Ld(V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
   | Tail, (Nop | St _ | MovR _ | FMovR _ | Save _ as exp) ->
       seq (g' saved s (NonTail(Id.gentmp Type.Unit), exp)) ret
-  | Tail, (Set _ | SetL _ | Mov _ | FMov _ | Neg _ | Add _ | Sub _ | Ld _ |
+  | Tail, (Set _ | SetL _ | Mov _ | FMov _ | Add _ | Sub _ | Ld _ |
            FNeg _ | FInv _ | FSqrt _ | FAbs _ | FAdd _ | FSub _ | FMul _ | LdFL _ as exp) ->
       seq (g' saved s (NonTail(!ret_reg), exp)) ret
   | Tail, (Restore(x) as exp) ->

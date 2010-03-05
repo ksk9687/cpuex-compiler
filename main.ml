@@ -17,19 +17,20 @@ let lexbuf outchan l =
     (MoveAsm.f
       (Scalar.f
         (RegAlloc.f
-          (Sglobal.f
-            (PreSchedule.f
-              (Sfl.f
-                (Slabel.f
-                  (Simm.f
-                    (Virtual.f
-                      (Closure.f
-                        (iter !limit
-                          (Alpha.f
-                            (KNormal.f
-                              (BuiltIn.f
-                                (Typing.f
-                                  (Parser.exp Lexer.token l))))))))))))))))
+          (AbsNegFlag.f
+	          (Sglobal.f
+	            (PreSchedule.f
+	              (Sfl.f
+	                (Slabel.f
+	                  (Simm.f
+	                    (Virtual.f
+	                      (Closure.f
+	                        (iter !limit
+	                          (Alpha.f
+	                            (KNormal.f
+	                              (BuiltIn.f
+	                                (Typing.f
+	                                  (Parser.exp Lexer.token l)))))))))))))))))
 
 let string s = lexbuf stdout (Lexing.from_string s)
 

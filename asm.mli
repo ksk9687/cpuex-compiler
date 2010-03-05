@@ -1,4 +1,5 @@
 type id_or_imm = V of Id.t | C of int | L of Id.l
+type flg = Non | Abs | Neg
 type t =
   | Ans of exp
   | Let of (Id.t * Type.t) * exp * t
@@ -9,18 +10,17 @@ and exp =
   | SetL of Id.l
   | Mov of Id.t
   | FMov of Id.t
-  | Neg of Id.t
   | Add of Id.t * id_or_imm
   | Sub of Id.t * id_or_imm
   | Ld of id_or_imm * id_or_imm
   | St of Id.t * id_or_imm * id_or_imm
   | FNeg of Id.t
-  | FInv of Id.t
-  | FSqrt of Id.t
+  | FInv of Id.t * flg
+  | FSqrt of Id.t * flg
   | FAbs of Id.t
-  | FAdd of Id.t * Id.t
-  | FSub of Id.t * Id.t
-  | FMul of Id.t * Id.t
+  | FAdd of Id.t * Id.t * flg
+  | FSub of Id.t * Id.t * flg
+  | FMul of Id.t * Id.t * flg
   | LdFL of Id.l
   | MovR of Id.t * Id.t
   | FMovR of Id.t * Id.t
@@ -52,7 +52,11 @@ val is_reg : Id.t -> bool
 val reg_fls : Id.t list
 val reg_igls : Id.t list
 val reg_fgls : Id.t list
+val output_header : out_channel -> unit
 
 val fv' : exp -> Id.t list
 val fv : t -> Id.t list
 val concat : t -> Id.t * Type.t -> t -> t
+val applyId : (Id.t -> Id.t) -> exp -> exp
+val apply : (t -> t) -> exp -> exp
+val replace : M.key M.t -> M.key -> M.key

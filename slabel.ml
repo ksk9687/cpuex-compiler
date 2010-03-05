@@ -13,12 +13,7 @@ and g' env = function
   | Ld(V(x), y') when M.mem x env -> g' env (Ld(L(M.find x env), y'))
   | St(x, y', V(z)) when M.mem z env -> g' env (St(x, y', L(M.find z env)))
   | St(x, V(y), z') when M.mem y env -> g' env (St(x, L(M.find y env), z'))
-  | IfEq(x, y', e1, e2) -> IfEq(x, y', g env e1, g env e2)
-  | IfLE(x, y', e1, e2) -> IfLE(x, y', g env e1, g env e2)
-  | IfGE(x, y', e1, e2) -> IfGE(x, y', g env e1, g env e2)
-  | IfFEq(x, y, e1, e2) -> IfFEq(x, y, g env e1, g env e2)
-  | IfFLE(x, y, e1, e2) -> IfFLE(x, y, g env e1, g env e2)
-  | e -> e
+  | e -> apply (g env) e
 
 let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }

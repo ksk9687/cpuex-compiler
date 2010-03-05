@@ -14,6 +14,9 @@ let fundata = ref
        ("read_int", [], "$i1");
        ("read_float", [], "$f1");
        ("write", ["$i2"], "$dummy");
+       ("atan", ["$f2"], "$f1");
+       ("sin", ["$f2"], "$f1");
+       ("cos", ["$f2"], "$f1");
        ("ledout", ["$i2"], "$dummy");
        ("ledout_float", ["$f2"], "$dummy");
        ("break", [], "$dummy")
@@ -55,16 +58,16 @@ let rec g env = function
           l
       in
       Ans(LdFL(l))
-  | Closure.Neg(x) -> Ans(Neg(x))
+  | Closure.Neg(x) -> Ans(Sub(reg_i0, V(x)))
   | Closure.Add(x, y) -> Ans(Add(x, V(y)))
   | Closure.Sub(x, y) -> Ans(Sub(x, V(y)))
   | Closure.FNeg(x) -> Ans(FNeg(x))
-  | Closure.FInv(x) -> Ans(FInv(x))
-  | Closure.FSqrt(x) -> Ans(FSqrt(x))
+  | Closure.FInv(x) -> Ans(FInv(x, Non))
+  | Closure.FSqrt(x) -> Ans(FSqrt(x, Non))
   | Closure.FAbs(x) -> Ans(FAbs(x))
-  | Closure.FAdd(x, y) -> Ans(FAdd(x, y))
-  | Closure.FSub(x, y) -> Ans(FSub(x, y))
-  | Closure.FMul(x, y) -> Ans(FMul(x, y))
+  | Closure.FAdd(x, y) -> Ans(FAdd(x, y, Non))
+  | Closure.FSub(x, y) -> Ans(FSub(x, y, Non))
+  | Closure.FMul(x, y) -> Ans(FMul(x, y, Non))
   | Closure.IfEq(x, y, e1, e2) ->
       (match M.find x env with
       | Type.Bool | Type.Int -> Ans(IfEq(x, V(y), g env e1, g env e2))

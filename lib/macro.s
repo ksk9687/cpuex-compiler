@@ -31,17 +31,17 @@
 .define { finv %fReg, %fReg } { finv 0 %1 %2 }
 .define { fsqrt %fReg, %fReg } { fsqrt 0 %1 %2 }
 .define { mov %fReg, %fReg } { fmov 0 %1 %2 }
-.define { fadd_abs %fReg, %fReg, %fReg } { fadd 2 %1 %2 %3 }
-.define { fsub_abs %fReg, %fReg, %fReg } { fsub 2 %1 %2 %3 }
-.define { fmul_abs %fReg, %fReg, %fReg } { fmul 2 %1 %2 %3 }
-.define { finv_abs %fReg, %fReg } { finv 2 %1 %2 }
-.define { fsqrt_abs %fReg, %fReg } { fsqrt 2 %1 %2 }
+.define { fadd_a %fReg, %fReg, %fReg } { fadd 2 %1 %2 %3 }
+.define { fsub_a %fReg, %fReg, %fReg } { fsub 2 %1 %2 %3 }
+.define { fmul_a %fReg, %fReg, %fReg } { fmul 2 %1 %2 %3 }
+.define { finv_a %fReg, %fReg } { finv 2 %1 %2 }
+.define { fsqrt_a %fReg, %fReg } { fsqrt 2 %1 %2 }
 .define { fabs %fReg, %fReg } { fmov 2 %1 %2 }
-.define { fadd_neg %fReg, %fReg, %fReg } { fadd 1 %1 %2 %3 }
-.define { fsub_neg %fReg, %fReg, %fReg } { fsub 1 %1 %2 %3 }
-.define { fmul_neg %fReg, %fReg, %fReg } { fmul 1 %1 %2 %3 }
-.define { finv_neg %fReg, %fReg } { finv 1 %1 %2 }
-.define { fsqrt_neg %fReg, %fReg } { fsqrt 1 %1 %2 }
+.define { fadd_n %fReg, %fReg, %fReg } { fadd 1 %1 %2 %3 }
+.define { fsub_n %fReg, %fReg, %fReg } { fsub 1 %1 %2 %3 }
+.define { fmul_n %fReg, %fReg, %fReg } { fmul 1 %1 %2 %3 }
+.define { finv_n %fReg, %fReg } { finv 1 %1 %2 }
+.define { fsqrt_n %fReg, %fReg } { fsqrt 1 %1 %2 }
 .define { fneg %fReg, %fReg } { fmov 1 %1 %2 }
 .define { load [%iReg + %Imm], %iReg } { load %1 %2 %3 }
 .define { load [%iReg + %iReg], %iReg } { loadr %1 %2 %3 }

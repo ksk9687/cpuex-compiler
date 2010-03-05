@@ -33,18 +33,9 @@ and count' env = function
   | Ld(L(Id.L(l)), _) -> rem l env
   | St(_, L(Id.L(l)), C(i)) -> inc l i env
   | St(_, L(Id.L(l)), _) -> rem l env
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2)
-  | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) -> count (count env e1) e2
+  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+      count (count env e1) e2
   | _ -> env
-
-let replace x env =
-  if M.mem x env then M.find x env
-  else x
-
-let replace' x' env =
-  match x' with
-    | V(x) when M.mem x env -> V(M.find x env)
-    | x' -> x'
 
 let rec hasPut l i = function
   | Ans(exp) -> hasPut' l i exp
@@ -52,8 +43,7 @@ let rec hasPut l i = function
   | Forget(_, e) -> hasPut l i e
 and hasPut' l i = function
   | St(_, L(l'), C(i')) when l' = l && i' = i -> true
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2)
-  | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) -> (hasPut l i e1) || (hasPut l i e2)
+  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) -> (hasPut l i e1) || (hasPut l i e2)
   | CallDir _ -> true
   | _ -> false
 
@@ -74,31 +64,9 @@ and g' env = function
       else Mov(List.assoc (l, i) !gtable)
   | St(x, L(l), C(i)) when List.mem_assoc (l, i) !gtable ->
       let Id.L(s) = l in
-      if (getInnerType (List.assoc s !glbl) i) = Type.Float then FMovR(replace x env, List.assoc (l, i) !gtable)
-      else MovR(replace x env, List.assoc (l, i) !gtable)
-  | Mov(x) -> Mov(replace x env)
-  | FMov(x) -> FMov(replace x env)
-  | Neg(x) -> Neg(replace x env)
-  | Add(x, y') -> Add(replace x env, replace' y' env)
-  | Sub(x, y') -> Sub(replace x env, replace' y' env)
-  | Ld(x', y') -> Ld(replace' x' env, replace' y' env)
-  | St(x, y', z') -> St(replace x env, replace' y' env, replace' z' env)
-  | FNeg(x) -> FNeg(replace x env)
-  | FInv(x) -> FInv(replace x env)
-  | FSqrt(x) -> FSqrt(replace x env)
-  | FAbs(x) -> FAbs(replace x env)
-  | FAdd(x, y) -> FAdd(replace x env, replace y env)
-  | FSub(x, y) -> FSub(replace x env, replace y env)
-  | FMul(x, y) -> FMul(replace x env, replace y env)
-  | MovR(x, y) -> MovR(replace x env, replace y env)
-  | FMovR(x, y) -> FMovR(replace x env, replace y env)
-  | IfEq(x, y', e1, e2) -> IfEq(replace x env, replace' y' env, g env e1, g env e2)
-  | IfLE(x, y', e1, e2) -> IfLE(replace x env, replace' y' env, g env e1, g env e2)
-  | IfGE(x, y', e1, e2) -> IfGE(replace x env, replace' y' env, g env e1, g env e2)
-  | IfFEq(x, y, e1, e2) -> IfFEq(replace x env, replace y env, g env e1, g env e2)
-  | IfFLE(x, y, e1, e2) -> IfFLE(replace x env, replace y env, g env e1, g env e2)
-  | CallDir(l, ys) -> CallDir(l, List.map (fun y -> replace y env) ys)
-  | e -> e
+      if (getInnerType (List.assoc s !glbl) i) = Type.Float then FMovR(replace env x, List.assoc (l, i) !gtable)
+      else MovR(replace env x, List.assoc (l, i) !gtable)
+  | e -> apply (g env) (applyId (replace env) e)
 
 let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }
