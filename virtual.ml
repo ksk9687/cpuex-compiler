@@ -7,7 +7,7 @@ let fundata = ref
      ) M.empty
       [("floor", ["$f2"], "$f1");
        ("float_of_int", ["$i2"], "$f1");
-       ("int_of_float", ["$f2"], "$f1");
+       ("int_of_float", ["$f2"], "$i1");
        ("create_array_int", ["$i2"; "$i3"], "$i1");
        ("create_array_float", ["$i2"; "$f2"], "$i1");
        ("read", [], "$i1");
