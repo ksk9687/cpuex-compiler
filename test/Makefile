@@ -1,12 +1,13 @@
 LIB = ../lib
 MIN_CAML = ../min-caml.opt
 SIM = ../../sim/sim.jar
+FAST_SIM = ../../sim/fastsim/fastsim.exe
 MIN_CAML_OPTION = -inline 0 -inline_cont 0
 CPU = MasterScalar
 RUN_SIM = java -jar -Xmx256M -Xss32M $(SIM) -cpu $(CPU)
 
 .PHONY: clean
-.SUFFIXES: .ml .s .bin
+.SUFFIXES: .ml .s .bin .run .fast
 
 .ml.s:
 	cat $(LIB)/lib_ml.ml $< > tmp.ml
@@ -16,8 +17,15 @@ RUN_SIM = java -jar -Xmx256M -Xss32M $(SIM) -cpu $(CPU)
 	rm tmp.ml tmp.s
 
 .s.bin:
+	$(RUN_SIM) -asm $@ $<
+
+.s.run:
 	touch $*.in
-	$(RUN_SIM) -asm $@ < $*.in > $*.out -gui $<
+	$(RUN_SIM) -asm $*.bin < $*.in > $*.out -gui $<
+
+.bin.fast:
+	touch $*.in
+	$(FAST_SIM) < $*.in > $*.out $<
 
 clean:
 	rm -f *.bin *.out tmp.s tmp.ml

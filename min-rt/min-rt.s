@@ -59,7 +59,7 @@
 .define { sub %iReg, -%Imm, %iReg } { add %1, %2, %3 }
 .define { sll %iReg, %iReg } { add %1, %1, %2 }
 .define { neg %iReg, %iReg } { sub $i0, %1, %2 }
-.define { b %Imm } { cmpjmp 0, $i0, $i0, %1 }
+.define { b %Imm } { cmpjmp 0, $i0, 0, %1 }
 .define { be %s, %s, %Imm } { cmpjmp 5, %1, %2, %3 }
 .define { bne %s, %s, %Imm } { cmpjmp 2, %1, %2, %3 }
 .define { bl %s, %s, %Imm } { cmpjmp 6, %1, %2, %3 }
