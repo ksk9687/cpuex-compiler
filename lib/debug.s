@@ -4,12 +4,13 @@
 #
 ######################################################################
 
-min_caml_debug_int:
-	debug_int $2
+min_caml_ledout:
+	ledout $i2
 	ret
 
-min_caml_debug_float:
-	debug_float $2
+min_caml_ledout_float:
+	mov $f2, $i2
+	ledout $i2
 	ret
 
 min_caml_break:

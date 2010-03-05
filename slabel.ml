@@ -20,8 +20,8 @@ and g' env = function
   | IfFLE(x, y, e1, e2) -> IfFLE(x, y, g env e1, g env e2)
   | e -> e
 
-let h { name = l; args = xs; arg_regs = rs; body = e; ret = t; ret_reg = r } =
-  { name = l; args = xs; arg_regs = rs; body = g M.empty e; ret = t; ret_reg = r }
+let h { name = l; args = xs; body = e; ret = t } =
+  { name = l; args = xs; body = g M.empty e; ret = t }
 
-let f (Prog(global, data, fundefs, e)) =
-  Prog(global, data, List.map h fundefs, g M.empty e)
+let f (Prog(fundata, global, data, fundefs, e)) =
+  Prog(fundata, global, data, List.map h fundefs, g M.empty e)

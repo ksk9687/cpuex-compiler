@@ -6,7 +6,6 @@ type t =
   | Neg of Id.t
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
-  | SLL of Id.t * int
   | FNeg of Id.t
   | FInv of Id.t
   | FSqrt of Id.t

@@ -6,4 +6,4 @@ let rec loop fib n =
 		(fib.(n) <- fib.(n - 1) + fib.(n - 2);
 		loop fib (n + 1))
 in loop fib 2;
-write (fib.(10))
+ledout (fib.(10))

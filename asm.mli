@@ -8,10 +8,10 @@ and exp =
   | Set of int
   | SetL of Id.l
   | Mov of Id.t
+  | FMov of Id.t
   | Neg of Id.t
   | Add of Id.t * id_or_imm
   | Sub of Id.t * id_or_imm
-  | SLL of Id.t * int
   | Ld of id_or_imm * id_or_imm
   | St of Id.t * id_or_imm * id_or_imm
   | FNeg of Id.t
@@ -23,6 +23,7 @@ and exp =
   | FMul of Id.t * Id.t
   | LdFL of Id.l
   | MovR of Id.t * Id.t
+  | FMovR of Id.t * Id.t
   | IfEq of Id.t * id_or_imm * t * t
   | IfLE of Id.t * id_or_imm * t * t
   | IfGE of Id.t * id_or_imm * t * t
@@ -31,8 +32,8 @@ and exp =
   | CallDir of Id.l * Id.t list
   | Save of Id.t * Id.t
   | Restore of Id.t
-type fundef = { name : Id.l; args : Id.t list; arg_regs : Id.t list; body : t; ret : Type.t; ret_reg : Id.t }
-type prog = Prog of (Id.t * Type.t) list * (Id.l * float) list * fundef list * t
+type fundef = { name : Id.l; args : Id.t list; body : t; ret : Type.t }
+type prog = Prog of (Id.t list * Id.t) M.t * (Id.t * Type.t) list * (Id.l * float) list * fundef list * t
 
 val seq : exp * t -> t
 

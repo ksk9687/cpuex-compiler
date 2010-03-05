@@ -51,9 +51,6 @@ let rec getCritical time = function
         (fun time r -> addMax r d time
         ) time (getWrite exp) in
       max t (getCritical time e)
-  | If _ ->
-      if M.mem "cond" time then (M.find "cond" time)
-      else 0
   | _ -> 0
 
 let rec remove exp = function
@@ -65,7 +62,7 @@ let rec addLast e = function
   | End -> e
   | Call(s, e') -> Call(s, addLast e e')
   | Seq(exp, e') -> Seq(exp, addLast e e')
-  | If(b, bn, e1, e2, e3) -> If(b, bn, e1, e2, addLast e e3)
+  | If(cmp, b, bn, e1, e2, e3, rs) -> If(cmp, b, bn, e1, e2, addLast e e3, rs)
   | _ -> assert false
 
 let aging write =
@@ -77,7 +74,7 @@ let miss = ref 0
 let rec schedule awrite = function
   | End | Ret _ | Jmp _ as e -> e
   | Call(s, e) -> Call(s, schedule [] e)
-  | If(b, bn, e1, e2, e3) -> If(b, bn, schedule [] e1, schedule [] e2, schedule [] e3)
+  | If(cmp, b, bn, e1, e2, e3, rs) -> If(cmp, b, bn, schedule [] e1, schedule [] e2, schedule [] e3, rs)
   | Seq(exp, e) as es ->
       let awrite = aging awrite in
       let write = List.fold_left (fun x (_, y) -> y @ x) [] awrite in
@@ -109,18 +106,18 @@ let rec g = function
   | End | Ret _ | Jmp _ as e -> e
   | Call(s, e) -> Call(s, g e)
   | Seq(Exp(asm, _, _, _) as exp, e) -> Seq(exp, g e)
-  | If(b, bn, e1, e2, e3) ->
-      let exps = inter (getFirst ["cond"] [] e1) (getFirst ["cond"] [] e2) in
+  | If(cmp, b, bn, e1, e2, e3, rs) ->
+      let exps = inter (getFirst rs [] e1) (getFirst rs [] e2) in
       if e1 = End && e2 = End then
         ((*Format.eprintf "RemoveJmp@.";*) g e3)
       else if exps <> [] then
         let exp = List.hd exps in
-        ((*Format.eprintf "MoveFirst@.";*) Seq(exp, g (If(b, bn, remove exp e1, remove exp e2, e3))))
+        ((*Format.eprintf "MoveFirst@.";*) Seq(exp, g (If(cmp, b, bn, remove exp e1, remove exp e2, e3, rs))))
       else
-        If(b, bn, g e1, g e2, g e3)
+        If(cmp, b, bn, g e1, g e2, g e3, rs)
         (*
         (*let exps = getFirst [] [] e3 in*)
-        let exps = getFirst ["cond"] [] e3 in
+        let exps = getFirst rs [] e3 in
         if exps <> [] then
           let exp = List.hd exps in
           g (If (b, bn, addLast (Seq(exp, End)) e1, addLast (Seq(exp, End)) e2, remove exp e3))

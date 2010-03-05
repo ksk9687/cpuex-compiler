@@ -17,7 +17,6 @@ and str' = function
   | Neg(s) -> Format.printf "-%s@." s
   | Add(a, b) -> Format.printf "%s + %s@." a (str_id_or_imm b)
   | Sub(a, b) -> Format.printf "%s - %s@." a (str_id_or_imm b)
-  | SLL(a, i) -> Format.printf "%s << %d@." a i
   | Ld(a, b) -> Format.printf "[%s + %s]@." (str_id_or_imm a) (str_id_or_imm b)
   | St(a, b, c) -> Format.printf "[%s + %s] = %s@." (str_id_or_imm b) (str_id_or_imm c) a
   | FNeg(a) -> Format.printf "-.%s@." a
@@ -38,7 +37,7 @@ and str' = function
   | _ -> assert false
 *)
 let getDelay = function
-  | Set _ | SetL _ | Neg _ | Add _ | Sub _ | SLL _ | FNeg _ | FAbs _ -> 1
+  | Set _ | SetL _ | Neg _ | Add _ | Sub _ | FNeg _ | FAbs _ -> 1
   | Ld _ | LdFL _ -> 2
   | FInv _ | FSqrt _ | FAdd _ | FSub _ | FMul _ -> 4
   | _ -> 0
@@ -62,7 +61,7 @@ let addMax x y xs =
 
 let rec noEffect = function
   | CallDir _ | St _ -> false
-	| IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
       (noEffect' e1) && (noEffect' e2)
   | _ -> true
 and noEffect' = function
@@ -73,26 +72,26 @@ and noEffect' = function
 let rec getFirst depth st ld writes = function
   | Let(id, exp, e) -> (
       match exp with
-	      | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+        | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
             let write = getWrite id in
             let exps = (getFirst (depth + 1) st true writes e1) @ (getFirst (depth + 1) st true writes e2) in
             if noEffect exp then (getFirst depth st ld (write@writes) e) @ exps
             else exps
         | CallDir _ -> []
-	      | St _ when ld -> []
+        | St _ when ld -> []
         | Ld _ when st -> []
         | exp ->
-			      let read = getRead exp in
-			      let write = getWrite id in
+            let read = getRead exp in
+            let write = getWrite id in
             let st = (match exp with St _ -> true | _ -> st) in
             let ld = (match exp with Ld _ -> true | _ -> ld) in
-			      if (inter writes read) <> [] then getFirst depth st ld (write@writes) e
-			      else (depth, id, exp) :: (getFirst depth st ld (write@writes) e)
+            if (inter writes read) <> [] then getFirst depth st ld (write@writes) e
+            else (depth, id, exp) :: (getFirst depth st ld (write@writes) e)
     )
   | Ans(exp) -> (
       match exp with
-	      | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
-	          (getFirst (depth + 1) st true writes e1) @ (getFirst (depth + 1) st true writes e2)
+        | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+            (getFirst (depth + 1) st true writes e1) @ (getFirst (depth + 1) st true writes e2)
         | _ -> []
     )
   | _ -> assert false
@@ -100,7 +99,7 @@ let rec getFirst depth st ld writes = function
 let rec getCritical time = function
   | Let(id, exp, e) -> (
       match exp with
-	      | IfEq _ | IfLE _ | IfGE _ | IfFEq _ | IfFLE _ ->
+        | IfEq _ | IfLE _ | IfGE _ | IfFEq _ | IfFLE _ ->
             List.fold_left
               (fun t r ->
                 if M.mem r time then max t (M.find r time)
@@ -114,10 +113,10 @@ let rec getCritical time = function
                 else t
               ) 0 (getRead exp) in
             let d = t + (getDelay exp) + 1 in
-			      let time = List.fold_left
-			        (fun time r -> addMax r d time
-			        ) time (getWrite id) in
-			      max t (getCritical time e)
+            let time = List.fold_left
+              (fun time r -> addMax r d time
+              ) time (getWrite id) in
+            max t (getCritical time e)
     )
   | Ans(exp) -> (
       match exp with
@@ -173,40 +172,40 @@ let rec g awrite e =
           | IfFLE(x, y, e1, e2) -> Let(id, IfFLE(x, y, g [] e1, g [] e2), g [] e)
           | exp -> Let(id, exp, g ((getDelay exp, getWrite id) :: awrite) e)
       )
-	  | e ->
-			  let exps = getFirst 0 false false write e in
-			  if exps <> [] then
-	        let time = List.fold_left
-	          (fun time (t, rs) -> List.fold_left
-	            (fun time r -> addMax r t time
-	            ) time rs
-	          ) M.empty awrite in
-	        let ts = List.map
-	          (fun (d, id, exp) ->
-	            let t = getDelay exp in
-	            let time = List.fold_left
-	              (fun time r -> addMax r t time
-	              ) time (getWrite id) in
-	            ((getCritical time (remove id exp e), d), id, exp)
-	          ) exps in
+    | e ->
+        let exps = getFirst 0 false false write e in
+        if exps <> [] then
+          let time = List.fold_left
+            (fun time (t, rs) -> List.fold_left
+              (fun time r -> addMax r t time
+              ) time rs
+            ) M.empty awrite in
+          let ts = List.map
+            (fun (d, id, exp) ->
+              let t = getDelay exp in
+              let time = List.fold_left
+                (fun time r -> addMax r t time
+                ) time (getWrite id) in
+              ((getCritical time (remove id exp e), d), id, exp)
+            ) exps in
           let (_, id, exp) = List.fold_left
             (fun (d, id, exp) (d', id', exp') ->
               if d > d' then (d', id', exp')
               else (d, id, exp)
             ) (List.hd ts) (List.tl ts) in
-			    Let(id, exp, g ((getDelay exp, getWrite id) :: awrite) (remove id exp e))
-			  else
-			    (incr miss; g awrite e)
+          Let(id, exp, g ((getDelay exp, getWrite id) :: awrite) (remove id exp e))
+        else
+          (incr miss; g awrite e)
 
-let h { name = l; args = xs; arg_regs = rs; body = e; ret = t; ret_reg = r } =
-  { name = l; args = xs; arg_regs = rs; body = g [] e; ret = t; ret_reg = r }
+let h { name = l; args = xs; body = e; ret = t } =
+  { name = l; args = xs; body = g [] e; ret = t }
 
-let f' (Prog(global, data, fundefs, e)) =
+let f' (Prog(fundata, global, data, fundefs, e)) =
   miss := 0;
   let fundefs = List.map h fundefs in
   let e = g [] e in
   Format.eprintf "MissCount: %d@." !miss;
-  Prog(global, data, fundefs, e)
+  Prog(fundata, global, data, fundefs, e)
 
 let rec f e =
   let e' = f' e in

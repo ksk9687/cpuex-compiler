@@ -6,7 +6,6 @@ type t =
   | Neg of Id.t
   | Add of Id.t * Id.t
   | Sub of Id.t * Id.t
-  | SLL of Id.t * int
   | FNeg of Id.t
   | FInv of Id.t
   | FSqrt of Id.t
@@ -31,7 +30,7 @@ type prog = Prog of (Id.t * Type.t) list * fundef list * t
 
 let rec fv = function
   | Unit | Int(_) | Float(_) | ExtArray(_) -> S.empty
-  | Neg(x) | FNeg(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | FInv(x) -> S.singleton x
+  | Neg(x) | FNeg(x) | FSqrt(x) | FAbs(x) | FInv(x) -> S.singleton x
   | Add(x, y) | Sub(x, y) | FAdd(x, y) | FSub(x, y) | FMul(x, y) | Get(x, y) -> S.of_list [x; y]
   | IfEq(x, y, e1, e2)| IfLE(x, y, e1, e2) -> S.add x (S.add y (S.union (fv e1) (fv e2)))
   | Let((x, t), e1, e2) -> S.union (fv e1) (S.remove x (fv e2))
@@ -43,6 +42,14 @@ let rec fv = function
 let global = ref []
 let toplevel = ref []
 
+let rec sll x i =
+  assert (i >= 0);
+  if i = 0 then Var(x)
+  else if i = 1 then Add(x, x)
+  else
+    let y = Id.genid x in
+    Let((y, Type.Int), sll x (i - 1), Add(y, y))
+
 let rec g env known = function
   | KNormal.Unit -> Unit
   | KNormal.Int(i) -> Int(i)
@@ -50,7 +57,7 @@ let rec g env known = function
   | KNormal.Neg(x) -> Neg(x)
   | KNormal.Add(x, y) -> Add(x, y)
   | KNormal.Sub(x, y) -> Sub(x, y)
-  | KNormal.SLL(x, i) -> SLL(x, i)
+  | KNormal.SLL(x, i) -> sll x i
   | KNormal.FNeg(x) -> FNeg(x)
   | KNormal.FInv(x) -> FInv(x)
   | KNormal.FAdd(x, y) -> FAdd(x, y)
@@ -85,7 +92,8 @@ let rec g env known = function
   | KNormal.Get(x, y) -> Get(x, y)
   | KNormal.Put(x, y, z) -> Put(x, y, z)
   | KNormal.ExtArray(x, t) ->
-      if List.mem_assoc x !global then global := (x, t) :: !global;
+      let x = "min_caml_" ^ x in
+      if not (List.mem_assoc x !global) then global := (x, t) :: !global;
       ExtArray(Id.L(x))
   | KNormal.ExtFunApp(x, ys) ->
       match x with
@@ -96,5 +104,4 @@ let rec g env known = function
 let f e =
   toplevel := [];
   let e' = g M.empty S.empty e in
-  List.iter (fun (name, t) -> Printf.printf "%s: %s\n" name (Type.string_of_t t)) !global;
   Prog(!global, List.rev !toplevel, e')

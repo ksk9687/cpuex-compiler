@@ -2,12 +2,15 @@ open Asm
 
 let rec g env = function
   | Ans(exp) -> Ans(g' env exp)
-  | Let((x, t), Set(i), e) when (-8192 < i) && (i < 8192) ->
+  | Let((x, t), Set(i), e) when (-128 <= i) && (i < 128) ->
       (* Format.eprintf "found simm %s = %d@." x i; *)
       let e' = g (M.add x i env) e in
       if List.mem x (fv e') then Let((x, t), Set(i), e') else
       ((* Format.eprintf "erased redundant Set to %s@." x; *)
        e')
+  | Let(xt, Set(i), e) ->
+      Format.eprintf "imm %d@." i;
+      Let(xt, g' env (Set(i)), g env e)
   | Let(xt, exp, e) -> Let(xt, g' env exp, g env e)
   | Forget(x, e) -> Forget(x, g env e)
 and g' env = function
@@ -31,8 +34,8 @@ and g' env = function
   | IfFLE(x, y, e1, e2) -> IfFLE(x, y, g env e1, g env e2)
   | e -> e
 
-let h { name = l; args = xs; arg_regs = rs; body = e; ret = t; ret_reg = r } =
-  { name = l; args = xs; arg_regs = rs; body = g M.empty e; ret = t; ret_reg = r }
+let h { name = l; args = xs; body = e; ret = t } =
+  { name = l; args = xs; body = g M.empty e; ret = t }
 
-let f (Prog(global, data, fundefs, e)) =
-  Prog(global, data, List.map h fundefs, g M.empty e)
+let f (Prog(fundata, global, data, fundefs, e)) =
+  Prog(fundata, global, data, List.map h fundefs, g M.empty e)

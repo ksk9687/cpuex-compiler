@@ -6,6 +6,12 @@ open Asm
 (* とりあえず関数呼び出しがあったらPutありとした *)
 
 let gtable = ref []
+let glbl = ref []
+
+let getInnerType t i = match t with
+    | Type.Array(t) -> t
+    | Type.Tuple(ts) -> List.nth ts i
+    | _ -> assert false
 
 let rec rem l env = M.add l [] env
 let rec inc' i env' =
@@ -62,13 +68,19 @@ let rec g env = function
   | Let(xt, exp, e) -> Let(xt, g' env exp, g env e)
   | Forget(x, e) -> Forget(x, g env e)
 and g' env = function
-  | Ld(L(l), C(i)) when List.mem_assoc (l, i) !gtable -> Mov(List.assoc (l, i) !gtable)
-  | St(x, L(l), C(i)) when List.mem_assoc (l, i) !gtable -> MovR(replace x env, List.assoc (l, i) !gtable)
+  | Ld(L(l), C(i)) when List.mem_assoc (l, i) !gtable ->
+      let Id.L(s) = l in
+      if (getInnerType (List.assoc s !glbl) i) = Type.Float then FMov(List.assoc (l, i) !gtable)
+      else Mov(List.assoc (l, i) !gtable)
+  | St(x, L(l), C(i)) when List.mem_assoc (l, i) !gtable ->
+      let Id.L(s) = l in
+      if (getInnerType (List.assoc s !glbl) i) = Type.Float then FMovR(replace x env, List.assoc (l, i) !gtable)
+      else MovR(replace x env, List.assoc (l, i) !gtable)
   | Mov(x) -> Mov(replace x env)
+  | FMov(x) -> FMov(replace x env)
   | Neg(x) -> Neg(replace x env)
   | Add(x, y') -> Add(replace x env, replace' y' env)
   | Sub(x, y') -> Sub(replace x env, replace' y' env)
-  | SLL(x, i) -> SLL(replace x env, i)
   | Ld(x', y') -> Ld(replace' x' env, replace' y' env)
   | St(x, y', z') -> St(replace x env, replace' y' env, replace' z' env)
   | FNeg(x) -> FNeg(replace x env)
@@ -78,6 +90,8 @@ and g' env = function
   | FAdd(x, y) -> FAdd(replace x env, replace y env)
   | FSub(x, y) -> FSub(replace x env, replace y env)
   | FMul(x, y) -> FMul(replace x env, replace y env)
+  | MovR(x, y) -> MovR(replace x env, replace y env)
+  | FMovR(x, y) -> FMovR(replace x env, replace y env)
   | IfEq(x, y', e1, e2) -> IfEq(replace x env, replace' y' env, g env e1, g env e2)
   | IfLE(x, y', e1, e2) -> IfLE(replace x env, replace' y' env, g env e1, g env e2)
   | IfGE(x, y', e1, e2) -> IfGE(replace x env, replace' y' env, g env e1, g env e2)
@@ -86,41 +100,43 @@ and g' env = function
   | CallDir(l, ys) -> CallDir(l, List.map (fun y -> replace y env) ys)
   | e -> e
 
-let h { name = l; args = xs; arg_regs = rs; body = e; ret = t; ret_reg = r } =
-  { name = l; args = xs; arg_regs = rs; body = g M.empty e; ret = t; ret_reg = r }
+let h { name = l; args = xs; body = e; ret = t } =
+  { name = l; args = xs; body = g M.empty e; ret = t }
 
-let f (Prog(global, data, fundefs, e)) =
-	let counts = List.fold_left (fun env { name = l; args = xs; body = e; ret = t} -> count env e) M.empty fundefs in
-	let counts = count counts e in
+let f (Prog(fundata, global, data, fundefs, e)) =
+  glbl := global;
+  let counts = List.fold_left (fun env { name = l; args = xs; body = e; ret = t} -> count env e) M.empty fundefs in
+  let counts = count counts e in
   let gls = M.fold (fun l env' ls -> List.fold_left (fun ls (i, n) -> (l, i, n) :: ls) ls env') counts [] in
   let gls = List.sort (fun (_, _, n1) (_, _, n2) -> n2 - n1) gls in
   let _  = List.fold_left
-	  (fun (ni, nf) (l, i, _) ->
-      let t = match (List.assoc l global) with
-        | Type.Array(t) -> t
-        | Type.Tuple(ts) -> List.nth ts i
-        | _ -> assert false
-      in
-      match t with
-        | Type.Float ->
-            if nf >= List.length reg_fgls then (ni, nf)
-            else
-              let reg = List.nth reg_fgls nf in
-			          Format.eprintf "Allocate %s.(%d) -> %s@." l i reg;
-		            gtable := ((Id.L(l), i), reg) :: !gtable;
-		            (ni, nf + 1)
-        | _ ->
-            if ni >= List.length reg_igls then (ni, nf)
-            else
-              let reg = List.nth reg_igls ni in
-			          Format.eprintf "Allocate %s.(%d) -> %s@." l i reg;
-		            gtable := ((Id.L(l), i), reg) :: !gtable;
-		            (ni + 1, nf)
-	  )
-	  (0, 0) gls
+    (fun (ni, nf) (l, i, _) ->
+      if not (List.mem_assoc l global) then
+        (*let _ = Format.eprintf "orz: %s@." l in*)
+        (ni, nf)
+      else
+	      let t = getInnerType (List.assoc l global) i in
+	      match t with
+	        | Type.Float ->
+	            if nf >= List.length reg_fgls then (ni, nf)
+	            else
+	              let reg = List.nth reg_fgls nf in
+	                Format.eprintf "Allocate %s.(%d) -> %s@." (String.sub l 9 ((String.length l) - 9)) i reg;
+	                gtable := ((Id.L(l), i), reg) :: !gtable;
+	                (ni, nf + 1)
+	        | _ ->
+	            if ni >= List.length reg_igls then (ni, nf)
+	            else
+	              let reg = List.nth reg_igls ni in
+	                Format.eprintf "Allocate %s.(%d) -> %s@." (String.sub l 9 ((String.length l) - 9)) i reg;
+	                gtable := ((Id.L(l), i), reg) :: !gtable;
+	                (ni + 1, nf)
+    )
+    (0, 0) gls
   in
-	Prog(global, data, List.map h fundefs,
+  Prog(fundata, global, data, List.map h fundefs,
         List.fold_left
-          (fun e ((l, i), reg) -> Let((reg, Type.Int), Ld(L(l), C(i)), e))
-          (g M.empty e)
-          !gtable)
+          (fun e ((l, i), reg) ->
+            let Id.L(s) = l in
+            Let((reg, getInnerType (List.assoc s global) i), Ld(L(l), C(i)), e)
+          ) (g M.empty e) !gtable)

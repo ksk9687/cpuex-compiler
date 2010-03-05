@@ -8,10 +8,10 @@ and exp =
   | Set of int
   | SetL of Id.l
   | Mov of Id.t
+  | FMov of Id.t
   | Neg of Id.t
   | Add of Id.t * id_or_imm
   | Sub of Id.t * id_or_imm
-  | SLL of Id.t * int
   | Ld of id_or_imm * id_or_imm
   | St of Id.t * id_or_imm * id_or_imm
   | FNeg of Id.t
@@ -23,6 +23,7 @@ and exp =
   | FMul of Id.t * Id.t
   | LdFL of Id.l
   | MovR of Id.t * Id.t
+  | FMovR of Id.t * Id.t
   | IfEq of Id.t * id_or_imm * t * t
   | IfLE of Id.t * id_or_imm * t * t
   | IfGE of Id.t * id_or_imm * t * t
@@ -31,18 +32,18 @@ and exp =
   | CallDir of Id.l * Id.t list
   | Save of Id.t * Id.t
   | Restore of Id.t
-type fundef = { name : Id.l; args : Id.t list; arg_regs : Id.t list; body : t; ret : Type.t; ret_reg : Id.t }
-type prog = Prog of (Id.t * Type.t) list * (Id.l * float) list * fundef list * t
+type fundef = { name : Id.l; args : Id.t list; body : t; ret : Type.t }
+type prog = Prog of (Id.t list * Id.t) M.t * (Id.t * Type.t) list * (Id.l * float) list * fundef list * t
 
 let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
-let niregs = 40
-let nfregs = 35
-let nfl = 9
-let nigl = 19
-let nfgl = 19
+let niregs = 50
+let nfregs = 38
+let nfl = 5
+let nigl = 9
+let nfgl = 20
 let iregs = Array.init niregs (fun i -> Printf.sprintf "$i%d" (i + 1))
-let fregs = Array.init niregs (fun i -> Printf.sprintf "$f%d" (i + 1))
+let fregs = Array.init nfregs (fun i -> Printf.sprintf "$f%d" (i + 1))
 let alliregs = Array.to_list iregs
 let allfregs = Array.to_list fregs
 let allregs = alliregs @ allfregs
@@ -69,11 +70,11 @@ let rec cat xs ys env =
 let fv_id_or_imm x' = match x' with V(x) -> [x] | _ -> []
 let rec fv' = function
   | Nop | Set _ | SetL _ | Restore _ | LdFL _ -> []
-  | Mov(x) | Neg(x) | FNeg(x) |FInv(x) | FSqrt(x) | FAbs(x) | SLL(x, _) | Save(x, _) -> [x]
+  | Mov(x) | FMov(x) | Neg(x) | FNeg(x) |FInv(x) | FSqrt(x) | FAbs(x) | Save(x, _) -> [x]
   | Add(x, y') | Sub(x, y') -> x :: fv_id_or_imm y'
   | Ld(x', y') -> fv_id_or_imm x' @ fv_id_or_imm y'
   | St(x, y', z') -> x :: fv_id_or_imm y' @ fv_id_or_imm z'
-  | FAdd(x, y) | FSub(x, y) | FMul(x, y) | MovR(x, y) -> [x; y]
+  | FAdd(x, y) | FSub(x, y) | FMul(x, y) | MovR(x, y) | FMovR(x, y) -> [x; y]
   | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> x :: fv_id_or_imm y'
   | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> [x; y]
   | CallDir(_, ys) -> ys

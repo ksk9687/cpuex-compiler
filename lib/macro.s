@@ -66,6 +66,12 @@
 .define { ble %s, %s, %Imm } { cmpjmp 4, %1, %2, %3 }
 .define { bg %s, %s, %Imm } { cmpjmp 3, %1, %2, %3 }
 .define { bge %s, %s, %Imm } { cmpjmp 1, %1, %2, %3 }
+.define { be %s, %Imm, %Imm } { cmpjmp 5, %1, %2, %3 }
+.define { bne %s, %Imm, %Imm } { cmpjmp 2, %1, %2, %3 }
+.define { bl %s, %Imm, %Imm } { cmpjmp 6, %1, %2, %3 }
+.define { ble %s, %Imm, %Imm } { cmpjmp 4, %1, %2, %3 }
+.define { bg %s, %Imm, %Imm } { cmpjmp 3, %1, %2, %3 }
+.define { bge %s, %Imm, %Imm } { cmpjmp 1, %1, %2, %3 }
 .define { load [%iReg - %Imm], %s } { load [%1 + -%2], %3}
 .define { load [%iReg], %s } { load [%1 + 0], %2 }
 .define { load [%Imm], %s } { load [$i0 + %1], %2 }

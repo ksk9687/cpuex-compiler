@@ -1,6 +1,23 @@
 open Asm
 
 let data = ref []
+let fundata = ref
+  (List.fold_left
+     (fun map (id, arg_regs, ret_reg) -> M.add ("min_caml_" ^ id) (arg_regs, ret_reg) map
+     ) M.empty
+      [("floor", ["$f2"], "$f1");
+       ("float_of_int", ["$i2"], "$f1");
+       ("int_of_float", ["$f2"], "$f1");
+       ("create_array_int", ["$i2"; "$i3"], "$i1");
+       ("create_array_float", ["$i2"; "$f2"], "$i1");
+       ("read", [], "$i1");
+       ("read_int", [], "$i1");
+       ("read_float", [], "$f1");
+       ("write", ["$i2"], "$dummy");
+       ("ledout", ["$i2"], "$dummy");
+       ("ledout_float", ["$f2"], "$dummy");
+       ("break", [], "$dummy")
+      ])
 
 let classify xts ini add =
   List.fold_left
@@ -41,7 +58,6 @@ let rec g env = function
   | Closure.Neg(x) -> Ans(Neg(x))
   | Closure.Add(x, y) -> Ans(Add(x, V(y)))
   | Closure.Sub(x, y) -> Ans(Sub(x, V(y)))
-  | Closure.SLL(x, i) -> Ans(SLL(x, i))
   | Closure.FNeg(x) -> Ans(FNeg(x))
   | Closure.FInv(x) -> Ans(FInv(x))
   | Closure.FSqrt(x) -> Ans(FSqrt(x))
@@ -100,7 +116,7 @@ let rec g env = function
       | Type.Array(Type.Unit) -> Ans(Nop)
       | Type.Array(_) -> Ans(St(z, V(x), V(y)))
       | _ -> assert false)
-  | Closure.ExtArray(Id.L(x)) -> Ans(SetL(Id.L("min_caml_" ^ x)))
+  | Closure.ExtArray(Id.L(x)) -> Ans(SetL(Id.L(x)))
 
 let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.body = e } =
   let (_, _, xs, rs) = List.fold_left
@@ -116,11 +132,13 @@ let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.body = e } =
         | Type.Float -> List.hd allfregs
         | _ -> List.hd alliregs
       ) in
-      { name = Id.L(x); args = xs; arg_regs = rs; body = g (M.add x t (M.add_list yts M.empty)) e; ret = t2; ret_reg = ret_reg }
+      fundata := M.add x (rs, ret_reg) !fundata;
+      { name = Id.L(x); args = xs; body = g (M.add x t (M.add_list yts M.empty)) e; ret = t2 }
   | _ -> assert false
 
 let f (Closure.Prog(global, fundefs, e)) =
   data := [];
   let fundefs = List.map h fundefs in
   let e = g M.empty e in
-  Prog(global, !data, fundefs, e)
+(*  M.iter (fun s (arg_regs, ret_reg) -> Format.eprintf "%s(%s) = %s@." s (String.concat ", " arg_regs) ret_reg) !fundata;*)
+  Prog(!fundata, global, !data, fundefs, e)
