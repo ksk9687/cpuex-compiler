@@ -22,8 +22,6 @@ and exp =
   | FSub of Id.t * Id.t * flg
   | FMul of Id.t * Id.t * flg
   | LdFL of Id.l
-  | MovR of Id.t * Id.t
-  | FMovR of Id.t * Id.t
   | IfEq of Id.t * id_or_imm * t * t
   | IfLE of Id.t * id_or_imm * t * t
   | IfGE of Id.t * id_or_imm * t * t
@@ -59,4 +57,5 @@ val fv : t -> Id.t list
 val concat : t -> Id.t * Type.t -> t -> t
 val applyId : (Id.t -> Id.t) -> exp -> exp
 val apply : (t -> t) -> exp -> exp
+val apply2 : (t -> t) -> (exp -> exp) -> t -> t
 val replace : M.key M.t -> M.key -> M.key

@@ -22,8 +22,16 @@ let safe_regs = ref
         ])
 
 let get_safe_regs x =
-  try M.find x !safe_regs
-  with Not_found -> S.empty
+  let s =
+    try M.find x !safe_regs
+    with Not_found -> S.empty in
+  let s = List.fold_left (fun s r -> S.add r s) s reg_fls in
+  let s = List.fold_left (fun s r -> S.add r s) s reg_fgls in
+  let s = List.fold_left (fun s r -> S.add r s) s reg_igls in
+  S.add reg_f0 (S.add reg_i0 s)
+
+(*  try M.find x !safe_regs
+  with Not_found -> S.empty*)
 
 let fundata = ref M.empty
 
@@ -36,7 +44,7 @@ let get_ret_reg x =
   ret_reg
 
 let rec target' src (dest, t) = function
-  | Mov(x) when x = src && is_reg dest ->
+  | (Mov(x) | FMov(x)) when x = src && is_reg dest ->
       assert (t <> Type.Unit);
       false, [dest]
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
@@ -127,6 +135,7 @@ let insert_forget xs exp t =
   let m =
     match t with
     | Type.Unit -> Nop
+    | Type.Float -> FMov(a)
     | _ -> Mov(a) in
   ToSpill(Let((a, t), exp, forget_list xs (Ans(m))), xs)
 
@@ -177,8 +186,6 @@ and g' dest cont regenv = function
   | FAdd(x, y, flg) -> NoSpill(Ans(FAdd(find x Type.Float regenv, find y Type.Float regenv, flg)), regenv)
   | FSub(x, y, flg) -> NoSpill(Ans(FSub(find x Type.Float regenv, find y Type.Float regenv, flg)), regenv)
   | FMul(x, y, flg) -> NoSpill(Ans(FMul(find x Type.Float regenv, find y Type.Float regenv, flg)), regenv)
-  | MovR(x, y) -> NoSpill(Ans(MovR(find x Type.Int regenv, find y Type.Int regenv)), regenv)
-  | FMovR(x, y) -> NoSpill(Ans(FMovR(find x Type.Float regenv, find y Type.Float regenv)), regenv)
   | IfEq(x, y', e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfEq(find x Type.Int regenv, find' y' regenv, e1', e2')) e1 e2
   | IfLE(x, y', e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfLE(find x Type.Int regenv, find' y' regenv, e1', e2')) e1 e2
   | IfGE(x, y', e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfGE(find x Type.Int regenv, find' y' regenv, e1', e2')) e1 e2
@@ -259,10 +266,12 @@ let rec set_safe_regs   { name = Id.L(x); args = args; body = e; ret = t } =
 
 let h { name = Id.L(x); args = xs; body = e; ret = t } =
   Format.eprintf "Allocating: %s@." x;
+  safe_regs := M.add x S.empty !safe_regs;
   let regenv = List.fold_left2
     (fun env x r -> M.add x r env
     ) M.empty xs (get_arg_regs x) in
-  let (e', regenv') = g_repeat (get_ret_reg x, t) (Ans(Mov(get_ret_reg x))) regenv e in
+  let ret = if t = Type.Float then FMov(get_ret_reg x) else Mov(get_ret_reg x) in
+  let (e', regenv') = g_repeat (get_ret_reg x, t) (Ans(ret)) regenv e in
   let func = { name = Id.L(x); args = (get_arg_regs x); body = e'; ret = t } in
   set_safe_regs func;
   func

@@ -1,10 +1,5 @@
 open Asm
 
-(* SetLがなく、定数インデックスアクセスのみならレジスタ上に配置可能 *)
-(* Putがなければそのレジスタをそのまま使用可能 *)
-(* Putがある場合は別のレジスタに退避して使う *)
-(* とりあえず関数呼び出しがあったらPutありとした *)
-
 let gtable = ref []
 let glbl = ref []
 
@@ -28,48 +23,37 @@ let rec count env = function
   | Let(_, exp, e) -> count (count' env exp) e
   | Forget(_, e) -> count env e
 and count' env = function
-  | SetL(Id.L(l)) | Ld(L(Id.L(l)), V(_)) -> rem l env
-  | Ld(L(Id.L(l)), C(i)) -> inc l i env
-  | Ld(L(Id.L(l)), _) -> rem l env
-  | St(_, L(Id.L(l)), C(i)) -> inc l i env
-  | St(_, L(Id.L(l)), _) -> rem l env
+  | Ld(L(Id.L(l)), C(i)) | St(_, L(Id.L(l)), C(i)) -> inc l i env
+  | SetL(Id.L(l)) | Ld(L(Id.L(l)), _) | St(_, L(Id.L(l)), _) -> rem l env
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
       count (count env e1) e2
   | _ -> env
 
-let rec hasPut l i = function
-  | Ans(exp) -> hasPut' l i exp
-  | Let(_, exp, e) -> (hasPut' l i exp) || (hasPut l i e)
-  | Forget(_, e) -> hasPut l i e
-and hasPut' l i = function
-  | St(_, L(l'), C(i')) when l' = l && i' = i -> true
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) -> (hasPut l i e1) || (hasPut l i e2)
-  | CallDir _ -> true
-  | _ -> false
-
-let rec g env = function
-  | Ans(exp) -> Ans(g' env exp)
-  | Let((x, t), Ld(L(l), C(i)), e) when List.mem_assoc (l, i) !gtable ->
-      (* これ除去するとまずいがレイトレは動く
-      if hasPut l i e then
-        Let((x, t), Mov(List.assoc (l, i) !gtable), g env e)
-      else *)
-        g (M.add x (List.assoc (l, i) !gtable) env) e 
-  | Let(xt, exp, e) -> Let(xt, g' env exp, g env e)
-  | Forget(x, e) -> Forget(x, g env e)
-and g' env = function
+let rec g = function
+  | Ans(St(x, L(l), C(i))) when List.mem_assoc (l, i) !gtable ->
+      let Id.L(s) = l in
+      let t = getInnerType (List.assoc s !glbl) i in
+      if t = Type.Float then
+        Let((List.assoc (l, i) !gtable, t), FMov(x), Ans(Nop))
+      else
+        Let((List.assoc (l, i) !gtable, t), Mov(x), Ans(Nop))
+  | Let(_, St(x, L(l), C(i)), e) when List.mem_assoc (l, i) !gtable ->
+      let Id.L(s) = l in
+      let t = getInnerType (List.assoc s !glbl) i in
+      if t = Type.Float then
+        Let((List.assoc (l, i) !gtable, t), FMov(x), g e)
+      else
+        Let((List.assoc (l, i) !gtable, t), Mov(x), g e)
+  | e -> apply2 g g' e
+and g' = function
   | Ld(L(l), C(i)) when List.mem_assoc (l, i) !gtable ->
       let Id.L(s) = l in
       if (getInnerType (List.assoc s !glbl) i) = Type.Float then FMov(List.assoc (l, i) !gtable)
       else Mov(List.assoc (l, i) !gtable)
-  | St(x, L(l), C(i)) when List.mem_assoc (l, i) !gtable ->
-      let Id.L(s) = l in
-      if (getInnerType (List.assoc s !glbl) i) = Type.Float then FMovR(replace env x, List.assoc (l, i) !gtable)
-      else MovR(replace env x, List.assoc (l, i) !gtable)
-  | e -> apply (g env) (applyId (replace env) e)
+  | exp -> apply g exp
 
 let h { name = l; args = xs; body = e; ret = t } =
-  { name = l; args = xs; body = g M.empty e; ret = t }
+  { name = l; args = xs; body = g e; ret = t }
 
 let f (Prog(fundata, global, data, fundefs, e)) =
   glbl := global;
@@ -80,7 +64,7 @@ let f (Prog(fundata, global, data, fundefs, e)) =
   let _  = List.fold_left
     (fun (ni, nf) (l, i, _) ->
       if not (List.mem_assoc l global) then
-        (*let _ = Format.eprintf "orz: %s@." l in*)
+        (* let _ = Format.eprintf "orz: %s@." l in (* float *) *)
         (ni, nf)
       else
 	      let t = getInnerType (List.assoc l global) i in
@@ -107,4 +91,4 @@ let f (Prog(fundata, global, data, fundefs, e)) =
           (fun e ((l, i), reg) ->
             let Id.L(s) = l in
             Let((reg, getInnerType (List.assoc s global) i), Ld(L(l), C(i)), e)
-          ) (g M.empty e) !gtable)
+          ) (g e) !gtable)

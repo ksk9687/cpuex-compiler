@@ -14,18 +14,13 @@ and count' env = function
       count (count env e1) e2
   | _ -> env
 
-let rec g env = function
-  | Ans(exp) -> Ans(g' env exp)
-  | Let((x, t), LdFL(l), e) when List.mem_assoc l !ftable ->
-      g (M.add x (List.assoc l !ftable) env) e
-  | Let(xt, exp, e) -> Let(xt, g' env exp, g env e)
-  | Forget(x, e) -> Forget(x, g env e)
-and g' env = function
+let rec g e = apply2 g g' e
+and g' = function
   | LdFL(l) when List.mem_assoc l !ftable -> FMov(List.assoc l !ftable)
-  | e -> apply (g env) (applyId (replace env) e)
+  | exp -> apply g exp
 
 let h { name = l; args = xs; body = e; ret = t } =
-  { name = l; args = xs; body = g M.empty e; ret = t }
+  { name = l; args = xs; body = g e; ret = t }
 
 let f (Prog(fundata, global, data, fundefs, e)) =
   let counts = List.fold_left (fun env (Id.L(l), _) -> M.add l 0 env) M.empty data in
@@ -46,5 +41,5 @@ let f (Prog(fundata, global, data, fundefs, e)) =
   Prog(fundata, global, data, List.map h fundefs,
         List.fold_left
           (fun e (l, reg) -> if reg = reg_f0 then e else Let((reg, Type.Float), Ld(L(l), C(0)), e))
-          (g M.empty e)
+          (g e)
           !ftable)

@@ -22,8 +22,6 @@ and exp =
   | FSub of Id.t * Id.t * flg
   | FMul of Id.t * Id.t * flg
   | LdFL of Id.l
-  | MovR of Id.t * Id.t
-  | FMovR of Id.t * Id.t
   | IfEq of Id.t * id_or_imm * t * t
   | IfLE of Id.t * id_or_imm * t * t
   | IfGE of Id.t * id_or_imm * t * t
@@ -86,7 +84,7 @@ let rec fv' = function
   | Add(x, y') | Sub(x, y') -> x :: fv_id_or_imm y'
   | Ld(x', y') -> fv_id_or_imm x' @ fv_id_or_imm y'
   | St(x, y', z') -> x :: fv_id_or_imm y' @ fv_id_or_imm z'
-  | FAdd(x, y, _) | FSub(x, y, _) | FMul(x, y, _) | MovR(x, y) | FMovR(x, y) -> [x; y]
+  | FAdd(x, y, _) | FSub(x, y, _) | FMul(x, y, _) -> [x; y]
   | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> x :: fv_id_or_imm y'
   | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> [x; y]
   | CallDir(_, ys) -> ys
@@ -127,8 +125,6 @@ let applyId f exp =
   | FAdd(x, y, flg) -> FAdd(f x, f y, flg)
   | FSub(x, y, flg) -> FSub(f x, f y, flg)
   | FMul(x, y, flg) -> FMul(f x, f y, flg)
-  | MovR(x, y) -> MovR(f x, f y)
-  | FMovR(x, y) -> FMovR(f x, f y)
   | IfEq(x, y', e1, e2) -> IfEq(f x, f' y', e1, e2)
   | IfLE(x, y', e1, e2) -> IfLE(f x, f' y', e1, e2)
   | IfGE(x, y', e1, e2) -> IfGE(f x, f' y', e1, e2)
@@ -146,6 +142,11 @@ let apply f = function
   | IfFEq(x, y, e1, e2) -> IfFEq(x, y, f e1, f e2)
   | IfFLE(x, y, e1, e2) -> IfFLE(x, y, f e1, f e2)
   | exp -> exp
+
+let apply2 f f' = function
+  | Ans(exp) -> Ans(f' exp)
+  | Let(xt, exp, e) -> Let(xt, f' exp, f e)
+  | Forget(x, e) -> Forget(x, f e)
 
 let replace env x =
   if M.mem x env then M.find x env

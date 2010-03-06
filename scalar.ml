@@ -170,7 +170,6 @@ and g' saved s = function
   | NonTail(x), FSub(y, z, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s ("fsub" ^ (flg f)) y z x, "fsub", [y; z], [x]), End)
   | NonTail(x), FMul(y, z, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s ("fmul" ^ (flg f)) y z x, "fmul", [y; z], [x]), End)
   | NonTail(x), LdFL(Id.L(l)) -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s], %s\n" (s ^ ".count load_float\n") "load" l x, "load", [], [x]), End)
-  | NonTail(_), (MovR(x, y) | FMovR(x, y)) -> g' saved (s ^ ".count move_float\n") (NonTail(y), Mov(x))
   | NonTail(r), Save(x, y) when List.mem x allregs && not (S.mem y !stackset) ->
       save y;
       g' saved (s ^ ".count stack_store\n") (NonTail(r), St(x, V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
@@ -178,7 +177,7 @@ and g' saved s = function
   | NonTail(x), Restore(y) ->
       assert (List.mem x allregs);
       g' saved (s ^ ".count stack_load\n") (NonTail(x), Ld(V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
-  | Tail, (Nop | St _ | MovR _ | FMovR _ | Save _ as exp) ->
+  | Tail, (Nop | St _ | Save _ as exp) ->
       seq (g' saved s (NonTail(Id.gentmp Type.Unit), exp)) ret
   | Tail, (Set _ | SetL _ | Mov _ | FMov _ | Add _ | Sub _ | Ld _ |
            FNeg _ | FInv _ | FSqrt _ | FAbs _ | FAdd _ | FSub _ | FMul _ | LdFL _ as exp) ->

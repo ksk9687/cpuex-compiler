@@ -1,19 +1,19 @@
 open Asm
 
+let replace env = function
+  | V(x) when M.mem x env -> L(M.find x env)
+  | x' -> x'
+
 let rec g env = function
-  | Ans(exp) -> Ans(g' env exp)
   | Let((x, t), SetL(l), e) ->
       let e' = g (M.add x l env) e in
-      if List.mem x (fv e') then Let((x, t), SetL(l), e') else
-       e'
-  | Let(xt, exp, e) -> Let(xt, g' env exp, g env e)
-  | Forget(x, e) -> Forget(x, g env e)
+      if List.mem x (fv e') then Let((x, t), SetL(l), e')
+      else e'
+  | e -> apply2 (g env) (g' env) e
 and g' env = function
-  | Ld(x', V(y)) when M.mem y env -> g' env (Ld(x', L(M.find y env)))
-  | Ld(V(x), y') when M.mem x env -> g' env (Ld(L(M.find x env), y'))
-  | St(x, y', V(z)) when M.mem z env -> g' env (St(x, y', L(M.find z env)))
-  | St(x, V(y), z') when M.mem y env -> g' env (St(x, L(M.find y env), z'))
-  | e -> apply (g env) e
+  | Ld(x', y') -> Ld(replace env x', replace env y')
+  | St(x, y', z') -> St(x, replace env y', replace env z')
+  | exp -> apply (g env) exp
 
 let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }

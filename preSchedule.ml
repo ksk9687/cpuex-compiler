@@ -1,5 +1,6 @@
 open Asm
 
+(* sglobalの後でやる場合はgetFirstあたりをもう一度考えなおす *)
 (*
 let str_id_or_imm = function
   | C(i) -> Format.sprintf "%d" i
