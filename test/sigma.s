@@ -633,38 +633,38 @@ ext_break:
 .define $f63 orz
 
 ######################################################################
-# fib
+# sigma
 ######################################################################
-.begin fib
-fib.17:
-	bg      $i2, 1, ble_else.34
-ble_then.34:
-	mov     $i2, $i1
+.begin sigma
+sigma.18:
+	bne     $i2, 0, be_else.37
+be_then.37:
+	mov     $f0, $f1
 	ret
-ble_else.34:
+be_else.37:
 .count stack_move
 	sub     $sp, 3, $sp
 .count stack_store
 	store   $ra, [$sp + 0]
 .count stack_store
 	store   $i2, [$sp + 1]
-	sub     $i2, 1, $i2
-	call    fib.17
+	call    ext_float_of_int
+	fmul    $f1, $f1, $f1
 .count stack_store
-	store   $i1, [$sp + 2]
+	store   $f1, [$sp + 2]
 .count stack_load
 	load    [$sp + 1], $i1
-	sub     $i1, 2, $i2
-	call    fib.17
+	sub     $i1, 1, $i2
+	call    sigma.18
 .count stack_load
 	load    [$sp + 0], $ra
 .count stack_move
 	add     $sp, 3, $sp
 .count stack_load
-	load    [$sp - 1], $i2
-	add     $i2, $i1, $i1
+	load    [$sp - 1], $f2
+	fadd    $f1, $f2, $f1
 	ret
-.end fib
+.end sigma
 
 ######################################################################
 # main
@@ -675,8 +675,11 @@ ext_main:
 	sub     $sp, 1, $sp
 .count stack_store
 	store   $ra, [$sp + 0]
-	li      10, $i2
-	call    fib.17
+	li      5, $i2
+	call    sigma.18
+.count move_ret
+	mov     $f1, $f2
+	call    ext_int_of_float
 .count move_ret
 	mov     $i1, $i2
 .count stack_load

@@ -1,47 +1,11 @@
 open Asm
 
-let safe_regs = ref
-    (List.fold_left
-       (fun map (id, regs) -> M.add ("min_caml_" ^ id) (S.diff (S.of_list allregs) (S.of_list regs)) map) 
-      M.empty
-        [("floor", ["$f1"; "$f2"; "$f3"]);
-         ("float_of_int", ["$i2"; "$i3"; "$i4"; "$f1"; "$f2"; "$f3"]);
-         ("int_of_float", ["$i1"; "$i2"; "$i3"; "$f2"; "$f3"]);
-         ("create_array_int", ["$i1"; "$i2"; "$i3"]);
-         ("create_array_float", ["$i1"; "$i2"; "$i3"; "$f2"]);
-         ("read", ["$i1"; "$i2"]);
-         ("read_int", ["$i1"; "$i2"; "$i3"; "$i4"; "$i5"]);
-         ("read_float", ["$i1"; "$i2"; "$i3"; "$i4"; "$i5"; "$f1"]);
-         ("write", ["$i2"]);
-         ("atan", ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"]);
-         ("sin", ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"; "$f6"; "$f7"]);
-         ("cos", ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"; "$f6"; "$f7"; "$f8"]);
-         ("ledout", ["$i2"]);
-         ("ledout_float", ["$i2"; "$f2"]);
-         ("break", [])
-        ])
+let fixed = ref S.empty
 
 let get_safe_regs x =
-  let s =
-    try M.find x !safe_regs
-    with Not_found -> S.empty in
-  let s = List.fold_left (fun s r -> S.add r s) s reg_fls in
-  let s = List.fold_left (fun s r -> S.add r s) s reg_fgls in
-  let s = List.fold_left (fun s r -> S.add r s) s reg_igls in
-  S.add reg_f0 (S.add reg_i0 s)
-
-(*  try M.find x !safe_regs
-  with Not_found -> S.empty*)
-
-let fundata = ref M.empty
-
-let get_arg_regs x =
-  let (arg_regs, ret_reg) = M.find x !fundata in
-  arg_regs
-
-let get_ret_reg x =
-  let (arg_regs, ret_reg) = M.find x !fundata in
-  ret_reg
+  fixed := S.add x !fixed;
+  let used = get_use_regs x in
+  List.filter (fun r -> not (S.mem r used)) allregs
 
 let rec target' src (dest, t) = function
   | (Mov(x) | FMov(x)) when x = src && is_reg dest ->
@@ -52,8 +16,7 @@ let rec target' src (dest, t) = function
       let c2, rs2 = target src (dest, t) e2 in
       c1 && c2, rs1 @ rs2
   | CallDir(Id.L(x), ys) ->
-      true, (target_args src (get_arg_regs x) ys @
-         S.elements (get_safe_regs x))
+      true, (target_args src (get_arg_regs x) ys) @ (get_safe_regs x)
   | _ -> false, []
 and target src dest = function
   | Ans(exp) -> target' src dest exp
@@ -219,18 +182,21 @@ and g'_if dest cont regenv exp constr e1 e2 =
   with [] -> NoSpill(Ans(constr e1' e2'), regenv')
   | xs -> insert_forget xs exp (snd dest)
 and g'_call id dest cont regenv exp constr ys =
-  match
-    List.filter
-      (fun x ->
-         not (is_reg x || x = fst dest || (M.mem x regenv && S.mem (M.find x regenv) (get_safe_regs id)))
-      ) (fv cont)
-  with [] -> NoSpill(Ans(constr
+  match List.filter
+    (fun x ->
+      if is_reg x || x = fst dest then false
+      else if not (M.mem x regenv) then false (* ??? *)
+      else
+        let r = M.find x regenv in
+        not (List.mem r (get_safe_regs id))
+    ) (fv cont)	with
+    | [] -> NoSpill(Ans(constr
                            (List.map2
                             (fun y r ->
                               find y (if List.mem r alliregs then Type.Int else if List.mem r allfregs then Type.Float else assert false) regenv
                             ) ys (get_arg_regs id))),
                      regenv)
-  | xs -> insert_forget xs exp (snd dest)
+    | xs -> insert_forget xs exp (snd dest)
 and g_repeat dest cont regenv e =
     match g dest cont regenv e with
     | NoSpill(e', regenv') -> (e', regenv')
@@ -241,44 +207,55 @@ and g_repeat dest cont regenv e =
              e
              xs)
 
-let rec set_safe_regs_t env = function
-  | Ans (e) -> set_safe_regs_exp env e
-  | Let ((x, _), e, t) -> set_safe_regs_t (set_safe_regs_exp (S.remove x env) e) t
-  | Forget (x, t) -> set_safe_regs_t (S.remove x env) t
-and set_safe_regs_exp env = function
+let rec get_use_regs env = function
+  | Ans (e) -> get_use_regs' env e
+  | Let ((x, _), e, t) -> get_use_regs (get_use_regs' (S.add x env) e) t
+  | Forget (x, t) -> get_use_regs (S.add x env) t
+and get_use_regs' env = function
   | CallDir (Id.L(x), _) ->
-      S.inter (get_safe_regs x) env
-  | IfEq (_, _, t1, t2) | IfLE (_, _, t1, t2) | IfGE (_, _, t1, t2)
-  | IfFEq (_, _, t1, t2) | IfFLE (_, _, t1, t2) ->
-      S.inter (set_safe_regs_t env t1) (set_safe_regs_t env t2)
+      S.union (Asm.get_use_regs x) env
+  | IfEq (_, _, e1, e2) | IfLE (_, _, e1, e2) | IfGE (_, _, e1, e2)	| IfFEq (_, _, e1, e2) | IfFLE (_, _, e1, e2) ->
+      S.union (get_use_regs env e1) (get_use_regs env e2)
   | _ -> env
-let rec set_safe_regs   { name = Id.L(x); args = args; body = e; ret = t } =
-  let env = S.of_list allregs in
-  let env = S.diff env (S.of_list (get_arg_regs x)) in
-  let env = S.remove (get_ret_reg x) env in
-  safe_regs := M.add x env !safe_regs;
-  let env = set_safe_regs_t env e in
-    List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "o" else "x")) alliregs;
-    Format.eprintf "@.";
-    List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "o" else "x")) allfregs;
-    Format.eprintf "@.";
-    safe_regs := M.add x env !safe_regs
 
 let h { name = Id.L(x); args = xs; body = e; ret = t } =
-  Format.eprintf "Allocating: %s@." x;
-  safe_regs := M.add x S.empty !safe_regs;
+  if not (S.mem x !fixed) then
+    let data = M.find x !fundata in
+    let (arg_regs, _) = List.fold_left2
+      (fun (arg_regs, regenv) x r ->
+        let typ = if List.mem r alliregs then Type.Int else Type.Float in
+        match (alloc (data.ret_reg, t) e regenv x typ) with
+          | Alloc(r) -> (arg_regs @ [r], M.add x r regenv)
+          | _ -> assert false
+      ) ([], M.empty) xs data.arg_regs in
+    let data = { arg_regs = arg_regs; ret_reg = data.ret_reg; reg_ra = data.reg_ra; use_regs = data.use_regs } in
+    fundata := M.add x data !fundata
+  else ();
+  let data = M.find x !fundata in
+  Format.eprintf "%s%s(%s)@." (if t = Type.Unit then "" else data.ret_reg ^ " = ") (Id.name x) (String.concat ", " data.arg_regs);
+  Format.eprintf "$ra = %s@." data.reg_ra;
   let regenv = List.fold_left2
     (fun env x r -> M.add x r env
-    ) M.empty xs (get_arg_regs x) in
-  let ret = if t = Type.Float then FMov(get_ret_reg x) else Mov(get_ret_reg x) in
-  let (e', regenv') = g_repeat (get_ret_reg x, t) (Ans(ret)) regenv e in
-  let func = { name = Id.L(x); args = (get_arg_regs x); body = e'; ret = t } in
-  set_safe_regs func;
-  func
-
-let f (Prog(fundata', global, data, funs, e)) =
+    ) M.empty xs data.arg_regs in
+  let ret = if t = Type.Float then FMov(get_ret_reg x) else Mov(data.ret_reg) in
+  let (e, _) = g_repeat (data.ret_reg, t) (Ans(ret)) regenv e in
+  let data = { arg_regs = data.arg_regs; ret_reg = data.ret_reg; reg_ra = data.reg_ra; use_regs = S.empty } in
+  fundata := M.add x data !fundata;
+  let env = get_use_regs (S.add data.ret_reg (S.of_list (data.arg_regs))) e in
+  let data = { arg_regs = data.arg_regs; ret_reg = data.ret_reg; reg_ra = data.reg_ra; use_regs = env } in
+  fundata := M.add x data !fundata;
+  List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) alliregs;
+  Format.eprintf "@.";
+  List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) allfregs;
+  Format.eprintf "@.";
+  List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) reg_igs;
+  Format.eprintf "@.";
+  List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) reg_fgs;
+  Format.eprintf "@.";
+  { name = Id.L(x); args = data.arg_regs; body = e; ret = t }
+  
+let f (Prog(data, funs, e)) =
   Format.eprintf "register allocation: may take some time (up to a few minutes, depending on the size of functions)@.";
-  fundata := fundata';
   let funs' = List.map h funs in
   let e', regenv' = g_repeat (Id.gentmp Type.Unit, Type.Unit) (Ans(Nop)) M.empty e in
-  Prog(!fundata, global, data, funs', e')
+  Prog(data, funs', e')

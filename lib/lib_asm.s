@@ -16,13 +16,13 @@ FLOAT_MAGICFHX:
 	.int 1258291200			# 0x4b000000
 
 ######################################################################
-# * floor
-# それ以下の最大の数
 # $f1 = floor($f2)
-# [$f1, $f2, $f3]
+# $ra = $ra
+# []
+# [$f1 - $f3]
 ######################################################################
 .begin floor
-min_caml_floor:
+ext_floor:
 	mov $f2, $f1
 	bge $f1, $f0, FLOOR_POSITIVE
 	fneg $f1, $f1
@@ -47,13 +47,13 @@ FLOOR_RET:
 .end floor
 
 ######################################################################
-# * float_of_int
-# 最も近いfloat
 # $f1 = float_of_int($i2)
-# [$i2, $i3, $i4, $f1, $f2, $f3]
+# $ra = $ra
+# [$i2 - $i4]
+# [$f1 - $f3]
 ######################################################################
 .begin float_of_int
-min_caml_float_of_int:
+ext_float_of_int:
 	bge $i2, 0, ITOF_MAIN
 	neg $i2, $i2
 	mov $ra, $tmp
@@ -83,13 +83,13 @@ ITOF_LOOP:
 .end float_of_int
 
 ######################################################################
-# * int_of_float
-# 最も近いint
 # $i1 = int_of_float($f2)
-# [$i1, $i2, $i3, $f2, $f3]
+# $ra = $ra
+# [$i1 - $i3]
+# [$f2 - $f3]
 ######################################################################
 .begin int_of_float
-min_caml_int_of_float:
+ext_int_of_float:
 	bge $f2, $f0, FTOI_MAIN
 	fneg $f2, $f2
 	mov $ra, $tmp
@@ -119,26 +119,13 @@ FTOI_LOOP:
 .end int_of_float
 
 ######################################################################
-# * read
-# 1byte同期読み込み
-# $i1 = read()
-# [$i1, $i2]
+# $i1 = read_int()
+# $ra = $ra
+# [$i1 - $i5]
+# []
 ######################################################################
 .begin read
-min_caml_read:
-	li 255, $i2
-read_loop:
-	read $i1
-	bg $i1, $i2, min_caml_read
-	ret
-
-######################################################################
-# * read_int
-# 4byte同期読み込み
-# $i1 = read_int()
-# [$i1, $i2, $i3, $i4, $i5]
-######################################################################
-min_caml_read_int:
+ext_read_int:
 	li 0, $i1
 	li 0, $i3
 	li 255, $i5
@@ -156,39 +143,39 @@ sll_loop:
 	ret
 
 ######################################################################
-# * read_float
-# 4byte同期読み込み
 # $f1 = read_float()
-# [$i1, $i2, $i3, $i4, $i5, $f1]
+# $ra = $ra
+# [$i1 - $i5]
+# [$f1]
 ######################################################################
-min_caml_read_float:
+ext_read_float:
 	mov $ra, $tmp
-	call min_caml_read_int
+	call ext_read_int
 	mov $i1, $f1
 	jr $tmp
 .end read
 
 ######################################################################
-# * write
-# 1byte同期出力
 # write($i2)
+# $ra = $ra
 # [$i2]
+# []
 ######################################################################
 .begin write
-min_caml_write:
+ext_write:
 	write $i2, $tmp
-	bg $tmp, 0, min_caml_write
+	bg $tmp, 0, ext_write
 	ret
 .end write
 
 ######################################################################
-# * create_array_int
-# create_array_int(length, init)で長さlength、初期値initの配列を作成
 # $i1 = create_array_int($i2, $i3)
-# [$i1, $i2, $i3]
+# $ra = $ra
+# [$i1 - $i3]
+# []
 ######################################################################
 .begin create_array
-min_caml_create_array_int:
+ext_create_array_int:
 	mov $i2, $i1
 	add $i2, $hp, $i2
 	mov $hp, $i1
@@ -199,20 +186,20 @@ create_array_loop:
 	ret
 
 ######################################################################
-# * create_array_float
-# create_array_float(length, init)で長さlength、初期値initの配列を作成
 # $i1 = create_array_float($i2, $f2)
-# [$i1, $i2, $i3, $f2]
+# $ra = $ra
+# [$i1 - $i3]
+# [$f2]
 ######################################################################
-min_caml_create_array_float:
+ext_create_array_float:
 	mov $f2, $i3
-	jal min_caml_create_array_int $tmp
+	jal ext_create_array_int $tmp
 .end create_array
 
 ######################################################################
-# * 算術関数(atan, sin, cos)
+# 三角関数
 ######################################################################
-min_caml_atan_table:
+ext_atan_table:
 	.float 0.785398163397448279
 	.float 0.463647609000806094
 	.float 0.244978663126864143
@@ -248,10 +235,12 @@ f._181:	.float  5.0000000000E-01
 
 ######################################################################
 # $f1 = atan($f2)
-# [$i2, $f1, $f2, $f3, $f4, $f5]
+# $ra = $ra
+# [$i2]
+# [$f1 - $f5]
 ######################################################################
 .begin atan
-min_caml_atan:
+ext_atan:
 .count load_float
 	load    [f._182], $f5
 	li      0, $i2
@@ -275,7 +264,7 @@ ble_then._189:
 	fsub    $f2, $f1, $f1
 	fmul    $f5, $f2, $f2
 	fadd    $f3, $f2, $f3
-	load    [min_caml_atan_table + $i2], $f2
+	load    [ext_atan_table + $i2], $f2
 	fsub    $f4, $f2, $f4
 .count load_float
 	load    [f._181], $f2
@@ -288,7 +277,7 @@ ble_else._189:
 	fadd    $f2, $f1, $f1
 	fmul    $f5, $f2, $f2
 	fsub    $f3, $f2, $f3
-	load    [min_caml_atan_table + $i2], $f2
+	load    [ext_atan_table + $i2], $f2
 	fadd    $f4, $f2, $f4
 .count load_float
 	load    [f._181], $f2
@@ -301,10 +290,12 @@ ble_else._189:
 
 ######################################################################
 # $f1 = sin($f2)
-# [$i2, $f1, $f2, $f3, $f4, $f5, $f6, $f7]
+# $ra = $ra
+# [$i2]
+# [$f1 - $f7]
 ######################################################################
 .begin sin
-min_caml_sin:
+ext_sin:
 	bg      $f0, $f2, ble_else._192
 ble_then._192:
 .count load_float
@@ -319,14 +310,14 @@ ble_then._194:
 	bg      $f1, $f2, ble_else._195
 ble_then._195:
 	fsub    $f2, $f1, $f2
-	b       min_caml_sin
+	b       ext_sin
 ble_else._195:
 .count stack_move
 	sub     $sp, 1, $sp
 .count stack_store
 	store   $ra, [$sp + 0]
 	fsub    $f1, $f2, $f2
-	call    min_caml_sin
+	call    ext_sin
 .count stack_load
 	load    [$sp + 0], $ra
 .count stack_move
@@ -342,7 +333,7 @@ ble_else._192:
 .count stack_store
 	store   $ra, [$sp + 0]
 	fneg    $f2, $f2
-	call    min_caml_sin
+	call    ext_sin
 .count stack_load
 	load    [$sp + 0], $ra
 .count stack_move
@@ -362,7 +353,7 @@ ble_then._191:
 	fadd    $f3, $f1, $f1
 	fmul    $f6, $f3, $f3
 	fsub    $f4, $f3, $f4
-	load    [min_caml_atan_table + $i2], $f3
+	load    [ext_atan_table + $i2], $f3
 	fsub    $f5, $f3, $f5
 .count load_float
 	load    [f._181], $f3
@@ -375,7 +366,7 @@ ble_else._191:
 	fsub    $f3, $f1, $f1
 	fmul    $f6, $f3, $f3
 	fadd    $f4, $f3, $f4
-	load    [min_caml_atan_table + $i2], $f3
+	load    [ext_atan_table + $i2], $f3
 	fadd    $f5, $f3, $f5
 .count load_float
 	load    [f._181], $f3
@@ -400,14 +391,16 @@ cordic_sin._82:
 
 ######################################################################
 # $f1 = cos($f2)
-# [$i2, $f1, $f2, $f3, $f4, $f5, $f6, $f7, $f8]
+# $ra = $ra
+# [$i2]
+# [$f1 - $f8]
 ######################################################################
 .begin cos
-min_caml_cos:
+ext_cos:
 .count load_float
 	load    [f._184], $f8
 	fsub    $f8, $f2, $f2
-	b       min_caml_sin
+	b       ext_sin
 .end cos
 
 ######################################################################

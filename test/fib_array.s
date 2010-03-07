@@ -633,38 +633,25 @@ ext_break:
 .define $f63 orz
 
 ######################################################################
-# fib
+# loop
 ######################################################################
-.begin fib
-fib.17:
-	bg      $i2, 1, ble_else.34
-ble_then.34:
-	mov     $i2, $i1
+.begin loop
+loop.30:
+	bne     $i3, 11, be_else.57
+be_then.57:
 	ret
-ble_else.34:
-.count stack_move
-	sub     $sp, 3, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
-.count stack_store
-	store   $i2, [$sp + 1]
-	sub     $i2, 1, $i2
-	call    fib.17
-.count stack_store
-	store   $i1, [$sp + 2]
-.count stack_load
-	load    [$sp + 1], $i1
-	sub     $i1, 2, $i2
-	call    fib.17
-.count stack_load
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 3, $sp
-.count stack_load
-	load    [$sp - 1], $i2
-	add     $i2, $i1, $i1
-	ret
-.end fib
+be_else.57:
+	sub     $i3, 1, $i1
+	load    [$i2 + $i1], $i1
+	sub     $i3, 2, $i4
+	load    [$i2 + $i4], $i4
+	add     $i1, $i4, $i1
+.count storer
+	add     $i2, $i3, $tmp
+	store   $i1, [$tmp + 0]
+	add     $i3, 1, $i3
+	b       loop.30
+.end loop
 
 ######################################################################
 # main
@@ -672,16 +659,26 @@ ble_else.34:
 .begin main
 ext_main:
 .count stack_move
-	sub     $sp, 1, $sp
+	sub     $sp, 2, $sp
 .count stack_store
 	store   $ra, [$sp + 0]
-	li      10, $i2
-	call    fib.17
+	li      11, $i2
+	li      0, $i3
+	call    ext_create_array_int
 .count move_ret
 	mov     $i1, $i2
+.count stack_store
+	store   $i2, [$sp + 1]
+	li      1, $i10
+	store   $i10, [$i2 + 1]
+	li      2, $i3
+	call    loop.30
 .count stack_load
 	load    [$sp + 0], $ra
 .count stack_move
-	add     $sp, 1, $sp
+	add     $sp, 2, $sp
+.count stack_load
+	load    [$sp - 1], $i1
+	load    [$i1 + 10], $i2
 	b       ext_ledout
 .end main

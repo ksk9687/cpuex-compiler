@@ -23,3 +23,7 @@ let rec id_of_typ = function
 let gentmp typ =
   incr counter;
   Printf.sprintf "T%s%d" (id_of_typ typ) !counter
+
+let name s =
+  try String.sub s 0 (String.index s '.')
+  with Not_found -> s

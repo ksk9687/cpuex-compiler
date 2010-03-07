@@ -1,48 +1,15 @@
 open Asm
 
 let data = ref []
-let fundata = ref
-  (List.fold_left
-     (fun map (id, arg_regs, ret_reg) -> M.add ("min_caml_" ^ id) (arg_regs, ret_reg) map
-     ) M.empty
-      [("floor", ["$f2"], "$f1");
-       ("float_of_int", ["$i2"], "$f1");
-       ("int_of_float", ["$f2"], "$i1");
-       ("create_array_int", ["$i2"; "$i3"], "$i1");
-       ("create_array_float", ["$i2"; "$f2"], "$i1");
-       ("read", [], "$i1");
-       ("read_int", [], "$i1");
-       ("read_float", [], "$f1");
-       ("write", ["$i2"], "$dummy");
-       ("atan", ["$f2"], "$f1");
-       ("sin", ["$f2"], "$f1");
-       ("cos", ["$f2"], "$f1");
-       ("ledout", ["$i2"], "$dummy");
-       ("ledout_float", ["$f2"], "$dummy");
-       ("break", [], "$dummy")
-      ])
 
-let classify xts ini add =
+let expand xts ini add =
   List.fold_left
     (fun acc (x, t) ->
       match t with
       | Type.Unit -> acc
-      | _ -> add acc x t)
+      | _ -> (fun (offset, acc) x t -> (offset + 1, add x t offset acc)) acc x t)
     ini
     xts
-
-let separate xts =
-  classify
-    xts
-    []
-    (fun yts x _ -> (yts @ [x]))
-
-let expand xts ini add =
-  classify
-    xts
-    ini
-    (fun (offset, acc) x t ->
-      (offset + 1, add x t offset acc))
 
 let rec g env = function
   | Closure.Unit -> Ans(Nop)
@@ -87,8 +54,12 @@ let rec g env = function
       | Type.Unit -> Ans(Nop)
       | _ -> Ans(Mov(x)))
   | Closure.AppDir(Id.L(x), ys) ->
-      let xts = separate (List.map (fun y -> (y, M.find y env)) ys) in
-      Ans(CallDir(Id.L(x), xts))
+      let xs = List.fold_left
+        (fun ys x -> match M.find x env with
+          | Type.Unit -> ys
+          | _ -> ys @ [x]
+        ) [] ys in
+      Ans(CallDir(Id.L(x), xs))
   | Closure.Tuple(xs) ->
       let y = Id.genid "t" in
       let (offset, store) =
@@ -128,6 +99,7 @@ let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.body = e } =
       | Type.Float -> (iregs, List.tl fregs, xs @ [x], rs @ [List.hd fregs])
       | _ -> (List.tl iregs, fregs, xs @ [x], rs @ [List.hd iregs])
     ) (List.tl alliregs, List.tl allfregs, [], []) yts in
+(*    ) (Util.shuffle (List.tl alliregs), Util.shuffle (List.tl allfregs), [], []) yts in*)
   match t with
   | Type.Fun(_, t2) ->
       let ret_reg = (match t2 with
@@ -135,13 +107,21 @@ let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.body = e } =
         | Type.Float -> List.hd allfregs
         | _ -> List.hd alliregs
       ) in
-      fundata := M.add x (rs, ret_reg) !fundata;
+      fundata := M.add x { arg_regs = rs; ret_reg = ret_reg; reg_ra = "$ra"; use_regs = S.of_list allregs } !fundata;
       { name = Id.L(x); args = xs; body = g (M.add x t (M.add_list yts M.empty)) e; ret = t2 }
   | _ -> assert false
 
-let f (Closure.Prog(global, fundefs, e)) =
+let f (Closure.Prog(fundefs, e)) =
   data := [];
+  fundata := builtInFuns;
+  M.iter (fun x t -> match t with
+      | Type.Fun(ts, y) when not (M.mem x !fundata) ->
+          Format.eprintf "ExtFunction: %s@." x;
+          let args = List.map (fun t -> ("", t)) ts in
+          let _ = h { Closure.name = (Id.L(x), t); Closure.args = args; Closure.body = Closure.Unit } in
+          ()
+      | _ -> ()
+    ) !Typing.extenv;
   let fundefs = List.map h fundefs in
   let e = g M.empty e in
-(*  M.iter (fun s (arg_regs, ret_reg) -> Format.eprintf "%s(%s) = %s@." s (String.concat ", " arg_regs) ret_reg) !fundata;*)
-  Prog(!fundata, global, !data, fundefs, e)
+  Prog(!data, fundefs, e)

@@ -26,7 +26,7 @@ type t =
 type fundef = { name : Id.l * Type.t;
                 args : (Id.t * Type.t) list;
                 body : t }
-type prog = Prog of (Id.t * Type.t) list * fundef list * t
+type prog = Prog of fundef list * t
 
 let rec fv = function
   | Unit | Int(_) | Float(_) | ExtArray(_) -> S.empty
@@ -39,7 +39,6 @@ let rec fv = function
   | LetTuple(xts, y, e) -> S.add y (S.diff (fv e) (S.of_list (List.map fst xts)))
   | Put(x, y, z) -> S.of_list [x; y; z]
 
-let global = ref []
 let toplevel = ref []
 
 let rec sll x i =
@@ -92,16 +91,15 @@ let rec g env known = function
   | KNormal.Get(x, y) -> Get(x, y)
   | KNormal.Put(x, y, z) -> Put(x, y, z)
   | KNormal.ExtArray(x, t) ->
-      let x = "min_caml_" ^ x in
-      if not (List.mem_assoc x !global) then global := (x, t) :: !global;
-      ExtArray(Id.L(x))
+      ExtArray(Id.L("ext_" ^ x))
   | KNormal.ExtFunApp(x, ys) ->
       match x with
         | "sqrt" -> FSqrt(List.hd ys)
         | "fabs" -> FAbs(List.hd ys)
-        | _ -> AppDir(Id.L("min_caml_" ^ x), ys)
+        | _ -> AppDir(Id.L("ext_" ^ x), ys)
 
 let f e =
   toplevel := [];
+  Typing.extenv := M.fold (fun x t map -> M.add ("ext_" ^ x) t map) !Typing.extenv M.empty;
   let e' = g M.empty S.empty e in
-  Prog(!global, List.rev !toplevel, e')
+  Prog(List.rev !toplevel, e')

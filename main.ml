@@ -1,4 +1,4 @@
-let limit = ref 1000
+let limit = ref 100
 
 let opts = [Movelet.f; ConstArg.f; ConstFold.f; Cse.f; ConstArray.f; Inline.f; Assoc.f; Beta.f]
 

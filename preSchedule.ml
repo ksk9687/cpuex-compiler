@@ -201,12 +201,12 @@ let rec g awrite e =
 let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g [] e; ret = t }
 
-let f' (Prog(fundata, global, data, fundefs, e)) =
+let f' (Prog(data, fundefs, e)) =
   miss := 0;
   let fundefs = List.map h fundefs in
   let e = g [] e in
   Format.eprintf "MissCount: %d@." !miss;
-  Prog(fundata, global, data, fundefs, e)
+  Prog(data, fundefs, e)
 
 let rec f e =
   let e' = f' e in

@@ -116,19 +116,13 @@ let rec g = function
       else
         If(cmp, b, bn, g e1, g e2, g e3, rs)
         (*
-        (*let exps = getFirst [] [] e3 in*)
         let exps = getFirst rs [] e3 in
         if exps <> [] then
           let exp = List.hd exps in
-          g (If (b, bn, addLast (Seq(exp, End)) e1, addLast (Seq(exp, End)) e2, remove exp e3))
+          g (If (cmp, b, bn, addLast (Seq(exp, End)) e1, addLast (Seq(exp, End)) e2, remove exp e3, rs))
         else
-          If(b, bn, g e1, g e2, g e3)
-        (*
-        match e3 with
-          | Call(s, e) -> g (If(b, bn, addLast (Call(s, End)) e1, addLast (Call(s, End)) e2, e))
-          | Seq(exp, e) -> g (If (b, bn, addLast (Seq(exp, End)) e1, addLast (Seq(exp, End)) e2, remove exp e3))
-          | e3 -> If(b, bn, g e1, g e2, g e3)
-        *)*)
+          If(cmp, b, bn, g e1, g e2, g e3, rs)
+        *)
 
 let rec h e =
   let e' = g e in

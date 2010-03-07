@@ -39,16 +39,6 @@ let flg = function
 let cmp x y' = Printf.sprintf "%s, %s" x (pp_id_or_imm y')
 let fcmp x y = Printf.sprintf "%s, %s" x y
 
-let fundata = ref M.empty
-
-let get_arg_regs x =
-  let (arg_regs, ret_reg) = M.find x !fundata in
-  arg_regs
-
-let get_ret_reg x =
-  let (arg_regs, ret_reg) = M.find x !fundata in
-  ret_reg
-
 let ret_reg = ref reg_tmp
 
 let ret = Ret(Printf.sprintf "\tret\n")
@@ -240,7 +230,6 @@ let h e =
   stackmap := [];
   g false (Tail, e)
 
-let f (Asm.Prog(fundata', global, data, funs, e)) =
+let f (Asm.Prog(data, funs, e)) =
   Format.eprintf "generating assembly...@.";
-  fundata := fundata';
-  Prog(data, List.map (fun {name = Id.L(x); body = e} -> ret_reg := get_ret_reg x; (Id.L(x), h e)) funs, h e)
+  Prog(data, List.map (fun {name = Id.L(x); body = e} -> ret_reg := (get_ret_reg x); (Id.L(x), h e)) funs, h e)

@@ -1,6 +1,6 @@
 open Asm
 
-let is_const r = List.mem r reg_fls || r = reg_i0 || r = reg_f0
+let is_const r = List.mem r reg_fcs || r = reg_i0 || r = reg_f0
 
 (* 0: ok, 1: hasPut, 2: orz *)
 let rec check x y = function
@@ -46,14 +46,14 @@ let rec g env = function
               g (M.add x y env) e
             else if y = reg_hp then
               Let((x, t), exp, g env e)
-            else if List.mem y reg_igls || List.mem y reg_fgls then
+            else if List.mem y reg_igs || List.mem y reg_fgs then
               if (check x y e) == 2 then
                 Let((x, t), exp, g env e)
               else
                 g (M.add x y env) e
             else
               (Format.eprintf "let %s = %s@." x y; assert false)
-          else if (List.mem x reg_igls || List.mem x reg_fgls) then
+          else if (List.mem x reg_igs || List.mem x reg_fgs) then
             Let((x, t), exp, g env e)
           else
             (Format.eprintf "let %s = %s@." x y; assert false)
@@ -66,8 +66,8 @@ and g' env = function
 let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }
 
-let f' (Prog(fundata, global, data, fundefs, e)) =
-  Prog(fundata, global, data, List.map h fundefs, g M.empty e)
+let f' (Prog(data, fundefs, e)) =
+  Prog(data, List.map h fundefs, g M.empty e)
 
 let rec f e =
   let e' = f' e in

@@ -1,9 +1,5 @@
 open Scalar
 
-let name s =
-  try String.sub s 0 (String.index s '.')
-  with Not_found -> s
-
 let rec g oc cont = function
   | End -> ()
   | Ret(asm) -> Printf.fprintf oc "%s" asm
@@ -83,9 +79,7 @@ let rec g oc cont = function
             g oc cont e3
 
 let h oc name x e =
-  Printf.fprintf oc "\n######################################################################\n";
-  Printf.fprintf oc "# %s\n" name;
-  Printf.fprintf oc "######################################################################\n";
+  Asm.output_fun_header oc x name;
   Printf.fprintf oc ".begin %s\n" name;
   Printf.fprintf oc "%s:\n" x;
   g oc End e;
@@ -96,5 +90,5 @@ let f oc (Prog(data, fundefs, e)) =
   List.iter
     (fun (Id.L(x), d) -> if d <> 0.0 then Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
     data;
-  List.iter (fun (Id.L(x), e) -> h oc (name x) x e) fundefs;
-  h oc "main" "min_caml_main" e
+  List.iter (fun (Id.L(x), e) -> h oc (Id.name x) x e) fundefs;
+  h oc "main" "ext_main" e

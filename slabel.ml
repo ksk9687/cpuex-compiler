@@ -18,5 +18,5 @@ and g' env = function
 let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }
 
-let f (Prog(fundata, global, data, fundefs, e)) =
-  Prog(fundata, global, data, List.map h fundefs, g M.empty e)
+let f (Prog(data, fundefs, e)) =
+  Prog(data, List.map h fundefs, g M.empty e)

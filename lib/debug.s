@@ -4,16 +4,23 @@
 #
 ######################################################################
 
-min_caml_ledout:
+ext_read:
+	li 255, $i2
+read_loop:
+	read $i1
+	bg $i1, $i2, ext_read
+	ret
+
+ext_ledout:
 	ledout $i2
 	ret
 
-min_caml_ledout_float:
+ext_ledout_float:
 	mov $f2, $i2
 	ledout $i2
 	ret
 
-min_caml_break:
+ext_break:
 	break
 	ret
 

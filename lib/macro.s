@@ -96,7 +96,7 @@
 	sll     $hp, $sp
 	sll     $sp, $sp
 	sll     $sp, $sp
-	call    min_caml_main
+	call    ext_main
 	halt
 
 ######################################################################
