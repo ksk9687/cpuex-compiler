@@ -1,37 +1,45 @@
 open Asm
 
+(* スコア式にしてみたが上手くいかないｏｒｚ *)
+
 let fixed = ref S.empty
 
-let rec target' src (dest, t) live = function
-  | (Mov(x) | FMov(x)) when is_reg dest ->
-      if x = src then ([dest], S.empty)
-      else ([], S.singleton dest)
+let rec target' src (dest, t) live env = function
+  | (Mov(x) | FMov(x)) when is_reg dest && M.mem dest env ->
+      if x = src then
+        if (M.find dest env) >= 0 then M.add dest ((M.find dest env) + 10) env
+        else env
+      else M.add dest (-30) env
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
-      let (rs1, use1) = target src (dest, t) live e1 in
-      let (rs2, use2) = target src (dest, t) live e2 in
-      if not (live || List.mem src (fv e1)) then (rs2, use2)
-      else if not (live || List.mem src (fv e2)) then (rs1, use1)
-      else (rs1 @ rs2, S.union use1 use2)
+      let env1 = target src (dest, t) live env e1 in
+      let env2 = target src (dest, t) live env e2 in
+      if not (live || List.mem src (fv e1)) then env2
+      else if not (live || List.mem src (fv e2)) then env1
+      else M.mapi (fun x score -> (score + (M.find x env2))) env1
   | CallDir(Id.L(x), ys) ->
       let arg_regs = get_arg_regs x in
-      List.fold_left2
-        (fun (prefer, use) y r ->
-          if y = src then (r :: prefer, use)
-          else (prefer, S.add r use)
-        ) ([], if live then get_use_regs x else S.empty) ys arg_regs
-  | _ -> ([], S.empty)
-and target src dest live = function
-  | Ans(exp) -> target' src dest live exp
+      let env = List.fold_left2
+        (fun env y r ->
+          if M.mem r env then
+            if y = src then
+              if (M.find r env) >= 0 then M.add r ((M.find r env) + 10) env
+              else env
+            else M.add r (-30) env
+          else env
+        ) env ys arg_regs in
+      if live then
+        let use_regs = get_use_regs x in
+        M.mapi (fun x score -> if S.mem x use_regs then -20 else score) env
+      else env
+  | _ -> env
+and target src dest live env = function
+  | Ans(exp) -> target' src dest live env exp
   | Let(xt, exp, e) when live || List.mem src (fv e) ->
-      let (rs1, use1) = target' src xt true exp in
-      let (rs2, use2) = target src dest live e in
-        (rs1 @ rs2, S.union use1 use2)
-  | Let(xt, exp, e) -> target' src xt false exp
-  | Forget(_, e) -> target src dest live e
-and target_args src regs = function
-  | [] -> []
-  | y :: ys when src = y -> (List.hd regs) :: target_args src (List.tl regs) ys
-  | _ :: ys -> target_args src (List.tl regs) ys
+      let env = target src dest live env e in
+      target' src xt true env exp
+  | Let(xt, exp, e) ->
+      target' src xt false env exp
+  | Forget(_, e) -> target src dest live env e
 
 let rec target_call = function
   | CallDir(Id.L(x), _) -> [get_ret_reg x]
@@ -57,11 +65,12 @@ let rec alloc dest cont exp regenv x t =
   else
     let free = fv cont in
     try
-      let (prefer, used) = target x dest false cont in
-      let prefer = List.filter
-        (fun r -> not (S.mem r used)
-        ) (prefer @ all) in
-      let prefer = (target_call exp) @ prefer in
+      let score = List.fold_left (fun env r -> M.add r 0 env) M.empty all in
+      let score = target x dest false score cont in
+      let score = List.fold_left (fun env r -> M.add r ((M.find r env) + 10) env) score (target_call exp) in
+      let prefer = List.stable_sort
+        (fun r1 r2 -> (M.find r2 score) - (M.find r1 score)
+        ) all in
       let live = List.fold_left
         (fun live y ->
           if M.mem y regenv then S.add (M.find y regenv) live
@@ -69,7 +78,8 @@ let rec alloc dest cont exp regenv x t =
         ) S.empty free in
       let r = List.find
         (fun r -> List.mem r all && not (S.mem r live)
-        ) (prefer @ all) in
+        ) prefer in
+      (*Format.eprintf "%s: %d@." r (M.find r score);*)
       Alloc(r)
     with Not_found ->
       Format.eprintf "register allocation failed for %s@." x;

@@ -99,7 +99,6 @@ let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.body = e } =
       | Type.Float -> (iregs, List.tl fregs, xs @ [x], rs @ [List.hd fregs])
       | _ -> (List.tl iregs, fregs, xs @ [x], rs @ [List.hd iregs])
     ) (List.tl alliregs, List.tl allfregs, [], []) yts in
-(*    ) (Util.shuffle (List.tl alliregs), Util.shuffle (List.tl allfregs), [], []) yts in*)
   match t with
   | Type.Fun(_, t2) ->
       let ret_reg = (match t2 with

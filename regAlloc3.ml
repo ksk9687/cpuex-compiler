@@ -1,5 +1,7 @@
 open Asm
 
+(* こっちのほうが何故かうまく行く *)
+
 let fixed = ref S.empty
 
 let rec target' src (dest, t) live = function
@@ -69,7 +71,7 @@ let rec alloc dest cont exp regenv x t =
         ) S.empty free in
       let r = List.find
         (fun r -> List.mem r all && not (S.mem r live)
-        ) (prefer @ all) in
+        ) (prefer @ all (* Util.shuffle all *)) in
       Alloc(r)
     with Not_found ->
       Format.eprintf "register allocation failed for %s@." x;

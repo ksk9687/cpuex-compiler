@@ -143,11 +143,10 @@ let rec fv' = function
   | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> x :: fv_id_or_imm y'
   | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> [x; y]
   | CallDir(_, ys) -> ys
-let rec fv_exp env cont e =
-  let xs = fv' e in
-  match e with
-    | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2)
-    | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+let rec fv_exp env cont exp =
+  let xs = fv' exp in
+  match exp with
+    | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
         cat xs (fv env (fv env cont e2) e1) env
     | _ -> cat xs cont env
 and fv env cont = function
