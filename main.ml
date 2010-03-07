@@ -1,6 +1,6 @@
 let limit = ref 1000
 
-let opts = [Movelet.f; ConstArg.f; ConstFold.f; Cse.f; Inline.f; Assoc.f; Beta.f]
+let opts = [Movelet.f; ConstArg.f; ConstFold.f; Cse.f; ConstArray.f; Inline.f; Assoc.f; Beta.f]
 
 let rec iter n e =
   Format.eprintf "iteration %d@." n;
