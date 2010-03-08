@@ -31,17 +31,17 @@
 .define { finv %fReg, %fReg } { finv 0 %1 %2 }
 .define { fsqrt %fReg, %fReg } { fsqrt 0 %1 %2 }
 .define { mov %fReg, %fReg } { fmov 0 %1 %2 }
-.define { fadd_abs %fReg, %fReg, %fReg } { fadd 2 %1 %2 %3 }
-.define { fsub_abs %fReg, %fReg, %fReg } { fsub 2 %1 %2 %3 }
-.define { fmul_abs %fReg, %fReg, %fReg } { fmul 2 %1 %2 %3 }
-.define { finv_abs %fReg, %fReg } { finv 2 %1 %2 }
-.define { fsqrt_abs %fReg, %fReg } { fsqrt 2 %1 %2 }
+.define { fadd_a %fReg, %fReg, %fReg } { fadd 2 %1 %2 %3 }
+.define { fsub_a %fReg, %fReg, %fReg } { fsub 2 %1 %2 %3 }
+.define { fmul_a %fReg, %fReg, %fReg } { fmul 2 %1 %2 %3 }
+.define { finv_a %fReg, %fReg } { finv 2 %1 %2 }
+.define { fsqrt_a %fReg, %fReg } { fsqrt 2 %1 %2 }
 .define { fabs %fReg, %fReg } { fmov 2 %1 %2 }
-.define { fadd_neg %fReg, %fReg, %fReg } { fadd 1 %1 %2 %3 }
-.define { fsub_neg %fReg, %fReg, %fReg } { fsub 1 %1 %2 %3 }
-.define { fmul_neg %fReg, %fReg, %fReg } { fmul 1 %1 %2 %3 }
-.define { finv_neg %fReg, %fReg } { finv 1 %1 %2 }
-.define { fsqrt_neg %fReg, %fReg } { fsqrt 1 %1 %2 }
+.define { fadd_n %fReg, %fReg, %fReg } { fadd 1 %1 %2 %3 }
+.define { fsub_n %fReg, %fReg, %fReg } { fsub 1 %1 %2 %3 }
+.define { fmul_n %fReg, %fReg, %fReg } { fmul 1 %1 %2 %3 }
+.define { finv_n %fReg, %fReg } { finv 1 %1 %2 }
+.define { fsqrt_n %fReg, %fReg } { fsqrt 1 %1 %2 }
 .define { fneg %fReg, %fReg } { fmov 1 %1 %2 }
 .define { load [%iReg + %Imm], %iReg } { load %1 %2 %3 }
 .define { load [%iReg + %iReg], %iReg } { loadr %1 %2 %3 }
@@ -59,7 +59,7 @@
 .define { sub %iReg, -%Imm, %iReg } { add %1, %2, %3 }
 .define { sll %iReg, %iReg } { add %1, %1, %2 }
 .define { neg %iReg, %iReg } { sub $i0, %1, %2 }
-.define { b %Imm } { cmpjmp 0, $i0, $i0, %1 }
+.define { b %Imm } { cmpjmp 0, $i0, 0, %1 }
 .define { be %s, %s, %Imm } { cmpjmp 5, %1, %2, %3 }
 .define { bne %s, %s, %Imm } { cmpjmp 2, %1, %2, %3 }
 .define { bl %s, %s, %Imm } { cmpjmp 6, %1, %2, %3 }
@@ -96,7 +96,7 @@
 	sll     $hp, $sp
 	sll     $sp, $sp
 	sll     $sp, $sp
-	call    min_caml_main
+	call    ext_main
 	halt
 
 ######################################################################
@@ -122,13 +122,13 @@ FLOAT_MAGICFHX:
 	.int 1258291200			# 0x4b000000
 
 ######################################################################
-# * floor
-# それ以下の最大の数
 # $f1 = floor($f2)
-# [$f1, $f2, $f3]
+# $ra = $ra
+# []
+# [$f1 - $f3]
 ######################################################################
 .begin floor
-min_caml_floor:
+ext_floor:
 	mov $f2, $f1
 	bge $f1, $f0, FLOOR_POSITIVE
 	fneg $f1, $f1
@@ -153,13 +153,13 @@ FLOOR_RET:
 .end floor
 
 ######################################################################
-# * float_of_int
-# 最も近いfloat
 # $f1 = float_of_int($i2)
-# [$i2, $i3, $i4, $f1, $f2, $f3]
+# $ra = $ra
+# [$i2 - $i4]
+# [$f1 - $f3]
 ######################################################################
 .begin float_of_int
-min_caml_float_of_int:
+ext_float_of_int:
 	bge $i2, 0, ITOF_MAIN
 	neg $i2, $i2
 	mov $ra, $tmp
@@ -189,13 +189,13 @@ ITOF_LOOP:
 .end float_of_int
 
 ######################################################################
-# * int_of_float
-# 最も近いint
 # $i1 = int_of_float($f2)
-# [$i1, $i2, $i3, $f2, $f3]
+# $ra = $ra
+# [$i1 - $i3]
+# [$f2 - $f3]
 ######################################################################
 .begin int_of_float
-min_caml_int_of_float:
+ext_int_of_float:
 	bge $f2, $f0, FTOI_MAIN
 	fneg $f2, $f2
 	mov $ra, $tmp
@@ -225,26 +225,13 @@ FTOI_LOOP:
 .end int_of_float
 
 ######################################################################
-# * read
-# 1byte同期読み込み
-# $i1 = read()
-# [$i1, $i2]
+# $i1 = read_int()
+# $ra = $ra
+# [$i1 - $i5]
+# []
 ######################################################################
 .begin read
-min_caml_read:
-	li 255, $i2
-read_loop:
-	read $i1
-	bg $i1, $i2, min_caml_read
-	ret
-
-######################################################################
-# * read_int
-# 4byte同期読み込み
-# $i1 = read_int()
-# [$i1, $i2, $i3, $i4, $i5]
-######################################################################
-min_caml_read_int:
+ext_read_int:
 	li 0, $i1
 	li 0, $i3
 	li 255, $i5
@@ -262,39 +249,39 @@ sll_loop:
 	ret
 
 ######################################################################
-# * read_float
-# 4byte同期読み込み
 # $f1 = read_float()
-# [$i1, $i2, $i3, $i4, $i5, $f1]
+# $ra = $ra
+# [$i1 - $i5]
+# [$f1]
 ######################################################################
-min_caml_read_float:
+ext_read_float:
 	mov $ra, $tmp
-	call min_caml_read_int
+	call ext_read_int
 	mov $i1, $f1
 	jr $tmp
 .end read
 
 ######################################################################
-# * write
-# 1byte同期出力
 # write($i2)
+# $ra = $ra
 # [$i2]
+# []
 ######################################################################
 .begin write
-min_caml_write:
+ext_write:
 	write $i2, $tmp
-	bg $tmp, 0, min_caml_write
+	bg $tmp, 0, ext_write
 	ret
 .end write
 
 ######################################################################
-# * create_array_int
-# create_array_int(length, init)で長さlength、初期値initの配列を作成
 # $i1 = create_array_int($i2, $i3)
-# [$i1, $i2, $i3]
+# $ra = $ra
+# [$i1 - $i3]
+# []
 ######################################################################
 .begin create_array
-min_caml_create_array_int:
+ext_create_array_int:
 	mov $i2, $i1
 	add $i2, $hp, $i2
 	mov $hp, $i1
@@ -305,26 +292,20 @@ create_array_loop:
 	ret
 
 ######################################################################
-# * create_array_float
-# create_array_float(length, init)で長さlength、初期値initの配列を作成
 # $i1 = create_array_float($i2, $f2)
-# [$i1, $i2, $i3, $f2]
+# $ra = $ra
+# [$i1 - $i3]
+# [$f2]
 ######################################################################
-min_caml_create_array_float:
+ext_create_array_float:
 	mov $f2, $i3
-	jal min_caml_create_array_int $tmp
+	jal ext_create_array_int $tmp
 .end create_array
 
 ######################################################################
-#
-# 		↑　ここまで lib_asm.s
-#
+# 三角関数
 ######################################################################
-
-######################################################################
-# * 算術関数(atan, sin, cos)
-######################################################################
-min_caml_atan_table:
+ext_atan_table:
 	.float 0.785398163397448279
 	.float 0.463647609000806094
 	.float 0.244978663126864143
@@ -351,6 +332,183 @@ min_caml_atan_table:
 	.float 1.19209289550780681e-07
 	.float 5.96046447753905522e-08
 
+f._186:	.float  6.2831853072E+00
+f._185:	.float  3.1415926536E+00
+f._184:	.float  1.5707963268E+00
+f._183:	.float  6.0725293501E-01
+f._182:	.float  1.0000000000E+00
+f._181:	.float  5.0000000000E-01
+
+######################################################################
+# $f1 = atan($f2)
+# $ra = $ra
+# [$i2]
+# [$f1 - $f5]
+######################################################################
+.begin atan
+ext_atan:
+.count load_float
+	load    [f._182], $f5
+	li      0, $i2
+.count move_args
+	mov     $f2, $f3
+.count move_args
+	mov     $f0, $f4
+.count move_args
+	mov     $f5, $f2
+	b       cordic_rec._146
+
+cordic_rec._146:
+	bne     $i2, 25, be_else._188
+be_then._188:
+	mov     $f4, $f1
+	ret
+be_else._188:
+	fmul    $f5, $f3, $f1
+	bg      $f3, $f0, ble_else._189
+ble_then._189:
+	fsub    $f2, $f1, $f1
+	fmul    $f5, $f2, $f2
+	fadd    $f3, $f2, $f3
+	load    [ext_atan_table + $i2], $f2
+	fsub    $f4, $f2, $f4
+.count load_float
+	load    [f._181], $f2
+	fmul    $f5, $f2, $f5
+	add     $i2, 1, $i2
+.count move_args
+	mov     $f1, $f2
+	b       cordic_rec._146
+ble_else._189:
+	fadd    $f2, $f1, $f1
+	fmul    $f5, $f2, $f2
+	fsub    $f3, $f2, $f3
+	load    [ext_atan_table + $i2], $f2
+	fadd    $f4, $f2, $f4
+.count load_float
+	load    [f._181], $f2
+	fmul    $f5, $f2, $f5
+	add     $i2, 1, $i2
+.count move_args
+	mov     $f1, $f2
+	b       cordic_rec._146
+.end atan
+
+######################################################################
+# $f1 = sin($f2)
+# $ra = $ra
+# [$i2]
+# [$f1 - $f7]
+######################################################################
+.begin sin
+ext_sin:
+	bg      $f0, $f2, ble_else._192
+ble_then._192:
+.count load_float
+	load    [f._184], $f7
+	bg      $f7, $f2, cordic_sin._82
+.count load_float
+	load    [f._185], $f7
+	bg      $f7, $f2, ble_else._194
+ble_then._194:
+.count load_float
+	load    [f._186], $f1
+	bg      $f1, $f2, ble_else._195
+ble_then._195:
+	fsub    $f2, $f1, $f2
+	b       ext_sin
+ble_else._195:
+.count stack_move
+	sub     $sp, 1, $sp
+.count stack_store
+	store   $ra, [$sp + 0]
+	fsub    $f1, $f2, $f2
+	call    ext_sin
+.count stack_load
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	fneg    $f1, $f1
+	ret
+ble_else._194:
+	fsub    $f7, $f2, $f2
+	b       cordic_sin._82
+ble_else._192:
+.count stack_move
+	sub     $sp, 1, $sp
+.count stack_store
+	store   $ra, [$sp + 0]
+	fneg    $f2, $f2
+	call    ext_sin
+.count stack_load
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	fneg    $f1, $f1
+	ret
+
+cordic_rec._111:
+	bne     $i2, 25, be_else._190
+be_then._190:
+	mov     $f4, $f1
+	ret
+be_else._190:
+	fmul    $f6, $f4, $f1
+	bg      $f2, $f5, ble_else._191
+ble_then._191:
+	fadd    $f3, $f1, $f1
+	fmul    $f6, $f3, $f3
+	fsub    $f4, $f3, $f4
+	load    [ext_atan_table + $i2], $f3
+	fsub    $f5, $f3, $f5
+.count load_float
+	load    [f._181], $f3
+	fmul    $f6, $f3, $f6
+	add     $i2, 1, $i2
+.count move_args
+	mov     $f1, $f3
+	b       cordic_rec._111
+ble_else._191:
+	fsub    $f3, $f1, $f1
+	fmul    $f6, $f3, $f3
+	fadd    $f4, $f3, $f4
+	load    [ext_atan_table + $i2], $f3
+	fadd    $f5, $f3, $f5
+.count load_float
+	load    [f._181], $f3
+	fmul    $f6, $f3, $f6
+	add     $i2, 1, $i2
+.count move_args
+	mov     $f1, $f3
+	b       cordic_rec._111
+
+cordic_sin._82:
+.count load_float
+	load    [f._183], $f3
+.count load_float
+	load    [f._182], $f6
+	li      0, $i2
+.count move_args
+	mov     $f0, $f4
+.count move_args
+	mov     $f0, $f5
+	b       cordic_rec._111
+.end sin
+
+######################################################################
+# $f1 = cos($f2)
+# $ra = $ra
+# [$i2]
+# [$f1 - $f8]
+######################################################################
+.begin cos
+ext_cos:
+.count load_float
+	load    [f._184], $f8
+	fsub    $f8, $f2, $f2
+	b       ext_sin
+.end cos
+
 ######################################################################
 #
 # 		↑　ここまで lib_asm.s
@@ -362,16 +520,23 @@ min_caml_atan_table:
 #
 ######################################################################
 
-min_caml_ledout:
+ext_read:
+	li 255, $i2
+read_loop:
+	read $i1
+	bg $i1, $i2, ext_read
+	ret
+
+ext_ledout:
 	ledout $i2
 	ret
 
-min_caml_ledout_float:
+ext_ledout_float:
 	mov $f2, $i2
 	ledout $i2
 	ret
 
-min_caml_break:
+ext_break:
 	break
 	ret
 
@@ -380,24 +545,165 @@ min_caml_break:
 # 		↑　ここまで debug.s
 #
 ######################################################################
-f.176:	.float  1.0000000000E+01
+.define $ig0 $i51
+.define $i51 orz
+.define $ig1 $i52
+.define $i52 orz
+.define $ig2 $i53
+.define $i53 orz
+.define $ig3 $i54
+.define $i54 orz
+.define $ig4 $i55
+.define $i55 orz
+.define $fg0 $f19
+.define $f19 orz
+.define $fg1 $f20
+.define $f20 orz
+.define $fg2 $f21
+.define $f21 orz
+.define $fg3 $f22
+.define $f22 orz
+.define $fg4 $f23
+.define $f23 orz
+.define $fg5 $f24
+.define $f24 orz
+.define $fg6 $f25
+.define $f25 orz
+.define $fg7 $f26
+.define $f26 orz
+.define $fg8 $f27
+.define $f27 orz
+.define $fg9 $f28
+.define $f28 orz
+.define $fg10 $f29
+.define $f29 orz
+.define $fg11 $f30
+.define $f30 orz
+.define $fg12 $f31
+.define $f31 orz
+.define $fg13 $f32
+.define $f32 orz
+.define $fg14 $f33
+.define $f33 orz
+.define $fg15 $f34
+.define $f34 orz
+.define $fg16 $f35
+.define $f35 orz
+.define $fg17 $f36
+.define $f36 orz
+.define $fg18 $f37
+.define $f37 orz
+.define $fg19 $f38
+.define $f38 orz
+.define $fg20 $f39
+.define $f39 orz
+.define $fg21 $f40
+.define $f40 orz
+.define $fg22 $f41
+.define $f41 orz
+.define $fg23 $f42
+.define $f42 orz
+.define $fg24 $f43
+.define $f43 orz
+.define $fc0 $f44
+.define $f44 orz
+.define $fc1 $f45
+.define $f45 orz
+.define $fc2 $f46
+.define $f46 orz
+.define $fc3 $f47
+.define $f47 orz
+.define $fc4 $f48
+.define $f48 orz
+.define $fc5 $f49
+.define $f49 orz
+.define $fc6 $f50
+.define $f50 orz
+.define $fc7 $f51
+.define $f51 orz
+.define $fc8 $f52
+.define $f52 orz
+.define $fc9 $f53
+.define $f53 orz
+.define $fc10 $f54
+.define $f54 orz
+.define $fc11 $f55
+.define $f55 orz
+.define $fc12 $f56
+.define $f56 orz
+.define $fc13 $f57
+.define $f57 orz
+.define $fc14 $f58
+.define $f58 orz
+.define $fc15 $f59
+.define $f59 orz
+.define $fc16 $f60
+.define $f60 orz
+.define $fc17 $f61
+.define $f61 orz
+.define $fc18 $f62
+.define $f62 orz
+.define $fc19 $f63
+.define $f63 orz
+.define $ra1 $i56
+.define $i56 orz
+.define $ra2 $i57
+.define $i57 orz
+.define $ra3 $i58
+.define $i58 orz
+.define $ra4 $i59
+.define $i59 orz
+f.31:	.float  1.0000000000E+00
 
 ######################################################################
+# $i7 = f()
+# $ra = $ra3
+# [$i7]
+# []
+# []
+# []
+######################################################################
+.begin f
+f.17:
+	li      1, $i7
+	jr      $ra3
+.end f
+
+######################################################################
+# main()
+# $ra = $ra
+# [$i1 - $i50]
+# [$f1 - $f18]
+# [$ig0 - $ig4]
+# [$fg0 - $fg24]
+######################################################################
 .begin main
-min_caml_main:
+ext_main:
+.count stack_store_ra
+	store   $ra, [$sp - 2]
 .count stack_move
-	sub     $sp, 1, $sp
+	sub     $sp, 2, $sp
+	load    [f.31 + 0], $fc0
+	jal     f.17, $ra3
 .count stack_store
-	store   $ra, [$sp + 0]
-	load    [f.176 + 0], $f39
-.count move_args
-	mov     $f39, $f2
-	call    min_caml_int_of_float
-.count move_ret
-	mov     $f1, $i2
+	store   $i7, [$sp + 1]
+	bl      $i7, 0, bge_else.37
+bge_then.37:
+	mov     $i7, $i1
+.count b_cont
+	b       bge_cont.37
+bge_else.37:
+	call    ext_g
+	add     $i1, 1, $i1
+bge_cont.37:
 .count stack_load
+	load    [$sp + 1], $i2
+	add     $i2, $i1, $i2
+	call    ext_ledout
+.count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
-	add     $sp, 1, $sp
-	b       min_caml_ledout
+	add     $sp, 2, $sp
+	mov     $fc0, $dummy
+	ret
 .end main

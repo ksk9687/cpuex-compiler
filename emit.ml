@@ -2,9 +2,9 @@ open Scalar
 
 let rec g oc cont = function
   | End -> ()
-  | Ret(asm) -> Printf.fprintf oc "%s" asm
+  | Ret(asm, _) -> Printf.fprintf oc "%s" asm
   | Jmp(s, label) -> Printf.fprintf oc "%s\t%-8s%s\n" s "b" label
-  | Call(asm, e) | Seq(Exp(asm, _, _, _), e) ->
+  | Call(asm, e, _) | Seq(Exp(asm, _, _, _), e) ->
       Printf.fprintf oc "%s" asm;
       g oc cont e
   | If(cmp, b, bn, e1, e2, e3, rs) ->

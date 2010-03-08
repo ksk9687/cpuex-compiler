@@ -25,7 +25,7 @@ let h { name = l; args = xs; body = e; ret = t } =
 let f (Prog(data, fundefs, e)) =
   let counts = List.fold_left (fun env (Id.L(l), _) -> M.add l 0 env) M.empty data in
   let counts = List.fold_left (fun env { name = l; args = xs; body = e; ret = t} -> count env e) counts fundefs in
-  let counts = count counts e in
+  let counts = count counts e.body in
   let fls = List.sort (fun (Id.L(a), _) (Id.L(b), _) -> (M.find b counts) - (M.find a counts)) data in
   let _  = List.fold_left
     (fun n (l, f) ->
@@ -38,8 +38,9 @@ let f (Prog(data, fundefs, e)) =
     )
     0 fls
   in
-  Prog(data, List.map h fundefs,
-        List.fold_left
-          (fun e (l, reg) -> if reg = reg_f0 then e else Let((reg, Type.Float), Ld(L(l), C(0)), e))
-          (g e)
-          !ftable)
+  let fundefs = List.map h fundefs in
+  let e = h e in
+  let body = List.fold_left
+	  (fun e (l, reg) -> if reg = reg_f0 then e else Let((reg, Type.Float), Ld(L(l), C(0)), e)
+    ) e.body !ftable in
+  Prog(data, fundefs, { e with body = body })

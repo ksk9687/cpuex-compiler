@@ -2,9 +2,9 @@ open Asm
 
 type t =
   | End
-  | Ret of string
-  | Jmp of string * string
-  | Call of string * t
+  | Ret of string * string (* asm, ra *)
+  | Jmp of string * string (* asm, label *)
+  | Call of string * t * string (* asm, cont, ra *)
   | Seq of exp * t
   | If of string * string * string * t * t * t * string list (* cmp, b, bn, then, else, cont, read *)
 and exp = Exp of string * string * string list * string list (* asm, instr, read, write *)
@@ -13,7 +13,7 @@ type prog = Prog of (Id.l * float) list * (Id.l * t) list * t
 let rec seq e1 e2 =
   match e1 with
     | End -> e2
-    | Call(s, e) -> Call(s, seq e e2)
+    | Call(s, e, ra) -> Call(s, seq e e2, ra)
     | Seq(exp, e) -> Seq(exp, seq e e2)
     | If(cmp, b, bn, e1', e2', e3', rs) -> If(cmp, b, bn, e1', e2', seq e3' e2, rs)
     | _ -> e1
@@ -40,8 +40,12 @@ let cmp x y' = Printf.sprintf "%s, %s" x (pp_id_or_imm y')
 let fcmp x y = Printf.sprintf "%s, %s" x y
 
 let ret_reg = ref reg_tmp
+let reg_ra = ref reg_ra
+let need_ra = ref true
 
-let ret = Ret(Printf.sprintf "\tret\n")
+let ret () =
+  if !reg_ra = Asm.reg_ra then Ret(Printf.sprintf "\tret\n", !reg_ra)
+  else Ret(Printf.sprintf "\t%-8s%s\n" "jr" !reg_ra, !reg_ra)
 
 let stacksize = ref 0
 let stackset = ref S.empty
@@ -60,11 +64,7 @@ let locate x =
 let offset x =
   let xs = locate x in
   if xs = [] then (Format.eprintf "Error: %s@." x; List.iter (fun s -> Format.eprintf "%s@." s) !stackmap; assert false)
-  else (List.hd xs) + 1
-
-let name s =
-  try String.sub s 0 (String.index s '.')
-  with Not_found -> s
+  else (List.hd xs) + (if !need_ra then 1 else 0)
 
 let rec shuffle sw xys =
   let _, xys = List.partition (fun (x, y) -> x = y) xys in
@@ -84,8 +84,7 @@ let rec hasNonTailCall tail = function (* 非末尾関数呼び出しがある�
   | Forget _ -> assert false
 and hasNonTailCall' tail = function
   | CallDir _ -> not tail
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) |
-    IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
       if tail then (hasNonTailCall tail e1) && (hasNonTailCall tail e2) (* 末尾の場合は必ずあるか *)
       else (hasNonTailCall tail e1) || (hasNonTailCall tail e2) (* 末尾でない場合はあるかもしれないか *)
   | _ -> false
@@ -96,8 +95,7 @@ let rec notHasNonTailCall tail = function (* 非末尾関数呼び出しが絶�
   | Forget _ -> assert false
 and notHasNonTailCall' tail = function
   | CallDir _ -> tail
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) |
-    IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
       (notHasNonTailCall tail e1) && (notHasNonTailCall tail e2)
   | _ -> true
 
@@ -118,14 +116,18 @@ type dest = Tail | NonTail of Id.t
 let rec g saved (dest, e) =
   let tail = (match dest with Tail -> true | _ -> false) in
   let e1, saved' =
-    if (not saved) && hasNonTailCall tail e then
-      let e1 = g' saved ".count stack_move\n" (NonTail(reg_sp), Sub(reg_sp, C(!stacksize))) in
-      let e2 = g' saved ".count stack_store\n" (NonTail(reg_tmp), St(reg_ra, V(reg_sp), C(0))) in
-      (seq e1 e2, true)
-    else if saved && tail && notHasNonTailCall tail e then
-      let e1 = g' saved ".count stack_load\n" (NonTail(reg_ra), Ld(V(reg_sp), C(0))) in
-      let e2 = g' saved ".count stack_move\n" (NonTail(reg_sp), Add(reg_sp, C(!stacksize))) in
-      (seq e1 e2, false)
+    if !stacksize > 0 && (not saved) && hasNonTailCall tail e then
+	    let e1 =
+        if !need_ra then g' saved ".count stack_store_ra\n" (NonTail(reg_tmp), St(!reg_ra, V(reg_sp), C(- !stacksize)))
+        else End in
+      let e2 = g' saved ".count stack_move\n" (NonTail(reg_sp), Sub(reg_sp, C(!stacksize))) in
+	    (seq e1 e2, true)
+    else if !stacksize > 0 && saved && tail && notHasNonTailCall tail e then
+      let e1 =
+        if !need_ra then g' saved ".count stack_load_ra\n" (NonTail(!reg_ra), Ld(V(reg_sp), C(0)))
+        else End in
+	    let e2 = g' saved ".count stack_move\n" (NonTail(reg_sp), Add(reg_sp, C(!stacksize))) in
+	    (seq e1 e2, false)
     else
       (End, saved)
   in
@@ -168,12 +170,12 @@ and g' saved s = function
       assert (List.mem x allregs);
       g' saved (s ^ ".count stack_load\n") (NonTail(x), Ld(V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
   | Tail, (Nop | St _ | Save _ as exp) ->
-      seq (g' saved s (NonTail(Id.gentmp Type.Unit), exp)) ret
+      seq (g' saved s (NonTail(Id.gentmp Type.Unit), exp)) (ret ())
   | Tail, (Set _ | SetL _ | Mov _ | FMov _ | Add _ | Sub _ | Ld _ |
            FNeg _ | FInv _ | FSqrt _ | FAbs _ | FAdd _ | FSub _ | FMul _ | LdFL _ as exp) ->
-      seq (g' saved s (NonTail(!ret_reg), exp)) ret
+      seq (g' saved s (NonTail(!ret_reg), exp)) (ret ())
   | Tail, (Restore(x) as exp) ->
-      seq (g' saved s (NonTail(!ret_reg), exp)) ret
+      seq (g' saved s (NonTail(!ret_reg), exp)) (ret ())
   | Tail, IfEq(x, y', e1, e2) ->
       g'_tail_if saved e1 e2 "be" "bne" (cmp x y') (x :: (reg y'))
   | Tail, IfLE(x, y', e1, e2) ->
@@ -199,8 +201,12 @@ and g' saved s = function
       seq e (Jmp(s, x))
   | NonTail(a), CallDir(Id.L(x), ys) ->
       let e = g'_args ys (get_arg_regs x) in
-      let e = seq e (Call(Printf.sprintf "%s\t%-8s%s\n" s "call" x, End)) in
-      let r = (get_ret_reg x) in
+      let ra = get_reg_ra x in
+      let str =
+        if ra = Asm.reg_ra then Printf.sprintf "%s\t%-8s%s\n" s "call" x
+        else Printf.sprintf "%s\t%-8s%s, %s\n" s "jal" x ra in
+      let e = seq e (Call(str, End, ra)) in
+      let r = get_ret_reg x in
       if List.mem a allregs && a <> r then seq e (g' saved ".count move_ret\n" (NonTail(a), Mov(r)))
       else e
 and g'_tail_if saved e1 e2 b bn cmp rs =
@@ -224,12 +230,16 @@ and g'_args ys rs =
     (fun (y, r) e -> seq (g' true ".count move_args\n" (NonTail(r), Mov(y))) e
     ) (shuffle reg_tmp yrs) End
 
-let h e =
-  stacksize := List.length (calcStack [] e) + 1;
+let h (Id.L(x)) e =
+  ret_reg := get_ret_reg x;
+  reg_ra := get_reg_ra x;
+  need_ra := (M.find x !fundata).need_ra;
+  stacksize := List.length (calcStack [] e) + (if !need_ra then 1 else 0);
   stackset := S.empty;
   stackmap := [];
   g false (Tail, e)
 
 let f (Asm.Prog(data, funs, e)) =
   Format.eprintf "generating assembly...@.";
-  Prog(data, List.map (fun {name = Id.L(x); body = e} -> ret_reg := (get_ret_reg x); (Id.L(x), h e)) funs, h e)
+  let funs = List.map (fun { name = x; body = e } -> (x, h x e)) funs in
+  Prog(data, funs, h e.name e.body)

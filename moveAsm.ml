@@ -60,7 +60,7 @@ let rec remove exp = function
 
 let rec addLast e = function
   | End -> e
-  | Call(s, e') -> Call(s, addLast e e')
+  | Call(s, e', ra) -> Call(s, addLast e e', ra)
   | Seq(exp, e') -> Seq(exp, addLast e e')
   | If(cmp, b, bn, e1, e2, e3, rs) -> If(cmp, b, bn, e1, e2, addLast e e3, rs)
   | _ -> assert false
@@ -73,7 +73,7 @@ let miss = ref 0
 
 let rec schedule awrite = function
   | End | Ret _ | Jmp _ as e -> e
-  | Call(s, e) -> Call(s, schedule [] e)
+  | Call(s, e, ra) -> Call(s, schedule [] e, ra)
   | If(cmp, b, bn, e1, e2, e3, rs) -> If(cmp, b, bn, schedule [] e1, schedule [] e2, schedule [] e3, rs)
   | Seq(exp, e) as es ->
       let awrite = aging awrite in
@@ -104,7 +104,7 @@ let rec schedule awrite = function
 
 let rec g = function
   | End | Ret _ | Jmp _ as e -> e
-  | Call(s, e) -> Call(s, g e)
+  | Call(s, e, ra) -> Call(s, g e, ra)
   | Seq(Exp(asm, _, _, _) as exp, e) -> Seq(exp, g e)
   | If(cmp, b, bn, e1, e2, e3, rs) ->
       let exps = inter (getFirst rs [] e1) (getFirst rs [] e2) in

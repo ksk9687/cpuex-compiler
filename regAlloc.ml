@@ -58,10 +58,10 @@ let rec alloc dest cont exp regenv x t =
     let free = fv cont in
     try
       let (prefer, used) = target x dest false cont in
+      let prefer = (target_call exp) @ prefer in (* TODO *)
       let prefer = List.filter
         (fun r -> not (S.mem r used)
         ) (prefer @ all) in
-      let prefer = (target_call exp) @ prefer in
       let live = List.fold_left
         (fun live y ->
           if M.mem y regenv then S.add (M.find y regenv) live
@@ -239,21 +239,21 @@ let h { name = Id.L(x); args = xs; body = e; ret = t } =
           | Alloc(r) -> (arg_regs @ [r], M.add x r regenv)
           | _ -> assert false
       ) ([], M.empty) xs data.arg_regs in
-    let data = { arg_regs = arg_regs; ret_reg = data.ret_reg; reg_ra = data.reg_ra; use_regs = data.use_regs } in
+    let data = { data with arg_regs = arg_regs } in
     fundata := M.add x data !fundata
   else ();
   let data = M.find x !fundata in
   Format.eprintf "%s%s(%s)@." (if t = Type.Unit then "" else data.ret_reg ^ " = ") (Id.name x) (String.concat ", " data.arg_regs);
-  Format.eprintf "$ra = %s@." data.reg_ra;
+  Format.eprintf "$ra = %s (%s)@." data.reg_ra (if data.need_ra then "save" else "non_save");
   let regenv = List.fold_left2
     (fun env x r -> M.add x r env
     ) M.empty xs data.arg_regs in
   let ret = if t = Type.Float then FMov(get_ret_reg x) else Mov(data.ret_reg) in
   let (e, _) = g_repeat (data.ret_reg, t) (Ans(ret)) regenv e in
-  let data = { arg_regs = data.arg_regs; ret_reg = data.ret_reg; reg_ra = data.reg_ra; use_regs = S.empty } in
+  let data = { data with use_regs = S.empty } in
   fundata := M.add x data !fundata;
   let env = get_use_regs (S.add data.ret_reg (S.of_list (data.arg_regs))) e in
-  let data = { arg_regs = data.arg_regs; ret_reg = data.ret_reg; reg_ra = data.reg_ra; use_regs = env } in
+  let data = { data with use_regs = env } in
   fundata := M.add x data !fundata;
   List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) alliregs;
   Format.eprintf "@.";
@@ -267,6 +267,6 @@ let h { name = Id.L(x); args = xs; body = e; ret = t } =
   
 let f (Prog(data, funs, e)) =
   Format.eprintf "register allocation: may take some time (up to a few minutes, depending on the size of functions)@.";
+  fixed := S.empty;
   let funs' = List.map h funs in
-  let e', regenv' = g_repeat (Id.gentmp Type.Unit, Type.Unit) (Ans(Nop)) M.empty e in
-  Prog(data, funs', e')
+  Prog(data, funs', h e)

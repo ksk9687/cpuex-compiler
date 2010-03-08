@@ -204,7 +204,7 @@ let h { name = l; args = xs; body = e; ret = t } =
 let f' (Prog(data, fundefs, e)) =
   miss := 0;
   let fundefs = List.map h fundefs in
-  let e = g [] e in
+  let e = h e in
   Format.eprintf "MissCount: %d@." !miss;
   Prog(data, fundefs, e)
 

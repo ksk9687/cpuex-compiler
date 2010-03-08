@@ -31,23 +31,23 @@ and exp =
   | Save of Id.t * Id.t
   | Restore of Id.t
 type fundef = { name : Id.l; args : Id.t list; body : t; ret : Type.t }
-type prog = Prog of (Id.l * float) list * fundef list * t
+type prog = Prog of (Id.l * float) list * fundef list * fundef
 
-type fundata = { arg_regs : Id.t list; ret_reg : Id.t; reg_ra : Id.t; use_regs : S.t }
+type fundata = { arg_regs : Id.t list; ret_reg : Id.t; reg_ra : Id.t; use_regs : S.t; need_ra : bool }
 
 let fundata = ref M.empty
 let builtInFuns = M.add_list
-  [("ext_floor", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$f1"; "$f2"; "$f3"] });
-   ("ext_float_of_int", { arg_regs = ["$i2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$i3"; "$i4"; "$f1"; "$f2"; "$f3"] });
-   ("ext_int_of_float", { arg_regs = ["$f2"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$f2"; "$f3"] });
-   ("ext_read_int", { arg_regs = []; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$i4"; "$i5"] });
-   ("ext_read_float", { arg_regs = []; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$i4"; "$i5"; "$f1"] });
-   ("ext_write", { arg_regs = ["$i2"]; ret_reg = "$dummy"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"] });
-   ("ext_create_array_int", { arg_regs = ["$i2"; "$i3"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"] });
-   ("ext_create_array_float", { arg_regs = ["$i2"; "$f2"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$f2"] });
-   ("ext_atan", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"] });
-   ("ext_sin", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"; "$f6"; "$f7"] });
-   ("ext_cos", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"; "$f6"; "$f7"; "$f8"] });
+  [("ext_floor", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$f1"; "$f2"; "$f3"]; need_ra = true });
+   ("ext_float_of_int", { arg_regs = ["$i2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$i3"; "$i4"; "$f1"; "$f2"; "$f3"]; need_ra = true });
+   ("ext_int_of_float", { arg_regs = ["$f2"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$f2"; "$f3"]; need_ra = true });
+   ("ext_read_int", { arg_regs = []; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$i4"; "$i5"]; need_ra = true });
+   ("ext_read_float", { arg_regs = []; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$i4"; "$i5"; "$f1"]; need_ra = true });
+   ("ext_write", { arg_regs = ["$i2"]; ret_reg = "$dummy"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"]; need_ra = true });
+   ("ext_create_array_int", { arg_regs = ["$i2"; "$i3"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"]; need_ra = true });
+   ("ext_create_array_float", { arg_regs = ["$i2"; "$f2"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$f2"]; need_ra = true });
+   ("ext_atan", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"]; need_ra = true });
+   ("ext_sin", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"; "$f6"; "$f7"]; need_ra = true });
+   ("ext_cos", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"; "$f6"; "$f7"; "$f8"]; need_ra = true });
   ] M.empty
 
 let get_arg_regs x = (M.find x !fundata).arg_regs
@@ -59,17 +59,18 @@ let typedata = ref M.empty (* TODO *)
 
 let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
-let niregs = 54
+let niregs = 45
 let nfregs = 18
 let nig = 5
 let nfg = 25
 let nfc = 20
+let nra = 10
 let iregs = Array.init niregs (fun i -> Printf.sprintf "$i%d" (i + 1))
 let fregs = Array.init nfregs (fun i -> Printf.sprintf "$f%d" (i + 1))
 let alliregs = Array.to_list iregs
 let allfregs = Array.to_list fregs
-let reg_ra = "$ra"
 let reg_tmp = "$tmp"
+let reg_ra = "$ra"
 let reg_sp = "$sp"
 let reg_hp = "$hp"
 let reg_i0 = "$i0"
@@ -78,6 +79,7 @@ let is_reg x = (x.[0] = '$')
 let reg_igs = Array.to_list (Array.init nig (fun i -> Printf.sprintf "$ig%d" i))
 let reg_fgs = Array.to_list (Array.init nfg (fun i -> Printf.sprintf "$fg%d" i))
 let reg_fcs = Array.to_list (Array.init nfc (fun i -> Printf.sprintf "$fc%d" i))
+let reg_ras = reg_ra :: Array.to_list (Array.init (nra - 1) (fun i -> Printf.sprintf "$ra%d" (i + 1)))
 let allregs = alliregs @ allfregs @ reg_igs @ reg_fgs
 
 let output_header oc =
@@ -90,38 +92,36 @@ let output_header oc =
   let _ = List.fold_left
     (fun n r -> Printf.fprintf oc ".define %s $f%d\n.define $f%d orz\n" r n n; (n + 1)
     ) (1 + nfregs + nfg) reg_fcs in
+  let _ = List.fold_left
+    (fun n r -> Printf.fprintf oc ".define %s $i%d\n.define $i%d orz\n" r n n; (n + 1)
+    ) (1 + niregs + nig) (List.tl reg_ras) in
   ()
 
 let output_fun_header oc x name =
-  if M.mem x !fundata then
-	  let data = M.find x !fundata in
-    let rec out rs use =
-      let add str s t =
-        let st = if s = t then s else s ^ " - " ^ t in
-        if s = "" then str
-        else if str = "" then st
-        else str ^ ", " ^ st
-      in
-      let (str, s, t) = List.fold_left
-	      (fun (str, s, t) r ->
-          if not (S.mem r use) then (add str s t, "", "")
-          else if s = "" then (str, r, r)
-          else (str, s, r)
-	      ) ("", "", "") rs
-      in add str s t
+  let data = M.find x !fundata in
+  let rec out rs use =
+    let add str s t =
+      let st = if s = t then s else s ^ " - " ^ t in
+      if s = "" then str
+      else if str = "" then st
+      else str ^ ", " ^ st
     in
-	  Printf.fprintf oc "\n######################################################################\n";
-	  Printf.fprintf oc "# %s%s(%s)\n" (if data.ret_reg = "$dummy" then "" else data.ret_reg ^ " = ") name (String.concat ", " data.arg_regs);
-	  Printf.fprintf oc "# $ra = %s\n" data.reg_ra;
-	  Printf.fprintf oc "# [%s]\n" (out alliregs data.use_regs);
-	  Printf.fprintf oc "# [%s]\n" (out allfregs data.use_regs);
-	  Printf.fprintf oc "# [%s]\n" (out reg_igs data.use_regs);
-	  Printf.fprintf oc "# [%s]\n" (out reg_fgs data.use_regs);
-	  Printf.fprintf oc "######################################################################\n"
-  else
-   (Printf.fprintf oc "\n######################################################################\n";
-	  Printf.fprintf oc "# %s\n" name;
-	  Printf.fprintf oc "######################################################################\n")
+    let (str, s, t) = List.fold_left
+        (fun (str, s, t) r ->
+        if not (S.mem r use) then (add str s t, "", "")
+        else if s = "" then (str, r, r)
+        else (str, s, r)
+        ) ("", "", "") rs
+    in add str s t
+  in
+  Printf.fprintf oc "\n######################################################################\n";
+  Printf.fprintf oc "# %s%s(%s)\n" (if data.ret_reg = "$dummy" then "" else data.ret_reg ^ " = ") name (String.concat ", " data.arg_regs);
+  Printf.fprintf oc "# $ra = %s\n" data.reg_ra;
+  Printf.fprintf oc "# [%s]\n" (out alliregs data.use_regs);
+  Printf.fprintf oc "# [%s]\n" (out allfregs data.use_regs);
+  Printf.fprintf oc "# [%s]\n" (out reg_igs data.use_regs);
+  Printf.fprintf oc "# [%s]\n" (out reg_fgs data.use_regs);
+  Printf.fprintf oc "######################################################################\n"
 
 let rec remove_and_uniq xs = function
   | [] -> []

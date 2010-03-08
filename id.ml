@@ -26,4 +26,6 @@ let gentmp typ =
 
 let name s =
   try String.sub s 0 (String.index s '.')
-  with Not_found -> s
+  with Not_found ->
+    if (String.length s) >= 4 && (String.sub s 0 4) = "ext_" then String.sub s 4 ((String.length s) - 4)
+    else s

@@ -67,7 +67,7 @@ let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }
 
 let f' (Prog(data, fundefs, e)) =
-  Prog(data, List.map h fundefs, g M.empty e)
+  Prog(data, List.map h fundefs, h e)
 
 let rec f e =
   let e' = f' e in
