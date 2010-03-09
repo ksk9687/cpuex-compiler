@@ -42,8 +42,6 @@ val get_ret_reg : Id.t -> Id.t
 val get_reg_ra : Id.t -> Id.t
 val get_use_regs : Id.t -> S.t
 
-val typedata : Type.t M.t ref
-
 val seq : exp * t -> t
 
 val alliregs : Id.t list

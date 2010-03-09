@@ -105,7 +105,7 @@ let rec schedule awrite = function
 let rec g = function
   | End | Ret _ | Jmp _ as e -> e
   | Call(s, e, ra) -> Call(s, g e, ra)
-  | Seq(Exp(asm, _, _, _) as exp, e) -> Seq(exp, g e)
+  | Seq(exp, e) -> Seq(exp, g e)
   | If(cmp, b, bn, e1, e2, e3, rs) ->
       let exps = inter (getFirst rs [] e1) (getFirst rs [] e2) in
       if e1 = End && e2 = End then
@@ -116,7 +116,7 @@ let rec g = function
       else
         If(cmp, b, bn, g e1, g e2, g e3, rs)
         (*
-        let exps = getFirst rs [] e3 in
+        let exps = getFirst [] [] e3 in
         if exps <> [] then
           let exp = List.hd exps in
           g (If (cmp, b, bn, addLast (Seq(exp, End)) e1, addLast (Seq(exp, End)) e2, remove exp e3, rs))

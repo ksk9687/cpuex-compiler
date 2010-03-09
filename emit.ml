@@ -60,7 +60,7 @@ let rec g oc cont = function
         | Jmp _ as jmp, _, _ ->
             let b_then = b ^ "_then" ^ id in
             let b_else = b ^ "_else" ^ id in
-             Printf.fprintf oc "\t%-8s%s, %s\n" bn cmp b_else;
+            Printf.fprintf oc "\t%-8s%s, %s\n" bn cmp b_else;
             Printf.fprintf oc "%s:\n" b_then;
             g oc cont' (seq e1 jmp);
             Printf.fprintf oc "%s:\n" b_else;

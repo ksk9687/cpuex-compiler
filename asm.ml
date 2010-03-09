@@ -55,8 +55,6 @@ let get_ret_reg x = (M.find x !fundata).ret_reg
 let get_reg_ra x = (M.find x !fundata).reg_ra
 let get_use_regs x = (M.find x !fundata).use_regs
 
-let typedata = ref M.empty (* TODO *)
-
 let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
 let niregs = 45
