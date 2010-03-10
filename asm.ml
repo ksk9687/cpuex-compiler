@@ -1,4 +1,4 @@
-type id_or_imm = V of Id.t | C of int | L of Id.l
+type id_or_imm = V of Id.t | C of int | L of Id.t
 type flg = Non | Abs | Neg
 type t =
   | Ans of exp
@@ -7,7 +7,7 @@ type t =
 and exp =
   | Nop
   | Set of int
-  | SetL of Id.l
+  | SetL of Id.t
   | Mov of Id.t
   | FMov of Id.t
   | Add of Id.t * id_or_imm
@@ -21,17 +21,17 @@ and exp =
   | FAdd of Id.t * Id.t * flg
   | FSub of Id.t * Id.t * flg
   | FMul of Id.t * Id.t * flg
-  | LdFL of Id.l
+  | LdFL of Id.t
   | IfEq of Id.t * id_or_imm * t * t
   | IfLE of Id.t * id_or_imm * t * t
   | IfGE of Id.t * id_or_imm * t * t
   | IfFEq of Id.t * Id.t * t * t
   | IfFLE of Id.t * Id.t * t * t
-  | CallDir of Id.l * Id.t list
+  | CallDir of Id.t * Id.t list
   | Save of Id.t * Id.t
   | Restore of Id.t
-type fundef = { name : Id.l; args : Id.t list; body : t; ret : Type.t }
-type prog = Prog of (Id.l * float) list * fundef list * fundef
+type fundef = { name : Id.t; args : Id.t list; body : t; ret : Type.t }
+type prog = Prog of (Id.t * float) list * fundef list * fundef
 
 type fundata = { arg_regs : Id.t list; ret_reg : Id.t; reg_ra : Id.t; use_regs : S.t; need_ra : bool }
 
@@ -78,7 +78,7 @@ let reg_igs = Array.to_list (Array.init nig (fun i -> Printf.sprintf "$ig%d" i))
 let reg_fgs = Array.to_list (Array.init nfg (fun i -> Printf.sprintf "$fg%d" i))
 let reg_fcs = Array.to_list (Array.init nfc (fun i -> Printf.sprintf "$fc%d" i))
 let reg_ras = reg_ra :: Array.to_list (Array.init (nra - 1) (fun i -> Printf.sprintf "$ra%d" (i + 1)))
-let allregs = alliregs @ allfregs @ reg_igs @ reg_fgs
+let allregs = alliregs @ allfregs @ reg_igs @ reg_fgs @ reg_ras
 
 let output_header oc =
   let _ = List.fold_left
@@ -119,6 +119,7 @@ let output_fun_header oc x name =
   Printf.fprintf oc "# [%s]\n" (out allfregs data.use_regs);
   Printf.fprintf oc "# [%s]\n" (out reg_igs data.use_regs);
   Printf.fprintf oc "# [%s]\n" (out reg_fgs data.use_regs);
+  Printf.fprintf oc "# [%s]\n" (out reg_ras data.use_regs);
   Printf.fprintf oc "######################################################################\n"
 
 let rec remove_and_uniq xs = function

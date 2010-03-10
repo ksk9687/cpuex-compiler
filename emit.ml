@@ -78,7 +78,8 @@ let rec g oc cont = function
             Printf.fprintf oc "%s:\n" b_cont;
             g oc cont e3
 
-let h oc name x e =
+let h oc x e =
+  let name = Id.name x in
   Asm.output_fun_header oc x name;
   Printf.fprintf oc ".begin %s\n" name;
   Printf.fprintf oc "%s:\n" x;
@@ -88,7 +89,7 @@ let h oc name x e =
 let f oc (Prog(data, fundefs, e)) =
   Asm.output_header oc;
   List.iter
-    (fun (Id.L(x), d) -> if d <> 0.0 then Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
+    (fun (x, d) -> if d <> 0.0 then Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
     data;
-  List.iter (fun (Id.L(x), e) -> h oc (Id.name x) x e) fundefs;
-  h oc "main" "ext_main" e
+  List.iter (fun (x, e) -> h oc x e) fundefs;
+  h oc "ext_main" e

@@ -1,9 +1,3 @@
-######################################################################
-#
-# 		↓　ここから macro.s
-#
-######################################################################
-
 #レジスタ名置き換え
 .define $hp $i63
 .define $sp $i62
@@ -90,19 +84,76 @@
 .define { call %Imm } { jal %1, $ra }
 .define { ret } { jr $ra }
 
-#スタックとヒープの初期化($hp=0x4000,$sp=0x20000)
-	li      0, $i0
-	mov     $i0, $f0
-	li      0x2000, $hp
-	sll     $hp, $hp
-	sll     $hp, $sp
-	sll     $sp, $sp
-	sll     $sp, $sp
-	call    ext_main
-	halt
-
-######################################################################
-#
-# 		↑　ここまで macro.s
-#
-######################################################################
+    li 0x100, $i1
+    li 0x1, $i2
+    li 128, $i5
+INST:
+    call READWORD
+    mov $i3, $i4
+READINST:
+    ble $i4, 0, DATA
+    call READWORD
+    store_inst $i3, $i5
+    call READWORD
+    store_inst $i3, $i5
+    call READWORD
+    store_inst $i3, $i5
+    add $i5, 1, $i5
+    sub $i4, 3, $i4
+    b READINST
+DATA:
+    call READWORD
+    mov $i3, $i4
+    li 0, $i5
+READDATA:
+    ble $i4, 0, ZEROXAA
+    call READWORD
+    store $i3, [$i5 + 0]
+    add $i5, 1, $i5
+    sub $i4, 1, $i4
+    b READDATA
+ZEROXAA:
+    li 0xaa, $i1
+    write $i1, $i3
+    bge $i3, $i2, ZEROXAA
+    b 256
+    halt
+READWORD:
+R1:
+    read $i10
+    bge $i10,$i1,R1
+R2:
+    read $i11
+    bge $i11,$i1,R2
+R3:
+    read $i12
+    bge $i12, $i1, R3
+R4:
+    read $i13
+    bge $i13, $i1, R4
+MAKEWORD:
+    li 0, $i3
+    mov $i10, $i20
+    jal SLL8, $i21
+    jal SLL8, $i21
+    jal SLL8, $i21
+    add $i3, $i20, $i3
+    mov $i11, $i20
+    jal SLL8, $i21
+    jal SLL8, $i21
+    add $i3, $i20, $i3
+    mov $i12, $i20
+    jal SLL8, $i21
+    add $i3, $i20, $i3
+    add $i3, $i13, $i3
+    ret
+SLL8:
+    sll $i20, $i20
+    sll $i20, $i20
+    sll $i20, $i20
+    sll $i20, $i20
+    sll $i20, $i20
+    sll $i20, $i20
+    sll $i20, $i20
+    sll $i20, $i20
+    jr $i21

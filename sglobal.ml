@@ -22,23 +22,21 @@ let rec count env = function
   | Let(_, exp, e) -> count (count' env exp) e
   | Forget(_, e) -> count env e
 and count' env = function
-  | Ld(L(Id.L(l)), C(i)) | St(_, L(Id.L(l)), C(i)) -> inc l i env
-  | SetL(Id.L(l)) | Ld(L(Id.L(l)), _) | St(_, L(Id.L(l)), _) -> rem l env
+  | Ld(L(l), C(i)) | St(_, L(l), C(i)) -> inc l i env
+  | SetL(l) | Ld(L(l), _) | St(_, L(l), _) -> rem l env
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
       count (count env e1) e2
   | _ -> env
 
 let rec g = function
   | Ans(St(x, L(l), C(i))) when List.mem_assoc (l, i) !gtable ->
-      let Id.L(s) = l in
-      let t = getInnerType (M.find s !Typing.extenv) i in
+      let t = getInnerType (M.find l !Typing.extenv) i in
       if t = Type.Float then
         Let((List.assoc (l, i) !gtable, t), FMov(x), Ans(Nop))
       else
         Let((List.assoc (l, i) !gtable, t), Mov(x), Ans(Nop))
   | Let(_, St(x, L(l), C(i)), e) when List.mem_assoc (l, i) !gtable ->
-      let Id.L(s) = l in
-      let t = getInnerType (M.find s !Typing.extenv) i in
+      let t = getInnerType (M.find l !Typing.extenv) i in
       if t = Type.Float then
         Let((List.assoc (l, i) !gtable, t), FMov(x), g e)
       else
@@ -46,8 +44,7 @@ let rec g = function
   | e -> apply2 g g' e
 and g' = function
   | Ld(L(l), C(i)) when List.mem_assoc (l, i) !gtable ->
-      let Id.L(s) = l in
-      if (getInnerType (M.find s !Typing.extenv) i) = Type.Float then FMov(List.assoc (l, i) !gtable)
+      if (getInnerType (M.find l !Typing.extenv) i) = Type.Float then FMov(List.assoc (l, i) !gtable)
       else Mov(List.assoc (l, i) !gtable)
   | exp -> apply g exp
 
@@ -72,14 +69,14 @@ let f (Prog(data, fundefs, e)) =
 	            else
 	              let reg = List.nth reg_fgs nf in
 	                Format.eprintf "Allocate %s.(%d) -> %s@." (String.sub l 4 ((String.length l) - 4)) i reg;
-	                gtable := ((Id.L(l), i), reg) :: !gtable;
+	                gtable := ((l, i), reg) :: !gtable;
 	                (ni, nf + 1)
 	        | _ ->
 	            if ni >= List.length reg_igs then (ni, nf)
 	            else
 	              let reg = List.nth reg_igs ni in
 	                Format.eprintf "Allocate %s.(%d) -> %s@." (String.sub l 4 ((String.length l) - 4)) i reg;
-	                gtable := ((Id.L(l), i), reg) :: !gtable;
+	                gtable := ((l, i), reg) :: !gtable;
 	                (ni + 1, nf)
     )
     (0, 0) gls
@@ -88,7 +85,6 @@ let f (Prog(data, fundefs, e)) =
   let e = h e in
   let body = List.fold_left
 	  (fun e ((l, i), reg) ->
-	    let Id.L(s) = l in
-	    Let((reg, getInnerType (M.find s !Typing.extenv) i), Ld(L(l), C(i)), e)
+	    Let((reg, getInnerType (M.find l !Typing.extenv) i), Ld(L(l), C(i)), e)
 	  ) e.body !gtable in
   Prog(data, List.map h fundefs, { e with body = body })

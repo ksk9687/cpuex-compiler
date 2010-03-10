@@ -1,4 +1,4 @@
-type closure = { entry : Id.l; actual_fv : Id.t list }
+type closure = { entry : Id.t; actual_fv : Id.t list }
 type t =
   | Unit
   | Int of int
@@ -17,13 +17,13 @@ type t =
   | IfLE of Id.t * Id.t * t * t
   | Let of (Id.t * Type.t) * t * t
   | Var of Id.t
-  | AppDir of Id.l * Id.t list
+  | AppDir of Id.t * Id.t list
   | Tuple of Id.t list
   | LetTuple of (Id.t * Type.t) list * Id.t * t
   | Get of Id.t * Id.t
   | Put of Id.t * Id.t * Id.t
-  | ExtArray of Id.l
-type fundef = { name : Id.l * Type.t;
+  | ExtArray of Id.t
+type fundef = { name : Id.t * Type.t;
                 args : (Id.t * Type.t) list;
                 body : t }
 type prog = Prog of fundef list * t

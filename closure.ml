@@ -1,4 +1,4 @@
-type closure = { entry : Id.l; actual_fv : Id.t list }
+type closure = { entry : Id.t; actual_fv : Id.t list }
 type t =
   | Unit
   | Int of int
@@ -17,13 +17,13 @@ type t =
   | IfLE of Id.t * Id.t * t * t
   | Let of (Id.t * Type.t) * t * t
   | Var of Id.t
-  | AppDir of Id.l * Id.t list
+  | AppDir of Id.t * Id.t list
   | Tuple of Id.t list
   | LetTuple of (Id.t * Type.t) list * Id.t * t
   | Get of Id.t * Id.t
   | Put of Id.t * Id.t * Id.t
-  | ExtArray of Id.l
-type fundef = { name : Id.l * Type.t;
+  | ExtArray of Id.t
+type fundef = { name : Id.t * Type.t;
                 args : (Id.t * Type.t) list;
                 body : t }
 type prog = Prog of fundef list * t
@@ -75,7 +75,7 @@ let rec g env known = function
         (Format.eprintf "free variable(s) %s found in function %s@." (Id.pp_list (S.elements zs)) x;
          Format.eprintf "function %s cannot be directly applied in fact@." x;
          assert false);
-      toplevel := { name = (Id.L(x), t); args = yts; body = e1' } :: !toplevel;
+      toplevel := { name = (x, t); args = yts; body = e1' } :: !toplevel;
       let e2' = g env' known' e2 in
       if S.mem x (fv e2') then
         assert false
@@ -84,19 +84,19 @@ let rec g env known = function
          e2')
   | KNormal.App(x, ys) when S.mem x known ->
 (*      Format.eprintf "directly applying %s@." x;*)
-      AppDir(Id.L(x), ys)
+      AppDir(x, ys)
   | KNormal.App(f, xs) -> assert false
   | KNormal.Tuple(xs) -> Tuple(xs)
   | KNormal.LetTuple(xts, y, e) -> LetTuple(xts, y, g (M.add_list xts env) known e)
   | KNormal.Get(x, y) -> Get(x, y)
   | KNormal.Put(x, y, z) -> Put(x, y, z)
   | KNormal.ExtArray(x, t) ->
-      ExtArray(Id.L("ext_" ^ x))
+      ExtArray("ext_" ^ x)
   | KNormal.ExtFunApp(x, ys) ->
       match x with
         | "sqrt" -> FSqrt(List.hd ys)
         | "fabs" -> FAbs(List.hd ys)
-        | _ -> AppDir(Id.L("ext_" ^ x), ys)
+        | _ -> AppDir("ext_" ^ x, ys)
 
 let f e =
   toplevel := [];

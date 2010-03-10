@@ -12,7 +12,7 @@ let rec target' src (dest, t) live = function
       if not (live || List.mem src (fv e1)) then (rs2, use2)
       else if not (live || List.mem src (fv e2)) then (rs1, use1)
       else (rs1 @ rs2, S.union use1 use2)
-  | CallDir(Id.L(x), ys) ->
+  | CallDir(x, ys) ->
       let arg_regs = get_arg_regs x in
       List.fold_left2
         (fun (prefer, use) y r ->
@@ -34,7 +34,7 @@ and target_args src regs = function
   | _ :: ys -> target_args src (List.tl regs) ys
 
 let rec target_call = function
-  | CallDir(Id.L(x), _) -> [get_ret_reg x]
+  | CallDir(x, _) -> [get_ret_reg x]
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
       (target_call' e1) @ (target_call' e2)
   | _ -> []
@@ -161,7 +161,7 @@ and g' dest cont regenv = function
   | IfGE(x, y', e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfGE(find x Type.Int regenv, find' y' regenv, e1', e2')) e1 e2
   | IfFEq(x, y, e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfFEq(find x Type.Float regenv, find y Type.Float regenv, e1', e2')) e1 e2
   | IfFLE(x, y, e1, e2) as exp -> g'_if dest cont regenv exp (fun e1' e2' -> IfFLE(find x Type.Float regenv, find y Type.Float regenv, e1', e2')) e1 e2
-  | CallDir(Id.L(x), ys) as exp -> g'_call x dest cont regenv exp (fun ys -> CallDir(Id.L(x), ys)) ys
+  | CallDir(x, ys) as exp -> g'_call x dest cont regenv exp (fun ys -> CallDir(x, ys)) ys
   | Save(x, y) ->
       assert (x = y);
       assert (not (is_reg x));
@@ -188,6 +188,7 @@ and g'_if dest cont regenv exp constr e1 e2 =
     | [] -> NoSpill(Ans(constr e1' e2'), regenv')
     | xs -> insert_forget xs exp (snd dest)
 and g'_call id dest cont regenv exp constr ys =
+  fixed := S.add id !fixed;
   let xs = List.filter
     (fun x ->
       if is_reg x || x = fst dest then false
@@ -217,19 +218,20 @@ and g_repeat dest cont regenv e =
              (fun e x -> seq(Save(x, x), e)
           ) e xs)
 
-let rec get_use_regs env = function
-  | Ans (e) -> get_use_regs' env e
-  | Let ((x, _), e, t) -> get_use_regs (get_use_regs' (S.add x env) e) t
-  | Forget (x, t) -> get_use_regs (S.add x env) t
-and get_use_regs' env = function
-  | CallDir (Id.L(x), _) ->
-      fixed := S.add x !fixed;
-      S.union (Asm.get_use_regs x) env
+let rec get_use_regs tail = function
+  | Ans (e) -> get_use_regs' tail e
+  | Let ((x, _), e, t) -> S.add x (S.union (get_use_regs' false e) (get_use_regs tail t))
+  | Forget (x, t) -> S.add x (get_use_regs tail t)
+and get_use_regs' tail = function
+  | CallDir (x, _) when tail ->
+      Asm.get_use_regs x
+  | CallDir (x, _) ->
+      S.add (get_reg_ra x) (Asm.get_use_regs x)
   | IfEq (_, _, e1, e2) | IfLE (_, _, e1, e2) | IfGE (_, _, e1, e2)	| IfFEq (_, _, e1, e2) | IfFLE (_, _, e1, e2) ->
-      S.union (get_use_regs env e1) (get_use_regs env e2)
-  | _ -> env
+      S.union (get_use_regs tail e1) (get_use_regs tail e2)
+  | _ -> S.empty
 
-let h { name = Id.L(x); args = xs; body = e; ret = t } =
+let h { name = x; args = xs; body = e; ret = t } =
   if not (S.mem x !fixed) then
     let data = M.find x !fundata in
     let (arg_regs, _) = List.fold_left2
@@ -252,7 +254,7 @@ let h { name = Id.L(x); args = xs; body = e; ret = t } =
   let (e, _) = g_repeat (data.ret_reg, t) (Ans(ret)) regenv e in
   let data = { data with use_regs = S.empty } in
   fundata := M.add x data !fundata;
-  let env = get_use_regs (S.add data.ret_reg (S.of_list (data.arg_regs))) e in
+  let env = S.union (S.add data.ret_reg (S.of_list (data.arg_regs))) (get_use_regs true e) in
   let data = { data with use_regs = env } in
   fundata := M.add x data !fundata;
   List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) alliregs;
@@ -263,7 +265,9 @@ let h { name = Id.L(x); args = xs; body = e; ret = t } =
   Format.eprintf "@.";
   List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) reg_fgs;
   Format.eprintf "@.";
-  { name = Id.L(x); args = data.arg_regs; body = e; ret = t }
+  List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) reg_ras;
+  Format.eprintf "@.";
+  { name = x; args = data.arg_regs; body = e; ret = t }
   
 let f (Prog(data, funs, e)) =
   Format.eprintf "register allocation: may take some time (up to a few minutes, depending on the size of functions)@.";

@@ -43,5 +43,8 @@ inline0:
 	cat $(LIB)/macro.s $(LIB)/lib_asm.s globals.s tmp.s > min-rt.s
 	rm tmp.ml tmp.s
 
+inst.coe: boot.s
+	$(RUN_SIM) -noOffset -vhdl inst.coe boot.s
+
 clean:
 	rm -f min-rt.s min-rt.bin contest.ppm contest_fpu.ppm tmp.ml tmp.s

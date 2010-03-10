@@ -8,7 +8,7 @@ type t =
   | Seq of exp * t
   | If of string * string * string * t * t * t * string list (* cmp, b, bn, then, else, cont, read *)
 and exp = Exp of string * string * string list * string list (* asm, instr, read, write *)
-type prog = Prog of (Id.l * float) list * (Id.l * t) list * t
+type prog = Prog of (Id.t * float) list * (Id.t * t) list * t
 
 let rec seq e1 e2 =
   match e1 with
@@ -25,7 +25,7 @@ let reg = function
 let pp_id_or_imm = function
   | V(x) -> x
   | C(i) -> string_of_int i
-  | L(Id.L(l)) -> l
+  | L(l) -> l
 
 let instr s = function
   | V(x) -> s
@@ -142,7 +142,7 @@ and g' saved s = function
   | NonTail(_), Nop -> End
   | NonTail(x), Set(i) when i < 0 -> g' saved s (NonTail(x), Add(reg_i0, C(i)))
   | NonTail(x), Set(i) -> Seq(Exp(Printf.sprintf "%s\t%-8s%d, %s\n" s "li" i x, "li", [], [x]), End)
-  | NonTail(x), SetL(Id.L(y)) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "li" y x, "li", [], [x]), End)
+  | NonTail(x), SetL(y) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "li" y x, "li", [], [x]), End)
   | NonTail(x), (Mov(y) | FMov(y)) when x = y -> End
   | NonTail(x), (Mov(y) | FMov(y)) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s\n" s "mov" y x, "mov", [y], [x]), End)
   | NonTail(x), Add(y, z') -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s "add" y (pp_id_or_imm z') x, instr "add" z', y :: (reg z'), [x]), End)
@@ -161,7 +161,7 @@ and g' saved s = function
   | NonTail(x), FAdd(y, z, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s ("fadd" ^ (flg f)) y z x, "fadd", [y; z], [x]), End)
   | NonTail(x), FSub(y, z, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s ("fsub" ^ (flg f)) y z x, "fsub", [y; z], [x]), End)
   | NonTail(x), FMul(y, z, f) -> Seq(Exp(Printf.sprintf "%s\t%-8s%s, %s, %s\n" s ("fmul" ^ (flg f)) y z x, "fmul", [y; z], [x]), End)
-  | NonTail(x), LdFL(Id.L(l)) -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s], %s\n" (s ^ ".count load_float\n") "load" l x, "load", [], [x]), End)
+  | NonTail(x), LdFL(l) -> Seq(Exp(Printf.sprintf "%s\t%-8s[%s], %s\n" (s ^ ".count load_float\n") "load" l x, "load", [], [x]), End)
   | NonTail(r), Save(x, y) when List.mem x allregs && not (S.mem y !stackset) ->
       save y;
       g' saved (s ^ ".count stack_store\n") (NonTail(r), St(x, V(reg_sp), C(offset y - (if saved then 0 else !stacksize))))
@@ -196,10 +196,10 @@ and g' saved s = function
       g'_non_tail_if saved (NonTail(z)) e1 e2 "be" "bne" (fcmp x y) [x; y]
   | NonTail(z), IfFLE(x, y, e1, e2) ->
       g'_non_tail_if saved (NonTail(z)) e1 e2 "ble" "bg" (fcmp x y) [x; y]
-  | Tail, CallDir(Id.L(x), ys) ->
+  | Tail, CallDir(x, ys) ->
       let e = g'_args ys (get_arg_regs x) in
       seq e (Jmp(s, x))
-  | NonTail(a), CallDir(Id.L(x), ys) ->
+  | NonTail(a), CallDir(x, ys) ->
       let e = g'_args ys (get_arg_regs x) in
       let ra = get_reg_ra x in
       let str =
@@ -230,7 +230,7 @@ and g'_args ys rs =
     (fun (y, r) e -> seq (g' true ".count move_args\n" (NonTail(r), Mov(y))) e
     ) (shuffle reg_tmp yrs) End
 
-let h (Id.L(x)) e =
+let h x e =
   ret_reg := get_ret_reg x;
   reg_ra := get_reg_ra x;
   need_ra := (M.find x !fundata).need_ra;

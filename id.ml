@@ -1,5 +1,4 @@
 type t = string
-type l = L of string
 
 let rec pp_list = function
   | [] -> ""

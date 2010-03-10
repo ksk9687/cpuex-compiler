@@ -1,4 +1,4 @@
-type id_or_imm = V of Id.t | C of int | L of Id.l
+type id_or_imm = V of Id.t | C of int | L of Id.t
 type flg = Non | Abs | Neg
 type t =
   | Ans of exp
@@ -7,7 +7,7 @@ type t =
 and exp =
   | Nop
   | Set of int
-  | SetL of Id.l
+  | SetL of Id.t
   | Mov of Id.t
   | FMov of Id.t
   | Add of Id.t * id_or_imm
@@ -21,17 +21,17 @@ and exp =
   | FAdd of Id.t * Id.t * flg
   | FSub of Id.t * Id.t * flg
   | FMul of Id.t * Id.t * flg
-  | LdFL of Id.l
+  | LdFL of Id.t
   | IfEq of Id.t * id_or_imm * t * t
   | IfLE of Id.t * id_or_imm * t * t
   | IfGE of Id.t * id_or_imm * t * t
   | IfFEq of Id.t * Id.t * t * t
   | IfFLE of Id.t * Id.t * t * t
-  | CallDir of Id.l * Id.t list
+  | CallDir of Id.t * Id.t list
   | Save of Id.t * Id.t
   | Restore of Id.t
-type fundef = { name : Id.l; args : Id.t list; body : t; ret : Type.t }
-type prog = Prog of (Id.l * float) list * fundef list * fundef
+type fundef = { name : Id.t; args : Id.t list; body : t; ret : Type.t }
+type prog = Prog of (Id.t * float) list * fundef list * fundef
 
 type fundata = { arg_regs : Id.t list; ret_reg : Id.t; reg_ra : Id.t; use_regs : S.t; need_ra : bool }
 

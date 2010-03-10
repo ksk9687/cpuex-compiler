@@ -20,7 +20,7 @@ let rec g env = function
           let (l, _) = List.find (fun (_, d') -> d = d') !data in
           l
         with Not_found ->
-          let l = Id.L(Id.genid "f") in
+          let l = Id.genid "f" in
           data := (l, d) :: !data;
           l
       in
@@ -53,13 +53,13 @@ let rec g env = function
       (match M.find x env with
       | Type.Unit -> Ans(Nop)
       | _ -> Ans(Mov(x)))
-  | Closure.AppDir(Id.L(x), ys) ->
+  | Closure.AppDir(x, ys) ->
       let xs = List.fold_left
         (fun ys x -> match M.find x env with
           | Type.Unit -> ys
           | _ -> ys @ [x]
         ) [] ys in
-      Ans(CallDir(Id.L(x), xs))
+      Ans(CallDir(x, xs))
   | Closure.Tuple(xs) ->
       let y = Id.genid "t" in
       let (offset, store) =
@@ -90,9 +90,9 @@ let rec g env = function
       | Type.Array(Type.Unit) -> Ans(Nop)
       | Type.Array(_) -> Ans(St(z, V(x), V(y)))
       | _ -> assert false)
-  | Closure.ExtArray(Id.L(x)) -> Ans(SetL(Id.L(x)))
+  | Closure.ExtArray(x) -> Ans(SetL(x))
 
-let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.body = e } =
+let h { Closure.name = (x, t); Closure.args = yts; Closure.body = e } =
   let (_, _, xs, rs) = List.fold_left
     (fun (iregs, fregs, xs, rs) (x, t) -> match t with
       | Type.Unit -> (iregs, fregs, xs, rs)
@@ -107,7 +107,7 @@ let h { Closure.name = (Id.L(x), t); Closure.args = yts; Closure.body = e } =
         | _ -> List.hd alliregs
       ) in
       fundata := M.add x { arg_regs = rs; ret_reg = ret_reg; reg_ra = "$ra"; use_regs = S.of_list allregs; need_ra = true } !fundata;
-      { name = Id.L(x); args = xs; body = g (M.add x t (M.add_list yts M.empty)) e; ret = t2 }
+      { name = x; args = xs; body = g (M.add x t (M.add_list yts M.empty)) e; ret = t2 }
   | _ -> assert false
 
 let rec get_calls tail set = function
@@ -115,8 +115,8 @@ let rec get_calls tail set = function
   | Let(_, exp, e) -> get_calls' false (get_calls tail set e) exp
   | Forget _ -> assert false
 and get_calls' tail (same, diff) = function
-  | CallDir(Id.L(x), _) when tail -> (S.add x same, diff)
-  | CallDir(Id.L(x), _) -> (same, S.add x diff)
+  | CallDir(x, _) when tail -> (S.add x same, diff)
+  | CallDir(x, _) -> (same, S.add x diff)
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
       get_calls tail (get_calls tail (same, diff) e2) e1
   | _ -> (same, diff)
@@ -134,7 +134,7 @@ let rec pow diffs =
   if same then diffs
   else pow diffs2
 
-let set_data' sames calls diffs (Id.L(x)) e =
+let set_data' sames calls diffs x e =
   let (same, diff) = get_calls true (S.empty, S.empty) e in
   Format.eprintf "%s@.Tail: %s@.NonTail: %s@.@." x (String.concat ", " (S.elements same)) (String.concat ", " (S.elements diff));
   (connect x same sames, M.add x (S.add x (S.union same diff)) calls, M.add x diff diffs)
@@ -155,11 +155,11 @@ let set_data fundefs e =
 *)
   let fixed = M.fold
     (fun x _ fixed ->
-      if List.exists (fun f -> f.name = Id.L(x)) fundefs then fixed
+      if List.exists (fun f -> f.name = x) fundefs then fixed
       else S.add x fixed
     ) !fundata S.empty in
   let _ = List.fold_left
-    (fun fixed { name = Id.L(x) } ->
+    (fun fixed { name = x } ->
       let data = M.find x !fundata in
       let fs = S.filter (fun y -> S.mem y fixed) (M.find x sames) in
       let reg_ra =
@@ -175,7 +175,7 @@ let set_data fundefs e =
       S.add x fixed
     ) fixed fundefs in
   List.iter
-    (fun { name = Id.L(x) } ->
+    (fun { name = x } ->
       let data = M.find x !fundata in
       if not (S.exists (fun y -> data.reg_ra = get_reg_ra y) (M.find x diffs)) then
         fundata := M.add x { data with need_ra = false } !fundata
@@ -188,11 +188,11 @@ let f (Closure.Prog(fundefs, e)) =
       | Type.Fun(ts, y) when not (M.mem x !fundata) ->
           Format.eprintf "ExtFunction: %s@." (Id.name x);
           let args = List.map (fun t -> ("", t)) ts in
-          let _ = h { Closure.name = (Id.L(x), t); Closure.args = args; Closure.body = Closure.Unit } in
+          let _ = h { Closure.name = (x, t); Closure.args = args; Closure.body = Closure.Unit } in
           ()
       | _ -> ()
     ) !Typing.extenv;
   let fundefs = List.map h fundefs in
-  let e = h { Closure.name = (Id.L("ext_main"), Type.Fun([], Type.Int)); Closure.args = []; Closure.body = e } in
+  let e = h { Closure.name = ("ext_main", Type.Fun([], Type.Int)); Closure.args = []; Closure.body = e } in
   set_data fundefs e;
   Prog(!data, fundefs, e)

@@ -7,7 +7,7 @@ let rec count env = function
   | Let(_, exp, e) -> count (count' env exp) e
   | Forget(_, e) -> count env e
 and count' env = function
-  | LdFL(Id.L(l)) when M.mem l env ->
+  | LdFL(l) when M.mem l env ->
       let n = M.find l env in
       M.add l (n + 1) env
   | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
@@ -23,10 +23,10 @@ let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g e; ret = t }
 
 let f (Prog(data, fundefs, e)) =
-  let counts = List.fold_left (fun env (Id.L(l), _) -> M.add l 0 env) M.empty data in
+  let counts = List.fold_left (fun env (l, _) -> M.add l 0 env) M.empty data in
   let counts = List.fold_left (fun env { name = l; args = xs; body = e; ret = t} -> count env e) counts fundefs in
   let counts = count counts e.body in
-  let fls = List.sort (fun (Id.L(a), _) (Id.L(b), _) -> (M.find b counts) - (M.find a counts)) data in
+  let fls = List.sort (fun (a, _) (b, _) -> (M.find b counts) - (M.find a counts)) data in
   let _  = List.fold_left
     (fun n (l, f) ->
         if f <> 0.0 && n >= List.length reg_fcs then n

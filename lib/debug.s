@@ -12,12 +12,12 @@ read_loop:
 	ret
 
 ext_ledout:
-	ledout $i2
+	ledout $i2, $tmp
 	ret
 
 ext_ledout_float:
 	mov $f2, $i2
-	ledout $i2
+	ledout $i2, $tmp
 	ret
 
 ext_break:
