@@ -1,5 +1,11 @@
 type id_or_imm = V of Id.t | C of int | L of Id.t
 type flg = Non | Abs | Neg
+type cmp =
+  | Eq of Id.t * id_or_imm
+  | LE of Id.t * id_or_imm
+  | GE of Id.t * id_or_imm
+  | FEq of Id.t * Id.t
+  | FLE of Id.t * Id.t
 type t =
   | Ans of exp
   | Let of (Id.t * Type.t) * exp * t
@@ -22,11 +28,7 @@ and exp =
   | FSub of Id.t * Id.t * flg
   | FMul of Id.t * Id.t * flg
   | LdFL of Id.t
-  | IfEq of Id.t * id_or_imm * t * t
-  | IfLE of Id.t * id_or_imm * t * t
-  | IfGE of Id.t * id_or_imm * t * t
-  | IfFEq of Id.t * Id.t * t * t
-  | IfFLE of Id.t * Id.t * t * t
+  | If of cmp * t * t
   | CallDir of Id.t * Id.t list
   | Save of Id.t * Id.t
   | Restore of Id.t
@@ -139,13 +141,13 @@ let rec fv' = function
   | Ld(x', y') -> fv_id_or_imm x' @ fv_id_or_imm y'
   | St(x, y', z') -> x :: fv_id_or_imm y' @ fv_id_or_imm z'
   | FAdd(x, y, _) | FSub(x, y, _) | FMul(x, y, _) -> [x; y]
-  | IfEq(x, y', e1, e2) | IfLE(x, y', e1, e2) | IfGE(x, y', e1, e2) -> x :: fv_id_or_imm y'
-  | IfFEq(x, y, e1, e2) | IfFLE(x, y, e1, e2) -> [x; y]
+  | If((Eq(x, y') | LE(x, y') | GE(x, y')), _, _) -> x :: fv_id_or_imm y'
+  | If((FEq(x, y) | FLE(x, y)), _, _) -> [x; y]
   | CallDir(_, ys) -> ys
 let rec fv_exp env cont exp =
   let xs = fv' exp in
   match exp with
-    | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+    | If(_, e1, e2) ->
         cat xs (fv env (fv env cont e2) e1) env
     | _ -> cat xs cont env
 and fv env cont = function
@@ -178,22 +180,18 @@ let applyId f exp =
   | FAdd(x, y, flg) -> FAdd(f x, f y, flg)
   | FSub(x, y, flg) -> FSub(f x, f y, flg)
   | FMul(x, y, flg) -> FMul(f x, f y, flg)
-  | IfEq(x, y', e1, e2) -> IfEq(f x, f' y', e1, e2)
-  | IfLE(x, y', e1, e2) -> IfLE(f x, f' y', e1, e2)
-  | IfGE(x, y', e1, e2) -> IfGE(f x, f' y', e1, e2)
-  | IfFEq(x, y, e1, e2) -> IfFEq(f x, f y, e1, e2)
-  | IfFLE(x, y, e1, e2) -> IfFLE(f x, f y, e1, e2)
+  | If(Eq(x, y'), e1, e2) -> If(Eq(f x, f' y'), e1, e2)
+  | If(LE(x, y'), e1, e2) -> If(LE(f x, f' y'), e1, e2)
+  | If(GE(x, y'), e1, e2) -> If(GE(f x, f' y'), e1, e2)
+  | If(FEq(x, y), e1, e2) -> If(FEq(f x, f y), e1, e2)
+  | If(FLE(x, y), e1, e2) -> If(FLE(f x, f y), e1, e2)
   | CallDir(x, ys) -> CallDir(x, List.map f ys)
   | Save(x, y) -> Save(f x, f y)
   | Restore(x) -> Restore(x)
   | exp -> exp
 
 let apply f = function
-  | IfEq(x, y', e1, e2) -> IfEq(x, y', f e1, f e2)
-  | IfLE(x, y', e1, e2) -> IfLE(x, y', f e1, f e2)
-  | IfGE(x, y', e1, e2) -> IfGE(x, y', f e1, f e2)
-  | IfFEq(x, y, e1, e2) -> IfFEq(x, y, f e1, f e2)
-  | IfFLE(x, y, e1, e2) -> IfFLE(x, y, f e1, f e2)
+  | If(cmp, e1, e2) -> If(cmp, f e1, f e2)
   | exp -> exp
 
 let apply2 f f' = function

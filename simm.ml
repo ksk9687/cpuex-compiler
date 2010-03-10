@@ -23,12 +23,12 @@ and g' env = function
   | Sub(x, V(y)) when M.mem y env -> Sub(x, C(M.find y env))
   | Ld(x', y') -> Ld(replace env x', replace env y')
   | St(x, y', z') -> St(x, replace env y', replace env z')
-  | IfEq(x, V(y), e1, e2) when check (-128) 128 env y -> IfEq(x, C(M.find y env), g env e1, g env e2)
-  | IfLE(x, V(y), e1, e2) when check (-128) 128 env y -> IfLE(x, C(M.find y env), g env e1, g env e2)
-  | IfGE(x, V(y), e1, e2) when check (-128) 128 env y -> IfGE(x, C(M.find y env), g env e1, g env e2)
-  | IfEq(x, V(y), e1, e2) when check (-128) 128 env x -> IfEq(y, C(M.find x env), g env e1, g env e2)
-  | IfLE(x, V(y), e1, e2) when check (-128) 128 env x -> IfGE(y, C(M.find x env), g env e1, g env e2)
-  | IfGE(x, V(y), e1, e2) when check (-128) 128 env x -> IfLE(y, C(M.find x env), g env e1, g env e2)
+  | If(Eq(x, V(y)), e1, e2) when check (-128) 128 env y -> If(Eq(x, C(M.find y env)), g env e1, g env e2)
+  | If(LE(x, V(y)), e1, e2) when check (-128) 128 env y -> If(LE(x, C(M.find y env)), g env e1, g env e2)
+  | If(GE(x, V(y)), e1, e2) when check (-128) 128 env y -> If(GE(x, C(M.find y env)), g env e1, g env e2)
+  | If(Eq(x, V(y)), e1, e2) when check (-128) 128 env x -> If(Eq(y, C(M.find x env)), g env e1, g env e2)
+  | If(LE(x, V(y)), e1, e2) when check (-128) 128 env x -> If(GE(y, C(M.find x env)), g env e1, g env e2)
+  | If(GE(x, V(y)), e1, e2) when check (-128) 128 env x -> If(LE(y, C(M.find x env)), g env e1, g env e2)
   | exp -> apply (g env) exp
 
 let h { name = l; args = xs; body = e; ret = t } =

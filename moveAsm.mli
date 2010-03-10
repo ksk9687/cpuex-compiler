@@ -1,1 +1,1 @@
-val f : Scalar.prog -> Scalar.prog
+val f : Block.prog -> Block.prog

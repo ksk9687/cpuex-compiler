@@ -12,7 +12,7 @@ and check' x = function
   | FAbs(x') when x = x' -> (true, Abs)
   | FNeg(x') when x = x' -> (true, Neg)
   | exp when List.mem x (fv' exp) -> (false, Non)
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | If(_, e1, e2) ->
       let ok1, flg1 = check x e1 in
       let ok2, flg2 = check x e2 in
       if ok1 && ok2 && (flg1 = flg2 || flg1 = Non || flg2 = Non) then (true, flg1)
@@ -24,7 +24,7 @@ let rec checkFPU = function
   | Let(_, _, e) | Forget(_, e) -> checkFPU e
 and checkFPU' = function
   | FMov _ | FInv _ | FSqrt _ | FAdd _ | FSub _ | FMul _ -> true
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | If(_, e1, e2) ->
       (checkFPU e1) && (checkFPU e2)
   | _ -> false
 

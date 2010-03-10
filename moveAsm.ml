@@ -1,5 +1,6 @@
-open Scalar
+open Block
 
+(*
 let delay =
   List.fold_left
     (fun m (n,list) ->
@@ -20,24 +21,9 @@ let getDelay exp =
     M.find inst delay
   with Not_found -> print_string inst; assert false
 
-let getRead = function
-  | Exp(_, _, read, _) -> read
-
-let getWrite = function
-  | Exp(_, _, _, write) -> write
-
-let inter xs ys =
-  List.fold_left (fun zs x -> if List.mem x ys then x :: zs else zs) [] xs
-
 let addMax x y xs =
   if M.mem x xs then M.add x (max (M.find x xs) y) xs
   else M.add x y xs
-
-let rec getFirst reads writes = function
-  | Seq(Exp(_, _, read, write) as exp, e) ->
-      if (inter (reads @ writes) write) <> [] || (inter writes read) <> [] then getFirst (read@reads) (write@writes) e
-      else exp :: (getFirst (read@reads) (write@writes) e)
-  | _ -> []
 
 let rec getCritical time = function
   | Seq(exp, e) ->
@@ -53,16 +39,11 @@ let rec getCritical time = function
       max t (getCritical time e)
   | _ -> 0
 
-let rec remove exp = function
-  | Seq(exp', e) when exp' = exp -> e
-  | Seq(exp', e) -> Seq(exp', remove exp e)
-  | _ -> assert false
-
 let rec addLast e = function
   | End -> e
   | Call(s, e', ra) -> Call(s, addLast e e', ra)
   | Seq(exp, e') -> Seq(exp, addLast e e')
-  | If(cmp, b, bn, e1, e2, e3, rs) -> If(cmp, b, bn, e1, e2, addLast e e3, rs)
+  | CmpJmp(cmp, b, bn, e1, e2, e3, rs) -> CmpJmp(cmp, b, bn, e1, e2, addLast e e3, rs)
   | _ -> assert false
 
 let aging write =
@@ -74,7 +55,7 @@ let miss = ref 0
 let rec schedule awrite = function
   | End | Ret _ | Jmp _ as e -> e
   | Call(s, e, ra) -> Call(s, schedule [] e, ra)
-  | If(cmp, b, bn, e1, e2, e3, rs) -> If(cmp, b, bn, schedule [] e1, schedule [] e2, schedule [] e3, rs)
+  | CmpJmp(cmp, b, bn, e1, e2, e3, rs) -> CmpJmp(cmp, b, bn, schedule [] e1, schedule [] e2, schedule [] e3, rs)
   | Seq(exp, e) as es ->
       let awrite = aging awrite in
       let write = List.fold_left (fun x (_, y) -> y @ x) [] awrite in
@@ -102,36 +83,125 @@ let rec schedule awrite = function
       else
         (incr miss; schedule awrite es)
 
-let rec g = function
-  | End | Ret _ | Jmp _ as e -> e
-  | Call(s, e, ra) -> Call(s, g e, ra)
-  | Seq(exp, e) -> Seq(exp, g e)
-  | If(cmp, b, bn, e1, e2, e3, rs) ->
-      let exps = inter (getFirst rs [] e1) (getFirst rs [] e2) in
-      if e1 = End && e2 = End then
-        ((*Format.eprintf "RemoveJmp@.";*) g e3)
-      else if exps <> [] then
-        let exp = List.hd exps in
-        ((*Format.eprintf "MoveFirst@.";*) Seq(exp, g (If(cmp, b, bn, remove exp e1, remove exp e2, e3, rs))))
+*)
+
+let getRead' = function
+  | Cmp(_, x, y) -> [x; y]
+  | Cmpi(_, x, _) -> [x]
+
+let getRead = function
+  | Li _ | Call _ -> []
+  | Addi(x, _, _) | Mov(x, _) | FInv(_, x, _) | FSqrt(_, x, _) | FAbs(x, _) | FNeg(x, _) -> [x]
+  | Add(x, y, _) | Sub(x, y, _) | FAdd(_, x, y, _) | FSub(_, x, y, _) | FMul(_, x, y, _) | Store(x, y, _) -> [x; y]
+  | Load(x, _, y) -> [x; y; "memory"]
+  | Loadr(x, y, z) -> [x; y; z; "memory"]
+
+let getWrite = function
+  | Li(_, x) | Addi(_, _, x) | Mov(_, x) | Add(_, _, x) | Sub(_, _, x) | Call(_, x) |
+    FAdd(_, _, _, x) | FSub(_, _, _, x) | FMul(_, _, _, x) | FInv(_, _, x) | FSqrt(_, _, x) |
+    FAbs(_, x) | FNeg(_, x) | Load(_, _, x) | Loadr(_, _, x) -> [x]
+  | Store _ -> ["memory"]
+
+let inter xs ys =
+  List.fold_left (fun zs x -> if List.mem x ys then x :: zs else zs) [] xs
+
+let rec removeFirst exp = function
+  | exp' :: exps when exp' = exp -> exps
+  | exp' :: exps -> exp' :: removeFirst exp exps
+  | _ -> assert false
+
+let rec getFirst reads writes = function
+  | (_, Call _) :: _  | [] -> []
+  | (s, exp) :: exps ->
+      let read = getRead exp in
+      let write = getWrite exp in
+      if (inter (reads @ writes) write) <> [] || (inter writes read) <> [] then
+        getFirst (read @ reads) (write @ writes) exps
       else
-        If(cmp, b, bn, g e1, g e2, g e3, rs)
-        (*
-        let exps = getFirst [] [] e3 in
-        if exps <> [] then
-          let exp = List.hd exps in
-          g (If (cmp, b, bn, addLast (Seq(exp, End)) e1, addLast (Seq(exp, End)) e2, remove exp e3, rs))
-        else
-          If(cmp, b, bn, g e1, g e2, g e3, rs)
-        *)
+        (s, exp) :: (getFirst (read @ reads) (write @ writes)) exps
 
-let rec h e =
-  let e' = g e in
-  if e' = e then e (*schedule [] e'*)
-  else h e'
+let getBlockID b =
+  let str = match b.last with
+    | Ret(ra) -> "ret_" ^ ra
+    | Jmp(x) -> "jmp_" ^ x
+    | CmpJmp(cmp, b1, b2) -> "cmpjmp_" ^ (string_of_cmp cmp) ^ "_" ^ b1.label ^ "_" ^ b2.label
+    | Cont(b1) -> "cont_" ^ b1.label in
+  (b.exps, str)
 
-let f (Prog(data, fundefs, e)) =
-  miss := 0;
-  let fundefs = List.map (fun (f, e) -> (f, h e)) fundefs in
-  let e = h e in
-  Format.eprintf "MissCount: %d@." !miss;
-  Prog(data, fundefs, e)
+(*
+let rec same exps1 exps2 =
+  if exps1 = [] && exps2 = [] then true
+  else
+	  let exps = inter (getFirst [] [] exps1) (getFirst [] [] exps2) in
+	  if exps = [] then false
+    else
+      let exp = List.hd exps in
+      same (removeFirst exp exps1) (removeFirst exp exps2)
+
+let rec find (exps, str) = function
+  | [] -> raise Not_found
+  | ((exps', str'), b) :: bs when str = str' && (List.length exps) = (List.length exps') && same exps exps' -> b
+  | b' :: bs -> find (exps, str) bs
+*)
+
+let removeCmpJmp env b =
+  b
+
+let change = ref false
+let memo = ref M.empty
+let blocks = ref []
+
+let rec g b =
+  if M.mem b.label !memo then
+    M.find b.label !memo
+  else try
+(*    let b' = find (getBlockID b) !blocks in *)
+    let b' = List.assoc (getBlockID b) !blocks in
+    change := true;
+    memo := M.add b.label b' !memo;
+    b'
+  with Not_found ->
+    let b' =
+      match b.exps, b.last with
+        | _, Cont(b1) ->
+            change := true;
+            b.exps <- b.exps @ b1.exps;
+            b.last <- b1.last;
+            b
+        | _, CmpJmp(_, b1, b2) when b1.label = b2.label ->
+            change := true;
+            b.exps <- b.exps @ b1.exps;
+            b.last <- b1.last;
+            b
+        | _, CmpJmp(cmp, b1, b2) when (get b1) = 1 && (get b2) = 1 ->
+            let rs = getRead' cmp in
+            let exps = inter (getFirst rs [] b1.exps) (getFirst rs [] b2.exps) in
+            if exps <> [] then (
+              change := true;
+              let exp = List.hd exps in
+              b.exps <- b.exps @ [exp];
+              b1.exps <- removeFirst exp b1.exps;
+              b2.exps <- removeFirst exp b2.exps
+            );
+            b.last <- CmpJmp(cmp, g b1, g b2);
+            b
+        | _, CmpJmp(cmp, b1, b2) ->
+            b.last <- CmpJmp(cmp, g b1, g b2);
+            b
+        | _ -> b in
+    memo := M.add b.label b' !memo;
+    blocks := (getBlockID b', b') :: !blocks;
+    b'
+
+let rec h b =
+  change := false;
+  setCount b;
+  memo := M.empty;
+  blocks := [];
+  let b = g b in
+  if !change then h b
+  else b
+
+let f (Prog(data, fundefs)) =
+  let fundefs = List.map (fun (f, b) -> (f, h b)) fundefs in
+  Prog(data, fundefs)

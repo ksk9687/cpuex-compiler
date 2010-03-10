@@ -1,5 +1,11 @@
 type id_or_imm = V of Id.t | C of int | L of Id.t
 type flg = Non | Abs | Neg
+type cmp =
+  | Eq of Id.t * id_or_imm
+  | LE of Id.t * id_or_imm
+  | GE of Id.t * id_or_imm
+  | FEq of Id.t * Id.t
+  | FLE of Id.t * Id.t
 type t =
   | Ans of exp
   | Let of (Id.t * Type.t) * exp * t
@@ -22,11 +28,7 @@ and exp =
   | FSub of Id.t * Id.t * flg
   | FMul of Id.t * Id.t * flg
   | LdFL of Id.t
-  | IfEq of Id.t * id_or_imm * t * t
-  | IfLE of Id.t * id_or_imm * t * t
-  | IfGE of Id.t * id_or_imm * t * t
-  | IfFEq of Id.t * Id.t * t * t
-  | IfFLE of Id.t * Id.t * t * t
+  | If of cmp * t * t
   | CallDir of Id.t * Id.t list
   | Save of Id.t * Id.t
   | Restore of Id.t

@@ -10,7 +10,7 @@ and count' env = function
   | LdFL(l) when M.mem l env ->
       let n = M.find l env in
       M.add l (n + 1) env
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | If(_, e1, e2) ->
       count (count env e1) e2
   | _ -> env
 

@@ -37,13 +37,13 @@ let rec g env = function
   | Closure.FMul(x, y) -> Ans(FMul(x, y, Non))
   | Closure.IfEq(x, y, e1, e2) ->
       (match M.find x env with
-      | Type.Bool | Type.Int -> Ans(IfEq(x, V(y), g env e1, g env e2))
-      | Type.Float -> Ans(IfFEq(x, y, g env e1, g env e2))
+      | Type.Bool | Type.Int -> Ans(If(Eq(x, V(y)), g env e1, g env e2))
+      | Type.Float -> Ans(If(FEq(x, y), g env e1, g env e2))
       | _ -> failwith "equality supported only for bool, int, and float")
   | Closure.IfLE(x, y, e1, e2) ->
       (match M.find x env with
-      | Type.Bool | Type.Int -> Ans(IfLE(x, V(y), g env e1, g env e2))
-      | Type.Float -> Ans(IfFLE(x, y, g env e1, g env e2))
+      | Type.Bool | Type.Int -> Ans(If(LE(x, V(y)), g env e1, g env e2))
+      | Type.Float -> Ans(If(FLE(x, y), g env e1, g env e2))
       | _ -> failwith "inequality supported only for bool, int and float")
   | Closure.Let((x, t1), e1, e2) ->
       let e1' = g env e1 in
@@ -117,7 +117,7 @@ let rec get_calls tail set = function
 and get_calls' tail (same, diff) = function
   | CallDir(x, _) when tail -> (S.add x same, diff)
   | CallDir(x, _) -> (same, S.add x diff)
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | If(_, e1, e2) ->
       get_calls tail (get_calls tail (same, diff) e2) e1
   | _ -> (same, diff)
 

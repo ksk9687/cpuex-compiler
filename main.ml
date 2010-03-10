@@ -15,7 +15,7 @@ let lexbuf outchan l =
   Typing.extenv := M.empty;
   Emit.f outchan
     (MoveAsm.f
-      (Scalar.f
+      (Block.f
         (RegAlloc.f
           (AbsNegFlag.f
             (Beta2.f

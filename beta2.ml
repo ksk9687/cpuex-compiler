@@ -8,7 +8,7 @@ let rec getAllPut env = function
       S.add y (S.union (getAllPut' env exp) (getAllPut env e))
   | Forget(y, e) -> S.add y (getAllPut env e)
 and getAllPut' env = function
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | If(_, e1, e2) ->
       S.union (getAllPut env e1) (getAllPut env e2)
   | CallDir(x, _) when M.mem x env -> M.find x env
   | _ -> S.empty
@@ -31,7 +31,7 @@ let rec check puts x y = function
       else check puts x y e
   | Forget(_, e) -> check puts x y e
 and check' puts x y = function
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | If(_, e1, e2) ->
       max (check puts x y e1) (check puts x y e2)
   | CallDir(f, _) when M.mem f puts && S.mem y (M.find f puts) -> 1
   | CallDir _ -> 0
@@ -45,7 +45,7 @@ let rec getPut x = function
       S.union (getPut' x exp) (getPut x e)
   | Forget(_, e) -> getPut x e
 and getPut' x = function
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | If(_, e1, e2) ->
       S.inter (getPut x e1) (getPut x e2)
   | _ -> S.empty
 

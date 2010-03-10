@@ -46,13 +46,15 @@
 .define { load [%iReg + %Imm], %iReg } { load %1 %2 %3 }
 .define { load [%iReg + %iReg], %iReg } { loadr %1 %2 %3 }
 .define { store %iReg, [%iReg + %Imm] } { store %2 %3 %1 }
-.define { store_inst %iReg, [%iReg + %Imm] } { store_inst %2 %3 %1 }
+.define { store_inst %iReg, %iReg } { store_inst %2 %1 }
 .define { load [%iReg + %Imm], %fReg } { fload %1 %2 %3 }
 .define { load [%iReg + %iReg], %fReg } { floadr %1 %2 %3 }
 .define { store %fReg, [%iReg + %Imm] } { fstore %2 %3 %1 }
 .define { mov %iReg, %fReg } { imovf %1 %2 }
 .define { mov %fReg, %iReg } { fmovi %1 %2 }
 .define { write %iReg, %iReg } { write %1 %2 }
+.define { ledout %iReg, %iReg } { ledout %1 %2 }
+.define { ledout %Imm, %iReg } { ledouti %1 %2 }
 
 #‹^Ž—–½—ß
 .define { add %iReg, -%Imm, %iReg } { sub %1, %2, %3 }
@@ -129,27 +131,27 @@ FLOAT_MAGICFHX:
 ######################################################################
 .begin floor
 ext_floor:
-    mov $f2, $f1                        # |    189,164 |    189,164 |
-    bge $f1, $f0, FLOOR_POSITIVE        # |    189,164 |    189,164 |
-    fneg $f1, $f1                       # |    166,713 |    166,713 |
-    mov $ra, $tmp                       # |    166,713 |    166,713 |
-    call FLOOR_POSITIVE                 # |    166,713 |    166,713 |
-    load [FLOOR_MONE], $f2              # |    166,713 |    166,713 |
-    fsub $f2, $f1, $f1                  # |    166,713 |    166,713 |
-    jr $tmp                             # |    166,713 |    166,713 |
+    mov $f2, $f1                        # |    189,018 |    189,018 |
+    bge $f1, $f0, FLOOR_POSITIVE        # |    189,018 |    189,018 |
+    fneg $f1, $f1                       # |    166,569 |    166,569 |
+    mov $ra, $tmp                       # |    166,569 |    166,569 |
+    call FLOOR_POSITIVE                 # |    166,569 |    166,569 |
+    load [FLOOR_MONE], $f2              # |    166,569 |    166,569 |
+    fsub $f2, $f1, $f1                  # |    166,569 |    166,569 |
+    jr $tmp                             # |    166,569 |    166,569 |
 FLOOR_POSITIVE:
-    load [FLOAT_MAGICF], $f3            # |    189,164 |    189,164 |
-    ble $f1, $f3, FLOOR_POSITIVE_MAIN   # |    189,164 |    189,164 |
+    load [FLOAT_MAGICF], $f3            # |    189,018 |    189,018 |
+    ble $f1, $f3, FLOOR_POSITIVE_MAIN   # |    189,018 |    189,018 |
     ret
 FLOOR_POSITIVE_MAIN:
-    mov $f1, $f2                        # |    189,164 |    189,164 |
-    fadd $f1, $f3, $f1                  # |    189,164 |    189,164 |
-    fsub $f1, $f3, $f1                  # |    189,164 |    189,164 |
-    ble $f1, $f2, FLOOR_RET             # |    189,164 |    189,164 |
+    mov $f1, $f2                        # |    189,018 |    189,018 |
+    fadd $f1, $f3, $f1                  # |    189,018 |    189,018 |
+    fsub $f1, $f3, $f1                  # |    189,018 |    189,018 |
+    ble $f1, $f2, FLOOR_RET             # |    189,018 |    189,018 |
     load [FLOOR_ONE], $f2
     fsub $f1, $f2, $f1
 FLOOR_RET:
-    ret                                 # |    189,164 |    189,164 |
+    ret                                 # |    189,018 |    189,018 |
 .end floor
 
 ######################################################################
@@ -160,21 +162,21 @@ FLOOR_RET:
 ######################################################################
 .begin float_of_int
 ext_float_of_int:
-    bge $i2, 0, ITOF_MAIN               # |     16,565 |     16,565 |
-    neg $i2, $i2                        # |      8,256 |      8,256 |
-    mov $ra, $tmp                       # |      8,256 |      8,256 |
-    call ITOF_MAIN                      # |      8,256 |      8,256 |
-    fneg $f1, $f1                       # |      8,256 |      8,256 |
-    jr $tmp                             # |      8,256 |      8,256 |
+    bge $i2, 0, ITOF_MAIN               # |     16,545 |     16,545 |
+    neg $i2, $i2                        # |      8,255 |      8,255 |
+    mov $ra, $tmp                       # |      8,255 |      8,255 |
+    call ITOF_MAIN                      # |      8,255 |      8,255 |
+    fneg $f1, $f1                       # |      8,255 |      8,255 |
+    jr $tmp                             # |      8,255 |      8,255 |
 ITOF_MAIN:
-    load [FLOAT_MAGICF], $f2            # |     16,565 |     16,565 |
-    load [FLOAT_MAGICFHX], $i3          # |     16,565 |     16,565 |
-    load [FLOAT_MAGICI], $i4            # |     16,565 |     16,565 |
-    bge $i2, $i4, ITOF_BIG              # |     16,565 |     16,565 |
-    add $i2, $i3, $i2                   # |     16,565 |     16,565 |
-    mov $i2, $f1                        # |     16,565 |     16,565 |
-    fsub $f1, $f2, $f1                  # |     16,565 |     16,565 |
-    ret                                 # |     16,565 |     16,565 |
+    load [FLOAT_MAGICF], $f2            # |     16,545 |     16,545 |
+    load [FLOAT_MAGICFHX], $i3          # |     16,545 |     16,545 |
+    load [FLOAT_MAGICI], $i4            # |     16,545 |     16,545 |
+    bge $i2, $i4, ITOF_BIG              # |     16,545 |     16,545 |
+    add $i2, $i3, $i2                   # |     16,545 |     16,545 |
+    mov $i2, $f1                        # |     16,545 |     16,545 |
+    fsub $f1, $f2, $f1                  # |     16,545 |     16,545 |
+    ret                                 # |     16,545 |     16,545 |
 ITOF_BIG:
     mov $f0, $f3
 ITOF_LOOP:
@@ -402,34 +404,34 @@ ble_else._189:
 ######################################################################
 .begin sin
 ext_sin:
-    bg      $f0, $f2, ble_else._192     # |      9,151 |      9,151 |
+    bg      $f0, $f2, ble_else._192     # |      9,153 |      9,153 |
 ble_then._192:
 .count load_float
-    load    [f._184], $f7               # |      8,651 |      8,651 |
-    bg      $f7, $f2, cordic_sin._82    # |      8,651 |      8,651 |
+    load    [f._184], $f7               # |      8,653 |      8,653 |
+    bg      $f7, $f2, cordic_sin._82    # |      8,653 |      8,653 |
 .count load_float
-    load    [f._185], $f7               # |      5,303 |      5,303 |
-    bg      $f7, $f2, ble_else._194     # |      5,303 |      5,303 |
+    load    [f._185], $f7               # |      5,304 |      5,304 |
+    bg      $f7, $f2, ble_else._194     # |      5,304 |      5,304 |
 ble_then._194:
 .count load_float
-    load    [f._186], $f1               # |      3,758 |      3,758 |
-    bg      $f1, $f2, ble_else._195     # |      3,758 |      3,758 |
+    load    [f._186], $f1               # |      3,759 |      3,759 |
+    bg      $f1, $f2, ble_else._195     # |      3,759 |      3,759 |
 ble_then._195:
     fsub    $f2, $f1, $f2               # |      2,416 |      2,416 |
     b       ext_sin                     # |      2,416 |      2,416 |
 ble_else._195:
 .count stack_move
-    sub     $sp, 1, $sp                 # |      1,342 |      1,342 |
+    sub     $sp, 1, $sp                 # |      1,343 |      1,343 |
 .count stack_store
-    store   $ra, [$sp + 0]              # |      1,342 |      1,342 |
-    fsub    $f1, $f2, $f2               # |      1,342 |      1,342 |
-    call    ext_sin                     # |      1,342 |      1,342 |
+    store   $ra, [$sp + 0]              # |      1,343 |      1,343 |
+    fsub    $f1, $f2, $f2               # |      1,343 |      1,343 |
+    call    ext_sin                     # |      1,343 |      1,343 |
 .count stack_load
-    load    [$sp + 0], $ra              # |      1,342 |      1,342 |
+    load    [$sp + 0], $ra              # |      1,343 |      1,343 |
 .count stack_move
-    add     $sp, 1, $sp                 # |      1,342 |      1,342 |
-    fneg    $f1, $f1                    # |      1,342 |      1,342 |
-    ret                                 # |      1,342 |      1,342 |
+    add     $sp, 1, $sp                 # |      1,343 |      1,343 |
+    fneg    $f1, $f1                    # |      1,343 |      1,343 |
+    ret                                 # |      1,343 |      1,343 |
 ble_else._194:
     fsub    $f7, $f2, $f2               # |      1,545 |      1,545 |
     b       cordic_sin._82              # |      1,545 |      1,545 |
@@ -448,51 +450,51 @@ ble_else._192:
     ret                                 # |        500 |        500 |
 
 cordic_rec._111:
-    bne     $i2, 25, be_else._190       # |    127,218 |    127,218 |
+    bne     $i2, 25, be_else._190       # |    127,244 |    127,244 |
 be_then._190:
-    mov     $f4, $f1                    # |      4,893 |      4,893 |
-    ret                                 # |      4,893 |      4,893 |
+    mov     $f4, $f1                    # |      4,894 |      4,894 |
+    ret                                 # |      4,894 |      4,894 |
 be_else._190:
-    fmul    $f6, $f4, $f1               # |    122,325 |    122,325 |
-    bg      $f2, $f5, ble_else._191     # |    122,325 |    122,325 |
+    fmul    $f6, $f4, $f1               # |    122,350 |    122,350 |
+    bg      $f2, $f5, ble_else._191     # |    122,350 |    122,350 |
 ble_then._191:
-    fadd    $f3, $f1, $f1               # |     59,231 |     59,231 |
-    fmul    $f6, $f3, $f3               # |     59,231 |     59,231 |
-    fsub    $f4, $f3, $f4               # |     59,231 |     59,231 |
-    load    [ext_atan_table + $i2], $f3 # |     59,231 |     59,231 |
-    fsub    $f5, $f3, $f5               # |     59,231 |     59,231 |
+    fadd    $f3, $f1, $f1               # |     59,253 |     59,253 |
+    fmul    $f6, $f3, $f3               # |     59,253 |     59,253 |
+    fsub    $f4, $f3, $f4               # |     59,253 |     59,253 |
+    load    [ext_atan_table + $i2], $f3 # |     59,253 |     59,253 |
+    fsub    $f5, $f3, $f5               # |     59,253 |     59,253 |
 .count load_float
-    load    [f._181], $f3               # |     59,231 |     59,231 |
-    fmul    $f6, $f3, $f6               # |     59,231 |     59,231 |
-    add     $i2, 1, $i2                 # |     59,231 |     59,231 |
+    load    [f._181], $f3               # |     59,253 |     59,253 |
+    fmul    $f6, $f3, $f6               # |     59,253 |     59,253 |
+    add     $i2, 1, $i2                 # |     59,253 |     59,253 |
 .count move_args
-    mov     $f1, $f3                    # |     59,231 |     59,231 |
-    b       cordic_rec._111             # |     59,231 |     59,231 |
+    mov     $f1, $f3                    # |     59,253 |     59,253 |
+    b       cordic_rec._111             # |     59,253 |     59,253 |
 ble_else._191:
-    fsub    $f3, $f1, $f1               # |     63,094 |     63,094 |
-    fmul    $f6, $f3, $f3               # |     63,094 |     63,094 |
-    fadd    $f4, $f3, $f4               # |     63,094 |     63,094 |
-    load    [ext_atan_table + $i2], $f3 # |     63,094 |     63,094 |
-    fadd    $f5, $f3, $f5               # |     63,094 |     63,094 |
+    fsub    $f3, $f1, $f1               # |     63,097 |     63,097 |
+    fmul    $f6, $f3, $f3               # |     63,097 |     63,097 |
+    fadd    $f4, $f3, $f4               # |     63,097 |     63,097 |
+    load    [ext_atan_table + $i2], $f3 # |     63,097 |     63,097 |
+    fadd    $f5, $f3, $f5               # |     63,097 |     63,097 |
 .count load_float
-    load    [f._181], $f3               # |     63,094 |     63,094 |
-    fmul    $f6, $f3, $f6               # |     63,094 |     63,094 |
-    add     $i2, 1, $i2                 # |     63,094 |     63,094 |
+    load    [f._181], $f3               # |     63,097 |     63,097 |
+    fmul    $f6, $f3, $f6               # |     63,097 |     63,097 |
+    add     $i2, 1, $i2                 # |     63,097 |     63,097 |
 .count move_args
-    mov     $f1, $f3                    # |     63,094 |     63,094 |
-    b       cordic_rec._111             # |     63,094 |     63,094 |
+    mov     $f1, $f3                    # |     63,097 |     63,097 |
+    b       cordic_rec._111             # |     63,097 |     63,097 |
 
 cordic_sin._82:
 .count load_float
-    load    [f._183], $f3               # |      4,893 |      4,893 |
+    load    [f._183], $f3               # |      4,894 |      4,894 |
 .count load_float
-    load    [f._182], $f6               # |      4,893 |      4,893 |
-    li      0, $i2                      # |      4,893 |      4,893 |
+    load    [f._182], $f6               # |      4,894 |      4,894 |
+    li      0, $i2                      # |      4,894 |      4,894 |
 .count move_args
-    mov     $f0, $f4                    # |      4,893 |      4,893 |
+    mov     $f0, $f4                    # |      4,894 |      4,894 |
 .count move_args
-    mov     $f0, $f5                    # |      4,893 |      4,893 |
-    b       cordic_rec._111             # |      4,893 |      4,893 |
+    mov     $f0, $f5                    # |      4,894 |      4,894 |
+    b       cordic_rec._111             # |      4,894 |      4,894 |
 .end sin
 
 ######################################################################
@@ -697,41 +699,154 @@ ext_n_reflections:
 .define $i58 orz
 .define $ra9 $i59
 .define $i59 orz
-f.32088:    .float  -2.0000000000E+02
-f.32087:    .float  2.0000000000E+02
-f.32059:    .float  1.2800000000E+02
-f.31997:    .float  9.0000000000E-01
-f.31996:    .float  2.0000000000E-01
-f.31968:    .float  1.5000000000E+02
-f.31967:    .float  -1.5000000000E+02
-f.31966:    .float  6.6666666667E-03
-f.31965:    .float  -6.6666666667E-03
-f.31964:    .float  -2.0000000000E+00
-f.31963:    .float  3.9062500000E-03
-f.31962:    .float  2.5600000000E+02
-f.31961:    .float  1.0000000000E+08
-f.31960:    .float  1.0000000000E+09
-f.31959:    .float  1.0000000000E+01
-f.31958:    .float  2.0000000000E+01
-f.31957:    .float  5.0000000000E-02
-f.31956:    .float  2.5000000000E-01
-f.31955:    .float  1.0000000000E-01
-f.31954:    .float  3.3333333333E+00
-f.31953:    .float  2.5500000000E+02
-f.31952:    .float  1.5000000000E-01
-f.31951:    .float  3.1830988148E-01
-f.31950:    .float  3.1415927000E+00
-f.31949:    .float  3.0000000000E+01
-f.31948:    .float  1.5000000000E+01
-f.31947:    .float  1.0000000000E-04
-f.31946:    .float  -1.0000000000E-01
-f.31945:    .float  1.0000000000E-02
-f.31944:    .float  -2.0000000000E-01
-f.31943:    .float  5.0000000000E-01
-f.31942:    .float  1.0000000000E+00
-f.31941:    .float  -1.0000000000E+00
-f.31940:    .float  2.0000000000E+00
-f.31927:    .float  1.7453293000E-02
+f.21573:    .float  -6.4000000000E+01
+f.21565:    .float  -5.0000000000E-01
+f.21564:    .float  7.0000000000E-01
+f.21563:    .float  -3.0000000000E-01
+f.21562:    .float  -1.0000000000E-01
+f.21561:    .float  9.0000000000E-01
+f.21560:    .float  2.0000000000E-01
+f.21550:    .float  1.5000000000E+02
+f.21549:    .float  -1.5000000000E+02
+f.21548:    .float  6.6666666667E-03
+f.21547:    .float  -6.6666666667E-03
+f.21546:    .float  -2.0000000000E+00
+f.21545:    .float  3.9062500000E-03
+f.21544:    .float  2.5600000000E+02
+f.21543:    .float  1.0000000000E+08
+f.21542:    .float  1.0000000000E+09
+f.21541:    .float  1.0000000000E+01
+f.21540:    .float  2.0000000000E+01
+f.21539:    .float  5.0000000000E-02
+f.21538:    .float  2.5000000000E-01
+f.21537:    .float  2.5500000000E+02
+f.21536:    .float  1.0000000000E-01
+f.21535:    .float  8.5000000000E+02
+f.21534:    .float  1.5000000000E-01
+f.21533:    .float  9.5492964444E+00
+f.21532:    .float  3.1830988148E-01
+f.21531:    .float  3.1415927000E+00
+f.21530:    .float  3.0000000000E+01
+f.21529:    .float  1.5000000000E+01
+f.21528:    .float  1.0000000000E-04
+f.21527:    .float  -1.0000000000E-01
+f.21526:    .float  1.0000000000E-02
+f.21525:    .float  -2.0000000000E-01
+f.21524:    .float  5.0000000000E-01
+f.21523:    .float  1.0000000000E+00
+f.21522:    .float  -1.0000000000E+00
+f.21521:    .float  2.0000000000E+00
+f.21507:    .float  -2.0000000000E+02
+f.21506:    .float  2.0000000000E+02
+f.21505:    .float  1.7453293000E-02
+
+######################################################################
+# read_screen_settings()
+# $ra = $ra1
+# [$i1 - $i5]
+# [$f1 - $f11]
+# []
+# [$fg20 - $fg24]
+# [$ra]
+######################################################################
+.begin read_screen_settings
+read_screen_settings.2712:
+    call    ext_read_float              # |          1 |          1 |
+    store   $f1, [ext_screen + 0]       # |          1 |          1 |
+    call    ext_read_float              # |          1 |          1 |
+    store   $f1, [ext_screen + 1]       # |          1 |          1 |
+    call    ext_read_float              # |          1 |          1 |
+    store   $f1, [ext_screen + 2]       # |          1 |          1 |
+    call    ext_read_float              # |          1 |          1 |
+    fmul    $f1, $fc16, $f9             # |          1 |          1 |
+.count move_args
+    mov     $f9, $f2                    # |          1 |          1 |
+    call    ext_cos                     # |          1 |          1 |
+.count move_ret
+    mov     $f1, $f10                   # |          1 |          1 |
+.count move_args
+    mov     $f9, $f2                    # |          1 |          1 |
+    call    ext_sin                     # |          1 |          1 |
+.count move_ret
+    mov     $f1, $f9                    # |          1 |          1 |
+    call    ext_read_float              # |          1 |          1 |
+    fmul    $f1, $fc16, $f11            # |          1 |          1 |
+.count move_args
+    mov     $f11, $f2                   # |          1 |          1 |
+    call    ext_cos                     # |          1 |          1 |
+.count move_ret
+    mov     $f1, $f8                    # |          1 |          1 |
+.count move_args
+    mov     $f11, $f2                   # |          1 |          1 |
+    call    ext_sin                     # |          1 |          1 |
+    fmul    $f10, $f1, $f2              # |          1 |          1 |
+.count load_float
+    load    [f.21506], $f3              # |          1 |          1 |
+    fmul    $f2, $f3, $fg20             # |          1 |          1 |
+.count load_float
+    load    [f.21507], $f2              # |          1 |          1 |
+    fmul    $f9, $f2, $fg21             # |          1 |          1 |
+    fmul    $f10, $f8, $f2              # |          1 |          1 |
+    fmul    $f2, $f3, $fg22             # |          1 |          1 |
+    store   $f8, [ext_screenx_dir + 0]  # |          1 |          1 |
+    fneg    $f1, $f2                    # |          1 |          1 |
+    store   $f2, [ext_screenx_dir + 2]  # |          1 |          1 |
+    fneg    $f9, $f2                    # |          1 |          1 |
+    fmul    $f2, $f1, $fg23             # |          1 |          1 |
+    fneg    $f10, $fg24                 # |          1 |          1 |
+    fmul    $f2, $f8, $f1               # |          1 |          1 |
+    store   $f1, [ext_screeny_dir + 2]  # |          1 |          1 |
+    load    [ext_screen + 0], $f1       # |          1 |          1 |
+    fsub    $f1, $fg20, $f1             # |          1 |          1 |
+    store   $f1, [ext_viewpoint + 0]    # |          1 |          1 |
+    load    [ext_screen + 1], $f1       # |          1 |          1 |
+    fsub    $f1, $fg21, $f1             # |          1 |          1 |
+    store   $f1, [ext_viewpoint + 1]    # |          1 |          1 |
+    load    [ext_screen + 2], $f1       # |          1 |          1 |
+    fsub    $f1, $fg22, $f1             # |          1 |          1 |
+    store   $f1, [ext_viewpoint + 2]    # |          1 |          1 |
+    jr      $ra1                        # |          1 |          1 |
+.end read_screen_settings
+
+######################################################################
+# read_light()
+# $ra = $ra1
+# [$i1 - $i5]
+# [$f1 - $f10]
+# []
+# [$fg12 - $fg14]
+# [$ra]
+######################################################################
+.begin read_light
+read_light.2714:
+    call    ext_read_int                # |          1 |          1 |
+    call    ext_read_float              # |          1 |          1 |
+    fmul    $f1, $fc16, $f8             # |          1 |          1 |
+.count move_args
+    mov     $f8, $f2                    # |          1 |          1 |
+    call    ext_sin                     # |          1 |          1 |
+    fneg    $f1, $fg12                  # |          1 |          1 |
+    call    ext_read_float              # |          1 |          1 |
+.count move_ret
+    mov     $f1, $f9                    # |          1 |          1 |
+.count move_args
+    mov     $f8, $f2                    # |          1 |          1 |
+    call    ext_cos                     # |          1 |          1 |
+.count move_ret
+    mov     $f1, $f10                   # |          1 |          1 |
+    fmul    $f9, $fc16, $f8             # |          1 |          1 |
+.count move_args
+    mov     $f8, $f2                    # |          1 |          1 |
+    call    ext_sin                     # |          1 |          1 |
+    fmul    $f10, $f1, $fg14            # |          1 |          1 |
+.count move_args
+    mov     $f8, $f2                    # |          1 |          1 |
+    call    ext_cos                     # |          1 |          1 |
+    fmul    $f10, $f1, $fg13            # |          1 |          1 |
+    call    ext_read_float              # |          1 |          1 |
+    store   $f1, [ext_beam + 0]         # |          1 |          1 |
+    jr      $ra1                        # |          1 |          1 |
+.end read_light
 
 ######################################################################
 # $i1 = read_nth_object($i6)
@@ -740,17 +855,18 @@ f.31927:    .float  1.7453293000E-02
 # [$f1 - $f17]
 # []
 # []
+# [$ra]
 ######################################################################
 .begin read_nth_object
 read_nth_object.2719:
     call    ext_read_int                # |         18 |         18 |
 .count move_ret
     mov     $i1, $i7                    # |         18 |         18 |
-    bne     $i7, -1, be_else.32268      # |         18 |         18 |
-be_then.32268:
+    bne     $i7, -1, be_else.21685      # |         18 |         18 |
+be_then.21685:
     li      0, $i1                      # |          1 |          1 |
     jr      $ra1                        # |          1 |          1 |
-be_else.32268:
+be_else.21685:
     call    ext_read_int                # |         17 |         17 |
 .count move_ret
     mov     $i1, $i8                    # |         17 |         17 |
@@ -815,40 +931,38 @@ be_else.32268:
     call    ext_create_array_float      # |         17 |         17 |
 .count move_ret
     mov     $i1, $i15                   # |         17 |         17 |
-    be      $i10, 0, bne_cont.32269     # |         17 |         17 |
-bne_then.32269:
+    be      $i10, 0, bne_cont.21686     # |         17 |         17 |
+bne_then.21686:
     call    ext_read_float
-.count load_float
-    load    [f.31927], $f2
-    fmul    $f1, $f2, $f1
+    fmul    $f1, $fc16, $f1
     store   $f1, [$i15 + 0]
     call    ext_read_float
-    fmul    $f1, $f2, $f1
+    fmul    $f1, $fc16, $f1
     store   $f1, [$i15 + 1]
     call    ext_read_float
-    fmul    $f1, $f2, $f1
+    fmul    $f1, $fc16, $f1
     store   $f1, [$i15 + 2]
-bne_cont.32269:
+bne_cont.21686:
     li      4, $i2                      # |         17 |         17 |
 .count move_args
     mov     $f0, $f2                    # |         17 |         17 |
     call    ext_create_array_float      # |         17 |         17 |
-    bg      $f0, $f3, ble_else.32270    # |         17 |         17 |
-ble_then.32270:
+    bg      $f0, $f3, ble_else.21687    # |         17 |         17 |
+ble_then.21687:
     li      0, $i2                      # |         15 |         15 |
 .count b_cont
-    b       ble_cont.32270              # |         15 |         15 |
-ble_else.32270:
+    b       ble_cont.21687              # |         15 |         15 |
+ble_else.21687:
     li      1, $i2                      # |          2 |          2 |
-ble_cont.32270:
-    bne     $i8, 2, be_else.32271       # |         17 |         17 |
-be_then.32271:
+ble_cont.21687:
+    bne     $i8, 2, be_else.21688       # |         17 |         17 |
+be_then.21688:
     li      1, $i3                      # |          2 |          2 |
 .count b_cont
-    b       be_cont.32271               # |          2 |          2 |
-be_else.32271:
+    b       be_cont.21688               # |          2 |          2 |
+be_else.21688:
     mov     $i2, $i3                    # |         15 |         15 |
-be_cont.32271:
+be_cont.21688:
     mov     $hp, $i4                    # |         17 |         17 |
     add     $hp, 11, $hp                # |         17 |         17 |
     store   $i1, [$i4 + 10]             # |         17 |         17 |
@@ -863,97 +977,97 @@ be_cont.32271:
     store   $i8, [$i4 + 1]              # |         17 |         17 |
     store   $i7, [$i4 + 0]              # |         17 |         17 |
     store   $i4, [ext_objects + $i6]    # |         17 |         17 |
-    bne     $i8, 3, be_else.32272       # |         17 |         17 |
-be_then.32272:
+    bne     $i8, 3, be_else.21689       # |         17 |         17 |
+be_then.21689:
     load    [$i11 + 0], $f1             # |          9 |          9 |
-    bne     $f1, $f0, be_else.32273     # |          9 |          9 |
-be_then.32273:
+    bne     $f1, $f0, be_else.21690     # |          9 |          9 |
+be_then.21690:
     mov     $f0, $f1                    # |          2 |          2 |
 .count b_cont
-    b       be_cont.32273               # |          2 |          2 |
-be_else.32273:
-    bne     $f1, $f0, be_else.32274     # |          7 |          7 |
-be_then.32274:
+    b       be_cont.21690               # |          2 |          2 |
+be_else.21690:
+    bne     $f1, $f0, be_else.21691     # |          7 |          7 |
+be_then.21691:
     fmul    $f1, $f1, $f1
     finv    $f1, $f1
     mov     $f0, $f1
 .count b_cont
-    b       be_cont.32274
-be_else.32274:
-    bg      $f1, $f0, ble_else.32275    # |          7 |          7 |
-ble_then.32275:
+    b       be_cont.21691
+be_else.21691:
+    bg      $f1, $f0, ble_else.21692    # |          7 |          7 |
+ble_then.21692:
     fmul    $f1, $f1, $f1
     finv_n  $f1, $f1
 .count b_cont
-    b       ble_cont.32275
-ble_else.32275:
+    b       ble_cont.21692
+ble_else.21692:
     fmul    $f1, $f1, $f1               # |          7 |          7 |
     finv    $f1, $f1                    # |          7 |          7 |
-ble_cont.32275:
-be_cont.32274:
-be_cont.32273:
+ble_cont.21692:
+be_cont.21691:
+be_cont.21690:
     store   $f1, [$i11 + 0]             # |          9 |          9 |
     load    [$i11 + 1], $f1             # |          9 |          9 |
-    bne     $f1, $f0, be_else.32276     # |          9 |          9 |
-be_then.32276:
+    bne     $f1, $f0, be_else.21693     # |          9 |          9 |
+be_then.21693:
     mov     $f0, $f1
 .count b_cont
-    b       be_cont.32276
-be_else.32276:
-    bne     $f1, $f0, be_else.32277     # |          9 |          9 |
-be_then.32277:
+    b       be_cont.21693
+be_else.21693:
+    bne     $f1, $f0, be_else.21694     # |          9 |          9 |
+be_then.21694:
     fmul    $f1, $f1, $f1
     finv    $f1, $f1
     mov     $f0, $f1
 .count b_cont
-    b       be_cont.32277
-be_else.32277:
-    bg      $f1, $f0, ble_else.32278    # |          9 |          9 |
-ble_then.32278:
+    b       be_cont.21694
+be_else.21694:
+    bg      $f1, $f0, ble_else.21695    # |          9 |          9 |
+ble_then.21695:
     fmul    $f1, $f1, $f1
     finv_n  $f1, $f1
 .count b_cont
-    b       ble_cont.32278
-ble_else.32278:
+    b       ble_cont.21695
+ble_else.21695:
     fmul    $f1, $f1, $f1               # |          9 |          9 |
     finv    $f1, $f1                    # |          9 |          9 |
-ble_cont.32278:
-be_cont.32277:
-be_cont.32276:
+ble_cont.21695:
+be_cont.21694:
+be_cont.21693:
     store   $f1, [$i11 + 1]             # |          9 |          9 |
     load    [$i11 + 2], $f1             # |          9 |          9 |
-    bne     $f1, $f0, be_else.32279     # |          9 |          9 |
-be_then.32279:
+    bne     $f1, $f0, be_else.21696     # |          9 |          9 |
+be_then.21696:
     mov     $f0, $f1
 .count b_cont
-    b       be_cont.32279
-be_else.32279:
-    bne     $f1, $f0, be_else.32280     # |          9 |          9 |
-be_then.32280:
+    b       be_cont.21696
+be_else.21696:
+    bne     $f1, $f0, be_else.21697     # |          9 |          9 |
+be_then.21697:
     fmul    $f1, $f1, $f1
     finv    $f1, $f1
     mov     $f0, $f1
 .count b_cont
-    b       be_cont.32280
-be_else.32280:
-    bg      $f1, $f0, ble_else.32281    # |          9 |          9 |
-ble_then.32281:
+    b       be_cont.21697
+be_else.21697:
+    bg      $f1, $f0, ble_else.21698    # |          9 |          9 |
+ble_then.21698:
     fmul    $f1, $f1, $f1
     finv_n  $f1, $f1
 .count b_cont
-    b       ble_cont.32281
-ble_else.32281:
+    b       ble_cont.21698
+ble_else.21698:
     fmul    $f1, $f1, $f1               # |          9 |          9 |
     finv    $f1, $f1                    # |          9 |          9 |
-ble_cont.32281:
-be_cont.32280:
-be_cont.32279:
+ble_cont.21698:
+be_cont.21697:
+be_cont.21696:
     store   $f1, [$i11 + 2]             # |          9 |          9 |
-    bne     $i10, 0, be_else.32282      # |          9 |          9 |
-be_then.32282:
+    bne     $i10, 0, be_else.21699      # |          9 |          9 |
+be_then.21699:
     li      1, $i1                      # |          9 |          9 |
     jr      $ra1                        # |          9 |          9 |
-be_else.32282:
+be_else.21699:
     load    [$i15 + 0], $f2
     call    ext_cos
 .count move_ret
@@ -1054,18 +1168,18 @@ be_else.32282:
     store   $f1, [$i15 + 2]
     li      1, $i1
     jr      $ra1
-be_else.32272:
-    bne     $i8, 2, be_else.32283       # |          8 |          8 |
-be_then.32283:
+be_else.21689:
+    bne     $i8, 2, be_else.21700       # |          8 |          8 |
+be_then.21700:
     load    [$i11 + 0], $f1             # |          2 |          2 |
-    bne     $i2, 0, be_else.32284       # |          2 |          2 |
-be_then.32284:
+    bne     $i2, 0, be_else.21701       # |          2 |          2 |
+be_then.21701:
     li      1, $i1                      # |          2 |          2 |
 .count b_cont
-    b       be_cont.32284               # |          2 |          2 |
-be_else.32284:
+    b       be_cont.21701               # |          2 |          2 |
+be_else.21701:
     li      0, $i1
-be_cont.32284:
+be_cont.21701:
     fmul    $f1, $f1, $f2               # |          2 |          2 |
     load    [$i11 + 1], $f3             # |          2 |          2 |
     fmul    $f3, $f3, $f3               # |          2 |          2 |
@@ -1074,21 +1188,21 @@ be_cont.32284:
     fmul    $f3, $f3, $f3               # |          2 |          2 |
     fadd    $f2, $f3, $f2               # |          2 |          2 |
     fsqrt   $f2, $f2                    # |          2 |          2 |
-    bne     $f2, $f0, be_else.32285     # |          2 |          2 |
-be_then.32285:
+    bne     $f2, $f0, be_else.21702     # |          2 |          2 |
+be_then.21702:
     mov     $fc0, $f2
 .count b_cont
-    b       be_cont.32285
-be_else.32285:
-    bne     $i1, 0, be_else.32286       # |          2 |          2 |
-be_then.32286:
+    b       be_cont.21702
+be_else.21702:
+    bne     $i1, 0, be_else.21703       # |          2 |          2 |
+be_then.21703:
     finv    $f2, $f2
 .count b_cont
-    b       be_cont.32286
-be_else.32286:
+    b       be_cont.21703
+be_else.21703:
     finv_n  $f2, $f2                    # |          2 |          2 |
-be_cont.32286:
-be_cont.32285:
+be_cont.21703:
+be_cont.21702:
     fmul    $f1, $f2, $f1               # |          2 |          2 |
     store   $f1, [$i11 + 0]             # |          2 |          2 |
     load    [$i11 + 1], $f1             # |          2 |          2 |
@@ -1097,11 +1211,11 @@ be_cont.32285:
     load    [$i11 + 2], $f1             # |          2 |          2 |
     fmul    $f1, $f2, $f1               # |          2 |          2 |
     store   $f1, [$i11 + 2]             # |          2 |          2 |
-    bne     $i10, 0, be_else.32287      # |          2 |          2 |
-be_then.32287:
+    bne     $i10, 0, be_else.21704      # |          2 |          2 |
+be_then.21704:
     li      1, $i1                      # |          2 |          2 |
     jr      $ra1                        # |          2 |          2 |
-be_else.32287:
+be_else.21704:
     load    [$i15 + 0], $f2
     call    ext_cos
 .count move_ret
@@ -1202,12 +1316,12 @@ be_else.32287:
     store   $f1, [$i15 + 2]
     li      1, $i1
     jr      $ra1
-be_else.32283:
-    bne     $i10, 0, be_else.32288      # |          6 |          6 |
-be_then.32288:
+be_else.21700:
+    bne     $i10, 0, be_else.21705      # |          6 |          6 |
+be_then.21705:
     li      1, $i1                      # |          6 |          6 |
     jr      $ra1                        # |          6 |          6 |
-be_else.32288:
+be_else.21705:
     load    [$i15 + 0], $f2
     call    ext_cos
 .count move_ret
@@ -1317,115 +1431,40 @@ be_else.32288:
 # [$f1 - $f17]
 # [$ig0]
 # []
+# [$ra - $ra1]
 ######################################################################
 .begin read_object
 read_object.2721:
-    bl      $i16, 60, bge_else.32289    # |          2 |          2 |
-bge_then.32289:
+    bl      $i16, 60, bge_else.21706    # |         18 |         18 |
+bge_then.21706:
     jr      $ra2
-bge_else.32289:
+bge_else.21706:
 .count move_args
-    mov     $i16, $i6                   # |          2 |          2 |
-    jal     read_nth_object.2719, $ra1  # |          2 |          2 |
-    bne     $i1, 0, be_else.32290       # |          2 |          2 |
-be_then.32290:
-    mov     $i16, $ig0
-    jr      $ra2
-be_else.32290:
-    add     $i16, 1, $i16               # |          2 |          2 |
-    bl      $i16, 60, bge_else.32291    # |          2 |          2 |
-bge_then.32291:
-    jr      $ra2
-bge_else.32291:
-.count move_args
-    mov     $i16, $i6                   # |          2 |          2 |
-    jal     read_nth_object.2719, $ra1  # |          2 |          2 |
-    bne     $i1, 0, be_else.32292       # |          2 |          2 |
-be_then.32292:
-    mov     $i16, $ig0
-    jr      $ra2
-be_else.32292:
-    add     $i16, 1, $i16               # |          2 |          2 |
-    bl      $i16, 60, bge_else.32293    # |          2 |          2 |
-bge_then.32293:
-    jr      $ra2
-bge_else.32293:
-.count move_args
-    mov     $i16, $i6                   # |          2 |          2 |
-    jal     read_nth_object.2719, $ra1  # |          2 |          2 |
-    bne     $i1, 0, be_else.32294       # |          2 |          2 |
-be_then.32294:
-    mov     $i16, $ig0
-    jr      $ra2
-be_else.32294:
-    add     $i16, 1, $i16               # |          2 |          2 |
-    bl      $i16, 60, bge_else.32295    # |          2 |          2 |
-bge_then.32295:
-    jr      $ra2
-bge_else.32295:
-.count move_args
-    mov     $i16, $i6                   # |          2 |          2 |
-    jal     read_nth_object.2719, $ra1  # |          2 |          2 |
-    bne     $i1, 0, be_else.32296       # |          2 |          2 |
-be_then.32296:
-    mov     $i16, $ig0
-    jr      $ra2
-be_else.32296:
-    add     $i16, 1, $i16               # |          2 |          2 |
-    bl      $i16, 60, bge_else.32297    # |          2 |          2 |
-bge_then.32297:
-    jr      $ra2
-bge_else.32297:
-.count move_args
-    mov     $i16, $i6                   # |          2 |          2 |
-    jal     read_nth_object.2719, $ra1  # |          2 |          2 |
-    bne     $i1, 0, be_else.32298       # |          2 |          2 |
-be_then.32298:
-    mov     $i16, $ig0
-    jr      $ra2
-be_else.32298:
-    add     $i16, 1, $i16               # |          2 |          2 |
-    bl      $i16, 60, bge_else.32299    # |          2 |          2 |
-bge_then.32299:
-    jr      $ra2
-bge_else.32299:
-.count move_args
-    mov     $i16, $i6                   # |          2 |          2 |
-    jal     read_nth_object.2719, $ra1  # |          2 |          2 |
-    bne     $i1, 0, be_else.32300       # |          2 |          2 |
-be_then.32300:
+    mov     $i16, $i6                   # |         18 |         18 |
+    jal     read_nth_object.2719, $ra1  # |         18 |         18 |
+    bne     $i1, 0, be_else.21707       # |         18 |         18 |
+be_then.21707:
     mov     $i16, $ig0                  # |          1 |          1 |
     jr      $ra2                        # |          1 |          1 |
-be_else.32300:
-    add     $i16, 1, $i16               # |          1 |          1 |
-    bl      $i16, 60, bge_else.32301    # |          1 |          1 |
-bge_then.32301:
-    jr      $ra2
-bge_else.32301:
-.count move_args
-    mov     $i16, $i6                   # |          1 |          1 |
-    jal     read_nth_object.2719, $ra1  # |          1 |          1 |
-    bne     $i1, 0, be_else.32302       # |          1 |          1 |
-be_then.32302:
-    mov     $i16, $ig0
-    jr      $ra2
-be_else.32302:
-    add     $i16, 1, $i16               # |          1 |          1 |
-    bl      $i16, 60, bge_else.32303    # |          1 |          1 |
-bge_then.32303:
-    jr      $ra2
-bge_else.32303:
-.count move_args
-    mov     $i16, $i6                   # |          1 |          1 |
-    jal     read_nth_object.2719, $ra1  # |          1 |          1 |
-    bne     $i1, 0, be_else.32304       # |          1 |          1 |
-be_then.32304:
-    mov     $i16, $ig0
-    jr      $ra2
-be_else.32304:
-    add     $i16, 1, $i16               # |          1 |          1 |
-    b       read_object.2721            # |          1 |          1 |
+be_else.21707:
+    add     $i16, 1, $i16               # |         17 |         17 |
+    b       read_object.2721            # |         17 |         17 |
 .end read_object
+
+######################################################################
+# read_all_object()
+# $ra = $ra2
+# [$i1 - $i16]
+# [$f1 - $f17]
+# [$ig0]
+# []
+# [$ra - $ra1]
+######################################################################
+.begin read_all_object
+read_all_object.2723:
+    li      0, $i16                     # |          1 |          1 |
+    b       read_object.2721            # |          1 |          1 |
+.end read_all_object
 
 ######################################################################
 # $i1 = read_net_item($i1)
@@ -1434,732 +1473,373 @@ be_else.32304:
 # []
 # []
 # []
+# [$ra]
 ######################################################################
 .begin read_net_item
 read_net_item.2725:
 .count stack_store_ra
-    store   $ra, [$sp - 9]              # |          7 |          7 |
+    store   $ra, [$sp - 3]              # |         43 |         43 |
 .count stack_move
-    sub     $sp, 9, $sp                 # |          7 |          7 |
+    sub     $sp, 3, $sp                 # |         43 |         43 |
 .count stack_store
-    store   $i1, [$sp + 1]              # |          7 |          7 |
-    call    ext_read_int                # |          7 |          7 |
-    bne     $i1, -1, be_else.32305      # |          7 |          7 |
-be_then.32305:
+    store   $i1, [$sp + 1]              # |         43 |         43 |
+    call    ext_read_int                # |         43 |         43 |
+    bne     $i1, -1, be_else.21708      # |         43 |         43 |
+be_then.21708:
 .count stack_load_ra
-    load    [$sp + 0], $ra              # |          2 |          2 |
+    load    [$sp + 0], $ra              # |         14 |         14 |
 .count stack_move
-    add     $sp, 9, $sp                 # |          2 |          2 |
+    add     $sp, 3, $sp                 # |         14 |         14 |
 .count stack_load
-    load    [$sp - 8], $i1              # |          2 |          2 |
-    add     $i1, 1, $i2                 # |          2 |          2 |
-    add     $i0, -1, $i3                # |          2 |          2 |
-    b       ext_create_array_int        # |          2 |          2 |
-be_else.32305:
+    load    [$sp - 2], $i1              # |         14 |         14 |
+    add     $i1, 1, $i2                 # |         14 |         14 |
+    add     $i0, -1, $i3                # |         14 |         14 |
+    b       ext_create_array_int        # |         14 |         14 |
+be_else.21708:
 .count stack_store
-    store   $i1, [$sp + 2]              # |          5 |          5 |
-    call    ext_read_int                # |          5 |          5 |
+    store   $i1, [$sp + 2]              # |         29 |         29 |
 .count stack_load
-    load    [$sp + 1], $i2              # |          5 |          5 |
-    add     $i2, 1, $i3                 # |          5 |          5 |
-    bne     $i1, -1, be_else.32306      # |          5 |          5 |
-be_then.32306:
-    add     $i3, 1, $i2                 # |          3 |          3 |
-    add     $i0, -1, $i3                # |          3 |          3 |
-    call    ext_create_array_int        # |          3 |          3 |
+    load    [$sp + 1], $i1              # |         29 |         29 |
+    add     $i1, 1, $i1                 # |         29 |         29 |
+    call    read_net_item.2725          # |         29 |         29 |
 .count stack_load_ra
-    load    [$sp + 0], $ra              # |          3 |          3 |
+    load    [$sp + 0], $ra              # |         29 |         29 |
 .count stack_move
-    add     $sp, 9, $sp                 # |          3 |          3 |
+    add     $sp, 3, $sp                 # |         29 |         29 |
 .count stack_load
-    load    [$sp - 8], $i2              # |          3 |          3 |
+    load    [$sp - 2], $i2              # |         29 |         29 |
 .count stack_load
-    load    [$sp - 7], $i3              # |          3 |          3 |
+    load    [$sp - 1], $i3              # |         29 |         29 |
 .count storer
-    add     $i1, $i2, $tmp              # |          3 |          3 |
-    store   $i3, [$tmp + 0]             # |          3 |          3 |
-    ret                                 # |          3 |          3 |
-be_else.32306:
-.count stack_store
-    store   $i1, [$sp + 3]              # |          2 |          2 |
-.count stack_store
-    store   $i3, [$sp + 4]              # |          2 |          2 |
-    call    ext_read_int                # |          2 |          2 |
-.count stack_load
-    load    [$sp + 4], $i2              # |          2 |          2 |
-    add     $i2, 1, $i3                 # |          2 |          2 |
-    bne     $i1, -1, be_else.32307      # |          2 |          2 |
-be_then.32307:
-    add     $i3, 1, $i2                 # |          1 |          1 |
-    add     $i0, -1, $i3                # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count stack_load_ra
-    load    [$sp + 0], $ra              # |          1 |          1 |
-.count stack_move
-    add     $sp, 9, $sp                 # |          1 |          1 |
-.count stack_load
-    load    [$sp - 5], $i2              # |          1 |          1 |
-.count stack_load
-    load    [$sp - 6], $i3              # |          1 |          1 |
-.count storer
-    add     $i1, $i2, $tmp              # |          1 |          1 |
-    store   $i3, [$tmp + 0]             # |          1 |          1 |
-.count stack_load
-    load    [$sp - 8], $i2              # |          1 |          1 |
-.count stack_load
-    load    [$sp - 7], $i3              # |          1 |          1 |
-.count storer
-    add     $i1, $i2, $tmp              # |          1 |          1 |
-    store   $i3, [$tmp + 0]             # |          1 |          1 |
-    ret                                 # |          1 |          1 |
-be_else.32307:
-.count stack_store
-    store   $i1, [$sp + 5]              # |          1 |          1 |
-.count stack_store
-    store   $i3, [$sp + 6]              # |          1 |          1 |
-    call    ext_read_int                # |          1 |          1 |
-.count stack_load
-    load    [$sp + 6], $i2              # |          1 |          1 |
-    add     $i2, 1, $i3                 # |          1 |          1 |
-    bne     $i1, -1, be_else.32308      # |          1 |          1 |
-be_then.32308:
-    add     $i3, 1, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-.count stack_load_ra
-    load    [$sp + 0], $ra
-.count stack_move
-    add     $sp, 9, $sp
-.count stack_load
-    load    [$sp - 3], $i2
-.count stack_load
-    load    [$sp - 4], $i3
-.count storer
-    add     $i1, $i2, $tmp
-    store   $i3, [$tmp + 0]
-.count stack_load
-    load    [$sp - 5], $i2
-.count stack_load
-    load    [$sp - 6], $i3
-.count storer
-    add     $i1, $i2, $tmp
-    store   $i3, [$tmp + 0]
-.count stack_load
-    load    [$sp - 8], $i2
-.count stack_load
-    load    [$sp - 7], $i3
-.count storer
-    add     $i1, $i2, $tmp
-    store   $i3, [$tmp + 0]
-    ret
-be_else.32308:
-.count stack_store
-    store   $i3, [$sp + 7]              # |          1 |          1 |
-.count stack_store
-    store   $i1, [$sp + 8]              # |          1 |          1 |
-    add     $i3, 1, $i1                 # |          1 |          1 |
-    call    read_net_item.2725          # |          1 |          1 |
-.count stack_load_ra
-    load    [$sp + 0], $ra              # |          1 |          1 |
-.count stack_move
-    add     $sp, 9, $sp                 # |          1 |          1 |
-.count stack_load
-    load    [$sp - 2], $i2              # |          1 |          1 |
-.count stack_load
-    load    [$sp - 1], $i3              # |          1 |          1 |
-.count storer
-    add     $i1, $i2, $tmp              # |          1 |          1 |
-    store   $i3, [$tmp + 0]             # |          1 |          1 |
-.count stack_load
-    load    [$sp - 3], $i2              # |          1 |          1 |
-.count stack_load
-    load    [$sp - 4], $i3              # |          1 |          1 |
-.count storer
-    add     $i1, $i2, $tmp              # |          1 |          1 |
-    store   $i3, [$tmp + 0]             # |          1 |          1 |
-.count stack_load
-    load    [$sp - 5], $i2              # |          1 |          1 |
-.count stack_load
-    load    [$sp - 6], $i3              # |          1 |          1 |
-.count storer
-    add     $i1, $i2, $tmp              # |          1 |          1 |
-    store   $i3, [$tmp + 0]             # |          1 |          1 |
-.count stack_load
-    load    [$sp - 8], $i2              # |          1 |          1 |
-.count stack_load
-    load    [$sp - 7], $i3              # |          1 |          1 |
-.count storer
-    add     $i1, $i2, $tmp              # |          1 |          1 |
-    store   $i3, [$tmp + 0]             # |          1 |          1 |
-    ret                                 # |          1 |          1 |
+    add     $i1, $i2, $tmp              # |         29 |         29 |
+    store   $i3, [$tmp + 0]             # |         29 |         29 |
+    ret                                 # |         29 |         29 |
 .end read_net_item
 
 ######################################################################
 # $i1 = read_or_network($i1)
 # $ra = $ra
-# [$i1 - $i8]
+# [$i1 - $i5]
 # []
 # []
 # []
+# [$ra]
 ######################################################################
 .begin read_or_network
 read_or_network.2727:
 .count stack_store_ra
-    store   $ra, [$sp - 5]              # |          1 |          1 |
+    store   $ra, [$sp - 3]              # |          3 |          3 |
 .count stack_move
-    sub     $sp, 5, $sp                 # |          1 |          1 |
+    sub     $sp, 3, $sp                 # |          3 |          3 |
 .count stack_store
-    store   $i1, [$sp + 1]              # |          1 |          1 |
-    call    ext_read_int                # |          1 |          1 |
-    mov     $i1, $i6                    # |          1 |          1 |
-    bne     $i6, -1, be_else.32309      # |          1 |          1 |
-be_then.32309:
-    li      1, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-.count b_cont
-    b       be_cont.32309
-be_else.32309:
-    call    ext_read_int                # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i7                    # |          1 |          1 |
-    bne     $i7, -1, be_else.32310      # |          1 |          1 |
-be_then.32310:
-    li      2, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-    store   $i6, [$i1 + 0]
-.count b_cont
-    b       be_cont.32310
-be_else.32310:
-    call    ext_read_int                # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i8                    # |          1 |          1 |
-    bne     $i8, -1, be_else.32311      # |          1 |          1 |
-be_then.32311:
-    li      3, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-    store   $i7, [$i1 + 1]
-    store   $i6, [$i1 + 0]
-.count b_cont
-    b       be_cont.32311
-be_else.32311:
-    li      3, $i1                      # |          1 |          1 |
-    call    read_net_item.2725          # |          1 |          1 |
-    store   $i8, [$i1 + 2]              # |          1 |          1 |
-    store   $i7, [$i1 + 1]              # |          1 |          1 |
-    store   $i6, [$i1 + 0]              # |          1 |          1 |
-be_cont.32311:
-be_cont.32310:
-be_cont.32309:
-    load    [$i1 + 0], $i2              # |          1 |          1 |
-    bne     $i2, -1, be_else.32312      # |          1 |          1 |
-be_then.32312:
-.count stack_load_ra
-    load    [$sp + 0], $ra
-.count stack_move
-    add     $sp, 5, $sp
-.count stack_load
-    load    [$sp - 4], $i2
-    add     $i2, 1, $i2
-.count move_args
-    mov     $i1, $i3
-    b       ext_create_array_int
-be_else.32312:
-.count stack_store
-    store   $i1, [$sp + 2]              # |          1 |          1 |
-    call    ext_read_int                # |          1 |          1 |
-    mov     $i1, $i6                    # |          1 |          1 |
-    bne     $i6, -1, be_else.32313      # |          1 |          1 |
-be_then.32313:
-    li      1, $i2                      # |          1 |          1 |
-    add     $i0, -1, $i3                # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count b_cont
-    b       be_cont.32313               # |          1 |          1 |
-be_else.32313:
-    call    ext_read_int
-.count move_ret
-    mov     $i1, $i7
-    bne     $i7, -1, be_else.32314
-be_then.32314:
-    li      2, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-    store   $i6, [$i1 + 0]
-.count b_cont
-    b       be_cont.32314
-be_else.32314:
-    li      2, $i1
-    call    read_net_item.2725
-    store   $i7, [$i1 + 1]
-    store   $i6, [$i1 + 0]
-be_cont.32314:
-be_cont.32313:
-    load    [$i1 + 0], $i2              # |          1 |          1 |
-.count stack_load
-    load    [$sp + 1], $i3              # |          1 |          1 |
-    add     $i3, 1, $i4                 # |          1 |          1 |
-    bne     $i2, -1, be_else.32315      # |          1 |          1 |
-be_then.32315:
-    add     $i4, 1, $i2                 # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
+    store   $i1, [$sp + 1]              # |          3 |          3 |
+    li      0, $i1                      # |          3 |          3 |
+    call    read_net_item.2725          # |          3 |          3 |
+    load    [$i1 + 0], $i2              # |          3 |          3 |
+    bne     $i2, -1, be_else.21709      # |          3 |          3 |
+be_then.21709:
 .count stack_load_ra
     load    [$sp + 0], $ra              # |          1 |          1 |
 .count stack_move
-    add     $sp, 5, $sp                 # |          1 |          1 |
+    add     $sp, 3, $sp                 # |          1 |          1 |
 .count stack_load
-    load    [$sp - 4], $i2              # |          1 |          1 |
+    load    [$sp - 2], $i2              # |          1 |          1 |
+    add     $i2, 1, $i2                 # |          1 |          1 |
+.count move_args
+    mov     $i1, $i3                    # |          1 |          1 |
+    b       ext_create_array_int        # |          1 |          1 |
+be_else.21709:
+.count stack_store
+    store   $i1, [$sp + 2]              # |          2 |          2 |
 .count stack_load
-    load    [$sp - 3], $i3              # |          1 |          1 |
-.count storer
-    add     $i1, $i2, $tmp              # |          1 |          1 |
-    store   $i3, [$tmp + 0]             # |          1 |          1 |
-    ret                                 # |          1 |          1 |
-be_else.32315:
-.count stack_store
-    store   $i4, [$sp + 3]
-.count stack_store
-    store   $i1, [$sp + 4]
-    add     $i4, 1, $i1
-    call    read_or_network.2727
+    load    [$sp + 1], $i1              # |          2 |          2 |
+    add     $i1, 1, $i1                 # |          2 |          2 |
+    call    read_or_network.2727        # |          2 |          2 |
 .count stack_load_ra
-    load    [$sp + 0], $ra
+    load    [$sp + 0], $ra              # |          2 |          2 |
 .count stack_move
-    add     $sp, 5, $sp
+    add     $sp, 3, $sp                 # |          2 |          2 |
 .count stack_load
-    load    [$sp - 2], $i2
+    load    [$sp - 2], $i2              # |          2 |          2 |
 .count stack_load
-    load    [$sp - 1], $i3
+    load    [$sp - 1], $i3              # |          2 |          2 |
 .count storer
-    add     $i1, $i2, $tmp
-    store   $i3, [$tmp + 0]
-.count stack_load
-    load    [$sp - 4], $i2
-.count stack_load
-    load    [$sp - 3], $i3
-.count storer
-    add     $i1, $i2, $tmp
-    store   $i3, [$tmp + 0]
-    ret
+    add     $i1, $i2, $tmp              # |          2 |          2 |
+    store   $i3, [$tmp + 0]             # |          2 |          2 |
+    ret                                 # |          2 |          2 |
 .end read_or_network
 
 ######################################################################
 # read_and_network($i6)
 # $ra = $ra1
-# [$i1 - $i9]
+# [$i1 - $i6]
 # []
 # []
 # []
+# [$ra]
 ######################################################################
 .begin read_and_network
 read_and_network.2729:
-    call    ext_read_int                # |          3 |          3 |
-.count move_ret
-    mov     $i1, $i7                    # |          3 |          3 |
-    bne     $i7, -1, be_else.32316      # |          3 |          3 |
-be_then.32316:
-    li      1, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-.count b_cont
-    b       be_cont.32316
-be_else.32316:
-    call    ext_read_int                # |          3 |          3 |
-.count move_ret
-    mov     $i1, $i8                    # |          3 |          3 |
-    bne     $i8, -1, be_else.32317      # |          3 |          3 |
-be_then.32317:
-    li      2, $i2                      # |          2 |          2 |
-    add     $i0, -1, $i3                # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    store   $i7, [$i1 + 0]              # |          2 |          2 |
-.count b_cont
-    b       be_cont.32317               # |          2 |          2 |
-be_else.32317:
-    call    ext_read_int                # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i9                    # |          1 |          1 |
-    bne     $i9, -1, be_else.32318      # |          1 |          1 |
-be_then.32318:
-    li      3, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-    store   $i8, [$i1 + 1]
-    store   $i7, [$i1 + 0]
-.count b_cont
-    b       be_cont.32318
-be_else.32318:
-    li      3, $i1                      # |          1 |          1 |
-    call    read_net_item.2725          # |          1 |          1 |
-    store   $i9, [$i1 + 2]              # |          1 |          1 |
-    store   $i8, [$i1 + 1]              # |          1 |          1 |
-    store   $i7, [$i1 + 0]              # |          1 |          1 |
-be_cont.32318:
-be_cont.32317:
-be_cont.32316:
-    load    [$i1 + 0], $i2              # |          3 |          3 |
-    bne     $i2, -1, be_else.32319      # |          3 |          3 |
-be_then.32319:
-    jr      $ra1
-be_else.32319:
-    store   $i1, [ext_and_net + $i6]    # |          3 |          3 |
-    call    ext_read_int                # |          3 |          3 |
-.count move_ret
-    mov     $i1, $i7                    # |          3 |          3 |
-    bne     $i7, -1, be_else.32320      # |          3 |          3 |
-be_then.32320:
-    li      1, $i2                      # |          1 |          1 |
-    add     $i0, -1, $i3                # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count b_cont
-    b       be_cont.32320               # |          1 |          1 |
-be_else.32320:
-    call    ext_read_int                # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i8                    # |          2 |          2 |
-    bne     $i8, -1, be_else.32321      # |          2 |          2 |
-be_then.32321:
-    li      2, $i2                      # |          1 |          1 |
-    add     $i0, -1, $i3                # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-    store   $i7, [$i1 + 0]              # |          1 |          1 |
-.count b_cont
-    b       be_cont.32321               # |          1 |          1 |
-be_else.32321:
-    li      2, $i1                      # |          1 |          1 |
-    call    read_net_item.2725          # |          1 |          1 |
-    store   $i8, [$i1 + 1]              # |          1 |          1 |
-    store   $i7, [$i1 + 0]              # |          1 |          1 |
-be_cont.32321:
-be_cont.32320:
-    load    [$i1 + 0], $i2              # |          3 |          3 |
-    bne     $i2, -1, be_else.32322      # |          3 |          3 |
-be_then.32322:
+    li      0, $i1                      # |         11 |         11 |
+    call    read_net_item.2725          # |         11 |         11 |
+    load    [$i1 + 0], $i2              # |         11 |         11 |
+    bne     $i2, -1, be_else.21710      # |         11 |         11 |
+be_then.21710:
     jr      $ra1                        # |          1 |          1 |
-be_else.32322:
-    add     $i6, 1, $i6                 # |          2 |          2 |
-    store   $i1, [ext_and_net + $i6]    # |          2 |          2 |
-    call    ext_read_int                # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i7                    # |          2 |          2 |
-    bne     $i7, -1, be_else.32323      # |          2 |          2 |
-be_then.32323:
-    li      1, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-.count b_cont
-    b       be_cont.32323
-be_else.32323:
-    call    ext_read_int                # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i8                    # |          2 |          2 |
-    bne     $i8, -1, be_else.32324      # |          2 |          2 |
-be_then.32324:
-    li      2, $i2                      # |          2 |          2 |
-    add     $i0, -1, $i3                # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    store   $i7, [$i1 + 0]              # |          2 |          2 |
-.count b_cont
-    b       be_cont.32324               # |          2 |          2 |
-be_else.32324:
-    call    ext_read_int
-.count move_ret
-    mov     $i1, $i9
-    bne     $i9, -1, be_else.32325
-be_then.32325:
-    li      3, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-    store   $i8, [$i1 + 1]
-    store   $i7, [$i1 + 0]
-.count b_cont
-    b       be_cont.32325
-be_else.32325:
-    li      3, $i1
-    call    read_net_item.2725
-    store   $i9, [$i1 + 2]
-    store   $i8, [$i1 + 1]
-    store   $i7, [$i1 + 0]
-be_cont.32325:
-be_cont.32324:
-be_cont.32323:
-    load    [$i1 + 0], $i2              # |          2 |          2 |
-    bne     $i2, -1, be_else.32326      # |          2 |          2 |
-be_then.32326:
-    jr      $ra1
-be_else.32326:
-    add     $i6, 1, $i6                 # |          2 |          2 |
-    store   $i1, [ext_and_net + $i6]    # |          2 |          2 |
-    call    ext_read_int                # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i7                    # |          2 |          2 |
-    bne     $i7, -1, be_else.32327      # |          2 |          2 |
-be_then.32327:
-    li      1, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-.count b_cont
-    b       be_cont.32327
-be_else.32327:
-    call    ext_read_int                # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i8                    # |          2 |          2 |
-    bne     $i8, -1, be_else.32328      # |          2 |          2 |
-be_then.32328:
-    li      2, $i2                      # |          1 |          1 |
-    add     $i0, -1, $i3                # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-    store   $i7, [$i1 + 0]              # |          1 |          1 |
-.count b_cont
-    b       be_cont.32328               # |          1 |          1 |
-be_else.32328:
-    li      2, $i1                      # |          1 |          1 |
-    call    read_net_item.2725          # |          1 |          1 |
-    store   $i8, [$i1 + 1]              # |          1 |          1 |
-    store   $i7, [$i1 + 0]              # |          1 |          1 |
-be_cont.32328:
-be_cont.32327:
-    load    [$i1 + 0], $i2              # |          2 |          2 |
-    bne     $i2, -1, be_else.32329      # |          2 |          2 |
-be_then.32329:
-    jr      $ra1
-be_else.32329:
-    add     $i6, 1, $i2                 # |          2 |          2 |
-    store   $i1, [ext_and_net + $i2]    # |          2 |          2 |
-    add     $i2, 1, $i6                 # |          2 |          2 |
-    b       read_and_network.2729       # |          2 |          2 |
+be_else.21710:
+    store   $i1, [ext_and_net + $i6]    # |         10 |         10 |
+    add     $i6, 1, $i6                 # |         10 |         10 |
+    b       read_and_network.2729       # |         10 |         10 |
 .end read_and_network
+
+######################################################################
+# read_parameter()
+# $ra = $ra3
+# [$i1 - $i16]
+# [$f1 - $f17]
+# [$ig0 - $ig1]
+# [$fg12 - $fg14, $fg20 - $fg24]
+# [$ra - $ra2]
+######################################################################
+.begin read_parameter
+read_parameter.2731:
+    jal     read_screen_settings.2712, $ra1# |          1 |          1 |
+    jal     read_light.2714, $ra1       # |          1 |          1 |
+    jal     read_all_object.2723, $ra2  # |          1 |          1 |
+    li      0, $i6                      # |          1 |          1 |
+    jal     read_and_network.2729, $ra1 # |          1 |          1 |
+    li      0, $i1                      # |          1 |          1 |
+    call    read_or_network.2727        # |          1 |          1 |
+.count move_ret
+    mov     $i1, $ig1                   # |          1 |          1 |
+    jr      $ra3                        # |          1 |          1 |
+.end read_parameter
 
 ######################################################################
 # $i1 = solver($i1, $i2)
 # $ra = $ra
-# [$i1 - $i7]
+# [$i1 - $i5]
 # [$f1 - $f13]
 # []
 # [$fg0]
+# []
 ######################################################################
 .begin solver
 solver.2773:
     load    [ext_objects + $i1], $i1    # |     23,754 |     23,754 |
     load    [$i1 + 5], $i3              # |     23,754 |     23,754 |
-    load    [$i1 + 5], $i4              # |     23,754 |     23,754 |
-    load    [$i1 + 5], $i5              # |     23,754 |     23,754 |
-    load    [$i1 + 1], $i6              # |     23,754 |     23,754 |
+    load    [$i1 + 1], $i4              # |     23,754 |     23,754 |
     load    [$i3 + 0], $f1              # |     23,754 |     23,754 |
-    load    [$i4 + 1], $f2              # |     23,754 |     23,754 |
-    load    [$i5 + 2], $f3              # |     23,754 |     23,754 |
-    fsub    $fg21, $f1, $f1             # |     23,754 |     23,754 |
-    fsub    $fg22, $f2, $f2             # |     23,754 |     23,754 |
-    fsub    $fg23, $f3, $f3             # |     23,754 |     23,754 |
+    load    [$i3 + 1], $f2              # |     23,754 |     23,754 |
+    load    [$i3 + 2], $f3              # |     23,754 |     23,754 |
+    fsub    $fg17, $f1, $f1             # |     23,754 |     23,754 |
+    fsub    $fg18, $f2, $f2             # |     23,754 |     23,754 |
+    fsub    $fg19, $f3, $f3             # |     23,754 |     23,754 |
     load    [$i2 + 0], $f4              # |     23,754 |     23,754 |
-    bne     $i6, 1, be_else.32330       # |     23,754 |     23,754 |
-be_then.32330:
-    bne     $f4, $f0, be_else.32331     # |     23,754 |     23,754 |
-be_then.32331:
+    bne     $i4, 1, be_else.21711       # |     23,754 |     23,754 |
+be_then.21711:
+    bne     $f4, $f0, be_else.21712     # |     23,754 |     23,754 |
+be_then.21712:
     li      0, $i3
 .count b_cont
-    b       be_cont.32331
-be_else.32331:
+    b       be_cont.21712
+be_else.21712:
     load    [$i1 + 4], $i3              # |     23,754 |     23,754 |
     load    [$i3 + 1], $f5              # |     23,754 |     23,754 |
     load    [$i2 + 1], $f6              # |     23,754 |     23,754 |
     load    [$i1 + 6], $i4              # |     23,754 |     23,754 |
-    bg      $f0, $f4, ble_else.32332    # |     23,754 |     23,754 |
-ble_then.32332:
+    bg      $f0, $f4, ble_else.21713    # |     23,754 |     23,754 |
+ble_then.21713:
     li      0, $i5                      # |     23,580 |     23,580 |
 .count b_cont
-    b       ble_cont.32332              # |     23,580 |     23,580 |
-ble_else.32332:
+    b       ble_cont.21713              # |     23,580 |     23,580 |
+ble_else.21713:
     li      1, $i5                      # |        174 |        174 |
-ble_cont.32332:
-    bne     $i4, 0, be_else.32333       # |     23,754 |     23,754 |
-be_then.32333:
+ble_cont.21713:
+    bne     $i4, 0, be_else.21714       # |     23,754 |     23,754 |
+be_then.21714:
     mov     $i5, $i4                    # |     23,754 |     23,754 |
 .count b_cont
-    b       be_cont.32333               # |     23,754 |     23,754 |
-be_else.32333:
-    bne     $i5, 0, be_else.32334
-be_then.32334:
+    b       be_cont.21714               # |     23,754 |     23,754 |
+be_else.21714:
+    bne     $i5, 0, be_else.21715
+be_then.21715:
     li      1, $i4
 .count b_cont
-    b       be_cont.32334
-be_else.32334:
+    b       be_cont.21715
+be_else.21715:
     li      0, $i4
-be_cont.32334:
-be_cont.32333:
+be_cont.21715:
+be_cont.21714:
     load    [$i3 + 0], $f7              # |     23,754 |     23,754 |
-    bne     $i4, 0, be_cont.32335       # |     23,754 |     23,754 |
-be_then.32335:
+    bne     $i4, 0, be_cont.21716       # |     23,754 |     23,754 |
+be_then.21716:
     fneg    $f7, $f7                    # |     23,580 |     23,580 |
-be_cont.32335:
+be_cont.21716:
     fsub    $f7, $f1, $f7               # |     23,754 |     23,754 |
     finv    $f4, $f4                    # |     23,754 |     23,754 |
     fmul    $f7, $f4, $f4               # |     23,754 |     23,754 |
     fmul    $f4, $f6, $f6               # |     23,754 |     23,754 |
     fadd_a  $f6, $f2, $f6               # |     23,754 |     23,754 |
-    bg      $f5, $f6, ble_else.32336    # |     23,754 |     23,754 |
-ble_then.32336:
+    bg      $f5, $f6, ble_else.21717    # |     23,754 |     23,754 |
+ble_then.21717:
     li      0, $i3                      # |     14,964 |     14,964 |
 .count b_cont
-    b       ble_cont.32336              # |     14,964 |     14,964 |
-ble_else.32336:
+    b       ble_cont.21717              # |     14,964 |     14,964 |
+ble_else.21717:
     load    [$i3 + 2], $f5              # |      8,790 |      8,790 |
     load    [$i2 + 2], $f6              # |      8,790 |      8,790 |
     fmul    $f4, $f6, $f6               # |      8,790 |      8,790 |
     fadd_a  $f6, $f3, $f6               # |      8,790 |      8,790 |
-    bg      $f5, $f6, ble_else.32337    # |      8,790 |      8,790 |
-ble_then.32337:
+    bg      $f5, $f6, ble_else.21718    # |      8,790 |      8,790 |
+ble_then.21718:
     li      0, $i3                      # |      5,123 |      5,123 |
 .count b_cont
-    b       ble_cont.32337              # |      5,123 |      5,123 |
-ble_else.32337:
+    b       ble_cont.21718              # |      5,123 |      5,123 |
+ble_else.21718:
     mov     $f4, $fg0                   # |      3,667 |      3,667 |
     li      1, $i3                      # |      3,667 |      3,667 |
-ble_cont.32337:
-ble_cont.32336:
-be_cont.32331:
-    bne     $i3, 0, be_else.32338       # |     23,754 |     23,754 |
-be_then.32338:
+ble_cont.21718:
+ble_cont.21717:
+be_cont.21712:
+    bne     $i3, 0, be_else.21719       # |     23,754 |     23,754 |
+be_then.21719:
     load    [$i2 + 1], $f4              # |     20,087 |     20,087 |
-    bne     $f4, $f0, be_else.32339     # |     20,087 |     20,087 |
-be_then.32339:
+    bne     $f4, $f0, be_else.21720     # |     20,087 |     20,087 |
+be_then.21720:
     li      0, $i3
 .count b_cont
-    b       be_cont.32339
-be_else.32339:
+    b       be_cont.21720
+be_else.21720:
     load    [$i1 + 4], $i3              # |     20,087 |     20,087 |
     load    [$i3 + 2], $f5              # |     20,087 |     20,087 |
     load    [$i2 + 2], $f6              # |     20,087 |     20,087 |
     load    [$i1 + 6], $i4              # |     20,087 |     20,087 |
-    bg      $f0, $f4, ble_else.32340    # |     20,087 |     20,087 |
-ble_then.32340:
+    bg      $f0, $f4, ble_else.21721    # |     20,087 |     20,087 |
+ble_then.21721:
     li      0, $i5                      # |         38 |         38 |
 .count b_cont
-    b       ble_cont.32340              # |         38 |         38 |
-ble_else.32340:
+    b       ble_cont.21721              # |         38 |         38 |
+ble_else.21721:
     li      1, $i5                      # |     20,049 |     20,049 |
-ble_cont.32340:
-    bne     $i4, 0, be_else.32341       # |     20,087 |     20,087 |
-be_then.32341:
+ble_cont.21721:
+    bne     $i4, 0, be_else.21722       # |     20,087 |     20,087 |
+be_then.21722:
     mov     $i5, $i4                    # |     20,087 |     20,087 |
 .count b_cont
-    b       be_cont.32341               # |     20,087 |     20,087 |
-be_else.32341:
-    bne     $i5, 0, be_else.32342
-be_then.32342:
+    b       be_cont.21722               # |     20,087 |     20,087 |
+be_else.21722:
+    bne     $i5, 0, be_else.21723
+be_then.21723:
     li      1, $i4
 .count b_cont
-    b       be_cont.32342
-be_else.32342:
+    b       be_cont.21723
+be_else.21723:
     li      0, $i4
-be_cont.32342:
-be_cont.32341:
+be_cont.21723:
+be_cont.21722:
     load    [$i3 + 1], $f7              # |     20,087 |     20,087 |
-    bne     $i4, 0, be_cont.32343       # |     20,087 |     20,087 |
-be_then.32343:
+    bne     $i4, 0, be_cont.21724       # |     20,087 |     20,087 |
+be_then.21724:
     fneg    $f7, $f7                    # |         38 |         38 |
-be_cont.32343:
+be_cont.21724:
     fsub    $f7, $f2, $f7               # |     20,087 |     20,087 |
     finv    $f4, $f4                    # |     20,087 |     20,087 |
     fmul    $f7, $f4, $f4               # |     20,087 |     20,087 |
     fmul    $f4, $f6, $f6               # |     20,087 |     20,087 |
     fadd_a  $f6, $f3, $f6               # |     20,087 |     20,087 |
-    bg      $f5, $f6, ble_else.32344    # |     20,087 |     20,087 |
-ble_then.32344:
+    bg      $f5, $f6, ble_else.21725    # |     20,087 |     20,087 |
+ble_then.21725:
     li      0, $i3                      # |     16,512 |     16,512 |
 .count b_cont
-    b       ble_cont.32344              # |     16,512 |     16,512 |
-ble_else.32344:
+    b       ble_cont.21725              # |     16,512 |     16,512 |
+ble_else.21725:
     load    [$i3 + 0], $f5              # |      3,575 |      3,575 |
     load    [$i2 + 0], $f6              # |      3,575 |      3,575 |
     fmul    $f4, $f6, $f6               # |      3,575 |      3,575 |
     fadd_a  $f6, $f1, $f6               # |      3,575 |      3,575 |
-    bg      $f5, $f6, ble_else.32345    # |      3,575 |      3,575 |
-ble_then.32345:
+    bg      $f5, $f6, ble_else.21726    # |      3,575 |      3,575 |
+ble_then.21726:
     li      0, $i3                      # |      2,631 |      2,631 |
 .count b_cont
-    b       ble_cont.32345              # |      2,631 |      2,631 |
-ble_else.32345:
+    b       ble_cont.21726              # |      2,631 |      2,631 |
+ble_else.21726:
     mov     $f4, $fg0                   # |        944 |        944 |
     li      1, $i3                      # |        944 |        944 |
-ble_cont.32345:
-ble_cont.32344:
-be_cont.32339:
-    bne     $i3, 0, be_else.32346       # |     20,087 |     20,087 |
-be_then.32346:
+ble_cont.21726:
+ble_cont.21725:
+be_cont.21720:
+    bne     $i3, 0, be_else.21727       # |     20,087 |     20,087 |
+be_then.21727:
     load    [$i2 + 2], $f4              # |     19,143 |     19,143 |
-    bne     $f4, $f0, be_else.32347     # |     19,143 |     19,143 |
-be_then.32347:
+    bne     $f4, $f0, be_else.21728     # |     19,143 |     19,143 |
+be_then.21728:
     li      0, $i1
     ret
-be_else.32347:
+be_else.21728:
     load    [$i1 + 4], $i3              # |     19,143 |     19,143 |
     load    [$i1 + 6], $i1              # |     19,143 |     19,143 |
     load    [$i3 + 0], $f5              # |     19,143 |     19,143 |
     load    [$i2 + 0], $f6              # |     19,143 |     19,143 |
-    bg      $f0, $f4, ble_else.32348    # |     19,143 |     19,143 |
-ble_then.32348:
+    bg      $f0, $f4, ble_else.21729    # |     19,143 |     19,143 |
+ble_then.21729:
     li      0, $i4                      # |     12,429 |     12,429 |
 .count b_cont
-    b       ble_cont.32348              # |     12,429 |     12,429 |
-ble_else.32348:
+    b       ble_cont.21729              # |     12,429 |     12,429 |
+ble_else.21729:
     li      1, $i4                      # |      6,714 |      6,714 |
-ble_cont.32348:
-    bne     $i1, 0, be_else.32349       # |     19,143 |     19,143 |
-be_then.32349:
+ble_cont.21729:
+    bne     $i1, 0, be_else.21730       # |     19,143 |     19,143 |
+be_then.21730:
     mov     $i4, $i1                    # |     19,143 |     19,143 |
 .count b_cont
-    b       be_cont.32349               # |     19,143 |     19,143 |
-be_else.32349:
-    bne     $i4, 0, be_else.32350
-be_then.32350:
+    b       be_cont.21730               # |     19,143 |     19,143 |
+be_else.21730:
+    bne     $i4, 0, be_else.21731
+be_then.21731:
     li      1, $i1
 .count b_cont
-    b       be_cont.32350
-be_else.32350:
+    b       be_cont.21731
+be_else.21731:
     li      0, $i1
-be_cont.32350:
-be_cont.32349:
+be_cont.21731:
+be_cont.21730:
     load    [$i3 + 2], $f7              # |     19,143 |     19,143 |
-    bne     $i1, 0, be_cont.32351       # |     19,143 |     19,143 |
-be_then.32351:
+    bne     $i1, 0, be_cont.21732       # |     19,143 |     19,143 |
+be_then.21732:
     fneg    $f7, $f7                    # |     12,429 |     12,429 |
-be_cont.32351:
+be_cont.21732:
     fsub    $f7, $f3, $f3               # |     19,143 |     19,143 |
     finv    $f4, $f4                    # |     19,143 |     19,143 |
     fmul    $f3, $f4, $f3               # |     19,143 |     19,143 |
     fmul    $f3, $f6, $f4               # |     19,143 |     19,143 |
     fadd_a  $f4, $f1, $f1               # |     19,143 |     19,143 |
-    bg      $f5, $f1, ble_else.32352    # |     19,143 |     19,143 |
-ble_then.32352:
+    bg      $f5, $f1, ble_else.21733    # |     19,143 |     19,143 |
+ble_then.21733:
     li      0, $i1                      # |     15,261 |     15,261 |
     ret                                 # |     15,261 |     15,261 |
-ble_else.32352:
+ble_else.21733:
     load    [$i3 + 1], $f1              # |      3,882 |      3,882 |
     load    [$i2 + 1], $f4              # |      3,882 |      3,882 |
     fmul    $f3, $f4, $f4               # |      3,882 |      3,882 |
     fadd_a  $f4, $f2, $f2               # |      3,882 |      3,882 |
-    bg      $f1, $f2, ble_else.32353    # |      3,882 |      3,882 |
-ble_then.32353:
+    bg      $f1, $f2, ble_else.21734    # |      3,882 |      3,882 |
+ble_then.21734:
     li      0, $i1                      # |      1,717 |      1,717 |
     ret                                 # |      1,717 |      1,717 |
-ble_else.32353:
+ble_else.21734:
     mov     $f3, $fg0                   # |      2,165 |      2,165 |
     li      3, $i1                      # |      2,165 |      2,165 |
     ret                                 # |      2,165 |      2,165 |
-be_else.32346:
+be_else.21727:
     li      2, $i1                      # |        944 |        944 |
     ret                                 # |        944 |        944 |
-be_else.32338:
+be_else.21719:
     li      1, $i1                      # |      3,667 |      3,667 |
     ret                                 # |      3,667 |      3,667 |
-be_else.32330:
-    bne     $i6, 2, be_else.32354
-be_then.32354:
+be_else.21711:
+    bne     $i4, 2, be_else.21735
+be_then.21735:
     load    [$i1 + 4], $i1
     load    [$i1 + 0], $f5
     fmul    $f4, $f5, $f4
@@ -2171,11 +1851,11 @@ be_then.32354:
     load    [$i1 + 2], $f8
     fmul    $f6, $f8, $f6
     fadd    $f4, $f6, $f4
-    bg      $f4, $f0, ble_else.32355
-ble_then.32355:
+    bg      $f4, $f0, ble_else.21736
+ble_then.21736:
     li      0, $i1
     ret
-ble_else.32355:
+ble_else.21736:
     fmul    $f5, $f1, $f1
     fmul    $f7, $f2, $f2
     fadd    $f1, $f2, $f1
@@ -2185,49 +1865,43 @@ ble_else.32355:
     fmul    $f1, $f2, $fg0
     li      1, $i1
     ret
-be_else.32354:
+be_else.21735:
     load    [$i1 + 4], $i3
-    load    [$i1 + 4], $i4
-    load    [$i1 + 4], $i5
-    load    [$i1 + 3], $i7
+    load    [$i1 + 3], $i5
     load    [$i2 + 1], $f5
     load    [$i2 + 2], $f6
     fmul    $f4, $f4, $f7
     load    [$i3 + 0], $f8
     fmul    $f7, $f8, $f7
     fmul    $f5, $f5, $f9
-    load    [$i4 + 1], $f10
+    load    [$i3 + 1], $f10
     fmul    $f9, $f10, $f9
     fadd    $f7, $f9, $f7
     fmul    $f6, $f6, $f9
-    load    [$i5 + 2], $f11
+    load    [$i3 + 2], $f11
     fmul    $f9, $f11, $f9
     fadd    $f7, $f9, $f7
-    be      $i7, 0, bne_cont.32356
-bne_then.32356:
+    be      $i5, 0, bne_cont.21737
+bne_then.21737:
     fmul    $f5, $f6, $f9
     load    [$i1 + 9], $i2
     load    [$i2 + 0], $f12
     fmul    $f9, $f12, $f9
     fadd    $f7, $f9, $f7
     fmul    $f6, $f4, $f9
-    load    [$i1 + 9], $i2
     load    [$i2 + 1], $f12
     fmul    $f9, $f12, $f9
     fadd    $f7, $f9, $f7
     fmul    $f4, $f5, $f9
-    load    [$i1 + 9], $i2
     load    [$i2 + 2], $f12
     fmul    $f9, $f12, $f9
     fadd    $f7, $f9, $f7
-bne_cont.32356:
-    bne     $f7, $f0, be_else.32357
-be_then.32357:
+bne_cont.21737:
+    bne     $f7, $f0, be_else.21738
+be_then.21738:
     li      0, $i1
     ret
-be_else.32357:
-    load    [$i1 + 3], $i2
-    load    [$i1 + 3], $i3
+be_else.21738:
     fmul    $f4, $f1, $f9
     fmul    $f9, $f8, $f9
     fmul    $f5, $f2, $f12
@@ -2236,12 +1910,12 @@ be_else.32357:
     fmul    $f6, $f3, $f12
     fmul    $f12, $f11, $f12
     fadd    $f9, $f12, $f9
-    bne     $i2, 0, be_else.32358
-be_then.32358:
+    bne     $i5, 0, be_else.21739
+be_then.21739:
     mov     $f9, $f4
 .count b_cont
-    b       be_cont.32358
-be_else.32358:
+    b       be_cont.21739
+be_else.21739:
     fmul    $f6, $f2, $f12
     fmul    $f5, $f3, $f13
     fadd    $f12, $f13, $f12
@@ -2251,20 +1925,18 @@ be_else.32358:
     fmul    $f4, $f3, $f13
     fmul    $f6, $f1, $f6
     fadd    $f13, $f6, $f6
-    load    [$i1 + 9], $i2
     load    [$i2 + 1], $f13
     fmul    $f6, $f13, $f6
     fadd    $f12, $f6, $f6
     fmul    $f4, $f2, $f4
     fmul    $f5, $f1, $f5
     fadd    $f4, $f5, $f4
-    load    [$i1 + 9], $i2
     load    [$i2 + 2], $f5
     fmul    $f4, $f5, $f4
     fadd    $f6, $f4, $f4
-    fmul    $f4, $fc3, $f4
+    fmul    $f4, $fc4, $f4
     fadd    $f9, $f4, $f4
-be_cont.32358:
+be_cont.21739:
     fmul    $f4, $f4, $f5
     fmul    $f1, $f1, $f6
     fmul    $f6, $f8, $f6
@@ -2274,50 +1946,48 @@ be_cont.32358:
     fmul    $f3, $f3, $f8
     fmul    $f8, $f11, $f8
     fadd    $f6, $f8, $f6
-    bne     $i3, 0, be_else.32359
-be_then.32359:
+    bne     $i5, 0, be_else.21740
+be_then.21740:
     mov     $f6, $f1
 .count b_cont
-    b       be_cont.32359
-be_else.32359:
+    b       be_cont.21740
+be_else.21740:
     fmul    $f2, $f3, $f8
     load    [$i1 + 9], $i2
     load    [$i2 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f6, $f8, $f6
     fmul    $f3, $f1, $f3
-    load    [$i1 + 9], $i2
     load    [$i2 + 1], $f8
     fmul    $f3, $f8, $f3
     fadd    $f6, $f3, $f3
     fmul    $f1, $f2, $f1
-    load    [$i1 + 9], $i2
     load    [$i2 + 2], $f2
     fmul    $f1, $f2, $f1
     fadd    $f3, $f1, $f1
-be_cont.32359:
-    bne     $i6, 3, be_cont.32360
-be_then.32360:
+be_cont.21740:
+    bne     $i4, 3, be_cont.21741
+be_then.21741:
     fsub    $f1, $fc0, $f1
-be_cont.32360:
+be_cont.21741:
     fmul    $f7, $f1, $f1
     fsub    $f5, $f1, $f1
-    bg      $f1, $f0, ble_else.32361
-ble_then.32361:
+    bg      $f1, $f0, ble_else.21742
+ble_then.21742:
     li      0, $i1
     ret
-ble_else.32361:
+ble_else.21742:
     load    [$i1 + 6], $i1
     fsqrt   $f1, $f1
     finv    $f7, $f2
-    bne     $i1, 0, be_else.32362
-be_then.32362:
+    bne     $i1, 0, be_else.21743
+be_then.21743:
     fneg    $f1, $f1
     fsub    $f1, $f4, $f1
     fmul    $f1, $f2, $fg0
     li      1, $i1
     ret
-be_else.32362:
+be_else.21743:
     fsub    $f1, $f4, $f1
     fmul    $f1, $f2, $fg0
     li      1, $i1
@@ -2327,156 +1997,152 @@ be_else.32362:
 ######################################################################
 # $i1 = solver_fast($i1)
 # $ra = $ra
-# [$i1 - $i7]
+# [$i1 - $i5]
 # [$f1 - $f9]
 # []
 # [$fg0]
+# []
 ######################################################################
 .begin solver_fast
 solver_fast.2796:
-    load    [ext_objects + $i1], $i2    # |    660,661 |    660,661 |
-    load    [$i2 + 5], $i3              # |    660,661 |    660,661 |
-    load    [$i2 + 5], $i4              # |    660,661 |    660,661 |
-    load    [$i2 + 5], $i5              # |    660,661 |    660,661 |
-    load    [ext_light_dirvec + 1], $i6 # |    660,661 |    660,661 |
-    load    [$i2 + 1], $i7              # |    660,661 |    660,661 |
-    load    [ext_intersection_point + 0], $f1# |    660,661 |    660,661 |
-    load    [$i3 + 0], $f2              # |    660,661 |    660,661 |
-    load    [ext_intersection_point + 1], $f3# |    660,661 |    660,661 |
-    load    [$i4 + 1], $f4              # |    660,661 |    660,661 |
-    load    [ext_intersection_point + 2], $f5# |    660,661 |    660,661 |
-    load    [$i5 + 2], $f6              # |    660,661 |    660,661 |
-    fsub    $f1, $f2, $f1               # |    660,661 |    660,661 |
-    fsub    $f3, $f4, $f2               # |    660,661 |    660,661 |
-    fsub    $f5, $f6, $f3               # |    660,661 |    660,661 |
-    load    [$i6 + $i1], $i1            # |    660,661 |    660,661 |
-    bne     $i7, 1, be_else.32363       # |    660,661 |    660,661 |
-be_then.32363:
-    load    [ext_light_dirvec + 0], $i3 # |    660,661 |    660,661 |
-    load    [$i2 + 4], $i4              # |    660,661 |    660,661 |
-    load    [$i4 + 1], $f4              # |    660,661 |    660,661 |
-    load    [$i3 + 1], $f5              # |    660,661 |    660,661 |
-    load    [$i1 + 0], $f6              # |    660,661 |    660,661 |
-    fsub    $f6, $f1, $f6               # |    660,661 |    660,661 |
-    load    [$i1 + 1], $f7              # |    660,661 |    660,661 |
-    fmul    $f6, $f7, $f6               # |    660,661 |    660,661 |
-    fmul    $f6, $f5, $f5               # |    660,661 |    660,661 |
-    fadd_a  $f5, $f2, $f5               # |    660,661 |    660,661 |
-    bg      $f4, $f5, ble_else.32364    # |    660,661 |    660,661 |
-ble_then.32364:
-    li      0, $i4                      # |    437,614 |    437,614 |
+    load    [ext_objects + $i1], $i2    # |    660,729 |    660,729 |
+    load    [$i2 + 5], $i3              # |    660,729 |    660,729 |
+    load    [ext_light_dirvec + 1], $i4 # |    660,729 |    660,729 |
+    load    [$i2 + 1], $i5              # |    660,729 |    660,729 |
+    load    [ext_intersection_point + 0], $f1# |    660,729 |    660,729 |
+    load    [$i3 + 0], $f2              # |    660,729 |    660,729 |
+    load    [ext_intersection_point + 1], $f3# |    660,729 |    660,729 |
+    load    [$i3 + 1], $f4              # |    660,729 |    660,729 |
+    load    [ext_intersection_point + 2], $f5# |    660,729 |    660,729 |
+    load    [$i3 + 2], $f6              # |    660,729 |    660,729 |
+    fsub    $f1, $f2, $f1               # |    660,729 |    660,729 |
+    fsub    $f3, $f4, $f2               # |    660,729 |    660,729 |
+    fsub    $f5, $f6, $f3               # |    660,729 |    660,729 |
+    load    [$i4 + $i1], $i1            # |    660,729 |    660,729 |
+    bne     $i5, 1, be_else.21744       # |    660,729 |    660,729 |
+be_then.21744:
+    load    [ext_light_dirvec + 0], $i3 # |    660,729 |    660,729 |
+    load    [$i2 + 4], $i2              # |    660,729 |    660,729 |
+    load    [$i2 + 1], $f4              # |    660,729 |    660,729 |
+    load    [$i3 + 1], $f5              # |    660,729 |    660,729 |
+    load    [$i1 + 0], $f6              # |    660,729 |    660,729 |
+    fsub    $f6, $f1, $f6               # |    660,729 |    660,729 |
+    load    [$i1 + 1], $f7              # |    660,729 |    660,729 |
+    fmul    $f6, $f7, $f6               # |    660,729 |    660,729 |
+    fmul    $f6, $f5, $f5               # |    660,729 |    660,729 |
+    fadd_a  $f5, $f2, $f5               # |    660,729 |    660,729 |
+    bg      $f4, $f5, ble_else.21745    # |    660,729 |    660,729 |
+ble_then.21745:
+    li      0, $i4                      # |    437,594 |    437,594 |
 .count b_cont
-    b       ble_cont.32364              # |    437,614 |    437,614 |
-ble_else.32364:
-    load    [$i2 + 4], $i4              # |    223,047 |    223,047 |
-    load    [$i4 + 2], $f5              # |    223,047 |    223,047 |
-    load    [$i3 + 2], $f7              # |    223,047 |    223,047 |
-    fmul    $f6, $f7, $f7               # |    223,047 |    223,047 |
-    fadd_a  $f7, $f3, $f7               # |    223,047 |    223,047 |
-    bg      $f5, $f7, ble_else.32365    # |    223,047 |    223,047 |
-ble_then.32365:
-    li      0, $i4                      # |     76,254 |     76,254 |
+    b       ble_cont.21745              # |    437,594 |    437,594 |
+ble_else.21745:
+    load    [$i2 + 2], $f5              # |    223,135 |    223,135 |
+    load    [$i3 + 2], $f7              # |    223,135 |    223,135 |
+    fmul    $f6, $f7, $f7               # |    223,135 |    223,135 |
+    fadd_a  $f7, $f3, $f7               # |    223,135 |    223,135 |
+    bg      $f5, $f7, ble_else.21746    # |    223,135 |    223,135 |
+ble_then.21746:
+    li      0, $i4                      # |     76,258 |     76,258 |
 .count b_cont
-    b       ble_cont.32365              # |     76,254 |     76,254 |
-ble_else.32365:
-    load    [$i1 + 1], $f5              # |    146,793 |    146,793 |
-    bne     $f5, $f0, be_else.32366     # |    146,793 |    146,793 |
-be_then.32366:
+    b       ble_cont.21746              # |     76,258 |     76,258 |
+ble_else.21746:
+    load    [$i1 + 1], $f5              # |    146,877 |    146,877 |
+    bne     $f5, $f0, be_else.21747     # |    146,877 |    146,877 |
+be_then.21747:
     li      0, $i4
 .count b_cont
-    b       be_cont.32366
-be_else.32366:
-    li      1, $i4                      # |    146,793 |    146,793 |
-be_cont.32366:
-ble_cont.32365:
-ble_cont.32364:
-    bne     $i4, 0, be_else.32367       # |    660,661 |    660,661 |
-be_then.32367:
-    load    [$i2 + 4], $i4              # |    513,868 |    513,868 |
-    load    [$i4 + 0], $f5              # |    513,868 |    513,868 |
-    load    [$i3 + 0], $f6              # |    513,868 |    513,868 |
-    load    [$i1 + 2], $f7              # |    513,868 |    513,868 |
-    fsub    $f7, $f2, $f7               # |    513,868 |    513,868 |
-    load    [$i1 + 3], $f8              # |    513,868 |    513,868 |
-    fmul    $f7, $f8, $f7               # |    513,868 |    513,868 |
-    fmul    $f7, $f6, $f6               # |    513,868 |    513,868 |
-    fadd_a  $f6, $f1, $f6               # |    513,868 |    513,868 |
-    bg      $f5, $f6, ble_else.32368    # |    513,868 |    513,868 |
-ble_then.32368:
-    li      0, $i2                      # |    438,844 |    438,844 |
+    b       be_cont.21747
+be_else.21747:
+    li      1, $i4                      # |    146,877 |    146,877 |
+be_cont.21747:
+ble_cont.21746:
+ble_cont.21745:
+    bne     $i4, 0, be_else.21748       # |    660,729 |    660,729 |
+be_then.21748:
+    load    [$i2 + 0], $f5              # |    513,852 |    513,852 |
+    load    [$i3 + 0], $f6              # |    513,852 |    513,852 |
+    load    [$i1 + 2], $f7              # |    513,852 |    513,852 |
+    fsub    $f7, $f2, $f7               # |    513,852 |    513,852 |
+    load    [$i1 + 3], $f8              # |    513,852 |    513,852 |
+    fmul    $f7, $f8, $f7               # |    513,852 |    513,852 |
+    fmul    $f7, $f6, $f6               # |    513,852 |    513,852 |
+    fadd_a  $f6, $f1, $f6               # |    513,852 |    513,852 |
+    bg      $f5, $f6, ble_else.21749    # |    513,852 |    513,852 |
+ble_then.21749:
+    li      0, $i2                      # |    438,821 |    438,821 |
 .count b_cont
-    b       ble_cont.32368              # |    438,844 |    438,844 |
-ble_else.32368:
-    load    [$i2 + 4], $i2              # |     75,024 |     75,024 |
-    load    [$i2 + 2], $f6              # |     75,024 |     75,024 |
-    load    [$i3 + 2], $f8              # |     75,024 |     75,024 |
-    fmul    $f7, $f8, $f8               # |     75,024 |     75,024 |
-    fadd_a  $f8, $f3, $f8               # |     75,024 |     75,024 |
-    bg      $f6, $f8, ble_else.32369    # |     75,024 |     75,024 |
-ble_then.32369:
-    li      0, $i2                      # |     40,191 |     40,191 |
+    b       ble_cont.21749              # |    438,821 |    438,821 |
+ble_else.21749:
+    load    [$i2 + 2], $f6              # |     75,031 |     75,031 |
+    load    [$i3 + 2], $f8              # |     75,031 |     75,031 |
+    fmul    $f7, $f8, $f8               # |     75,031 |     75,031 |
+    fadd_a  $f8, $f3, $f8               # |     75,031 |     75,031 |
+    bg      $f6, $f8, ble_else.21750    # |     75,031 |     75,031 |
+ble_then.21750:
+    li      0, $i2                      # |     40,195 |     40,195 |
 .count b_cont
-    b       ble_cont.32369              # |     40,191 |     40,191 |
-ble_else.32369:
-    load    [$i1 + 3], $f6              # |     34,833 |     34,833 |
-    bne     $f6, $f0, be_else.32370     # |     34,833 |     34,833 |
-be_then.32370:
+    b       ble_cont.21750              # |     40,195 |     40,195 |
+ble_else.21750:
+    load    [$i1 + 3], $f6              # |     34,836 |     34,836 |
+    bne     $f6, $f0, be_else.21751     # |     34,836 |     34,836 |
+be_then.21751:
     li      0, $i2
 .count b_cont
-    b       be_cont.32370
-be_else.32370:
-    li      1, $i2                      # |     34,833 |     34,833 |
-be_cont.32370:
-ble_cont.32369:
-ble_cont.32368:
-    bne     $i2, 0, be_else.32371       # |    513,868 |    513,868 |
-be_then.32371:
-    load    [$i3 + 0], $f6              # |    479,035 |    479,035 |
-    load    [$i1 + 4], $f7              # |    479,035 |    479,035 |
-    fsub    $f7, $f3, $f3               # |    479,035 |    479,035 |
-    load    [$i1 + 5], $f7              # |    479,035 |    479,035 |
-    fmul    $f3, $f7, $f3               # |    479,035 |    479,035 |
-    fmul    $f3, $f6, $f6               # |    479,035 |    479,035 |
-    fadd_a  $f6, $f1, $f1               # |    479,035 |    479,035 |
-    bg      $f5, $f1, ble_else.32372    # |    479,035 |    479,035 |
-ble_then.32372:
-    li      0, $i1                      # |    447,036 |    447,036 |
-    ret                                 # |    447,036 |    447,036 |
-ble_else.32372:
-    load    [$i3 + 1], $f1              # |     31,999 |     31,999 |
-    fmul    $f3, $f1, $f1               # |     31,999 |     31,999 |
-    fadd_a  $f1, $f2, $f1               # |     31,999 |     31,999 |
-    bg      $f4, $f1, ble_else.32373    # |     31,999 |     31,999 |
-ble_then.32373:
+    b       be_cont.21751
+be_else.21751:
+    li      1, $i2                      # |     34,836 |     34,836 |
+be_cont.21751:
+ble_cont.21750:
+ble_cont.21749:
+    bne     $i2, 0, be_else.21752       # |    513,852 |    513,852 |
+be_then.21752:
+    load    [$i3 + 0], $f6              # |    479,016 |    479,016 |
+    load    [$i1 + 4], $f7              # |    479,016 |    479,016 |
+    fsub    $f7, $f3, $f3               # |    479,016 |    479,016 |
+    load    [$i1 + 5], $f7              # |    479,016 |    479,016 |
+    fmul    $f3, $f7, $f3               # |    479,016 |    479,016 |
+    fmul    $f3, $f6, $f6               # |    479,016 |    479,016 |
+    fadd_a  $f6, $f1, $f1               # |    479,016 |    479,016 |
+    bg      $f5, $f1, ble_else.21753    # |    479,016 |    479,016 |
+ble_then.21753:
+    li      0, $i1                      # |    447,010 |    447,010 |
+    ret                                 # |    447,010 |    447,010 |
+ble_else.21753:
+    load    [$i3 + 1], $f1              # |     32,006 |     32,006 |
+    fmul    $f3, $f1, $f1               # |     32,006 |     32,006 |
+    fadd_a  $f1, $f2, $f1               # |     32,006 |     32,006 |
+    bg      $f4, $f1, ble_else.21754    # |     32,006 |     32,006 |
+ble_then.21754:
     li      0, $i1                      # |      7,652 |      7,652 |
     ret                                 # |      7,652 |      7,652 |
-ble_else.32373:
-    load    [$i1 + 5], $f1              # |     24,347 |     24,347 |
-    bne     $f1, $f0, be_else.32374     # |     24,347 |     24,347 |
-be_then.32374:
+ble_else.21754:
+    load    [$i1 + 5], $f1              # |     24,354 |     24,354 |
+    bne     $f1, $f0, be_else.21755     # |     24,354 |     24,354 |
+be_then.21755:
     li      0, $i1
     ret
-be_else.32374:
-    mov     $f3, $fg0                   # |     24,347 |     24,347 |
-    li      3, $i1                      # |     24,347 |     24,347 |
-    ret                                 # |     24,347 |     24,347 |
-be_else.32371:
-    mov     $f7, $fg0                   # |     34,833 |     34,833 |
-    li      2, $i1                      # |     34,833 |     34,833 |
-    ret                                 # |     34,833 |     34,833 |
-be_else.32367:
-    mov     $f6, $fg0                   # |    146,793 |    146,793 |
-    li      1, $i1                      # |    146,793 |    146,793 |
-    ret                                 # |    146,793 |    146,793 |
-be_else.32363:
+be_else.21755:
+    mov     $f3, $fg0                   # |     24,354 |     24,354 |
+    li      3, $i1                      # |     24,354 |     24,354 |
+    ret                                 # |     24,354 |     24,354 |
+be_else.21752:
+    mov     $f7, $fg0                   # |     34,836 |     34,836 |
+    li      2, $i1                      # |     34,836 |     34,836 |
+    ret                                 # |     34,836 |     34,836 |
+be_else.21748:
+    mov     $f6, $fg0                   # |    146,877 |    146,877 |
+    li      1, $i1                      # |    146,877 |    146,877 |
+    ret                                 # |    146,877 |    146,877 |
+be_else.21744:
     load    [$i1 + 0], $f4
-    bne     $i7, 2, be_else.32375
-be_then.32375:
-    bg      $f0, $f4, ble_else.32376
-ble_then.32376:
+    bne     $i5, 2, be_else.21756
+be_then.21756:
+    bg      $f0, $f4, ble_else.21757
+ble_then.21757:
     li      0, $i1
     ret
-ble_else.32376:
+ble_else.21757:
     load    [$i1 + 1], $f4
     fmul    $f4, $f1, $f1
     load    [$i1 + 2], $f4
@@ -2487,16 +2153,14 @@ ble_else.32376:
     fadd    $f1, $f2, $fg0
     li      1, $i1
     ret
-be_else.32375:
-    bne     $f4, $f0, be_else.32377
-be_then.32377:
+be_else.21756:
+    bne     $f4, $f0, be_else.21758
+be_then.21758:
     li      0, $i1
     ret
-be_else.32377:
+be_else.21758:
     load    [$i2 + 4], $i3
-    load    [$i2 + 4], $i4
-    load    [$i2 + 4], $i5
-    load    [$i2 + 3], $i6
+    load    [$i2 + 3], $i4
     load    [$i1 + 1], $f5
     fmul    $f5, $f1, $f5
     load    [$i1 + 2], $f6
@@ -2510,56 +2174,54 @@ be_else.32377:
     load    [$i3 + 0], $f8
     fmul    $f7, $f8, $f7
     fmul    $f2, $f2, $f8
-    load    [$i4 + 1], $f9
+    load    [$i3 + 1], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f3, $f3, $f8
-    load    [$i5 + 2], $f9
+    load    [$i3 + 2], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
-    bne     $i6, 0, be_else.32378
-be_then.32378:
+    bne     $i4, 0, be_else.21759
+be_then.21759:
     mov     $f7, $f1
 .count b_cont
-    b       be_cont.32378
-be_else.32378:
+    b       be_cont.21759
+be_else.21759:
     fmul    $f2, $f3, $f8
     load    [$i2 + 9], $i3
     load    [$i3 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f3, $f1, $f3
-    load    [$i2 + 9], $i3
     load    [$i3 + 1], $f8
     fmul    $f3, $f8, $f3
     fadd    $f7, $f3, $f3
     fmul    $f1, $f2, $f1
-    load    [$i2 + 9], $i3
     load    [$i3 + 2], $f2
     fmul    $f1, $f2, $f1
     fadd    $f3, $f1, $f1
-be_cont.32378:
-    bne     $i7, 3, be_cont.32379
-be_then.32379:
+be_cont.21759:
+    bne     $i5, 3, be_cont.21760
+be_then.21760:
     fsub    $f1, $fc0, $f1
-be_cont.32379:
+be_cont.21760:
     fmul    $f4, $f1, $f1
     fsub    $f6, $f1, $f1
-    bg      $f1, $f0, ble_else.32380
-ble_then.32380:
+    bg      $f1, $f0, ble_else.21761
+ble_then.21761:
     li      0, $i1
     ret
-ble_else.32380:
+ble_else.21761:
     load    [$i2 + 6], $i2
     load    [$i1 + 4], $f2
     li      1, $i1
     fsqrt   $f1, $f1
-    bne     $i2, 0, be_else.32381
-be_then.32381:
+    bne     $i2, 0, be_else.21762
+be_then.21762:
     fsub    $f5, $f1, $f1
     fmul    $f1, $f2, $fg0
     ret
-be_else.32381:
+be_else.21762:
     fadd    $f5, $f1, $f1
     fmul    $f1, $f2, $fg0
     ret
@@ -2572,6 +2234,7 @@ be_else.32381:
 # [$f1 - $f8]
 # []
 # [$fg0]
+# []
 ######################################################################
 .begin solver_fast2
 solver_fast2.2814:
@@ -2583,11 +2246,11 @@ solver_fast2.2814:
     load    [$i4 + 1], $f2              # |  1,134,616 |  1,134,616 |
     load    [$i4 + 2], $f3              # |  1,134,616 |  1,134,616 |
     load    [$i5 + $i1], $i1            # |  1,134,616 |  1,134,616 |
-    bne     $i6, 1, be_else.32382       # |  1,134,616 |  1,134,616 |
-be_then.32382:
+    bne     $i6, 1, be_else.21763       # |  1,134,616 |  1,134,616 |
+be_then.21763:
     load    [$i2 + 0], $i2              # |  1,134,616 |  1,134,616 |
-    load    [$i3 + 4], $i4              # |  1,134,616 |  1,134,616 |
-    load    [$i4 + 1], $f4              # |  1,134,616 |  1,134,616 |
+    load    [$i3 + 4], $i3              # |  1,134,616 |  1,134,616 |
+    load    [$i3 + 1], $f4              # |  1,134,616 |  1,134,616 |
     load    [$i2 + 1], $f5              # |  1,134,616 |  1,134,616 |
     load    [$i1 + 0], $f6              # |  1,134,616 |  1,134,616 |
     fsub    $f6, $f1, $f6               # |  1,134,616 |  1,134,616 |
@@ -2595,132 +2258,129 @@ be_then.32382:
     fmul    $f6, $f7, $f6               # |  1,134,616 |  1,134,616 |
     fmul    $f6, $f5, $f5               # |  1,134,616 |  1,134,616 |
     fadd_a  $f5, $f2, $f5               # |  1,134,616 |  1,134,616 |
-    bg      $f4, $f5, ble_else.32383    # |  1,134,616 |  1,134,616 |
-ble_then.32383:
-    li      0, $i4                      # |    640,191 |    640,191 |
+    bg      $f4, $f5, ble_else.21764    # |  1,134,616 |  1,134,616 |
+ble_then.21764:
+    li      0, $i4                      # |    640,181 |    640,181 |
 .count b_cont
-    b       ble_cont.32383              # |    640,191 |    640,191 |
-ble_else.32383:
-    load    [$i3 + 4], $i4              # |    494,425 |    494,425 |
-    load    [$i4 + 2], $f5              # |    494,425 |    494,425 |
-    load    [$i2 + 2], $f7              # |    494,425 |    494,425 |
-    fmul    $f6, $f7, $f7               # |    494,425 |    494,425 |
-    fadd_a  $f7, $f3, $f7               # |    494,425 |    494,425 |
-    bg      $f5, $f7, ble_else.32384    # |    494,425 |    494,425 |
-ble_then.32384:
-    li      0, $i4                      # |    164,419 |    164,419 |
+    b       ble_cont.21764              # |    640,181 |    640,181 |
+ble_else.21764:
+    load    [$i3 + 2], $f5              # |    494,435 |    494,435 |
+    load    [$i2 + 2], $f7              # |    494,435 |    494,435 |
+    fmul    $f6, $f7, $f7               # |    494,435 |    494,435 |
+    fadd_a  $f7, $f3, $f7               # |    494,435 |    494,435 |
+    bg      $f5, $f7, ble_else.21765    # |    494,435 |    494,435 |
+ble_then.21765:
+    li      0, $i4                      # |    164,440 |    164,440 |
 .count b_cont
-    b       ble_cont.32384              # |    164,419 |    164,419 |
-ble_else.32384:
-    load    [$i1 + 1], $f5              # |    330,006 |    330,006 |
-    bne     $f5, $f0, be_else.32385     # |    330,006 |    330,006 |
-be_then.32385:
+    b       ble_cont.21765              # |    164,440 |    164,440 |
+ble_else.21765:
+    load    [$i1 + 1], $f5              # |    329,995 |    329,995 |
+    bne     $f5, $f0, be_else.21766     # |    329,995 |    329,995 |
+be_then.21766:
     li      0, $i4
 .count b_cont
-    b       be_cont.32385
-be_else.32385:
-    li      1, $i4                      # |    330,006 |    330,006 |
-be_cont.32385:
-ble_cont.32384:
-ble_cont.32383:
-    bne     $i4, 0, be_else.32386       # |  1,134,616 |  1,134,616 |
-be_then.32386:
-    load    [$i3 + 4], $i4              # |    804,610 |    804,610 |
-    load    [$i4 + 0], $f5              # |    804,610 |    804,610 |
-    load    [$i2 + 0], $f6              # |    804,610 |    804,610 |
-    load    [$i1 + 2], $f7              # |    804,610 |    804,610 |
-    fsub    $f7, $f2, $f7               # |    804,610 |    804,610 |
-    load    [$i1 + 3], $f8              # |    804,610 |    804,610 |
-    fmul    $f7, $f8, $f7               # |    804,610 |    804,610 |
-    fmul    $f7, $f6, $f6               # |    804,610 |    804,610 |
-    fadd_a  $f6, $f1, $f6               # |    804,610 |    804,610 |
-    bg      $f5, $f6, ble_else.32387    # |    804,610 |    804,610 |
-ble_then.32387:
-    li      0, $i3                      # |    453,618 |    453,618 |
+    b       be_cont.21766
+be_else.21766:
+    li      1, $i4                      # |    329,995 |    329,995 |
+be_cont.21766:
+ble_cont.21765:
+ble_cont.21764:
+    bne     $i4, 0, be_else.21767       # |  1,134,616 |  1,134,616 |
+be_then.21767:
+    load    [$i3 + 0], $f5              # |    804,621 |    804,621 |
+    load    [$i2 + 0], $f6              # |    804,621 |    804,621 |
+    load    [$i1 + 2], $f7              # |    804,621 |    804,621 |
+    fsub    $f7, $f2, $f7               # |    804,621 |    804,621 |
+    load    [$i1 + 3], $f8              # |    804,621 |    804,621 |
+    fmul    $f7, $f8, $f7               # |    804,621 |    804,621 |
+    fmul    $f7, $f6, $f6               # |    804,621 |    804,621 |
+    fadd_a  $f6, $f1, $f6               # |    804,621 |    804,621 |
+    bg      $f5, $f6, ble_else.21768    # |    804,621 |    804,621 |
+ble_then.21768:
+    li      0, $i3                      # |    453,639 |    453,639 |
 .count b_cont
-    b       ble_cont.32387              # |    453,618 |    453,618 |
-ble_else.32387:
-    load    [$i3 + 4], $i3              # |    350,992 |    350,992 |
-    load    [$i3 + 2], $f6              # |    350,992 |    350,992 |
-    load    [$i2 + 2], $f8              # |    350,992 |    350,992 |
-    fmul    $f7, $f8, $f8               # |    350,992 |    350,992 |
-    fadd_a  $f8, $f3, $f8               # |    350,992 |    350,992 |
-    bg      $f6, $f8, ble_else.32388    # |    350,992 |    350,992 |
-ble_then.32388:
-    li      0, $i3                      # |    123,643 |    123,643 |
+    b       ble_cont.21768              # |    453,639 |    453,639 |
+ble_else.21768:
+    load    [$i3 + 2], $f6              # |    350,982 |    350,982 |
+    load    [$i2 + 2], $f8              # |    350,982 |    350,982 |
+    fmul    $f7, $f8, $f8               # |    350,982 |    350,982 |
+    fadd_a  $f8, $f3, $f8               # |    350,982 |    350,982 |
+    bg      $f6, $f8, ble_else.21769    # |    350,982 |    350,982 |
+ble_then.21769:
+    li      0, $i3                      # |    123,655 |    123,655 |
 .count b_cont
-    b       ble_cont.32388              # |    123,643 |    123,643 |
-ble_else.32388:
-    load    [$i1 + 3], $f6              # |    227,349 |    227,349 |
-    bne     $f6, $f0, be_else.32389     # |    227,349 |    227,349 |
-be_then.32389:
+    b       ble_cont.21769              # |    123,655 |    123,655 |
+ble_else.21769:
+    load    [$i1 + 3], $f6              # |    227,327 |    227,327 |
+    bne     $f6, $f0, be_else.21770     # |    227,327 |    227,327 |
+be_then.21770:
     li      0, $i3
 .count b_cont
-    b       be_cont.32389
-be_else.32389:
-    li      1, $i3                      # |    227,349 |    227,349 |
-be_cont.32389:
-ble_cont.32388:
-ble_cont.32387:
-    bne     $i3, 0, be_else.32390       # |    804,610 |    804,610 |
-be_then.32390:
-    load    [$i2 + 0], $f6              # |    577,261 |    577,261 |
-    load    [$i1 + 4], $f7              # |    577,261 |    577,261 |
-    fsub    $f7, $f3, $f3               # |    577,261 |    577,261 |
-    load    [$i1 + 5], $f7              # |    577,261 |    577,261 |
-    fmul    $f3, $f7, $f3               # |    577,261 |    577,261 |
-    fmul    $f3, $f6, $f6               # |    577,261 |    577,261 |
-    fadd_a  $f6, $f1, $f1               # |    577,261 |    577,261 |
-    bg      $f5, $f1, ble_else.32391    # |    577,261 |    577,261 |
-ble_then.32391:
+    b       be_cont.21770
+be_else.21770:
+    li      1, $i3                      # |    227,327 |    227,327 |
+be_cont.21770:
+ble_cont.21769:
+ble_cont.21768:
+    bne     $i3, 0, be_else.21771       # |    804,621 |    804,621 |
+be_then.21771:
+    load    [$i2 + 0], $f6              # |    577,294 |    577,294 |
+    load    [$i1 + 4], $f7              # |    577,294 |    577,294 |
+    fsub    $f7, $f3, $f3               # |    577,294 |    577,294 |
+    load    [$i1 + 5], $f7              # |    577,294 |    577,294 |
+    fmul    $f3, $f7, $f3               # |    577,294 |    577,294 |
+    fmul    $f3, $f6, $f6               # |    577,294 |    577,294 |
+    fadd_a  $f6, $f1, $f1               # |    577,294 |    577,294 |
+    bg      $f5, $f1, ble_else.21772    # |    577,294 |    577,294 |
+ble_then.21772:
     li      0, $i1                      # |    412,314 |    412,314 |
     ret                                 # |    412,314 |    412,314 |
-ble_else.32391:
-    load    [$i2 + 1], $f1              # |    164,947 |    164,947 |
-    fmul    $f3, $f1, $f1               # |    164,947 |    164,947 |
-    fadd_a  $f1, $f2, $f1               # |    164,947 |    164,947 |
-    bg      $f4, $f1, ble_else.32392    # |    164,947 |    164,947 |
-ble_then.32392:
+ble_else.21772:
+    load    [$i2 + 1], $f1              # |    164,980 |    164,980 |
+    fmul    $f3, $f1, $f1               # |    164,980 |    164,980 |
+    fadd_a  $f1, $f2, $f1               # |    164,980 |    164,980 |
+    bg      $f4, $f1, ble_else.21773    # |    164,980 |    164,980 |
+ble_then.21773:
     li      0, $i1                      # |     37,478 |     37,478 |
     ret                                 # |     37,478 |     37,478 |
-ble_else.32392:
-    load    [$i1 + 5], $f1              # |    127,469 |    127,469 |
-    bne     $f1, $f0, be_else.32393     # |    127,469 |    127,469 |
-be_then.32393:
+ble_else.21773:
+    load    [$i1 + 5], $f1              # |    127,502 |    127,502 |
+    bne     $f1, $f0, be_else.21774     # |    127,502 |    127,502 |
+be_then.21774:
     li      0, $i1
     ret
-be_else.32393:
-    mov     $f3, $fg0                   # |    127,469 |    127,469 |
-    li      3, $i1                      # |    127,469 |    127,469 |
-    ret                                 # |    127,469 |    127,469 |
-be_else.32390:
-    mov     $f7, $fg0                   # |    227,349 |    227,349 |
-    li      2, $i1                      # |    227,349 |    227,349 |
-    ret                                 # |    227,349 |    227,349 |
-be_else.32386:
-    mov     $f6, $fg0                   # |    330,006 |    330,006 |
-    li      1, $i1                      # |    330,006 |    330,006 |
-    ret                                 # |    330,006 |    330,006 |
-be_else.32382:
-    bne     $i6, 2, be_else.32394
-be_then.32394:
+be_else.21774:
+    mov     $f3, $fg0                   # |    127,502 |    127,502 |
+    li      3, $i1                      # |    127,502 |    127,502 |
+    ret                                 # |    127,502 |    127,502 |
+be_else.21771:
+    mov     $f7, $fg0                   # |    227,327 |    227,327 |
+    li      2, $i1                      # |    227,327 |    227,327 |
+    ret                                 # |    227,327 |    227,327 |
+be_else.21767:
+    mov     $f6, $fg0                   # |    329,995 |    329,995 |
+    li      1, $i1                      # |    329,995 |    329,995 |
+    ret                                 # |    329,995 |    329,995 |
+be_else.21763:
+    bne     $i6, 2, be_else.21775
+be_then.21775:
     load    [$i1 + 0], $f1
-    bg      $f0, $f1, ble_else.32395
-ble_then.32395:
+    bg      $f0, $f1, ble_else.21776
+ble_then.21776:
     li      0, $i1
     ret
-ble_else.32395:
+ble_else.21776:
     load    [$i4 + 3], $f2
     fmul    $f1, $f2, $fg0
     li      1, $i1
     ret
-be_else.32394:
+be_else.21775:
     load    [$i1 + 0], $f4
-    bne     $f4, $f0, be_else.32396
-be_then.32396:
+    bne     $f4, $f0, be_else.21777
+be_then.21777:
     li      0, $i1
     ret
-be_else.32396:
+be_else.21777:
     load    [$i1 + 1], $f5
     fmul    $f5, $f1, $f1
     load    [$i1 + 2], $f5
@@ -2733,21 +2393,21 @@ be_else.32396:
     load    [$i4 + 3], $f3
     fmul    $f4, $f3, $f3
     fsub    $f2, $f3, $f2
-    bg      $f2, $f0, ble_else.32397
-ble_then.32397:
+    bg      $f2, $f0, ble_else.21778
+ble_then.21778:
     li      0, $i1
     ret
-ble_else.32397:
+ble_else.21778:
     load    [$i3 + 6], $i2
     fsqrt   $f2, $f2
-    bne     $i2, 0, be_else.32398
-be_then.32398:
+    bne     $i2, 0, be_else.21779
+be_then.21779:
     fsub    $f1, $f2, $f1
     load    [$i1 + 4], $f2
     fmul    $f1, $f2, $fg0
     li      1, $i1
     ret
-be_else.32398:
+be_else.21779:
     fadd    $f1, $f2, $f1
     load    [$i1 + 4], $f2
     fmul    $f1, $f2, $fg0
@@ -2756,671 +2416,398 @@ be_else.32398:
 .end solver_fast2
 
 ######################################################################
-# iter_setup_dirvec_constants($i4, $i5)
+# $i1 = setup_rect_table($i4, $i5)
 # $ra = $ra1
-# [$i1 - $i10]
+# [$i1 - $i5]
+# [$f1 - $f2]
+# []
+# []
+# [$ra]
+######################################################################
+.begin setup_rect_table
+setup_rect_table.2817:
+    li      6, $i2                      # |      3,612 |      3,612 |
+.count move_args
+    mov     $f0, $f2                    # |      3,612 |      3,612 |
+    call    ext_create_array_float      # |      3,612 |      3,612 |
+    load    [$i4 + 0], $f1              # |      3,612 |      3,612 |
+    bne     $f1, $f0, be_else.21780     # |      3,612 |      3,612 |
+be_then.21780:
+    store   $f0, [$i1 + 1]
+.count b_cont
+    b       be_cont.21780
+be_else.21780:
+    load    [$i5 + 6], $i2              # |      3,612 |      3,612 |
+    bg      $f0, $f1, ble_else.21781    # |      3,612 |      3,612 |
+ble_then.21781:
+    li      0, $i3                      # |      1,806 |      1,806 |
+.count b_cont
+    b       ble_cont.21781              # |      1,806 |      1,806 |
+ble_else.21781:
+    li      1, $i3                      # |      1,806 |      1,806 |
+ble_cont.21781:
+    bne     $i2, 0, be_else.21782       # |      3,612 |      3,612 |
+be_then.21782:
+    mov     $i3, $i2                    # |      3,612 |      3,612 |
+.count b_cont
+    b       be_cont.21782               # |      3,612 |      3,612 |
+be_else.21782:
+    bne     $i3, 0, be_else.21783
+be_then.21783:
+    li      1, $i2
+.count b_cont
+    b       be_cont.21783
+be_else.21783:
+    li      0, $i2
+be_cont.21783:
+be_cont.21782:
+    load    [$i5 + 4], $i3              # |      3,612 |      3,612 |
+    load    [$i3 + 0], $f1              # |      3,612 |      3,612 |
+    bne     $i2, 0, be_else.21784       # |      3,612 |      3,612 |
+be_then.21784:
+    fneg    $f1, $f1                    # |      1,806 |      1,806 |
+    store   $f1, [$i1 + 0]              # |      1,806 |      1,806 |
+    load    [$i4 + 0], $f1              # |      1,806 |      1,806 |
+    finv    $f1, $f1                    # |      1,806 |      1,806 |
+    store   $f1, [$i1 + 1]              # |      1,806 |      1,806 |
+.count b_cont
+    b       be_cont.21784               # |      1,806 |      1,806 |
+be_else.21784:
+    store   $f1, [$i1 + 0]              # |      1,806 |      1,806 |
+    load    [$i4 + 0], $f1              # |      1,806 |      1,806 |
+    finv    $f1, $f1                    # |      1,806 |      1,806 |
+    store   $f1, [$i1 + 1]              # |      1,806 |      1,806 |
+be_cont.21784:
+be_cont.21780:
+    load    [$i4 + 1], $f1              # |      3,612 |      3,612 |
+    bne     $f1, $f0, be_else.21785     # |      3,612 |      3,612 |
+be_then.21785:
+    store   $f0, [$i1 + 3]
+.count b_cont
+    b       be_cont.21785
+be_else.21785:
+    load    [$i5 + 6], $i2              # |      3,612 |      3,612 |
+    bg      $f0, $f1, ble_else.21786    # |      3,612 |      3,612 |
+ble_then.21786:
+    li      0, $i3                      # |      1,806 |      1,806 |
+.count b_cont
+    b       ble_cont.21786              # |      1,806 |      1,806 |
+ble_else.21786:
+    li      1, $i3                      # |      1,806 |      1,806 |
+ble_cont.21786:
+    bne     $i2, 0, be_else.21787       # |      3,612 |      3,612 |
+be_then.21787:
+    mov     $i3, $i2                    # |      3,612 |      3,612 |
+.count b_cont
+    b       be_cont.21787               # |      3,612 |      3,612 |
+be_else.21787:
+    bne     $i3, 0, be_else.21788
+be_then.21788:
+    li      1, $i2
+.count b_cont
+    b       be_cont.21788
+be_else.21788:
+    li      0, $i2
+be_cont.21788:
+be_cont.21787:
+    load    [$i5 + 4], $i3              # |      3,612 |      3,612 |
+    load    [$i3 + 1], $f1              # |      3,612 |      3,612 |
+    bne     $i2, 0, be_else.21789       # |      3,612 |      3,612 |
+be_then.21789:
+    fneg    $f1, $f1                    # |      1,806 |      1,806 |
+    store   $f1, [$i1 + 2]              # |      1,806 |      1,806 |
+    load    [$i4 + 1], $f1              # |      1,806 |      1,806 |
+    finv    $f1, $f1                    # |      1,806 |      1,806 |
+    store   $f1, [$i1 + 3]              # |      1,806 |      1,806 |
+.count b_cont
+    b       be_cont.21789               # |      1,806 |      1,806 |
+be_else.21789:
+    store   $f1, [$i1 + 2]              # |      1,806 |      1,806 |
+    load    [$i4 + 1], $f1              # |      1,806 |      1,806 |
+    finv    $f1, $f1                    # |      1,806 |      1,806 |
+    store   $f1, [$i1 + 3]              # |      1,806 |      1,806 |
+be_cont.21789:
+be_cont.21785:
+    load    [$i4 + 2], $f1              # |      3,612 |      3,612 |
+    bne     $f1, $f0, be_else.21790     # |      3,612 |      3,612 |
+be_then.21790:
+    store   $f0, [$i1 + 5]
+    jr      $ra1
+be_else.21790:
+    load    [$i5 + 6], $i2              # |      3,612 |      3,612 |
+    load    [$i5 + 4], $i3              # |      3,612 |      3,612 |
+    bg      $f0, $f1, ble_else.21791    # |      3,612 |      3,612 |
+ble_then.21791:
+    li      0, $i5                      # |      1,812 |      1,812 |
+.count b_cont
+    b       ble_cont.21791              # |      1,812 |      1,812 |
+ble_else.21791:
+    li      1, $i5                      # |      1,800 |      1,800 |
+ble_cont.21791:
+    bne     $i2, 0, be_else.21792       # |      3,612 |      3,612 |
+be_then.21792:
+    mov     $i5, $i2                    # |      3,612 |      3,612 |
+.count b_cont
+    b       be_cont.21792               # |      3,612 |      3,612 |
+be_else.21792:
+    bne     $i5, 0, be_else.21793
+be_then.21793:
+    li      1, $i2
+.count b_cont
+    b       be_cont.21793
+be_else.21793:
+    li      0, $i2
+be_cont.21793:
+be_cont.21792:
+    load    [$i3 + 2], $f1              # |      3,612 |      3,612 |
+    bne     $i2, 0, be_else.21794       # |      3,612 |      3,612 |
+be_then.21794:
+    fneg    $f1, $f1                    # |      1,812 |      1,812 |
+    store   $f1, [$i1 + 4]              # |      1,812 |      1,812 |
+    load    [$i4 + 2], $f1              # |      1,812 |      1,812 |
+    finv    $f1, $f1                    # |      1,812 |      1,812 |
+    store   $f1, [$i1 + 5]              # |      1,812 |      1,812 |
+    jr      $ra1                        # |      1,812 |      1,812 |
+be_else.21794:
+    store   $f1, [$i1 + 4]              # |      1,800 |      1,800 |
+    load    [$i4 + 2], $f1              # |      1,800 |      1,800 |
+    finv    $f1, $f1                    # |      1,800 |      1,800 |
+    store   $f1, [$i1 + 5]              # |      1,800 |      1,800 |
+    jr      $ra1                        # |      1,800 |      1,800 |
+.end setup_rect_table
+
+######################################################################
+# $i1 = setup_surface_table($i4, $i5)
+# $ra = $ra1
+# [$i1 - $i5]
+# [$f1 - $f3]
+# []
+# []
+# [$ra]
+######################################################################
+.begin setup_surface_table
+setup_surface_table.2820:
+    li      4, $i2                      # |      1,204 |      1,204 |
+.count move_args
+    mov     $f0, $f2                    # |      1,204 |      1,204 |
+    call    ext_create_array_float      # |      1,204 |      1,204 |
+    load    [$i5 + 4], $i2              # |      1,204 |      1,204 |
+    load    [$i4 + 0], $f1              # |      1,204 |      1,204 |
+    load    [$i2 + 0], $f2              # |      1,204 |      1,204 |
+    fmul    $f1, $f2, $f1               # |      1,204 |      1,204 |
+    load    [$i4 + 1], $f2              # |      1,204 |      1,204 |
+    load    [$i2 + 1], $f3              # |      1,204 |      1,204 |
+    fmul    $f2, $f3, $f2               # |      1,204 |      1,204 |
+    fadd    $f1, $f2, $f1               # |      1,204 |      1,204 |
+    load    [$i4 + 2], $f2              # |      1,204 |      1,204 |
+    load    [$i2 + 2], $f3              # |      1,204 |      1,204 |
+    fmul    $f2, $f3, $f2               # |      1,204 |      1,204 |
+    fadd    $f1, $f2, $f1               # |      1,204 |      1,204 |
+    bg      $f1, $f0, ble_else.21795    # |      1,204 |      1,204 |
+ble_then.21795:
+    store   $f0, [$i1 + 0]              # |        601 |        601 |
+    jr      $ra1                        # |        601 |        601 |
+ble_else.21795:
+    finv    $f1, $f1                    # |        603 |        603 |
+    fneg    $f1, $f2                    # |        603 |        603 |
+    store   $f2, [$i1 + 0]              # |        603 |        603 |
+    load    [$i2 + 0], $f2              # |        603 |        603 |
+    fmul_n  $f2, $f1, $f2               # |        603 |        603 |
+    store   $f2, [$i1 + 1]              # |        603 |        603 |
+    load    [$i2 + 1], $f2              # |        603 |        603 |
+    fmul_n  $f2, $f1, $f2               # |        603 |        603 |
+    store   $f2, [$i1 + 2]              # |        603 |        603 |
+    load    [$i2 + 2], $f2              # |        603 |        603 |
+    fmul_n  $f2, $f1, $f1               # |        603 |        603 |
+    store   $f1, [$i1 + 3]              # |        603 |        603 |
+    jr      $ra1                        # |        603 |        603 |
+.end setup_surface_table
+
+######################################################################
+# $i1 = setup_second_table($i4, $i5)
+# $ra = $ra1
+# [$i1 - $i6]
 # [$f1 - $f8]
 # []
 # []
+# [$ra]
+######################################################################
+.begin setup_second_table
+setup_second_table.2823:
+    li      5, $i2                      # |      5,418 |      5,418 |
+.count move_args
+    mov     $f0, $f2                    # |      5,418 |      5,418 |
+    call    ext_create_array_float      # |      5,418 |      5,418 |
+    load    [$i5 + 3], $i2              # |      5,418 |      5,418 |
+    load    [$i5 + 4], $i3              # |      5,418 |      5,418 |
+    load    [$i4 + 0], $f1              # |      5,418 |      5,418 |
+    load    [$i4 + 1], $f2              # |      5,418 |      5,418 |
+    load    [$i4 + 2], $f3              # |      5,418 |      5,418 |
+    fmul    $f1, $f1, $f4               # |      5,418 |      5,418 |
+    load    [$i3 + 0], $f5              # |      5,418 |      5,418 |
+    fmul    $f4, $f5, $f4               # |      5,418 |      5,418 |
+    fmul    $f2, $f2, $f5               # |      5,418 |      5,418 |
+    load    [$i3 + 1], $f6              # |      5,418 |      5,418 |
+    fmul    $f5, $f6, $f5               # |      5,418 |      5,418 |
+    fadd    $f4, $f5, $f4               # |      5,418 |      5,418 |
+    fmul    $f3, $f3, $f5               # |      5,418 |      5,418 |
+    load    [$i3 + 2], $f6              # |      5,418 |      5,418 |
+    fmul    $f5, $f6, $f5               # |      5,418 |      5,418 |
+    fadd    $f4, $f5, $f4               # |      5,418 |      5,418 |
+    bne     $i2, 0, be_else.21796       # |      5,418 |      5,418 |
+be_then.21796:
+    mov     $f4, $f1                    # |      5,418 |      5,418 |
+.count b_cont
+    b       be_cont.21796               # |      5,418 |      5,418 |
+be_else.21796:
+    fmul    $f2, $f3, $f5
+    load    [$i5 + 9], $i6
+    load    [$i6 + 0], $f6
+    fmul    $f5, $f6, $f5
+    fadd    $f4, $f5, $f4
+    fmul    $f3, $f1, $f3
+    load    [$i6 + 1], $f5
+    fmul    $f3, $f5, $f3
+    fadd    $f4, $f3, $f3
+    fmul    $f1, $f2, $f1
+    load    [$i6 + 2], $f2
+    fmul    $f1, $f2, $f1
+    fadd    $f3, $f1, $f1
+be_cont.21796:
+    store   $f1, [$i1 + 0]              # |      5,418 |      5,418 |
+    load    [$i4 + 0], $f2              # |      5,418 |      5,418 |
+    load    [$i3 + 0], $f3              # |      5,418 |      5,418 |
+    fmul    $f2, $f3, $f2               # |      5,418 |      5,418 |
+    load    [$i4 + 1], $f3              # |      5,418 |      5,418 |
+    load    [$i3 + 1], $f4              # |      5,418 |      5,418 |
+    fmul    $f3, $f4, $f4               # |      5,418 |      5,418 |
+    load    [$i4 + 2], $f5              # |      5,418 |      5,418 |
+    load    [$i3 + 2], $f6              # |      5,418 |      5,418 |
+    fmul    $f5, $f6, $f6               # |      5,418 |      5,418 |
+    fneg    $f2, $f2                    # |      5,418 |      5,418 |
+    fneg    $f4, $f4                    # |      5,418 |      5,418 |
+    fneg    $f6, $f6                    # |      5,418 |      5,418 |
+    bne     $i2, 0, be_else.21797       # |      5,418 |      5,418 |
+be_then.21797:
+    store   $f2, [$i1 + 1]              # |      5,418 |      5,418 |
+    store   $f4, [$i1 + 2]              # |      5,418 |      5,418 |
+    store   $f6, [$i1 + 3]              # |      5,418 |      5,418 |
+    bne     $f1, $f0, be_else.21798     # |      5,418 |      5,418 |
+be_then.21798:
+    jr      $ra1
+be_else.21798:
+    finv    $f1, $f1                    # |      5,418 |      5,418 |
+    store   $f1, [$i1 + 4]              # |      5,418 |      5,418 |
+    jr      $ra1                        # |      5,418 |      5,418 |
+be_else.21797:
+    load    [$i5 + 9], $i2
+    load    [$i2 + 1], $f7
+    fmul    $f5, $f7, $f5
+    load    [$i2 + 2], $f8
+    fmul    $f3, $f8, $f3
+    fadd    $f5, $f3, $f3
+    fmul    $f3, $fc4, $f3
+    fsub    $f2, $f3, $f2
+    store   $f2, [$i1 + 1]
+    load    [$i4 + 2], $f2
+    load    [$i2 + 0], $f3
+    fmul    $f2, $f3, $f2
+    load    [$i4 + 0], $f5
+    fmul    $f5, $f8, $f5
+    fadd    $f2, $f5, $f2
+    fmul    $f2, $fc4, $f2
+    fsub    $f4, $f2, $f2
+    store   $f2, [$i1 + 2]
+    load    [$i4 + 1], $f2
+    fmul    $f2, $f3, $f2
+    load    [$i4 + 0], $f3
+    fmul    $f3, $f7, $f3
+    fadd    $f2, $f3, $f2
+    fmul    $f2, $fc4, $f2
+    fsub    $f6, $f2, $f2
+    store   $f2, [$i1 + 3]
+    bne     $f1, $f0, be_else.21799
+be_then.21799:
+    jr      $ra1
+be_else.21799:
+    finv    $f1, $f1
+    store   $f1, [$i1 + 4]
+    jr      $ra1
+.end setup_second_table
+
+######################################################################
+# iter_setup_dirvec_constants($i7, $i8)
+# $ra = $ra2
+# [$i1 - $i9]
+# [$f1 - $f8]
+# []
+# []
+# [$ra - $ra1]
 ######################################################################
 .begin iter_setup_dirvec_constants
 iter_setup_dirvec_constants.2826:
-    bl      $i5, 0, bge_else.32399      # |      7,375 |      7,375 |
-bge_then.32399:
-    load    [$i4 + 1], $i6              # |      7,375 |      7,375 |
-    load    [ext_objects + $i5], $i7    # |      7,375 |      7,375 |
-    load    [$i7 + 1], $i1              # |      7,375 |      7,375 |
-    load    [$i4 + 0], $i8              # |      7,375 |      7,375 |
-.count move_args
-    mov     $f0, $f2                    # |      7,375 |      7,375 |
-    bne     $i1, 1, be_else.32400       # |      7,375 |      7,375 |
-be_then.32400:
-    li      6, $i2                      # |      3,010 |      3,010 |
-    call    ext_create_array_float      # |      3,010 |      3,010 |
-    load    [$i8 + 0], $f1              # |      3,010 |      3,010 |
-    bne     $f1, $f0, be_else.32401     # |      3,010 |      3,010 |
-be_then.32401:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.32401
-be_else.32401:
-    load    [$i7 + 6], $i2              # |      3,010 |      3,010 |
-    bg      $f0, $f1, ble_else.32402    # |      3,010 |      3,010 |
-ble_then.32402:
-    li      0, $i3                      # |      1,505 |      1,505 |
-.count b_cont
-    b       ble_cont.32402              # |      1,505 |      1,505 |
-ble_else.32402:
-    li      1, $i3                      # |      1,505 |      1,505 |
-ble_cont.32402:
-    bne     $i2, 0, be_else.32403       # |      3,010 |      3,010 |
-be_then.32403:
-    mov     $i3, $i2                    # |      3,010 |      3,010 |
-.count b_cont
-    b       be_cont.32403               # |      3,010 |      3,010 |
-be_else.32403:
-    bne     $i3, 0, be_else.32404
-be_then.32404:
-    li      1, $i2
-.count b_cont
-    b       be_cont.32404
-be_else.32404:
-    li      0, $i2
-be_cont.32404:
-be_cont.32403:
-    load    [$i7 + 4], $i3              # |      3,010 |      3,010 |
-    load    [$i3 + 0], $f1              # |      3,010 |      3,010 |
-    bne     $i2, 0, be_else.32405       # |      3,010 |      3,010 |
-be_then.32405:
-    fneg    $f1, $f1                    # |      1,505 |      1,505 |
-    store   $f1, [$i1 + 0]              # |      1,505 |      1,505 |
-    load    [$i8 + 0], $f1              # |      1,505 |      1,505 |
-    finv    $f1, $f1                    # |      1,505 |      1,505 |
-    store   $f1, [$i1 + 1]              # |      1,505 |      1,505 |
-.count b_cont
-    b       be_cont.32405               # |      1,505 |      1,505 |
-be_else.32405:
-    store   $f1, [$i1 + 0]              # |      1,505 |      1,505 |
-    load    [$i8 + 0], $f1              # |      1,505 |      1,505 |
-    finv    $f1, $f1                    # |      1,505 |      1,505 |
-    store   $f1, [$i1 + 1]              # |      1,505 |      1,505 |
-be_cont.32405:
-be_cont.32401:
-    load    [$i8 + 1], $f1              # |      3,010 |      3,010 |
-    bne     $f1, $f0, be_else.32406     # |      3,010 |      3,010 |
-be_then.32406:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.32406
-be_else.32406:
-    load    [$i7 + 6], $i2              # |      3,010 |      3,010 |
-    bg      $f0, $f1, ble_else.32407    # |      3,010 |      3,010 |
-ble_then.32407:
-    li      0, $i3                      # |      1,505 |      1,505 |
-.count b_cont
-    b       ble_cont.32407              # |      1,505 |      1,505 |
-ble_else.32407:
-    li      1, $i3                      # |      1,505 |      1,505 |
-ble_cont.32407:
-    bne     $i2, 0, be_else.32408       # |      3,010 |      3,010 |
-be_then.32408:
-    mov     $i3, $i2                    # |      3,010 |      3,010 |
-.count b_cont
-    b       be_cont.32408               # |      3,010 |      3,010 |
-be_else.32408:
-    bne     $i3, 0, be_else.32409
-be_then.32409:
-    li      1, $i2
-.count b_cont
-    b       be_cont.32409
-be_else.32409:
-    li      0, $i2
-be_cont.32409:
-be_cont.32408:
-    load    [$i7 + 4], $i3              # |      3,010 |      3,010 |
-    load    [$i3 + 1], $f1              # |      3,010 |      3,010 |
-    bne     $i2, 0, be_else.32410       # |      3,010 |      3,010 |
-be_then.32410:
-    fneg    $f1, $f1                    # |      1,505 |      1,505 |
-    store   $f1, [$i1 + 2]              # |      1,505 |      1,505 |
-    load    [$i8 + 1], $f1              # |      1,505 |      1,505 |
-    finv    $f1, $f1                    # |      1,505 |      1,505 |
-    store   $f1, [$i1 + 3]              # |      1,505 |      1,505 |
-.count b_cont
-    b       be_cont.32410               # |      1,505 |      1,505 |
-be_else.32410:
-    store   $f1, [$i1 + 2]              # |      1,505 |      1,505 |
-    load    [$i8 + 1], $f1              # |      1,505 |      1,505 |
-    finv    $f1, $f1                    # |      1,505 |      1,505 |
-    store   $f1, [$i1 + 3]              # |      1,505 |      1,505 |
-be_cont.32410:
-be_cont.32406:
-    load    [$i8 + 2], $f1              # |      3,010 |      3,010 |
-    bne     $f1, $f0, be_else.32411     # |      3,010 |      3,010 |
-be_then.32411:
-    store   $f0, [$i1 + 5]
-.count b_cont
-    b       be_cont.32411
-be_else.32411:
-    load    [$i7 + 6], $i2              # |      3,010 |      3,010 |
-    bg      $f0, $f1, ble_else.32412    # |      3,010 |      3,010 |
-ble_then.32412:
-    li      0, $i3                      # |      1,510 |      1,510 |
-.count b_cont
-    b       ble_cont.32412              # |      1,510 |      1,510 |
-ble_else.32412:
-    li      1, $i3                      # |      1,500 |      1,500 |
-ble_cont.32412:
-    bne     $i2, 0, be_else.32413       # |      3,010 |      3,010 |
-be_then.32413:
-    mov     $i3, $i2                    # |      3,010 |      3,010 |
-.count b_cont
-    b       be_cont.32413               # |      3,010 |      3,010 |
-be_else.32413:
-    bne     $i3, 0, be_else.32414
-be_then.32414:
-    li      1, $i2
-.count b_cont
-    b       be_cont.32414
-be_else.32414:
-    li      0, $i2
-be_cont.32414:
-be_cont.32413:
-    load    [$i7 + 4], $i3              # |      3,010 |      3,010 |
-    load    [$i3 + 2], $f1              # |      3,010 |      3,010 |
-    bne     $i2, 0, be_else.32415       # |      3,010 |      3,010 |
-be_then.32415:
-    fneg    $f1, $f1                    # |      1,510 |      1,510 |
-    store   $f1, [$i1 + 4]              # |      1,510 |      1,510 |
-    load    [$i8 + 2], $f1              # |      1,510 |      1,510 |
-    finv    $f1, $f1                    # |      1,510 |      1,510 |
-    store   $f1, [$i1 + 5]              # |      1,510 |      1,510 |
-.count b_cont
-    b       be_cont.32415               # |      1,510 |      1,510 |
-be_else.32415:
-    store   $f1, [$i1 + 4]              # |      1,500 |      1,500 |
-    load    [$i8 + 2], $f1              # |      1,500 |      1,500 |
-    finv    $f1, $f1                    # |      1,500 |      1,500 |
-    store   $f1, [$i1 + 5]              # |      1,500 |      1,500 |
-be_cont.32415:
-be_cont.32411:
+    bl      $i8, 0, bge_else.21800      # |     10,836 |     10,836 |
+bge_then.21800:
+    load    [$i7 + 1], $i9              # |     10,234 |     10,234 |
+    load    [ext_objects + $i8], $i5    # |     10,234 |     10,234 |
+    load    [$i5 + 1], $i1              # |     10,234 |     10,234 |
+    load    [$i7 + 0], $i4              # |     10,234 |     10,234 |
+    bne     $i1, 1, be_else.21801       # |     10,234 |     10,234 |
+be_then.21801:
+    jal     setup_rect_table.2817, $ra1 # |      3,612 |      3,612 |
 .count storer
-    add     $i6, $i5, $tmp              # |      3,010 |      3,010 |
-    store   $i1, [$tmp + 0]             # |      3,010 |      3,010 |
-    sub     $i5, 1, $i5                 # |      3,010 |      3,010 |
-    bl      $i5, 0, bge_else.32416      # |      3,010 |      3,010 |
-bge_then.32416:
-    load    [ext_objects + $i5], $i7    # |      2,408 |      2,408 |
-    load    [$i7 + 1], $i1              # |      2,408 |      2,408 |
-.count move_args
-    mov     $f0, $f2                    # |      2,408 |      2,408 |
-    bne     $i1, 1, be_else.32417       # |      2,408 |      2,408 |
-be_then.32417:
-    li      6, $i2                      # |        602 |        602 |
-    call    ext_create_array_float      # |        602 |        602 |
-    load    [$i8 + 0], $f1              # |        602 |        602 |
-    bne     $f1, $f0, be_else.32418     # |        602 |        602 |
-be_then.32418:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.32418
-be_else.32418:
-    load    [$i7 + 6], $i2              # |        602 |        602 |
-    bg      $f0, $f1, ble_else.32419    # |        602 |        602 |
-ble_then.32419:
-    li      0, $i3                      # |        301 |        301 |
-.count b_cont
-    b       ble_cont.32419              # |        301 |        301 |
-ble_else.32419:
-    li      1, $i3                      # |        301 |        301 |
-ble_cont.32419:
-    bne     $i2, 0, be_else.32420       # |        602 |        602 |
-be_then.32420:
-    mov     $i3, $i2                    # |        602 |        602 |
-.count b_cont
-    b       be_cont.32420               # |        602 |        602 |
-be_else.32420:
-    bne     $i3, 0, be_else.32421
-be_then.32421:
-    li      1, $i2
-.count b_cont
-    b       be_cont.32421
-be_else.32421:
-    li      0, $i2
-be_cont.32421:
-be_cont.32420:
-    load    [$i7 + 4], $i3              # |        602 |        602 |
-    load    [$i3 + 0], $f1              # |        602 |        602 |
-    bne     $i2, 0, be_else.32422       # |        602 |        602 |
-be_then.32422:
-    fneg    $f1, $f1                    # |        301 |        301 |
-    store   $f1, [$i1 + 0]              # |        301 |        301 |
-    load    [$i8 + 0], $f1              # |        301 |        301 |
-    finv    $f1, $f1                    # |        301 |        301 |
-    store   $f1, [$i1 + 1]              # |        301 |        301 |
-.count b_cont
-    b       be_cont.32422               # |        301 |        301 |
-be_else.32422:
-    store   $f1, [$i1 + 0]              # |        301 |        301 |
-    load    [$i8 + 0], $f1              # |        301 |        301 |
-    finv    $f1, $f1                    # |        301 |        301 |
-    store   $f1, [$i1 + 1]              # |        301 |        301 |
-be_cont.32422:
-be_cont.32418:
-    load    [$i8 + 1], $f1              # |        602 |        602 |
-    bne     $f1, $f0, be_else.32423     # |        602 |        602 |
-be_then.32423:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.32423
-be_else.32423:
-    load    [$i7 + 6], $i2              # |        602 |        602 |
-    bg      $f0, $f1, ble_else.32424    # |        602 |        602 |
-ble_then.32424:
-    li      0, $i3                      # |        301 |        301 |
-.count b_cont
-    b       ble_cont.32424              # |        301 |        301 |
-ble_else.32424:
-    li      1, $i3                      # |        301 |        301 |
-ble_cont.32424:
-    bne     $i2, 0, be_else.32425       # |        602 |        602 |
-be_then.32425:
-    mov     $i3, $i2                    # |        602 |        602 |
-.count b_cont
-    b       be_cont.32425               # |        602 |        602 |
-be_else.32425:
-    bne     $i3, 0, be_else.32426
-be_then.32426:
-    li      1, $i2
-.count b_cont
-    b       be_cont.32426
-be_else.32426:
-    li      0, $i2
-be_cont.32426:
-be_cont.32425:
-    load    [$i7 + 4], $i3              # |        602 |        602 |
-    load    [$i3 + 1], $f1              # |        602 |        602 |
-    bne     $i2, 0, be_else.32427       # |        602 |        602 |
-be_then.32427:
-    fneg    $f1, $f1                    # |        301 |        301 |
-    store   $f1, [$i1 + 2]              # |        301 |        301 |
-    load    [$i8 + 1], $f1              # |        301 |        301 |
-    finv    $f1, $f1                    # |        301 |        301 |
-    store   $f1, [$i1 + 3]              # |        301 |        301 |
-.count b_cont
-    b       be_cont.32427               # |        301 |        301 |
-be_else.32427:
-    store   $f1, [$i1 + 2]              # |        301 |        301 |
-    load    [$i8 + 1], $f1              # |        301 |        301 |
-    finv    $f1, $f1                    # |        301 |        301 |
-    store   $f1, [$i1 + 3]              # |        301 |        301 |
-be_cont.32427:
-be_cont.32423:
-    load    [$i8 + 2], $f1              # |        602 |        602 |
-    bne     $f1, $f0, be_else.32428     # |        602 |        602 |
-be_then.32428:
-    store   $f0, [$i1 + 5]
+    add     $i9, $i8, $tmp              # |      3,612 |      3,612 |
+    store   $i1, [$tmp + 0]             # |      3,612 |      3,612 |
+    sub     $i8, 1, $i8                 # |      3,612 |      3,612 |
+    b       iter_setup_dirvec_constants.2826# |      3,612 |      3,612 |
+be_else.21801:
+    bne     $i1, 2, be_else.21802       # |      6,622 |      6,622 |
+be_then.21802:
+    jal     setup_surface_table.2820, $ra1# |      1,204 |      1,204 |
 .count storer
-    add     $i6, $i5, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i5, 1, $i5
-    b       iter_setup_dirvec_constants.2826
-be_else.32428:
-    load    [$i7 + 6], $i2              # |        602 |        602 |
-    load    [$i7 + 4], $i3              # |        602 |        602 |
-    bg      $f0, $f1, ble_else.32429    # |        602 |        602 |
-ble_then.32429:
-    li      0, $i7                      # |        302 |        302 |
-.count b_cont
-    b       ble_cont.32429              # |        302 |        302 |
-ble_else.32429:
-    li      1, $i7                      # |        300 |        300 |
-ble_cont.32429:
-    bne     $i2, 0, be_else.32430       # |        602 |        602 |
-be_then.32430:
-    mov     $i7, $i2                    # |        602 |        602 |
-.count b_cont
-    b       be_cont.32430               # |        602 |        602 |
-be_else.32430:
-    bne     $i7, 0, be_else.32431
-be_then.32431:
-    li      1, $i2
-.count b_cont
-    b       be_cont.32431
-be_else.32431:
-    li      0, $i2
-be_cont.32431:
-be_cont.32430:
-    load    [$i3 + 2], $f1              # |        602 |        602 |
-    bne     $i2, 0, be_cont.32432       # |        602 |        602 |
-be_then.32432:
-    fneg    $f1, $f1                    # |        302 |        302 |
-be_cont.32432:
-    store   $f1, [$i1 + 4]              # |        602 |        602 |
-    load    [$i8 + 2], $f1              # |        602 |        602 |
-    finv    $f1, $f1                    # |        602 |        602 |
-    store   $f1, [$i1 + 5]              # |        602 |        602 |
-.count storer
-    add     $i6, $i5, $tmp              # |        602 |        602 |
-    store   $i1, [$tmp + 0]             # |        602 |        602 |
-    sub     $i5, 1, $i5                 # |        602 |        602 |
-    b       iter_setup_dirvec_constants.2826# |        602 |        602 |
-be_else.32417:
-    bne     $i1, 2, be_else.32433       # |      1,806 |      1,806 |
-be_then.32433:
-    li      4, $i2                      # |        602 |        602 |
-    call    ext_create_array_float      # |        602 |        602 |
-    load    [$i7 + 4], $i2              # |        602 |        602 |
-    load    [$i7 + 4], $i3              # |        602 |        602 |
-    load    [$i7 + 4], $i9              # |        602 |        602 |
-    load    [$i8 + 0], $f1              # |        602 |        602 |
-    load    [$i2 + 0], $f2              # |        602 |        602 |
-    fmul    $f1, $f2, $f1               # |        602 |        602 |
-    load    [$i8 + 1], $f2              # |        602 |        602 |
-    load    [$i3 + 1], $f3              # |        602 |        602 |
-    fmul    $f2, $f3, $f2               # |        602 |        602 |
-    fadd    $f1, $f2, $f1               # |        602 |        602 |
-    load    [$i8 + 2], $f2              # |        602 |        602 |
-    load    [$i9 + 2], $f3              # |        602 |        602 |
-    fmul    $f2, $f3, $f2               # |        602 |        602 |
-    fadd    $f1, $f2, $f1               # |        602 |        602 |
-.count storer
-    add     $i6, $i5, $tmp              # |        602 |        602 |
-    sub     $i5, 1, $i5                 # |        602 |        602 |
-    bg      $f1, $f0, ble_else.32434    # |        602 |        602 |
-ble_then.32434:
-    store   $f0, [$i1 + 0]              # |        301 |        301 |
-    store   $i1, [$tmp + 0]             # |        301 |        301 |
-    b       iter_setup_dirvec_constants.2826# |        301 |        301 |
-ble_else.32434:
-    finv    $f1, $f1                    # |        301 |        301 |
-    fneg    $f1, $f2                    # |        301 |        301 |
-    store   $f2, [$i1 + 0]              # |        301 |        301 |
-    load    [$i7 + 4], $i2              # |        301 |        301 |
-    load    [$i2 + 0], $f2              # |        301 |        301 |
-    fmul_n  $f2, $f1, $f2               # |        301 |        301 |
-    store   $f2, [$i1 + 1]              # |        301 |        301 |
-    load    [$i7 + 4], $i2              # |        301 |        301 |
-    load    [$i2 + 1], $f2              # |        301 |        301 |
-    fmul_n  $f2, $f1, $f2               # |        301 |        301 |
-    store   $f2, [$i1 + 2]              # |        301 |        301 |
-    load    [$i7 + 4], $i2              # |        301 |        301 |
-    load    [$i2 + 2], $f2              # |        301 |        301 |
-    fmul_n  $f2, $f1, $f1               # |        301 |        301 |
-    store   $f1, [$i1 + 3]              # |        301 |        301 |
-    store   $i1, [$tmp + 0]             # |        301 |        301 |
-    b       iter_setup_dirvec_constants.2826# |        301 |        301 |
-be_else.32433:
-    li      5, $i2                      # |      1,204 |      1,204 |
-    call    ext_create_array_float      # |      1,204 |      1,204 |
-    load    [$i7 + 3], $i2              # |      1,204 |      1,204 |
-    load    [$i7 + 4], $i3              # |      1,204 |      1,204 |
-    load    [$i7 + 4], $i9              # |      1,204 |      1,204 |
-    load    [$i7 + 4], $i10             # |      1,204 |      1,204 |
-    load    [$i8 + 0], $f1              # |      1,204 |      1,204 |
-    load    [$i8 + 1], $f2              # |      1,204 |      1,204 |
-    load    [$i8 + 2], $f3              # |      1,204 |      1,204 |
-    fmul    $f1, $f1, $f4               # |      1,204 |      1,204 |
-    load    [$i3 + 0], $f5              # |      1,204 |      1,204 |
-    fmul    $f4, $f5, $f4               # |      1,204 |      1,204 |
-    fmul    $f2, $f2, $f5               # |      1,204 |      1,204 |
-    load    [$i9 + 1], $f6              # |      1,204 |      1,204 |
-    fmul    $f5, $f6, $f5               # |      1,204 |      1,204 |
-    fadd    $f4, $f5, $f4               # |      1,204 |      1,204 |
-    fmul    $f3, $f3, $f5               # |      1,204 |      1,204 |
-    load    [$i10 + 2], $f6             # |      1,204 |      1,204 |
-    fmul    $f5, $f6, $f5               # |      1,204 |      1,204 |
-    fadd    $f4, $f5, $f4               # |      1,204 |      1,204 |
-    bne     $i2, 0, be_else.32435       # |      1,204 |      1,204 |
-be_then.32435:
-    mov     $f4, $f1                    # |      1,204 |      1,204 |
-.count b_cont
-    b       be_cont.32435               # |      1,204 |      1,204 |
-be_else.32435:
-    fmul    $f2, $f3, $f5
-    load    [$i7 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i7 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i7 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.32435:
-    store   $f1, [$i1 + 0]              # |      1,204 |      1,204 |
-    load    [$i7 + 4], $i3              # |      1,204 |      1,204 |
-    load    [$i7 + 4], $i9              # |      1,204 |      1,204 |
-    load    [$i7 + 4], $i10             # |      1,204 |      1,204 |
-    load    [$i8 + 0], $f2              # |      1,204 |      1,204 |
-    load    [$i3 + 0], $f3              # |      1,204 |      1,204 |
-    fmul    $f2, $f3, $f2               # |      1,204 |      1,204 |
-    load    [$i8 + 1], $f3              # |      1,204 |      1,204 |
-    load    [$i9 + 1], $f4              # |      1,204 |      1,204 |
-    fmul    $f3, $f4, $f4               # |      1,204 |      1,204 |
-    load    [$i8 + 2], $f5              # |      1,204 |      1,204 |
-    load    [$i10 + 2], $f6             # |      1,204 |      1,204 |
-    fmul    $f5, $f6, $f6               # |      1,204 |      1,204 |
-    fneg    $f2, $f2                    # |      1,204 |      1,204 |
-    fneg    $f4, $f4                    # |      1,204 |      1,204 |
-    fneg    $f6, $f6                    # |      1,204 |      1,204 |
-.count storer
-    add     $i6, $i5, $tmp              # |      1,204 |      1,204 |
-    sub     $i5, 1, $i5                 # |      1,204 |      1,204 |
-    bne     $i2, 0, be_else.32436       # |      1,204 |      1,204 |
-be_then.32436:
-    store   $f2, [$i1 + 1]              # |      1,204 |      1,204 |
-    store   $f4, [$i1 + 2]              # |      1,204 |      1,204 |
-    store   $f6, [$i1 + 3]              # |      1,204 |      1,204 |
-    bne     $f1, $f0, be_else.32437     # |      1,204 |      1,204 |
-be_then.32437:
-    store   $i1, [$tmp + 0]
-    b       iter_setup_dirvec_constants.2826
-be_else.32437:
-    finv    $f1, $f1                    # |      1,204 |      1,204 |
-    store   $f1, [$i1 + 4]              # |      1,204 |      1,204 |
+    add     $i9, $i8, $tmp              # |      1,204 |      1,204 |
     store   $i1, [$tmp + 0]             # |      1,204 |      1,204 |
+    sub     $i8, 1, $i8                 # |      1,204 |      1,204 |
     b       iter_setup_dirvec_constants.2826# |      1,204 |      1,204 |
-be_else.32436:
-    load    [$i7 + 9], $i2
-    load    [$i7 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 9], $i2
-    load    [$i8 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i8 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    bne     $f1, $f0, be_else.32438
-be_then.32438:
-    store   $i1, [$tmp + 0]
-    b       iter_setup_dirvec_constants.2826
-be_else.32438:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    b       iter_setup_dirvec_constants.2826
-bge_else.32416:
-    jr      $ra1                        # |        602 |        602 |
-be_else.32400:
-    bne     $i1, 2, be_else.32439       # |      4,365 |      4,365 |
-be_then.32439:
-    li      4, $i2                      # |        151 |        151 |
-    call    ext_create_array_float      # |        151 |        151 |
-    load    [$i7 + 4], $i2              # |        151 |        151 |
-    load    [$i7 + 4], $i3              # |        151 |        151 |
-    load    [$i7 + 4], $i9              # |        151 |        151 |
-    load    [$i8 + 0], $f1              # |        151 |        151 |
-    load    [$i2 + 0], $f2              # |        151 |        151 |
-    fmul    $f1, $f2, $f1               # |        151 |        151 |
-    load    [$i8 + 1], $f2              # |        151 |        151 |
-    load    [$i3 + 1], $f3              # |        151 |        151 |
-    fmul    $f2, $f3, $f2               # |        151 |        151 |
-    fadd    $f1, $f2, $f1               # |        151 |        151 |
-    load    [$i8 + 2], $f2              # |        151 |        151 |
-    load    [$i9 + 2], $f3              # |        151 |        151 |
-    fmul    $f2, $f3, $f2               # |        151 |        151 |
-    fadd    $f1, $f2, $f1               # |        151 |        151 |
+be_else.21802:
+    jal     setup_second_table.2823, $ra1# |      5,418 |      5,418 |
 .count storer
-    add     $i6, $i5, $tmp              # |        151 |        151 |
-    sub     $i5, 1, $i5                 # |        151 |        151 |
-    bg      $f1, $f0, ble_else.32440    # |        151 |        151 |
-ble_then.32440:
-    store   $f0, [$i1 + 0]              # |         80 |         80 |
-    store   $i1, [$tmp + 0]             # |         80 |         80 |
-    b       iter_setup_dirvec_constants.2826# |         80 |         80 |
-ble_else.32440:
-    finv    $f1, $f1                    # |         71 |         71 |
-    fneg    $f1, $f2                    # |         71 |         71 |
-    store   $f2, [$i1 + 0]              # |         71 |         71 |
-    load    [$i7 + 4], $i2              # |         71 |         71 |
-    load    [$i2 + 0], $f2              # |         71 |         71 |
-    fmul_n  $f2, $f1, $f2               # |         71 |         71 |
-    store   $f2, [$i1 + 1]              # |         71 |         71 |
-    load    [$i7 + 4], $i2              # |         71 |         71 |
-    load    [$i2 + 1], $f2              # |         71 |         71 |
-    fmul_n  $f2, $f1, $f2               # |         71 |         71 |
-    store   $f2, [$i1 + 2]              # |         71 |         71 |
-    load    [$i7 + 4], $i2              # |         71 |         71 |
-    load    [$i2 + 2], $f2              # |         71 |         71 |
-    fmul_n  $f2, $f1, $f1               # |         71 |         71 |
-    store   $f1, [$i1 + 3]              # |         71 |         71 |
-    store   $i1, [$tmp + 0]             # |         71 |         71 |
-    b       iter_setup_dirvec_constants.2826# |         71 |         71 |
-be_else.32439:
-    li      5, $i2                      # |      4,214 |      4,214 |
-    call    ext_create_array_float      # |      4,214 |      4,214 |
-    load    [$i7 + 3], $i2              # |      4,214 |      4,214 |
-    load    [$i7 + 4], $i3              # |      4,214 |      4,214 |
-    load    [$i7 + 4], $i9              # |      4,214 |      4,214 |
-    load    [$i7 + 4], $i10             # |      4,214 |      4,214 |
-    load    [$i8 + 0], $f1              # |      4,214 |      4,214 |
-    load    [$i8 + 1], $f2              # |      4,214 |      4,214 |
-    load    [$i8 + 2], $f3              # |      4,214 |      4,214 |
-    fmul    $f1, $f1, $f4               # |      4,214 |      4,214 |
-    load    [$i3 + 0], $f5              # |      4,214 |      4,214 |
-    fmul    $f4, $f5, $f4               # |      4,214 |      4,214 |
-    fmul    $f2, $f2, $f5               # |      4,214 |      4,214 |
-    load    [$i9 + 1], $f6              # |      4,214 |      4,214 |
-    fmul    $f5, $f6, $f5               # |      4,214 |      4,214 |
-    fadd    $f4, $f5, $f4               # |      4,214 |      4,214 |
-    fmul    $f3, $f3, $f5               # |      4,214 |      4,214 |
-    load    [$i10 + 2], $f6             # |      4,214 |      4,214 |
-    fmul    $f5, $f6, $f5               # |      4,214 |      4,214 |
-    fadd    $f4, $f5, $f4               # |      4,214 |      4,214 |
-    bne     $i2, 0, be_else.32441       # |      4,214 |      4,214 |
-be_then.32441:
-    mov     $f4, $f1                    # |      4,214 |      4,214 |
-.count b_cont
-    b       be_cont.32441               # |      4,214 |      4,214 |
-be_else.32441:
-    fmul    $f2, $f3, $f5
-    load    [$i7 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i7 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i7 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.32441:
-    store   $f1, [$i1 + 0]              # |      4,214 |      4,214 |
-    load    [$i7 + 4], $i3              # |      4,214 |      4,214 |
-    load    [$i7 + 4], $i9              # |      4,214 |      4,214 |
-    load    [$i7 + 4], $i10             # |      4,214 |      4,214 |
-    load    [$i8 + 0], $f2              # |      4,214 |      4,214 |
-    load    [$i3 + 0], $f3              # |      4,214 |      4,214 |
-    fmul    $f2, $f3, $f2               # |      4,214 |      4,214 |
-    load    [$i8 + 1], $f3              # |      4,214 |      4,214 |
-    load    [$i9 + 1], $f4              # |      4,214 |      4,214 |
-    fmul    $f3, $f4, $f4               # |      4,214 |      4,214 |
-    load    [$i8 + 2], $f5              # |      4,214 |      4,214 |
-    load    [$i10 + 2], $f6             # |      4,214 |      4,214 |
-    fmul    $f5, $f6, $f6               # |      4,214 |      4,214 |
-    fneg    $f2, $f2                    # |      4,214 |      4,214 |
-    fneg    $f4, $f4                    # |      4,214 |      4,214 |
-    fneg    $f6, $f6                    # |      4,214 |      4,214 |
-.count storer
-    add     $i6, $i5, $tmp              # |      4,214 |      4,214 |
-    sub     $i5, 1, $i5                 # |      4,214 |      4,214 |
-    bne     $i2, 0, be_else.32442       # |      4,214 |      4,214 |
-be_then.32442:
-    store   $f2, [$i1 + 1]              # |      4,214 |      4,214 |
-    store   $f4, [$i1 + 2]              # |      4,214 |      4,214 |
-    store   $f6, [$i1 + 3]              # |      4,214 |      4,214 |
-    bne     $f1, $f0, be_else.32443     # |      4,214 |      4,214 |
-be_then.32443:
-    store   $i1, [$tmp + 0]
-    b       iter_setup_dirvec_constants.2826
-be_else.32443:
-    finv    $f1, $f1                    # |      4,214 |      4,214 |
-    store   $f1, [$i1 + 4]              # |      4,214 |      4,214 |
-    store   $i1, [$tmp + 0]             # |      4,214 |      4,214 |
-    b       iter_setup_dirvec_constants.2826# |      4,214 |      4,214 |
-be_else.32442:
-    load    [$i7 + 9], $i2
-    load    [$i7 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 9], $i2
-    load    [$i8 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i8 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    bne     $f1, $f0, be_else.32444
-be_then.32444:
-    store   $i1, [$tmp + 0]
-    b       iter_setup_dirvec_constants.2826
-be_else.32444:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    b       iter_setup_dirvec_constants.2826
-bge_else.32399:
-    jr      $ra1
+    add     $i9, $i8, $tmp              # |      5,418 |      5,418 |
+    store   $i1, [$tmp + 0]             # |      5,418 |      5,418 |
+    sub     $i8, 1, $i8                 # |      5,418 |      5,418 |
+    b       iter_setup_dirvec_constants.2826# |      5,418 |      5,418 |
+bge_else.21800:
+    jr      $ra2                        # |        602 |        602 |
 .end iter_setup_dirvec_constants
+
+######################################################################
+# setup_dirvec_constants($i7)
+# $ra = $ra2
+# [$i1 - $i9]
+# [$f1 - $f8]
+# []
+# []
+# [$ra - $ra1]
+######################################################################
+.begin setup_dirvec_constants
+setup_dirvec_constants.2829:
+    sub     $ig0, 1, $i8                # |        602 |        602 |
+    b       iter_setup_dirvec_constants.2826# |        602 |        602 |
+.end setup_dirvec_constants
 
 ######################################################################
 # setup_startp_constants($i2, $i1)
 # $ra = $ra
-# [$i1 - $i9]
+# [$i1 - $i7]
 # [$f1 - $f6]
+# []
 # []
 # []
 ######################################################################
 .begin setup_startp_constants
 setup_startp_constants.2831:
-    bl      $i1, 0, bge_else.32445      # |    667,764 |    667,764 |
-bge_then.32445:
+    bl      $i1, 0, bge_else.21803      # |    667,764 |    667,764 |
+bge_then.21803:
     load    [ext_objects + $i1], $i3    # |    630,666 |    630,666 |
     load    [$i3 + 5], $i4              # |    630,666 |    630,666 |
     load    [$i3 + 10], $i5             # |    630,666 |    630,666 |
@@ -3428,19 +2815,17 @@ bge_then.32445:
     load    [$i4 + 0], $f2              # |    630,666 |    630,666 |
     fsub    $f1, $f2, $f1               # |    630,666 |    630,666 |
     store   $f1, [$i5 + 0]              # |    630,666 |    630,666 |
-    load    [$i3 + 5], $i4              # |    630,666 |    630,666 |
     load    [$i2 + 1], $f1              # |    630,666 |    630,666 |
     load    [$i4 + 1], $f2              # |    630,666 |    630,666 |
     fsub    $f1, $f2, $f1               # |    630,666 |    630,666 |
     store   $f1, [$i5 + 1]              # |    630,666 |    630,666 |
-    load    [$i3 + 5], $i4              # |    630,666 |    630,666 |
     load    [$i2 + 2], $f1              # |    630,666 |    630,666 |
     load    [$i4 + 2], $f2              # |    630,666 |    630,666 |
     fsub    $f1, $f2, $f1               # |    630,666 |    630,666 |
     store   $f1, [$i5 + 2]              # |    630,666 |    630,666 |
     load    [$i3 + 1], $i4              # |    630,666 |    630,666 |
-    bne     $i4, 2, be_else.32446       # |    630,666 |    630,666 |
-be_then.32446:
+    bne     $i4, 2, be_else.21804       # |    630,666 |    630,666 |
+be_then.21804:
     load    [$i3 + 4], $i3              # |     74,196 |     74,196 |
     load    [$i5 + 0], $f1              # |     74,196 |     74,196 |
     load    [$i3 + 0], $f2              # |     74,196 |     74,196 |
@@ -3456,16 +2841,14 @@ be_then.32446:
     store   $f1, [$i5 + 3]              # |     74,196 |     74,196 |
     sub     $i1, 1, $i1                 # |     74,196 |     74,196 |
     b       setup_startp_constants.2831 # |     74,196 |     74,196 |
-be_else.32446:
-    bg      $i4, 2, ble_else.32447      # |    556,470 |    556,470 |
-ble_then.32447:
+be_else.21804:
+    bg      $i4, 2, ble_else.21805      # |    556,470 |    556,470 |
+ble_then.21805:
     sub     $i1, 1, $i1                 # |    222,588 |    222,588 |
     b       setup_startp_constants.2831 # |    222,588 |    222,588 |
-ble_else.32447:
+ble_else.21805:
     load    [$i3 + 4], $i6              # |    333,882 |    333,882 |
-    load    [$i3 + 4], $i7              # |    333,882 |    333,882 |
-    load    [$i3 + 4], $i8              # |    333,882 |    333,882 |
-    load    [$i3 + 3], $i9              # |    333,882 |    333,882 |
+    load    [$i3 + 3], $i7              # |    333,882 |    333,882 |
     load    [$i5 + 0], $f1              # |    333,882 |    333,882 |
     load    [$i5 + 1], $f2              # |    333,882 |    333,882 |
     load    [$i5 + 2], $f3              # |    333,882 |    333,882 |
@@ -3473,638 +2856,601 @@ ble_else.32447:
     load    [$i6 + 0], $f5              # |    333,882 |    333,882 |
     fmul    $f4, $f5, $f4               # |    333,882 |    333,882 |
     fmul    $f2, $f2, $f5               # |    333,882 |    333,882 |
-    load    [$i7 + 1], $f6              # |    333,882 |    333,882 |
+    load    [$i6 + 1], $f6              # |    333,882 |    333,882 |
     fmul    $f5, $f6, $f5               # |    333,882 |    333,882 |
     fadd    $f4, $f5, $f4               # |    333,882 |    333,882 |
     fmul    $f3, $f3, $f5               # |    333,882 |    333,882 |
-    load    [$i8 + 2], $f6              # |    333,882 |    333,882 |
+    load    [$i6 + 2], $f6              # |    333,882 |    333,882 |
     fmul    $f5, $f6, $f5               # |    333,882 |    333,882 |
     fadd    $f4, $f5, $f4               # |    333,882 |    333,882 |
-    bne     $i9, 0, be_else.32448       # |    333,882 |    333,882 |
-be_then.32448:
+    bne     $i7, 0, be_else.21806       # |    333,882 |    333,882 |
+be_then.21806:
     mov     $f4, $f1                    # |    333,882 |    333,882 |
 .count b_cont
-    b       be_cont.32448               # |    333,882 |    333,882 |
-be_else.32448:
-    load    [$i3 + 9], $i6
-    load    [$i3 + 9], $i7
+    b       be_cont.21806               # |    333,882 |    333,882 |
+be_else.21806:
     load    [$i3 + 9], $i3
     fmul    $f2, $f3, $f5
-    load    [$i6 + 0], $f6
+    load    [$i3 + 0], $f6
     fmul    $f5, $f6, $f5
     fadd    $f4, $f5, $f4
     fmul    $f3, $f1, $f3
-    load    [$i7 + 1], $f5
+    load    [$i3 + 1], $f5
     fmul    $f3, $f5, $f3
     fadd    $f4, $f3, $f3
     fmul    $f1, $f2, $f1
     load    [$i3 + 2], $f2
     fmul    $f1, $f2, $f1
     fadd    $f3, $f1, $f1
-be_cont.32448:
+be_cont.21806:
     sub     $i1, 1, $i1                 # |    333,882 |    333,882 |
-    bne     $i4, 3, be_else.32449       # |    333,882 |    333,882 |
-be_then.32449:
+    bne     $i4, 3, be_else.21807       # |    333,882 |    333,882 |
+be_then.21807:
     fsub    $f1, $fc0, $f1              # |    333,882 |    333,882 |
     store   $f1, [$i5 + 3]              # |    333,882 |    333,882 |
     b       setup_startp_constants.2831 # |    333,882 |    333,882 |
-be_else.32449:
+be_else.21807:
     store   $f1, [$i5 + 3]
     b       setup_startp_constants.2831
-bge_else.32445:
+bge_else.21803:
     ret                                 # |     37,098 |     37,098 |
 .end setup_startp_constants
 
 ######################################################################
 # $i1 = check_all_inside($i1, $i3, $f2, $f3, $f4)
 # $ra = $ra
-# [$i1 - $i9]
+# [$i1 - $i7]
 # [$f1 - $f9]
+# []
 # []
 # []
 ######################################################################
 .begin check_all_inside
 check_all_inside.2856:
-    load    [$i3 + $i1], $i2            # |  1,716,028 |  1,716,028 |
-    bne     $i2, -1, be_else.32450      # |  1,716,028 |  1,716,028 |
-be_then.32450:
-    li      1, $i1                      # |     22,090 |     22,090 |
-    ret                                 # |     22,090 |     22,090 |
-be_else.32450:
-    load    [ext_objects + $i2], $i2    # |  1,693,938 |  1,693,938 |
-    load    [$i2 + 1], $i4              # |  1,693,938 |  1,693,938 |
-    load    [$i2 + 5], $i5              # |  1,693,938 |  1,693,938 |
-    load    [$i2 + 5], $i6              # |  1,693,938 |  1,693,938 |
-    load    [$i2 + 5], $i7              # |  1,693,938 |  1,693,938 |
-    load    [$i5 + 0], $f1              # |  1,693,938 |  1,693,938 |
-    fsub    $f2, $f1, $f1               # |  1,693,938 |  1,693,938 |
-    load    [$i6 + 1], $f5              # |  1,693,938 |  1,693,938 |
-    fsub    $f3, $f5, $f5               # |  1,693,938 |  1,693,938 |
-    load    [$i7 + 2], $f6              # |  1,693,938 |  1,693,938 |
-    fsub    $f4, $f6, $f6               # |  1,693,938 |  1,693,938 |
-    bne     $i4, 1, be_else.32451       # |  1,693,938 |  1,693,938 |
-be_then.32451:
-    load    [$i2 + 4], $i4              # |    716,909 |    716,909 |
-    load    [$i4 + 0], $f7              # |    716,909 |    716,909 |
-    fabs    $f1, $f1                    # |    716,909 |    716,909 |
-    bg      $f7, $f1, ble_else.32452    # |    716,909 |    716,909 |
-ble_then.32452:
-    load    [$i2 + 6], $i2              # |    198,344 |    198,344 |
-    bne     $i2, 0, be_else.32453       # |    198,344 |    198,344 |
-be_then.32453:
-    li      1, $i2                      # |    198,344 |    198,344 |
+    load    [$i3 + $i1], $i2            # |  1,716,699 |  1,716,699 |
+    bne     $i2, -1, be_else.21808      # |  1,716,699 |  1,716,699 |
+be_then.21808:
+    li      1, $i1                      # |     22,129 |     22,129 |
+    ret                                 # |     22,129 |     22,129 |
+be_else.21808:
+    load    [ext_objects + $i2], $i2    # |  1,694,570 |  1,694,570 |
+    load    [$i2 + 1], $i4              # |  1,694,570 |  1,694,570 |
+    load    [$i2 + 5], $i5              # |  1,694,570 |  1,694,570 |
+    load    [$i5 + 0], $f1              # |  1,694,570 |  1,694,570 |
+    fsub    $f2, $f1, $f1               # |  1,694,570 |  1,694,570 |
+    load    [$i5 + 1], $f5              # |  1,694,570 |  1,694,570 |
+    fsub    $f3, $f5, $f5               # |  1,694,570 |  1,694,570 |
+    load    [$i5 + 2], $f6              # |  1,694,570 |  1,694,570 |
+    fsub    $f4, $f6, $f6               # |  1,694,570 |  1,694,570 |
+    bne     $i4, 1, be_else.21809       # |  1,694,570 |  1,694,570 |
+be_then.21809:
+    load    [$i2 + 4], $i4              # |    716,988 |    716,988 |
+    load    [$i4 + 0], $f7              # |    716,988 |    716,988 |
+    fabs    $f1, $f1                    # |    716,988 |    716,988 |
+    load    [$i2 + 6], $i2              # |    716,988 |    716,988 |
+    bg      $f7, $f1, ble_else.21810    # |    716,988 |    716,988 |
+ble_then.21810:
+    bne     $i2, 0, be_else.21811       # |    198,212 |    198,212 |
+be_then.21811:
+    li      1, $i2                      # |    198,212 |    198,212 |
 .count b_cont
-    b       be_cont.32451               # |    198,344 |    198,344 |
-be_else.32453:
+    b       be_cont.21809               # |    198,212 |    198,212 |
+be_else.21811:
     li      0, $i2
 .count b_cont
-    b       be_cont.32451
-ble_else.32452:
-    load    [$i2 + 4], $i4              # |    518,565 |    518,565 |
-    load    [$i4 + 1], $f1              # |    518,565 |    518,565 |
-    fabs    $f5, $f5                    # |    518,565 |    518,565 |
-    bg      $f1, $f5, ble_else.32454    # |    518,565 |    518,565 |
-ble_then.32454:
-    load    [$i2 + 6], $i2              # |     55,268 |     55,268 |
-    bne     $i2, 0, be_else.32455       # |     55,268 |     55,268 |
-be_then.32455:
-    li      1, $i2                      # |     55,268 |     55,268 |
+    b       be_cont.21809
+ble_else.21810:
+    load    [$i4 + 1], $f1              # |    518,776 |    518,776 |
+    fabs    $f5, $f5                    # |    518,776 |    518,776 |
+    bg      $f1, $f5, ble_else.21812    # |    518,776 |    518,776 |
+ble_then.21812:
+    bne     $i2, 0, be_else.21813       # |     55,320 |     55,320 |
+be_then.21813:
+    li      1, $i2                      # |     55,320 |     55,320 |
 .count b_cont
-    b       be_cont.32451               # |     55,268 |     55,268 |
-be_else.32455:
+    b       be_cont.21809               # |     55,320 |     55,320 |
+be_else.21813:
     li      0, $i2
 .count b_cont
-    b       be_cont.32451
-ble_else.32454:
-    load    [$i2 + 4], $i4              # |    463,297 |    463,297 |
-    load    [$i4 + 2], $f1              # |    463,297 |    463,297 |
-    fabs    $f6, $f5                    # |    463,297 |    463,297 |
-    load    [$i2 + 6], $i2              # |    463,297 |    463,297 |
-    bg      $f1, $f5, be_cont.32451     # |    463,297 |    463,297 |
-ble_then.32456:
-    bne     $i2, 0, be_else.32457       # |     17,085 |     17,085 |
-be_then.32457:
-    li      1, $i2                      # |     17,085 |     17,085 |
+    b       be_cont.21809
+ble_else.21812:
+    load    [$i4 + 2], $f1              # |    463,456 |    463,456 |
+    fabs    $f6, $f5                    # |    463,456 |    463,456 |
+    bg      $f1, $f5, be_cont.21809     # |    463,456 |    463,456 |
+ble_then.21814:
+    bne     $i2, 0, be_else.21815       # |     17,095 |     17,095 |
+be_then.21815:
+    li      1, $i2                      # |     17,095 |     17,095 |
 .count b_cont
-    b       be_cont.32451               # |     17,085 |     17,085 |
-be_else.32457:
+    b       be_cont.21809               # |     17,095 |     17,095 |
+be_else.21815:
     li      0, $i2
 .count b_cont
-    b       be_cont.32451
-be_else.32451:
-    bne     $i4, 2, be_else.32458       # |    977,029 |    977,029 |
-be_then.32458:
-    load    [$i2 + 6], $i4              # |    460,725 |    460,725 |
-    load    [$i2 + 4], $i2              # |    460,725 |    460,725 |
-    load    [$i2 + 0], $f7              # |    460,725 |    460,725 |
-    fmul    $f7, $f1, $f1               # |    460,725 |    460,725 |
-    load    [$i2 + 1], $f7              # |    460,725 |    460,725 |
-    fmul    $f7, $f5, $f5               # |    460,725 |    460,725 |
-    fadd    $f1, $f5, $f1               # |    460,725 |    460,725 |
-    load    [$i2 + 2], $f5              # |    460,725 |    460,725 |
-    fmul    $f5, $f6, $f5               # |    460,725 |    460,725 |
-    fadd    $f1, $f5, $f1               # |    460,725 |    460,725 |
-    bg      $f0, $f1, ble_else.32459    # |    460,725 |    460,725 |
-ble_then.32459:
-    bne     $i4, 0, be_else.32460       # |    460,725 |    460,725 |
-be_then.32460:
+    b       be_cont.21809
+be_else.21809:
+    bne     $i4, 2, be_else.21816       # |    977,582 |    977,582 |
+be_then.21816:
+    load    [$i2 + 6], $i4              # |    460,717 |    460,717 |
+    load    [$i2 + 4], $i2              # |    460,717 |    460,717 |
+    load    [$i2 + 0], $f7              # |    460,717 |    460,717 |
+    fmul    $f7, $f1, $f1               # |    460,717 |    460,717 |
+    load    [$i2 + 1], $f7              # |    460,717 |    460,717 |
+    fmul    $f7, $f5, $f5               # |    460,717 |    460,717 |
+    fadd    $f1, $f5, $f1               # |    460,717 |    460,717 |
+    load    [$i2 + 2], $f5              # |    460,717 |    460,717 |
+    fmul    $f5, $f6, $f5               # |    460,717 |    460,717 |
+    fadd    $f1, $f5, $f1               # |    460,717 |    460,717 |
+    bg      $f0, $f1, ble_else.21817    # |    460,717 |    460,717 |
+ble_then.21817:
+    bne     $i4, 0, be_else.21818       # |    460,717 |    460,717 |
+be_then.21818:
     li      1, $i2
 .count b_cont
-    b       be_cont.32458
-be_else.32460:
-    li      0, $i2                      # |    460,725 |    460,725 |
+    b       be_cont.21816
+be_else.21818:
+    li      0, $i2                      # |    460,717 |    460,717 |
 .count b_cont
-    b       be_cont.32458               # |    460,725 |    460,725 |
-ble_else.32459:
-    bne     $i4, 0, be_else.32461
-be_then.32461:
+    b       be_cont.21816               # |    460,717 |    460,717 |
+ble_else.21817:
+    bne     $i4, 0, be_else.21819
+be_then.21819:
     li      0, $i2
 .count b_cont
-    b       be_cont.32458
-be_else.32461:
+    b       be_cont.21816
+be_else.21819:
     li      1, $i2
 .count b_cont
-    b       be_cont.32458
-be_else.32458:
-    load    [$i2 + 6], $i5              # |    516,304 |    516,304 |
-    fmul    $f1, $f1, $f7               # |    516,304 |    516,304 |
-    load    [$i2 + 4], $i6              # |    516,304 |    516,304 |
-    load    [$i6 + 0], $f8              # |    516,304 |    516,304 |
-    fmul    $f7, $f8, $f7               # |    516,304 |    516,304 |
-    fmul    $f5, $f5, $f8               # |    516,304 |    516,304 |
-    load    [$i2 + 4], $i6              # |    516,304 |    516,304 |
-    load    [$i6 + 1], $f9              # |    516,304 |    516,304 |
-    fmul    $f8, $f9, $f8               # |    516,304 |    516,304 |
-    fadd    $f7, $f8, $f7               # |    516,304 |    516,304 |
-    fmul    $f6, $f6, $f8               # |    516,304 |    516,304 |
-    load    [$i2 + 4], $i6              # |    516,304 |    516,304 |
-    load    [$i6 + 2], $f9              # |    516,304 |    516,304 |
-    fmul    $f8, $f9, $f8               # |    516,304 |    516,304 |
-    fadd    $f7, $f8, $f7               # |    516,304 |    516,304 |
-    load    [$i2 + 3], $i6              # |    516,304 |    516,304 |
-    bne     $i6, 0, be_else.32462       # |    516,304 |    516,304 |
-be_then.32462:
-    mov     $f7, $f1                    # |    516,304 |    516,304 |
+    b       be_cont.21816
+be_else.21816:
+    load    [$i2 + 6], $i5              # |    516,865 |    516,865 |
+    fmul    $f1, $f1, $f7               # |    516,865 |    516,865 |
+    load    [$i2 + 4], $i6              # |    516,865 |    516,865 |
+    load    [$i6 + 0], $f8              # |    516,865 |    516,865 |
+    fmul    $f7, $f8, $f7               # |    516,865 |    516,865 |
+    fmul    $f5, $f5, $f8               # |    516,865 |    516,865 |
+    load    [$i6 + 1], $f9              # |    516,865 |    516,865 |
+    fmul    $f8, $f9, $f8               # |    516,865 |    516,865 |
+    fadd    $f7, $f8, $f7               # |    516,865 |    516,865 |
+    fmul    $f6, $f6, $f8               # |    516,865 |    516,865 |
+    load    [$i6 + 2], $f9              # |    516,865 |    516,865 |
+    fmul    $f8, $f9, $f8               # |    516,865 |    516,865 |
+    fadd    $f7, $f8, $f7               # |    516,865 |    516,865 |
+    load    [$i2 + 3], $i6              # |    516,865 |    516,865 |
+    bne     $i6, 0, be_else.21820       # |    516,865 |    516,865 |
+be_then.21820:
+    mov     $f7, $f1                    # |    516,865 |    516,865 |
 .count b_cont
-    b       be_cont.32462               # |    516,304 |    516,304 |
-be_else.32462:
+    b       be_cont.21820               # |    516,865 |    516,865 |
+be_else.21820:
     fmul    $f5, $f6, $f8
-    load    [$i2 + 9], $i6
-    load    [$i6 + 0], $f9
+    load    [$i2 + 9], $i2
+    load    [$i2 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f6, $f1, $f6
-    load    [$i2 + 9], $i6
-    load    [$i6 + 1], $f8
+    load    [$i2 + 1], $f8
     fmul    $f6, $f8, $f6
     fadd    $f7, $f6, $f6
     fmul    $f1, $f5, $f1
-    load    [$i2 + 9], $i2
     load    [$i2 + 2], $f5
     fmul    $f1, $f5, $f1
     fadd    $f6, $f1, $f1
-be_cont.32462:
-    bne     $i4, 3, be_cont.32463       # |    516,304 |    516,304 |
-be_then.32463:
-    fsub    $f1, $fc0, $f1              # |    516,304 |    516,304 |
-be_cont.32463:
-    bg      $f0, $f1, ble_else.32464    # |    516,304 |    516,304 |
-ble_then.32464:
-    bne     $i5, 0, be_else.32465       # |    184,512 |    184,512 |
-be_then.32465:
-    li      1, $i2                      # |    184,512 |    184,512 |
+be_cont.21820:
+    bne     $i4, 3, be_cont.21821       # |    516,865 |    516,865 |
+be_then.21821:
+    fsub    $f1, $fc0, $f1              # |    516,865 |    516,865 |
+be_cont.21821:
+    bg      $f0, $f1, ble_else.21822    # |    516,865 |    516,865 |
+ble_then.21822:
+    bne     $i5, 0, be_else.21823       # |    184,696 |    184,696 |
+be_then.21823:
+    li      1, $i2                      # |    184,696 |    184,696 |
 .count b_cont
-    b       ble_cont.32464              # |    184,512 |    184,512 |
-be_else.32465:
+    b       ble_cont.21822              # |    184,696 |    184,696 |
+be_else.21823:
     li      0, $i2
 .count b_cont
-    b       ble_cont.32464
-ble_else.32464:
-    bne     $i5, 0, be_else.32466       # |    331,792 |    331,792 |
-be_then.32466:
-    li      0, $i2                      # |    331,792 |    331,792 |
+    b       ble_cont.21822
+ble_else.21822:
+    bne     $i5, 0, be_else.21824       # |    332,169 |    332,169 |
+be_then.21824:
+    li      0, $i2                      # |    332,169 |    332,169 |
 .count b_cont
-    b       be_cont.32466               # |    331,792 |    331,792 |
-be_else.32466:
+    b       be_cont.21824               # |    332,169 |    332,169 |
+be_else.21824:
     li      1, $i2
-be_cont.32466:
-ble_cont.32464:
-be_cont.32458:
-be_cont.32451:
-    bne     $i2, 0, be_else.32467       # |  1,693,938 |  1,693,938 |
-be_then.32467:
-    add     $i1, 1, $i1                 # |  1,238,729 |  1,238,729 |
-    load    [$i3 + $i1], $i2            # |  1,238,729 |  1,238,729 |
-    bne     $i2, -1, be_else.32468      # |  1,238,729 |  1,238,729 |
-be_then.32468:
-    li      1, $i1                      # |    596,960 |    596,960 |
-    ret                                 # |    596,960 |    596,960 |
-be_else.32468:
-    load    [ext_objects + $i2], $i2    # |    641,769 |    641,769 |
-    load    [$i2 + 5], $i4              # |    641,769 |    641,769 |
-    load    [$i2 + 5], $i5              # |    641,769 |    641,769 |
-    load    [$i2 + 5], $i6              # |    641,769 |    641,769 |
-    load    [$i2 + 1], $i7              # |    641,769 |    641,769 |
-    load    [$i4 + 0], $f1              # |    641,769 |    641,769 |
-    fsub    $f2, $f1, $f1               # |    641,769 |    641,769 |
-    load    [$i5 + 1], $f5              # |    641,769 |    641,769 |
-    fsub    $f3, $f5, $f5               # |    641,769 |    641,769 |
-    load    [$i6 + 2], $f6              # |    641,769 |    641,769 |
-    fsub    $f4, $f6, $f6               # |    641,769 |    641,769 |
-    bne     $i7, 1, be_else.32469       # |    641,769 |    641,769 |
-be_then.32469:
+be_cont.21824:
+ble_cont.21822:
+be_cont.21816:
+be_cont.21809:
+    bne     $i2, 0, be_else.21825       # |  1,694,570 |  1,694,570 |
+be_then.21825:
+    add     $i1, 1, $i1                 # |  1,239,247 |  1,239,247 |
+    load    [$i3 + $i1], $i2            # |  1,239,247 |  1,239,247 |
+    bne     $i2, -1, be_else.21826      # |  1,239,247 |  1,239,247 |
+be_then.21826:
+    li      1, $i1                      # |    596,938 |    596,938 |
+    ret                                 # |    596,938 |    596,938 |
+be_else.21826:
+    load    [ext_objects + $i2], $i2    # |    642,309 |    642,309 |
+    load    [$i2 + 5], $i4              # |    642,309 |    642,309 |
+    load    [$i2 + 1], $i5              # |    642,309 |    642,309 |
+    load    [$i4 + 0], $f1              # |    642,309 |    642,309 |
+    fsub    $f2, $f1, $f1               # |    642,309 |    642,309 |
+    load    [$i4 + 1], $f5              # |    642,309 |    642,309 |
+    fsub    $f3, $f5, $f5               # |    642,309 |    642,309 |
+    load    [$i4 + 2], $f6              # |    642,309 |    642,309 |
+    fsub    $f4, $f6, $f6               # |    642,309 |    642,309 |
+    bne     $i5, 1, be_else.21827       # |    642,309 |    642,309 |
+be_then.21827:
     load    [$i2 + 4], $i4
     load    [$i4 + 0], $f7
     fabs    $f1, $f1
-    bg      $f7, $f1, ble_else.32470
-ble_then.32470:
     load    [$i2 + 6], $i2
-    bne     $i2, 0, be_else.32471
-be_then.32471:
+    bg      $f7, $f1, ble_else.21828
+ble_then.21828:
+    bne     $i2, 0, be_else.21829
+be_then.21829:
     li      1, $i2
 .count b_cont
-    b       be_cont.32469
-be_else.32471:
+    b       be_cont.21827
+be_else.21829:
     li      0, $i2
 .count b_cont
-    b       be_cont.32469
-ble_else.32470:
-    load    [$i2 + 4], $i4
+    b       be_cont.21827
+ble_else.21828:
     load    [$i4 + 1], $f1
     fabs    $f5, $f5
-    bg      $f1, $f5, ble_else.32472
-ble_then.32472:
-    load    [$i2 + 6], $i2
-    bne     $i2, 0, be_else.32473
-be_then.32473:
+    bg      $f1, $f5, ble_else.21830
+ble_then.21830:
+    bne     $i2, 0, be_else.21831
+be_then.21831:
     li      1, $i2
 .count b_cont
-    b       be_cont.32469
-be_else.32473:
+    b       be_cont.21827
+be_else.21831:
     li      0, $i2
 .count b_cont
-    b       be_cont.32469
-ble_else.32472:
-    load    [$i2 + 4], $i4
+    b       be_cont.21827
+ble_else.21830:
     load    [$i4 + 2], $f1
     fabs    $f6, $f5
-    load    [$i2 + 6], $i2
-    bg      $f1, $f5, be_cont.32469
-ble_then.32474:
-    bne     $i2, 0, be_else.32475
-be_then.32475:
+    bg      $f1, $f5, be_cont.21827
+ble_then.21832:
+    bne     $i2, 0, be_else.21833
+be_then.21833:
     li      1, $i2
 .count b_cont
-    b       be_cont.32469
-be_else.32475:
+    b       be_cont.21827
+be_else.21833:
     li      0, $i2
 .count b_cont
-    b       be_cont.32469
-be_else.32469:
-    load    [$i2 + 6], $i4              # |    641,769 |    641,769 |
-    bne     $i7, 2, be_else.32476       # |    641,769 |    641,769 |
-be_then.32476:
-    load    [$i2 + 4], $i2              # |     31,829 |     31,829 |
-    load    [$i2 + 0], $f7              # |     31,829 |     31,829 |
-    fmul    $f7, $f1, $f1               # |     31,829 |     31,829 |
-    load    [$i2 + 1], $f7              # |     31,829 |     31,829 |
-    fmul    $f7, $f5, $f5               # |     31,829 |     31,829 |
-    fadd    $f1, $f5, $f1               # |     31,829 |     31,829 |
-    load    [$i2 + 2], $f5              # |     31,829 |     31,829 |
-    fmul    $f5, $f6, $f5               # |     31,829 |     31,829 |
-    fadd    $f1, $f5, $f1               # |     31,829 |     31,829 |
-    bg      $f0, $f1, ble_else.32477    # |     31,829 |     31,829 |
-ble_then.32477:
-    bne     $i4, 0, be_else.32478       # |     20,422 |     20,422 |
-be_then.32478:
+    b       be_cont.21827
+be_else.21827:
+    load    [$i2 + 6], $i4              # |    642,309 |    642,309 |
+    bne     $i5, 2, be_else.21834       # |    642,309 |    642,309 |
+be_then.21834:
+    load    [$i2 + 4], $i2              # |     31,832 |     31,832 |
+    load    [$i2 + 0], $f7              # |     31,832 |     31,832 |
+    fmul    $f7, $f1, $f1               # |     31,832 |     31,832 |
+    load    [$i2 + 1], $f7              # |     31,832 |     31,832 |
+    fmul    $f7, $f5, $f5               # |     31,832 |     31,832 |
+    fadd    $f1, $f5, $f1               # |     31,832 |     31,832 |
+    load    [$i2 + 2], $f5              # |     31,832 |     31,832 |
+    fmul    $f5, $f6, $f5               # |     31,832 |     31,832 |
+    fadd    $f1, $f5, $f1               # |     31,832 |     31,832 |
+    bg      $f0, $f1, ble_else.21835    # |     31,832 |     31,832 |
+ble_then.21835:
+    bne     $i4, 0, be_else.21836       # |     20,424 |     20,424 |
+be_then.21836:
     li      1, $i2
 .count b_cont
-    b       be_cont.32476
-be_else.32478:
-    li      0, $i2                      # |     20,422 |     20,422 |
+    b       be_cont.21834
+be_else.21836:
+    li      0, $i2                      # |     20,424 |     20,424 |
 .count b_cont
-    b       be_cont.32476               # |     20,422 |     20,422 |
-ble_else.32477:
-    bne     $i4, 0, be_else.32479       # |     11,407 |     11,407 |
-be_then.32479:
+    b       be_cont.21834               # |     20,424 |     20,424 |
+ble_else.21835:
+    bne     $i4, 0, be_else.21837       # |     11,408 |     11,408 |
+be_then.21837:
     li      0, $i2
 .count b_cont
-    b       be_cont.32476
-be_else.32479:
-    li      1, $i2                      # |     11,407 |     11,407 |
+    b       be_cont.21834
+be_else.21837:
+    li      1, $i2                      # |     11,408 |     11,408 |
 .count b_cont
-    b       be_cont.32476               # |     11,407 |     11,407 |
-be_else.32476:
-    load    [$i2 + 1], $i5              # |    609,940 |    609,940 |
-    load    [$i2 + 4], $i6              # |    609,940 |    609,940 |
-    load    [$i2 + 4], $i7              # |    609,940 |    609,940 |
-    load    [$i2 + 4], $i8              # |    609,940 |    609,940 |
-    load    [$i2 + 3], $i9              # |    609,940 |    609,940 |
-    fmul    $f1, $f1, $f7               # |    609,940 |    609,940 |
-    load    [$i6 + 0], $f8              # |    609,940 |    609,940 |
-    fmul    $f7, $f8, $f7               # |    609,940 |    609,940 |
-    fmul    $f5, $f5, $f8               # |    609,940 |    609,940 |
-    load    [$i7 + 1], $f9              # |    609,940 |    609,940 |
-    fmul    $f8, $f9, $f8               # |    609,940 |    609,940 |
-    fadd    $f7, $f8, $f7               # |    609,940 |    609,940 |
-    fmul    $f6, $f6, $f8               # |    609,940 |    609,940 |
-    load    [$i8 + 2], $f9              # |    609,940 |    609,940 |
-    fmul    $f8, $f9, $f8               # |    609,940 |    609,940 |
-    fadd    $f7, $f8, $f7               # |    609,940 |    609,940 |
-    bne     $i9, 0, be_else.32480       # |    609,940 |    609,940 |
-be_then.32480:
-    mov     $f7, $f1                    # |    609,940 |    609,940 |
+    b       be_cont.21834               # |     11,408 |     11,408 |
+be_else.21834:
+    load    [$i2 + 4], $i6              # |    610,477 |    610,477 |
+    load    [$i2 + 3], $i7              # |    610,477 |    610,477 |
+    fmul    $f1, $f1, $f7               # |    610,477 |    610,477 |
+    load    [$i6 + 0], $f8              # |    610,477 |    610,477 |
+    fmul    $f7, $f8, $f7               # |    610,477 |    610,477 |
+    fmul    $f5, $f5, $f8               # |    610,477 |    610,477 |
+    load    [$i6 + 1], $f9              # |    610,477 |    610,477 |
+    fmul    $f8, $f9, $f8               # |    610,477 |    610,477 |
+    fadd    $f7, $f8, $f7               # |    610,477 |    610,477 |
+    fmul    $f6, $f6, $f8               # |    610,477 |    610,477 |
+    load    [$i6 + 2], $f9              # |    610,477 |    610,477 |
+    fmul    $f8, $f9, $f8               # |    610,477 |    610,477 |
+    fadd    $f7, $f8, $f7               # |    610,477 |    610,477 |
+    bne     $i7, 0, be_else.21838       # |    610,477 |    610,477 |
+be_then.21838:
+    mov     $f7, $f1                    # |    610,477 |    610,477 |
 .count b_cont
-    b       be_cont.32480               # |    609,940 |    609,940 |
-be_else.32480:
-    load    [$i2 + 9], $i6
-    load    [$i2 + 9], $i7
+    b       be_cont.21838               # |    610,477 |    610,477 |
+be_else.21838:
     load    [$i2 + 9], $i2
     fmul    $f5, $f6, $f8
-    load    [$i6 + 0], $f9
+    load    [$i2 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f6, $f1, $f6
-    load    [$i7 + 1], $f8
+    load    [$i2 + 1], $f8
     fmul    $f6, $f8, $f6
     fadd    $f7, $f6, $f6
     fmul    $f1, $f5, $f1
     load    [$i2 + 2], $f5
     fmul    $f1, $f5, $f1
     fadd    $f6, $f1, $f1
-be_cont.32480:
-    bne     $i5, 3, be_cont.32481       # |    609,940 |    609,940 |
-be_then.32481:
-    fsub    $f1, $fc0, $f1              # |    609,940 |    609,940 |
-be_cont.32481:
-    bg      $f0, $f1, ble_else.32482    # |    609,940 |    609,940 |
-ble_then.32482:
-    bne     $i4, 0, be_else.32483       # |    299,723 |    299,723 |
-be_then.32483:
-    li      1, $i2                      # |    108,345 |    108,345 |
+be_cont.21838:
+    bne     $i5, 3, be_cont.21839       # |    610,477 |    610,477 |
+be_then.21839:
+    fsub    $f1, $fc0, $f1              # |    610,477 |    610,477 |
+be_cont.21839:
+    bg      $f0, $f1, ble_else.21840    # |    610,477 |    610,477 |
+ble_then.21840:
+    bne     $i4, 0, be_else.21841       # |    299,953 |    299,953 |
+be_then.21841:
+    li      1, $i2                      # |    108,381 |    108,381 |
 .count b_cont
-    b       ble_cont.32482              # |    108,345 |    108,345 |
-be_else.32483:
-    li      0, $i2                      # |    191,378 |    191,378 |
+    b       ble_cont.21840              # |    108,381 |    108,381 |
+be_else.21841:
+    li      0, $i2                      # |    191,572 |    191,572 |
 .count b_cont
-    b       ble_cont.32482              # |    191,378 |    191,378 |
-ble_else.32482:
-    bne     $i4, 0, be_else.32484       # |    310,217 |    310,217 |
-be_then.32484:
-    li      0, $i2                      # |    243,275 |    243,275 |
+    b       ble_cont.21840              # |    191,572 |    191,572 |
+ble_else.21840:
+    bne     $i4, 0, be_else.21842       # |    310,524 |    310,524 |
+be_then.21842:
+    li      0, $i2                      # |    243,461 |    243,461 |
 .count b_cont
-    b       be_cont.32484               # |    243,275 |    243,275 |
-be_else.32484:
-    li      1, $i2                      # |     66,942 |     66,942 |
-be_cont.32484:
-ble_cont.32482:
-be_cont.32476:
-be_cont.32469:
-    bne     $i2, 0, be_else.32485       # |    641,769 |    641,769 |
-be_then.32485:
-    add     $i1, 1, $i1                 # |    455,075 |    455,075 |
-    load    [$i3 + $i1], $i2            # |    455,075 |    455,075 |
-    bne     $i2, -1, be_else.32486      # |    455,075 |    455,075 |
-be_then.32486:
-    li      1, $i1                      # |    219,472 |    219,472 |
-    ret                                 # |    219,472 |    219,472 |
-be_else.32486:
-    load    [ext_objects + $i2], $i2    # |    235,603 |    235,603 |
-    load    [$i2 + 1], $i4              # |    235,603 |    235,603 |
-    load    [$i2 + 5], $i5              # |    235,603 |    235,603 |
-    load    [$i2 + 5], $i6              # |    235,603 |    235,603 |
-    load    [$i2 + 5], $i7              # |    235,603 |    235,603 |
-    load    [$i5 + 0], $f1              # |    235,603 |    235,603 |
-    fsub    $f2, $f1, $f1               # |    235,603 |    235,603 |
-    load    [$i6 + 1], $f5              # |    235,603 |    235,603 |
-    fsub    $f3, $f5, $f5               # |    235,603 |    235,603 |
-    load    [$i7 + 2], $f6              # |    235,603 |    235,603 |
-    fsub    $f4, $f6, $f6               # |    235,603 |    235,603 |
-    bne     $i4, 1, be_else.32487       # |    235,603 |    235,603 |
-be_then.32487:
+    b       be_cont.21842               # |    243,461 |    243,461 |
+be_else.21842:
+    li      1, $i2                      # |     67,063 |     67,063 |
+be_cont.21842:
+ble_cont.21840:
+be_cont.21834:
+be_cont.21827:
+    bne     $i2, 0, be_else.21843       # |    642,309 |    642,309 |
+be_then.21843:
+    add     $i1, 1, $i1                 # |    455,457 |    455,457 |
+    load    [$i3 + $i1], $i2            # |    455,457 |    455,457 |
+    bne     $i2, -1, be_else.21844      # |    455,457 |    455,457 |
+be_then.21844:
+    li      1, $i1                      # |    219,667 |    219,667 |
+    ret                                 # |    219,667 |    219,667 |
+be_else.21844:
+    load    [ext_objects + $i2], $i2    # |    235,790 |    235,790 |
+    load    [$i2 + 1], $i4              # |    235,790 |    235,790 |
+    load    [$i2 + 5], $i5              # |    235,790 |    235,790 |
+    load    [$i5 + 0], $f1              # |    235,790 |    235,790 |
+    fsub    $f2, $f1, $f1               # |    235,790 |    235,790 |
+    load    [$i5 + 1], $f5              # |    235,790 |    235,790 |
+    fsub    $f3, $f5, $f5               # |    235,790 |    235,790 |
+    load    [$i5 + 2], $f6              # |    235,790 |    235,790 |
+    fsub    $f4, $f6, $f6               # |    235,790 |    235,790 |
+    bne     $i4, 1, be_else.21845       # |    235,790 |    235,790 |
+be_then.21845:
     load    [$i2 + 4], $i4
     load    [$i4 + 0], $f7
     fabs    $f1, $f1
-    bg      $f7, $f1, ble_else.32488
-ble_then.32488:
     load    [$i2 + 6], $i2
-    bne     $i2, 0, be_else.32489
-be_then.32489:
+    bg      $f7, $f1, ble_else.21846
+ble_then.21846:
+    bne     $i2, 0, be_else.21847
+be_then.21847:
     li      1, $i2
 .count b_cont
-    b       be_cont.32487
-be_else.32489:
+    b       be_cont.21845
+be_else.21847:
     li      0, $i2
 .count b_cont
-    b       be_cont.32487
-ble_else.32488:
-    load    [$i2 + 4], $i4
+    b       be_cont.21845
+ble_else.21846:
     load    [$i4 + 1], $f1
     fabs    $f5, $f5
-    bg      $f1, $f5, ble_else.32490
-ble_then.32490:
-    load    [$i2 + 6], $i2
-    bne     $i2, 0, be_else.32491
-be_then.32491:
+    bg      $f1, $f5, ble_else.21848
+ble_then.21848:
+    bne     $i2, 0, be_else.21849
+be_then.21849:
     li      1, $i2
 .count b_cont
-    b       be_cont.32487
-be_else.32491:
+    b       be_cont.21845
+be_else.21849:
     li      0, $i2
 .count b_cont
-    b       be_cont.32487
-ble_else.32490:
-    load    [$i2 + 4], $i4
+    b       be_cont.21845
+ble_else.21848:
     load    [$i4 + 2], $f1
     fabs    $f6, $f5
-    load    [$i2 + 6], $i2
-    bg      $f1, $f5, be_cont.32487
-ble_then.32492:
-    bne     $i2, 0, be_else.32493
-be_then.32493:
+    bg      $f1, $f5, be_cont.21845
+ble_then.21850:
+    bne     $i2, 0, be_else.21851
+be_then.21851:
     li      1, $i2
 .count b_cont
-    b       be_cont.32487
-be_else.32493:
+    b       be_cont.21845
+be_else.21851:
     li      0, $i2
 .count b_cont
-    b       be_cont.32487
-be_else.32487:
-    bne     $i4, 2, be_else.32494       # |    235,603 |    235,603 |
-be_then.32494:
-    load    [$i2 + 6], $i4              # |     46,306 |     46,306 |
-    load    [$i2 + 4], $i2              # |     46,306 |     46,306 |
-    load    [$i2 + 0], $f7              # |     46,306 |     46,306 |
-    fmul    $f7, $f1, $f1               # |     46,306 |     46,306 |
-    load    [$i2 + 1], $f7              # |     46,306 |     46,306 |
-    fmul    $f7, $f5, $f5               # |     46,306 |     46,306 |
-    fadd    $f1, $f5, $f1               # |     46,306 |     46,306 |
-    load    [$i2 + 2], $f5              # |     46,306 |     46,306 |
-    fmul    $f5, $f6, $f5               # |     46,306 |     46,306 |
-    fadd    $f1, $f5, $f1               # |     46,306 |     46,306 |
-    bg      $f0, $f1, ble_else.32495    # |     46,306 |     46,306 |
-ble_then.32495:
-    bne     $i4, 0, be_else.32496       # |     26,044 |     26,044 |
-be_then.32496:
+    b       be_cont.21845
+be_else.21845:
+    bne     $i4, 2, be_else.21852       # |    235,790 |    235,790 |
+be_then.21852:
+    load    [$i2 + 6], $i4              # |     46,329 |     46,329 |
+    load    [$i2 + 4], $i2              # |     46,329 |     46,329 |
+    load    [$i2 + 0], $f7              # |     46,329 |     46,329 |
+    fmul    $f7, $f1, $f1               # |     46,329 |     46,329 |
+    load    [$i2 + 1], $f7              # |     46,329 |     46,329 |
+    fmul    $f7, $f5, $f5               # |     46,329 |     46,329 |
+    fadd    $f1, $f5, $f1               # |     46,329 |     46,329 |
+    load    [$i2 + 2], $f5              # |     46,329 |     46,329 |
+    fmul    $f5, $f6, $f5               # |     46,329 |     46,329 |
+    fadd    $f1, $f5, $f1               # |     46,329 |     46,329 |
+    bg      $f0, $f1, ble_else.21853    # |     46,329 |     46,329 |
+ble_then.21853:
+    bne     $i4, 0, be_else.21854       # |     26,054 |     26,054 |
+be_then.21854:
     li      1, $i2
 .count b_cont
-    b       be_cont.32494
-be_else.32496:
-    li      0, $i2                      # |     26,044 |     26,044 |
+    b       be_cont.21852
+be_else.21854:
+    li      0, $i2                      # |     26,054 |     26,054 |
 .count b_cont
-    b       be_cont.32494               # |     26,044 |     26,044 |
-ble_else.32495:
-    bne     $i4, 0, be_else.32497       # |     20,262 |     20,262 |
-be_then.32497:
+    b       be_cont.21852               # |     26,054 |     26,054 |
+ble_else.21853:
+    bne     $i4, 0, be_else.21855       # |     20,275 |     20,275 |
+be_then.21855:
     li      0, $i2
 .count b_cont
-    b       be_cont.32494
-be_else.32497:
-    li      1, $i2                      # |     20,262 |     20,262 |
+    b       be_cont.21852
+be_else.21855:
+    li      1, $i2                      # |     20,275 |     20,275 |
 .count b_cont
-    b       be_cont.32494               # |     20,262 |     20,262 |
-be_else.32494:
-    load    [$i2 + 6], $i4              # |    189,297 |    189,297 |
-    load    [$i2 + 1], $i5              # |    189,297 |    189,297 |
-    load    [$i2 + 3], $i6              # |    189,297 |    189,297 |
-    fmul    $f1, $f1, $f7               # |    189,297 |    189,297 |
-    load    [$i2 + 4], $i7              # |    189,297 |    189,297 |
-    load    [$i7 + 0], $f8              # |    189,297 |    189,297 |
-    fmul    $f7, $f8, $f7               # |    189,297 |    189,297 |
-    fmul    $f5, $f5, $f8               # |    189,297 |    189,297 |
-    load    [$i2 + 4], $i7              # |    189,297 |    189,297 |
-    load    [$i7 + 1], $f9              # |    189,297 |    189,297 |
-    fmul    $f8, $f9, $f8               # |    189,297 |    189,297 |
-    fadd    $f7, $f8, $f7               # |    189,297 |    189,297 |
-    fmul    $f6, $f6, $f8               # |    189,297 |    189,297 |
-    load    [$i2 + 4], $i7              # |    189,297 |    189,297 |
-    load    [$i7 + 2], $f9              # |    189,297 |    189,297 |
-    fmul    $f8, $f9, $f8               # |    189,297 |    189,297 |
-    fadd    $f7, $f8, $f7               # |    189,297 |    189,297 |
-    bne     $i6, 0, be_else.32498       # |    189,297 |    189,297 |
-be_then.32498:
-    mov     $f7, $f1                    # |    189,297 |    189,297 |
+    b       be_cont.21852               # |     20,275 |     20,275 |
+be_else.21852:
+    load    [$i2 + 6], $i5              # |    189,461 |    189,461 |
+    load    [$i2 + 3], $i6              # |    189,461 |    189,461 |
+    fmul    $f1, $f1, $f7               # |    189,461 |    189,461 |
+    load    [$i2 + 4], $i7              # |    189,461 |    189,461 |
+    load    [$i7 + 0], $f8              # |    189,461 |    189,461 |
+    fmul    $f7, $f8, $f7               # |    189,461 |    189,461 |
+    fmul    $f5, $f5, $f8               # |    189,461 |    189,461 |
+    load    [$i7 + 1], $f9              # |    189,461 |    189,461 |
+    fmul    $f8, $f9, $f8               # |    189,461 |    189,461 |
+    fadd    $f7, $f8, $f7               # |    189,461 |    189,461 |
+    fmul    $f6, $f6, $f8               # |    189,461 |    189,461 |
+    load    [$i7 + 2], $f9              # |    189,461 |    189,461 |
+    fmul    $f8, $f9, $f8               # |    189,461 |    189,461 |
+    fadd    $f7, $f8, $f7               # |    189,461 |    189,461 |
+    bne     $i6, 0, be_else.21856       # |    189,461 |    189,461 |
+be_then.21856:
+    mov     $f7, $f1                    # |    189,461 |    189,461 |
 .count b_cont
-    b       be_cont.32498               # |    189,297 |    189,297 |
-be_else.32498:
+    b       be_cont.21856               # |    189,461 |    189,461 |
+be_else.21856:
     fmul    $f5, $f6, $f8
-    load    [$i2 + 9], $i6
-    load    [$i6 + 0], $f9
+    load    [$i2 + 9], $i2
+    load    [$i2 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f6, $f1, $f6
-    load    [$i2 + 9], $i6
-    load    [$i6 + 1], $f8
+    load    [$i2 + 1], $f8
     fmul    $f6, $f8, $f6
     fadd    $f7, $f6, $f6
     fmul    $f1, $f5, $f1
-    load    [$i2 + 9], $i2
     load    [$i2 + 2], $f5
     fmul    $f1, $f5, $f1
     fadd    $f6, $f1, $f1
-be_cont.32498:
-    bne     $i5, 3, be_cont.32499       # |    189,297 |    189,297 |
-be_then.32499:
-    fsub    $f1, $fc0, $f1              # |    189,297 |    189,297 |
-be_cont.32499:
-    bg      $f0, $f1, ble_else.32500    # |    189,297 |    189,297 |
-ble_then.32500:
-    bne     $i4, 0, be_else.32501       # |    153,079 |    153,079 |
-be_then.32501:
+be_cont.21856:
+    bne     $i4, 3, be_cont.21857       # |    189,461 |    189,461 |
+be_then.21857:
+    fsub    $f1, $fc0, $f1              # |    189,461 |    189,461 |
+be_cont.21857:
+    bg      $f0, $f1, ble_else.21858    # |    189,461 |    189,461 |
+ble_then.21858:
+    bne     $i5, 0, be_else.21859       # |    153,221 |    153,221 |
+be_then.21859:
     li      1, $i2
 .count b_cont
-    b       ble_cont.32500
-be_else.32501:
-    li      0, $i2                      # |    153,079 |    153,079 |
+    b       ble_cont.21858
+be_else.21859:
+    li      0, $i2                      # |    153,221 |    153,221 |
 .count b_cont
-    b       ble_cont.32500              # |    153,079 |    153,079 |
-ble_else.32500:
-    bne     $i4, 0, be_else.32502       # |     36,218 |     36,218 |
-be_then.32502:
+    b       ble_cont.21858              # |    153,221 |    153,221 |
+ble_else.21858:
+    bne     $i5, 0, be_else.21860       # |     36,240 |     36,240 |
+be_then.21860:
     li      0, $i2
 .count b_cont
-    b       be_cont.32502
-be_else.32502:
-    li      1, $i2                      # |     36,218 |     36,218 |
-be_cont.32502:
-ble_cont.32500:
-be_cont.32494:
-be_cont.32487:
-    bne     $i2, 0, be_else.32503       # |    235,603 |    235,603 |
-be_then.32503:
-    add     $i1, 1, $i1                 # |    179,123 |    179,123 |
-    load    [$i3 + $i1], $i2            # |    179,123 |    179,123 |
-    bne     $i2, -1, be_else.32504      # |    179,123 |    179,123 |
-be_then.32504:
-    li      1, $i1                      # |    179,123 |    179,123 |
-    ret                                 # |    179,123 |    179,123 |
-be_else.32504:
+    b       be_cont.21860
+be_else.21860:
+    li      1, $i2                      # |     36,240 |     36,240 |
+be_cont.21860:
+ble_cont.21858:
+be_cont.21852:
+be_cont.21845:
+    bne     $i2, 0, be_else.21861       # |    235,790 |    235,790 |
+be_then.21861:
+    add     $i1, 1, $i1                 # |    179,275 |    179,275 |
+    load    [$i3 + $i1], $i2            # |    179,275 |    179,275 |
+    bne     $i2, -1, be_else.21862      # |    179,275 |    179,275 |
+be_then.21862:
+    li      1, $i1                      # |    179,275 |    179,275 |
+    ret                                 # |    179,275 |    179,275 |
+be_else.21862:
     load    [ext_objects + $i2], $i2
     load    [$i2 + 5], $i4
-    load    [$i2 + 5], $i5
-    load    [$i2 + 5], $i6
-    load    [$i2 + 1], $i7
+    load    [$i2 + 1], $i5
     load    [$i4 + 0], $f1
-    load    [$i5 + 1], $f5
-    load    [$i6 + 2], $f6
+    load    [$i4 + 1], $f5
+    load    [$i4 + 2], $f6
     fsub    $f2, $f1, $f1
     fsub    $f3, $f5, $f5
     fsub    $f4, $f6, $f6
-    bne     $i7, 1, be_else.32505
-be_then.32505:
+    bne     $i5, 1, be_else.21863
+be_then.21863:
     load    [$i2 + 4], $i4
     load    [$i4 + 0], $f7
     fabs    $f1, $f1
-    bg      $f7, $f1, ble_else.32506
-ble_then.32506:
+    bg      $f7, $f1, ble_else.21864
+ble_then.21864:
     li      0, $i4
 .count b_cont
-    b       ble_cont.32506
-ble_else.32506:
-    load    [$i2 + 4], $i4
+    b       ble_cont.21864
+ble_else.21864:
     load    [$i4 + 1], $f1
     fabs    $f5, $f5
-    bg      $f1, $f5, ble_else.32507
-ble_then.32507:
+    bg      $f1, $f5, ble_else.21865
+ble_then.21865:
     li      0, $i4
 .count b_cont
-    b       ble_cont.32507
-ble_else.32507:
-    load    [$i2 + 4], $i4
+    b       ble_cont.21865
+ble_else.21865:
     load    [$i4 + 2], $f1
     fabs    $f6, $f5
-    bg      $f1, $f5, ble_else.32508
-ble_then.32508:
+    bg      $f1, $f5, ble_else.21866
+ble_then.21866:
     li      0, $i4
 .count b_cont
-    b       ble_cont.32508
-ble_else.32508:
+    b       ble_cont.21866
+ble_else.21866:
     li      1, $i4
-ble_cont.32508:
-ble_cont.32507:
-ble_cont.32506:
+ble_cont.21866:
+ble_cont.21865:
+ble_cont.21864:
     load    [$i2 + 6], $i2
-    bne     $i4, 0, be_else.32509
-be_then.32509:
-    bne     $i2, 0, be_else.32510
-be_then.32510:
+    bne     $i4, 0, be_else.21867
+be_then.21867:
+    bne     $i2, 0, be_else.21868
+be_then.21868:
     li      0, $i1
     ret
-be_else.32510:
+be_else.21868:
     add     $i1, 1, $i1
     b       check_all_inside.2856
-be_else.32509:
-    bne     $i2, 0, be_else.32511
-be_then.32511:
+be_else.21867:
+    bne     $i2, 0, be_else.21869
+be_then.21869:
     add     $i1, 1, $i1
     b       check_all_inside.2856
-be_else.32511:
+be_else.21869:
     li      0, $i1
     ret
-be_else.32505:
+be_else.21863:
     load    [$i2 + 6], $i4
-    bne     $i7, 2, be_else.32512
-be_then.32512:
+    bne     $i5, 2, be_else.21870
+be_then.21870:
     load    [$i2 + 4], $i2
     load    [$i2 + 0], $f7
     fmul    $f7, $f1, $f1
@@ -4114,467 +3460,447 @@ be_then.32512:
     load    [$i2 + 2], $f5
     fmul    $f5, $f6, $f5
     fadd    $f1, $f5, $f1
-    bg      $f0, $f1, ble_else.32513
-ble_then.32513:
-    bne     $i4, 0, be_else.32514
-be_then.32514:
+    bg      $f0, $f1, ble_else.21871
+ble_then.21871:
+    bne     $i4, 0, be_else.21872
+be_then.21872:
     li      0, $i1
     ret
-be_else.32514:
+be_else.21872:
     add     $i1, 1, $i1
     b       check_all_inside.2856
-ble_else.32513:
-    bne     $i4, 0, be_else.32515
-be_then.32515:
+ble_else.21871:
+    bne     $i4, 0, be_else.21873
+be_then.21873:
     add     $i1, 1, $i1
     b       check_all_inside.2856
-be_else.32515:
+be_else.21873:
     li      0, $i1
     ret
-be_else.32512:
-    load    [$i2 + 4], $i5
+be_else.21870:
     load    [$i2 + 4], $i6
-    load    [$i2 + 4], $i8
-    load    [$i2 + 3], $i9
+    load    [$i2 + 3], $i7
     fmul    $f1, $f1, $f7
-    load    [$i5 + 0], $f8
+    load    [$i6 + 0], $f8
     fmul    $f7, $f8, $f7
     fmul    $f5, $f5, $f8
     load    [$i6 + 1], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f6, $f6, $f8
-    load    [$i8 + 2], $f9
+    load    [$i6 + 2], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
-    bne     $i9, 0, be_else.32516
-be_then.32516:
+    bne     $i7, 0, be_else.21874
+be_then.21874:
     mov     $f7, $f1
 .count b_cont
-    b       be_cont.32516
-be_else.32516:
+    b       be_cont.21874
+be_else.21874:
     fmul    $f5, $f6, $f8
-    load    [$i2 + 9], $i5
-    load    [$i5 + 0], $f9
+    load    [$i2 + 9], $i2
+    load    [$i2 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f6, $f1, $f6
-    load    [$i2 + 9], $i5
-    load    [$i5 + 1], $f8
+    load    [$i2 + 1], $f8
     fmul    $f6, $f8, $f6
     fadd    $f7, $f6, $f6
     fmul    $f1, $f5, $f1
-    load    [$i2 + 9], $i2
     load    [$i2 + 2], $f5
     fmul    $f1, $f5, $f1
     fadd    $f6, $f1, $f1
-be_cont.32516:
-    bne     $i7, 3, be_cont.32517
-be_then.32517:
+be_cont.21874:
+    bne     $i5, 3, be_cont.21875
+be_then.21875:
     fsub    $f1, $fc0, $f1
-be_cont.32517:
-    bg      $f0, $f1, ble_else.32518
-ble_then.32518:
-    bne     $i4, 0, be_else.32519
-be_then.32519:
+be_cont.21875:
+    bg      $f0, $f1, ble_else.21876
+ble_then.21876:
+    bne     $i4, 0, be_else.21877
+be_then.21877:
     li      0, $i1
     ret
-be_else.32519:
+be_else.21877:
     add     $i1, 1, $i1
     b       check_all_inside.2856
-ble_else.32518:
-    bne     $i4, 0, be_else.32520
-be_then.32520:
+ble_else.21876:
+    bne     $i4, 0, be_else.21878
+be_then.21878:
     add     $i1, 1, $i1
     b       check_all_inside.2856
-be_else.32520:
+be_else.21878:
     li      0, $i1
     ret
-be_else.32503:
-    li      0, $i1                      # |     56,480 |     56,480 |
-    ret                                 # |     56,480 |     56,480 |
-be_else.32485:
-    li      0, $i1                      # |    186,694 |    186,694 |
-    ret                                 # |    186,694 |    186,694 |
-be_else.32467:
-    li      0, $i1                      # |    455,209 |    455,209 |
-    ret                                 # |    455,209 |    455,209 |
+be_else.21861:
+    li      0, $i1                      # |     56,515 |     56,515 |
+    ret                                 # |     56,515 |     56,515 |
+be_else.21843:
+    li      0, $i1                      # |    186,852 |    186,852 |
+    ret                                 # |    186,852 |    186,852 |
+be_else.21825:
+    li      0, $i1                      # |    455,323 |    455,323 |
+    ret                                 # |    455,323 |    455,323 |
 .end check_all_inside
 
 ######################################################################
-# $i1 = shadow_check_and_group($i10, $i11)
+# $i1 = shadow_check_and_group($i8, $i9)
 # $ra = $ra1
-# [$i1 - $i11]
+# [$i1 - $i9]
 # [$f1 - $f9]
 # []
 # [$fg0]
+# [$ra]
 ######################################################################
 .begin shadow_check_and_group
 shadow_check_and_group.2862:
-    load    [$i11 + $i10], $i1          # |  4,222,772 |  4,222,772 |
-    bne     $i1, -1, be_else.32521      # |  4,222,772 |  4,222,772 |
-be_then.32521:
-    li      0, $i1                      # |    627,857 |    627,857 |
-    jr      $ra1                        # |    627,857 |    627,857 |
-be_else.32521:
-    load    [ext_objects + $i1], $i2    # |  3,594,915 |  3,594,915 |
-    load    [$i2 + 5], $i3              # |  3,594,915 |  3,594,915 |
-    load    [$i2 + 5], $i4              # |  3,594,915 |  3,594,915 |
-    load    [$i2 + 5], $i5              # |  3,594,915 |  3,594,915 |
-    load    [ext_light_dirvec + 1], $i6 # |  3,594,915 |  3,594,915 |
-    load    [$i2 + 1], $i7              # |  3,594,915 |  3,594,915 |
-    load    [ext_intersection_point + 0], $f1# |  3,594,915 |  3,594,915 |
-    load    [$i3 + 0], $f2              # |  3,594,915 |  3,594,915 |
-    fsub    $f1, $f2, $f1               # |  3,594,915 |  3,594,915 |
-    load    [ext_intersection_point + 1], $f2# |  3,594,915 |  3,594,915 |
-    load    [$i4 + 1], $f3              # |  3,594,915 |  3,594,915 |
-    fsub    $f2, $f3, $f2               # |  3,594,915 |  3,594,915 |
-    load    [ext_intersection_point + 2], $f3# |  3,594,915 |  3,594,915 |
-    load    [$i5 + 2], $f4              # |  3,594,915 |  3,594,915 |
-    fsub    $f3, $f4, $f3               # |  3,594,915 |  3,594,915 |
-    load    [$i6 + $i1], $i3            # |  3,594,915 |  3,594,915 |
-    bne     $i7, 1, be_else.32522       # |  3,594,915 |  3,594,915 |
-be_then.32522:
-    load    [ext_light_dirvec + 0], $i4 # |  1,409,409 |  1,409,409 |
-    load    [$i2 + 4], $i5              # |  1,409,409 |  1,409,409 |
-    load    [$i5 + 1], $f4              # |  1,409,409 |  1,409,409 |
-    load    [$i4 + 1], $f5              # |  1,409,409 |  1,409,409 |
-    load    [$i3 + 0], $f6              # |  1,409,409 |  1,409,409 |
-    fsub    $f6, $f1, $f6               # |  1,409,409 |  1,409,409 |
-    load    [$i3 + 1], $f7              # |  1,409,409 |  1,409,409 |
-    fmul    $f6, $f7, $f6               # |  1,409,409 |  1,409,409 |
-    fmul    $f6, $f5, $f5               # |  1,409,409 |  1,409,409 |
-    fadd_a  $f5, $f2, $f5               # |  1,409,409 |  1,409,409 |
-    bg      $f4, $f5, ble_else.32523    # |  1,409,409 |  1,409,409 |
-ble_then.32523:
-    li      0, $i5                      # |    998,347 |    998,347 |
+    load    [$i9 + $i8], $i1            # |  4,223,804 |  4,223,804 |
+    bne     $i1, -1, be_else.21879      # |  4,223,804 |  4,223,804 |
+be_then.21879:
+    li      0, $i1                      # |    627,950 |    627,950 |
+    jr      $ra1                        # |    627,950 |    627,950 |
+be_else.21879:
+    load    [ext_objects + $i1], $i2    # |  3,595,854 |  3,595,854 |
+    load    [$i2 + 5], $i3              # |  3,595,854 |  3,595,854 |
+    load    [ext_light_dirvec + 1], $i4 # |  3,595,854 |  3,595,854 |
+    load    [$i2 + 1], $i5              # |  3,595,854 |  3,595,854 |
+    load    [ext_intersection_point + 0], $f1# |  3,595,854 |  3,595,854 |
+    load    [$i3 + 0], $f2              # |  3,595,854 |  3,595,854 |
+    fsub    $f1, $f2, $f1               # |  3,595,854 |  3,595,854 |
+    load    [ext_intersection_point + 1], $f2# |  3,595,854 |  3,595,854 |
+    load    [$i3 + 1], $f3              # |  3,595,854 |  3,595,854 |
+    fsub    $f2, $f3, $f2               # |  3,595,854 |  3,595,854 |
+    load    [ext_intersection_point + 2], $f3# |  3,595,854 |  3,595,854 |
+    load    [$i3 + 2], $f4              # |  3,595,854 |  3,595,854 |
+    fsub    $f3, $f4, $f3               # |  3,595,854 |  3,595,854 |
+    load    [$i4 + $i1], $i3            # |  3,595,854 |  3,595,854 |
+    bne     $i5, 1, be_else.21880       # |  3,595,854 |  3,595,854 |
+be_then.21880:
+    load    [ext_light_dirvec + 0], $i4 # |  1,410,052 |  1,410,052 |
+    load    [$i2 + 4], $i2              # |  1,410,052 |  1,410,052 |
+    load    [$i2 + 1], $f4              # |  1,410,052 |  1,410,052 |
+    load    [$i4 + 1], $f5              # |  1,410,052 |  1,410,052 |
+    load    [$i3 + 0], $f6              # |  1,410,052 |  1,410,052 |
+    fsub    $f6, $f1, $f6               # |  1,410,052 |  1,410,052 |
+    load    [$i3 + 1], $f7              # |  1,410,052 |  1,410,052 |
+    fmul    $f6, $f7, $f6               # |  1,410,052 |  1,410,052 |
+    fmul    $f6, $f5, $f5               # |  1,410,052 |  1,410,052 |
+    fadd_a  $f5, $f2, $f5               # |  1,410,052 |  1,410,052 |
+    bg      $f4, $f5, ble_else.21881    # |  1,410,052 |  1,410,052 |
+ble_then.21881:
+    li      0, $i5                      # |    998,548 |    998,548 |
 .count b_cont
-    b       ble_cont.32523              # |    998,347 |    998,347 |
-ble_else.32523:
-    load    [$i2 + 4], $i5              # |    411,062 |    411,062 |
-    load    [$i5 + 2], $f4              # |    411,062 |    411,062 |
-    load    [$i4 + 2], $f5              # |    411,062 |    411,062 |
-    fmul    $f6, $f5, $f5               # |    411,062 |    411,062 |
-    fadd_a  $f5, $f3, $f5               # |    411,062 |    411,062 |
-    bg      $f4, $f5, ble_else.32524    # |    411,062 |    411,062 |
-ble_then.32524:
-    li      0, $i5                      # |    136,251 |    136,251 |
+    b       ble_cont.21881              # |    998,548 |    998,548 |
+ble_else.21881:
+    load    [$i2 + 2], $f4              # |    411,504 |    411,504 |
+    load    [$i4 + 2], $f5              # |    411,504 |    411,504 |
+    fmul    $f6, $f5, $f5               # |    411,504 |    411,504 |
+    fadd_a  $f5, $f3, $f5               # |    411,504 |    411,504 |
+    bg      $f4, $f5, ble_else.21882    # |    411,504 |    411,504 |
+ble_then.21882:
+    li      0, $i5                      # |    136,398 |    136,398 |
 .count b_cont
-    b       ble_cont.32524              # |    136,251 |    136,251 |
-ble_else.32524:
-    load    [$i3 + 1], $f4              # |    274,811 |    274,811 |
-    bne     $f4, $f0, be_else.32525     # |    274,811 |    274,811 |
-be_then.32525:
+    b       ble_cont.21882              # |    136,398 |    136,398 |
+ble_else.21882:
+    load    [$i3 + 1], $f4              # |    275,106 |    275,106 |
+    bne     $f4, $f0, be_else.21883     # |    275,106 |    275,106 |
+be_then.21883:
     li      0, $i5
 .count b_cont
-    b       be_cont.32525
-be_else.32525:
-    li      1, $i5                      # |    274,811 |    274,811 |
-be_cont.32525:
-ble_cont.32524:
-ble_cont.32523:
-    bne     $i5, 0, be_else.32526       # |  1,409,409 |  1,409,409 |
-be_then.32526:
-    load    [$i2 + 4], $i5              # |  1,134,598 |  1,134,598 |
-    load    [$i5 + 0], $f4              # |  1,134,598 |  1,134,598 |
-    load    [$i4 + 0], $f5              # |  1,134,598 |  1,134,598 |
-    load    [$i3 + 2], $f6              # |  1,134,598 |  1,134,598 |
-    fsub    $f6, $f2, $f6               # |  1,134,598 |  1,134,598 |
-    load    [$i3 + 3], $f7              # |  1,134,598 |  1,134,598 |
-    fmul    $f6, $f7, $f6               # |  1,134,598 |  1,134,598 |
-    fmul    $f6, $f5, $f5               # |  1,134,598 |  1,134,598 |
-    fadd_a  $f5, $f1, $f5               # |  1,134,598 |  1,134,598 |
-    bg      $f4, $f5, ble_else.32527    # |  1,134,598 |  1,134,598 |
-ble_then.32527:
-    li      0, $i5                      # |    632,414 |    632,414 |
+    b       be_cont.21883
+be_else.21883:
+    li      1, $i5                      # |    275,106 |    275,106 |
+be_cont.21883:
+ble_cont.21882:
+ble_cont.21881:
+    bne     $i5, 0, be_else.21884       # |  1,410,052 |  1,410,052 |
+be_then.21884:
+    load    [$i2 + 0], $f4              # |  1,134,946 |  1,134,946 |
+    load    [$i4 + 0], $f5              # |  1,134,946 |  1,134,946 |
+    load    [$i3 + 2], $f6              # |  1,134,946 |  1,134,946 |
+    fsub    $f6, $f2, $f6               # |  1,134,946 |  1,134,946 |
+    load    [$i3 + 3], $f7              # |  1,134,946 |  1,134,946 |
+    fmul    $f6, $f7, $f6               # |  1,134,946 |  1,134,946 |
+    fmul    $f6, $f5, $f5               # |  1,134,946 |  1,134,946 |
+    fadd_a  $f5, $f1, $f5               # |  1,134,946 |  1,134,946 |
+    bg      $f4, $f5, ble_else.21885    # |  1,134,946 |  1,134,946 |
+ble_then.21885:
+    li      0, $i5                      # |    632,680 |    632,680 |
 .count b_cont
-    b       ble_cont.32527              # |    632,414 |    632,414 |
-ble_else.32527:
-    load    [$i2 + 4], $i5              # |    502,184 |    502,184 |
-    load    [$i5 + 2], $f4              # |    502,184 |    502,184 |
-    load    [$i4 + 2], $f5              # |    502,184 |    502,184 |
-    fmul    $f6, $f5, $f5               # |    502,184 |    502,184 |
-    fadd_a  $f5, $f3, $f5               # |    502,184 |    502,184 |
-    bg      $f4, $f5, ble_else.32528    # |    502,184 |    502,184 |
-ble_then.32528:
-    li      0, $i5                      # |    138,902 |    138,902 |
+    b       ble_cont.21885              # |    632,680 |    632,680 |
+ble_else.21885:
+    load    [$i2 + 2], $f4              # |    502,266 |    502,266 |
+    load    [$i4 + 2], $f5              # |    502,266 |    502,266 |
+    fmul    $f6, $f5, $f5               # |    502,266 |    502,266 |
+    fadd_a  $f5, $f3, $f5               # |    502,266 |    502,266 |
+    bg      $f4, $f5, ble_else.21886    # |    502,266 |    502,266 |
+ble_then.21886:
+    li      0, $i5                      # |    139,036 |    139,036 |
 .count b_cont
-    b       ble_cont.32528              # |    138,902 |    138,902 |
-ble_else.32528:
-    load    [$i3 + 3], $f4              # |    363,282 |    363,282 |
-    bne     $f4, $f0, be_else.32529     # |    363,282 |    363,282 |
-be_then.32529:
+    b       ble_cont.21886              # |    139,036 |    139,036 |
+ble_else.21886:
+    load    [$i3 + 3], $f4              # |    363,230 |    363,230 |
+    bne     $f4, $f0, be_else.21887     # |    363,230 |    363,230 |
+be_then.21887:
     li      0, $i5
 .count b_cont
-    b       be_cont.32529
-be_else.32529:
-    li      1, $i5                      # |    363,282 |    363,282 |
-be_cont.32529:
-ble_cont.32528:
-ble_cont.32527:
-    bne     $i5, 0, be_else.32530       # |  1,134,598 |  1,134,598 |
-be_then.32530:
-    load    [$i2 + 4], $i5              # |    771,316 |    771,316 |
-    load    [$i5 + 0], $f4              # |    771,316 |    771,316 |
-    load    [$i4 + 0], $f5              # |    771,316 |    771,316 |
-    load    [$i3 + 4], $f6              # |    771,316 |    771,316 |
-    fsub    $f6, $f3, $f3               # |    771,316 |    771,316 |
-    load    [$i3 + 5], $f6              # |    771,316 |    771,316 |
-    fmul    $f3, $f6, $f3               # |    771,316 |    771,316 |
-    fmul    $f3, $f5, $f5               # |    771,316 |    771,316 |
-    fadd_a  $f5, $f1, $f1               # |    771,316 |    771,316 |
-    bg      $f4, $f1, ble_else.32531    # |    771,316 |    771,316 |
-ble_then.32531:
-    li      0, $i2                      # |    642,019 |    642,019 |
+    b       be_cont.21887
+be_else.21887:
+    li      1, $i5                      # |    363,230 |    363,230 |
+be_cont.21887:
+ble_cont.21886:
+ble_cont.21885:
+    bne     $i5, 0, be_else.21888       # |  1,134,946 |  1,134,946 |
+be_then.21888:
+    load    [$i2 + 0], $f4              # |    771,716 |    771,716 |
+    load    [$i4 + 0], $f5              # |    771,716 |    771,716 |
+    load    [$i3 + 4], $f6              # |    771,716 |    771,716 |
+    fsub    $f6, $f3, $f3               # |    771,716 |    771,716 |
+    load    [$i3 + 5], $f6              # |    771,716 |    771,716 |
+    fmul    $f3, $f6, $f3               # |    771,716 |    771,716 |
+    fmul    $f3, $f5, $f5               # |    771,716 |    771,716 |
+    fadd_a  $f5, $f1, $f1               # |    771,716 |    771,716 |
+    bg      $f4, $f1, ble_else.21889    # |    771,716 |    771,716 |
+ble_then.21889:
+    li      0, $i2                      # |    642,375 |    642,375 |
 .count b_cont
-    b       be_cont.32522               # |    642,019 |    642,019 |
-ble_else.32531:
-    load    [$i2 + 4], $i2              # |    129,297 |    129,297 |
-    load    [$i2 + 1], $f1              # |    129,297 |    129,297 |
-    load    [$i4 + 1], $f4              # |    129,297 |    129,297 |
-    fmul    $f3, $f4, $f4               # |    129,297 |    129,297 |
-    fadd_a  $f4, $f2, $f2               # |    129,297 |    129,297 |
-    bg      $f1, $f2, ble_else.32532    # |    129,297 |    129,297 |
-ble_then.32532:
-    li      0, $i2                      # |     78,455 |     78,455 |
+    b       be_cont.21880               # |    642,375 |    642,375 |
+ble_else.21889:
+    load    [$i2 + 1], $f1              # |    129,341 |    129,341 |
+    load    [$i4 + 1], $f4              # |    129,341 |    129,341 |
+    fmul    $f3, $f4, $f4               # |    129,341 |    129,341 |
+    fadd_a  $f4, $f2, $f2               # |    129,341 |    129,341 |
+    bg      $f1, $f2, ble_else.21890    # |    129,341 |    129,341 |
+ble_then.21890:
+    li      0, $i2                      # |     78,458 |     78,458 |
 .count b_cont
-    b       be_cont.32522               # |     78,455 |     78,455 |
-ble_else.32532:
-    load    [$i3 + 5], $f1              # |     50,842 |     50,842 |
-    bne     $f1, $f0, be_else.32533     # |     50,842 |     50,842 |
-be_then.32533:
+    b       be_cont.21880               # |     78,458 |     78,458 |
+ble_else.21890:
+    load    [$i3 + 5], $f1              # |     50,883 |     50,883 |
+    bne     $f1, $f0, be_else.21891     # |     50,883 |     50,883 |
+be_then.21891:
     li      0, $i2
 .count b_cont
-    b       be_cont.32522
-be_else.32533:
-    mov     $f3, $fg0                   # |     50,842 |     50,842 |
-    li      3, $i2                      # |     50,842 |     50,842 |
+    b       be_cont.21880
+be_else.21891:
+    mov     $f3, $fg0                   # |     50,883 |     50,883 |
+    li      3, $i2                      # |     50,883 |     50,883 |
 .count b_cont
-    b       be_cont.32522               # |     50,842 |     50,842 |
-be_else.32530:
-    mov     $f6, $fg0                   # |    363,282 |    363,282 |
-    li      2, $i2                      # |    363,282 |    363,282 |
+    b       be_cont.21880               # |     50,883 |     50,883 |
+be_else.21888:
+    mov     $f6, $fg0                   # |    363,230 |    363,230 |
+    li      2, $i2                      # |    363,230 |    363,230 |
 .count b_cont
-    b       be_cont.32522               # |    363,282 |    363,282 |
-be_else.32526:
-    mov     $f6, $fg0                   # |    274,811 |    274,811 |
-    li      1, $i2                      # |    274,811 |    274,811 |
+    b       be_cont.21880               # |    363,230 |    363,230 |
+be_else.21884:
+    mov     $f6, $fg0                   # |    275,106 |    275,106 |
+    li      1, $i2                      # |    275,106 |    275,106 |
 .count b_cont
-    b       be_cont.32522               # |    274,811 |    274,811 |
-be_else.32522:
-    load    [$i3 + 0], $f4              # |  2,185,506 |  2,185,506 |
-    bne     $i7, 2, be_else.32534       # |  2,185,506 |  2,185,506 |
-be_then.32534:
-    bg      $f0, $f4, ble_else.32535    # |    566,355 |    566,355 |
-ble_then.32535:
-    li      0, $i2                      # |     11,416 |     11,416 |
+    b       be_cont.21880               # |    275,106 |    275,106 |
+be_else.21880:
+    load    [$i3 + 0], $f4              # |  2,185,802 |  2,185,802 |
+    bne     $i5, 2, be_else.21892       # |  2,185,802 |  2,185,802 |
+be_then.21892:
+    bg      $f0, $f4, ble_else.21893    # |    566,304 |    566,304 |
+ble_then.21893:
+    li      0, $i2                      # |     11,417 |     11,417 |
 .count b_cont
-    b       be_cont.32534               # |     11,416 |     11,416 |
-ble_else.32535:
-    load    [$i3 + 1], $f4              # |    554,939 |    554,939 |
-    fmul    $f4, $f1, $f1               # |    554,939 |    554,939 |
-    load    [$i3 + 2], $f4              # |    554,939 |    554,939 |
-    fmul    $f4, $f2, $f2               # |    554,939 |    554,939 |
-    fadd    $f1, $f2, $f1               # |    554,939 |    554,939 |
-    load    [$i3 + 3], $f2              # |    554,939 |    554,939 |
-    fmul    $f2, $f3, $f2               # |    554,939 |    554,939 |
-    fadd    $f1, $f2, $fg0              # |    554,939 |    554,939 |
-    li      1, $i2                      # |    554,939 |    554,939 |
+    b       be_cont.21892               # |     11,417 |     11,417 |
+ble_else.21893:
+    load    [$i3 + 1], $f4              # |    554,887 |    554,887 |
+    fmul    $f4, $f1, $f1               # |    554,887 |    554,887 |
+    load    [$i3 + 2], $f4              # |    554,887 |    554,887 |
+    fmul    $f4, $f2, $f2               # |    554,887 |    554,887 |
+    fadd    $f1, $f2, $f1               # |    554,887 |    554,887 |
+    load    [$i3 + 3], $f2              # |    554,887 |    554,887 |
+    fmul    $f2, $f3, $f2               # |    554,887 |    554,887 |
+    fadd    $f1, $f2, $fg0              # |    554,887 |    554,887 |
+    li      1, $i2                      # |    554,887 |    554,887 |
 .count b_cont
-    b       be_cont.32534               # |    554,939 |    554,939 |
-be_else.32534:
-    bne     $f4, $f0, be_else.32536     # |  1,619,151 |  1,619,151 |
-be_then.32536:
+    b       be_cont.21892               # |    554,887 |    554,887 |
+be_else.21892:
+    bne     $f4, $f0, be_else.21894     # |  1,619,498 |  1,619,498 |
+be_then.21894:
     li      0, $i2
 .count b_cont
-    b       be_cont.32536
-be_else.32536:
-    load    [$i3 + 1], $f5              # |  1,619,151 |  1,619,151 |
-    fmul    $f5, $f1, $f5               # |  1,619,151 |  1,619,151 |
-    load    [$i3 + 2], $f6              # |  1,619,151 |  1,619,151 |
-    fmul    $f6, $f2, $f6               # |  1,619,151 |  1,619,151 |
-    fadd    $f5, $f6, $f5               # |  1,619,151 |  1,619,151 |
-    load    [$i3 + 3], $f6              # |  1,619,151 |  1,619,151 |
-    fmul    $f6, $f3, $f6               # |  1,619,151 |  1,619,151 |
-    fadd    $f5, $f6, $f5               # |  1,619,151 |  1,619,151 |
-    fmul    $f5, $f5, $f6               # |  1,619,151 |  1,619,151 |
-    fmul    $f1, $f1, $f7               # |  1,619,151 |  1,619,151 |
-    load    [$i2 + 4], $i4              # |  1,619,151 |  1,619,151 |
-    load    [$i4 + 0], $f8              # |  1,619,151 |  1,619,151 |
-    fmul    $f7, $f8, $f7               # |  1,619,151 |  1,619,151 |
-    fmul    $f2, $f2, $f8               # |  1,619,151 |  1,619,151 |
-    load    [$i2 + 4], $i4              # |  1,619,151 |  1,619,151 |
-    load    [$i4 + 1], $f9              # |  1,619,151 |  1,619,151 |
-    fmul    $f8, $f9, $f8               # |  1,619,151 |  1,619,151 |
-    fadd    $f7, $f8, $f7               # |  1,619,151 |  1,619,151 |
-    fmul    $f3, $f3, $f8               # |  1,619,151 |  1,619,151 |
-    load    [$i2 + 4], $i4              # |  1,619,151 |  1,619,151 |
-    load    [$i4 + 2], $f9              # |  1,619,151 |  1,619,151 |
-    fmul    $f8, $f9, $f8               # |  1,619,151 |  1,619,151 |
-    fadd    $f7, $f8, $f7               # |  1,619,151 |  1,619,151 |
-    load    [$i2 + 3], $i4              # |  1,619,151 |  1,619,151 |
-    bne     $i4, 0, be_else.32537       # |  1,619,151 |  1,619,151 |
-be_then.32537:
-    mov     $f7, $f1                    # |  1,619,151 |  1,619,151 |
+    b       be_cont.21894
+be_else.21894:
+    load    [$i3 + 1], $f5              # |  1,619,498 |  1,619,498 |
+    fmul    $f5, $f1, $f5               # |  1,619,498 |  1,619,498 |
+    load    [$i3 + 2], $f6              # |  1,619,498 |  1,619,498 |
+    fmul    $f6, $f2, $f6               # |  1,619,498 |  1,619,498 |
+    fadd    $f5, $f6, $f5               # |  1,619,498 |  1,619,498 |
+    load    [$i3 + 3], $f6              # |  1,619,498 |  1,619,498 |
+    fmul    $f6, $f3, $f6               # |  1,619,498 |  1,619,498 |
+    fadd    $f5, $f6, $f5               # |  1,619,498 |  1,619,498 |
+    fmul    $f5, $f5, $f6               # |  1,619,498 |  1,619,498 |
+    fmul    $f1, $f1, $f7               # |  1,619,498 |  1,619,498 |
+    load    [$i2 + 4], $i4              # |  1,619,498 |  1,619,498 |
+    load    [$i4 + 0], $f8              # |  1,619,498 |  1,619,498 |
+    fmul    $f7, $f8, $f7               # |  1,619,498 |  1,619,498 |
+    fmul    $f2, $f2, $f8               # |  1,619,498 |  1,619,498 |
+    load    [$i4 + 1], $f9              # |  1,619,498 |  1,619,498 |
+    fmul    $f8, $f9, $f8               # |  1,619,498 |  1,619,498 |
+    fadd    $f7, $f8, $f7               # |  1,619,498 |  1,619,498 |
+    fmul    $f3, $f3, $f8               # |  1,619,498 |  1,619,498 |
+    load    [$i4 + 2], $f9              # |  1,619,498 |  1,619,498 |
+    fmul    $f8, $f9, $f8               # |  1,619,498 |  1,619,498 |
+    fadd    $f7, $f8, $f7               # |  1,619,498 |  1,619,498 |
+    load    [$i2 + 3], $i4              # |  1,619,498 |  1,619,498 |
+    bne     $i4, 0, be_else.21895       # |  1,619,498 |  1,619,498 |
+be_then.21895:
+    mov     $f7, $f1                    # |  1,619,498 |  1,619,498 |
 .count b_cont
-    b       be_cont.32537               # |  1,619,151 |  1,619,151 |
-be_else.32537:
+    b       be_cont.21895               # |  1,619,498 |  1,619,498 |
+be_else.21895:
     fmul    $f2, $f3, $f8
     load    [$i2 + 9], $i4
     load    [$i4 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f3, $f1, $f3
-    load    [$i2 + 9], $i4
     load    [$i4 + 1], $f8
     fmul    $f3, $f8, $f3
     fadd    $f7, $f3, $f3
     fmul    $f1, $f2, $f1
-    load    [$i2 + 9], $i4
     load    [$i4 + 2], $f2
     fmul    $f1, $f2, $f1
     fadd    $f3, $f1, $f1
-be_cont.32537:
-    bne     $i7, 3, be_cont.32538       # |  1,619,151 |  1,619,151 |
-be_then.32538:
-    fsub    $f1, $fc0, $f1              # |  1,619,151 |  1,619,151 |
-be_cont.32538:
-    fmul    $f4, $f1, $f1               # |  1,619,151 |  1,619,151 |
-    fsub    $f6, $f1, $f1               # |  1,619,151 |  1,619,151 |
-    bg      $f1, $f0, ble_else.32539    # |  1,619,151 |  1,619,151 |
-ble_then.32539:
-    li      0, $i2                      # |  1,270,619 |  1,270,619 |
+be_cont.21895:
+    bne     $i5, 3, be_cont.21896       # |  1,619,498 |  1,619,498 |
+be_then.21896:
+    fsub    $f1, $fc0, $f1              # |  1,619,498 |  1,619,498 |
+be_cont.21896:
+    fmul    $f4, $f1, $f1               # |  1,619,498 |  1,619,498 |
+    fsub    $f6, $f1, $f1               # |  1,619,498 |  1,619,498 |
+    bg      $f1, $f0, ble_else.21897    # |  1,619,498 |  1,619,498 |
+ble_then.21897:
+    li      0, $i2                      # |  1,270,514 |  1,270,514 |
 .count b_cont
-    b       ble_cont.32539              # |  1,270,619 |  1,270,619 |
-ble_else.32539:
-    load    [$i2 + 6], $i2              # |    348,532 |    348,532 |
-    load    [$i3 + 4], $f2              # |    348,532 |    348,532 |
-    fsqrt   $f1, $f1                    # |    348,532 |    348,532 |
-    bne     $i2, 0, be_else.32540       # |    348,532 |    348,532 |
-be_then.32540:
-    fsub    $f5, $f1, $f1               # |    278,489 |    278,489 |
-    fmul    $f1, $f2, $fg0              # |    278,489 |    278,489 |
-    li      1, $i2                      # |    278,489 |    278,489 |
+    b       ble_cont.21897              # |  1,270,514 |  1,270,514 |
+ble_else.21897:
+    load    [$i2 + 6], $i2              # |    348,984 |    348,984 |
+    load    [$i3 + 4], $f2              # |    348,984 |    348,984 |
+    fsqrt   $f1, $f1                    # |    348,984 |    348,984 |
+    bne     $i2, 0, be_else.21898       # |    348,984 |    348,984 |
+be_then.21898:
+    fsub    $f5, $f1, $f1               # |    278,797 |    278,797 |
+    fmul    $f1, $f2, $fg0              # |    278,797 |    278,797 |
+    li      1, $i2                      # |    278,797 |    278,797 |
 .count b_cont
-    b       be_cont.32540               # |    278,489 |    278,489 |
-be_else.32540:
-    fadd    $f5, $f1, $f1               # |     70,043 |     70,043 |
-    fmul    $f1, $f2, $fg0              # |     70,043 |     70,043 |
-    li      1, $i2                      # |     70,043 |     70,043 |
-be_cont.32540:
-ble_cont.32539:
-be_cont.32536:
-be_cont.32534:
-be_cont.32522:
-    bne     $i2, 0, be_else.32541       # |  3,594,915 |  3,594,915 |
-be_then.32541:
-    li      0, $i2                      # |  2,002,509 |  2,002,509 |
+    b       be_cont.21898               # |    278,797 |    278,797 |
+be_else.21898:
+    fadd    $f5, $f1, $f1               # |     70,187 |     70,187 |
+    fmul    $f1, $f2, $fg0              # |     70,187 |     70,187 |
+    li      1, $i2                      # |     70,187 |     70,187 |
+be_cont.21898:
+ble_cont.21897:
+be_cont.21894:
+be_cont.21892:
+be_cont.21880:
+    bne     $i2, 0, be_else.21899       # |  3,595,854 |  3,595,854 |
+be_then.21899:
+    li      0, $i2                      # |  2,002,764 |  2,002,764 |
 .count b_cont
-    b       be_cont.32541               # |  2,002,509 |  2,002,509 |
-be_else.32541:
+    b       be_cont.21899               # |  2,002,764 |  2,002,764 |
+be_else.21899:
 .count load_float
-    load    [f.31944], $f1              # |  1,592,406 |  1,592,406 |
-    bg      $f1, $fg0, ble_else.32542   # |  1,592,406 |  1,592,406 |
-ble_then.32542:
-    li      0, $i2                      # |  1,029,338 |  1,029,338 |
+    load    [f.21525], $f1              # |  1,593,090 |  1,593,090 |
+    bg      $f1, $fg0, ble_else.21900   # |  1,593,090 |  1,593,090 |
+ble_then.21900:
+    li      0, $i2                      # |  1,029,398 |  1,029,398 |
 .count b_cont
-    b       ble_cont.32542              # |  1,029,338 |  1,029,338 |
-ble_else.32542:
-    li      1, $i2                      # |    563,068 |    563,068 |
-ble_cont.32542:
-be_cont.32541:
-    bne     $i2, 0, be_else.32543       # |  3,594,915 |  3,594,915 |
-be_then.32543:
-    load    [ext_objects + $i1], $i1    # |  3,031,847 |  3,031,847 |
-    load    [$i1 + 6], $i1              # |  3,031,847 |  3,031,847 |
-    bne     $i1, 0, be_else.32544       # |  3,031,847 |  3,031,847 |
-be_then.32544:
-    li      0, $i1                      # |  2,406,042 |  2,406,042 |
-    jr      $ra1                        # |  2,406,042 |  2,406,042 |
-be_else.32544:
-    add     $i10, 1, $i10               # |    625,805 |    625,805 |
-    b       shadow_check_and_group.2862 # |    625,805 |    625,805 |
-be_else.32543:
-    load    [$i11 + 0], $i1             # |    563,068 |    563,068 |
-    bne     $i1, -1, be_else.32545      # |    563,068 |    563,068 |
-be_then.32545:
+    b       ble_cont.21900              # |  1,029,398 |  1,029,398 |
+ble_else.21900:
+    li      1, $i2                      # |    563,692 |    563,692 |
+ble_cont.21900:
+be_cont.21899:
+    bne     $i2, 0, be_else.21901       # |  3,595,854 |  3,595,854 |
+be_then.21901:
+    load    [ext_objects + $i1], $i1    # |  3,032,162 |  3,032,162 |
+    load    [$i1 + 6], $i1              # |  3,032,162 |  3,032,162 |
+    bne     $i1, 0, be_else.21902       # |  3,032,162 |  3,032,162 |
+be_then.21902:
+    li      0, $i1                      # |  2,406,264 |  2,406,264 |
+    jr      $ra1                        # |  2,406,264 |  2,406,264 |
+be_else.21902:
+    add     $i8, 1, $i8                 # |    625,898 |    625,898 |
+    b       shadow_check_and_group.2862 # |    625,898 |    625,898 |
+be_else.21901:
+    load    [$i9 + 0], $i1              # |    563,692 |    563,692 |
+    bne     $i1, -1, be_else.21903      # |    563,692 |    563,692 |
+be_then.21903:
     li      1, $i1
     jr      $ra1
-be_else.32545:
-    load    [ext_objects + $i1], $i1    # |    563,068 |    563,068 |
-    load    [$i1 + 5], $i2              # |    563,068 |    563,068 |
-    load    [$i1 + 5], $i3              # |    563,068 |    563,068 |
-    load    [$i1 + 5], $i4              # |    563,068 |    563,068 |
-    load    [$i1 + 1], $i5              # |    563,068 |    563,068 |
-    load    [$i2 + 0], $f1              # |    563,068 |    563,068 |
-    fadd    $fg0, $fc16, $f2            # |    563,068 |    563,068 |
-    fmul    $fg12, $f2, $f3             # |    563,068 |    563,068 |
-    load    [ext_intersection_point + 0], $f4# |    563,068 |    563,068 |
-    fadd    $f3, $f4, $f5               # |    563,068 |    563,068 |
-    fsub    $f5, $f1, $f1               # |    563,068 |    563,068 |
-    load    [$i3 + 1], $f3              # |    563,068 |    563,068 |
-    fmul    $fg13, $f2, $f4             # |    563,068 |    563,068 |
-    load    [ext_intersection_point + 1], $f6# |    563,068 |    563,068 |
-    fadd    $f4, $f6, $f6               # |    563,068 |    563,068 |
-    fsub    $f6, $f3, $f3               # |    563,068 |    563,068 |
-    load    [$i4 + 2], $f4              # |    563,068 |    563,068 |
-    fmul    $fg14, $f2, $f2             # |    563,068 |    563,068 |
-    load    [ext_intersection_point + 2], $f7# |    563,068 |    563,068 |
-    fadd    $f2, $f7, $f7               # |    563,068 |    563,068 |
-    fsub    $f7, $f4, $f2               # |    563,068 |    563,068 |
-    bne     $i5, 1, be_else.32546       # |    563,068 |    563,068 |
-be_then.32546:
-    load    [$i1 + 4], $i2              # |    541,392 |    541,392 |
-    load    [$i2 + 0], $f4              # |    541,392 |    541,392 |
-    fabs    $f1, $f1                    # |    541,392 |    541,392 |
-    bg      $f4, $f1, ble_else.32547    # |    541,392 |    541,392 |
-ble_then.32547:
-    load    [$i1 + 6], $i1              # |     56,355 |     56,355 |
-    bne     $i1, 0, be_else.32548       # |     56,355 |     56,355 |
-be_then.32548:
-    li      1, $i1                      # |     56,355 |     56,355 |
+be_else.21903:
+    load    [ext_objects + $i1], $i1    # |    563,692 |    563,692 |
+    load    [$i1 + 5], $i2              # |    563,692 |    563,692 |
+    load    [$i1 + 1], $i3              # |    563,692 |    563,692 |
+    load    [$i2 + 0], $f1              # |    563,692 |    563,692 |
+    fadd    $fg0, $fc15, $f2            # |    563,692 |    563,692 |
+    fmul    $fg14, $f2, $f3             # |    563,692 |    563,692 |
+    load    [ext_intersection_point + 0], $f4# |    563,692 |    563,692 |
+    fadd    $f3, $f4, $f5               # |    563,692 |    563,692 |
+    fsub    $f5, $f1, $f1               # |    563,692 |    563,692 |
+    load    [$i2 + 1], $f3              # |    563,692 |    563,692 |
+    fmul    $fg12, $f2, $f4             # |    563,692 |    563,692 |
+    load    [ext_intersection_point + 1], $f6# |    563,692 |    563,692 |
+    fadd    $f4, $f6, $f6               # |    563,692 |    563,692 |
+    fsub    $f6, $f3, $f3               # |    563,692 |    563,692 |
+    load    [$i2 + 2], $f4              # |    563,692 |    563,692 |
+    fmul    $fg13, $f2, $f2             # |    563,692 |    563,692 |
+    load    [ext_intersection_point + 2], $f7# |    563,692 |    563,692 |
+    fadd    $f2, $f7, $f7               # |    563,692 |    563,692 |
+    fsub    $f7, $f4, $f2               # |    563,692 |    563,692 |
+    bne     $i3, 1, be_else.21904       # |    563,692 |    563,692 |
+be_then.21904:
+    load    [$i1 + 4], $i2              # |    541,977 |    541,977 |
+    load    [$i2 + 0], $f4              # |    541,977 |    541,977 |
+    fabs    $f1, $f1                    # |    541,977 |    541,977 |
+    load    [$i1 + 6], $i1              # |    541,977 |    541,977 |
+    bg      $f4, $f1, ble_else.21905    # |    541,977 |    541,977 |
+ble_then.21905:
+    bne     $i1, 0, be_else.21906       # |     56,407 |     56,407 |
+be_then.21906:
+    li      1, $i1                      # |     56,407 |     56,407 |
 .count b_cont
-    b       be_cont.32546               # |     56,355 |     56,355 |
-be_else.32548:
+    b       be_cont.21904               # |     56,407 |     56,407 |
+be_else.21906:
     li      0, $i1
 .count b_cont
-    b       be_cont.32546
-ble_else.32547:
-    load    [$i1 + 4], $i2              # |    485,037 |    485,037 |
-    load    [$i2 + 1], $f1              # |    485,037 |    485,037 |
-    fabs    $f3, $f3                    # |    485,037 |    485,037 |
-    bg      $f1, $f3, ble_else.32549    # |    485,037 |    485,037 |
-ble_then.32549:
-    load    [$i1 + 6], $i1              # |      5,586 |      5,586 |
-    bne     $i1, 0, be_else.32550       # |      5,586 |      5,586 |
-be_then.32550:
-    li      1, $i1                      # |      5,586 |      5,586 |
+    b       be_cont.21904
+ble_else.21905:
+    load    [$i2 + 1], $f1              # |    485,570 |    485,570 |
+    fabs    $f3, $f3                    # |    485,570 |    485,570 |
+    bg      $f1, $f3, ble_else.21907    # |    485,570 |    485,570 |
+ble_then.21907:
+    bne     $i1, 0, be_else.21908       # |      5,609 |      5,609 |
+be_then.21908:
+    li      1, $i1                      # |      5,609 |      5,609 |
 .count b_cont
-    b       be_cont.32546               # |      5,586 |      5,586 |
-be_else.32550:
+    b       be_cont.21904               # |      5,609 |      5,609 |
+be_else.21908:
     li      0, $i1
 .count b_cont
-    b       be_cont.32546
-ble_else.32549:
-    load    [$i1 + 4], $i2              # |    479,451 |    479,451 |
-    load    [$i2 + 2], $f1              # |    479,451 |    479,451 |
-    fabs    $f2, $f2                    # |    479,451 |    479,451 |
-    load    [$i1 + 6], $i1              # |    479,451 |    479,451 |
-    bg      $f1, $f2, be_cont.32546     # |    479,451 |    479,451 |
-ble_then.32551:
-    bne     $i1, 0, be_else.32552       # |      2,205 |      2,205 |
-be_then.32552:
-    li      1, $i1                      # |      2,205 |      2,205 |
+    b       be_cont.21904
+ble_else.21907:
+    load    [$i2 + 2], $f1              # |    479,961 |    479,961 |
+    fabs    $f2, $f2                    # |    479,961 |    479,961 |
+    bg      $f1, $f2, be_cont.21904     # |    479,961 |    479,961 |
+ble_then.21909:
+    bne     $i1, 0, be_else.21910       # |      2,213 |      2,213 |
+be_then.21910:
+    li      1, $i1                      # |      2,213 |      2,213 |
 .count b_cont
-    b       be_cont.32546               # |      2,205 |      2,205 |
-be_else.32552:
+    b       be_cont.21904               # |      2,213 |      2,213 |
+be_else.21910:
     li      0, $i1
 .count b_cont
-    b       be_cont.32546
-be_else.32546:
-    load    [$i1 + 6], $i2              # |     21,676 |     21,676 |
-    bne     $i5, 2, be_else.32553       # |     21,676 |     21,676 |
-be_then.32553:
+    b       be_cont.21904
+be_else.21904:
+    load    [$i1 + 6], $i2              # |     21,715 |     21,715 |
+    bne     $i3, 2, be_else.21911       # |     21,715 |     21,715 |
+be_then.21911:
     load    [$i1 + 4], $i1
     load    [$i1 + 0], $f4
     fmul    $f4, $f1, $f1
@@ -4584,426 +3910,417 @@ be_then.32553:
     load    [$i1 + 2], $f3
     fmul    $f3, $f2, $f2
     fadd    $f1, $f2, $f1
-    bg      $f0, $f1, ble_else.32554
-ble_then.32554:
-    bne     $i2, 0, be_else.32555
-be_then.32555:
+    bg      $f0, $f1, ble_else.21912
+ble_then.21912:
+    bne     $i2, 0, be_else.21913
+be_then.21913:
     li      1, $i1
 .count b_cont
-    b       be_cont.32553
-be_else.32555:
+    b       be_cont.21911
+be_else.21913:
     li      0, $i1
 .count b_cont
-    b       be_cont.32553
-ble_else.32554:
-    bne     $i2, 0, be_else.32556
-be_then.32556:
+    b       be_cont.21911
+ble_else.21912:
+    bne     $i2, 0, be_else.21914
+be_then.21914:
     li      0, $i1
 .count b_cont
-    b       be_cont.32553
-be_else.32556:
+    b       be_cont.21911
+be_else.21914:
     li      1, $i1
 .count b_cont
-    b       be_cont.32553
-be_else.32553:
-    fmul    $f1, $f1, $f4               # |     21,676 |     21,676 |
-    load    [$i1 + 4], $i3              # |     21,676 |     21,676 |
-    load    [$i3 + 0], $f8              # |     21,676 |     21,676 |
-    fmul    $f4, $f8, $f4               # |     21,676 |     21,676 |
-    fmul    $f3, $f3, $f8               # |     21,676 |     21,676 |
-    load    [$i1 + 4], $i3              # |     21,676 |     21,676 |
-    load    [$i3 + 1], $f9              # |     21,676 |     21,676 |
-    fmul    $f8, $f9, $f8               # |     21,676 |     21,676 |
-    fadd    $f4, $f8, $f4               # |     21,676 |     21,676 |
-    fmul    $f2, $f2, $f8               # |     21,676 |     21,676 |
-    load    [$i1 + 4], $i3              # |     21,676 |     21,676 |
-    load    [$i3 + 2], $f9              # |     21,676 |     21,676 |
-    fmul    $f8, $f9, $f8               # |     21,676 |     21,676 |
-    load    [$i1 + 3], $i3              # |     21,676 |     21,676 |
-    fadd    $f4, $f8, $f4               # |     21,676 |     21,676 |
-    bne     $i3, 0, be_else.32557       # |     21,676 |     21,676 |
-be_then.32557:
-    mov     $f4, $f1                    # |     21,676 |     21,676 |
+    b       be_cont.21911
+be_else.21911:
+    fmul    $f1, $f1, $f4               # |     21,715 |     21,715 |
+    load    [$i1 + 4], $i4              # |     21,715 |     21,715 |
+    load    [$i4 + 0], $f8              # |     21,715 |     21,715 |
+    fmul    $f4, $f8, $f4               # |     21,715 |     21,715 |
+    fmul    $f3, $f3, $f8               # |     21,715 |     21,715 |
+    load    [$i4 + 1], $f9              # |     21,715 |     21,715 |
+    fmul    $f8, $f9, $f8               # |     21,715 |     21,715 |
+    fadd    $f4, $f8, $f4               # |     21,715 |     21,715 |
+    fmul    $f2, $f2, $f8               # |     21,715 |     21,715 |
+    load    [$i4 + 2], $f9              # |     21,715 |     21,715 |
+    fmul    $f8, $f9, $f8               # |     21,715 |     21,715 |
+    load    [$i1 + 3], $i4              # |     21,715 |     21,715 |
+    fadd    $f4, $f8, $f4               # |     21,715 |     21,715 |
+    bne     $i4, 0, be_else.21915       # |     21,715 |     21,715 |
+be_then.21915:
+    mov     $f4, $f1                    # |     21,715 |     21,715 |
 .count b_cont
-    b       be_cont.32557               # |     21,676 |     21,676 |
-be_else.32557:
+    b       be_cont.21915               # |     21,715 |     21,715 |
+be_else.21915:
     fmul    $f3, $f2, $f8
-    load    [$i1 + 9], $i3
-    load    [$i3 + 0], $f9
+    load    [$i1 + 9], $i1
+    load    [$i1 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f4, $f8, $f4
     fmul    $f2, $f1, $f2
-    load    [$i1 + 9], $i3
-    load    [$i3 + 1], $f8
+    load    [$i1 + 1], $f8
     fmul    $f2, $f8, $f2
     fadd    $f4, $f2, $f2
     fmul    $f1, $f3, $f1
-    load    [$i1 + 9], $i1
     load    [$i1 + 2], $f3
     fmul    $f1, $f3, $f1
     fadd    $f2, $f1, $f1
-be_cont.32557:
-    bne     $i5, 3, be_cont.32558       # |     21,676 |     21,676 |
-be_then.32558:
-    fsub    $f1, $fc0, $f1              # |     21,676 |     21,676 |
-be_cont.32558:
-    bg      $f0, $f1, ble_else.32559    # |     21,676 |     21,676 |
-ble_then.32559:
-    bne     $i2, 0, be_else.32560
-be_then.32560:
+be_cont.21915:
+    bne     $i3, 3, be_cont.21916       # |     21,715 |     21,715 |
+be_then.21916:
+    fsub    $f1, $fc0, $f1              # |     21,715 |     21,715 |
+be_cont.21916:
+    bg      $f0, $f1, ble_else.21917    # |     21,715 |     21,715 |
+ble_then.21917:
+    bne     $i2, 0, be_else.21918
+be_then.21918:
     li      1, $i1
 .count b_cont
-    b       ble_cont.32559
-be_else.32560:
+    b       ble_cont.21917
+be_else.21918:
     li      0, $i1
 .count b_cont
-    b       ble_cont.32559
-ble_else.32559:
-    bne     $i2, 0, be_else.32561       # |     21,676 |     21,676 |
-be_then.32561:
-    li      0, $i1                      # |     21,676 |     21,676 |
+    b       ble_cont.21917
+ble_else.21917:
+    bne     $i2, 0, be_else.21919       # |     21,715 |     21,715 |
+be_then.21919:
+    li      0, $i1                      # |     21,715 |     21,715 |
 .count b_cont
-    b       be_cont.32561               # |     21,676 |     21,676 |
-be_else.32561:
+    b       be_cont.21919               # |     21,715 |     21,715 |
+be_else.21919:
     li      1, $i1
-be_cont.32561:
-ble_cont.32559:
-be_cont.32553:
-be_cont.32546:
-    bne     $i1, 0, be_else.32562       # |    563,068 |    563,068 |
-be_then.32562:
-    li      1, $i1                      # |    498,922 |    498,922 |
+be_cont.21919:
+ble_cont.21917:
+be_cont.21911:
+be_cont.21904:
+    bne     $i1, 0, be_else.21920       # |    563,692 |    563,692 |
+be_then.21920:
+    li      1, $i1                      # |    499,463 |    499,463 |
 .count move_args
-    mov     $i11, $i3                   # |    498,922 |    498,922 |
+    mov     $i9, $i3                    # |    499,463 |    499,463 |
 .count move_args
-    mov     $f5, $f2                    # |    498,922 |    498,922 |
+    mov     $f5, $f2                    # |    499,463 |    499,463 |
 .count move_args
-    mov     $f6, $f3                    # |    498,922 |    498,922 |
+    mov     $f6, $f3                    # |    499,463 |    499,463 |
 .count move_args
-    mov     $f7, $f4                    # |    498,922 |    498,922 |
-    call    check_all_inside.2856       # |    498,922 |    498,922 |
-    bne     $i1, 0, be_else.32563       # |    498,922 |    498,922 |
-be_then.32563:
-    add     $i10, 1, $i10               # |    262,860 |    262,860 |
-    b       shadow_check_and_group.2862 # |    262,860 |    262,860 |
-be_else.32563:
-    li      1, $i1                      # |    236,062 |    236,062 |
-    jr      $ra1                        # |    236,062 |    236,062 |
-be_else.32562:
-    add     $i10, 1, $i10               # |     64,146 |     64,146 |
-    b       shadow_check_and_group.2862 # |     64,146 |     64,146 |
+    mov     $f7, $f4                    # |    499,463 |    499,463 |
+    call    check_all_inside.2856       # |    499,463 |    499,463 |
+    bne     $i1, 0, be_else.21921       # |    499,463 |    499,463 |
+be_then.21921:
+    add     $i8, 1, $i8                 # |    263,166 |    263,166 |
+    b       shadow_check_and_group.2862 # |    263,166 |    263,166 |
+be_else.21921:
+    li      1, $i1                      # |    236,297 |    236,297 |
+    jr      $ra1                        # |    236,297 |    236,297 |
+be_else.21920:
+    add     $i8, 1, $i8                 # |     64,229 |     64,229 |
+    b       shadow_check_and_group.2862 # |     64,229 |     64,229 |
 .end shadow_check_and_group
 
 ######################################################################
-# $i1 = shadow_check_one_or_group($i12, $i13)
+# $i1 = shadow_check_one_or_group($i10, $i11)
 # $ra = $ra2
-# [$i1 - $i13]
+# [$i1 - $i11]
 # [$f1 - $f9]
 # []
 # [$fg0]
+# [$ra - $ra1]
 ######################################################################
 .begin shadow_check_one_or_group
 shadow_check_one_or_group.2865:
-    load    [$i13 + $i12], $i1          # |    223,481 |    223,481 |
-    bne     $i1, -1, be_else.32564      # |    223,481 |    223,481 |
-be_then.32564:
+    load    [$i11 + $i10], $i1          # |    223,695 |    223,695 |
+    bne     $i1, -1, be_else.21922      # |    223,695 |    223,695 |
+be_then.21922:
     li      0, $i1
     jr      $ra2
-be_else.32564:
-    li      0, $i10                     # |    223,481 |    223,481 |
-    load    [ext_and_net + $i1], $i11   # |    223,481 |    223,481 |
-    jal     shadow_check_and_group.2862, $ra1# |    223,481 |    223,481 |
-    bne     $i1, 0, be_else.32565       # |    223,481 |    223,481 |
-be_then.32565:
-    add     $i12, 1, $i12               # |    113,403 |    113,403 |
-    load    [$i13 + $i12], $i1          # |    113,403 |    113,403 |
-    bne     $i1, -1, be_else.32566      # |    113,403 |    113,403 |
-be_then.32566:
+be_else.21922:
+    li      0, $i8                      # |    223,695 |    223,695 |
+    load    [ext_and_net + $i1], $i9    # |    223,695 |    223,695 |
+    jal     shadow_check_and_group.2862, $ra1# |    223,695 |    223,695 |
+    bne     $i1, 0, be_else.21923       # |    223,695 |    223,695 |
+be_then.21923:
+    add     $i10, 1, $i10               # |    113,433 |    113,433 |
+    load    [$i11 + $i10], $i1          # |    113,433 |    113,433 |
+    bne     $i1, -1, be_else.21924      # |    113,433 |    113,433 |
+be_then.21924:
     li      0, $i1
     jr      $ra2
-be_else.32566:
-    li      0, $i10                     # |    113,403 |    113,403 |
-    load    [ext_and_net + $i1], $i11   # |    113,403 |    113,403 |
-    jal     shadow_check_and_group.2862, $ra1# |    113,403 |    113,403 |
-    bne     $i1, 0, be_else.32567       # |    113,403 |    113,403 |
-be_then.32567:
-    add     $i12, 1, $i12               # |    106,755 |    106,755 |
-    load    [$i13 + $i12], $i1          # |    106,755 |    106,755 |
-    bne     $i1, -1, be_else.32568      # |    106,755 |    106,755 |
-be_then.32568:
-    li      0, $i1                      # |     10,334 |     10,334 |
-    jr      $ra2                        # |     10,334 |     10,334 |
-be_else.32568:
-    li      0, $i10                     # |     96,421 |     96,421 |
-    load    [ext_and_net + $i1], $i11   # |     96,421 |     96,421 |
-    jal     shadow_check_and_group.2862, $ra1# |     96,421 |     96,421 |
-    bne     $i1, 0, be_else.32569       # |     96,421 |     96,421 |
-be_then.32569:
-    add     $i12, 1, $i12               # |     94,249 |     94,249 |
-    load    [$i13 + $i12], $i1          # |     94,249 |     94,249 |
-    bne     $i1, -1, be_else.32570      # |     94,249 |     94,249 |
-be_then.32570:
+be_else.21924:
+    li      0, $i8                      # |    113,433 |    113,433 |
+    load    [ext_and_net + $i1], $i9    # |    113,433 |    113,433 |
+    jal     shadow_check_and_group.2862, $ra1# |    113,433 |    113,433 |
+    bne     $i1, 0, be_else.21925       # |    113,433 |    113,433 |
+be_then.21925:
+    add     $i10, 1, $i10               # |    106,783 |    106,783 |
+    load    [$i11 + $i10], $i1          # |    106,783 |    106,783 |
+    bne     $i1, -1, be_else.21926      # |    106,783 |    106,783 |
+be_then.21926:
+    li      0, $i1                      # |     10,331 |     10,331 |
+    jr      $ra2                        # |     10,331 |     10,331 |
+be_else.21926:
+    li      0, $i8                      # |     96,452 |     96,452 |
+    load    [ext_and_net + $i1], $i9    # |     96,452 |     96,452 |
+    jal     shadow_check_and_group.2862, $ra1# |     96,452 |     96,452 |
+    bne     $i1, 0, be_else.21927       # |     96,452 |     96,452 |
+be_then.21927:
+    add     $i10, 1, $i10               # |     94,280 |     94,280 |
+    load    [$i11 + $i10], $i1          # |     94,280 |     94,280 |
+    bne     $i1, -1, be_else.21928      # |     94,280 |     94,280 |
+be_then.21928:
     li      0, $i1
     jr      $ra2
-be_else.32570:
-    li      0, $i10                     # |     94,249 |     94,249 |
-    load    [ext_and_net + $i1], $i11   # |     94,249 |     94,249 |
-    jal     shadow_check_and_group.2862, $ra1# |     94,249 |     94,249 |
-    bne     $i1, 0, be_else.32571       # |     94,249 |     94,249 |
-be_then.32571:
-    add     $i12, 1, $i12               # |     82,757 |     82,757 |
-    load    [$i13 + $i12], $i1          # |     82,757 |     82,757 |
-    bne     $i1, -1, be_else.32572      # |     82,757 |     82,757 |
-be_then.32572:
-    li      0, $i1                      # |     82,757 |     82,757 |
-    jr      $ra2                        # |     82,757 |     82,757 |
-be_else.32572:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.21928:
+    li      0, $i8                      # |     94,280 |     94,280 |
+    load    [ext_and_net + $i1], $i9    # |     94,280 |     94,280 |
+    jal     shadow_check_and_group.2862, $ra1# |     94,280 |     94,280 |
+    bne     $i1, 0, be_else.21929       # |     94,280 |     94,280 |
+be_then.21929:
+    add     $i10, 1, $i10               # |     82,752 |     82,752 |
+    load    [$i11 + $i10], $i1          # |     82,752 |     82,752 |
+    bne     $i1, -1, be_else.21930      # |     82,752 |     82,752 |
+be_then.21930:
+    li      0, $i1                      # |     82,752 |     82,752 |
+    jr      $ra2                        # |     82,752 |     82,752 |
+be_else.21930:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32573
-be_then.32573:
-    add     $i12, 1, $i12
-    load    [$i13 + $i12], $i1
-    bne     $i1, -1, be_else.32574
-be_then.32574:
+    bne     $i1, 0, be_else.21931
+be_then.21931:
+    add     $i10, 1, $i10
+    load    [$i11 + $i10], $i1
+    bne     $i1, -1, be_else.21932
+be_then.21932:
     li      0, $i1
     jr      $ra2
-be_else.32574:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.21932:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32575
-be_then.32575:
-    add     $i12, 1, $i12
-    load    [$i13 + $i12], $i1
-    bne     $i1, -1, be_else.32576
-be_then.32576:
+    bne     $i1, 0, be_else.21933
+be_then.21933:
+    add     $i10, 1, $i10
+    load    [$i11 + $i10], $i1
+    bne     $i1, -1, be_else.21934
+be_then.21934:
     li      0, $i1
     jr      $ra2
-be_else.32576:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.21934:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32577
-be_then.32577:
-    add     $i12, 1, $i12
-    load    [$i13 + $i12], $i1
-    bne     $i1, -1, be_else.32578
-be_then.32578:
+    bne     $i1, 0, be_else.21935
+be_then.21935:
+    add     $i10, 1, $i10
+    load    [$i11 + $i10], $i1
+    bne     $i1, -1, be_else.21936
+be_then.21936:
     li      0, $i1
     jr      $ra2
-be_else.32578:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.21936:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32579
-be_then.32579:
-    add     $i12, 1, $i12
+    bne     $i1, 0, be_else.21937
+be_then.21937:
+    add     $i10, 1, $i10
     b       shadow_check_one_or_group.2865
-be_else.32579:
+be_else.21937:
     li      1, $i1
     jr      $ra2
-be_else.32577:
+be_else.21935:
     li      1, $i1
     jr      $ra2
-be_else.32575:
+be_else.21933:
     li      1, $i1
     jr      $ra2
-be_else.32573:
+be_else.21931:
     li      1, $i1
     jr      $ra2
-be_else.32571:
-    li      1, $i1                      # |     11,492 |     11,492 |
-    jr      $ra2                        # |     11,492 |     11,492 |
-be_else.32569:
+be_else.21929:
+    li      1, $i1                      # |     11,528 |     11,528 |
+    jr      $ra2                        # |     11,528 |     11,528 |
+be_else.21927:
     li      1, $i1                      # |      2,172 |      2,172 |
     jr      $ra2                        # |      2,172 |      2,172 |
-be_else.32567:
-    li      1, $i1                      # |      6,648 |      6,648 |
-    jr      $ra2                        # |      6,648 |      6,648 |
-be_else.32565:
-    li      1, $i1                      # |    110,078 |    110,078 |
-    jr      $ra2                        # |    110,078 |    110,078 |
+be_else.21925:
+    li      1, $i1                      # |      6,650 |      6,650 |
+    jr      $ra2                        # |      6,650 |      6,650 |
+be_else.21923:
+    li      1, $i1                      # |    110,262 |    110,262 |
+    jr      $ra2                        # |    110,262 |    110,262 |
 .end shadow_check_one_or_group
 
 ######################################################################
-# $i1 = shadow_check_one_or_matrix($i14, $i15)
+# $i1 = shadow_check_one_or_matrix($i12, $i13)
 # $ra = $ra3
-# [$i1 - $i16]
+# [$i1 - $i14]
 # [$f1 - $f9]
 # []
 # [$fg0]
+# [$ra - $ra2]
 ######################################################################
 .begin shadow_check_one_or_matrix
 shadow_check_one_or_matrix.2868:
-    load    [$i15 + $i14], $i16         # |    565,273 |    565,273 |
-    load    [$i16 + 0], $i1             # |    565,273 |    565,273 |
-    bne     $i1, -1, be_else.32580      # |    565,273 |    565,273 |
-be_then.32580:
-    li      0, $i1                      # |     10,334 |     10,334 |
-    jr      $ra3                        # |     10,334 |     10,334 |
-be_else.32580:
-    bne     $i1, 99, be_else.32581      # |    554,939 |    554,939 |
-be_then.32581:
-    li      1, $i1                      # |    544,605 |    544,605 |
+    load    [$i13 + $i12], $i14         # |    565,218 |    565,218 |
+    load    [$i14 + 0], $i1             # |    565,218 |    565,218 |
+    bne     $i1, -1, be_else.21938      # |    565,218 |    565,218 |
+be_then.21938:
+    li      0, $i1                      # |     10,331 |     10,331 |
+    jr      $ra3                        # |     10,331 |     10,331 |
+be_else.21938:
+    bne     $i1, 99, be_else.21939      # |    554,887 |    554,887 |
+be_then.21939:
+    li      1, $i1                      # |    544,556 |    544,556 |
 .count b_cont
-    b       be_cont.32581               # |    544,605 |    544,605 |
-be_else.32581:
-    load    [ext_objects + $i1], $i2    # |     10,334 |     10,334 |
-    load    [ext_intersection_point + 0], $f1# |     10,334 |     10,334 |
-    load    [$i2 + 5], $i3              # |     10,334 |     10,334 |
-    load    [$i3 + 0], $f2              # |     10,334 |     10,334 |
-    fsub    $f1, $f2, $f1               # |     10,334 |     10,334 |
-    load    [ext_intersection_point + 1], $f2# |     10,334 |     10,334 |
-    load    [$i2 + 5], $i3              # |     10,334 |     10,334 |
-    load    [$i3 + 1], $f3              # |     10,334 |     10,334 |
-    fsub    $f2, $f3, $f2               # |     10,334 |     10,334 |
-    load    [ext_intersection_point + 2], $f3# |     10,334 |     10,334 |
-    load    [$i2 + 5], $i3              # |     10,334 |     10,334 |
-    load    [$i3 + 2], $f4              # |     10,334 |     10,334 |
-    fsub    $f3, $f4, $f3               # |     10,334 |     10,334 |
-    load    [ext_light_dirvec + 1], $i3 # |     10,334 |     10,334 |
-    load    [$i3 + $i1], $i1            # |     10,334 |     10,334 |
-    load    [$i2 + 1], $i3              # |     10,334 |     10,334 |
-    bne     $i3, 1, be_else.32582       # |     10,334 |     10,334 |
-be_then.32582:
-    load    [ext_light_dirvec + 0], $i3 # |     10,334 |     10,334 |
-    load    [$i2 + 4], $i4              # |     10,334 |     10,334 |
-    load    [$i4 + 1], $f4              # |     10,334 |     10,334 |
-    load    [$i3 + 1], $f5              # |     10,334 |     10,334 |
-    load    [$i1 + 0], $f6              # |     10,334 |     10,334 |
-    fsub    $f6, $f1, $f6               # |     10,334 |     10,334 |
-    load    [$i1 + 1], $f7              # |     10,334 |     10,334 |
-    fmul    $f6, $f7, $f6               # |     10,334 |     10,334 |
-    fmul    $f6, $f5, $f5               # |     10,334 |     10,334 |
-    fadd_a  $f5, $f2, $f5               # |     10,334 |     10,334 |
-    bg      $f4, $f5, ble_else.32583    # |     10,334 |     10,334 |
-ble_then.32583:
+    b       be_cont.21939               # |    544,556 |    544,556 |
+be_else.21939:
+    load    [ext_objects + $i1], $i2    # |     10,331 |     10,331 |
+    load    [ext_intersection_point + 0], $f1# |     10,331 |     10,331 |
+    load    [$i2 + 5], $i3              # |     10,331 |     10,331 |
+    load    [$i3 + 0], $f2              # |     10,331 |     10,331 |
+    fsub    $f1, $f2, $f1               # |     10,331 |     10,331 |
+    load    [ext_intersection_point + 1], $f2# |     10,331 |     10,331 |
+    load    [$i3 + 1], $f3              # |     10,331 |     10,331 |
+    fsub    $f2, $f3, $f2               # |     10,331 |     10,331 |
+    load    [ext_intersection_point + 2], $f3# |     10,331 |     10,331 |
+    load    [$i3 + 2], $f4              # |     10,331 |     10,331 |
+    fsub    $f3, $f4, $f3               # |     10,331 |     10,331 |
+    load    [ext_light_dirvec + 1], $i3 # |     10,331 |     10,331 |
+    load    [$i3 + $i1], $i1            # |     10,331 |     10,331 |
+    load    [$i2 + 1], $i3              # |     10,331 |     10,331 |
+    bne     $i3, 1, be_else.21940       # |     10,331 |     10,331 |
+be_then.21940:
+    load    [ext_light_dirvec + 0], $i3 # |     10,331 |     10,331 |
+    load    [$i2 + 4], $i2              # |     10,331 |     10,331 |
+    load    [$i2 + 1], $f4              # |     10,331 |     10,331 |
+    load    [$i3 + 1], $f5              # |     10,331 |     10,331 |
+    load    [$i1 + 0], $f6              # |     10,331 |     10,331 |
+    fsub    $f6, $f1, $f6               # |     10,331 |     10,331 |
+    load    [$i1 + 1], $f7              # |     10,331 |     10,331 |
+    fmul    $f6, $f7, $f6               # |     10,331 |     10,331 |
+    fmul    $f6, $f5, $f5               # |     10,331 |     10,331 |
+    fadd_a  $f5, $f2, $f5               # |     10,331 |     10,331 |
+    bg      $f4, $f5, ble_else.21941    # |     10,331 |     10,331 |
+ble_then.21941:
     li      0, $i4                      # |      6,459 |      6,459 |
 .count b_cont
-    b       ble_cont.32583              # |      6,459 |      6,459 |
-ble_else.32583:
-    load    [$i2 + 4], $i4              # |      3,875 |      3,875 |
-    load    [$i4 + 2], $f4              # |      3,875 |      3,875 |
-    load    [$i3 + 2], $f5              # |      3,875 |      3,875 |
-    fmul    $f6, $f5, $f5               # |      3,875 |      3,875 |
-    fadd_a  $f5, $f3, $f5               # |      3,875 |      3,875 |
-    bg      $f4, $f5, ble_else.32584    # |      3,875 |      3,875 |
-ble_then.32584:
-    li      0, $i4                      # |      3,875 |      3,875 |
+    b       ble_cont.21941              # |      6,459 |      6,459 |
+ble_else.21941:
+    load    [$i2 + 2], $f4              # |      3,872 |      3,872 |
+    load    [$i3 + 2], $f5              # |      3,872 |      3,872 |
+    fmul    $f6, $f5, $f5               # |      3,872 |      3,872 |
+    fadd_a  $f5, $f3, $f5               # |      3,872 |      3,872 |
+    bg      $f4, $f5, ble_else.21942    # |      3,872 |      3,872 |
+ble_then.21942:
+    li      0, $i4                      # |      3,872 |      3,872 |
 .count b_cont
-    b       ble_cont.32584              # |      3,875 |      3,875 |
-ble_else.32584:
+    b       ble_cont.21942              # |      3,872 |      3,872 |
+ble_else.21942:
     load    [$i1 + 1], $f4
-    bne     $f4, $f0, be_else.32585
-be_then.32585:
+    bne     $f4, $f0, be_else.21943
+be_then.21943:
     li      0, $i4
 .count b_cont
-    b       be_cont.32585
-be_else.32585:
+    b       be_cont.21943
+be_else.21943:
     li      1, $i4
-be_cont.32585:
-ble_cont.32584:
-ble_cont.32583:
-    bne     $i4, 0, be_else.32586       # |     10,334 |     10,334 |
-be_then.32586:
-    load    [$i2 + 4], $i4              # |     10,334 |     10,334 |
-    load    [$i4 + 0], $f4              # |     10,334 |     10,334 |
-    load    [$i3 + 0], $f5              # |     10,334 |     10,334 |
-    load    [$i1 + 2], $f6              # |     10,334 |     10,334 |
-    fsub    $f6, $f2, $f6               # |     10,334 |     10,334 |
-    load    [$i1 + 3], $f7              # |     10,334 |     10,334 |
-    fmul    $f6, $f7, $f6               # |     10,334 |     10,334 |
-    fmul    $f6, $f5, $f5               # |     10,334 |     10,334 |
-    fadd_a  $f5, $f1, $f5               # |     10,334 |     10,334 |
-    bg      $f4, $f5, ble_else.32587    # |     10,334 |     10,334 |
-ble_then.32587:
-    li      0, $i4                      # |      9,079 |      9,079 |
+be_cont.21943:
+ble_cont.21942:
+ble_cont.21941:
+    bne     $i4, 0, be_else.21944       # |     10,331 |     10,331 |
+be_then.21944:
+    load    [$i2 + 0], $f4              # |     10,331 |     10,331 |
+    load    [$i3 + 0], $f5              # |     10,331 |     10,331 |
+    load    [$i1 + 2], $f6              # |     10,331 |     10,331 |
+    fsub    $f6, $f2, $f6               # |     10,331 |     10,331 |
+    load    [$i1 + 3], $f7              # |     10,331 |     10,331 |
+    fmul    $f6, $f7, $f6               # |     10,331 |     10,331 |
+    fmul    $f6, $f5, $f5               # |     10,331 |     10,331 |
+    fadd_a  $f5, $f1, $f5               # |     10,331 |     10,331 |
+    bg      $f4, $f5, ble_else.21945    # |     10,331 |     10,331 |
+ble_then.21945:
+    li      0, $i4                      # |      9,076 |      9,076 |
 .count b_cont
-    b       ble_cont.32587              # |      9,079 |      9,079 |
-ble_else.32587:
-    load    [$i2 + 4], $i4              # |      1,255 |      1,255 |
-    load    [$i4 + 2], $f4              # |      1,255 |      1,255 |
+    b       ble_cont.21945              # |      9,076 |      9,076 |
+ble_else.21945:
+    load    [$i2 + 2], $f4              # |      1,255 |      1,255 |
     load    [$i3 + 2], $f5              # |      1,255 |      1,255 |
     fmul    $f6, $f5, $f5               # |      1,255 |      1,255 |
     fadd_a  $f5, $f3, $f5               # |      1,255 |      1,255 |
-    bg      $f4, $f5, ble_else.32588    # |      1,255 |      1,255 |
-ble_then.32588:
+    bg      $f4, $f5, ble_else.21946    # |      1,255 |      1,255 |
+ble_then.21946:
     li      0, $i4                      # |      1,255 |      1,255 |
 .count b_cont
-    b       ble_cont.32588              # |      1,255 |      1,255 |
-ble_else.32588:
+    b       ble_cont.21946              # |      1,255 |      1,255 |
+ble_else.21946:
     load    [$i1 + 3], $f4
-    bne     $f4, $f0, be_else.32589
-be_then.32589:
+    bne     $f4, $f0, be_else.21947
+be_then.21947:
     li      0, $i4
 .count b_cont
-    b       be_cont.32589
-be_else.32589:
+    b       be_cont.21947
+be_else.21947:
     li      1, $i4
-be_cont.32589:
-ble_cont.32588:
-ble_cont.32587:
-    bne     $i4, 0, be_else.32590       # |     10,334 |     10,334 |
-be_then.32590:
-    load    [$i2 + 4], $i4              # |     10,334 |     10,334 |
-    load    [$i4 + 0], $f4              # |     10,334 |     10,334 |
-    load    [$i3 + 0], $f5              # |     10,334 |     10,334 |
-    load    [$i1 + 4], $f6              # |     10,334 |     10,334 |
-    fsub    $f6, $f3, $f3               # |     10,334 |     10,334 |
-    load    [$i1 + 5], $f6              # |     10,334 |     10,334 |
-    fmul    $f3, $f6, $f3               # |     10,334 |     10,334 |
-    fmul    $f3, $f5, $f5               # |     10,334 |     10,334 |
-    fadd_a  $f5, $f1, $f1               # |     10,334 |     10,334 |
-    bg      $f4, $f1, ble_else.32591    # |     10,334 |     10,334 |
-ble_then.32591:
-    li      0, $i1                      # |     10,334 |     10,334 |
+be_cont.21947:
+ble_cont.21946:
+ble_cont.21945:
+    bne     $i4, 0, be_else.21948       # |     10,331 |     10,331 |
+be_then.21948:
+    load    [$i2 + 0], $f4              # |     10,331 |     10,331 |
+    load    [$i3 + 0], $f5              # |     10,331 |     10,331 |
+    load    [$i1 + 4], $f6              # |     10,331 |     10,331 |
+    fsub    $f6, $f3, $f3               # |     10,331 |     10,331 |
+    load    [$i1 + 5], $f6              # |     10,331 |     10,331 |
+    fmul    $f3, $f6, $f3               # |     10,331 |     10,331 |
+    fmul    $f3, $f5, $f5               # |     10,331 |     10,331 |
+    fadd_a  $f5, $f1, $f1               # |     10,331 |     10,331 |
+    bg      $f4, $f1, ble_else.21949    # |     10,331 |     10,331 |
+ble_then.21949:
+    li      0, $i1                      # |     10,331 |     10,331 |
 .count b_cont
-    b       be_cont.32582               # |     10,334 |     10,334 |
-ble_else.32591:
-    load    [$i2 + 4], $i2
+    b       be_cont.21940               # |     10,331 |     10,331 |
+ble_else.21949:
     load    [$i2 + 1], $f1
     load    [$i3 + 1], $f4
     fmul    $f3, $f4, $f4
     fadd_a  $f4, $f2, $f2
-    bg      $f1, $f2, ble_else.32592
-ble_then.32592:
+    bg      $f1, $f2, ble_else.21950
+ble_then.21950:
     li      0, $i1
 .count b_cont
-    b       be_cont.32582
-ble_else.32592:
+    b       be_cont.21940
+ble_else.21950:
     load    [$i1 + 5], $f1
-    bne     $f1, $f0, be_else.32593
-be_then.32593:
+    bne     $f1, $f0, be_else.21951
+be_then.21951:
     li      0, $i1
 .count b_cont
-    b       be_cont.32582
-be_else.32593:
+    b       be_cont.21940
+be_else.21951:
     mov     $f3, $fg0
     li      3, $i1
 .count b_cont
-    b       be_cont.32582
-be_else.32590:
+    b       be_cont.21940
+be_else.21948:
     mov     $f6, $fg0
     li      2, $i1
 .count b_cont
-    b       be_cont.32582
-be_else.32586:
+    b       be_cont.21940
+be_else.21944:
     mov     $f6, $fg0
     li      1, $i1
 .count b_cont
-    b       be_cont.32582
-be_else.32582:
+    b       be_cont.21940
+be_else.21940:
     load    [$i1 + 0], $f4
-    bne     $i3, 2, be_else.32594
-be_then.32594:
-    bg      $f0, $f4, ble_else.32595
-ble_then.32595:
+    bne     $i3, 2, be_else.21952
+be_then.21952:
+    bg      $f0, $f4, ble_else.21953
+ble_then.21953:
     li      0, $i1
 .count b_cont
-    b       be_cont.32594
-ble_else.32595:
+    b       be_cont.21952
+ble_else.21953:
     load    [$i1 + 1], $f4
     fmul    $f4, $f1, $f1
     load    [$i1 + 2], $f4
@@ -5014,14 +4331,14 @@ ble_else.32595:
     fadd    $f1, $f2, $fg0
     li      1, $i1
 .count b_cont
-    b       be_cont.32594
-be_else.32594:
-    bne     $f4, $f0, be_else.32596
-be_then.32596:
+    b       be_cont.21952
+be_else.21952:
+    bne     $f4, $f0, be_else.21954
+be_then.21954:
     li      0, $i1
 .count b_cont
-    b       be_cont.32596
-be_else.32596:
+    b       be_cont.21954
+be_else.21954:
     load    [$i1 + 1], $f5
     fmul    $f5, $f1, $f5
     load    [$i1 + 2], $f6
@@ -5036,732 +4353,727 @@ be_else.32596:
     load    [$i4 + 0], $f8
     fmul    $f7, $f8, $f7
     fmul    $f2, $f2, $f8
-    load    [$i2 + 4], $i4
     load    [$i4 + 1], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f3, $f3, $f8
-    load    [$i2 + 4], $i4
     load    [$i4 + 2], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     load    [$i2 + 3], $i4
-    bne     $i4, 0, be_else.32597
-be_then.32597:
+    bne     $i4, 0, be_else.21955
+be_then.21955:
     mov     $f7, $f1
 .count b_cont
-    b       be_cont.32597
-be_else.32597:
+    b       be_cont.21955
+be_else.21955:
     fmul    $f2, $f3, $f8
     load    [$i2 + 9], $i4
     load    [$i4 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f7, $f8, $f7
     fmul    $f3, $f1, $f3
-    load    [$i2 + 9], $i4
     load    [$i4 + 1], $f8
     fmul    $f3, $f8, $f3
     fadd    $f7, $f3, $f3
     fmul    $f1, $f2, $f1
-    load    [$i2 + 9], $i4
     load    [$i4 + 2], $f2
     fmul    $f1, $f2, $f1
     fadd    $f3, $f1, $f1
-be_cont.32597:
-    bne     $i3, 3, be_cont.32598
-be_then.32598:
+be_cont.21955:
+    bne     $i3, 3, be_cont.21956
+be_then.21956:
     fsub    $f1, $fc0, $f1
-be_cont.32598:
+be_cont.21956:
     fmul    $f4, $f1, $f1
     fsub    $f6, $f1, $f1
-    bg      $f1, $f0, ble_else.32599
-ble_then.32599:
+    bg      $f1, $f0, ble_else.21957
+ble_then.21957:
     li      0, $i1
 .count b_cont
-    b       ble_cont.32599
-ble_else.32599:
+    b       ble_cont.21957
+ble_else.21957:
     load    [$i2 + 6], $i2
     load    [$i1 + 4], $f2
     li      1, $i1
     fsqrt   $f1, $f1
-    bne     $i2, 0, be_else.32600
-be_then.32600:
+    bne     $i2, 0, be_else.21958
+be_then.21958:
     fsub    $f5, $f1, $f1
     fmul    $f1, $f2, $fg0
 .count b_cont
-    b       be_cont.32600
-be_else.32600:
+    b       be_cont.21958
+be_else.21958:
     fadd    $f5, $f1, $f1
     fmul    $f1, $f2, $fg0
-be_cont.32600:
-ble_cont.32599:
-be_cont.32596:
-be_cont.32594:
-be_cont.32582:
-    bne     $i1, 0, be_else.32601       # |     10,334 |     10,334 |
-be_then.32601:
-    li      0, $i1                      # |     10,334 |     10,334 |
+be_cont.21958:
+ble_cont.21957:
+be_cont.21954:
+be_cont.21952:
+be_cont.21940:
+    bne     $i1, 0, be_else.21959       # |     10,331 |     10,331 |
+be_then.21959:
+    li      0, $i1                      # |     10,331 |     10,331 |
 .count b_cont
-    b       be_cont.32601               # |     10,334 |     10,334 |
-be_else.32601:
-    bg      $fc7, $fg0, ble_else.32602
-ble_then.32602:
+    b       be_cont.21959               # |     10,331 |     10,331 |
+be_else.21959:
+    bg      $fc7, $fg0, ble_else.21960
+ble_then.21960:
     li      0, $i1
 .count b_cont
-    b       ble_cont.32602
-ble_else.32602:
-    load    [$i16 + 1], $i1
-    bne     $i1, -1, be_else.32603
-be_then.32603:
+    b       ble_cont.21960
+ble_else.21960:
+    load    [$i14 + 1], $i1
+    bne     $i1, -1, be_else.21961
+be_then.21961:
     li      0, $i1
 .count b_cont
-    b       be_cont.32603
-be_else.32603:
-    load    [ext_and_net + $i1], $i11
-    li      0, $i10
+    b       be_cont.21961
+be_else.21961:
+    load    [ext_and_net + $i1], $i9
+    li      0, $i8
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32604
-be_then.32604:
-    li      2, $i12
+    bne     $i1, 0, be_else.21962
+be_then.21962:
+    li      2, $i10
 .count move_args
-    mov     $i16, $i13
+    mov     $i14, $i11
     jal     shadow_check_one_or_group.2865, $ra2
-    bne     $i1, 0, be_else.32605
-be_then.32605:
+    bne     $i1, 0, be_else.21963
+be_then.21963:
     li      0, $i1
 .count b_cont
-    b       be_cont.32604
-be_else.32605:
+    b       be_cont.21962
+be_else.21963:
     li      1, $i1
 .count b_cont
-    b       be_cont.32604
-be_else.32604:
+    b       be_cont.21962
+be_else.21962:
     li      1, $i1
-be_cont.32604:
-be_cont.32603:
-ble_cont.32602:
-be_cont.32601:
-be_cont.32581:
-    bne     $i1, 0, be_else.32606       # |    554,939 |    554,939 |
-be_then.32606:
-    add     $i14, 1, $i14               # |     10,334 |     10,334 |
-    load    [$i15 + $i14], $i16         # |     10,334 |     10,334 |
-    load    [$i16 + 0], $i1             # |     10,334 |     10,334 |
-    bne     $i1, -1, be_else.32607      # |     10,334 |     10,334 |
-be_then.32607:
+be_cont.21962:
+be_cont.21961:
+ble_cont.21960:
+be_cont.21959:
+be_cont.21939:
+    bne     $i1, 0, be_else.21964       # |    554,887 |    554,887 |
+be_then.21964:
+    add     $i12, 1, $i12               # |     10,331 |     10,331 |
+    load    [$i13 + $i12], $i14         # |     10,331 |     10,331 |
+    load    [$i14 + 0], $i1             # |     10,331 |     10,331 |
+    bne     $i1, -1, be_else.21965      # |     10,331 |     10,331 |
+be_then.21965:
     li      0, $i1
     jr      $ra3
-be_else.32607:
-    bne     $i1, 99, be_else.32608      # |     10,334 |     10,334 |
-be_then.32608:
-    li      1, $i1                      # |     10,334 |     10,334 |
+be_else.21965:
+    bne     $i1, 99, be_else.21966      # |     10,331 |     10,331 |
+be_then.21966:
+    li      1, $i1                      # |     10,331 |     10,331 |
 .count b_cont
-    b       be_cont.32608               # |     10,334 |     10,334 |
-be_else.32608:
+    b       be_cont.21966               # |     10,331 |     10,331 |
+be_else.21966:
     call    solver_fast.2796
-    bne     $i1, 0, be_else.32609
-be_then.32609:
+    bne     $i1, 0, be_else.21967
+be_then.21967:
     li      0, $i1
 .count b_cont
-    b       be_cont.32609
-be_else.32609:
-    bg      $fc7, $fg0, ble_else.32610
-ble_then.32610:
+    b       be_cont.21967
+be_else.21967:
+    bg      $fc7, $fg0, ble_else.21968
+ble_then.21968:
     li      0, $i1
 .count b_cont
-    b       ble_cont.32610
-ble_else.32610:
-    load    [$i16 + 1], $i1
-    bne     $i1, -1, be_else.32611
-be_then.32611:
+    b       ble_cont.21968
+ble_else.21968:
+    load    [$i14 + 1], $i1
+    bne     $i1, -1, be_else.21969
+be_then.21969:
     li      0, $i1
 .count b_cont
-    b       be_cont.32611
-be_else.32611:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.21969
+be_else.21969:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32612
-be_then.32612:
-    load    [$i16 + 2], $i1
-    bne     $i1, -1, be_else.32613
-be_then.32613:
+    bne     $i1, 0, be_else.21970
+be_then.21970:
+    load    [$i14 + 2], $i1
+    bne     $i1, -1, be_else.21971
+be_then.21971:
     li      0, $i1
 .count b_cont
-    b       be_cont.32612
-be_else.32613:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.21970
+be_else.21971:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32614
-be_then.32614:
-    li      3, $i12
+    bne     $i1, 0, be_else.21972
+be_then.21972:
+    li      3, $i10
 .count move_args
-    mov     $i16, $i13
+    mov     $i14, $i11
     jal     shadow_check_one_or_group.2865, $ra2
-    bne     $i1, 0, be_else.32615
-be_then.32615:
+    bne     $i1, 0, be_else.21973
+be_then.21973:
     li      0, $i1
 .count b_cont
-    b       be_cont.32612
-be_else.32615:
+    b       be_cont.21970
+be_else.21973:
     li      1, $i1
 .count b_cont
-    b       be_cont.32612
-be_else.32614:
+    b       be_cont.21970
+be_else.21972:
     li      1, $i1
 .count b_cont
-    b       be_cont.32612
-be_else.32612:
+    b       be_cont.21970
+be_else.21970:
     li      1, $i1
-be_cont.32612:
-be_cont.32611:
-ble_cont.32610:
-be_cont.32609:
-be_cont.32608:
-    bne     $i1, 0, be_else.32616       # |     10,334 |     10,334 |
-be_then.32616:
-    add     $i14, 1, $i14
+be_cont.21970:
+be_cont.21969:
+ble_cont.21968:
+be_cont.21967:
+be_cont.21966:
+    bne     $i1, 0, be_else.21974       # |     10,331 |     10,331 |
+be_then.21974:
+    add     $i12, 1, $i12
     b       shadow_check_one_or_matrix.2868
-be_else.32616:
-    load    [$i16 + 1], $i1             # |     10,334 |     10,334 |
-    bne     $i1, -1, be_else.32617      # |     10,334 |     10,334 |
-be_then.32617:
-    add     $i14, 1, $i14
+be_else.21974:
+    load    [$i14 + 1], $i1             # |     10,331 |     10,331 |
+    bne     $i1, -1, be_else.21975      # |     10,331 |     10,331 |
+be_then.21975:
+    add     $i12, 1, $i12
     b       shadow_check_one_or_matrix.2868
-be_else.32617:
-    li      0, $i10                     # |     10,334 |     10,334 |
-    load    [ext_and_net + $i1], $i11   # |     10,334 |     10,334 |
-    jal     shadow_check_and_group.2862, $ra1# |     10,334 |     10,334 |
-    bne     $i1, 0, be_else.32618       # |     10,334 |     10,334 |
-be_then.32618:
-    load    [$i16 + 2], $i1             # |     10,334 |     10,334 |
-    bne     $i1, -1, be_else.32619      # |     10,334 |     10,334 |
-be_then.32619:
-    add     $i14, 1, $i14
+be_else.21975:
+    li      0, $i8                      # |     10,331 |     10,331 |
+    load    [ext_and_net + $i1], $i9    # |     10,331 |     10,331 |
+    jal     shadow_check_and_group.2862, $ra1# |     10,331 |     10,331 |
+    bne     $i1, 0, be_else.21976       # |     10,331 |     10,331 |
+be_then.21976:
+    load    [$i14 + 2], $i1             # |     10,331 |     10,331 |
+    bne     $i1, -1, be_else.21977      # |     10,331 |     10,331 |
+be_then.21977:
+    add     $i12, 1, $i12
     b       shadow_check_one_or_matrix.2868
-be_else.32619:
-    li      0, $i10                     # |     10,334 |     10,334 |
-    load    [ext_and_net + $i1], $i11   # |     10,334 |     10,334 |
-    jal     shadow_check_and_group.2862, $ra1# |     10,334 |     10,334 |
-    bne     $i1, 0, be_else.32620       # |     10,334 |     10,334 |
-be_then.32620:
-    li      3, $i12                     # |     10,334 |     10,334 |
+be_else.21977:
+    li      0, $i8                      # |     10,331 |     10,331 |
+    load    [ext_and_net + $i1], $i9    # |     10,331 |     10,331 |
+    jal     shadow_check_and_group.2862, $ra1# |     10,331 |     10,331 |
+    bne     $i1, 0, be_else.21978       # |     10,331 |     10,331 |
+be_then.21978:
+    li      3, $i10                     # |     10,331 |     10,331 |
 .count move_args
-    mov     $i16, $i13                  # |     10,334 |     10,334 |
-    jal     shadow_check_one_or_group.2865, $ra2# |     10,334 |     10,334 |
-    bne     $i1, 0, be_else.32621       # |     10,334 |     10,334 |
-be_then.32621:
-    add     $i14, 1, $i14               # |     10,334 |     10,334 |
-    b       shadow_check_one_or_matrix.2868# |     10,334 |     10,334 |
-be_else.32621:
+    mov     $i14, $i11                  # |     10,331 |     10,331 |
+    jal     shadow_check_one_or_group.2865, $ra2# |     10,331 |     10,331 |
+    bne     $i1, 0, be_else.21979       # |     10,331 |     10,331 |
+be_then.21979:
+    add     $i12, 1, $i12               # |     10,331 |     10,331 |
+    b       shadow_check_one_or_matrix.2868# |     10,331 |     10,331 |
+be_else.21979:
     li      1, $i1
     jr      $ra3
-be_else.32620:
+be_else.21978:
     li      1, $i1
     jr      $ra3
-be_else.32618:
+be_else.21976:
     li      1, $i1
     jr      $ra3
-be_else.32606:
-    load    [$i16 + 1], $i1             # |    544,605 |    544,605 |
-    bne     $i1, -1, be_else.32622      # |    544,605 |    544,605 |
-be_then.32622:
+be_else.21964:
+    load    [$i14 + 1], $i1             # |    544,556 |    544,556 |
+    bne     $i1, -1, be_else.21980      # |    544,556 |    544,556 |
+be_then.21980:
     li      0, $i1
 .count b_cont
-    b       be_cont.32622
-be_else.32622:
-    load    [ext_and_net + $i1], $i11   # |    544,605 |    544,605 |
-    li      0, $i10                     # |    544,605 |    544,605 |
-    jal     shadow_check_and_group.2862, $ra1# |    544,605 |    544,605 |
-    bne     $i1, 0, be_else.32623       # |    544,605 |    544,605 |
-be_then.32623:
-    load    [$i16 + 2], $i1             # |    544,605 |    544,605 |
-    bne     $i1, -1, be_else.32624      # |    544,605 |    544,605 |
-be_then.32624:
+    b       be_cont.21980
+be_else.21980:
+    load    [ext_and_net + $i1], $i9    # |    544,556 |    544,556 |
+    li      0, $i8                      # |    544,556 |    544,556 |
+    jal     shadow_check_and_group.2862, $ra1# |    544,556 |    544,556 |
+    bne     $i1, 0, be_else.21981       # |    544,556 |    544,556 |
+be_then.21981:
+    load    [$i14 + 2], $i1             # |    544,556 |    544,556 |
+    bne     $i1, -1, be_else.21982      # |    544,556 |    544,556 |
+be_then.21982:
     li      0, $i1
 .count b_cont
-    b       be_cont.32623
-be_else.32624:
-    li      0, $i10                     # |    544,605 |    544,605 |
-    load    [ext_and_net + $i1], $i11   # |    544,605 |    544,605 |
-    jal     shadow_check_and_group.2862, $ra1# |    544,605 |    544,605 |
-    bne     $i1, 0, be_else.32625       # |    544,605 |    544,605 |
-be_then.32625:
-    load    [$i16 + 3], $i1             # |    543,022 |    543,022 |
-    bne     $i1, -1, be_else.32626      # |    543,022 |    543,022 |
-be_then.32626:
+    b       be_cont.21981
+be_else.21982:
+    li      0, $i8                      # |    544,556 |    544,556 |
+    load    [ext_and_net + $i1], $i9    # |    544,556 |    544,556 |
+    jal     shadow_check_and_group.2862, $ra1# |    544,556 |    544,556 |
+    bne     $i1, 0, be_else.21983       # |    544,556 |    544,556 |
+be_then.21983:
+    load    [$i14 + 3], $i1             # |    542,972 |    542,972 |
+    bne     $i1, -1, be_else.21984      # |    542,972 |    542,972 |
+be_then.21984:
     li      0, $i1
 .count b_cont
-    b       be_cont.32623
-be_else.32626:
-    li      0, $i10                     # |    543,022 |    543,022 |
-    load    [ext_and_net + $i1], $i11   # |    543,022 |    543,022 |
-    jal     shadow_check_and_group.2862, $ra1# |    543,022 |    543,022 |
-    bne     $i1, 0, be_else.32627       # |    543,022 |    543,022 |
-be_then.32627:
-    load    [$i16 + 4], $i1             # |    541,069 |    541,069 |
-    bne     $i1, -1, be_else.32628      # |    541,069 |    541,069 |
-be_then.32628:
+    b       be_cont.21981
+be_else.21984:
+    li      0, $i8                      # |    542,972 |    542,972 |
+    load    [ext_and_net + $i1], $i9    # |    542,972 |    542,972 |
+    jal     shadow_check_and_group.2862, $ra1# |    542,972 |    542,972 |
+    bne     $i1, 0, be_else.21985       # |    542,972 |    542,972 |
+be_then.21985:
+    load    [$i14 + 4], $i1             # |    541,019 |    541,019 |
+    bne     $i1, -1, be_else.21986      # |    541,019 |    541,019 |
+be_then.21986:
     li      0, $i1
 .count b_cont
-    b       be_cont.32623
-be_else.32628:
-    li      0, $i10                     # |    541,069 |    541,069 |
-    load    [ext_and_net + $i1], $i11   # |    541,069 |    541,069 |
-    jal     shadow_check_and_group.2862, $ra1# |    541,069 |    541,069 |
-    bne     $i1, 0, be_else.32629       # |    541,069 |    541,069 |
-be_then.32629:
-    load    [$i16 + 5], $i1             # |    540,655 |    540,655 |
-    bne     $i1, -1, be_else.32630      # |    540,655 |    540,655 |
-be_then.32630:
-    li      0, $i1                      # |    540,655 |    540,655 |
+    b       be_cont.21981
+be_else.21986:
+    li      0, $i8                      # |    541,019 |    541,019 |
+    load    [ext_and_net + $i1], $i9    # |    541,019 |    541,019 |
+    jal     shadow_check_and_group.2862, $ra1# |    541,019 |    541,019 |
+    bne     $i1, 0, be_else.21987       # |    541,019 |    541,019 |
+be_then.21987:
+    load    [$i14 + 5], $i1             # |    540,605 |    540,605 |
+    bne     $i1, -1, be_else.21988      # |    540,605 |    540,605 |
+be_then.21988:
+    li      0, $i1                      # |    540,605 |    540,605 |
 .count b_cont
-    b       be_cont.32623               # |    540,655 |    540,655 |
-be_else.32630:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.21981               # |    540,605 |    540,605 |
+be_else.21988:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32631
-be_then.32631:
-    load    [$i16 + 6], $i1
-    bne     $i1, -1, be_else.32632
-be_then.32632:
+    bne     $i1, 0, be_else.21989
+be_then.21989:
+    load    [$i14 + 6], $i1
+    bne     $i1, -1, be_else.21990
+be_then.21990:
     li      0, $i1
 .count b_cont
-    b       be_cont.32623
-be_else.32632:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.21981
+be_else.21990:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32633
-be_then.32633:
-    load    [$i16 + 7], $i1
-    bne     $i1, -1, be_else.32634
-be_then.32634:
+    bne     $i1, 0, be_else.21991
+be_then.21991:
+    load    [$i14 + 7], $i1
+    bne     $i1, -1, be_else.21992
+be_then.21992:
     li      0, $i1
 .count b_cont
-    b       be_cont.32623
-be_else.32634:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.21981
+be_else.21992:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32635
-be_then.32635:
-    li      8, $i12
+    bne     $i1, 0, be_else.21993
+be_then.21993:
+    li      8, $i10
 .count move_args
-    mov     $i16, $i13
+    mov     $i14, $i11
     jal     shadow_check_one_or_group.2865, $ra2
 .count b_cont
-    b       be_cont.32623
-be_else.32635:
+    b       be_cont.21981
+be_else.21993:
     li      1, $i1
 .count b_cont
-    b       be_cont.32623
-be_else.32633:
+    b       be_cont.21981
+be_else.21991:
     li      1, $i1
 .count b_cont
-    b       be_cont.32623
-be_else.32631:
+    b       be_cont.21981
+be_else.21989:
     li      1, $i1
 .count b_cont
-    b       be_cont.32623
-be_else.32629:
+    b       be_cont.21981
+be_else.21987:
     li      1, $i1                      # |        414 |        414 |
 .count b_cont
-    b       be_cont.32623               # |        414 |        414 |
-be_else.32627:
+    b       be_cont.21981               # |        414 |        414 |
+be_else.21985:
     li      1, $i1                      # |      1,953 |      1,953 |
 .count b_cont
-    b       be_cont.32623               # |      1,953 |      1,953 |
-be_else.32625:
-    li      1, $i1                      # |      1,583 |      1,583 |
+    b       be_cont.21981               # |      1,953 |      1,953 |
+be_else.21983:
+    li      1, $i1                      # |      1,584 |      1,584 |
 .count b_cont
-    b       be_cont.32623               # |      1,583 |      1,583 |
-be_else.32623:
+    b       be_cont.21981               # |      1,584 |      1,584 |
+be_else.21981:
     li      1, $i1
-be_cont.32623:
-be_cont.32622:
-    bne     $i1, 0, be_else.32636       # |    544,605 |    544,605 |
-be_then.32636:
-    add     $i14, 1, $i14               # |    540,655 |    540,655 |
-    load    [$i15 + $i14], $i16         # |    540,655 |    540,655 |
-    load    [$i16 + 0], $i1             # |    540,655 |    540,655 |
-    bne     $i1, -1, be_else.32637      # |    540,655 |    540,655 |
-be_then.32637:
-    li      0, $i1                      # |    540,655 |    540,655 |
-    jr      $ra3                        # |    540,655 |    540,655 |
-be_else.32637:
-    bne     $i1, 99, be_else.32638
-be_then.32638:
+be_cont.21981:
+be_cont.21980:
+    bne     $i1, 0, be_else.21994       # |    544,556 |    544,556 |
+be_then.21994:
+    add     $i12, 1, $i12               # |    540,605 |    540,605 |
+    load    [$i13 + $i12], $i14         # |    540,605 |    540,605 |
+    load    [$i14 + 0], $i1             # |    540,605 |    540,605 |
+    bne     $i1, -1, be_else.21995      # |    540,605 |    540,605 |
+be_then.21995:
+    li      0, $i1                      # |    540,605 |    540,605 |
+    jr      $ra3                        # |    540,605 |    540,605 |
+be_else.21995:
+    bne     $i1, 99, be_else.21996
+be_then.21996:
     li      1, $i1
 .count b_cont
-    b       be_cont.32638
-be_else.32638:
+    b       be_cont.21996
+be_else.21996:
     call    solver_fast.2796
-    bne     $i1, 0, be_else.32639
-be_then.32639:
+    bne     $i1, 0, be_else.21997
+be_then.21997:
     li      0, $i1
 .count b_cont
-    b       be_cont.32639
-be_else.32639:
-    bg      $fc7, $fg0, ble_else.32640
-ble_then.32640:
+    b       be_cont.21997
+be_else.21997:
+    bg      $fc7, $fg0, ble_else.21998
+ble_then.21998:
     li      0, $i1
 .count b_cont
-    b       ble_cont.32640
-ble_else.32640:
-    load    [$i16 + 1], $i1
-    bne     $i1, -1, be_else.32641
-be_then.32641:
+    b       ble_cont.21998
+ble_else.21998:
+    load    [$i14 + 1], $i1
+    bne     $i1, -1, be_else.21999
+be_then.21999:
     li      0, $i1
 .count b_cont
-    b       be_cont.32641
-be_else.32641:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.21999
+be_else.21999:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32642
-be_then.32642:
-    load    [$i16 + 2], $i1
-    bne     $i1, -1, be_else.32643
-be_then.32643:
+    bne     $i1, 0, be_else.22000
+be_then.22000:
+    load    [$i14 + 2], $i1
+    bne     $i1, -1, be_else.22001
+be_then.22001:
     li      0, $i1
 .count b_cont
-    b       be_cont.32642
-be_else.32643:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22000
+be_else.22001:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32644
-be_then.32644:
-    li      3, $i12
+    bne     $i1, 0, be_else.22002
+be_then.22002:
+    li      3, $i10
 .count move_args
-    mov     $i16, $i13
+    mov     $i14, $i11
     jal     shadow_check_one_or_group.2865, $ra2
-    bne     $i1, 0, be_else.32645
-be_then.32645:
+    bne     $i1, 0, be_else.22003
+be_then.22003:
     li      0, $i1
 .count b_cont
-    b       be_cont.32642
-be_else.32645:
+    b       be_cont.22000
+be_else.22003:
     li      1, $i1
 .count b_cont
-    b       be_cont.32642
-be_else.32644:
+    b       be_cont.22000
+be_else.22002:
     li      1, $i1
 .count b_cont
-    b       be_cont.32642
-be_else.32642:
+    b       be_cont.22000
+be_else.22000:
     li      1, $i1
-be_cont.32642:
-be_cont.32641:
-ble_cont.32640:
-be_cont.32639:
-be_cont.32638:
-    bne     $i1, 0, be_else.32646
-be_then.32646:
-    add     $i14, 1, $i14
+be_cont.22000:
+be_cont.21999:
+ble_cont.21998:
+be_cont.21997:
+be_cont.21996:
+    bne     $i1, 0, be_else.22004
+be_then.22004:
+    add     $i12, 1, $i12
     b       shadow_check_one_or_matrix.2868
-be_else.32646:
-    load    [$i16 + 1], $i1
-    bne     $i1, -1, be_else.32647
-be_then.32647:
-    add     $i14, 1, $i14
+be_else.22004:
+    load    [$i14 + 1], $i1
+    bne     $i1, -1, be_else.22005
+be_then.22005:
+    add     $i12, 1, $i12
     b       shadow_check_one_or_matrix.2868
-be_else.32647:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22005:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32648
-be_then.32648:
-    load    [$i16 + 2], $i1
-    bne     $i1, -1, be_else.32649
-be_then.32649:
-    add     $i14, 1, $i14
+    bne     $i1, 0, be_else.22006
+be_then.22006:
+    load    [$i14 + 2], $i1
+    bne     $i1, -1, be_else.22007
+be_then.22007:
+    add     $i12, 1, $i12
     b       shadow_check_one_or_matrix.2868
-be_else.32649:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22007:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
     jal     shadow_check_and_group.2862, $ra1
-    bne     $i1, 0, be_else.32650
-be_then.32650:
-    li      3, $i12
+    bne     $i1, 0, be_else.22008
+be_then.22008:
+    li      3, $i10
 .count move_args
-    mov     $i16, $i13
+    mov     $i14, $i11
     jal     shadow_check_one_or_group.2865, $ra2
-    bne     $i1, 0, be_else.32651
-be_then.32651:
-    add     $i14, 1, $i14
+    bne     $i1, 0, be_else.22009
+be_then.22009:
+    add     $i12, 1, $i12
     b       shadow_check_one_or_matrix.2868
-be_else.32651:
+be_else.22009:
     li      1, $i1
     jr      $ra3
-be_else.32650:
+be_else.22008:
     li      1, $i1
     jr      $ra3
-be_else.32648:
+be_else.22006:
     li      1, $i1
     jr      $ra3
-be_else.32636:
-    li      1, $i1                      # |      3,950 |      3,950 |
-    jr      $ra3                        # |      3,950 |      3,950 |
+be_else.21994:
+    li      1, $i1                      # |      3,951 |      3,951 |
+    jr      $ra3                        # |      3,951 |      3,951 |
 .end shadow_check_one_or_matrix
 
 ######################################################################
-# solve_each_element($i10, $i11, $i12)
+# solve_each_element($i8, $i9, $i10)
 # $ra = $ra1
-# [$i1 - $i14]
+# [$i1 - $i12]
 # [$f1 - $f13]
 # [$ig2 - $ig3]
 # [$fg0, $fg7]
+# [$ra]
 ######################################################################
 .begin solve_each_element
 solve_each_element.2871:
-    load    [$i11 + $i10], $i13         # |    193,311 |    193,311 |
-    bne     $i13, -1, be_else.32652     # |    193,311 |    193,311 |
-be_then.32652:
+    load    [$i9 + $i8], $i11           # |    193,311 |    193,311 |
+    bne     $i11, -1, be_else.22010     # |    193,311 |    193,311 |
+be_then.22010:
     jr      $ra1                        # |     43,491 |     43,491 |
-be_else.32652:
-    load    [ext_objects + $i13], $i1   # |    149,820 |    149,820 |
+be_else.22010:
+    load    [ext_objects + $i11], $i1   # |    149,820 |    149,820 |
     load    [$i1 + 5], $i2              # |    149,820 |    149,820 |
-    load    [$i1 + 5], $i3              # |    149,820 |    149,820 |
-    load    [$i1 + 5], $i4              # |    149,820 |    149,820 |
-    load    [$i1 + 1], $i5              # |    149,820 |    149,820 |
+    load    [$i1 + 1], $i3              # |    149,820 |    149,820 |
     load    [$i2 + 0], $f1              # |    149,820 |    149,820 |
-    fsub    $fg21, $f1, $f1             # |    149,820 |    149,820 |
-    load    [$i3 + 1], $f2              # |    149,820 |    149,820 |
-    fsub    $fg22, $f2, $f2             # |    149,820 |    149,820 |
-    load    [$i4 + 2], $f3              # |    149,820 |    149,820 |
-    fsub    $fg23, $f3, $f3             # |    149,820 |    149,820 |
-    load    [$i12 + 0], $f4             # |    149,820 |    149,820 |
-    bne     $i5, 1, be_else.32653       # |    149,820 |    149,820 |
-be_then.32653:
-    bne     $f4, $f0, be_else.32654     # |     50,858 |     50,858 |
-be_then.32654:
+    fsub    $fg17, $f1, $f1             # |    149,820 |    149,820 |
+    load    [$i2 + 1], $f2              # |    149,820 |    149,820 |
+    fsub    $fg18, $f2, $f2             # |    149,820 |    149,820 |
+    load    [$i2 + 2], $f3              # |    149,820 |    149,820 |
+    fsub    $fg19, $f3, $f3             # |    149,820 |    149,820 |
+    load    [$i10 + 0], $f4             # |    149,820 |    149,820 |
+    bne     $i3, 1, be_else.22011       # |    149,820 |    149,820 |
+be_then.22011:
+    bne     $f4, $f0, be_else.22012     # |     50,858 |     50,858 |
+be_then.22012:
     li      0, $i2
 .count b_cont
-    b       be_cont.32654
-be_else.32654:
+    b       be_cont.22012
+be_else.22012:
     load    [$i1 + 4], $i2              # |     50,858 |     50,858 |
     load    [$i1 + 6], $i3              # |     50,858 |     50,858 |
-    bg      $f0, $f4, ble_else.32655    # |     50,858 |     50,858 |
-ble_then.32655:
+    bg      $f0, $f4, ble_else.22013    # |     50,858 |     50,858 |
+ble_then.22013:
     li      0, $i4                      # |     50,160 |     50,160 |
 .count b_cont
-    b       ble_cont.32655              # |     50,160 |     50,160 |
-ble_else.32655:
+    b       ble_cont.22013              # |     50,160 |     50,160 |
+ble_else.22013:
     li      1, $i4                      # |        698 |        698 |
-ble_cont.32655:
-    bne     $i3, 0, be_else.32656       # |     50,858 |     50,858 |
-be_then.32656:
+ble_cont.22013:
+    bne     $i3, 0, be_else.22014       # |     50,858 |     50,858 |
+be_then.22014:
     mov     $i4, $i3                    # |     50,858 |     50,858 |
 .count b_cont
-    b       be_cont.32656               # |     50,858 |     50,858 |
-be_else.32656:
-    bne     $i4, 0, be_else.32657
-be_then.32657:
+    b       be_cont.22014               # |     50,858 |     50,858 |
+be_else.22014:
+    bne     $i4, 0, be_else.22015
+be_then.22015:
     li      1, $i3
 .count b_cont
-    b       be_cont.32657
-be_else.32657:
+    b       be_cont.22015
+be_else.22015:
     li      0, $i3
-be_cont.32657:
-be_cont.32656:
+be_cont.22015:
+be_cont.22014:
     load    [$i2 + 0], $f5              # |     50,858 |     50,858 |
-    bne     $i3, 0, be_cont.32658       # |     50,858 |     50,858 |
-be_then.32658:
+    bne     $i3, 0, be_cont.22016       # |     50,858 |     50,858 |
+be_then.22016:
     fneg    $f5, $f5                    # |     50,160 |     50,160 |
-be_cont.32658:
+be_cont.22016:
     fsub    $f5, $f1, $f5               # |     50,858 |     50,858 |
     finv    $f4, $f4                    # |     50,858 |     50,858 |
     fmul    $f5, $f4, $f4               # |     50,858 |     50,858 |
     load    [$i2 + 1], $f5              # |     50,858 |     50,858 |
-    load    [$i12 + 1], $f6             # |     50,858 |     50,858 |
+    load    [$i10 + 1], $f6             # |     50,858 |     50,858 |
     fmul    $f4, $f6, $f6               # |     50,858 |     50,858 |
     fadd_a  $f6, $f2, $f6               # |     50,858 |     50,858 |
-    bg      $f5, $f6, ble_else.32659    # |     50,858 |     50,858 |
-ble_then.32659:
+    bg      $f5, $f6, ble_else.22017    # |     50,858 |     50,858 |
+ble_then.22017:
     li      0, $i2                      # |     41,048 |     41,048 |
 .count b_cont
-    b       ble_cont.32659              # |     41,048 |     41,048 |
-ble_else.32659:
+    b       ble_cont.22017              # |     41,048 |     41,048 |
+ble_else.22017:
     load    [$i2 + 2], $f5              # |      9,810 |      9,810 |
-    load    [$i12 + 2], $f6             # |      9,810 |      9,810 |
+    load    [$i10 + 2], $f6             # |      9,810 |      9,810 |
     fmul    $f4, $f6, $f6               # |      9,810 |      9,810 |
     fadd_a  $f6, $f3, $f6               # |      9,810 |      9,810 |
-    bg      $f5, $f6, ble_else.32660    # |      9,810 |      9,810 |
-ble_then.32660:
+    bg      $f5, $f6, ble_else.22018    # |      9,810 |      9,810 |
+ble_then.22018:
     li      0, $i2                      # |      5,699 |      5,699 |
 .count b_cont
-    b       ble_cont.32660              # |      5,699 |      5,699 |
-ble_else.32660:
+    b       ble_cont.22018              # |      5,699 |      5,699 |
+ble_else.22018:
     mov     $f4, $fg0                   # |      4,111 |      4,111 |
     li      1, $i2                      # |      4,111 |      4,111 |
-ble_cont.32660:
-ble_cont.32659:
-be_cont.32654:
-    bne     $i2, 0, be_else.32661       # |     50,858 |     50,858 |
-be_then.32661:
-    load    [$i12 + 1], $f4             # |     46,747 |     46,747 |
-    bne     $f4, $f0, be_else.32662     # |     46,747 |     46,747 |
-be_then.32662:
+ble_cont.22018:
+ble_cont.22017:
+be_cont.22012:
+    bne     $i2, 0, be_else.22019       # |     50,858 |     50,858 |
+be_then.22019:
+    load    [$i10 + 1], $f4             # |     46,747 |     46,747 |
+    bne     $f4, $f0, be_else.22020     # |     46,747 |     46,747 |
+be_then.22020:
     li      0, $i2
 .count b_cont
-    b       be_cont.32662
-be_else.32662:
+    b       be_cont.22020
+be_else.22020:
     load    [$i1 + 4], $i2              # |     46,747 |     46,747 |
     load    [$i1 + 6], $i3              # |     46,747 |     46,747 |
-    bg      $f0, $f4, ble_else.32663    # |     46,747 |     46,747 |
-ble_then.32663:
+    bg      $f0, $f4, ble_else.22021    # |     46,747 |     46,747 |
+ble_then.22021:
     li      0, $i4                      # |        217 |        217 |
 .count b_cont
-    b       ble_cont.32663              # |        217 |        217 |
-ble_else.32663:
+    b       ble_cont.22021              # |        217 |        217 |
+ble_else.22021:
     li      1, $i4                      # |     46,530 |     46,530 |
-ble_cont.32663:
-    bne     $i3, 0, be_else.32664       # |     46,747 |     46,747 |
-be_then.32664:
+ble_cont.22021:
+    bne     $i3, 0, be_else.22022       # |     46,747 |     46,747 |
+be_then.22022:
     mov     $i4, $i3                    # |     46,747 |     46,747 |
 .count b_cont
-    b       be_cont.32664               # |     46,747 |     46,747 |
-be_else.32664:
-    bne     $i4, 0, be_else.32665
-be_then.32665:
+    b       be_cont.22022               # |     46,747 |     46,747 |
+be_else.22022:
+    bne     $i4, 0, be_else.22023
+be_then.22023:
     li      1, $i3
 .count b_cont
-    b       be_cont.32665
-be_else.32665:
+    b       be_cont.22023
+be_else.22023:
     li      0, $i3
-be_cont.32665:
-be_cont.32664:
+be_cont.22023:
+be_cont.22022:
     load    [$i2 + 1], $f5              # |     46,747 |     46,747 |
-    bne     $i3, 0, be_cont.32666       # |     46,747 |     46,747 |
-be_then.32666:
+    bne     $i3, 0, be_cont.22024       # |     46,747 |     46,747 |
+be_then.22024:
     fneg    $f5, $f5                    # |        217 |        217 |
-be_cont.32666:
+be_cont.22024:
     fsub    $f5, $f2, $f5               # |     46,747 |     46,747 |
     finv    $f4, $f4                    # |     46,747 |     46,747 |
     fmul    $f5, $f4, $f4               # |     46,747 |     46,747 |
     load    [$i2 + 2], $f5              # |     46,747 |     46,747 |
-    load    [$i12 + 2], $f6             # |     46,747 |     46,747 |
+    load    [$i10 + 2], $f6             # |     46,747 |     46,747 |
     fmul    $f4, $f6, $f6               # |     46,747 |     46,747 |
     fadd_a  $f6, $f3, $f6               # |     46,747 |     46,747 |
-    bg      $f5, $f6, ble_else.32667    # |     46,747 |     46,747 |
-ble_then.32667:
+    bg      $f5, $f6, ble_else.22025    # |     46,747 |     46,747 |
+ble_then.22025:
     li      0, $i2                      # |     28,211 |     28,211 |
 .count b_cont
-    b       ble_cont.32667              # |     28,211 |     28,211 |
-ble_else.32667:
+    b       ble_cont.22025              # |     28,211 |     28,211 |
+ble_else.22025:
     load    [$i2 + 0], $f5              # |     18,536 |     18,536 |
-    load    [$i12 + 0], $f6             # |     18,536 |     18,536 |
+    load    [$i10 + 0], $f6             # |     18,536 |     18,536 |
     fmul    $f4, $f6, $f6               # |     18,536 |     18,536 |
     fadd_a  $f6, $f1, $f6               # |     18,536 |     18,536 |
-    bg      $f5, $f6, ble_else.32668    # |     18,536 |     18,536 |
-ble_then.32668:
+    bg      $f5, $f6, ble_else.22026    # |     18,536 |     18,536 |
+ble_then.22026:
     li      0, $i2                      # |      6,456 |      6,456 |
 .count b_cont
-    b       ble_cont.32668              # |      6,456 |      6,456 |
-ble_else.32668:
+    b       ble_cont.22026              # |      6,456 |      6,456 |
+ble_else.22026:
     mov     $f4, $fg0                   # |     12,080 |     12,080 |
     li      1, $i2                      # |     12,080 |     12,080 |
-ble_cont.32668:
-ble_cont.32667:
-be_cont.32662:
-    bne     $i2, 0, be_else.32669       # |     46,747 |     46,747 |
-be_then.32669:
-    load    [$i12 + 2], $f4             # |     34,667 |     34,667 |
-    bne     $f4, $f0, be_else.32670     # |     34,667 |     34,667 |
-be_then.32670:
-    li      0, $i14
+ble_cont.22026:
+ble_cont.22025:
+be_cont.22020:
+    bne     $i2, 0, be_else.22027       # |     46,747 |     46,747 |
+be_then.22027:
+    load    [$i10 + 2], $f4             # |     34,667 |     34,667 |
+    bne     $f4, $f0, be_else.22028     # |     34,667 |     34,667 |
+be_then.22028:
+    li      0, $i12
 .count b_cont
-    b       be_cont.32653
-be_else.32670:
+    b       be_cont.22011
+be_else.22028:
     load    [$i1 + 4], $i2              # |     34,667 |     34,667 |
     load    [$i2 + 0], $f5              # |     34,667 |     34,667 |
-    load    [$i12 + 0], $f6             # |     34,667 |     34,667 |
+    load    [$i10 + 0], $f6             # |     34,667 |     34,667 |
     load    [$i1 + 6], $i1              # |     34,667 |     34,667 |
-    bg      $f0, $f4, ble_else.32671    # |     34,667 |     34,667 |
-ble_then.32671:
+    bg      $f0, $f4, ble_else.22029    # |     34,667 |     34,667 |
+ble_then.22029:
     li      0, $i3                      # |     24,683 |     24,683 |
 .count b_cont
-    b       ble_cont.32671              # |     24,683 |     24,683 |
-ble_else.32671:
+    b       ble_cont.22029              # |     24,683 |     24,683 |
+ble_else.22029:
     li      1, $i3                      # |      9,984 |      9,984 |
-ble_cont.32671:
-    bne     $i1, 0, be_else.32672       # |     34,667 |     34,667 |
-be_then.32672:
+ble_cont.22029:
+    bne     $i1, 0, be_else.22030       # |     34,667 |     34,667 |
+be_then.22030:
     mov     $i3, $i1                    # |     34,667 |     34,667 |
 .count b_cont
-    b       be_cont.32672               # |     34,667 |     34,667 |
-be_else.32672:
-    bne     $i3, 0, be_else.32673
-be_then.32673:
+    b       be_cont.22030               # |     34,667 |     34,667 |
+be_else.22030:
+    bne     $i3, 0, be_else.22031
+be_then.22031:
     li      1, $i1
 .count b_cont
-    b       be_cont.32673
-be_else.32673:
+    b       be_cont.22031
+be_else.22031:
     li      0, $i1
-be_cont.32673:
-be_cont.32672:
+be_cont.22031:
+be_cont.22030:
     load    [$i2 + 2], $f7              # |     34,667 |     34,667 |
-    bne     $i1, 0, be_cont.32674       # |     34,667 |     34,667 |
-be_then.32674:
+    bne     $i1, 0, be_cont.22032       # |     34,667 |     34,667 |
+be_then.22032:
     fneg    $f7, $f7                    # |     24,683 |     24,683 |
-be_cont.32674:
+be_cont.22032:
     fsub    $f7, $f3, $f3               # |     34,667 |     34,667 |
     finv    $f4, $f4                    # |     34,667 |     34,667 |
     fmul    $f3, $f4, $f3               # |     34,667 |     34,667 |
     fmul    $f3, $f6, $f4               # |     34,667 |     34,667 |
     fadd_a  $f4, $f1, $f1               # |     34,667 |     34,667 |
-    bg      $f5, $f1, ble_else.32675    # |     34,667 |     34,667 |
-ble_then.32675:
-    li      0, $i14                     # |     18,798 |     18,798 |
+    bg      $f5, $f1, ble_else.22033    # |     34,667 |     34,667 |
+ble_then.22033:
+    li      0, $i12                     # |     18,798 |     18,798 |
 .count b_cont
-    b       be_cont.32653               # |     18,798 |     18,798 |
-ble_else.32675:
+    b       be_cont.22011               # |     18,798 |     18,798 |
+ble_else.22033:
     load    [$i2 + 1], $f1              # |     15,869 |     15,869 |
-    load    [$i12 + 1], $f4             # |     15,869 |     15,869 |
+    load    [$i10 + 1], $f4             # |     15,869 |     15,869 |
     fmul    $f3, $f4, $f4               # |     15,869 |     15,869 |
     fadd_a  $f4, $f2, $f2               # |     15,869 |     15,869 |
-    bg      $f1, $f2, ble_else.32676    # |     15,869 |     15,869 |
-ble_then.32676:
-    li      0, $i14                     # |     12,844 |     12,844 |
+    bg      $f1, $f2, ble_else.22034    # |     15,869 |     15,869 |
+ble_then.22034:
+    li      0, $i12                     # |     12,844 |     12,844 |
 .count b_cont
-    b       be_cont.32653               # |     12,844 |     12,844 |
-ble_else.32676:
+    b       be_cont.22011               # |     12,844 |     12,844 |
+ble_else.22034:
     mov     $f3, $fg0                   # |      3,025 |      3,025 |
-    li      3, $i14                     # |      3,025 |      3,025 |
+    li      3, $i12                     # |      3,025 |      3,025 |
 .count b_cont
-    b       be_cont.32653               # |      3,025 |      3,025 |
-be_else.32669:
-    li      2, $i14                     # |     12,080 |     12,080 |
+    b       be_cont.22011               # |      3,025 |      3,025 |
+be_else.22027:
+    li      2, $i12                     # |     12,080 |     12,080 |
 .count b_cont
-    b       be_cont.32653               # |     12,080 |     12,080 |
-be_else.32661:
-    li      1, $i14                     # |      4,111 |      4,111 |
+    b       be_cont.22011               # |     12,080 |     12,080 |
+be_else.22019:
+    li      1, $i12                     # |      4,111 |      4,111 |
 .count b_cont
-    b       be_cont.32653               # |      4,111 |      4,111 |
-be_else.32653:
-    bne     $i5, 2, be_else.32677       # |     98,962 |     98,962 |
-be_then.32677:
+    b       be_cont.22011               # |      4,111 |      4,111 |
+be_else.22011:
+    bne     $i3, 2, be_else.22035       # |     98,962 |     98,962 |
+be_then.22035:
     load    [$i1 + 4], $i1              # |     24,693 |     24,693 |
     load    [$i1 + 0], $f5              # |     24,693 |     24,693 |
     fmul    $f4, $f5, $f4               # |     24,693 |     24,693 |
-    load    [$i12 + 1], $f6             # |     24,693 |     24,693 |
+    load    [$i10 + 1], $f6             # |     24,693 |     24,693 |
     load    [$i1 + 1], $f7              # |     24,693 |     24,693 |
     fmul    $f6, $f7, $f6               # |     24,693 |     24,693 |
     fadd    $f4, $f6, $f4               # |     24,693 |     24,693 |
-    load    [$i12 + 2], $f6             # |     24,693 |     24,693 |
+    load    [$i10 + 2], $f6             # |     24,693 |     24,693 |
     load    [$i1 + 2], $f8              # |     24,693 |     24,693 |
     fmul    $f6, $f8, $f6               # |     24,693 |     24,693 |
     fadd    $f4, $f6, $f4               # |     24,693 |     24,693 |
-    bg      $f4, $f0, ble_else.32678    # |     24,693 |     24,693 |
-ble_then.32678:
-    li      0, $i14                     # |      7,535 |      7,535 |
+    bg      $f4, $f0, ble_else.22036    # |     24,693 |     24,693 |
+ble_then.22036:
+    li      0, $i12                     # |      7,535 |      7,535 |
 .count b_cont
-    b       be_cont.32677               # |      7,535 |      7,535 |
-ble_else.32678:
+    b       be_cont.22035               # |      7,535 |      7,535 |
+ble_else.22036:
     fmul    $f5, $f1, $f1               # |     17,158 |     17,158 |
     fmul    $f7, $f2, $f2               # |     17,158 |     17,158 |
     fadd    $f1, $f2, $f1               # |     17,158 |     17,158 |
@@ -5769,52 +5081,47 @@ ble_else.32678:
     fadd_n  $f1, $f2, $f1               # |     17,158 |     17,158 |
     finv    $f4, $f2                    # |     17,158 |     17,158 |
     fmul    $f1, $f2, $fg0              # |     17,158 |     17,158 |
-    li      1, $i14                     # |     17,158 |     17,158 |
+    li      1, $i12                     # |     17,158 |     17,158 |
 .count b_cont
-    b       be_cont.32677               # |     17,158 |     17,158 |
-be_else.32677:
+    b       be_cont.22035               # |     17,158 |     17,158 |
+be_else.22035:
     load    [$i1 + 3], $i2              # |     74,269 |     74,269 |
-    load    [$i1 + 4], $i3              # |     74,269 |     74,269 |
     load    [$i1 + 4], $i4              # |     74,269 |     74,269 |
-    load    [$i1 + 4], $i5              # |     74,269 |     74,269 |
-    load    [$i12 + 1], $f5             # |     74,269 |     74,269 |
-    load    [$i12 + 2], $f6             # |     74,269 |     74,269 |
+    load    [$i10 + 1], $f5             # |     74,269 |     74,269 |
+    load    [$i10 + 2], $f6             # |     74,269 |     74,269 |
     fmul    $f4, $f4, $f7               # |     74,269 |     74,269 |
-    load    [$i3 + 0], $f8              # |     74,269 |     74,269 |
+    load    [$i4 + 0], $f8              # |     74,269 |     74,269 |
     fmul    $f7, $f8, $f7               # |     74,269 |     74,269 |
     fmul    $f5, $f5, $f9               # |     74,269 |     74,269 |
     load    [$i4 + 1], $f10             # |     74,269 |     74,269 |
     fmul    $f9, $f10, $f9              # |     74,269 |     74,269 |
     fadd    $f7, $f9, $f7               # |     74,269 |     74,269 |
     fmul    $f6, $f6, $f9               # |     74,269 |     74,269 |
-    load    [$i5 + 2], $f11             # |     74,269 |     74,269 |
+    load    [$i4 + 2], $f11             # |     74,269 |     74,269 |
     fmul    $f9, $f11, $f9              # |     74,269 |     74,269 |
     fadd    $f7, $f9, $f7               # |     74,269 |     74,269 |
-    be      $i2, 0, bne_cont.32679      # |     74,269 |     74,269 |
-bne_then.32679:
+    be      $i2, 0, bne_cont.22037      # |     74,269 |     74,269 |
+bne_then.22037:
     fmul    $f5, $f6, $f9
-    load    [$i1 + 9], $i3
-    load    [$i3 + 0], $f12
+    load    [$i1 + 9], $i4
+    load    [$i4 + 0], $f12
     fmul    $f9, $f12, $f9
     fadd    $f7, $f9, $f7
     fmul    $f6, $f4, $f9
-    load    [$i1 + 9], $i3
-    load    [$i3 + 1], $f12
+    load    [$i4 + 1], $f12
     fmul    $f9, $f12, $f9
     fadd    $f7, $f9, $f7
     fmul    $f4, $f5, $f9
-    load    [$i1 + 9], $i3
-    load    [$i3 + 2], $f12
+    load    [$i4 + 2], $f12
     fmul    $f9, $f12, $f9
     fadd    $f7, $f9, $f7
-bne_cont.32679:
-    bne     $f7, $f0, be_else.32680     # |     74,269 |     74,269 |
-be_then.32680:
-    li      0, $i14
+bne_cont.22037:
+    bne     $f7, $f0, be_else.22038     # |     74,269 |     74,269 |
+be_then.22038:
+    li      0, $i12
 .count b_cont
-    b       be_cont.32680
-be_else.32680:
-    load    [$i1 + 1], $i3              # |     74,269 |     74,269 |
+    b       be_cont.22038
+be_else.22038:
     fmul    $f4, $f1, $f9               # |     74,269 |     74,269 |
     fmul    $f9, $f8, $f9               # |     74,269 |     74,269 |
     fmul    $f5, $f2, $f12              # |     74,269 |     74,269 |
@@ -5823,12 +5130,12 @@ be_else.32680:
     fmul    $f6, $f3, $f12              # |     74,269 |     74,269 |
     fmul    $f12, $f11, $f12            # |     74,269 |     74,269 |
     fadd    $f9, $f12, $f9              # |     74,269 |     74,269 |
-    bne     $i2, 0, be_else.32681       # |     74,269 |     74,269 |
-be_then.32681:
+    bne     $i2, 0, be_else.22039       # |     74,269 |     74,269 |
+be_then.22039:
     mov     $f9, $f4                    # |     74,269 |     74,269 |
 .count b_cont
-    b       be_cont.32681               # |     74,269 |     74,269 |
-be_else.32681:
+    b       be_cont.22039               # |     74,269 |     74,269 |
+be_else.22039:
     fmul    $f6, $f2, $f12
     fmul    $f5, $f3, $f13
     fadd    $f12, $f13, $f12
@@ -5838,20 +5145,18 @@ be_else.32681:
     fmul    $f4, $f3, $f13
     fmul    $f6, $f1, $f6
     fadd    $f13, $f6, $f6
-    load    [$i1 + 9], $i4
     load    [$i4 + 1], $f13
     fmul    $f6, $f13, $f6
     fadd    $f12, $f6, $f6
     fmul    $f4, $f2, $f4
     fmul    $f5, $f1, $f5
     fadd    $f4, $f5, $f4
-    load    [$i1 + 9], $i4
     load    [$i4 + 2], $f5
     fmul    $f4, $f5, $f4
     fadd    $f6, $f4, $f4
-    fmul    $f4, $fc3, $f4
+    fmul    $f4, $fc4, $f4
     fadd    $f9, $f4, $f4
-be_cont.32681:
+be_cont.22039:
     fmul    $f4, $f4, $f5               # |     74,269 |     74,269 |
     fmul    $f1, $f1, $f6               # |     74,269 |     74,269 |
     fmul    $f6, $f8, $f6               # |     74,269 |     74,269 |
@@ -5861,93 +5166,91 @@ be_cont.32681:
     fmul    $f3, $f3, $f8               # |     74,269 |     74,269 |
     fmul    $f8, $f11, $f8              # |     74,269 |     74,269 |
     fadd    $f6, $f8, $f6               # |     74,269 |     74,269 |
-    bne     $i2, 0, be_else.32682       # |     74,269 |     74,269 |
-be_then.32682:
+    bne     $i2, 0, be_else.22040       # |     74,269 |     74,269 |
+be_then.22040:
     mov     $f6, $f1                    # |     74,269 |     74,269 |
 .count b_cont
-    b       be_cont.32682               # |     74,269 |     74,269 |
-be_else.32682:
+    b       be_cont.22040               # |     74,269 |     74,269 |
+be_else.22040:
     fmul    $f2, $f3, $f8
     load    [$i1 + 9], $i2
     load    [$i2 + 0], $f9
     fmul    $f8, $f9, $f8
     fadd    $f6, $f8, $f6
     fmul    $f3, $f1, $f3
-    load    [$i1 + 9], $i2
     load    [$i2 + 1], $f8
     fmul    $f3, $f8, $f3
     fadd    $f6, $f3, $f3
     fmul    $f1, $f2, $f1
-    load    [$i1 + 9], $i2
     load    [$i2 + 2], $f2
     fmul    $f1, $f2, $f1
     fadd    $f3, $f1, $f1
-be_cont.32682:
-    bne     $i3, 3, be_cont.32683       # |     74,269 |     74,269 |
-be_then.32683:
+be_cont.22040:
+    bne     $i3, 3, be_cont.22041       # |     74,269 |     74,269 |
+be_then.22041:
     fsub    $f1, $fc0, $f1              # |     74,269 |     74,269 |
-be_cont.32683:
+be_cont.22041:
     fmul    $f7, $f1, $f1               # |     74,269 |     74,269 |
     fsub    $f5, $f1, $f1               # |     74,269 |     74,269 |
-    bg      $f1, $f0, ble_else.32684    # |     74,269 |     74,269 |
-ble_then.32684:
-    li      0, $i14                     # |     62,376 |     62,376 |
+    bg      $f1, $f0, ble_else.22042    # |     74,269 |     74,269 |
+ble_then.22042:
+    li      0, $i12                     # |     62,376 |     62,376 |
 .count b_cont
-    b       ble_cont.32684              # |     62,376 |     62,376 |
-ble_else.32684:
+    b       ble_cont.22042              # |     62,376 |     62,376 |
+ble_else.22042:
     load    [$i1 + 6], $i1              # |     11,893 |     11,893 |
     fsqrt   $f1, $f1                    # |     11,893 |     11,893 |
-    li      1, $i14                     # |     11,893 |     11,893 |
+    li      1, $i12                     # |     11,893 |     11,893 |
     finv    $f7, $f2                    # |     11,893 |     11,893 |
-    bne     $i1, 0, be_else.32685       # |     11,893 |     11,893 |
-be_then.32685:
+    bne     $i1, 0, be_else.22043       # |     11,893 |     11,893 |
+be_then.22043:
     fneg    $f1, $f1                    # |      9,138 |      9,138 |
     fsub    $f1, $f4, $f1               # |      9,138 |      9,138 |
     fmul    $f1, $f2, $fg0              # |      9,138 |      9,138 |
 .count b_cont
-    b       be_cont.32685               # |      9,138 |      9,138 |
-be_else.32685:
+    b       be_cont.22043               # |      9,138 |      9,138 |
+be_else.22043:
     fsub    $f1, $f4, $f1               # |      2,755 |      2,755 |
     fmul    $f1, $f2, $fg0              # |      2,755 |      2,755 |
-be_cont.32685:
-ble_cont.32684:
-be_cont.32680:
-be_cont.32677:
-be_cont.32653:
-    bne     $i14, 0, be_else.32686      # |    149,820 |    149,820 |
-be_then.32686:
-    load    [ext_objects + $i13], $i1   # |    101,553 |    101,553 |
+be_cont.22043:
+ble_cont.22042:
+be_cont.22038:
+be_cont.22035:
+be_cont.22011:
+    bne     $i12, 0, be_else.22044      # |    149,820 |    149,820 |
+be_then.22044:
+    load    [ext_objects + $i11], $i1   # |    101,553 |    101,553 |
     load    [$i1 + 6], $i1              # |    101,553 |    101,553 |
-    bne     $i1, 0, be_else.32687       # |    101,553 |    101,553 |
-be_then.32687:
+    bne     $i1, 0, be_else.22045       # |    101,553 |    101,553 |
+be_then.22045:
     jr      $ra1                        # |     92,181 |     92,181 |
-be_else.32687:
-    add     $i10, 1, $i10               # |      9,372 |      9,372 |
+be_else.22045:
+    add     $i8, 1, $i8                 # |      9,372 |      9,372 |
     b       solve_each_element.2871     # |      9,372 |      9,372 |
-be_else.32686:
-    bg      $fg0, $f0, ble_else.32688   # |     48,267 |     48,267 |
-ble_then.32688:
-    add     $i10, 1, $i10               # |        847 |        847 |
+be_else.22044:
+    bg      $fg0, $f0, ble_else.22046   # |     48,267 |     48,267 |
+ble_then.22046:
+    add     $i8, 1, $i8                 # |        847 |        847 |
     b       solve_each_element.2871     # |        847 |        847 |
-ble_else.32688:
-    bg      $fg7, $fg0, ble_else.32689  # |     47,420 |     47,420 |
-ble_then.32689:
-    add     $i10, 1, $i10               # |     11,681 |     11,681 |
+ble_else.22046:
+    bg      $fg7, $fg0, ble_else.22047  # |     47,420 |     47,420 |
+ble_then.22047:
+    add     $i8, 1, $i8                 # |     11,681 |     11,681 |
     b       solve_each_element.2871     # |     11,681 |     11,681 |
-ble_else.32689:
+ble_else.22047:
     li      0, $i1                      # |     35,739 |     35,739 |
-    load    [$i12 + 0], $f1             # |     35,739 |     35,739 |
-    fadd    $fg0, $fc16, $f10           # |     35,739 |     35,739 |
+    load    [$i10 + 0], $f1             # |     35,739 |     35,739 |
+    fadd    $fg0, $fc15, $f10           # |     35,739 |     35,739 |
     fmul    $f1, $f10, $f1              # |     35,739 |     35,739 |
-    fadd    $f1, $fg21, $f11            # |     35,739 |     35,739 |
-    load    [$i12 + 1], $f1             # |     35,739 |     35,739 |
+    fadd    $f1, $fg17, $f11            # |     35,739 |     35,739 |
+    load    [$i10 + 1], $f1             # |     35,739 |     35,739 |
     fmul    $f1, $f10, $f1              # |     35,739 |     35,739 |
-    fadd    $f1, $fg22, $f12            # |     35,739 |     35,739 |
-    load    [$i12 + 2], $f1             # |     35,739 |     35,739 |
+    fadd    $f1, $fg18, $f12            # |     35,739 |     35,739 |
+    load    [$i10 + 2], $f1             # |     35,739 |     35,739 |
     fmul    $f1, $f10, $f1              # |     35,739 |     35,739 |
-    fadd    $f1, $fg23, $f13            # |     35,739 |     35,739 |
+    fadd    $f1, $fg19, $f13            # |     35,739 |     35,739 |
 .count move_args
-    mov     $i11, $i3                   # |     35,739 |     35,739 |
+    mov     $i9, $i3                    # |     35,739 |     35,739 |
 .count move_args
     mov     $f11, $f2                   # |     35,739 |     35,739 |
 .count move_args
@@ -5955,323 +5258,326 @@ ble_else.32689:
 .count move_args
     mov     $f13, $f4                   # |     35,739 |     35,739 |
     call    check_all_inside.2856       # |     35,739 |     35,739 |
-    add     $i10, 1, $i10               # |     35,739 |     35,739 |
+    add     $i8, 1, $i8                 # |     35,739 |     35,739 |
     be      $i1, 0, solve_each_element.2871# |     35,739 |     35,739 |
-    mov     $f10, $fg7                  # |     25,164 |     25,164 |
-    store   $f11, [ext_intersection_point + 0]# |     25,164 |     25,164 |
-    store   $f12, [ext_intersection_point + 1]# |     25,164 |     25,164 |
-    store   $f13, [ext_intersection_point + 2]# |     25,164 |     25,164 |
-    mov     $i13, $ig3                  # |     25,164 |     25,164 |
-    mov     $i14, $ig2                  # |     25,164 |     25,164 |
-    b       solve_each_element.2871     # |     25,164 |     25,164 |
+    mov     $f10, $fg7                  # |     25,163 |     25,163 |
+    store   $f11, [ext_intersection_point + 0]# |     25,163 |     25,163 |
+    store   $f12, [ext_intersection_point + 1]# |     25,163 |     25,163 |
+    store   $f13, [ext_intersection_point + 2]# |     25,163 |     25,163 |
+    mov     $i11, $ig3                  # |     25,163 |     25,163 |
+    mov     $i12, $ig2                  # |     25,163 |     25,163 |
+    b       solve_each_element.2871     # |     25,163 |     25,163 |
 .end solve_each_element
 
 ######################################################################
-# solve_one_or_network($i15, $i16, $i17)
+# solve_one_or_network($i13, $i14, $i15)
 # $ra = $ra2
-# [$i1 - $i17]
+# [$i1 - $i15]
 # [$f1 - $f13]
 # [$ig2 - $ig3]
 # [$fg0, $fg7]
+# [$ra - $ra1]
 ######################################################################
 .begin solve_one_or_network
 solve_one_or_network.2875:
-    load    [$i16 + $i15], $i1          # |      6,776 |      6,776 |
-    bne     $i1, -1, be_else.32691      # |      6,776 |      6,776 |
-be_then.32691:
+    load    [$i14 + $i13], $i1          # |      6,776 |      6,776 |
+    bne     $i1, -1, be_else.22049      # |      6,776 |      6,776 |
+be_then.22049:
     jr      $ra2
-be_else.32691:
-    li      0, $i10                     # |      6,776 |      6,776 |
-    load    [ext_and_net + $i1], $i11   # |      6,776 |      6,776 |
+be_else.22049:
+    li      0, $i8                      # |      6,776 |      6,776 |
+    load    [ext_and_net + $i1], $i9    # |      6,776 |      6,776 |
 .count move_args
-    mov     $i17, $i12                  # |      6,776 |      6,776 |
+    mov     $i15, $i10                  # |      6,776 |      6,776 |
     jal     solve_each_element.2871, $ra1# |      6,776 |      6,776 |
-    add     $i15, 1, $i15               # |      6,776 |      6,776 |
-    load    [$i16 + $i15], $i1          # |      6,776 |      6,776 |
-    bne     $i1, -1, be_else.32692      # |      6,776 |      6,776 |
-be_then.32692:
+    add     $i13, 1, $i13               # |      6,776 |      6,776 |
+    load    [$i14 + $i13], $i1          # |      6,776 |      6,776 |
+    bne     $i1, -1, be_else.22050      # |      6,776 |      6,776 |
+be_then.22050:
     jr      $ra2
-be_else.32692:
-    li      0, $i10                     # |      6,776 |      6,776 |
-    load    [ext_and_net + $i1], $i11   # |      6,776 |      6,776 |
+be_else.22050:
+    li      0, $i8                      # |      6,776 |      6,776 |
+    load    [ext_and_net + $i1], $i9    # |      6,776 |      6,776 |
 .count move_args
-    mov     $i17, $i12                  # |      6,776 |      6,776 |
+    mov     $i15, $i10                  # |      6,776 |      6,776 |
     jal     solve_each_element.2871, $ra1# |      6,776 |      6,776 |
-    add     $i15, 1, $i15               # |      6,776 |      6,776 |
-    load    [$i16 + $i15], $i1          # |      6,776 |      6,776 |
-    bne     $i1, -1, be_else.32693      # |      6,776 |      6,776 |
-be_then.32693:
+    add     $i13, 1, $i13               # |      6,776 |      6,776 |
+    load    [$i14 + $i13], $i1          # |      6,776 |      6,776 |
+    bne     $i1, -1, be_else.22051      # |      6,776 |      6,776 |
+be_then.22051:
     jr      $ra2
-be_else.32693:
-    li      0, $i10                     # |      6,776 |      6,776 |
-    load    [ext_and_net + $i1], $i11   # |      6,776 |      6,776 |
+be_else.22051:
+    li      0, $i8                      # |      6,776 |      6,776 |
+    load    [ext_and_net + $i1], $i9    # |      6,776 |      6,776 |
 .count move_args
-    mov     $i17, $i12                  # |      6,776 |      6,776 |
+    mov     $i15, $i10                  # |      6,776 |      6,776 |
     jal     solve_each_element.2871, $ra1# |      6,776 |      6,776 |
-    add     $i15, 1, $i15               # |      6,776 |      6,776 |
-    load    [$i16 + $i15], $i1          # |      6,776 |      6,776 |
-    bne     $i1, -1, be_else.32694      # |      6,776 |      6,776 |
-be_then.32694:
+    add     $i13, 1, $i13               # |      6,776 |      6,776 |
+    load    [$i14 + $i13], $i1          # |      6,776 |      6,776 |
+    bne     $i1, -1, be_else.22052      # |      6,776 |      6,776 |
+be_then.22052:
     jr      $ra2
-be_else.32694:
-    li      0, $i10                     # |      6,776 |      6,776 |
-    load    [ext_and_net + $i1], $i11   # |      6,776 |      6,776 |
+be_else.22052:
+    li      0, $i8                      # |      6,776 |      6,776 |
+    load    [ext_and_net + $i1], $i9    # |      6,776 |      6,776 |
 .count move_args
-    mov     $i17, $i12                  # |      6,776 |      6,776 |
+    mov     $i15, $i10                  # |      6,776 |      6,776 |
     jal     solve_each_element.2871, $ra1# |      6,776 |      6,776 |
-    add     $i15, 1, $i15               # |      6,776 |      6,776 |
-    load    [$i16 + $i15], $i1          # |      6,776 |      6,776 |
-    bne     $i1, -1, be_else.32695      # |      6,776 |      6,776 |
-be_then.32695:
+    add     $i13, 1, $i13               # |      6,776 |      6,776 |
+    load    [$i14 + $i13], $i1          # |      6,776 |      6,776 |
+    bne     $i1, -1, be_else.22053      # |      6,776 |      6,776 |
+be_then.22053:
     jr      $ra2
-be_else.32695:
-    li      0, $i10                     # |      6,776 |      6,776 |
-    load    [ext_and_net + $i1], $i11   # |      6,776 |      6,776 |
+be_else.22053:
+    li      0, $i8                      # |      6,776 |      6,776 |
+    load    [ext_and_net + $i1], $i9    # |      6,776 |      6,776 |
 .count move_args
-    mov     $i17, $i12                  # |      6,776 |      6,776 |
+    mov     $i15, $i10                  # |      6,776 |      6,776 |
     jal     solve_each_element.2871, $ra1# |      6,776 |      6,776 |
-    add     $i15, 1, $i15               # |      6,776 |      6,776 |
-    load    [$i16 + $i15], $i1          # |      6,776 |      6,776 |
-    bne     $i1, -1, be_else.32696      # |      6,776 |      6,776 |
-be_then.32696:
+    add     $i13, 1, $i13               # |      6,776 |      6,776 |
+    load    [$i14 + $i13], $i1          # |      6,776 |      6,776 |
+    bne     $i1, -1, be_else.22054      # |      6,776 |      6,776 |
+be_then.22054:
     jr      $ra2
-be_else.32696:
-    li      0, $i10                     # |      6,776 |      6,776 |
-    load    [ext_and_net + $i1], $i11   # |      6,776 |      6,776 |
+be_else.22054:
+    li      0, $i8                      # |      6,776 |      6,776 |
+    load    [ext_and_net + $i1], $i9    # |      6,776 |      6,776 |
 .count move_args
-    mov     $i17, $i12                  # |      6,776 |      6,776 |
+    mov     $i15, $i10                  # |      6,776 |      6,776 |
     jal     solve_each_element.2871, $ra1# |      6,776 |      6,776 |
-    add     $i15, 1, $i15               # |      6,776 |      6,776 |
-    load    [$i16 + $i15], $i1          # |      6,776 |      6,776 |
-    bne     $i1, -1, be_else.32697      # |      6,776 |      6,776 |
-be_then.32697:
+    add     $i13, 1, $i13               # |      6,776 |      6,776 |
+    load    [$i14 + $i13], $i1          # |      6,776 |      6,776 |
+    bne     $i1, -1, be_else.22055      # |      6,776 |      6,776 |
+be_then.22055:
     jr      $ra2                        # |      6,776 |      6,776 |
-be_else.32697:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22055:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i17, $i12
+    mov     $i15, $i10
     jal     solve_each_element.2871, $ra1
-    add     $i15, 1, $i15
-    load    [$i16 + $i15], $i1
-    bne     $i1, -1, be_else.32698
-be_then.32698:
+    add     $i13, 1, $i13
+    load    [$i14 + $i13], $i1
+    bne     $i1, -1, be_else.22056
+be_then.22056:
     jr      $ra2
-be_else.32698:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22056:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i17, $i12
+    mov     $i15, $i10
     jal     solve_each_element.2871, $ra1
-    add     $i15, 1, $i15
+    add     $i13, 1, $i13
     b       solve_one_or_network.2875
 .end solve_one_or_network
 
 ######################################################################
-# trace_or_matrix($i18, $i19, $i20)
+# trace_or_matrix($i16, $i17, $i18)
 # $ra = $ra3
-# [$i1 - $i20]
+# [$i1 - $i18]
 # [$f1 - $f13]
 # [$ig2 - $ig3]
 # [$fg0, $fg7]
+# [$ra - $ra2]
 ######################################################################
 .begin trace_or_matrix
 trace_or_matrix.2879:
-    load    [$i19 + $i18], $i16         # |     23,754 |     23,754 |
-    load    [$i16 + 0], $i1             # |     23,754 |     23,754 |
-    bne     $i1, -1, be_else.32699      # |     23,754 |     23,754 |
-be_then.32699:
+    load    [$i17 + $i16], $i14         # |     23,754 |     23,754 |
+    load    [$i14 + 0], $i1             # |     23,754 |     23,754 |
+    bne     $i1, -1, be_else.22057      # |     23,754 |     23,754 |
+be_then.22057:
     jr      $ra3
-be_else.32699:
-    bne     $i1, 99, be_else.32700      # |     23,754 |     23,754 |
-be_then.32700:
-    load    [$i16 + 1], $i1             # |     23,754 |     23,754 |
-    be      $i1, -1, bne_cont.32701     # |     23,754 |     23,754 |
-bne_then.32701:
-    li      0, $i10                     # |     23,754 |     23,754 |
-    load    [ext_and_net + $i1], $i11   # |     23,754 |     23,754 |
+be_else.22057:
+    bne     $i1, 99, be_else.22058      # |     23,754 |     23,754 |
+be_then.22058:
+    load    [$i14 + 1], $i1             # |     23,754 |     23,754 |
+    be      $i1, -1, bne_cont.22059     # |     23,754 |     23,754 |
+bne_then.22059:
+    li      0, $i8                      # |     23,754 |     23,754 |
+    load    [ext_and_net + $i1], $i9    # |     23,754 |     23,754 |
 .count move_args
-    mov     $i20, $i12                  # |     23,754 |     23,754 |
+    mov     $i18, $i10                  # |     23,754 |     23,754 |
     jal     solve_each_element.2871, $ra1# |     23,754 |     23,754 |
-    load    [$i16 + 2], $i1             # |     23,754 |     23,754 |
-    be      $i1, -1, bne_cont.32702     # |     23,754 |     23,754 |
-bne_then.32702:
-    li      0, $i10                     # |     23,754 |     23,754 |
-    load    [ext_and_net + $i1], $i11   # |     23,754 |     23,754 |
+    load    [$i14 + 2], $i1             # |     23,754 |     23,754 |
+    be      $i1, -1, bne_cont.22060     # |     23,754 |     23,754 |
+bne_then.22060:
+    li      0, $i8                      # |     23,754 |     23,754 |
+    load    [ext_and_net + $i1], $i9    # |     23,754 |     23,754 |
 .count move_args
-    mov     $i20, $i12                  # |     23,754 |     23,754 |
+    mov     $i18, $i10                  # |     23,754 |     23,754 |
     jal     solve_each_element.2871, $ra1# |     23,754 |     23,754 |
-    load    [$i16 + 3], $i1             # |     23,754 |     23,754 |
-    be      $i1, -1, bne_cont.32703     # |     23,754 |     23,754 |
-bne_then.32703:
-    li      0, $i10                     # |     23,754 |     23,754 |
-    load    [ext_and_net + $i1], $i11   # |     23,754 |     23,754 |
+    load    [$i14 + 3], $i1             # |     23,754 |     23,754 |
+    be      $i1, -1, bne_cont.22061     # |     23,754 |     23,754 |
+bne_then.22061:
+    li      0, $i8                      # |     23,754 |     23,754 |
+    load    [ext_and_net + $i1], $i9    # |     23,754 |     23,754 |
 .count move_args
-    mov     $i20, $i12                  # |     23,754 |     23,754 |
+    mov     $i18, $i10                  # |     23,754 |     23,754 |
     jal     solve_each_element.2871, $ra1# |     23,754 |     23,754 |
-    load    [$i16 + 4], $i1             # |     23,754 |     23,754 |
-    be      $i1, -1, bne_cont.32704     # |     23,754 |     23,754 |
-bne_then.32704:
-    li      0, $i10                     # |     23,754 |     23,754 |
-    load    [ext_and_net + $i1], $i11   # |     23,754 |     23,754 |
+    load    [$i14 + 4], $i1             # |     23,754 |     23,754 |
+    be      $i1, -1, bne_cont.22062     # |     23,754 |     23,754 |
+bne_then.22062:
+    li      0, $i8                      # |     23,754 |     23,754 |
+    load    [ext_and_net + $i1], $i9    # |     23,754 |     23,754 |
 .count move_args
-    mov     $i20, $i12                  # |     23,754 |     23,754 |
+    mov     $i18, $i10                  # |     23,754 |     23,754 |
     jal     solve_each_element.2871, $ra1# |     23,754 |     23,754 |
-    load    [$i16 + 5], $i1             # |     23,754 |     23,754 |
-    be      $i1, -1, bne_cont.32705     # |     23,754 |     23,754 |
-bne_then.32705:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    load    [$i14 + 5], $i1             # |     23,754 |     23,754 |
+    be      $i1, -1, bne_cont.22063     # |     23,754 |     23,754 |
+bne_then.22063:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element.2871, $ra1
-    load    [$i16 + 6], $i1
-    be      $i1, -1, bne_cont.32706
-bne_then.32706:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    load    [$i14 + 6], $i1
+    be      $i1, -1, bne_cont.22064
+bne_then.22064:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element.2871, $ra1
-    li      7, $i15
+    li      7, $i13
 .count move_args
-    mov     $i20, $i17
+    mov     $i18, $i15
     jal     solve_one_or_network.2875, $ra2
-bne_cont.32706:
-bne_cont.32705:
-bne_cont.32704:
-bne_cont.32703:
-bne_cont.32702:
-bne_cont.32701:
-    add     $i18, 1, $i18               # |     23,754 |     23,754 |
-    load    [$i19 + $i18], $i16         # |     23,754 |     23,754 |
-    load    [$i16 + 0], $i1             # |     23,754 |     23,754 |
-    bne     $i1, -1, be_else.32707      # |     23,754 |     23,754 |
-be_then.32707:
+bne_cont.22064:
+bne_cont.22063:
+bne_cont.22062:
+bne_cont.22061:
+bne_cont.22060:
+bne_cont.22059:
+    add     $i16, 1, $i16               # |     23,754 |     23,754 |
+    load    [$i17 + $i16], $i14         # |     23,754 |     23,754 |
+    load    [$i14 + 0], $i1             # |     23,754 |     23,754 |
+    bne     $i1, -1, be_else.22065      # |     23,754 |     23,754 |
+be_then.22065:
     jr      $ra3                        # |     23,754 |     23,754 |
-be_else.32707:
-    bne     $i1, 99, be_else.32708
-be_then.32708:
-    load    [$i16 + 1], $i1
-    bne     $i1, -1, be_else.32709
-be_then.32709:
-    add     $i18, 1, $i18
+be_else.22065:
+    bne     $i1, 99, be_else.22066
+be_then.22066:
+    load    [$i14 + 1], $i1
+    bne     $i1, -1, be_else.22067
+be_then.22067:
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-be_else.32709:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22067:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element.2871, $ra1
-    load    [$i16 + 2], $i1
-    bne     $i1, -1, be_else.32710
-be_then.32710:
-    add     $i18, 1, $i18
+    load    [$i14 + 2], $i1
+    bne     $i1, -1, be_else.22068
+be_then.22068:
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-be_else.32710:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22068:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element.2871, $ra1
-    load    [$i16 + 3], $i1
-    bne     $i1, -1, be_else.32711
-be_then.32711:
-    add     $i18, 1, $i18
+    load    [$i14 + 3], $i1
+    bne     $i1, -1, be_else.22069
+be_then.22069:
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-be_else.32711:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22069:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element.2871, $ra1
-    load    [$i16 + 4], $i1
-    bne     $i1, -1, be_else.32712
-be_then.32712:
-    add     $i18, 1, $i18
+    load    [$i14 + 4], $i1
+    bne     $i1, -1, be_else.22070
+be_then.22070:
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-be_else.32712:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22070:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element.2871, $ra1
-    li      5, $i15
+    li      5, $i13
 .count move_args
-    mov     $i20, $i17
+    mov     $i18, $i15
     jal     solve_one_or_network.2875, $ra2
-    add     $i18, 1, $i18
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-be_else.32708:
+be_else.22066:
 .count move_args
-    mov     $i20, $i2
+    mov     $i18, $i2
     call    solver.2773
-    bne     $i1, 0, be_else.32713
-be_then.32713:
-    add     $i18, 1, $i18
+    bne     $i1, 0, be_else.22071
+be_then.22071:
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-be_else.32713:
-    bg      $fg7, $fg0, ble_else.32714
-ble_then.32714:
-    add     $i18, 1, $i18
+be_else.22071:
+    bg      $fg7, $fg0, ble_else.22072
+ble_then.22072:
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-ble_else.32714:
-    li      1, $i15
+ble_else.22072:
+    li      1, $i13
 .count move_args
-    mov     $i20, $i17
+    mov     $i18, $i15
     jal     solve_one_or_network.2875, $ra2
-    add     $i18, 1, $i18
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-be_else.32700:
+be_else.22058:
 .count move_args
-    mov     $i20, $i2
+    mov     $i18, $i2
     call    solver.2773
-    bne     $i1, 0, be_else.32715
-be_then.32715:
-    add     $i18, 1, $i18
+    bne     $i1, 0, be_else.22073
+be_then.22073:
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-be_else.32715:
-    bg      $fg7, $fg0, ble_else.32716
-ble_then.32716:
-    add     $i18, 1, $i18
+be_else.22073:
+    bg      $fg7, $fg0, ble_else.22074
+ble_then.22074:
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
-ble_else.32716:
-    li      1, $i15
+ble_else.22074:
+    li      1, $i13
 .count move_args
-    mov     $i20, $i17
+    mov     $i18, $i15
     jal     solve_one_or_network.2875, $ra2
-    add     $i18, 1, $i18
+    add     $i16, 1, $i16
     b       trace_or_matrix.2879
 .end trace_or_matrix
 
 ######################################################################
-# solve_each_element_fast($i10, $i11, $i12)
+# solve_each_element_fast($i8, $i9, $i10)
 # $ra = $ra1
-# [$i1 - $i14]
+# [$i1 - $i12]
 # [$f1 - $f13]
 # [$ig2 - $ig3]
 # [$fg0, $fg7]
+# [$ra]
 ######################################################################
 .begin solve_each_element_fast
 solve_each_element_fast.2885:
-    load    [$i11 + $i10], $i13         # | 13,852,375 | 13,852,375 |
-    bne     $i13, -1, be_else.32717     # | 13,852,375 | 13,852,375 |
-be_then.32717:
-    jr      $ra1                        # |  3,308,310 |  3,308,310 |
-be_else.32717:
-    load    [ext_objects + $i13], $i1   # | 10,544,065 | 10,544,065 |
-    load    [$i1 + 10], $i2             # | 10,544,065 | 10,544,065 |
-    load    [$i12 + 1], $i3             # | 10,544,065 | 10,544,065 |
-    load    [$i1 + 1], $i4              # | 10,544,065 | 10,544,065 |
-    load    [$i2 + 0], $f1              # | 10,544,065 | 10,544,065 |
-    load    [$i2 + 1], $f2              # | 10,544,065 | 10,544,065 |
-    load    [$i2 + 2], $f3              # | 10,544,065 | 10,544,065 |
-    load    [$i3 + $i13], $i3           # | 10,544,065 | 10,544,065 |
-    bne     $i4, 1, be_else.32718       # | 10,544,065 | 10,544,065 |
-be_then.32718:
-    load    [$i12 + 0], $i2             # |  3,873,912 |  3,873,912 |
-    load    [$i1 + 4], $i4              # |  3,873,912 |  3,873,912 |
-    load    [$i4 + 1], $f4              # |  3,873,912 |  3,873,912 |
+    load    [$i9 + $i8], $i11           # | 13,852,171 | 13,852,171 |
+    bne     $i11, -1, be_else.22075     # | 13,852,171 | 13,852,171 |
+be_then.22075:
+    jr      $ra1                        # |  3,308,077 |  3,308,077 |
+be_else.22075:
+    load    [ext_objects + $i11], $i1   # | 10,544,094 | 10,544,094 |
+    load    [$i1 + 10], $i2             # | 10,544,094 | 10,544,094 |
+    load    [$i10 + 1], $i3             # | 10,544,094 | 10,544,094 |
+    load    [$i1 + 1], $i4              # | 10,544,094 | 10,544,094 |
+    load    [$i2 + 0], $f1              # | 10,544,094 | 10,544,094 |
+    load    [$i2 + 1], $f2              # | 10,544,094 | 10,544,094 |
+    load    [$i2 + 2], $f3              # | 10,544,094 | 10,544,094 |
+    load    [$i3 + $i11], $i3           # | 10,544,094 | 10,544,094 |
+    bne     $i4, 1, be_else.22076       # | 10,544,094 | 10,544,094 |
+be_then.22076:
+    load    [$i10 + 0], $i2             # |  3,873,912 |  3,873,912 |
+    load    [$i1 + 4], $i1              # |  3,873,912 |  3,873,912 |
+    load    [$i1 + 1], $f4              # |  3,873,912 |  3,873,912 |
     load    [$i2 + 1], $f5              # |  3,873,912 |  3,873,912 |
     load    [$i3 + 0], $f6              # |  3,873,912 |  3,873,912 |
     fsub    $f6, $f1, $f6               # |  3,873,912 |  3,873,912 |
@@ -6279,601 +5585,595 @@ be_then.32718:
     fmul    $f6, $f7, $f6               # |  3,873,912 |  3,873,912 |
     fmul    $f6, $f5, $f5               # |  3,873,912 |  3,873,912 |
     fadd_a  $f5, $f2, $f5               # |  3,873,912 |  3,873,912 |
-    bg      $f4, $f5, ble_else.32719    # |  3,873,912 |  3,873,912 |
-ble_then.32719:
-    li      0, $i4                      # |  3,045,892 |  3,045,892 |
+    bg      $f4, $f5, ble_else.22077    # |  3,873,912 |  3,873,912 |
+ble_then.22077:
+    li      0, $i4                      # |  3,045,774 |  3,045,774 |
 .count b_cont
-    b       ble_cont.32719              # |  3,045,892 |  3,045,892 |
-ble_else.32719:
-    load    [$i1 + 4], $i4              # |    828,020 |    828,020 |
-    load    [$i4 + 2], $f4              # |    828,020 |    828,020 |
-    load    [$i2 + 2], $f5              # |    828,020 |    828,020 |
-    fmul    $f6, $f5, $f5               # |    828,020 |    828,020 |
-    fadd_a  $f5, $f3, $f5               # |    828,020 |    828,020 |
-    bg      $f4, $f5, ble_else.32720    # |    828,020 |    828,020 |
-ble_then.32720:
-    li      0, $i4                      # |    324,595 |    324,595 |
+    b       ble_cont.22077              # |  3,045,774 |  3,045,774 |
+ble_else.22077:
+    load    [$i1 + 2], $f4              # |    828,138 |    828,138 |
+    load    [$i2 + 2], $f5              # |    828,138 |    828,138 |
+    fmul    $f6, $f5, $f5               # |    828,138 |    828,138 |
+    fadd_a  $f5, $f3, $f5               # |    828,138 |    828,138 |
+    bg      $f4, $f5, ble_else.22078    # |    828,138 |    828,138 |
+ble_then.22078:
+    li      0, $i4                      # |    324,692 |    324,692 |
 .count b_cont
-    b       ble_cont.32720              # |    324,595 |    324,595 |
-ble_else.32720:
-    load    [$i3 + 1], $f4              # |    503,425 |    503,425 |
-    bne     $f4, $f0, be_else.32721     # |    503,425 |    503,425 |
-be_then.32721:
+    b       ble_cont.22078              # |    324,692 |    324,692 |
+ble_else.22078:
+    load    [$i3 + 1], $f4              # |    503,446 |    503,446 |
+    bne     $f4, $f0, be_else.22079     # |    503,446 |    503,446 |
+be_then.22079:
     li      0, $i4
 .count b_cont
-    b       be_cont.32721
-be_else.32721:
-    li      1, $i4                      # |    503,425 |    503,425 |
-be_cont.32721:
-ble_cont.32720:
-ble_cont.32719:
-    bne     $i4, 0, be_else.32722       # |  3,873,912 |  3,873,912 |
-be_then.32722:
-    load    [$i1 + 4], $i4              # |  3,370,487 |  3,370,487 |
-    load    [$i4 + 0], $f4              # |  3,370,487 |  3,370,487 |
-    load    [$i2 + 0], $f5              # |  3,370,487 |  3,370,487 |
-    load    [$i3 + 2], $f6              # |  3,370,487 |  3,370,487 |
-    fsub    $f6, $f2, $f6               # |  3,370,487 |  3,370,487 |
-    load    [$i3 + 3], $f7              # |  3,370,487 |  3,370,487 |
-    fmul    $f6, $f7, $f6               # |  3,370,487 |  3,370,487 |
-    fmul    $f6, $f5, $f5               # |  3,370,487 |  3,370,487 |
-    fadd_a  $f5, $f1, $f5               # |  3,370,487 |  3,370,487 |
-    bg      $f4, $f5, ble_else.32723    # |  3,370,487 |  3,370,487 |
-ble_then.32723:
-    li      0, $i4                      # |  1,577,233 |  1,577,233 |
+    b       be_cont.22079
+be_else.22079:
+    li      1, $i4                      # |    503,446 |    503,446 |
+be_cont.22079:
+ble_cont.22078:
+ble_cont.22077:
+    bne     $i4, 0, be_else.22080       # |  3,873,912 |  3,873,912 |
+be_then.22080:
+    load    [$i1 + 0], $f4              # |  3,370,466 |  3,370,466 |
+    load    [$i2 + 0], $f5              # |  3,370,466 |  3,370,466 |
+    load    [$i3 + 2], $f6              # |  3,370,466 |  3,370,466 |
+    fsub    $f6, $f2, $f6               # |  3,370,466 |  3,370,466 |
+    load    [$i3 + 3], $f7              # |  3,370,466 |  3,370,466 |
+    fmul    $f6, $f7, $f6               # |  3,370,466 |  3,370,466 |
+    fmul    $f6, $f5, $f5               # |  3,370,466 |  3,370,466 |
+    fadd_a  $f5, $f1, $f5               # |  3,370,466 |  3,370,466 |
+    bg      $f4, $f5, ble_else.22081    # |  3,370,466 |  3,370,466 |
+ble_then.22081:
+    li      0, $i4                      # |  1,577,235 |  1,577,235 |
 .count b_cont
-    b       ble_cont.32723              # |  1,577,233 |  1,577,233 |
-ble_else.32723:
-    load    [$i1 + 4], $i4              # |  1,793,254 |  1,793,254 |
-    load    [$i4 + 2], $f4              # |  1,793,254 |  1,793,254 |
-    load    [$i2 + 2], $f5              # |  1,793,254 |  1,793,254 |
-    fmul    $f6, $f5, $f5               # |  1,793,254 |  1,793,254 |
-    fadd_a  $f5, $f3, $f5               # |  1,793,254 |  1,793,254 |
-    bg      $f4, $f5, ble_else.32724    # |  1,793,254 |  1,793,254 |
-ble_then.32724:
-    li      0, $i4                      # |    570,589 |    570,589 |
+    b       ble_cont.22081              # |  1,577,235 |  1,577,235 |
+ble_else.22081:
+    load    [$i1 + 2], $f4              # |  1,793,231 |  1,793,231 |
+    load    [$i2 + 2], $f5              # |  1,793,231 |  1,793,231 |
+    fmul    $f6, $f5, $f5               # |  1,793,231 |  1,793,231 |
+    fadd_a  $f5, $f3, $f5               # |  1,793,231 |  1,793,231 |
+    bg      $f4, $f5, ble_else.22082    # |  1,793,231 |  1,793,231 |
+ble_then.22082:
+    li      0, $i4                      # |    570,575 |    570,575 |
 .count b_cont
-    b       ble_cont.32724              # |    570,589 |    570,589 |
-ble_else.32724:
-    load    [$i3 + 3], $f4              # |  1,222,665 |  1,222,665 |
-    bne     $f4, $f0, be_else.32725     # |  1,222,665 |  1,222,665 |
-be_then.32725:
+    b       ble_cont.22082              # |    570,575 |    570,575 |
+ble_else.22082:
+    load    [$i3 + 3], $f4              # |  1,222,656 |  1,222,656 |
+    bne     $f4, $f0, be_else.22083     # |  1,222,656 |  1,222,656 |
+be_then.22083:
     li      0, $i4
 .count b_cont
-    b       be_cont.32725
-be_else.32725:
-    li      1, $i4                      # |  1,222,665 |  1,222,665 |
-be_cont.32725:
-ble_cont.32724:
-ble_cont.32723:
-    bne     $i4, 0, be_else.32726       # |  3,370,487 |  3,370,487 |
-be_then.32726:
-    load    [$i1 + 4], $i4              # |  2,147,822 |  2,147,822 |
-    load    [$i4 + 0], $f4              # |  2,147,822 |  2,147,822 |
-    load    [$i2 + 0], $f5              # |  2,147,822 |  2,147,822 |
-    load    [$i3 + 4], $f6              # |  2,147,822 |  2,147,822 |
-    fsub    $f6, $f3, $f3               # |  2,147,822 |  2,147,822 |
-    load    [$i3 + 5], $f6              # |  2,147,822 |  2,147,822 |
-    fmul    $f3, $f6, $f3               # |  2,147,822 |  2,147,822 |
-    fmul    $f3, $f5, $f5               # |  2,147,822 |  2,147,822 |
-    fadd_a  $f5, $f1, $f1               # |  2,147,822 |  2,147,822 |
-    bg      $f4, $f1, ble_else.32727    # |  2,147,822 |  2,147,822 |
-ble_then.32727:
-    li      0, $i14                     # |  1,541,308 |  1,541,308 |
+    b       be_cont.22083
+be_else.22083:
+    li      1, $i4                      # |  1,222,656 |  1,222,656 |
+be_cont.22083:
+ble_cont.22082:
+ble_cont.22081:
+    bne     $i4, 0, be_else.22084       # |  3,370,466 |  3,370,466 |
+be_then.22084:
+    load    [$i1 + 0], $f4              # |  2,147,810 |  2,147,810 |
+    load    [$i2 + 0], $f5              # |  2,147,810 |  2,147,810 |
+    load    [$i3 + 4], $f6              # |  2,147,810 |  2,147,810 |
+    fsub    $f6, $f3, $f3               # |  2,147,810 |  2,147,810 |
+    load    [$i3 + 5], $f6              # |  2,147,810 |  2,147,810 |
+    fmul    $f3, $f6, $f3               # |  2,147,810 |  2,147,810 |
+    fmul    $f3, $f5, $f5               # |  2,147,810 |  2,147,810 |
+    fadd_a  $f5, $f1, $f1               # |  2,147,810 |  2,147,810 |
+    bg      $f4, $f1, ble_else.22085    # |  2,147,810 |  2,147,810 |
+ble_then.22085:
+    li      0, $i12                     # |  1,541,243 |  1,541,243 |
 .count b_cont
-    b       be_cont.32718               # |  1,541,308 |  1,541,308 |
-ble_else.32727:
-    load    [$i1 + 4], $i1              # |    606,514 |    606,514 |
-    load    [$i1 + 1], $f1              # |    606,514 |    606,514 |
-    load    [$i2 + 1], $f4              # |    606,514 |    606,514 |
-    fmul    $f3, $f4, $f4               # |    606,514 |    606,514 |
-    fadd_a  $f4, $f2, $f2               # |    606,514 |    606,514 |
-    bg      $f1, $f2, ble_else.32728    # |    606,514 |    606,514 |
-ble_then.32728:
-    li      0, $i14                     # |    331,936 |    331,936 |
+    b       be_cont.22076               # |  1,541,243 |  1,541,243 |
+ble_else.22085:
+    load    [$i1 + 1], $f1              # |    606,567 |    606,567 |
+    load    [$i2 + 1], $f4              # |    606,567 |    606,567 |
+    fmul    $f3, $f4, $f4               # |    606,567 |    606,567 |
+    fadd_a  $f4, $f2, $f2               # |    606,567 |    606,567 |
+    bg      $f1, $f2, ble_else.22086    # |    606,567 |    606,567 |
+ble_then.22086:
+    li      0, $i12                     # |    331,991 |    331,991 |
 .count b_cont
-    b       be_cont.32718               # |    331,936 |    331,936 |
-ble_else.32728:
-    load    [$i3 + 5], $f1              # |    274,578 |    274,578 |
-    bne     $f1, $f0, be_else.32729     # |    274,578 |    274,578 |
-be_then.32729:
-    li      0, $i14
+    b       be_cont.22076               # |    331,991 |    331,991 |
+ble_else.22086:
+    load    [$i3 + 5], $f1              # |    274,576 |    274,576 |
+    bne     $f1, $f0, be_else.22087     # |    274,576 |    274,576 |
+be_then.22087:
+    li      0, $i12
 .count b_cont
-    b       be_cont.32718
-be_else.32729:
-    mov     $f3, $fg0                   # |    274,578 |    274,578 |
-    li      3, $i14                     # |    274,578 |    274,578 |
+    b       be_cont.22076
+be_else.22087:
+    mov     $f3, $fg0                   # |    274,576 |    274,576 |
+    li      3, $i12                     # |    274,576 |    274,576 |
 .count b_cont
-    b       be_cont.32718               # |    274,578 |    274,578 |
-be_else.32726:
-    mov     $f6, $fg0                   # |  1,222,665 |  1,222,665 |
-    li      2, $i14                     # |  1,222,665 |  1,222,665 |
+    b       be_cont.22076               # |    274,576 |    274,576 |
+be_else.22084:
+    mov     $f6, $fg0                   # |  1,222,656 |  1,222,656 |
+    li      2, $i12                     # |  1,222,656 |  1,222,656 |
 .count b_cont
-    b       be_cont.32718               # |  1,222,665 |  1,222,665 |
-be_else.32722:
-    mov     $f6, $fg0                   # |    503,425 |    503,425 |
-    li      1, $i14                     # |    503,425 |    503,425 |
+    b       be_cont.22076               # |  1,222,656 |  1,222,656 |
+be_else.22080:
+    mov     $f6, $fg0                   # |    503,446 |    503,446 |
+    li      1, $i12                     # |    503,446 |    503,446 |
 .count b_cont
-    b       be_cont.32718               # |    503,425 |    503,425 |
-be_else.32718:
-    bne     $i4, 2, be_else.32730       # |  6,670,153 |  6,670,153 |
-be_then.32730:
-    load    [$i3 + 0], $f1              # |  1,242,328 |  1,242,328 |
-    bg      $f0, $f1, ble_else.32731    # |  1,242,328 |  1,242,328 |
-ble_then.32731:
-    li      0, $i14                     # |    647,143 |    647,143 |
+    b       be_cont.22076               # |    503,446 |    503,446 |
+be_else.22076:
+    bne     $i4, 2, be_else.22088       # |  6,670,182 |  6,670,182 |
+be_then.22088:
+    load    [$i3 + 0], $f1              # |  1,242,326 |  1,242,326 |
+    bg      $f0, $f1, ble_else.22089    # |  1,242,326 |  1,242,326 |
+ble_then.22089:
+    li      0, $i12                     # |    647,017 |    647,017 |
 .count b_cont
-    b       be_cont.32730               # |    647,143 |    647,143 |
-ble_else.32731:
-    load    [$i2 + 3], $f2              # |    595,185 |    595,185 |
-    fmul    $f1, $f2, $fg0              # |    595,185 |    595,185 |
-    li      1, $i14                     # |    595,185 |    595,185 |
+    b       be_cont.22088               # |    647,017 |    647,017 |
+ble_else.22089:
+    load    [$i2 + 3], $f2              # |    595,309 |    595,309 |
+    fmul    $f1, $f2, $fg0              # |    595,309 |    595,309 |
+    li      1, $i12                     # |    595,309 |    595,309 |
 .count b_cont
-    b       be_cont.32730               # |    595,185 |    595,185 |
-be_else.32730:
-    load    [$i3 + 0], $f4              # |  5,427,825 |  5,427,825 |
-    bne     $f4, $f0, be_else.32732     # |  5,427,825 |  5,427,825 |
-be_then.32732:
-    li      0, $i14
+    b       be_cont.22088               # |    595,309 |    595,309 |
+be_else.22088:
+    load    [$i3 + 0], $f4              # |  5,427,856 |  5,427,856 |
+    bne     $f4, $f0, be_else.22090     # |  5,427,856 |  5,427,856 |
+be_then.22090:
+    li      0, $i12
 .count b_cont
-    b       be_cont.32732
-be_else.32732:
-    load    [$i3 + 1], $f5              # |  5,427,825 |  5,427,825 |
-    fmul    $f5, $f1, $f1               # |  5,427,825 |  5,427,825 |
-    load    [$i3 + 2], $f5              # |  5,427,825 |  5,427,825 |
-    fmul    $f5, $f2, $f2               # |  5,427,825 |  5,427,825 |
-    fadd    $f1, $f2, $f1               # |  5,427,825 |  5,427,825 |
-    load    [$i3 + 3], $f2              # |  5,427,825 |  5,427,825 |
-    fmul    $f2, $f3, $f2               # |  5,427,825 |  5,427,825 |
-    fadd    $f1, $f2, $f1               # |  5,427,825 |  5,427,825 |
-    fmul    $f1, $f1, $f2               # |  5,427,825 |  5,427,825 |
-    load    [$i2 + 3], $f3              # |  5,427,825 |  5,427,825 |
-    fmul    $f4, $f3, $f3               # |  5,427,825 |  5,427,825 |
-    fsub    $f2, $f3, $f2               # |  5,427,825 |  5,427,825 |
-    bg      $f2, $f0, ble_else.32733    # |  5,427,825 |  5,427,825 |
-ble_then.32733:
-    li      0, $i14                     # |  3,746,732 |  3,746,732 |
+    b       be_cont.22090
+be_else.22090:
+    load    [$i3 + 1], $f5              # |  5,427,856 |  5,427,856 |
+    fmul    $f5, $f1, $f1               # |  5,427,856 |  5,427,856 |
+    load    [$i3 + 2], $f5              # |  5,427,856 |  5,427,856 |
+    fmul    $f5, $f2, $f2               # |  5,427,856 |  5,427,856 |
+    fadd    $f1, $f2, $f1               # |  5,427,856 |  5,427,856 |
+    load    [$i3 + 3], $f2              # |  5,427,856 |  5,427,856 |
+    fmul    $f2, $f3, $f2               # |  5,427,856 |  5,427,856 |
+    fadd    $f1, $f2, $f1               # |  5,427,856 |  5,427,856 |
+    fmul    $f1, $f1, $f2               # |  5,427,856 |  5,427,856 |
+    load    [$i2 + 3], $f3              # |  5,427,856 |  5,427,856 |
+    fmul    $f4, $f3, $f3               # |  5,427,856 |  5,427,856 |
+    fsub    $f2, $f3, $f2               # |  5,427,856 |  5,427,856 |
+    bg      $f2, $f0, ble_else.22091    # |  5,427,856 |  5,427,856 |
+ble_then.22091:
+    li      0, $i12                     # |  3,746,988 |  3,746,988 |
 .count b_cont
-    b       ble_cont.32733              # |  3,746,732 |  3,746,732 |
-ble_else.32733:
-    load    [$i1 + 6], $i1              # |  1,681,093 |  1,681,093 |
-    li      1, $i14                     # |  1,681,093 |  1,681,093 |
-    fsqrt   $f2, $f2                    # |  1,681,093 |  1,681,093 |
-    bne     $i1, 0, be_else.32734       # |  1,681,093 |  1,681,093 |
-be_then.32734:
-    fsub    $f1, $f2, $f1               # |  1,260,286 |  1,260,286 |
-    load    [$i3 + 4], $f2              # |  1,260,286 |  1,260,286 |
-    fmul    $f1, $f2, $fg0              # |  1,260,286 |  1,260,286 |
+    b       ble_cont.22091              # |  3,746,988 |  3,746,988 |
+ble_else.22091:
+    load    [$i1 + 6], $i1              # |  1,680,868 |  1,680,868 |
+    li      1, $i12                     # |  1,680,868 |  1,680,868 |
+    fsqrt   $f2, $f2                    # |  1,680,868 |  1,680,868 |
+    bne     $i1, 0, be_else.22092       # |  1,680,868 |  1,680,868 |
+be_then.22092:
+    fsub    $f1, $f2, $f1               # |  1,260,056 |  1,260,056 |
+    load    [$i3 + 4], $f2              # |  1,260,056 |  1,260,056 |
+    fmul    $f1, $f2, $fg0              # |  1,260,056 |  1,260,056 |
 .count b_cont
-    b       be_cont.32734               # |  1,260,286 |  1,260,286 |
-be_else.32734:
-    fadd    $f1, $f2, $f1               # |    420,807 |    420,807 |
-    load    [$i3 + 4], $f2              # |    420,807 |    420,807 |
-    fmul    $f1, $f2, $fg0              # |    420,807 |    420,807 |
-be_cont.32734:
-ble_cont.32733:
-be_cont.32732:
-be_cont.32730:
-be_cont.32718:
-    bne     $i14, 0, be_else.32735      # | 10,544,065 | 10,544,065 |
-be_then.32735:
-    load    [ext_objects + $i13], $i1   # |  6,267,119 |  6,267,119 |
-    load    [$i1 + 6], $i1              # |  6,267,119 |  6,267,119 |
-    bne     $i1, 0, be_else.32736       # |  6,267,119 |  6,267,119 |
-be_then.32736:
-    jr      $ra1                        # |  5,339,098 |  5,339,098 |
-be_else.32736:
-    add     $i10, 1, $i10               # |    928,021 |    928,021 |
-    b       solve_each_element_fast.2885# |    928,021 |    928,021 |
-be_else.32735:
-    bg      $fg0, $f0, ble_else.32737   # |  4,276,946 |  4,276,946 |
-ble_then.32737:
-    add     $i10, 1, $i10               # |  2,880,318 |  2,880,318 |
-    b       solve_each_element_fast.2885# |  2,880,318 |  2,880,318 |
-ble_else.32737:
-    load    [$i12 + 0], $i1             # |  1,396,628 |  1,396,628 |
-    bg      $fg7, $fg0, ble_else.32738  # |  1,396,628 |  1,396,628 |
-ble_then.32738:
-    add     $i10, 1, $i10               # |    215,261 |    215,261 |
-    b       solve_each_element_fast.2885# |    215,261 |    215,261 |
-ble_else.32738:
-    li      0, $i2                      # |  1,181,367 |  1,181,367 |
-    load    [$i1 + 0], $f1              # |  1,181,367 |  1,181,367 |
-    fadd    $fg0, $fc16, $f10           # |  1,181,367 |  1,181,367 |
-    fmul    $f1, $f10, $f1              # |  1,181,367 |  1,181,367 |
-    fadd    $f1, $fg8, $f11             # |  1,181,367 |  1,181,367 |
-    load    [$i1 + 1], $f1              # |  1,181,367 |  1,181,367 |
-    fmul    $f1, $f10, $f1              # |  1,181,367 |  1,181,367 |
-    fadd    $f1, $fg9, $f12             # |  1,181,367 |  1,181,367 |
-    load    [$i1 + 2], $f1              # |  1,181,367 |  1,181,367 |
-    fmul    $f1, $f10, $f1              # |  1,181,367 |  1,181,367 |
-    fadd    $f1, $fg10, $f13            # |  1,181,367 |  1,181,367 |
+    b       be_cont.22092               # |  1,260,056 |  1,260,056 |
+be_else.22092:
+    fadd    $f1, $f2, $f1               # |    420,812 |    420,812 |
+    load    [$i3 + 4], $f2              # |    420,812 |    420,812 |
+    fmul    $f1, $f2, $fg0              # |    420,812 |    420,812 |
+be_cont.22092:
+ble_cont.22091:
+be_cont.22090:
+be_cont.22088:
+be_cont.22076:
+    bne     $i12, 0, be_else.22093      # | 10,544,094 | 10,544,094 |
+be_then.22093:
+    load    [ext_objects + $i11], $i1   # |  6,267,239 |  6,267,239 |
+    load    [$i1 + 6], $i1              # |  6,267,239 |  6,267,239 |
+    bne     $i1, 0, be_else.22094       # |  6,267,239 |  6,267,239 |
+be_then.22094:
+    jr      $ra1                        # |  5,339,331 |  5,339,331 |
+be_else.22094:
+    add     $i8, 1, $i8                 # |    927,908 |    927,908 |
+    b       solve_each_element_fast.2885# |    927,908 |    927,908 |
+be_else.22093:
+    bg      $fg0, $f0, ble_else.22095   # |  4,276,855 |  4,276,855 |
+ble_then.22095:
+    add     $i8, 1, $i8                 # |  2,879,924 |  2,879,924 |
+    b       solve_each_element_fast.2885# |  2,879,924 |  2,879,924 |
+ble_else.22095:
+    load    [$i10 + 0], $i1             # |  1,396,931 |  1,396,931 |
+    bg      $fg7, $fg0, ble_else.22096  # |  1,396,931 |  1,396,931 |
+ble_then.22096:
+    add     $i8, 1, $i8                 # |    215,434 |    215,434 |
+    b       solve_each_element_fast.2885# |    215,434 |    215,434 |
+ble_else.22096:
+    li      0, $i2                      # |  1,181,497 |  1,181,497 |
+    load    [$i1 + 0], $f1              # |  1,181,497 |  1,181,497 |
+    fadd    $fg0, $fc15, $f10           # |  1,181,497 |  1,181,497 |
+    fmul    $f1, $f10, $f1              # |  1,181,497 |  1,181,497 |
+    fadd    $f1, $fg8, $f11             # |  1,181,497 |  1,181,497 |
+    load    [$i1 + 1], $f1              # |  1,181,497 |  1,181,497 |
+    fmul    $f1, $f10, $f1              # |  1,181,497 |  1,181,497 |
+    fadd    $f1, $fg9, $f12             # |  1,181,497 |  1,181,497 |
+    load    [$i1 + 2], $f1              # |  1,181,497 |  1,181,497 |
+    fmul    $f1, $f10, $f1              # |  1,181,497 |  1,181,497 |
+    fadd    $f1, $fg10, $f13            # |  1,181,497 |  1,181,497 |
 .count move_args
-    mov     $i2, $i1                    # |  1,181,367 |  1,181,367 |
+    mov     $i2, $i1                    # |  1,181,497 |  1,181,497 |
 .count move_args
-    mov     $i11, $i3                   # |  1,181,367 |  1,181,367 |
+    mov     $i9, $i3                    # |  1,181,497 |  1,181,497 |
 .count move_args
-    mov     $f11, $f2                   # |  1,181,367 |  1,181,367 |
+    mov     $f11, $f2                   # |  1,181,497 |  1,181,497 |
 .count move_args
-    mov     $f12, $f3                   # |  1,181,367 |  1,181,367 |
+    mov     $f12, $f3                   # |  1,181,497 |  1,181,497 |
 .count move_args
-    mov     $f13, $f4                   # |  1,181,367 |  1,181,367 |
-    call    check_all_inside.2856       # |  1,181,367 |  1,181,367 |
-    add     $i10, 1, $i10               # |  1,181,367 |  1,181,367 |
-    be      $i1, 0, solve_each_element_fast.2885# |  1,181,367 |  1,181,367 |
-    mov     $f10, $fg7                  # |    756,419 |    756,419 |
-    store   $f11, [ext_intersection_point + 0]# |    756,419 |    756,419 |
-    store   $f12, [ext_intersection_point + 1]# |    756,419 |    756,419 |
-    store   $f13, [ext_intersection_point + 2]# |    756,419 |    756,419 |
-    mov     $i13, $ig3                  # |    756,419 |    756,419 |
-    mov     $i14, $ig2                  # |    756,419 |    756,419 |
-    b       solve_each_element_fast.2885# |    756,419 |    756,419 |
+    mov     $f13, $f4                   # |  1,181,497 |  1,181,497 |
+    call    check_all_inside.2856       # |  1,181,497 |  1,181,497 |
+    add     $i8, 1, $i8                 # |  1,181,497 |  1,181,497 |
+    be      $i1, 0, solve_each_element_fast.2885# |  1,181,497 |  1,181,497 |
+    mov     $f10, $fg7                  # |    756,549 |    756,549 |
+    store   $f11, [ext_intersection_point + 0]# |    756,549 |    756,549 |
+    store   $f12, [ext_intersection_point + 1]# |    756,549 |    756,549 |
+    store   $f13, [ext_intersection_point + 2]# |    756,549 |    756,549 |
+    mov     $i11, $ig3                  # |    756,549 |    756,549 |
+    mov     $i12, $ig2                  # |    756,549 |    756,549 |
+    b       solve_each_element_fast.2885# |    756,549 |    756,549 |
 .end solve_each_element_fast
 
 ######################################################################
-# solve_one_or_network_fast($i15, $i16, $i17)
+# solve_one_or_network_fast($i13, $i14, $i15)
 # $ra = $ra2
-# [$i1 - $i17]
+# [$i1 - $i15]
 # [$f1 - $f13]
 # [$ig2 - $ig3]
 # [$fg0, $fg7]
+# [$ra - $ra1]
 ######################################################################
 .begin solve_one_or_network_fast
 solve_one_or_network_fast.2889:
-    load    [$i16 + $i15], $i1          # |    684,824 |    684,824 |
-    bne     $i1, -1, be_else.32740      # |    684,824 |    684,824 |
-be_then.32740:
+    load    [$i14 + $i13], $i1          # |    684,824 |    684,824 |
+    bne     $i1, -1, be_else.22098      # |    684,824 |    684,824 |
+be_then.22098:
     jr      $ra2
-be_else.32740:
-    li      0, $i10                     # |    684,824 |    684,824 |
-    load    [ext_and_net + $i1], $i11   # |    684,824 |    684,824 |
+be_else.22098:
+    li      0, $i8                      # |    684,824 |    684,824 |
+    load    [ext_and_net + $i1], $i9    # |    684,824 |    684,824 |
 .count move_args
-    mov     $i17, $i12                  # |    684,824 |    684,824 |
+    mov     $i15, $i10                  # |    684,824 |    684,824 |
     jal     solve_each_element_fast.2885, $ra1# |    684,824 |    684,824 |
-    add     $i15, 1, $i15               # |    684,824 |    684,824 |
-    load    [$i16 + $i15], $i1          # |    684,824 |    684,824 |
-    bne     $i1, -1, be_else.32741      # |    684,824 |    684,824 |
-be_then.32741:
+    add     $i13, 1, $i13               # |    684,824 |    684,824 |
+    load    [$i14 + $i13], $i1          # |    684,824 |    684,824 |
+    bne     $i1, -1, be_else.22099      # |    684,824 |    684,824 |
+be_then.22099:
     jr      $ra2
-be_else.32741:
-    li      0, $i10                     # |    684,824 |    684,824 |
-    load    [ext_and_net + $i1], $i11   # |    684,824 |    684,824 |
+be_else.22099:
+    li      0, $i8                      # |    684,824 |    684,824 |
+    load    [ext_and_net + $i1], $i9    # |    684,824 |    684,824 |
 .count move_args
-    mov     $i17, $i12                  # |    684,824 |    684,824 |
+    mov     $i15, $i10                  # |    684,824 |    684,824 |
     jal     solve_each_element_fast.2885, $ra1# |    684,824 |    684,824 |
-    add     $i15, 1, $i15               # |    684,824 |    684,824 |
-    load    [$i16 + $i15], $i1          # |    684,824 |    684,824 |
-    bne     $i1, -1, be_else.32742      # |    684,824 |    684,824 |
-be_then.32742:
+    add     $i13, 1, $i13               # |    684,824 |    684,824 |
+    load    [$i14 + $i13], $i1          # |    684,824 |    684,824 |
+    bne     $i1, -1, be_else.22100      # |    684,824 |    684,824 |
+be_then.22100:
     jr      $ra2
-be_else.32742:
-    li      0, $i10                     # |    684,824 |    684,824 |
-    load    [ext_and_net + $i1], $i11   # |    684,824 |    684,824 |
+be_else.22100:
+    li      0, $i8                      # |    684,824 |    684,824 |
+    load    [ext_and_net + $i1], $i9    # |    684,824 |    684,824 |
 .count move_args
-    mov     $i17, $i12                  # |    684,824 |    684,824 |
+    mov     $i15, $i10                  # |    684,824 |    684,824 |
     jal     solve_each_element_fast.2885, $ra1# |    684,824 |    684,824 |
-    add     $i15, 1, $i15               # |    684,824 |    684,824 |
-    load    [$i16 + $i15], $i1          # |    684,824 |    684,824 |
-    bne     $i1, -1, be_else.32743      # |    684,824 |    684,824 |
-be_then.32743:
+    add     $i13, 1, $i13               # |    684,824 |    684,824 |
+    load    [$i14 + $i13], $i1          # |    684,824 |    684,824 |
+    bne     $i1, -1, be_else.22101      # |    684,824 |    684,824 |
+be_then.22101:
     jr      $ra2
-be_else.32743:
-    li      0, $i10                     # |    684,824 |    684,824 |
-    load    [ext_and_net + $i1], $i11   # |    684,824 |    684,824 |
+be_else.22101:
+    li      0, $i8                      # |    684,824 |    684,824 |
+    load    [ext_and_net + $i1], $i9    # |    684,824 |    684,824 |
 .count move_args
-    mov     $i17, $i12                  # |    684,824 |    684,824 |
+    mov     $i15, $i10                  # |    684,824 |    684,824 |
     jal     solve_each_element_fast.2885, $ra1# |    684,824 |    684,824 |
-    add     $i15, 1, $i15               # |    684,824 |    684,824 |
-    load    [$i16 + $i15], $i1          # |    684,824 |    684,824 |
-    bne     $i1, -1, be_else.32744      # |    684,824 |    684,824 |
-be_then.32744:
+    add     $i13, 1, $i13               # |    684,824 |    684,824 |
+    load    [$i14 + $i13], $i1          # |    684,824 |    684,824 |
+    bne     $i1, -1, be_else.22102      # |    684,824 |    684,824 |
+be_then.22102:
     jr      $ra2
-be_else.32744:
-    li      0, $i10                     # |    684,824 |    684,824 |
-    load    [ext_and_net + $i1], $i11   # |    684,824 |    684,824 |
+be_else.22102:
+    li      0, $i8                      # |    684,824 |    684,824 |
+    load    [ext_and_net + $i1], $i9    # |    684,824 |    684,824 |
 .count move_args
-    mov     $i17, $i12                  # |    684,824 |    684,824 |
+    mov     $i15, $i10                  # |    684,824 |    684,824 |
     jal     solve_each_element_fast.2885, $ra1# |    684,824 |    684,824 |
-    add     $i15, 1, $i15               # |    684,824 |    684,824 |
-    load    [$i16 + $i15], $i1          # |    684,824 |    684,824 |
-    bne     $i1, -1, be_else.32745      # |    684,824 |    684,824 |
-be_then.32745:
+    add     $i13, 1, $i13               # |    684,824 |    684,824 |
+    load    [$i14 + $i13], $i1          # |    684,824 |    684,824 |
+    bne     $i1, -1, be_else.22103      # |    684,824 |    684,824 |
+be_then.22103:
     jr      $ra2
-be_else.32745:
-    li      0, $i10                     # |    684,824 |    684,824 |
-    load    [ext_and_net + $i1], $i11   # |    684,824 |    684,824 |
+be_else.22103:
+    li      0, $i8                      # |    684,824 |    684,824 |
+    load    [ext_and_net + $i1], $i9    # |    684,824 |    684,824 |
 .count move_args
-    mov     $i17, $i12                  # |    684,824 |    684,824 |
+    mov     $i15, $i10                  # |    684,824 |    684,824 |
     jal     solve_each_element_fast.2885, $ra1# |    684,824 |    684,824 |
-    add     $i15, 1, $i15               # |    684,824 |    684,824 |
-    load    [$i16 + $i15], $i1          # |    684,824 |    684,824 |
-    bne     $i1, -1, be_else.32746      # |    684,824 |    684,824 |
-be_then.32746:
+    add     $i13, 1, $i13               # |    684,824 |    684,824 |
+    load    [$i14 + $i13], $i1          # |    684,824 |    684,824 |
+    bne     $i1, -1, be_else.22104      # |    684,824 |    684,824 |
+be_then.22104:
     jr      $ra2                        # |    684,824 |    684,824 |
-be_else.32746:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22104:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i17, $i12
+    mov     $i15, $i10
     jal     solve_each_element_fast.2885, $ra1
-    add     $i15, 1, $i15
-    load    [$i16 + $i15], $i1
-    bne     $i1, -1, be_else.32747
-be_then.32747:
+    add     $i13, 1, $i13
+    load    [$i14 + $i13], $i1
+    bne     $i1, -1, be_else.22105
+be_then.22105:
     jr      $ra2
-be_else.32747:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22105:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i17, $i12
+    mov     $i15, $i10
     jal     solve_each_element_fast.2885, $ra1
-    add     $i15, 1, $i15
+    add     $i13, 1, $i13
     b       solve_one_or_network_fast.2889
 .end solve_one_or_network_fast
 
 ######################################################################
-# trace_or_matrix_fast($i18, $i19, $i20)
+# trace_or_matrix_fast($i16, $i17, $i18)
 # $ra = $ra3
-# [$i1 - $i20]
+# [$i1 - $i18]
 # [$f1 - $f13]
 # [$ig2 - $ig3]
 # [$fg0, $fg7]
+# [$ra - $ra2]
 ######################################################################
 .begin trace_or_matrix_fast
 trace_or_matrix_fast.2893:
-    load    [$i19 + $i18], $i16         # |  1,134,616 |  1,134,616 |
-    load    [$i16 + 0], $i1             # |  1,134,616 |  1,134,616 |
-    bne     $i1, -1, be_else.32748      # |  1,134,616 |  1,134,616 |
-be_then.32748:
+    load    [$i17 + $i16], $i14         # |  1,134,616 |  1,134,616 |
+    load    [$i14 + 0], $i1             # |  1,134,616 |  1,134,616 |
+    bne     $i1, -1, be_else.22106      # |  1,134,616 |  1,134,616 |
+be_then.22106:
     jr      $ra3
-be_else.32748:
-    bne     $i1, 99, be_else.32749      # |  1,134,616 |  1,134,616 |
-be_then.32749:
-    load    [$i16 + 1], $i1             # |  1,134,616 |  1,134,616 |
-    be      $i1, -1, bne_cont.32750     # |  1,134,616 |  1,134,616 |
-bne_then.32750:
-    li      0, $i10                     # |  1,134,616 |  1,134,616 |
-    load    [ext_and_net + $i1], $i11   # |  1,134,616 |  1,134,616 |
+be_else.22106:
+    bne     $i1, 99, be_else.22107      # |  1,134,616 |  1,134,616 |
+be_then.22107:
+    load    [$i14 + 1], $i1             # |  1,134,616 |  1,134,616 |
+    be      $i1, -1, bne_cont.22108     # |  1,134,616 |  1,134,616 |
+bne_then.22108:
+    li      0, $i8                      # |  1,134,616 |  1,134,616 |
+    load    [ext_and_net + $i1], $i9    # |  1,134,616 |  1,134,616 |
 .count move_args
-    mov     $i20, $i12                  # |  1,134,616 |  1,134,616 |
+    mov     $i18, $i10                  # |  1,134,616 |  1,134,616 |
     jal     solve_each_element_fast.2885, $ra1# |  1,134,616 |  1,134,616 |
-    load    [$i16 + 2], $i1             # |  1,134,616 |  1,134,616 |
-    be      $i1, -1, bne_cont.32751     # |  1,134,616 |  1,134,616 |
-bne_then.32751:
-    li      0, $i10                     # |  1,134,616 |  1,134,616 |
-    load    [ext_and_net + $i1], $i11   # |  1,134,616 |  1,134,616 |
+    load    [$i14 + 2], $i1             # |  1,134,616 |  1,134,616 |
+    be      $i1, -1, bne_cont.22109     # |  1,134,616 |  1,134,616 |
+bne_then.22109:
+    li      0, $i8                      # |  1,134,616 |  1,134,616 |
+    load    [ext_and_net + $i1], $i9    # |  1,134,616 |  1,134,616 |
 .count move_args
-    mov     $i20, $i12                  # |  1,134,616 |  1,134,616 |
+    mov     $i18, $i10                  # |  1,134,616 |  1,134,616 |
     jal     solve_each_element_fast.2885, $ra1# |  1,134,616 |  1,134,616 |
-    load    [$i16 + 3], $i1             # |  1,134,616 |  1,134,616 |
-    be      $i1, -1, bne_cont.32752     # |  1,134,616 |  1,134,616 |
-bne_then.32752:
-    li      0, $i10                     # |  1,134,616 |  1,134,616 |
-    load    [ext_and_net + $i1], $i11   # |  1,134,616 |  1,134,616 |
+    load    [$i14 + 3], $i1             # |  1,134,616 |  1,134,616 |
+    be      $i1, -1, bne_cont.22110     # |  1,134,616 |  1,134,616 |
+bne_then.22110:
+    li      0, $i8                      # |  1,134,616 |  1,134,616 |
+    load    [ext_and_net + $i1], $i9    # |  1,134,616 |  1,134,616 |
 .count move_args
-    mov     $i20, $i12                  # |  1,134,616 |  1,134,616 |
+    mov     $i18, $i10                  # |  1,134,616 |  1,134,616 |
     jal     solve_each_element_fast.2885, $ra1# |  1,134,616 |  1,134,616 |
-    load    [$i16 + 4], $i1             # |  1,134,616 |  1,134,616 |
-    be      $i1, -1, bne_cont.32753     # |  1,134,616 |  1,134,616 |
-bne_then.32753:
-    li      0, $i10                     # |  1,134,616 |  1,134,616 |
-    load    [ext_and_net + $i1], $i11   # |  1,134,616 |  1,134,616 |
+    load    [$i14 + 4], $i1             # |  1,134,616 |  1,134,616 |
+    be      $i1, -1, bne_cont.22111     # |  1,134,616 |  1,134,616 |
+bne_then.22111:
+    li      0, $i8                      # |  1,134,616 |  1,134,616 |
+    load    [ext_and_net + $i1], $i9    # |  1,134,616 |  1,134,616 |
 .count move_args
-    mov     $i20, $i12                  # |  1,134,616 |  1,134,616 |
+    mov     $i18, $i10                  # |  1,134,616 |  1,134,616 |
     jal     solve_each_element_fast.2885, $ra1# |  1,134,616 |  1,134,616 |
-    load    [$i16 + 5], $i1             # |  1,134,616 |  1,134,616 |
-    be      $i1, -1, bne_cont.32754     # |  1,134,616 |  1,134,616 |
-bne_then.32754:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    load    [$i14 + 5], $i1             # |  1,134,616 |  1,134,616 |
+    be      $i1, -1, bne_cont.22112     # |  1,134,616 |  1,134,616 |
+bne_then.22112:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 6], $i1
-    be      $i1, -1, bne_cont.32755
-bne_then.32755:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    load    [$i14 + 6], $i1
+    be      $i1, -1, bne_cont.22113
+bne_then.22113:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element_fast.2885, $ra1
-    li      7, $i15
+    li      7, $i13
 .count move_args
-    mov     $i20, $i17
+    mov     $i18, $i15
     jal     solve_one_or_network_fast.2889, $ra2
-bne_cont.32755:
-bne_cont.32754:
-bne_cont.32753:
-bne_cont.32752:
-bne_cont.32751:
-bne_cont.32750:
-    add     $i18, 1, $i18               # |  1,134,616 |  1,134,616 |
-    load    [$i19 + $i18], $i16         # |  1,134,616 |  1,134,616 |
-    load    [$i16 + 0], $i1             # |  1,134,616 |  1,134,616 |
-    bne     $i1, -1, be_else.32756      # |  1,134,616 |  1,134,616 |
-be_then.32756:
+bne_cont.22113:
+bne_cont.22112:
+bne_cont.22111:
+bne_cont.22110:
+bne_cont.22109:
+bne_cont.22108:
+    add     $i16, 1, $i16               # |  1,134,616 |  1,134,616 |
+    load    [$i17 + $i16], $i14         # |  1,134,616 |  1,134,616 |
+    load    [$i14 + 0], $i1             # |  1,134,616 |  1,134,616 |
+    bne     $i1, -1, be_else.22114      # |  1,134,616 |  1,134,616 |
+be_then.22114:
     jr      $ra3                        # |  1,134,616 |  1,134,616 |
-be_else.32756:
-    bne     $i1, 99, be_else.32757
-be_then.32757:
-    load    [$i16 + 1], $i1
-    bne     $i1, -1, be_else.32758
-be_then.32758:
-    add     $i18, 1, $i18
+be_else.22114:
+    bne     $i1, 99, be_else.22115
+be_then.22115:
+    load    [$i14 + 1], $i1
+    bne     $i1, -1, be_else.22116
+be_then.22116:
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-be_else.32758:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22116:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 2], $i1
-    bne     $i1, -1, be_else.32759
-be_then.32759:
-    add     $i18, 1, $i18
+    load    [$i14 + 2], $i1
+    bne     $i1, -1, be_else.22117
+be_then.22117:
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-be_else.32759:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22117:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 3], $i1
-    bne     $i1, -1, be_else.32760
-be_then.32760:
-    add     $i18, 1, $i18
+    load    [$i14 + 3], $i1
+    bne     $i1, -1, be_else.22118
+be_then.22118:
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-be_else.32760:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22118:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 4], $i1
-    bne     $i1, -1, be_else.32761
-be_then.32761:
-    add     $i18, 1, $i18
+    load    [$i14 + 4], $i1
+    bne     $i1, -1, be_else.22119
+be_then.22119:
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-be_else.32761:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+be_else.22119:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i20, $i12
+    mov     $i18, $i10
     jal     solve_each_element_fast.2885, $ra1
-    li      5, $i15
+    li      5, $i13
 .count move_args
-    mov     $i20, $i17
+    mov     $i18, $i15
     jal     solve_one_or_network_fast.2889, $ra2
-    add     $i18, 1, $i18
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-be_else.32757:
+be_else.22115:
 .count move_args
-    mov     $i20, $i2
+    mov     $i18, $i2
     call    solver_fast2.2814
-    bne     $i1, 0, be_else.32762
-be_then.32762:
-    add     $i18, 1, $i18
+    bne     $i1, 0, be_else.22120
+be_then.22120:
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-be_else.32762:
-    bg      $fg7, $fg0, ble_else.32763
-ble_then.32763:
-    add     $i18, 1, $i18
+be_else.22120:
+    bg      $fg7, $fg0, ble_else.22121
+ble_then.22121:
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-ble_else.32763:
-    li      1, $i15
+ble_else.22121:
+    li      1, $i13
 .count move_args
-    mov     $i20, $i17
+    mov     $i18, $i15
     jal     solve_one_or_network_fast.2889, $ra2
-    add     $i18, 1, $i18
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-be_else.32749:
+be_else.22107:
 .count move_args
-    mov     $i20, $i2
+    mov     $i18, $i2
     call    solver_fast2.2814
-    bne     $i1, 0, be_else.32764
-be_then.32764:
-    add     $i18, 1, $i18
+    bne     $i1, 0, be_else.22122
+be_then.22122:
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-be_else.32764:
-    bg      $fg7, $fg0, ble_else.32765
-ble_then.32765:
-    add     $i18, 1, $i18
+be_else.22122:
+    bg      $fg7, $fg0, ble_else.22123
+ble_then.22123:
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
-ble_else.32765:
-    li      1, $i15
+ble_else.22123:
+    li      1, $i13
 .count move_args
-    mov     $i20, $i17
+    mov     $i18, $i15
     jal     solve_one_or_network_fast.2889, $ra2
-    add     $i18, 1, $i18
+    add     $i16, 1, $i16
     b       trace_or_matrix_fast.2893
 .end trace_or_matrix_fast
 
 ######################################################################
 # utexture($i1)
 # $ra = $ra1
-# [$i1 - $i5]
+# [$i1 - $i3]
 # [$f1 - $f9]
 # []
 # [$fg11, $fg15 - $fg16]
+# [$ra]
 ######################################################################
 .begin utexture
 utexture.2908:
-    load    [$i1 + 8], $i2              # |    660,661 |    660,661 |
-    load    [$i2 + 0], $fg16            # |    660,661 |    660,661 |
-    load    [$i1 + 8], $i2              # |    660,661 |    660,661 |
-    load    [$i2 + 1], $fg11            # |    660,661 |    660,661 |
-    load    [$i1 + 8], $i2              # |    660,661 |    660,661 |
-    load    [$i2 + 2], $fg15            # |    660,661 |    660,661 |
-    load    [$i1 + 0], $i2              # |    660,661 |    660,661 |
-    bne     $i2, 1, be_else.32766       # |    660,661 |    660,661 |
-be_then.32766:
-    load    [$i1 + 5], $i2              # |     94,582 |     94,582 |
-    load    [$i1 + 5], $i1              # |     94,582 |     94,582 |
-    load    [ext_intersection_point + 0], $f1# |     94,582 |     94,582 |
-    load    [$i2 + 0], $f2              # |     94,582 |     94,582 |
+    load    [$i1 + 8], $i2              # |    660,729 |    660,729 |
+    load    [$i2 + 0], $fg16            # |    660,729 |    660,729 |
+    load    [$i2 + 1], $fg11            # |    660,729 |    660,729 |
+    load    [$i2 + 2], $fg15            # |    660,729 |    660,729 |
+    load    [$i1 + 0], $i2              # |    660,729 |    660,729 |
+    bne     $i2, 1, be_else.22124       # |    660,729 |    660,729 |
+be_then.22124:
+    load    [$i1 + 5], $i1              # |     94,509 |     94,509 |
+    load    [ext_intersection_point + 0], $f1# |     94,509 |     94,509 |
+    load    [$i1 + 0], $f2              # |     94,509 |     94,509 |
 .count load_float
-    load    [f.31957], $f4              # |     94,582 |     94,582 |
-    fsub    $f1, $f2, $f5               # |     94,582 |     94,582 |
-    fmul    $f5, $f4, $f2               # |     94,582 |     94,582 |
-    call    ext_floor                   # |     94,582 |     94,582 |
+    load    [f.21539], $f4              # |     94,509 |     94,509 |
+    fsub    $f1, $f2, $f5               # |     94,509 |     94,509 |
+    fmul    $f5, $f4, $f2               # |     94,509 |     94,509 |
+    call    ext_floor                   # |     94,509 |     94,509 |
 .count load_float
-    load    [f.31958], $f6              # |     94,582 |     94,582 |
+    load    [f.21540], $f6              # |     94,509 |     94,509 |
 .count load_float
-    load    [f.31959], $f7              # |     94,582 |     94,582 |
-    fmul    $f1, $f6, $f1               # |     94,582 |     94,582 |
-    fsub    $f5, $f1, $f5               # |     94,582 |     94,582 |
-    load    [ext_intersection_point + 2], $f1# |     94,582 |     94,582 |
-    load    [$i1 + 2], $f2              # |     94,582 |     94,582 |
-    fsub    $f1, $f2, $f8               # |     94,582 |     94,582 |
-    fmul    $f8, $f4, $f2               # |     94,582 |     94,582 |
-    call    ext_floor                   # |     94,582 |     94,582 |
-    fmul    $f1, $f6, $f1               # |     94,582 |     94,582 |
-    fsub    $f8, $f1, $f1               # |     94,582 |     94,582 |
-    bg      $f7, $f5, ble_else.32767    # |     94,582 |     94,582 |
-ble_then.32767:
-    li      0, $i1                      # |     50,346 |     50,346 |
+    load    [f.21541], $f7              # |     94,509 |     94,509 |
+    fmul    $f1, $f6, $f1               # |     94,509 |     94,509 |
+    fsub    $f5, $f1, $f5               # |     94,509 |     94,509 |
+    load    [ext_intersection_point + 2], $f1# |     94,509 |     94,509 |
+    load    [$i1 + 2], $f2              # |     94,509 |     94,509 |
+    fsub    $f1, $f2, $f8               # |     94,509 |     94,509 |
+    fmul    $f8, $f4, $f2               # |     94,509 |     94,509 |
+    call    ext_floor                   # |     94,509 |     94,509 |
+    fmul    $f1, $f6, $f1               # |     94,509 |     94,509 |
+    fsub    $f8, $f1, $f1               # |     94,509 |     94,509 |
+    bg      $f7, $f5, ble_else.22125    # |     94,509 |     94,509 |
+ble_then.22125:
+    li      0, $i1                      # |     50,304 |     50,304 |
 .count b_cont
-    b       ble_cont.32767              # |     50,346 |     50,346 |
-ble_else.32767:
-    li      1, $i1                      # |     44,236 |     44,236 |
-ble_cont.32767:
-    bg      $f7, $f1, ble_else.32768    # |     94,582 |     94,582 |
-ble_then.32768:
-    bne     $i1, 0, be_else.32769       # |     45,724 |     45,724 |
-be_then.32769:
-    mov     $fc9, $fg11                 # |     24,135 |     24,135 |
-    jr      $ra1                        # |     24,135 |     24,135 |
-be_else.32769:
-    mov     $f0, $fg11                  # |     21,589 |     21,589 |
-    jr      $ra1                        # |     21,589 |     21,589 |
-ble_else.32768:
-    bne     $i1, 0, be_else.32770       # |     48,858 |     48,858 |
-be_then.32770:
-    mov     $f0, $fg11                  # |     26,211 |     26,211 |
-    jr      $ra1                        # |     26,211 |     26,211 |
-be_else.32770:
-    mov     $fc9, $fg11                 # |     22,647 |     22,647 |
-    jr      $ra1                        # |     22,647 |     22,647 |
-be_else.32766:
-    bne     $i2, 2, be_else.32771       # |    566,079 |    566,079 |
-be_then.32771:
-    load    [ext_intersection_point + 1], $f1# |      2,885 |      2,885 |
+    b       ble_cont.22125              # |     50,304 |     50,304 |
+ble_else.22125:
+    li      1, $i1                      # |     44,205 |     44,205 |
+ble_cont.22125:
+    bg      $f7, $f1, ble_else.22126    # |     94,509 |     94,509 |
+ble_then.22126:
+    bne     $i1, 0, be_else.22127       # |     45,686 |     45,686 |
+be_then.22127:
+    mov     $fc8, $fg11                 # |     24,111 |     24,111 |
+    jr      $ra1                        # |     24,111 |     24,111 |
+be_else.22127:
+    mov     $f0, $fg11                  # |     21,575 |     21,575 |
+    jr      $ra1                        # |     21,575 |     21,575 |
+ble_else.22126:
+    bne     $i1, 0, be_else.22128       # |     48,823 |     48,823 |
+be_then.22128:
+    mov     $f0, $fg11                  # |     26,193 |     26,193 |
+    jr      $ra1                        # |     26,193 |     26,193 |
+be_else.22128:
+    mov     $fc8, $fg11                 # |     22,630 |     22,630 |
+    jr      $ra1                        # |     22,630 |     22,630 |
+be_else.22124:
+    bne     $i2, 2, be_else.22129       # |    566,220 |    566,220 |
+be_then.22129:
+    load    [ext_intersection_point + 1], $f1# |      2,886 |      2,886 |
 .count load_float
-    load    [f.31956], $f2              # |      2,885 |      2,885 |
-    fmul    $f1, $f2, $f2               # |      2,885 |      2,885 |
-    call    ext_sin                     # |      2,885 |      2,885 |
-    fmul    $f1, $f1, $f1               # |      2,885 |      2,885 |
-    fmul    $fc9, $f1, $fg16            # |      2,885 |      2,885 |
-    fsub    $fc0, $f1, $f1              # |      2,885 |      2,885 |
-    fmul    $fc9, $f1, $fg11            # |      2,885 |      2,885 |
-    jr      $ra1                        # |      2,885 |      2,885 |
-be_else.32771:
-    bne     $i2, 3, be_else.32772       # |    563,194 |    563,194 |
-be_then.32772:
-    load    [$i1 + 5], $i2
+    load    [f.21538], $f2              # |      2,886 |      2,886 |
+    fmul    $f1, $f2, $f2               # |      2,886 |      2,886 |
+    call    ext_sin                     # |      2,886 |      2,886 |
+    fmul    $f1, $f1, $f1               # |      2,886 |      2,886 |
+    fmul    $fc8, $f1, $fg16            # |      2,886 |      2,886 |
+    fsub    $fc0, $f1, $f1              # |      2,886 |      2,886 |
+    fmul    $fc8, $f1, $fg11            # |      2,886 |      2,886 |
+    jr      $ra1                        # |      2,886 |      2,886 |
+be_else.22129:
+    bne     $i2, 3, be_else.22130       # |    563,334 |    563,334 |
+be_then.22130:
     load    [$i1 + 5], $i1
     load    [ext_intersection_point + 0], $f1
-    load    [$i2 + 0], $f2
+    load    [$i1 + 0], $f2
     fsub    $f1, $f2, $f1
     fmul    $f1, $f1, $f1
     load    [ext_intersection_point + 2], $f2
@@ -6882,508 +6182,519 @@ be_then.32772:
     fmul    $f2, $f2, $f2
     fadd    $f1, $f2, $f1
     fsqrt   $f1, $f1
-    fmul    $f1, $fc8, $f4
+    fmul    $f1, $fc9, $f4
 .count move_args
     mov     $f4, $f2
     call    ext_floor
     fsub    $f4, $f1, $f1
-    fmul    $f1, $fc15, $f2
+    fmul    $f1, $fc14, $f2
     call    ext_cos
     fmul    $f1, $f1, $f1
-    fmul    $f1, $fc9, $fg11
+    fmul    $f1, $fc8, $fg11
     fsub    $fc0, $f1, $f1
-    fmul    $f1, $fc9, $fg15
+    fmul    $f1, $fc8, $fg15
     jr      $ra1
-be_else.32772:
-    bne     $i2, 4, be_else.32773       # |    563,194 |    563,194 |
-be_then.32773:
-    load    [$i1 + 5], $i2
-    load    [$i1 + 4], $i3
-    load    [$i1 + 5], $i4
-    load    [$i1 + 4], $i5
+be_else.22130:
+    bne     $i2, 4, be_else.22131       # |    563,334 |    563,334 |
+be_then.22131:
+    load    [$i1 + 5], $i3
+    load    [$i1 + 4], $i1
 .count load_float
-    load    [f.31947], $f6
+    load    [f.21528], $f6
     load    [ext_intersection_point + 0], $f1
-    load    [$i2 + 0], $f2
-    fsub    $f1, $f2, $f1
     load    [$i3 + 0], $f2
+    fsub    $f1, $f2, $f1
+    load    [$i1 + 0], $f2
     fsqrt   $f2, $f2
     fmul    $f1, $f2, $f7
     fabs    $f7, $f1
     load    [ext_intersection_point + 2], $f2
-    load    [$i4 + 2], $f3
+    load    [$i3 + 2], $f3
     fsub    $f2, $f3, $f2
-    load    [$i5 + 2], $f3
+    load    [$i1 + 2], $f3
     fsqrt   $f3, $f3
     fmul    $f2, $f3, $f8
-    bg      $f6, $f1, ble_else.32774
-ble_then.32774:
+    bg      $f6, $f1, ble_else.22132
+ble_then.22132:
     finv    $f7, $f1
     fmul_a  $f8, $f1, $f2
     call    ext_atan
-    fmul    $f1, $fc18, $f1
-    fmul    $f1, $fc17, $f9
+.count load_float
+    load    [f.21530], $f2
+    fmul    $f1, $f2, $f2
+.count load_float
+    load    [f.21532], $f2
+.count load_float
+    load    [f.21533], $f2
+    fmul    $f2, $f1, $f9
 .count b_cont
-    b       ble_cont.32774
-ble_else.32774:
-    mov     $fc19, $f9
-ble_cont.32774:
-    load    [$i1 + 5], $i2
-    load    [$i1 + 4], $i1
+    b       ble_cont.22132
+ble_else.22132:
+.count load_float
+    load    [f.21529], $f9
+ble_cont.22132:
     fmul    $f7, $f7, $f1
     fmul    $f8, $f8, $f2
     fadd    $f1, $f2, $f1
     fabs    $f1, $f2
     load    [ext_intersection_point + 1], $f3
-    load    [$i2 + 1], $f4
+    load    [$i3 + 1], $f4
     fsub    $f3, $f4, $f3
     load    [$i1 + 1], $f4
     fsqrt   $f4, $f4
     fmul    $f3, $f4, $f3
-    bg      $f6, $f2, ble_else.32775
-ble_then.32775:
+    bg      $f6, $f2, ble_else.22133
+ble_then.22133:
     finv    $f1, $f1
     fmul_a  $f3, $f1, $f2
     call    ext_atan
-    fmul    $f1, $fc18, $f1
-    fmul    $f1, $fc17, $f4
-.count b_cont
-    b       ble_cont.32775
-ble_else.32775:
-    mov     $fc19, $f4
-ble_cont.32775:
 .count load_float
-    load    [f.31952], $f5
+    load    [f.21530], $f2
+    fmul    $f1, $f2, $f2
+.count load_float
+    load    [f.21532], $f2
+.count load_float
+    load    [f.21533], $f2
+    fmul    $f2, $f1, $f4
+.count b_cont
+    b       ble_cont.22133
+ble_else.22133:
+.count load_float
+    load    [f.21529], $f4
+ble_cont.22133:
+.count load_float
+    load    [f.21534], $f5
 .count move_args
     mov     $f9, $f2
     call    ext_floor
     fsub    $f9, $f1, $f1
-    fsub    $fc3, $f1, $f1
+    fsub    $fc4, $f1, $f1
     fmul    $f1, $f1, $f1
     fsub    $f5, $f1, $f5
 .count move_args
     mov     $f4, $f2
     call    ext_floor
     fsub    $f4, $f1, $f1
-    fsub    $fc3, $f1, $f1
+    fsub    $fc4, $f1, $f1
     fmul    $f1, $f1, $f1
     fsub    $f5, $f1, $f1
-    bg      $f0, $f1, ble_else.32776
-ble_then.32776:
-    fmul    $fc9, $f1, $f1
+    bg      $f0, $f1, ble_else.22134
+ble_then.22134:
 .count load_float
-    load    [f.31954], $f2
-    fmul    $f1, $f2, $fg15
+    load    [f.21535], $f2
+    fmul    $f2, $f1, $fg15
     jr      $ra1
-ble_else.32776:
+ble_else.22134:
     mov     $f0, $fg15
     jr      $ra1
-be_else.32773:
-    jr      $ra1                        # |    563,194 |    563,194 |
+be_else.22131:
+    jr      $ra1                        # |    563,334 |    563,334 |
 .end utexture
 
 ######################################################################
-# trace_reflections($i21, $f14, $f15, $i22)
+# trace_reflections($i19, $f14, $f15, $i20)
 # $ra = $ra4
-# [$i1 - $i24]
+# [$i1 - $i22]
 # [$f1 - $f15]
 # [$ig2 - $ig3]
 # [$fg0, $fg4 - $fg7]
+# [$ra - $ra3]
 ######################################################################
 .begin trace_reflections
 trace_reflections.2915:
-    bl      $i21, 0, bge_else.32777     # |     36,992 |     36,992 |
-bge_then.32777:
-    load    [ext_reflections + $i21], $i23# |     18,496 |     18,496 |
-    load    [$i23 + 1], $i24            # |     18,496 |     18,496 |
-    mov     $fc14, $fg7                 # |     18,496 |     18,496 |
-    load    [$ig1 + 0], $i16            # |     18,496 |     18,496 |
-    load    [$i16 + 0], $i1             # |     18,496 |     18,496 |
-    be      $i1, -1, bne_cont.32778     # |     18,496 |     18,496 |
-bne_then.32778:
-    bne     $i1, 99, be_else.32779      # |     18,496 |     18,496 |
-be_then.32779:
-    load    [$i16 + 1], $i1
-    bne     $i1, -1, be_else.32780
-be_then.32780:
-    li      1, $i18
+    bl      $i19, 0, bge_else.22135     # |     36,992 |     36,992 |
+bge_then.22135:
+    load    [ext_reflections + $i19], $i21# |     18,496 |     18,496 |
+    load    [$i21 + 1], $i22            # |     18,496 |     18,496 |
+    mov     $fc13, $fg7                 # |     18,496 |     18,496 |
+    load    [$ig1 + 0], $i14            # |     18,496 |     18,496 |
+    load    [$i14 + 0], $i1             # |     18,496 |     18,496 |
+    be      $i1, -1, bne_cont.22136     # |     18,496 |     18,496 |
+bne_then.22136:
+    bne     $i1, 99, be_else.22137      # |     18,496 |     18,496 |
+be_then.22137:
+    load    [$i14 + 1], $i1
+    bne     $i1, -1, be_else.22138
+be_then.22138:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i24, $i20
+    mov     $i22, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32779
-be_else.32780:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22137
+be_else.22138:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i24, $i12
+    mov     $i22, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 2], $i1
-    bne     $i1, -1, be_else.32781
-be_then.32781:
-    li      1, $i18
+    load    [$i14 + 2], $i1
+    bne     $i1, -1, be_else.22139
+be_then.22139:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i24, $i20
+    mov     $i22, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32779
-be_else.32781:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22137
+be_else.22139:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i24, $i12
+    mov     $i22, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 3], $i1
-    bne     $i1, -1, be_else.32782
-be_then.32782:
-    li      1, $i18
+    load    [$i14 + 3], $i1
+    bne     $i1, -1, be_else.22140
+be_then.22140:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i24, $i20
+    mov     $i22, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32779
-be_else.32782:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22137
+be_else.22140:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i24, $i12
+    mov     $i22, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 4], $i1
-    bne     $i1, -1, be_else.32783
-be_then.32783:
-    li      1, $i18
+    load    [$i14 + 4], $i1
+    bne     $i1, -1, be_else.22141
+be_then.22141:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i24, $i20
+    mov     $i22, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32779
-be_else.32783:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22137
+be_else.22141:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i24, $i12
+    mov     $i22, $i10
     jal     solve_each_element_fast.2885, $ra1
-    li      5, $i15
+    li      5, $i13
 .count move_args
-    mov     $i24, $i17
+    mov     $i22, $i15
     jal     solve_one_or_network_fast.2889, $ra2
-    li      1, $i18
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i24, $i20
+    mov     $i22, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32779
-be_else.32779:
+    b       be_cont.22137
+be_else.22137:
 .count move_args
-    mov     $i24, $i2                   # |     18,496 |     18,496 |
+    mov     $i22, $i2                   # |     18,496 |     18,496 |
     call    solver_fast2.2814           # |     18,496 |     18,496 |
-    bne     $i1, 0, be_else.32784       # |     18,496 |     18,496 |
-be_then.32784:
-    li      1, $i18                     # |     13,470 |     13,470 |
+    bne     $i1, 0, be_else.22142       # |     18,496 |     18,496 |
+be_then.22142:
+    li      1, $i16                     # |     13,470 |     13,470 |
 .count move_args
-    mov     $ig1, $i19                  # |     13,470 |     13,470 |
+    mov     $ig1, $i17                  # |     13,470 |     13,470 |
 .count move_args
-    mov     $i24, $i20                  # |     13,470 |     13,470 |
+    mov     $i22, $i18                  # |     13,470 |     13,470 |
     jal     trace_or_matrix_fast.2893, $ra3# |     13,470 |     13,470 |
 .count b_cont
-    b       be_cont.32784               # |     13,470 |     13,470 |
-be_else.32784:
-    bg      $fg7, $fg0, ble_else.32785  # |      5,026 |      5,026 |
-ble_then.32785:
-    li      1, $i18
+    b       be_cont.22142               # |     13,470 |     13,470 |
+be_else.22142:
+    bg      $fg7, $fg0, ble_else.22143  # |      5,026 |      5,026 |
+ble_then.22143:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i24, $i20
+    mov     $i22, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       ble_cont.32785
-ble_else.32785:
-    li      1, $i15                     # |      5,026 |      5,026 |
+    b       ble_cont.22143
+ble_else.22143:
+    li      1, $i13                     # |      5,026 |      5,026 |
 .count move_args
-    mov     $i24, $i17                  # |      5,026 |      5,026 |
+    mov     $i22, $i15                  # |      5,026 |      5,026 |
     jal     solve_one_or_network_fast.2889, $ra2# |      5,026 |      5,026 |
-    li      1, $i18                     # |      5,026 |      5,026 |
+    li      1, $i16                     # |      5,026 |      5,026 |
 .count move_args
-    mov     $ig1, $i19                  # |      5,026 |      5,026 |
+    mov     $ig1, $i17                  # |      5,026 |      5,026 |
 .count move_args
-    mov     $i24, $i20                  # |      5,026 |      5,026 |
+    mov     $i22, $i18                  # |      5,026 |      5,026 |
     jal     trace_or_matrix_fast.2893, $ra3# |      5,026 |      5,026 |
-ble_cont.32785:
-be_cont.32784:
-be_cont.32779:
-bne_cont.32778:
-    bg      $fg7, $fc7, ble_else.32786  # |     18,496 |     18,496 |
-ble_then.32786:
+ble_cont.22143:
+be_cont.22142:
+be_cont.22137:
+bne_cont.22136:
+    bg      $fg7, $fc7, ble_else.22144  # |     18,496 |     18,496 |
+ble_then.22144:
     li      0, $i1
 .count b_cont
-    b       ble_cont.32786
-ble_else.32786:
-    bg      $fc13, $fg7, ble_else.32787 # |     18,496 |     18,496 |
-ble_then.32787:
+    b       ble_cont.22144
+ble_else.22144:
+    bg      $fc12, $fg7, ble_else.22145 # |     18,496 |     18,496 |
+ble_then.22145:
     li      0, $i1                      # |      7,212 |      7,212 |
 .count b_cont
-    b       ble_cont.32787              # |      7,212 |      7,212 |
-ble_else.32787:
+    b       ble_cont.22145              # |      7,212 |      7,212 |
+ble_else.22145:
     li      1, $i1                      # |     11,284 |     11,284 |
-ble_cont.32787:
-ble_cont.32786:
-    bne     $i1, 0, be_else.32788       # |     18,496 |     18,496 |
-be_then.32788:
-    sub     $i21, 1, $i21               # |      7,212 |      7,212 |
+ble_cont.22145:
+ble_cont.22144:
+    bne     $i1, 0, be_else.22146       # |     18,496 |     18,496 |
+be_then.22146:
+    sub     $i19, 1, $i19               # |      7,212 |      7,212 |
     b       trace_reflections.2915      # |      7,212 |      7,212 |
-be_else.32788:
-    load    [$i23 + 0], $i1             # |     11,284 |     11,284 |
+be_else.22146:
+    load    [$i21 + 0], $i1             # |     11,284 |     11,284 |
     add     $ig3, $ig3, $i2             # |     11,284 |     11,284 |
     add     $i2, $i2, $i2               # |     11,284 |     11,284 |
     add     $i2, $ig2, $i2              # |     11,284 |     11,284 |
-    bne     $i2, $i1, be_else.32789     # |     11,284 |     11,284 |
-be_then.32789:
-    li      0, $i14                     # |     10,334 |     10,334 |
+    bne     $i2, $i1, be_else.22147     # |     11,284 |     11,284 |
+be_then.22147:
+    li      0, $i12                     # |     10,331 |     10,331 |
 .count move_args
-    mov     $ig1, $i15                  # |     10,334 |     10,334 |
-    jal     shadow_check_one_or_matrix.2868, $ra3# |     10,334 |     10,334 |
-    bne     $i1, 0, be_else.32790       # |     10,334 |     10,334 |
-be_then.32790:
-    load    [$i23 + 2], $f1             # |     10,334 |     10,334 |
-    load    [$i24 + 0], $i1             # |     10,334 |     10,334 |
-    fmul    $f1, $f14, $f2              # |     10,334 |     10,334 |
-    load    [ext_nvector + 0], $f3      # |     10,334 |     10,334 |
-    load    [$i1 + 0], $f4              # |     10,334 |     10,334 |
-    fmul    $f3, $f4, $f3               # |     10,334 |     10,334 |
-    load    [ext_nvector + 1], $f5      # |     10,334 |     10,334 |
-    load    [$i1 + 1], $f6              # |     10,334 |     10,334 |
-    fmul    $f5, $f6, $f5               # |     10,334 |     10,334 |
-    fadd    $f3, $f5, $f3               # |     10,334 |     10,334 |
-    load    [ext_nvector + 2], $f5      # |     10,334 |     10,334 |
-    load    [$i1 + 2], $f7              # |     10,334 |     10,334 |
-    fmul    $f5, $f7, $f5               # |     10,334 |     10,334 |
-    fadd    $f3, $f5, $f3               # |     10,334 |     10,334 |
-    fmul    $f2, $f3, $f2               # |     10,334 |     10,334 |
-    ble     $f2, $f0, bg_cont.32791     # |     10,334 |     10,334 |
-bg_then.32791:
+    mov     $ig1, $i13                  # |     10,331 |     10,331 |
+    jal     shadow_check_one_or_matrix.2868, $ra3# |     10,331 |     10,331 |
+    bne     $i1, 0, be_else.22148       # |     10,331 |     10,331 |
+be_then.22148:
+    load    [$i21 + 2], $f1             # |     10,331 |     10,331 |
+    load    [$i22 + 0], $i1             # |     10,331 |     10,331 |
+    fmul    $f1, $f14, $f2              # |     10,331 |     10,331 |
+    load    [ext_nvector + 0], $f3      # |     10,331 |     10,331 |
+    load    [$i1 + 0], $f4              # |     10,331 |     10,331 |
+    fmul    $f3, $f4, $f3               # |     10,331 |     10,331 |
+    load    [ext_nvector + 1], $f5      # |     10,331 |     10,331 |
+    load    [$i1 + 1], $f6              # |     10,331 |     10,331 |
+    fmul    $f5, $f6, $f5               # |     10,331 |     10,331 |
+    fadd    $f3, $f5, $f3               # |     10,331 |     10,331 |
+    load    [ext_nvector + 2], $f5      # |     10,331 |     10,331 |
+    load    [$i1 + 2], $f7              # |     10,331 |     10,331 |
+    fmul    $f5, $f7, $f5               # |     10,331 |     10,331 |
+    fadd    $f3, $f5, $f3               # |     10,331 |     10,331 |
+    fmul    $f2, $f3, $f2               # |     10,331 |     10,331 |
+    ble     $f2, $f0, bg_cont.22149     # |     10,331 |     10,331 |
+bg_then.22149:
     fmul    $f2, $fg16, $f3             # |      9,373 |      9,373 |
     fadd    $fg4, $f3, $fg4             # |      9,373 |      9,373 |
     fmul    $f2, $fg11, $f3             # |      9,373 |      9,373 |
     fadd    $fg5, $f3, $fg5             # |      9,373 |      9,373 |
     fmul    $f2, $fg15, $f2             # |      9,373 |      9,373 |
     fadd    $fg6, $f2, $fg6             # |      9,373 |      9,373 |
-bg_cont.32791:
-    load    [$i22 + 0], $f2             # |     10,334 |     10,334 |
-    fmul    $f2, $f4, $f2               # |     10,334 |     10,334 |
-    load    [$i22 + 1], $f3             # |     10,334 |     10,334 |
-    fmul    $f3, $f6, $f3               # |     10,334 |     10,334 |
-    fadd    $f2, $f3, $f2               # |     10,334 |     10,334 |
-    load    [$i22 + 2], $f3             # |     10,334 |     10,334 |
-    fmul    $f3, $f7, $f3               # |     10,334 |     10,334 |
-    fadd    $f2, $f3, $f2               # |     10,334 |     10,334 |
-    fmul    $f1, $f2, $f1               # |     10,334 |     10,334 |
-    sub     $i21, 1, $i21               # |     10,334 |     10,334 |
-    ble     $f1, $f0, trace_reflections.2915# |     10,334 |     10,334 |
-    fmul    $f1, $f1, $f1               # |      7,720 |      7,720 |
-    fmul    $f1, $f1, $f1               # |      7,720 |      7,720 |
-    fmul    $f1, $f15, $f1              # |      7,720 |      7,720 |
-    fadd    $fg4, $f1, $fg4             # |      7,720 |      7,720 |
-    fadd    $fg5, $f1, $fg5             # |      7,720 |      7,720 |
-    fadd    $fg6, $f1, $fg6             # |      7,720 |      7,720 |
-    b       trace_reflections.2915      # |      7,720 |      7,720 |
-be_else.32790:
-    sub     $i21, 1, $i21
+bg_cont.22149:
+    load    [$i20 + 0], $f2             # |     10,331 |     10,331 |
+    fmul    $f2, $f4, $f2               # |     10,331 |     10,331 |
+    load    [$i20 + 1], $f3             # |     10,331 |     10,331 |
+    fmul    $f3, $f6, $f3               # |     10,331 |     10,331 |
+    fadd    $f2, $f3, $f2               # |     10,331 |     10,331 |
+    load    [$i20 + 2], $f3             # |     10,331 |     10,331 |
+    fmul    $f3, $f7, $f3               # |     10,331 |     10,331 |
+    fadd    $f2, $f3, $f2               # |     10,331 |     10,331 |
+    fmul    $f1, $f2, $f1               # |     10,331 |     10,331 |
+    sub     $i19, 1, $i19               # |     10,331 |     10,331 |
+    ble     $f1, $f0, trace_reflections.2915# |     10,331 |     10,331 |
+    fmul    $f1, $f1, $f1               # |      7,721 |      7,721 |
+    fmul    $f1, $f1, $f1               # |      7,721 |      7,721 |
+    fmul    $f1, $f15, $f1              # |      7,721 |      7,721 |
+    fadd    $fg4, $f1, $fg4             # |      7,721 |      7,721 |
+    fadd    $fg5, $f1, $fg5             # |      7,721 |      7,721 |
+    fadd    $fg6, $f1, $fg6             # |      7,721 |      7,721 |
+    b       trace_reflections.2915      # |      7,721 |      7,721 |
+be_else.22148:
+    sub     $i19, 1, $i19
     b       trace_reflections.2915
-be_else.32789:
-    sub     $i21, 1, $i21               # |        950 |        950 |
-    b       trace_reflections.2915      # |        950 |        950 |
-bge_else.32777:
+be_else.22147:
+    sub     $i19, 1, $i19               # |        953 |        953 |
+    b       trace_reflections.2915      # |        953 |        953 |
+bge_else.22135:
     jr      $ra4                        # |     18,496 |     18,496 |
 .end trace_reflections
 
 ######################################################################
-# trace_ray($i25, $f16, $i26, $i27, $f17)
+# trace_ray($i23, $f16, $i24, $i25, $f17)
 # $ra = $ra5
-# [$i1 - $i29]
+# [$i1 - $i28]
 # [$f1 - $f17]
 # [$ig2 - $ig3]
-# [$fg0, $fg4 - $fg11, $fg15 - $fg16, $fg21 - $fg23]
+# [$fg0, $fg4 - $fg11, $fg15 - $fg19]
+# [$ra - $ra4]
 ######################################################################
 .begin trace_ray
 trace_ray.2920:
-    bg      $i25, 4, ble_else.32793     # |     23,754 |     23,754 |
-ble_then.32793:
-    mov     $fc14, $fg7                 # |     23,754 |     23,754 |
-    load    [$ig1 + 0], $i16            # |     23,754 |     23,754 |
-    load    [$i16 + 0], $i1             # |     23,754 |     23,754 |
-    be      $i1, -1, bne_cont.32794     # |     23,754 |     23,754 |
-bne_then.32794:
-    bne     $i1, 99, be_else.32795      # |     23,754 |     23,754 |
-be_then.32795:
-    load    [$i16 + 1], $i1
-    bne     $i1, -1, be_else.32796
-be_then.32796:
-    li      1, $i18
+    bg      $i23, 4, ble_else.22151     # |     23,754 |     23,754 |
+ble_then.22151:
+    mov     $fc13, $fg7                 # |     23,754 |     23,754 |
+    load    [$ig1 + 0], $i14            # |     23,754 |     23,754 |
+    load    [$i14 + 0], $i1             # |     23,754 |     23,754 |
+    be      $i1, -1, bne_cont.22152     # |     23,754 |     23,754 |
+bne_then.22152:
+    bne     $i1, 99, be_else.22153      # |     23,754 |     23,754 |
+be_then.22153:
+    load    [$i14 + 1], $i1
+    bne     $i1, -1, be_else.22154
+be_then.22154:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i26, $i20
+    mov     $i24, $i18
     jal     trace_or_matrix.2879, $ra3
 .count b_cont
-    b       be_cont.32795
-be_else.32796:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22153
+be_else.22154:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i26, $i12
+    mov     $i24, $i10
     jal     solve_each_element.2871, $ra1
-    load    [$i16 + 2], $i1
-    bne     $i1, -1, be_else.32797
-be_then.32797:
-    li      1, $i18
+    load    [$i14 + 2], $i1
+    bne     $i1, -1, be_else.22155
+be_then.22155:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i26, $i20
+    mov     $i24, $i18
     jal     trace_or_matrix.2879, $ra3
 .count b_cont
-    b       be_cont.32795
-be_else.32797:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22153
+be_else.22155:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i26, $i12
+    mov     $i24, $i10
     jal     solve_each_element.2871, $ra1
-    load    [$i16 + 3], $i1
-    bne     $i1, -1, be_else.32798
-be_then.32798:
-    li      1, $i18
+    load    [$i14 + 3], $i1
+    bne     $i1, -1, be_else.22156
+be_then.22156:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i26, $i20
+    mov     $i24, $i18
     jal     trace_or_matrix.2879, $ra3
 .count b_cont
-    b       be_cont.32795
-be_else.32798:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22153
+be_else.22156:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i26, $i12
+    mov     $i24, $i10
     jal     solve_each_element.2871, $ra1
-    load    [$i16 + 4], $i1
-    bne     $i1, -1, be_else.32799
-be_then.32799:
-    li      1, $i18
+    load    [$i14 + 4], $i1
+    bne     $i1, -1, be_else.22157
+be_then.22157:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i26, $i20
+    mov     $i24, $i18
     jal     trace_or_matrix.2879, $ra3
 .count b_cont
-    b       be_cont.32795
-be_else.32799:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22153
+be_else.22157:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i26, $i12
+    mov     $i24, $i10
     jal     solve_each_element.2871, $ra1
-    li      5, $i15
+    li      5, $i13
 .count move_args
-    mov     $i26, $i17
+    mov     $i24, $i15
     jal     solve_one_or_network.2875, $ra2
-    li      1, $i18
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i26, $i20
+    mov     $i24, $i18
     jal     trace_or_matrix.2879, $ra3
 .count b_cont
-    b       be_cont.32795
-be_else.32795:
+    b       be_cont.22153
+be_else.22153:
 .count move_args
-    mov     $i26, $i2                   # |     23,754 |     23,754 |
+    mov     $i24, $i2                   # |     23,754 |     23,754 |
     call    solver.2773                 # |     23,754 |     23,754 |
-    bne     $i1, 0, be_else.32800       # |     23,754 |     23,754 |
-be_then.32800:
-    li      1, $i18                     # |     16,978 |     16,978 |
+    bne     $i1, 0, be_else.22158       # |     23,754 |     23,754 |
+be_then.22158:
+    li      1, $i16                     # |     16,978 |     16,978 |
 .count move_args
-    mov     $ig1, $i19                  # |     16,978 |     16,978 |
+    mov     $ig1, $i17                  # |     16,978 |     16,978 |
 .count move_args
-    mov     $i26, $i20                  # |     16,978 |     16,978 |
+    mov     $i24, $i18                  # |     16,978 |     16,978 |
     jal     trace_or_matrix.2879, $ra3  # |     16,978 |     16,978 |
 .count b_cont
-    b       be_cont.32800               # |     16,978 |     16,978 |
-be_else.32800:
-    bg      $fg7, $fg0, ble_else.32801  # |      6,776 |      6,776 |
-ble_then.32801:
-    li      1, $i18
+    b       be_cont.22158               # |     16,978 |     16,978 |
+be_else.22158:
+    bg      $fg7, $fg0, ble_else.22159  # |      6,776 |      6,776 |
+ble_then.22159:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i26, $i20
+    mov     $i24, $i18
     jal     trace_or_matrix.2879, $ra3
 .count b_cont
-    b       ble_cont.32801
-ble_else.32801:
-    li      1, $i15                     # |      6,776 |      6,776 |
+    b       ble_cont.22159
+ble_else.22159:
+    li      1, $i13                     # |      6,776 |      6,776 |
 .count move_args
-    mov     $i26, $i17                  # |      6,776 |      6,776 |
+    mov     $i24, $i15                  # |      6,776 |      6,776 |
     jal     solve_one_or_network.2875, $ra2# |      6,776 |      6,776 |
-    li      1, $i18                     # |      6,776 |      6,776 |
+    li      1, $i16                     # |      6,776 |      6,776 |
 .count move_args
-    mov     $ig1, $i19                  # |      6,776 |      6,776 |
+    mov     $ig1, $i17                  # |      6,776 |      6,776 |
 .count move_args
-    mov     $i26, $i20                  # |      6,776 |      6,776 |
+    mov     $i24, $i18                  # |      6,776 |      6,776 |
     jal     trace_or_matrix.2879, $ra3  # |      6,776 |      6,776 |
-ble_cont.32801:
-be_cont.32800:
-be_cont.32795:
-bne_cont.32794:
-    load    [$i27 + 2], $i28            # |     23,754 |     23,754 |
-    bg      $fg7, $fc7, ble_else.32802  # |     23,754 |     23,754 |
-ble_then.32802:
+ble_cont.22159:
+be_cont.22158:
+be_cont.22153:
+bne_cont.22152:
+    load    [$i25 + 2], $i26            # |     23,754 |     23,754 |
+    bg      $fg7, $fc7, ble_else.22160  # |     23,754 |     23,754 |
+ble_then.22160:
     li      0, $i1
 .count b_cont
-    b       ble_cont.32802
-ble_else.32802:
-    bg      $fc13, $fg7, ble_else.32803 # |     23,754 |     23,754 |
-ble_then.32803:
+    b       ble_cont.22160
+ble_else.22160:
+    bg      $fc12, $fg7, ble_else.22161 # |     23,754 |     23,754 |
+ble_then.22161:
     li      0, $i1                      # |      5,258 |      5,258 |
 .count b_cont
-    b       ble_cont.32803              # |      5,258 |      5,258 |
-ble_else.32803:
+    b       ble_cont.22161              # |      5,258 |      5,258 |
+ble_else.22161:
     li      1, $i1                      # |     18,496 |     18,496 |
-ble_cont.32803:
-ble_cont.32802:
-    bne     $i1, 0, be_else.32804       # |     23,754 |     23,754 |
-be_then.32804:
+ble_cont.22161:
+ble_cont.22160:
+    bne     $i1, 0, be_else.22162       # |     23,754 |     23,754 |
+be_then.22162:
     add     $i0, -1, $i1                # |      5,258 |      5,258 |
 .count storer
-    add     $i28, $i25, $tmp            # |      5,258 |      5,258 |
+    add     $i26, $i23, $tmp            # |      5,258 |      5,258 |
     store   $i1, [$tmp + 0]             # |      5,258 |      5,258 |
-    bne     $i25, 0, be_else.32805      # |      5,258 |      5,258 |
-be_then.32805:
+    bne     $i23, 0, be_else.22163      # |      5,258 |      5,258 |
+be_then.22163:
     jr      $ra5
-be_else.32805:
-    load    [$i26 + 0], $f1             # |      5,258 |      5,258 |
-    fmul    $f1, $fg12, $f1             # |      5,258 |      5,258 |
-    load    [$i26 + 1], $f2             # |      5,258 |      5,258 |
-    fmul    $f2, $fg13, $f2             # |      5,258 |      5,258 |
+be_else.22163:
+    load    [$i24 + 0], $f1             # |      5,258 |      5,258 |
+    fmul    $f1, $fg14, $f1             # |      5,258 |      5,258 |
+    load    [$i24 + 1], $f2             # |      5,258 |      5,258 |
+    fmul    $f2, $fg12, $f2             # |      5,258 |      5,258 |
     fadd    $f1, $f2, $f1               # |      5,258 |      5,258 |
-    load    [$i26 + 2], $f2             # |      5,258 |      5,258 |
-    fmul    $f2, $fg14, $f2             # |      5,258 |      5,258 |
+    load    [$i24 + 2], $f2             # |      5,258 |      5,258 |
+    fmul    $f2, $fg13, $f2             # |      5,258 |      5,258 |
     fadd_n  $f1, $f2, $f1               # |      5,258 |      5,258 |
-    bg      $f1, $f0, ble_else.32806    # |      5,258 |      5,258 |
-ble_then.32806:
+    bg      $f1, $f0, ble_else.22164    # |      5,258 |      5,258 |
+ble_then.22164:
     jr      $ra5                        # |      3,274 |      3,274 |
-ble_else.32806:
+ble_else.22164:
     fmul    $f1, $f1, $f2               # |      1,984 |      1,984 |
     fmul    $f2, $f1, $f1               # |      1,984 |      1,984 |
     fmul    $f1, $f16, $f1              # |      1,984 |      1,984 |
@@ -7393,112 +6704,101 @@ ble_else.32806:
     fadd    $fg5, $f1, $fg5             # |      1,984 |      1,984 |
     fadd    $fg6, $f1, $fg6             # |      1,984 |      1,984 |
     jr      $ra5                        # |      1,984 |      1,984 |
-be_else.32804:
-    load    [ext_objects + $ig3], $i29  # |     18,496 |     18,496 |
-    load    [$i29 + 1], $i1             # |     18,496 |     18,496 |
-    bne     $i1, 1, be_else.32807       # |     18,496 |     18,496 |
-be_then.32807:
+be_else.22162:
+    load    [ext_objects + $ig3], $i27  # |     18,496 |     18,496 |
+    load    [$i27 + 1], $i1             # |     18,496 |     18,496 |
+    bne     $i1, 1, be_else.22165       # |     18,496 |     18,496 |
+be_then.22165:
     store   $f0, [ext_nvector + 0]      # |      7,910 |      7,910 |
     store   $f0, [ext_nvector + 1]      # |      7,910 |      7,910 |
     store   $f0, [ext_nvector + 2]      # |      7,910 |      7,910 |
     sub     $ig2, 1, $i1                # |      7,910 |      7,910 |
-    load    [$i26 + $i1], $f1           # |      7,910 |      7,910 |
-    bne     $f1, $f0, be_else.32808     # |      7,910 |      7,910 |
-be_then.32808:
+    load    [$i24 + $i1], $f1           # |      7,910 |      7,910 |
+    bne     $f1, $f0, be_else.22166     # |      7,910 |      7,910 |
+be_then.22166:
     store   $f0, [ext_nvector + $i1]
 .count b_cont
-    b       be_cont.32807
-be_else.32808:
-    bg      $f1, $f0, ble_else.32809    # |      7,910 |      7,910 |
-ble_then.32809:
+    b       be_cont.22165
+be_else.22166:
+    bg      $f1, $f0, ble_else.22167    # |      7,910 |      7,910 |
+ble_then.22167:
     store   $fc0, [ext_nvector + $i1]   # |      6,667 |      6,667 |
 .count b_cont
-    b       be_cont.32807               # |      6,667 |      6,667 |
-ble_else.32809:
-    store   $fc4, [ext_nvector + $i1]   # |      1,243 |      1,243 |
+    b       be_cont.22165               # |      6,667 |      6,667 |
+ble_else.22167:
+    store   $fc3, [ext_nvector + $i1]   # |      1,243 |      1,243 |
 .count b_cont
-    b       be_cont.32807               # |      1,243 |      1,243 |
-be_else.32807:
-    bne     $i1, 2, be_else.32810       # |     10,586 |     10,586 |
-be_then.32810:
-    load    [$i29 + 4], $i1             # |      7,226 |      7,226 |
+    b       be_cont.22165               # |      1,243 |      1,243 |
+be_else.22165:
+    bne     $i1, 2, be_else.22168       # |     10,586 |     10,586 |
+be_then.22168:
+    load    [$i27 + 4], $i1             # |      7,226 |      7,226 |
     load    [$i1 + 0], $f1              # |      7,226 |      7,226 |
     fneg    $f1, $f1                    # |      7,226 |      7,226 |
     store   $f1, [ext_nvector + 0]      # |      7,226 |      7,226 |
-    load    [$i29 + 4], $i1             # |      7,226 |      7,226 |
     load    [$i1 + 1], $f1              # |      7,226 |      7,226 |
     fneg    $f1, $f1                    # |      7,226 |      7,226 |
     store   $f1, [ext_nvector + 1]      # |      7,226 |      7,226 |
-    load    [$i29 + 4], $i1             # |      7,226 |      7,226 |
     load    [$i1 + 2], $f1              # |      7,226 |      7,226 |
     fneg    $f1, $f1                    # |      7,226 |      7,226 |
     store   $f1, [ext_nvector + 2]      # |      7,226 |      7,226 |
 .count b_cont
-    b       be_cont.32810               # |      7,226 |      7,226 |
-be_else.32810:
-    load    [$i29 + 3], $i1             # |      3,360 |      3,360 |
-    load    [$i29 + 4], $i2             # |      3,360 |      3,360 |
+    b       be_cont.22168               # |      7,226 |      7,226 |
+be_else.22168:
+    load    [$i27 + 3], $i1             # |      3,360 |      3,360 |
+    load    [$i27 + 4], $i2             # |      3,360 |      3,360 |
     load    [$i2 + 0], $f1              # |      3,360 |      3,360 |
     load    [ext_intersection_point + 0], $f2# |      3,360 |      3,360 |
-    load    [$i29 + 5], $i2             # |      3,360 |      3,360 |
-    load    [$i2 + 0], $f3              # |      3,360 |      3,360 |
+    load    [$i27 + 5], $i3             # |      3,360 |      3,360 |
+    load    [$i3 + 0], $f3              # |      3,360 |      3,360 |
     fsub    $f2, $f3, $f2               # |      3,360 |      3,360 |
     fmul    $f2, $f1, $f1               # |      3,360 |      3,360 |
-    load    [$i29 + 4], $i2             # |      3,360 |      3,360 |
     load    [$i2 + 1], $f3              # |      3,360 |      3,360 |
     load    [ext_intersection_point + 1], $f4# |      3,360 |      3,360 |
-    load    [$i29 + 5], $i2             # |      3,360 |      3,360 |
-    load    [$i2 + 1], $f5              # |      3,360 |      3,360 |
+    load    [$i3 + 1], $f5              # |      3,360 |      3,360 |
     fsub    $f4, $f5, $f4               # |      3,360 |      3,360 |
     fmul    $f4, $f3, $f3               # |      3,360 |      3,360 |
-    load    [$i29 + 4], $i2             # |      3,360 |      3,360 |
     load    [$i2 + 2], $f5              # |      3,360 |      3,360 |
     load    [ext_intersection_point + 2], $f6# |      3,360 |      3,360 |
-    load    [$i29 + 5], $i2             # |      3,360 |      3,360 |
-    load    [$i2 + 2], $f7              # |      3,360 |      3,360 |
+    load    [$i3 + 2], $f7              # |      3,360 |      3,360 |
     fsub    $f6, $f7, $f6               # |      3,360 |      3,360 |
     fmul    $f6, $f5, $f5               # |      3,360 |      3,360 |
-    bne     $i1, 0, be_else.32811       # |      3,360 |      3,360 |
-be_then.32811:
+    bne     $i1, 0, be_else.22169       # |      3,360 |      3,360 |
+be_then.22169:
     store   $f1, [ext_nvector + 0]      # |      3,360 |      3,360 |
     store   $f3, [ext_nvector + 1]      # |      3,360 |      3,360 |
     store   $f5, [ext_nvector + 2]      # |      3,360 |      3,360 |
 .count b_cont
-    b       be_cont.32811               # |      3,360 |      3,360 |
-be_else.32811:
-    load    [$i29 + 9], $i1
+    b       be_cont.22169               # |      3,360 |      3,360 |
+be_else.22169:
+    load    [$i27 + 9], $i1
     load    [$i1 + 2], $f7
     fmul    $f4, $f7, $f7
-    load    [$i29 + 9], $i1
     load    [$i1 + 1], $f8
     fmul    $f6, $f8, $f8
     fadd    $f7, $f8, $f7
-    fmul    $f7, $fc3, $f7
+    fmul    $f7, $fc4, $f7
     fadd    $f1, $f7, $f1
     store   $f1, [ext_nvector + 0]
-    load    [$i29 + 9], $i1
     load    [$i1 + 2], $f1
     fmul    $f2, $f1, $f1
-    load    [$i29 + 9], $i1
     load    [$i1 + 0], $f7
     fmul    $f6, $f7, $f6
     fadd    $f1, $f6, $f1
-    fmul    $f1, $fc3, $f1
+    fmul    $f1, $fc4, $f1
     fadd    $f3, $f1, $f1
     store   $f1, [ext_nvector + 1]
-    load    [$i29 + 9], $i1
     load    [$i1 + 1], $f1
     fmul    $f2, $f1, $f1
-    load    [$i29 + 9], $i1
     load    [$i1 + 0], $f2
     fmul    $f4, $f2, $f2
     fadd    $f1, $f2, $f1
-    fmul    $f1, $fc3, $f1
+    fmul    $f1, $fc4, $f1
     fadd    $f5, $f1, $f1
     store   $f1, [ext_nvector + 2]
-be_cont.32811:
+be_cont.22169:
     load    [ext_nvector + 0], $f1      # |      3,360 |      3,360 |
-    load    [$i29 + 6], $i1             # |      3,360 |      3,360 |
+    load    [$i27 + 6], $i1             # |      3,360 |      3,360 |
     fmul    $f1, $f1, $f2               # |      3,360 |      3,360 |
     load    [ext_nvector + 1], $f3      # |      3,360 |      3,360 |
     fmul    $f3, $f3, $f3               # |      3,360 |      3,360 |
@@ -7507,21 +6807,21 @@ be_cont.32811:
     fmul    $f3, $f3, $f3               # |      3,360 |      3,360 |
     fadd    $f2, $f3, $f2               # |      3,360 |      3,360 |
     fsqrt   $f2, $f2                    # |      3,360 |      3,360 |
-    bne     $f2, $f0, be_else.32812     # |      3,360 |      3,360 |
-be_then.32812:
+    bne     $f2, $f0, be_else.22170     # |      3,360 |      3,360 |
+be_then.22170:
     mov     $fc0, $f2
 .count b_cont
-    b       be_cont.32812
-be_else.32812:
-    bne     $i1, 0, be_else.32813       # |      3,360 |      3,360 |
-be_then.32813:
-    finv    $f2, $f2                    # |      3,128 |      3,128 |
+    b       be_cont.22170
+be_else.22170:
+    bne     $i1, 0, be_else.22171       # |      3,360 |      3,360 |
+be_then.22171:
+    finv    $f2, $f2                    # |      3,127 |      3,127 |
 .count b_cont
-    b       be_cont.32813               # |      3,128 |      3,128 |
-be_else.32813:
-    finv_n  $f2, $f2                    # |        232 |        232 |
-be_cont.32813:
-be_cont.32812:
+    b       be_cont.22171               # |      3,127 |      3,127 |
+be_else.22171:
+    finv_n  $f2, $f2                    # |        233 |        233 |
+be_cont.22171:
+be_cont.22170:
     fmul    $f1, $f2, $f1               # |      3,360 |      3,360 |
     store   $f1, [ext_nvector + 0]      # |      3,360 |      3,360 |
     load    [ext_nvector + 1], $f1      # |      3,360 |      3,360 |
@@ -7530,48 +6830,48 @@ be_cont.32812:
     load    [ext_nvector + 2], $f1      # |      3,360 |      3,360 |
     fmul    $f1, $f2, $f1               # |      3,360 |      3,360 |
     store   $f1, [ext_nvector + 2]      # |      3,360 |      3,360 |
-be_cont.32810:
-be_cont.32807:
-    load    [ext_intersection_point + 0], $fg21# |     18,496 |     18,496 |
-    load    [ext_intersection_point + 1], $fg22# |     18,496 |     18,496 |
-    load    [ext_intersection_point + 2], $fg23# |     18,496 |     18,496 |
+be_cont.22168:
+be_cont.22165:
+    load    [ext_intersection_point + 0], $fg17# |     18,496 |     18,496 |
+    load    [ext_intersection_point + 1], $fg18# |     18,496 |     18,496 |
+    load    [ext_intersection_point + 2], $fg19# |     18,496 |     18,496 |
 .count move_args
-    mov     $i29, $i1                   # |     18,496 |     18,496 |
+    mov     $i27, $i1                   # |     18,496 |     18,496 |
     jal     utexture.2908, $ra1         # |     18,496 |     18,496 |
     add     $ig3, $ig3, $i1             # |     18,496 |     18,496 |
     add     $i1, $i1, $i1               # |     18,496 |     18,496 |
     add     $i1, $ig2, $i1              # |     18,496 |     18,496 |
 .count storer
-    add     $i28, $i25, $tmp            # |     18,496 |     18,496 |
+    add     $i26, $i23, $tmp            # |     18,496 |     18,496 |
     store   $i1, [$tmp + 0]             # |     18,496 |     18,496 |
-    load    [$i27 + 1], $i1             # |     18,496 |     18,496 |
-    load    [$i1 + $i25], $i1           # |     18,496 |     18,496 |
+    load    [$i25 + 1], $i1             # |     18,496 |     18,496 |
+    load    [$i1 + $i23], $i1           # |     18,496 |     18,496 |
     load    [ext_intersection_point + 0], $f1# |     18,496 |     18,496 |
     store   $f1, [$i1 + 0]              # |     18,496 |     18,496 |
     load    [ext_intersection_point + 1], $f1# |     18,496 |     18,496 |
     store   $f1, [$i1 + 1]              # |     18,496 |     18,496 |
     load    [ext_intersection_point + 2], $f1# |     18,496 |     18,496 |
     store   $f1, [$i1 + 2]              # |     18,496 |     18,496 |
-    load    [$i29 + 7], $i1             # |     18,496 |     18,496 |
-    load    [$i27 + 3], $i2             # |     18,496 |     18,496 |
-    load    [$i1 + 0], $f1              # |     18,496 |     18,496 |
+    load    [$i27 + 7], $i28            # |     18,496 |     18,496 |
+    load    [$i25 + 3], $i1             # |     18,496 |     18,496 |
+    load    [$i28 + 0], $f1             # |     18,496 |     18,496 |
     fmul    $f1, $f16, $f14             # |     18,496 |     18,496 |
 .count storer
-    add     $i2, $i25, $tmp             # |     18,496 |     18,496 |
-    bg      $fc3, $f1, ble_else.32814   # |     18,496 |     18,496 |
-ble_then.32814:
-    li      1, $i1                      # |     11,126 |     11,126 |
-    store   $i1, [$tmp + 0]             # |     11,126 |     11,126 |
-    load    [$i27 + 4], $i1             # |     11,126 |     11,126 |
-    load    [$i1 + $i25], $i2           # |     11,126 |     11,126 |
+    add     $i1, $i23, $tmp             # |     18,496 |     18,496 |
+    bg      $fc4, $f1, ble_else.22172   # |     18,496 |     18,496 |
+ble_then.22172:
+    li      1, $i2                      # |     11,126 |     11,126 |
+    store   $i2, [$tmp + 0]             # |     11,126 |     11,126 |
+    load    [$i25 + 4], $i1             # |     11,126 |     11,126 |
+    load    [$i1 + $i23], $i2           # |     11,126 |     11,126 |
     store   $fg16, [$i2 + 0]            # |     11,126 |     11,126 |
     store   $fg11, [$i2 + 1]            # |     11,126 |     11,126 |
     store   $fg15, [$i2 + 2]            # |     11,126 |     11,126 |
-    load    [$i1 + $i25], $i1           # |     11,126 |     11,126 |
+    load    [$i1 + $i23], $i1           # |     11,126 |     11,126 |
 .count load_float
-    load    [f.31962], $f1              # |     11,126 |     11,126 |
+    load    [f.21544], $f1              # |     11,126 |     11,126 |
 .count load_float
-    load    [f.31963], $f1              # |     11,126 |     11,126 |
+    load    [f.21545], $f1              # |     11,126 |     11,126 |
     fmul    $f1, $f14, $f1              # |     11,126 |     11,126 |
     load    [$i1 + 0], $f2              # |     11,126 |     11,126 |
     fmul    $f2, $f1, $f2               # |     11,126 |     11,126 |
@@ -7582,8 +6882,8 @@ ble_then.32814:
     load    [$i1 + 2], $f2              # |     11,126 |     11,126 |
     fmul    $f2, $f1, $f1               # |     11,126 |     11,126 |
     store   $f1, [$i1 + 2]              # |     11,126 |     11,126 |
-    load    [$i27 + 7], $i1             # |     11,126 |     11,126 |
-    load    [$i1 + $i25], $i1           # |     11,126 |     11,126 |
+    load    [$i25 + 7], $i1             # |     11,126 |     11,126 |
+    load    [$i1 + $i23], $i1           # |     11,126 |     11,126 |
     load    [ext_nvector + 0], $f1      # |     11,126 |     11,126 |
     store   $f1, [$i1 + 0]              # |     11,126 |     11,126 |
     load    [ext_nvector + 1], $f1      # |     11,126 |     11,126 |
@@ -7591,1070 +6891,1060 @@ ble_then.32814:
     load    [ext_nvector + 2], $f1      # |     11,126 |     11,126 |
     store   $f1, [$i1 + 2]              # |     11,126 |     11,126 |
 .count b_cont
-    b       ble_cont.32814              # |     11,126 |     11,126 |
-ble_else.32814:
-    li      0, $i1                      # |      7,370 |      7,370 |
-    store   $i1, [$tmp + 0]             # |      7,370 |      7,370 |
-ble_cont.32814:
+    b       ble_cont.22172              # |     11,126 |     11,126 |
+ble_else.22172:
+    li      0, $i2                      # |      7,370 |      7,370 |
+    store   $i2, [$tmp + 0]             # |      7,370 |      7,370 |
+ble_cont.22172:
     load    [ext_nvector + 0], $f1      # |     18,496 |     18,496 |
 .count load_float
-    load    [f.31964], $f2              # |     18,496 |     18,496 |
-    load    [$i26 + 0], $f3             # |     18,496 |     18,496 |
+    load    [f.21546], $f2              # |     18,496 |     18,496 |
+    load    [$i24 + 0], $f3             # |     18,496 |     18,496 |
     fmul    $f3, $f1, $f4               # |     18,496 |     18,496 |
-    load    [$i26 + 1], $f5             # |     18,496 |     18,496 |
+    load    [$i24 + 1], $f5             # |     18,496 |     18,496 |
     load    [ext_nvector + 1], $f6      # |     18,496 |     18,496 |
     fmul    $f5, $f6, $f5               # |     18,496 |     18,496 |
     fadd    $f4, $f5, $f4               # |     18,496 |     18,496 |
-    load    [$i26 + 2], $f5             # |     18,496 |     18,496 |
+    load    [$i24 + 2], $f5             # |     18,496 |     18,496 |
     load    [ext_nvector + 2], $f6      # |     18,496 |     18,496 |
     fmul    $f5, $f6, $f5               # |     18,496 |     18,496 |
     fadd    $f4, $f5, $f4               # |     18,496 |     18,496 |
     fmul    $f2, $f4, $f2               # |     18,496 |     18,496 |
     fmul    $f2, $f1, $f1               # |     18,496 |     18,496 |
     fadd    $f3, $f1, $f1               # |     18,496 |     18,496 |
-    store   $f1, [$i26 + 0]             # |     18,496 |     18,496 |
-    load    [$i26 + 1], $f1             # |     18,496 |     18,496 |
+    store   $f1, [$i24 + 0]             # |     18,496 |     18,496 |
+    load    [$i24 + 1], $f1             # |     18,496 |     18,496 |
     load    [ext_nvector + 1], $f3      # |     18,496 |     18,496 |
     fmul    $f2, $f3, $f3               # |     18,496 |     18,496 |
     fadd    $f1, $f3, $f1               # |     18,496 |     18,496 |
-    store   $f1, [$i26 + 1]             # |     18,496 |     18,496 |
-    load    [$i26 + 2], $f1             # |     18,496 |     18,496 |
+    store   $f1, [$i24 + 1]             # |     18,496 |     18,496 |
+    load    [$i24 + 2], $f1             # |     18,496 |     18,496 |
     load    [ext_nvector + 2], $f3      # |     18,496 |     18,496 |
     fmul    $f2, $f3, $f2               # |     18,496 |     18,496 |
     fadd    $f1, $f2, $f1               # |     18,496 |     18,496 |
-    store   $f1, [$i26 + 2]             # |     18,496 |     18,496 |
-    load    [$ig1 + 0], $i14            # |     18,496 |     18,496 |
-    load    [$i14 + 0], $i1             # |     18,496 |     18,496 |
-    bne     $i1, -1, be_else.32815      # |     18,496 |     18,496 |
-be_then.32815:
+    store   $f1, [$i24 + 2]             # |     18,496 |     18,496 |
+    load    [$ig1 + 0], $i12            # |     18,496 |     18,496 |
+    load    [$i12 + 0], $i1             # |     18,496 |     18,496 |
+    bne     $i1, -1, be_else.22173      # |     18,496 |     18,496 |
+be_then.22173:
     li      0, $i1
 .count b_cont
-    b       be_cont.32815
-be_else.32815:
-    bne     $i1, 99, be_else.32816      # |     18,496 |     18,496 |
-be_then.32816:
+    b       be_cont.22173
+be_else.22173:
+    bne     $i1, 99, be_else.22174      # |     18,496 |     18,496 |
+be_then.22174:
     li      1, $i1
 .count b_cont
-    b       be_cont.32816
-be_else.32816:
+    b       be_cont.22174
+be_else.22174:
     call    solver_fast.2796            # |     18,496 |     18,496 |
-    bne     $i1, 0, be_else.32817       # |     18,496 |     18,496 |
-be_then.32817:
+    bne     $i1, 0, be_else.22175       # |     18,496 |     18,496 |
+be_then.22175:
     li      0, $i1                      # |     13,405 |     13,405 |
 .count b_cont
-    b       be_cont.32817               # |     13,405 |     13,405 |
-be_else.32817:
-    bg      $fc7, $fg0, ble_else.32818  # |      5,091 |      5,091 |
-ble_then.32818:
+    b       be_cont.22175               # |     13,405 |     13,405 |
+be_else.22175:
+    bg      $fc7, $fg0, ble_else.22176  # |      5,091 |      5,091 |
+ble_then.22176:
     li      0, $i1                      # |        207 |        207 |
 .count b_cont
-    b       ble_cont.32818              # |        207 |        207 |
-ble_else.32818:
-    load    [$i14 + 1], $i1             # |      4,884 |      4,884 |
-    bne     $i1, -1, be_else.32819      # |      4,884 |      4,884 |
-be_then.32819:
+    b       ble_cont.22176              # |        207 |        207 |
+ble_else.22176:
+    load    [$i12 + 1], $i1             # |      4,884 |      4,884 |
+    bne     $i1, -1, be_else.22177      # |      4,884 |      4,884 |
+be_then.22177:
     li      0, $i1
 .count b_cont
-    b       be_cont.32819
-be_else.32819:
-    li      0, $i10                     # |      4,884 |      4,884 |
-    load    [ext_and_net + $i1], $i11   # |      4,884 |      4,884 |
+    b       be_cont.22177
+be_else.22177:
+    li      0, $i8                      # |      4,884 |      4,884 |
+    load    [ext_and_net + $i1], $i9    # |      4,884 |      4,884 |
     jal     shadow_check_and_group.2862, $ra1# |      4,884 |      4,884 |
-    bne     $i1, 0, be_else.32820       # |      4,884 |      4,884 |
-be_then.32820:
-    load    [$i14 + 2], $i1             # |      4,517 |      4,517 |
-    bne     $i1, -1, be_else.32821      # |      4,517 |      4,517 |
-be_then.32821:
+    bne     $i1, 0, be_else.22178       # |      4,884 |      4,884 |
+be_then.22178:
+    load    [$i12 + 2], $i1             # |      4,517 |      4,517 |
+    bne     $i1, -1, be_else.22179      # |      4,517 |      4,517 |
+be_then.22179:
     li      0, $i1
 .count b_cont
-    b       be_cont.32820
-be_else.32821:
-    li      0, $i10                     # |      4,517 |      4,517 |
-    load    [ext_and_net + $i1], $i11   # |      4,517 |      4,517 |
+    b       be_cont.22178
+be_else.22179:
+    li      0, $i8                      # |      4,517 |      4,517 |
+    load    [ext_and_net + $i1], $i9    # |      4,517 |      4,517 |
     jal     shadow_check_and_group.2862, $ra1# |      4,517 |      4,517 |
-    bne     $i1, 0, be_else.32822       # |      4,517 |      4,517 |
-be_then.32822:
-    li      3, $i12                     # |      4,439 |      4,439 |
+    bne     $i1, 0, be_else.22180       # |      4,517 |      4,517 |
+be_then.22180:
+    li      3, $i10                     # |      4,439 |      4,439 |
 .count move_args
-    mov     $i14, $i13                  # |      4,439 |      4,439 |
+    mov     $i12, $i11                  # |      4,439 |      4,439 |
     jal     shadow_check_one_or_group.2865, $ra2# |      4,439 |      4,439 |
-    bne     $i1, 0, be_else.32823       # |      4,439 |      4,439 |
-be_then.32823:
-    li      0, $i1                      # |      4,100 |      4,100 |
+    bne     $i1, 0, be_else.22181       # |      4,439 |      4,439 |
+be_then.22181:
+    li      0, $i1                      # |      4,099 |      4,099 |
 .count b_cont
-    b       be_cont.32820               # |      4,100 |      4,100 |
-be_else.32823:
-    li      1, $i1                      # |        339 |        339 |
+    b       be_cont.22178               # |      4,099 |      4,099 |
+be_else.22181:
+    li      1, $i1                      # |        340 |        340 |
 .count b_cont
-    b       be_cont.32820               # |        339 |        339 |
-be_else.32822:
+    b       be_cont.22178               # |        340 |        340 |
+be_else.22180:
     li      1, $i1                      # |         78 |         78 |
 .count b_cont
-    b       be_cont.32820               # |         78 |         78 |
-be_else.32820:
+    b       be_cont.22178               # |         78 |         78 |
+be_else.22178:
     li      1, $i1                      # |        367 |        367 |
-be_cont.32820:
-be_cont.32819:
-ble_cont.32818:
-be_cont.32817:
-be_cont.32816:
-    bne     $i1, 0, be_else.32824       # |     18,496 |     18,496 |
-be_then.32824:
-    li      1, $i14                     # |     17,712 |     17,712 |
+be_cont.22178:
+be_cont.22177:
+ble_cont.22176:
+be_cont.22175:
+be_cont.22174:
+    bne     $i1, 0, be_else.22182       # |     18,496 |     18,496 |
+be_then.22182:
+    li      1, $i12                     # |     17,711 |     17,711 |
 .count move_args
-    mov     $ig1, $i15                  # |     17,712 |     17,712 |
-    jal     shadow_check_one_or_matrix.2868, $ra3# |     17,712 |     17,712 |
+    mov     $ig1, $i13                  # |     17,711 |     17,711 |
+    jal     shadow_check_one_or_matrix.2868, $ra3# |     17,711 |     17,711 |
 .count b_cont
-    b       be_cont.32824               # |     17,712 |     17,712 |
-be_else.32824:
-    load    [$i14 + 1], $i1             # |        784 |        784 |
-    bne     $i1, -1, be_else.32825      # |        784 |        784 |
-be_then.32825:
-    li      1, $i14
+    b       be_cont.22182               # |     17,711 |     17,711 |
+be_else.22182:
+    load    [$i12 + 1], $i1             # |        785 |        785 |
+    bne     $i1, -1, be_else.22183      # |        785 |        785 |
+be_then.22183:
+    li      1, $i12
 .count move_args
-    mov     $ig1, $i15
+    mov     $ig1, $i13
     jal     shadow_check_one_or_matrix.2868, $ra3
 .count b_cont
-    b       be_cont.32825
-be_else.32825:
-    li      0, $i10                     # |        784 |        784 |
-    load    [ext_and_net + $i1], $i11   # |        784 |        784 |
-    jal     shadow_check_and_group.2862, $ra1# |        784 |        784 |
-    bne     $i1, 0, be_else.32826       # |        784 |        784 |
-be_then.32826:
-    load    [$i14 + 2], $i1             # |        417 |        417 |
-    bne     $i1, -1, be_else.32827      # |        417 |        417 |
-be_then.32827:
-    li      1, $i14
+    b       be_cont.22183
+be_else.22183:
+    li      0, $i8                      # |        785 |        785 |
+    load    [ext_and_net + $i1], $i9    # |        785 |        785 |
+    jal     shadow_check_and_group.2862, $ra1# |        785 |        785 |
+    bne     $i1, 0, be_else.22184       # |        785 |        785 |
+be_then.22184:
+    load    [$i12 + 2], $i1             # |        418 |        418 |
+    bne     $i1, -1, be_else.22185      # |        418 |        418 |
+be_then.22185:
+    li      1, $i12
 .count move_args
-    mov     $ig1, $i15
+    mov     $ig1, $i13
     jal     shadow_check_one_or_matrix.2868, $ra3
 .count b_cont
-    b       be_cont.32826
-be_else.32827:
-    li      0, $i10                     # |        417 |        417 |
-    load    [ext_and_net + $i1], $i11   # |        417 |        417 |
-    jal     shadow_check_and_group.2862, $ra1# |        417 |        417 |
-    bne     $i1, 0, be_else.32828       # |        417 |        417 |
-be_then.32828:
-    li      3, $i12                     # |        339 |        339 |
+    b       be_cont.22184
+be_else.22185:
+    li      0, $i8                      # |        418 |        418 |
+    load    [ext_and_net + $i1], $i9    # |        418 |        418 |
+    jal     shadow_check_and_group.2862, $ra1# |        418 |        418 |
+    bne     $i1, 0, be_else.22186       # |        418 |        418 |
+be_then.22186:
+    li      3, $i10                     # |        340 |        340 |
 .count move_args
-    mov     $i14, $i13                  # |        339 |        339 |
-    jal     shadow_check_one_or_group.2865, $ra2# |        339 |        339 |
-    bne     $i1, 0, be_else.32829       # |        339 |        339 |
-be_then.32829:
-    li      1, $i14
+    mov     $i12, $i11                  # |        340 |        340 |
+    jal     shadow_check_one_or_group.2865, $ra2# |        340 |        340 |
+    bne     $i1, 0, be_else.22187       # |        340 |        340 |
+be_then.22187:
+    li      1, $i12
 .count move_args
-    mov     $ig1, $i15
+    mov     $ig1, $i13
     jal     shadow_check_one_or_matrix.2868, $ra3
 .count b_cont
-    b       be_cont.32826
-be_else.32829:
-    li      1, $i1                      # |        339 |        339 |
+    b       be_cont.22184
+be_else.22187:
+    li      1, $i1                      # |        340 |        340 |
 .count b_cont
-    b       be_cont.32826               # |        339 |        339 |
-be_else.32828:
+    b       be_cont.22184               # |        340 |        340 |
+be_else.22186:
     li      1, $i1                      # |         78 |         78 |
 .count b_cont
-    b       be_cont.32826               # |         78 |         78 |
-be_else.32826:
+    b       be_cont.22184               # |         78 |         78 |
+be_else.22184:
     li      1, $i1                      # |        367 |        367 |
-be_cont.32826:
-be_cont.32825:
-be_cont.32824:
-be_cont.32815:
-    load    [$i29 + 7], $i2             # |     18,496 |     18,496 |
-    load    [$i2 + 1], $f1              # |     18,496 |     18,496 |
+be_cont.22184:
+be_cont.22183:
+be_cont.22182:
+be_cont.22173:
+    load    [$i28 + 1], $f1             # |     18,496 |     18,496 |
     fmul    $f16, $f1, $f15             # |     18,496 |     18,496 |
-    bne     $i1, 0, be_cont.32830       # |     18,496 |     18,496 |
-be_then.32830:
-    load    [ext_nvector + 0], $f1      # |     17,539 |     17,539 |
-    fmul    $f1, $fg12, $f1             # |     17,539 |     17,539 |
-    load    [ext_nvector + 1], $f2      # |     17,539 |     17,539 |
-    fmul    $f2, $fg13, $f2             # |     17,539 |     17,539 |
-    fadd    $f1, $f2, $f1               # |     17,539 |     17,539 |
-    load    [ext_nvector + 2], $f2      # |     17,539 |     17,539 |
-    fmul    $f2, $fg14, $f2             # |     17,539 |     17,539 |
-    fadd_n  $f1, $f2, $f1               # |     17,539 |     17,539 |
-    fmul    $f1, $f14, $f1              # |     17,539 |     17,539 |
-    load    [$i26 + 0], $f2             # |     17,539 |     17,539 |
-    fmul    $f2, $fg12, $f2             # |     17,539 |     17,539 |
-    load    [$i26 + 1], $f3             # |     17,539 |     17,539 |
-    fmul    $f3, $fg13, $f3             # |     17,539 |     17,539 |
-    fadd    $f2, $f3, $f2               # |     17,539 |     17,539 |
-    load    [$i26 + 2], $f3             # |     17,539 |     17,539 |
-    fmul    $f3, $fg14, $f3             # |     17,539 |     17,539 |
-    fadd_n  $f2, $f3, $f2               # |     17,539 |     17,539 |
-    ble     $f1, $f0, bg_cont.32831     # |     17,539 |     17,539 |
-bg_then.32831:
-    fmul    $f1, $fg16, $f3             # |     17,537 |     17,537 |
-    fadd    $fg4, $f3, $fg4             # |     17,537 |     17,537 |
-    fmul    $f1, $fg11, $f3             # |     17,537 |     17,537 |
-    fadd    $fg5, $f3, $fg5             # |     17,537 |     17,537 |
-    fmul    $f1, $fg15, $f1             # |     17,537 |     17,537 |
-    fadd    $fg6, $f1, $fg6             # |     17,537 |     17,537 |
-bg_cont.32831:
-    ble     $f2, $f0, bg_cont.32832     # |     17,539 |     17,539 |
-bg_then.32832:
-    fmul    $f2, $f2, $f1               # |      6,452 |      6,452 |
-    fmul    $f1, $f1, $f1               # |      6,452 |      6,452 |
-    fmul    $f1, $f15, $f1              # |      6,452 |      6,452 |
-    fadd    $fg4, $f1, $fg4             # |      6,452 |      6,452 |
-    fadd    $fg5, $f1, $fg5             # |      6,452 |      6,452 |
-    fadd    $fg6, $f1, $fg6             # |      6,452 |      6,452 |
-bg_cont.32832:
-be_cont.32830:
+    bne     $i1, 0, be_cont.22188       # |     18,496 |     18,496 |
+be_then.22188:
+    load    [ext_nvector + 0], $f1      # |     17,538 |     17,538 |
+    fmul    $f1, $fg14, $f1             # |     17,538 |     17,538 |
+    load    [ext_nvector + 1], $f2      # |     17,538 |     17,538 |
+    fmul    $f2, $fg12, $f2             # |     17,538 |     17,538 |
+    fadd    $f1, $f2, $f1               # |     17,538 |     17,538 |
+    load    [ext_nvector + 2], $f2      # |     17,538 |     17,538 |
+    fmul    $f2, $fg13, $f2             # |     17,538 |     17,538 |
+    fadd_n  $f1, $f2, $f1               # |     17,538 |     17,538 |
+    fmul    $f1, $f14, $f1              # |     17,538 |     17,538 |
+    load    [$i24 + 0], $f2             # |     17,538 |     17,538 |
+    fmul    $f2, $fg14, $f2             # |     17,538 |     17,538 |
+    load    [$i24 + 1], $f3             # |     17,538 |     17,538 |
+    fmul    $f3, $fg12, $f3             # |     17,538 |     17,538 |
+    fadd    $f2, $f3, $f2               # |     17,538 |     17,538 |
+    load    [$i24 + 2], $f3             # |     17,538 |     17,538 |
+    fmul    $f3, $fg13, $f3             # |     17,538 |     17,538 |
+    fadd_n  $f2, $f3, $f2               # |     17,538 |     17,538 |
+    ble     $f1, $f0, bg_cont.22189     # |     17,538 |     17,538 |
+bg_then.22189:
+    fmul    $f1, $fg16, $f3             # |     17,536 |     17,536 |
+    fadd    $fg4, $f3, $fg4             # |     17,536 |     17,536 |
+    fmul    $f1, $fg11, $f3             # |     17,536 |     17,536 |
+    fadd    $fg5, $f3, $fg5             # |     17,536 |     17,536 |
+    fmul    $f1, $fg15, $f1             # |     17,536 |     17,536 |
+    fadd    $fg6, $f1, $fg6             # |     17,536 |     17,536 |
+bg_cont.22189:
+    ble     $f2, $f0, bg_cont.22190     # |     17,538 |     17,538 |
+bg_then.22190:
+    fmul    $f2, $f2, $f1               # |      6,451 |      6,451 |
+    fmul    $f1, $f1, $f1               # |      6,451 |      6,451 |
+    fmul    $f1, $f15, $f1              # |      6,451 |      6,451 |
+    fadd    $fg4, $f1, $fg4             # |      6,451 |      6,451 |
+    fadd    $fg5, $f1, $fg5             # |      6,451 |      6,451 |
+    fadd    $fg6, $f1, $fg6             # |      6,451 |      6,451 |
+bg_cont.22190:
+be_cont.22188:
     li      ext_intersection_point, $i2 # |     18,496 |     18,496 |
     load    [ext_intersection_point + 0], $fg8# |     18,496 |     18,496 |
     load    [ext_intersection_point + 1], $fg9# |     18,496 |     18,496 |
     load    [ext_intersection_point + 2], $fg10# |     18,496 |     18,496 |
     sub     $ig0, 1, $i1                # |     18,496 |     18,496 |
     call    setup_startp_constants.2831 # |     18,496 |     18,496 |
-    sub     $ig4, 1, $i21               # |     18,496 |     18,496 |
+    sub     $ig4, 1, $i19               # |     18,496 |     18,496 |
 .count move_args
-    mov     $i26, $i22                  # |     18,496 |     18,496 |
+    mov     $i24, $i20                  # |     18,496 |     18,496 |
     jal     trace_reflections.2915, $ra4# |     18,496 |     18,496 |
-    bg      $f16, $fc8, ble_else.32833  # |     18,496 |     18,496 |
-ble_then.32833:
+    bg      $f16, $fc9, ble_else.22191  # |     18,496 |     18,496 |
+ble_then.22191:
     jr      $ra5
-ble_else.32833:
-    bge     $i25, 4, bl_cont.32834      # |     18,496 |     18,496 |
-bl_then.32834:
-    add     $i25, 1, $i1                # |     18,496 |     18,496 |
+ble_else.22191:
+    bge     $i23, 4, bl_cont.22192      # |     18,496 |     18,496 |
+bl_then.22192:
+    add     $i23, 1, $i1                # |     18,496 |     18,496 |
     add     $i0, -1, $i2                # |     18,496 |     18,496 |
 .count storer
-    add     $i28, $i1, $tmp             # |     18,496 |     18,496 |
+    add     $i26, $i1, $tmp             # |     18,496 |     18,496 |
     store   $i2, [$tmp + 0]             # |     18,496 |     18,496 |
-bl_cont.32834:
-    load    [$i29 + 2], $i1             # |     18,496 |     18,496 |
-    bne     $i1, 2, be_else.32835       # |     18,496 |     18,496 |
-be_then.32835:
-    load    [$i29 + 7], $i1             # |      7,370 |      7,370 |
+bl_cont.22192:
+    load    [$i27 + 2], $i1             # |     18,496 |     18,496 |
+    bne     $i1, 2, be_else.22193       # |     18,496 |     18,496 |
+be_then.22193:
     fadd    $f17, $fg7, $f17            # |      7,370 |      7,370 |
-    add     $i25, 1, $i25               # |      7,370 |      7,370 |
-    load    [$i1 + 0], $f1              # |      7,370 |      7,370 |
+    add     $i23, 1, $i23               # |      7,370 |      7,370 |
+    load    [$i28 + 0], $f1             # |      7,370 |      7,370 |
     fsub    $fc0, $f1, $f1              # |      7,370 |      7,370 |
     fmul    $f16, $f1, $f16             # |      7,370 |      7,370 |
     b       trace_ray.2920              # |      7,370 |      7,370 |
-be_else.32835:
+be_else.22193:
     jr      $ra5                        # |     11,126 |     11,126 |
-ble_else.32793:
+ble_else.22151:
     jr      $ra5
 .end trace_ray
 
 ######################################################################
-# trace_diffuse_ray($i21, $f14)
+# trace_diffuse_ray($i19, $f14)
 # $ra = $ra4
-# [$i1 - $i21]
+# [$i1 - $i19]
 # [$f1 - $f14]
 # [$ig2 - $ig3]
 # [$fg0 - $fg3, $fg7, $fg11, $fg15 - $fg16]
+# [$ra - $ra3]
 ######################################################################
 .begin trace_diffuse_ray
 trace_diffuse_ray.2926:
-    mov     $fc14, $fg7                 # |  1,116,120 |  1,116,120 |
-    load    [$ig1 + 0], $i16            # |  1,116,120 |  1,116,120 |
-    load    [$i16 + 0], $i1             # |  1,116,120 |  1,116,120 |
-    be      $i1, -1, bne_cont.32836     # |  1,116,120 |  1,116,120 |
-bne_then.32836:
-    bne     $i1, 99, be_else.32837      # |  1,116,120 |  1,116,120 |
-be_then.32837:
-    load    [$i16 + 1], $i1
-    bne     $i1, -1, be_else.32838
-be_then.32838:
-    li      1, $i18
+    mov     $fc13, $fg7                 # |  1,116,120 |  1,116,120 |
+    load    [$ig1 + 0], $i14            # |  1,116,120 |  1,116,120 |
+    load    [$i14 + 0], $i1             # |  1,116,120 |  1,116,120 |
+    be      $i1, -1, bne_cont.22194     # |  1,116,120 |  1,116,120 |
+bne_then.22194:
+    bne     $i1, 99, be_else.22195      # |  1,116,120 |  1,116,120 |
+be_then.22195:
+    load    [$i14 + 1], $i1
+    bne     $i1, -1, be_else.22196
+be_then.22196:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i21, $i20
+    mov     $i19, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32837
-be_else.32838:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22195
+be_else.22196:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i21, $i12
+    mov     $i19, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 2], $i1
-    bne     $i1, -1, be_else.32839
-be_then.32839:
-    li      1, $i18
+    load    [$i14 + 2], $i1
+    bne     $i1, -1, be_else.22197
+be_then.22197:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i21, $i20
+    mov     $i19, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32837
-be_else.32839:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22195
+be_else.22197:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i21, $i12
+    mov     $i19, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 3], $i1
-    bne     $i1, -1, be_else.32840
-be_then.32840:
-    li      1, $i18
+    load    [$i14 + 3], $i1
+    bne     $i1, -1, be_else.22198
+be_then.22198:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i21, $i20
+    mov     $i19, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32837
-be_else.32840:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22195
+be_else.22198:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i21, $i12
+    mov     $i19, $i10
     jal     solve_each_element_fast.2885, $ra1
-    load    [$i16 + 4], $i1
-    bne     $i1, -1, be_else.32841
-be_then.32841:
-    li      1, $i18
+    load    [$i14 + 4], $i1
+    bne     $i1, -1, be_else.22199
+be_then.22199:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i21, $i20
+    mov     $i19, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32837
-be_else.32841:
-    li      0, $i10
-    load    [ext_and_net + $i1], $i11
+    b       be_cont.22195
+be_else.22199:
+    li      0, $i8
+    load    [ext_and_net + $i1], $i9
 .count move_args
-    mov     $i21, $i12
+    mov     $i19, $i10
     jal     solve_each_element_fast.2885, $ra1
-    li      5, $i15
+    li      5, $i13
 .count move_args
-    mov     $i21, $i17
+    mov     $i19, $i15
     jal     solve_one_or_network_fast.2889, $ra2
-    li      1, $i18
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i21, $i20
+    mov     $i19, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       be_cont.32837
-be_else.32837:
+    b       be_cont.22195
+be_else.22195:
 .count move_args
-    mov     $i21, $i2                   # |  1,116,120 |  1,116,120 |
+    mov     $i19, $i2                   # |  1,116,120 |  1,116,120 |
     call    solver_fast2.2814           # |  1,116,120 |  1,116,120 |
-    bne     $i1, 0, be_else.32842       # |  1,116,120 |  1,116,120 |
-be_then.32842:
-    li      1, $i18                     # |    436,322 |    436,322 |
+    bne     $i1, 0, be_else.22200       # |  1,116,120 |  1,116,120 |
+be_then.22200:
+    li      1, $i16                     # |    436,322 |    436,322 |
 .count move_args
-    mov     $ig1, $i19                  # |    436,322 |    436,322 |
+    mov     $ig1, $i17                  # |    436,322 |    436,322 |
 .count move_args
-    mov     $i21, $i20                  # |    436,322 |    436,322 |
+    mov     $i19, $i18                  # |    436,322 |    436,322 |
     jal     trace_or_matrix_fast.2893, $ra3# |    436,322 |    436,322 |
 .count b_cont
-    b       be_cont.32842               # |    436,322 |    436,322 |
-be_else.32842:
-    bg      $fg7, $fg0, ble_else.32843  # |    679,798 |    679,798 |
-ble_then.32843:
-    li      1, $i18
+    b       be_cont.22200               # |    436,322 |    436,322 |
+be_else.22200:
+    bg      $fg7, $fg0, ble_else.22201  # |    679,798 |    679,798 |
+ble_then.22201:
+    li      1, $i16
 .count move_args
-    mov     $ig1, $i19
+    mov     $ig1, $i17
 .count move_args
-    mov     $i21, $i20
+    mov     $i19, $i18
     jal     trace_or_matrix_fast.2893, $ra3
 .count b_cont
-    b       ble_cont.32843
-ble_else.32843:
-    li      1, $i15                     # |    679,798 |    679,798 |
+    b       ble_cont.22201
+ble_else.22201:
+    li      1, $i13                     # |    679,798 |    679,798 |
 .count move_args
-    mov     $i21, $i17                  # |    679,798 |    679,798 |
+    mov     $i19, $i15                  # |    679,798 |    679,798 |
     jal     solve_one_or_network_fast.2889, $ra2# |    679,798 |    679,798 |
-    li      1, $i18                     # |    679,798 |    679,798 |
+    li      1, $i16                     # |    679,798 |    679,798 |
 .count move_args
-    mov     $ig1, $i19                  # |    679,798 |    679,798 |
+    mov     $ig1, $i17                  # |    679,798 |    679,798 |
 .count move_args
-    mov     $i21, $i20                  # |    679,798 |    679,798 |
+    mov     $i19, $i18                  # |    679,798 |    679,798 |
     jal     trace_or_matrix_fast.2893, $ra3# |    679,798 |    679,798 |
-ble_cont.32843:
-be_cont.32842:
-be_cont.32837:
-bne_cont.32836:
-    bg      $fg7, $fc7, ble_else.32844  # |  1,116,120 |  1,116,120 |
-ble_then.32844:
+ble_cont.22201:
+be_cont.22200:
+be_cont.22195:
+bne_cont.22194:
+    bg      $fg7, $fc7, ble_else.22202  # |  1,116,120 |  1,116,120 |
+ble_then.22202:
     li      0, $i1
 .count b_cont
-    b       ble_cont.32844
-ble_else.32844:
-    bg      $fc13, $fg7, ble_else.32845 # |  1,116,120 |  1,116,120 |
-ble_then.32845:
-    li      0, $i1                      # |    473,955 |    473,955 |
+    b       ble_cont.22202
+ble_else.22202:
+    bg      $fc12, $fg7, ble_else.22203 # |  1,116,120 |  1,116,120 |
+ble_then.22203:
+    li      0, $i1                      # |    473,887 |    473,887 |
 .count b_cont
-    b       ble_cont.32845              # |    473,955 |    473,955 |
-ble_else.32845:
-    li      1, $i1                      # |    642,165 |    642,165 |
-ble_cont.32845:
-ble_cont.32844:
-    bne     $i1, 0, be_else.32846       # |  1,116,120 |  1,116,120 |
-be_then.32846:
-    jr      $ra4                        # |    473,955 |    473,955 |
-be_else.32846:
-    load    [$i21 + 0], $i1             # |    642,165 |    642,165 |
-    load    [ext_objects + $ig3], $i17  # |    642,165 |    642,165 |
-    load    [$i17 + 1], $i2             # |    642,165 |    642,165 |
-    bne     $i2, 1, be_else.32847       # |    642,165 |    642,165 |
-be_then.32847:
-    store   $f0, [ext_nvector + 0]      # |    114,993 |    114,993 |
-    store   $f0, [ext_nvector + 1]      # |    114,993 |    114,993 |
-    store   $f0, [ext_nvector + 2]      # |    114,993 |    114,993 |
-    sub     $ig2, 1, $i2                # |    114,993 |    114,993 |
-    load    [$i1 + $i2], $f1            # |    114,993 |    114,993 |
-    bne     $f1, $f0, be_else.32848     # |    114,993 |    114,993 |
-be_then.32848:
+    b       ble_cont.22203              # |    473,887 |    473,887 |
+ble_else.22203:
+    li      1, $i1                      # |    642,233 |    642,233 |
+ble_cont.22203:
+ble_cont.22202:
+    bne     $i1, 0, be_else.22204       # |  1,116,120 |  1,116,120 |
+be_then.22204:
+    jr      $ra4                        # |    473,887 |    473,887 |
+be_else.22204:
+    load    [$i19 + 0], $i1             # |    642,233 |    642,233 |
+    load    [ext_objects + $ig3], $i15  # |    642,233 |    642,233 |
+    load    [$i15 + 1], $i2             # |    642,233 |    642,233 |
+    bne     $i2, 1, be_else.22205       # |    642,233 |    642,233 |
+be_then.22205:
+    store   $f0, [ext_nvector + 0]      # |    114,909 |    114,909 |
+    store   $f0, [ext_nvector + 1]      # |    114,909 |    114,909 |
+    store   $f0, [ext_nvector + 2]      # |    114,909 |    114,909 |
+    sub     $ig2, 1, $i2                # |    114,909 |    114,909 |
+    load    [$i1 + $i2], $f1            # |    114,909 |    114,909 |
+    bne     $f1, $f0, be_else.22206     # |    114,909 |    114,909 |
+be_then.22206:
     store   $f0, [ext_nvector + $i2]
 .count b_cont
-    b       be_cont.32847
-be_else.32848:
-    bg      $f1, $f0, ble_else.32849    # |    114,993 |    114,993 |
-ble_then.32849:
-    store   $fc0, [ext_nvector + $i2]   # |     90,204 |     90,204 |
+    b       be_cont.22205
+be_else.22206:
+    bg      $f1, $f0, ble_else.22207    # |    114,909 |    114,909 |
+ble_then.22207:
+    store   $fc0, [ext_nvector + $i2]   # |     90,131 |     90,131 |
 .count b_cont
-    b       be_cont.32847               # |     90,204 |     90,204 |
-ble_else.32849:
-    store   $fc4, [ext_nvector + $i2]   # |     24,789 |     24,789 |
+    b       be_cont.22205               # |     90,131 |     90,131 |
+ble_else.22207:
+    store   $fc3, [ext_nvector + $i2]   # |     24,778 |     24,778 |
 .count b_cont
-    b       be_cont.32847               # |     24,789 |     24,789 |
-be_else.32847:
-    bne     $i2, 2, be_else.32850       # |    527,172 |    527,172 |
-be_then.32850:
-    load    [$i17 + 4], $i1             # |    391,509 |    391,509 |
-    load    [$i1 + 0], $f1              # |    391,509 |    391,509 |
-    fneg    $f1, $f1                    # |    391,509 |    391,509 |
-    store   $f1, [ext_nvector + 0]      # |    391,509 |    391,509 |
-    load    [$i17 + 4], $i1             # |    391,509 |    391,509 |
-    load    [$i1 + 1], $f1              # |    391,509 |    391,509 |
-    fneg    $f1, $f1                    # |    391,509 |    391,509 |
-    store   $f1, [ext_nvector + 1]      # |    391,509 |    391,509 |
-    load    [$i17 + 4], $i1             # |    391,509 |    391,509 |
-    load    [$i1 + 2], $f1              # |    391,509 |    391,509 |
-    fneg    $f1, $f1                    # |    391,509 |    391,509 |
-    store   $f1, [ext_nvector + 2]      # |    391,509 |    391,509 |
+    b       be_cont.22205               # |     24,778 |     24,778 |
+be_else.22205:
+    bne     $i2, 2, be_else.22208       # |    527,324 |    527,324 |
+be_then.22208:
+    load    [$i15 + 4], $i1             # |    391,531 |    391,531 |
+    load    [$i1 + 0], $f1              # |    391,531 |    391,531 |
+    fneg    $f1, $f1                    # |    391,531 |    391,531 |
+    store   $f1, [ext_nvector + 0]      # |    391,531 |    391,531 |
+    load    [$i1 + 1], $f1              # |    391,531 |    391,531 |
+    fneg    $f1, $f1                    # |    391,531 |    391,531 |
+    store   $f1, [ext_nvector + 1]      # |    391,531 |    391,531 |
+    load    [$i1 + 2], $f1              # |    391,531 |    391,531 |
+    fneg    $f1, $f1                    # |    391,531 |    391,531 |
+    store   $f1, [ext_nvector + 2]      # |    391,531 |    391,531 |
 .count b_cont
-    b       be_cont.32850               # |    391,509 |    391,509 |
-be_else.32850:
-    load    [$i17 + 3], $i1             # |    135,663 |    135,663 |
-    load    [$i17 + 4], $i2             # |    135,663 |    135,663 |
-    load    [$i2 + 0], $f1              # |    135,663 |    135,663 |
-    load    [ext_intersection_point + 0], $f2# |    135,663 |    135,663 |
-    load    [$i17 + 5], $i2             # |    135,663 |    135,663 |
-    load    [$i2 + 0], $f3              # |    135,663 |    135,663 |
-    fsub    $f2, $f3, $f2               # |    135,663 |    135,663 |
-    fmul    $f2, $f1, $f1               # |    135,663 |    135,663 |
-    load    [$i17 + 4], $i2             # |    135,663 |    135,663 |
-    load    [$i2 + 1], $f3              # |    135,663 |    135,663 |
-    load    [ext_intersection_point + 1], $f4# |    135,663 |    135,663 |
-    load    [$i17 + 5], $i2             # |    135,663 |    135,663 |
-    load    [$i2 + 1], $f5              # |    135,663 |    135,663 |
-    fsub    $f4, $f5, $f4               # |    135,663 |    135,663 |
-    fmul    $f4, $f3, $f3               # |    135,663 |    135,663 |
-    load    [$i17 + 4], $i2             # |    135,663 |    135,663 |
-    load    [$i2 + 2], $f5              # |    135,663 |    135,663 |
-    load    [ext_intersection_point + 2], $f6# |    135,663 |    135,663 |
-    load    [$i17 + 5], $i2             # |    135,663 |    135,663 |
-    load    [$i2 + 2], $f7              # |    135,663 |    135,663 |
-    fsub    $f6, $f7, $f6               # |    135,663 |    135,663 |
-    fmul    $f6, $f5, $f5               # |    135,663 |    135,663 |
-    bne     $i1, 0, be_else.32851       # |    135,663 |    135,663 |
-be_then.32851:
-    store   $f1, [ext_nvector + 0]      # |    135,663 |    135,663 |
-    store   $f3, [ext_nvector + 1]      # |    135,663 |    135,663 |
-    store   $f5, [ext_nvector + 2]      # |    135,663 |    135,663 |
+    b       be_cont.22208               # |    391,531 |    391,531 |
+be_else.22208:
+    load    [$i15 + 3], $i1             # |    135,793 |    135,793 |
+    load    [$i15 + 4], $i2             # |    135,793 |    135,793 |
+    load    [$i2 + 0], $f1              # |    135,793 |    135,793 |
+    load    [ext_intersection_point + 0], $f2# |    135,793 |    135,793 |
+    load    [$i15 + 5], $i3             # |    135,793 |    135,793 |
+    load    [$i3 + 0], $f3              # |    135,793 |    135,793 |
+    fsub    $f2, $f3, $f2               # |    135,793 |    135,793 |
+    fmul    $f2, $f1, $f1               # |    135,793 |    135,793 |
+    load    [$i2 + 1], $f3              # |    135,793 |    135,793 |
+    load    [ext_intersection_point + 1], $f4# |    135,793 |    135,793 |
+    load    [$i3 + 1], $f5              # |    135,793 |    135,793 |
+    fsub    $f4, $f5, $f4               # |    135,793 |    135,793 |
+    fmul    $f4, $f3, $f3               # |    135,793 |    135,793 |
+    load    [$i2 + 2], $f5              # |    135,793 |    135,793 |
+    load    [ext_intersection_point + 2], $f6# |    135,793 |    135,793 |
+    load    [$i3 + 2], $f7              # |    135,793 |    135,793 |
+    fsub    $f6, $f7, $f6               # |    135,793 |    135,793 |
+    fmul    $f6, $f5, $f5               # |    135,793 |    135,793 |
+    bne     $i1, 0, be_else.22209       # |    135,793 |    135,793 |
+be_then.22209:
+    store   $f1, [ext_nvector + 0]      # |    135,793 |    135,793 |
+    store   $f3, [ext_nvector + 1]      # |    135,793 |    135,793 |
+    store   $f5, [ext_nvector + 2]      # |    135,793 |    135,793 |
 .count b_cont
-    b       be_cont.32851               # |    135,663 |    135,663 |
-be_else.32851:
-    load    [$i17 + 9], $i1
+    b       be_cont.22209               # |    135,793 |    135,793 |
+be_else.22209:
+    load    [$i15 + 9], $i1
     load    [$i1 + 2], $f7
     fmul    $f4, $f7, $f7
-    load    [$i17 + 9], $i1
     load    [$i1 + 1], $f8
     fmul    $f6, $f8, $f8
     fadd    $f7, $f8, $f7
-    fmul    $f7, $fc3, $f7
+    fmul    $f7, $fc4, $f7
     fadd    $f1, $f7, $f1
     store   $f1, [ext_nvector + 0]
-    load    [$i17 + 9], $i1
     load    [$i1 + 2], $f1
     fmul    $f2, $f1, $f1
-    load    [$i17 + 9], $i1
     load    [$i1 + 0], $f7
     fmul    $f6, $f7, $f6
     fadd    $f1, $f6, $f1
-    fmul    $f1, $fc3, $f1
+    fmul    $f1, $fc4, $f1
     fadd    $f3, $f1, $f1
     store   $f1, [ext_nvector + 1]
-    load    [$i17 + 9], $i1
     load    [$i1 + 1], $f1
     fmul    $f2, $f1, $f1
-    load    [$i17 + 9], $i1
     load    [$i1 + 0], $f2
     fmul    $f4, $f2, $f2
     fadd    $f1, $f2, $f1
-    fmul    $f1, $fc3, $f1
+    fmul    $f1, $fc4, $f1
     fadd    $f5, $f1, $f1
     store   $f1, [ext_nvector + 2]
-be_cont.32851:
-    load    [ext_nvector + 0], $f1      # |    135,663 |    135,663 |
-    load    [$i17 + 6], $i1             # |    135,663 |    135,663 |
-    fmul    $f1, $f1, $f2               # |    135,663 |    135,663 |
-    load    [ext_nvector + 1], $f3      # |    135,663 |    135,663 |
-    fmul    $f3, $f3, $f3               # |    135,663 |    135,663 |
-    fadd    $f2, $f3, $f2               # |    135,663 |    135,663 |
-    load    [ext_nvector + 2], $f3      # |    135,663 |    135,663 |
-    fmul    $f3, $f3, $f3               # |    135,663 |    135,663 |
-    fadd    $f2, $f3, $f2               # |    135,663 |    135,663 |
-    fsqrt   $f2, $f2                    # |    135,663 |    135,663 |
-    bne     $f2, $f0, be_else.32852     # |    135,663 |    135,663 |
-be_then.32852:
+be_cont.22209:
+    load    [ext_nvector + 0], $f1      # |    135,793 |    135,793 |
+    load    [$i15 + 6], $i1             # |    135,793 |    135,793 |
+    fmul    $f1, $f1, $f2               # |    135,793 |    135,793 |
+    load    [ext_nvector + 1], $f3      # |    135,793 |    135,793 |
+    fmul    $f3, $f3, $f3               # |    135,793 |    135,793 |
+    fadd    $f2, $f3, $f2               # |    135,793 |    135,793 |
+    load    [ext_nvector + 2], $f3      # |    135,793 |    135,793 |
+    fmul    $f3, $f3, $f3               # |    135,793 |    135,793 |
+    fadd    $f2, $f3, $f2               # |    135,793 |    135,793 |
+    fsqrt   $f2, $f2                    # |    135,793 |    135,793 |
+    bne     $f2, $f0, be_else.22210     # |    135,793 |    135,793 |
+be_then.22210:
     mov     $fc0, $f2
 .count b_cont
-    b       be_cont.32852
-be_else.32852:
-    bne     $i1, 0, be_else.32853       # |    135,663 |    135,663 |
-be_then.32853:
-    finv    $f2, $f2                    # |    103,786 |    103,786 |
+    b       be_cont.22210
+be_else.22210:
+    bne     $i1, 0, be_else.22211       # |    135,793 |    135,793 |
+be_then.22211:
+    finv    $f2, $f2                    # |    103,847 |    103,847 |
 .count b_cont
-    b       be_cont.32853               # |    103,786 |    103,786 |
-be_else.32853:
-    finv_n  $f2, $f2                    # |     31,877 |     31,877 |
-be_cont.32853:
-be_cont.32852:
-    fmul    $f1, $f2, $f1               # |    135,663 |    135,663 |
-    store   $f1, [ext_nvector + 0]      # |    135,663 |    135,663 |
-    load    [ext_nvector + 1], $f1      # |    135,663 |    135,663 |
-    fmul    $f1, $f2, $f1               # |    135,663 |    135,663 |
-    store   $f1, [ext_nvector + 1]      # |    135,663 |    135,663 |
-    load    [ext_nvector + 2], $f1      # |    135,663 |    135,663 |
-    fmul    $f1, $f2, $f1               # |    135,663 |    135,663 |
-    store   $f1, [ext_nvector + 2]      # |    135,663 |    135,663 |
-be_cont.32850:
-be_cont.32847:
+    b       be_cont.22211               # |    103,847 |    103,847 |
+be_else.22211:
+    finv_n  $f2, $f2                    # |     31,946 |     31,946 |
+be_cont.22211:
+be_cont.22210:
+    fmul    $f1, $f2, $f1               # |    135,793 |    135,793 |
+    store   $f1, [ext_nvector + 0]      # |    135,793 |    135,793 |
+    load    [ext_nvector + 1], $f1      # |    135,793 |    135,793 |
+    fmul    $f1, $f2, $f1               # |    135,793 |    135,793 |
+    store   $f1, [ext_nvector + 1]      # |    135,793 |    135,793 |
+    load    [ext_nvector + 2], $f1      # |    135,793 |    135,793 |
+    fmul    $f1, $f2, $f1               # |    135,793 |    135,793 |
+    store   $f1, [ext_nvector + 2]      # |    135,793 |    135,793 |
+be_cont.22208:
+be_cont.22205:
 .count move_args
-    mov     $i17, $i1                   # |    642,165 |    642,165 |
-    jal     utexture.2908, $ra1         # |    642,165 |    642,165 |
-    load    [$ig1 + 0], $i14            # |    642,165 |    642,165 |
-    load    [$i14 + 0], $i1             # |    642,165 |    642,165 |
-    bne     $i1, -1, be_else.32854      # |    642,165 |    642,165 |
-be_then.32854:
+    mov     $i15, $i1                   # |    642,233 |    642,233 |
+    jal     utexture.2908, $ra1         # |    642,233 |    642,233 |
+    load    [$ig1 + 0], $i12            # |    642,233 |    642,233 |
+    load    [$i12 + 0], $i1             # |    642,233 |    642,233 |
+    bne     $i1, -1, be_else.22212      # |    642,233 |    642,233 |
+be_then.22212:
     li      0, $i1
 .count b_cont
-    b       be_cont.32854
-be_else.32854:
-    bne     $i1, 99, be_else.32855      # |    642,165 |    642,165 |
-be_then.32855:
+    b       be_cont.22212
+be_else.22212:
+    bne     $i1, 99, be_else.22213      # |    642,233 |    642,233 |
+be_then.22213:
     li      1, $i1
 .count b_cont
-    b       be_cont.32855
-be_else.32855:
-    call    solver_fast.2796            # |    642,165 |    642,165 |
-    bne     $i1, 0, be_else.32856       # |    642,165 |    642,165 |
-be_then.32856:
-    li      0, $i1                      # |    441,283 |    441,283 |
+    b       be_cont.22213
+be_else.22213:
+    call    solver_fast.2796            # |    642,233 |    642,233 |
+    bne     $i1, 0, be_else.22214       # |    642,233 |    642,233 |
+be_then.22214:
+    li      0, $i1                      # |    441,257 |    441,257 |
 .count b_cont
-    b       be_cont.32856               # |    441,283 |    441,283 |
-be_else.32856:
-    bg      $fc7, $fg0, ble_else.32857  # |    200,882 |    200,882 |
-ble_then.32857:
-    li      0, $i1                      # |      6,953 |      6,953 |
+    b       be_cont.22214               # |    441,257 |    441,257 |
+be_else.22214:
+    bg      $fc7, $fg0, ble_else.22215  # |    200,976 |    200,976 |
+ble_then.22215:
+    li      0, $i1                      # |      6,935 |      6,935 |
 .count b_cont
-    b       ble_cont.32857              # |      6,953 |      6,953 |
-ble_else.32857:
-    load    [$i14 + 1], $i1             # |    193,929 |    193,929 |
-    bne     $i1, -1, be_else.32858      # |    193,929 |    193,929 |
-be_then.32858:
+    b       ble_cont.22215              # |      6,935 |      6,935 |
+ble_else.22215:
+    load    [$i12 + 1], $i1             # |    194,041 |    194,041 |
+    bne     $i1, -1, be_else.22216      # |    194,041 |    194,041 |
+be_then.22216:
     li      0, $i1
 .count b_cont
-    b       be_cont.32858
-be_else.32858:
-    li      0, $i10                     # |    193,929 |    193,929 |
-    load    [ext_and_net + $i1], $i11   # |    193,929 |    193,929 |
-    jal     shadow_check_and_group.2862, $ra1# |    193,929 |    193,929 |
-    bne     $i1, 0, be_else.32859       # |    193,929 |    193,929 |
-be_then.32859:
-    load    [$i14 + 2], $i1             # |    153,646 |    153,646 |
-    bne     $i1, -1, be_else.32860      # |    153,646 |    153,646 |
-be_then.32860:
+    b       be_cont.22216
+be_else.22216:
+    li      0, $i8                      # |    194,041 |    194,041 |
+    load    [ext_and_net + $i1], $i9    # |    194,041 |    194,041 |
+    jal     shadow_check_and_group.2862, $ra1# |    194,041 |    194,041 |
+    bne     $i1, 0, be_else.22217       # |    194,041 |    194,041 |
+be_then.22217:
+    load    [$i12 + 2], $i1             # |    153,753 |    153,753 |
+    bne     $i1, -1, be_else.22218      # |    153,753 |    153,753 |
+be_then.22218:
     li      0, $i1
 .count b_cont
-    b       be_cont.32859
-be_else.32860:
-    li      0, $i10                     # |    153,646 |    153,646 |
-    load    [ext_and_net + $i1], $i11   # |    153,646 |    153,646 |
-    jal     shadow_check_and_group.2862, $ra1# |    153,646 |    153,646 |
-    bne     $i1, 0, be_else.32861       # |    153,646 |    153,646 |
-be_then.32861:
-    li      3, $i12                     # |    143,513 |    143,513 |
+    b       be_cont.22217
+be_else.22218:
+    li      0, $i8                      # |    153,753 |    153,753 |
+    load    [ext_and_net + $i1], $i9    # |    153,753 |    153,753 |
+    jal     shadow_check_and_group.2862, $ra1# |    153,753 |    153,753 |
+    bne     $i1, 0, be_else.22219       # |    153,753 |    153,753 |
+be_then.22219:
+    li      3, $i10                     # |    143,619 |    143,619 |
 .count move_args
-    mov     $i14, $i13                  # |    143,513 |    143,513 |
-    jal     shadow_check_one_or_group.2865, $ra2# |    143,513 |    143,513 |
-    bne     $i1, 0, be_else.32862       # |    143,513 |    143,513 |
-be_then.32862:
-    li      0, $i1                      # |     78,657 |     78,657 |
+    mov     $i12, $i11                  # |    143,619 |    143,619 |
+    jal     shadow_check_one_or_group.2865, $ra2# |    143,619 |    143,619 |
+    bne     $i1, 0, be_else.22220       # |    143,619 |    143,619 |
+be_then.22220:
+    li      0, $i1                      # |     78,653 |     78,653 |
 .count b_cont
-    b       be_cont.32859               # |     78,657 |     78,657 |
-be_else.32862:
-    li      1, $i1                      # |     64,856 |     64,856 |
+    b       be_cont.22217               # |     78,653 |     78,653 |
+be_else.22220:
+    li      1, $i1                      # |     64,966 |     64,966 |
 .count b_cont
-    b       be_cont.32859               # |     64,856 |     64,856 |
-be_else.32861:
-    li      1, $i1                      # |     10,133 |     10,133 |
+    b       be_cont.22217               # |     64,966 |     64,966 |
+be_else.22219:
+    li      1, $i1                      # |     10,134 |     10,134 |
 .count b_cont
-    b       be_cont.32859               # |     10,133 |     10,133 |
-be_else.32859:
-    li      1, $i1                      # |     40,283 |     40,283 |
-be_cont.32859:
-be_cont.32858:
-ble_cont.32857:
-be_cont.32856:
-be_cont.32855:
-    bne     $i1, 0, be_else.32863       # |    642,165 |    642,165 |
-be_then.32863:
-    li      1, $i14                     # |    526,893 |    526,893 |
+    b       be_cont.22217               # |     10,134 |     10,134 |
+be_else.22217:
+    li      1, $i1                      # |     40,288 |     40,288 |
+be_cont.22217:
+be_cont.22216:
+ble_cont.22215:
+be_cont.22214:
+be_cont.22213:
+    bne     $i1, 0, be_else.22221       # |    642,233 |    642,233 |
+be_then.22221:
+    li      1, $i12                     # |    526,845 |    526,845 |
 .count move_args
-    mov     $ig1, $i15                  # |    526,893 |    526,893 |
-    jal     shadow_check_one_or_matrix.2868, $ra3# |    526,893 |    526,893 |
+    mov     $ig1, $i13                  # |    526,845 |    526,845 |
+    jal     shadow_check_one_or_matrix.2868, $ra3# |    526,845 |    526,845 |
 .count b_cont
-    b       be_cont.32863               # |    526,893 |    526,893 |
-be_else.32863:
-    load    [$i14 + 1], $i1             # |    115,272 |    115,272 |
-    bne     $i1, -1, be_else.32864      # |    115,272 |    115,272 |
-be_then.32864:
-    li      1, $i14
+    b       be_cont.22221               # |    526,845 |    526,845 |
+be_else.22221:
+    load    [$i12 + 1], $i1             # |    115,388 |    115,388 |
+    bne     $i1, -1, be_else.22222      # |    115,388 |    115,388 |
+be_then.22222:
+    li      1, $i12
 .count move_args
-    mov     $ig1, $i15
+    mov     $ig1, $i13
     jal     shadow_check_one_or_matrix.2868, $ra3
 .count b_cont
-    b       be_cont.32864
-be_else.32864:
-    li      0, $i10                     # |    115,272 |    115,272 |
-    load    [ext_and_net + $i1], $i11   # |    115,272 |    115,272 |
-    jal     shadow_check_and_group.2862, $ra1# |    115,272 |    115,272 |
-    bne     $i1, 0, be_else.32865       # |    115,272 |    115,272 |
-be_then.32865:
-    load    [$i14 + 2], $i1             # |     74,989 |     74,989 |
-    bne     $i1, -1, be_else.32866      # |     74,989 |     74,989 |
-be_then.32866:
-    li      1, $i14
+    b       be_cont.22222
+be_else.22222:
+    li      0, $i8                      # |    115,388 |    115,388 |
+    load    [ext_and_net + $i1], $i9    # |    115,388 |    115,388 |
+    jal     shadow_check_and_group.2862, $ra1# |    115,388 |    115,388 |
+    bne     $i1, 0, be_else.22223       # |    115,388 |    115,388 |
+be_then.22223:
+    load    [$i12 + 2], $i1             # |     75,100 |     75,100 |
+    bne     $i1, -1, be_else.22224      # |     75,100 |     75,100 |
+be_then.22224:
+    li      1, $i12
 .count move_args
-    mov     $ig1, $i15
+    mov     $ig1, $i13
     jal     shadow_check_one_or_matrix.2868, $ra3
 .count b_cont
-    b       be_cont.32865
-be_else.32866:
-    li      0, $i10                     # |     74,989 |     74,989 |
-    load    [ext_and_net + $i1], $i11   # |     74,989 |     74,989 |
-    jal     shadow_check_and_group.2862, $ra1# |     74,989 |     74,989 |
-    bne     $i1, 0, be_else.32867       # |     74,989 |     74,989 |
-be_then.32867:
-    li      3, $i12                     # |     64,856 |     64,856 |
+    b       be_cont.22223
+be_else.22224:
+    li      0, $i8                      # |     75,100 |     75,100 |
+    load    [ext_and_net + $i1], $i9    # |     75,100 |     75,100 |
+    jal     shadow_check_and_group.2862, $ra1# |     75,100 |     75,100 |
+    bne     $i1, 0, be_else.22225       # |     75,100 |     75,100 |
+be_then.22225:
+    li      3, $i10                     # |     64,966 |     64,966 |
 .count move_args
-    mov     $i14, $i13                  # |     64,856 |     64,856 |
-    jal     shadow_check_one_or_group.2865, $ra2# |     64,856 |     64,856 |
-    bne     $i1, 0, be_else.32868       # |     64,856 |     64,856 |
-be_then.32868:
-    li      1, $i14
+    mov     $i12, $i11                  # |     64,966 |     64,966 |
+    jal     shadow_check_one_or_group.2865, $ra2# |     64,966 |     64,966 |
+    bne     $i1, 0, be_else.22226       # |     64,966 |     64,966 |
+be_then.22226:
+    li      1, $i12
 .count move_args
-    mov     $ig1, $i15
+    mov     $ig1, $i13
     jal     shadow_check_one_or_matrix.2868, $ra3
 .count b_cont
-    b       be_cont.32865
-be_else.32868:
-    li      1, $i1                      # |     64,856 |     64,856 |
+    b       be_cont.22223
+be_else.22226:
+    li      1, $i1                      # |     64,966 |     64,966 |
 .count b_cont
-    b       be_cont.32865               # |     64,856 |     64,856 |
-be_else.32867:
-    li      1, $i1                      # |     10,133 |     10,133 |
+    b       be_cont.22223               # |     64,966 |     64,966 |
+be_else.22225:
+    li      1, $i1                      # |     10,134 |     10,134 |
 .count b_cont
-    b       be_cont.32865               # |     10,133 |     10,133 |
-be_else.32865:
-    li      1, $i1                      # |     40,283 |     40,283 |
-be_cont.32865:
-be_cont.32864:
-be_cont.32863:
-be_cont.32854:
-    bne     $i1, 0, be_else.32869       # |    642,165 |    642,165 |
-be_then.32869:
-    load    [$i17 + 7], $i1             # |    523,116 |    523,116 |
-    load    [ext_nvector + 0], $f1      # |    523,116 |    523,116 |
-    fmul    $f1, $fg12, $f1             # |    523,116 |    523,116 |
-    load    [ext_nvector + 1], $f2      # |    523,116 |    523,116 |
-    fmul    $f2, $fg13, $f2             # |    523,116 |    523,116 |
-    fadd    $f1, $f2, $f1               # |    523,116 |    523,116 |
-    load    [ext_nvector + 2], $f2      # |    523,116 |    523,116 |
-    fmul    $f2, $fg14, $f2             # |    523,116 |    523,116 |
-    fadd_n  $f1, $f2, $f1               # |    523,116 |    523,116 |
-    bg      $f1, $f0, ble_cont.32870    # |    523,116 |    523,116 |
-ble_then.32870:
+    b       be_cont.22223               # |     10,134 |     10,134 |
+be_else.22223:
+    li      1, $i1                      # |     40,288 |     40,288 |
+be_cont.22223:
+be_cont.22222:
+be_cont.22221:
+be_cont.22212:
+    bne     $i1, 0, be_else.22227       # |    642,233 |    642,233 |
+be_then.22227:
+    load    [$i15 + 7], $i1             # |    523,067 |    523,067 |
+    load    [ext_nvector + 0], $f1      # |    523,067 |    523,067 |
+    fmul    $f1, $fg14, $f1             # |    523,067 |    523,067 |
+    load    [ext_nvector + 1], $f2      # |    523,067 |    523,067 |
+    fmul    $f2, $fg12, $f2             # |    523,067 |    523,067 |
+    fadd    $f1, $f2, $f1               # |    523,067 |    523,067 |
+    load    [ext_nvector + 2], $f2      # |    523,067 |    523,067 |
+    fmul    $f2, $fg13, $f2             # |    523,067 |    523,067 |
+    fadd_n  $f1, $f2, $f1               # |    523,067 |    523,067 |
+    bg      $f1, $f0, ble_cont.22228    # |    523,067 |    523,067 |
+ble_then.22228:
     mov     $f0, $f1                    # |        709 |        709 |
-ble_cont.32870:
-    fmul    $f14, $f1, $f1              # |    523,116 |    523,116 |
-    load    [$i1 + 0], $f2              # |    523,116 |    523,116 |
-    fmul    $f1, $f2, $f1               # |    523,116 |    523,116 |
-    fmul    $f1, $fg16, $f2             # |    523,116 |    523,116 |
-    fadd    $fg1, $f2, $fg1             # |    523,116 |    523,116 |
-    fmul    $f1, $fg11, $f2             # |    523,116 |    523,116 |
-    fadd    $fg2, $f2, $fg2             # |    523,116 |    523,116 |
-    fmul    $f1, $fg15, $f1             # |    523,116 |    523,116 |
-    fadd    $fg3, $f1, $fg3             # |    523,116 |    523,116 |
-    jr      $ra4                        # |    523,116 |    523,116 |
-be_else.32869:
-    jr      $ra4                        # |    119,049 |    119,049 |
+ble_cont.22228:
+    fmul    $f14, $f1, $f1              # |    523,067 |    523,067 |
+    load    [$i1 + 0], $f2              # |    523,067 |    523,067 |
+    fmul    $f1, $f2, $f1               # |    523,067 |    523,067 |
+    fmul    $f1, $fg16, $f2             # |    523,067 |    523,067 |
+    fadd    $fg1, $f2, $fg1             # |    523,067 |    523,067 |
+    fmul    $f1, $fg11, $f2             # |    523,067 |    523,067 |
+    fadd    $fg2, $f2, $fg2             # |    523,067 |    523,067 |
+    fmul    $f1, $fg15, $f1             # |    523,067 |    523,067 |
+    fadd    $fg3, $f1, $fg3             # |    523,067 |    523,067 |
+    jr      $ra4                        # |    523,067 |    523,067 |
+be_else.22227:
+    jr      $ra4                        # |    119,166 |    119,166 |
 .end trace_diffuse_ray
 
 ######################################################################
-# iter_trace_diffuse_rays($i22, $i23, $i24)
+# iter_trace_diffuse_rays($i20, $i21, $i22)
 # $ra = $ra5
-# [$i1 - $i24]
+# [$i1 - $i22]
 # [$f1 - $f14]
 # [$ig2 - $ig3]
 # [$fg0 - $fg3, $fg7, $fg11, $fg15 - $fg16]
+# [$ra - $ra4]
 ######################################################################
 .begin iter_trace_diffuse_rays
 iter_trace_diffuse_rays.2929:
-    bl      $i24, 0, bge_else.32871     # |    558,060 |    558,060 |
-bge_then.32871:
-    load    [$i22 + $i24], $i1          # |    558,060 |    558,060 |
+    bl      $i22, 0, bge_else.22229     # |    558,060 |    558,060 |
+bge_then.22229:
+    load    [$i20 + $i22], $i1          # |    558,060 |    558,060 |
     load    [$i1 + 0], $i1              # |    558,060 |    558,060 |
     load    [$i1 + 0], $f1              # |    558,060 |    558,060 |
-    load    [$i23 + 0], $f2             # |    558,060 |    558,060 |
+    load    [$i21 + 0], $f2             # |    558,060 |    558,060 |
     fmul    $f1, $f2, $f1               # |    558,060 |    558,060 |
     load    [$i1 + 1], $f2              # |    558,060 |    558,060 |
-    load    [$i23 + 1], $f3             # |    558,060 |    558,060 |
+    load    [$i21 + 1], $f3             # |    558,060 |    558,060 |
     fmul    $f2, $f3, $f2               # |    558,060 |    558,060 |
     fadd    $f1, $f2, $f1               # |    558,060 |    558,060 |
     load    [$i1 + 2], $f2              # |    558,060 |    558,060 |
-    load    [$i23 + 2], $f3             # |    558,060 |    558,060 |
+    load    [$i21 + 2], $f3             # |    558,060 |    558,060 |
     fmul    $f2, $f3, $f2               # |    558,060 |    558,060 |
     fadd    $f1, $f2, $f1               # |    558,060 |    558,060 |
-    bg      $f0, $f1, ble_else.32872    # |    558,060 |    558,060 |
-ble_then.32872:
-    fmul    $f1, $fc1, $f14             # |    381,307 |    381,307 |
-    load    [$i22 + $i24], $i21         # |    381,307 |    381,307 |
-    jal     trace_diffuse_ray.2926, $ra4# |    381,307 |    381,307 |
-    sub     $i24, 2, $i24               # |    381,307 |    381,307 |
-    bl      $i24, 0, bge_else.32873     # |    381,307 |    381,307 |
-bge_then.32873:
-    load    [$i22 + $i24], $i1          # |    365,736 |    365,736 |
-    load    [$i1 + 0], $i1              # |    365,736 |    365,736 |
-    load    [$i1 + 0], $f1              # |    365,736 |    365,736 |
-    load    [$i23 + 0], $f2             # |    365,736 |    365,736 |
-    fmul    $f1, $f2, $f1               # |    365,736 |    365,736 |
-    load    [$i1 + 1], $f2              # |    365,736 |    365,736 |
-    load    [$i23 + 1], $f3             # |    365,736 |    365,736 |
-    fmul    $f2, $f3, $f2               # |    365,736 |    365,736 |
-    fadd    $f1, $f2, $f1               # |    365,736 |    365,736 |
-    load    [$i1 + 2], $f2              # |    365,736 |    365,736 |
-    load    [$i23 + 2], $f3             # |    365,736 |    365,736 |
-    fmul    $f2, $f3, $f2               # |    365,736 |    365,736 |
-    fadd    $f1, $f2, $f1               # |    365,736 |    365,736 |
-    bg      $f0, $f1, ble_else.32874    # |    365,736 |    365,736 |
-ble_then.32874:
-    fmul    $f1, $fc1, $f14             # |    191,017 |    191,017 |
-    load    [$i22 + $i24], $i21         # |    191,017 |    191,017 |
-    jal     trace_diffuse_ray.2926, $ra4# |    191,017 |    191,017 |
-    sub     $i24, 2, $i24               # |    191,017 |    191,017 |
-    b       iter_trace_diffuse_rays.2929# |    191,017 |    191,017 |
-ble_else.32874:
-    fmul    $f1, $fc2, $f14             # |    174,719 |    174,719 |
-    add     $i24, 1, $i1                # |    174,719 |    174,719 |
-    load    [$i22 + $i1], $i21          # |    174,719 |    174,719 |
-    jal     trace_diffuse_ray.2926, $ra4# |    174,719 |    174,719 |
-    sub     $i24, 2, $i24               # |    174,719 |    174,719 |
-    b       iter_trace_diffuse_rays.2929# |    174,719 |    174,719 |
-bge_else.32873:
-    jr      $ra5                        # |     15,571 |     15,571 |
-ble_else.32872:
-    fmul    $f1, $fc2, $f14             # |    176,753 |    176,753 |
-    add     $i24, 1, $i1                # |    176,753 |    176,753 |
-    load    [$i22 + $i1], $i21          # |    176,753 |    176,753 |
-    jal     trace_diffuse_ray.2926, $ra4# |    176,753 |    176,753 |
-    sub     $i24, 2, $i24               # |    176,753 |    176,753 |
-    bl      $i24, 0, bge_else.32875     # |    176,753 |    176,753 |
-bge_then.32875:
-    load    [$i22 + $i24], $i1          # |    173,722 |    173,722 |
-    load    [$i1 + 0], $i1              # |    173,722 |    173,722 |
-    load    [$i1 + 0], $f1              # |    173,722 |    173,722 |
-    load    [$i23 + 0], $f2             # |    173,722 |    173,722 |
-    fmul    $f1, $f2, $f1               # |    173,722 |    173,722 |
-    load    [$i1 + 1], $f2              # |    173,722 |    173,722 |
-    load    [$i23 + 1], $f3             # |    173,722 |    173,722 |
-    fmul    $f2, $f3, $f2               # |    173,722 |    173,722 |
-    fadd    $f1, $f2, $f1               # |    173,722 |    173,722 |
-    load    [$i1 + 2], $f2              # |    173,722 |    173,722 |
-    load    [$i23 + 2], $f3             # |    173,722 |    173,722 |
-    fmul    $f2, $f3, $f2               # |    173,722 |    173,722 |
-    fadd    $f1, $f2, $f1               # |    173,722 |    173,722 |
-    bg      $f0, $f1, ble_else.32876    # |    173,722 |    173,722 |
-ble_then.32876:
-    fmul    $f1, $fc1, $f14             # |     20,153 |     20,153 |
-    load    [$i22 + $i24], $i21         # |     20,153 |     20,153 |
-    jal     trace_diffuse_ray.2926, $ra4# |     20,153 |     20,153 |
-    sub     $i24, 2, $i24               # |     20,153 |     20,153 |
-    b       iter_trace_diffuse_rays.2929# |     20,153 |     20,153 |
-ble_else.32876:
-    fmul    $f1, $fc2, $f14             # |    153,569 |    153,569 |
-    add     $i24, 1, $i1                # |    153,569 |    153,569 |
-    load    [$i22 + $i1], $i21          # |    153,569 |    153,569 |
-    jal     trace_diffuse_ray.2926, $ra4# |    153,569 |    153,569 |
-    sub     $i24, 2, $i24               # |    153,569 |    153,569 |
-    b       iter_trace_diffuse_rays.2929# |    153,569 |    153,569 |
-bge_else.32875:
-    jr      $ra5                        # |      3,031 |      3,031 |
-bge_else.32871:
+    bg      $f0, $f1, ble_else.22230    # |    558,060 |    558,060 |
+ble_then.22230:
+    fmul    $f1, $fc1, $f14             # |    381,373 |    381,373 |
+    load    [$i20 + $i22], $i19         # |    381,373 |    381,373 |
+    jal     trace_diffuse_ray.2926, $ra4# |    381,373 |    381,373 |
+    sub     $i22, 2, $i22               # |    381,373 |    381,373 |
+    bl      $i22, 0, bge_else.22231     # |    381,373 |    381,373 |
+bge_then.22231:
+    load    [$i20 + $i22], $i1          # |    365,799 |    365,799 |
+    load    [$i1 + 0], $i1              # |    365,799 |    365,799 |
+    load    [$i1 + 0], $f1              # |    365,799 |    365,799 |
+    load    [$i21 + 0], $f2             # |    365,799 |    365,799 |
+    fmul    $f1, $f2, $f1               # |    365,799 |    365,799 |
+    load    [$i1 + 1], $f2              # |    365,799 |    365,799 |
+    load    [$i21 + 1], $f3             # |    365,799 |    365,799 |
+    fmul    $f2, $f3, $f2               # |    365,799 |    365,799 |
+    fadd    $f1, $f2, $f1               # |    365,799 |    365,799 |
+    load    [$i1 + 2], $f2              # |    365,799 |    365,799 |
+    load    [$i21 + 2], $f3             # |    365,799 |    365,799 |
+    fmul    $f2, $f3, $f2               # |    365,799 |    365,799 |
+    fadd    $f1, $f2, $f1               # |    365,799 |    365,799 |
+    bg      $f0, $f1, ble_else.22232    # |    365,799 |    365,799 |
+ble_then.22232:
+    fmul    $f1, $fc1, $f14             # |    191,106 |    191,106 |
+    load    [$i20 + $i22], $i19         # |    191,106 |    191,106 |
+    jal     trace_diffuse_ray.2926, $ra4# |    191,106 |    191,106 |
+    sub     $i22, 2, $i22               # |    191,106 |    191,106 |
+    b       iter_trace_diffuse_rays.2929# |    191,106 |    191,106 |
+ble_else.22232:
+    fmul    $f1, $fc2, $f14             # |    174,693 |    174,693 |
+    add     $i22, 1, $i1                # |    174,693 |    174,693 |
+    load    [$i20 + $i1], $i19          # |    174,693 |    174,693 |
+    jal     trace_diffuse_ray.2926, $ra4# |    174,693 |    174,693 |
+    sub     $i22, 2, $i22               # |    174,693 |    174,693 |
+    b       iter_trace_diffuse_rays.2929# |    174,693 |    174,693 |
+bge_else.22231:
+    jr      $ra5                        # |     15,574 |     15,574 |
+ble_else.22230:
+    fmul    $f1, $fc2, $f14             # |    176,687 |    176,687 |
+    add     $i22, 1, $i1                # |    176,687 |    176,687 |
+    load    [$i20 + $i1], $i19          # |    176,687 |    176,687 |
+    jal     trace_diffuse_ray.2926, $ra4# |    176,687 |    176,687 |
+    sub     $i22, 2, $i22               # |    176,687 |    176,687 |
+    bl      $i22, 0, bge_else.22233     # |    176,687 |    176,687 |
+bge_then.22233:
+    load    [$i20 + $i22], $i1          # |    173,659 |    173,659 |
+    load    [$i1 + 0], $i1              # |    173,659 |    173,659 |
+    load    [$i1 + 0], $f1              # |    173,659 |    173,659 |
+    load    [$i21 + 0], $f2             # |    173,659 |    173,659 |
+    fmul    $f1, $f2, $f1               # |    173,659 |    173,659 |
+    load    [$i1 + 1], $f2              # |    173,659 |    173,659 |
+    load    [$i21 + 1], $f3             # |    173,659 |    173,659 |
+    fmul    $f2, $f3, $f2               # |    173,659 |    173,659 |
+    fadd    $f1, $f2, $f1               # |    173,659 |    173,659 |
+    load    [$i1 + 2], $f2              # |    173,659 |    173,659 |
+    load    [$i21 + 2], $f3             # |    173,659 |    173,659 |
+    fmul    $f2, $f3, $f2               # |    173,659 |    173,659 |
+    fadd    $f1, $f2, $f1               # |    173,659 |    173,659 |
+    bg      $f0, $f1, ble_else.22234    # |    173,659 |    173,659 |
+ble_then.22234:
+    fmul    $f1, $fc1, $f14             # |     20,160 |     20,160 |
+    load    [$i20 + $i22], $i19         # |     20,160 |     20,160 |
+    jal     trace_diffuse_ray.2926, $ra4# |     20,160 |     20,160 |
+    sub     $i22, 2, $i22               # |     20,160 |     20,160 |
+    b       iter_trace_diffuse_rays.2929# |     20,160 |     20,160 |
+ble_else.22234:
+    fmul    $f1, $fc2, $f14             # |    153,499 |    153,499 |
+    add     $i22, 1, $i1                # |    153,499 |    153,499 |
+    load    [$i20 + $i1], $i19          # |    153,499 |    153,499 |
+    jal     trace_diffuse_ray.2926, $ra4# |    153,499 |    153,499 |
+    sub     $i22, 2, $i22               # |    153,499 |    153,499 |
+    b       iter_trace_diffuse_rays.2929# |    153,499 |    153,499 |
+bge_else.22233:
+    jr      $ra5                        # |      3,028 |      3,028 |
+bge_else.22229:
     jr      $ra5
 .end iter_trace_diffuse_rays
 
 ######################################################################
-# calc_diffuse_using_1point($i25, $i26)
+# calc_diffuse_using_1point($i23, $i24)
 # $ra = $ra6
-# [$i1 - $i29]
+# [$i1 - $i27]
 # [$f1 - $f14]
 # [$ig2 - $ig3]
 # [$fg0 - $fg11, $fg15 - $fg16]
+# [$ra - $ra5]
 ######################################################################
 .begin calc_diffuse_using_1point
 calc_diffuse_using_1point.2942:
-    load    [$i25 + 5], $i1             # |      1,737 |      1,737 |
-    load    [$i1 + $i26], $i1           # |      1,737 |      1,737 |
+    load    [$i23 + 5], $i1             # |      1,737 |      1,737 |
+    load    [$i1 + $i24], $i1           # |      1,737 |      1,737 |
     load    [$i1 + 0], $fg1             # |      1,737 |      1,737 |
     load    [$i1 + 1], $fg2             # |      1,737 |      1,737 |
     load    [$i1 + 2], $fg3             # |      1,737 |      1,737 |
-    load    [$i25 + 7], $i1             # |      1,737 |      1,737 |
-    load    [$i25 + 1], $i2             # |      1,737 |      1,737 |
-    load    [$i25 + 6], $i3             # |      1,737 |      1,737 |
-    load    [$i1 + $i26], $i27          # |      1,737 |      1,737 |
-    load    [$i2 + $i26], $i28          # |      1,737 |      1,737 |
-    load    [$i3 + 0], $i29             # |      1,737 |      1,737 |
-    be      $i29, 0, bne_cont.32877     # |      1,737 |      1,737 |
-bne_then.32877:
-    load    [ext_dirvecs + 0], $i22     # |      1,389 |      1,389 |
-    load    [$i28 + 0], $fg8            # |      1,389 |      1,389 |
-    load    [$i28 + 1], $fg9            # |      1,389 |      1,389 |
-    load    [$i28 + 2], $fg10           # |      1,389 |      1,389 |
+    load    [$i23 + 7], $i1             # |      1,737 |      1,737 |
+    load    [$i23 + 1], $i2             # |      1,737 |      1,737 |
+    load    [$i23 + 6], $i3             # |      1,737 |      1,737 |
+    load    [$i1 + $i24], $i25          # |      1,737 |      1,737 |
+    load    [$i2 + $i24], $i26          # |      1,737 |      1,737 |
+    load    [$i3 + 0], $i27             # |      1,737 |      1,737 |
+    be      $i27, 0, bne_cont.22235     # |      1,737 |      1,737 |
+bne_then.22235:
+    load    [ext_dirvecs + 0], $i20     # |      1,389 |      1,389 |
+    load    [$i26 + 0], $fg8            # |      1,389 |      1,389 |
+    load    [$i26 + 1], $fg9            # |      1,389 |      1,389 |
+    load    [$i26 + 2], $fg10           # |      1,389 |      1,389 |
     sub     $ig0, 1, $i1                # |      1,389 |      1,389 |
 .count move_args
-    mov     $i28, $i2                   # |      1,389 |      1,389 |
+    mov     $i26, $i2                   # |      1,389 |      1,389 |
     call    setup_startp_constants.2831 # |      1,389 |      1,389 |
-    load    [$i22 + 118], $i1           # |      1,389 |      1,389 |
+    load    [$i20 + 118], $i1           # |      1,389 |      1,389 |
     load    [$i1 + 0], $i1              # |      1,389 |      1,389 |
     load    [$i1 + 0], $f1              # |      1,389 |      1,389 |
-    load    [$i27 + 0], $f2             # |      1,389 |      1,389 |
+    load    [$i25 + 0], $f2             # |      1,389 |      1,389 |
     fmul    $f1, $f2, $f1               # |      1,389 |      1,389 |
     load    [$i1 + 1], $f2              # |      1,389 |      1,389 |
-    load    [$i27 + 1], $f3             # |      1,389 |      1,389 |
+    load    [$i25 + 1], $f3             # |      1,389 |      1,389 |
     fmul    $f2, $f3, $f2               # |      1,389 |      1,389 |
     fadd    $f1, $f2, $f1               # |      1,389 |      1,389 |
     load    [$i1 + 2], $f2              # |      1,389 |      1,389 |
-    load    [$i27 + 2], $f3             # |      1,389 |      1,389 |
+    load    [$i25 + 2], $f3             # |      1,389 |      1,389 |
     fmul    $f2, $f3, $f2               # |      1,389 |      1,389 |
     fadd    $f1, $f2, $f1               # |      1,389 |      1,389 |
-    bg      $f0, $f1, ble_else.32878    # |      1,389 |      1,389 |
-ble_then.32878:
-    load    [$i22 + 118], $i21          # |         89 |         89 |
-    fmul    $f1, $fc1, $f14             # |         89 |         89 |
-    jal     trace_diffuse_ray.2926, $ra4# |         89 |         89 |
-    li      116, $i24                   # |         89 |         89 |
+    bg      $f0, $f1, ble_else.22236    # |      1,389 |      1,389 |
+ble_then.22236:
+    load    [$i20 + 118], $i19          # |         90 |         90 |
+    fmul    $f1, $fc1, $f14             # |         90 |         90 |
+    jal     trace_diffuse_ray.2926, $ra4# |         90 |         90 |
+    li      116, $i22                   # |         90 |         90 |
 .count move_args
-    mov     $i27, $i23                  # |         89 |         89 |
-    jal     iter_trace_diffuse_rays.2929, $ra5# |         89 |         89 |
+    mov     $i25, $i21                  # |         90 |         90 |
+    jal     iter_trace_diffuse_rays.2929, $ra5# |         90 |         90 |
 .count b_cont
-    b       ble_cont.32878              # |         89 |         89 |
-ble_else.32878:
-    load    [$i22 + 119], $i21          # |      1,300 |      1,300 |
-    fmul    $f1, $fc2, $f14             # |      1,300 |      1,300 |
-    jal     trace_diffuse_ray.2926, $ra4# |      1,300 |      1,300 |
-    li      116, $i24                   # |      1,300 |      1,300 |
+    b       ble_cont.22236              # |         90 |         90 |
+ble_else.22236:
+    load    [$i20 + 119], $i19          # |      1,299 |      1,299 |
+    fmul    $f1, $fc2, $f14             # |      1,299 |      1,299 |
+    jal     trace_diffuse_ray.2926, $ra4# |      1,299 |      1,299 |
+    li      116, $i22                   # |      1,299 |      1,299 |
 .count move_args
-    mov     $i27, $i23                  # |      1,300 |      1,300 |
-    jal     iter_trace_diffuse_rays.2929, $ra5# |      1,300 |      1,300 |
-ble_cont.32878:
-bne_cont.32877:
-    be      $i29, 1, bne_cont.32879     # |      1,737 |      1,737 |
-bne_then.32879:
-    load    [ext_dirvecs + 1], $i22     # |      1,389 |      1,389 |
-    load    [$i28 + 0], $fg8            # |      1,389 |      1,389 |
-    load    [$i28 + 1], $fg9            # |      1,389 |      1,389 |
-    load    [$i28 + 2], $fg10           # |      1,389 |      1,389 |
+    mov     $i25, $i21                  # |      1,299 |      1,299 |
+    jal     iter_trace_diffuse_rays.2929, $ra5# |      1,299 |      1,299 |
+ble_cont.22236:
+bne_cont.22235:
+    be      $i27, 1, bne_cont.22237     # |      1,737 |      1,737 |
+bne_then.22237:
+    load    [ext_dirvecs + 1], $i20     # |      1,389 |      1,389 |
+    load    [$i26 + 0], $fg8            # |      1,389 |      1,389 |
+    load    [$i26 + 1], $fg9            # |      1,389 |      1,389 |
+    load    [$i26 + 2], $fg10           # |      1,389 |      1,389 |
     sub     $ig0, 1, $i1                # |      1,389 |      1,389 |
 .count move_args
-    mov     $i28, $i2                   # |      1,389 |      1,389 |
+    mov     $i26, $i2                   # |      1,389 |      1,389 |
     call    setup_startp_constants.2831 # |      1,389 |      1,389 |
-    load    [$i22 + 118], $i1           # |      1,389 |      1,389 |
+    load    [$i20 + 118], $i1           # |      1,389 |      1,389 |
     load    [$i1 + 0], $i1              # |      1,389 |      1,389 |
     load    [$i1 + 0], $f1              # |      1,389 |      1,389 |
-    load    [$i27 + 0], $f2             # |      1,389 |      1,389 |
+    load    [$i25 + 0], $f2             # |      1,389 |      1,389 |
     fmul    $f1, $f2, $f1               # |      1,389 |      1,389 |
     load    [$i1 + 1], $f2              # |      1,389 |      1,389 |
-    load    [$i27 + 1], $f3             # |      1,389 |      1,389 |
+    load    [$i25 + 1], $f3             # |      1,389 |      1,389 |
     fmul    $f2, $f3, $f2               # |      1,389 |      1,389 |
     fadd    $f1, $f2, $f1               # |      1,389 |      1,389 |
     load    [$i1 + 2], $f2              # |      1,389 |      1,389 |
-    load    [$i27 + 2], $f3             # |      1,389 |      1,389 |
+    load    [$i25 + 2], $f3             # |      1,389 |      1,389 |
     fmul    $f2, $f3, $f2               # |      1,389 |      1,389 |
     fadd    $f1, $f2, $f1               # |      1,389 |      1,389 |
-    bg      $f0, $f1, ble_else.32880    # |      1,389 |      1,389 |
-ble_then.32880:
-    load    [$i22 + 118], $i21          # |         96 |         96 |
+    bg      $f0, $f1, ble_else.22238    # |      1,389 |      1,389 |
+ble_then.22238:
+    load    [$i20 + 118], $i19          # |         96 |         96 |
     fmul    $f1, $fc1, $f14             # |         96 |         96 |
     jal     trace_diffuse_ray.2926, $ra4# |         96 |         96 |
-    li      116, $i24                   # |         96 |         96 |
+    li      116, $i22                   # |         96 |         96 |
 .count move_args
-    mov     $i27, $i23                  # |         96 |         96 |
+    mov     $i25, $i21                  # |         96 |         96 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |         96 |         96 |
 .count b_cont
-    b       ble_cont.32880              # |         96 |         96 |
-ble_else.32880:
-    load    [$i22 + 119], $i21          # |      1,293 |      1,293 |
+    b       ble_cont.22238              # |         96 |         96 |
+ble_else.22238:
+    load    [$i20 + 119], $i19          # |      1,293 |      1,293 |
     fmul    $f1, $fc2, $f14             # |      1,293 |      1,293 |
     jal     trace_diffuse_ray.2926, $ra4# |      1,293 |      1,293 |
-    li      116, $i24                   # |      1,293 |      1,293 |
+    li      116, $i22                   # |      1,293 |      1,293 |
 .count move_args
-    mov     $i27, $i23                  # |      1,293 |      1,293 |
+    mov     $i25, $i21                  # |      1,293 |      1,293 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |      1,293 |      1,293 |
-ble_cont.32880:
-bne_cont.32879:
-    be      $i29, 2, bne_cont.32881     # |      1,737 |      1,737 |
-bne_then.32881:
-    load    [ext_dirvecs + 2], $i22     # |      1,400 |      1,400 |
-    load    [$i28 + 0], $fg8            # |      1,400 |      1,400 |
-    load    [$i28 + 1], $fg9            # |      1,400 |      1,400 |
-    load    [$i28 + 2], $fg10           # |      1,400 |      1,400 |
+ble_cont.22238:
+bne_cont.22237:
+    be      $i27, 2, bne_cont.22239     # |      1,737 |      1,737 |
+bne_then.22239:
+    load    [ext_dirvecs + 2], $i20     # |      1,400 |      1,400 |
+    load    [$i26 + 0], $fg8            # |      1,400 |      1,400 |
+    load    [$i26 + 1], $fg9            # |      1,400 |      1,400 |
+    load    [$i26 + 2], $fg10           # |      1,400 |      1,400 |
     sub     $ig0, 1, $i1                # |      1,400 |      1,400 |
 .count move_args
-    mov     $i28, $i2                   # |      1,400 |      1,400 |
+    mov     $i26, $i2                   # |      1,400 |      1,400 |
     call    setup_startp_constants.2831 # |      1,400 |      1,400 |
-    load    [$i22 + 118], $i1           # |      1,400 |      1,400 |
+    load    [$i20 + 118], $i1           # |      1,400 |      1,400 |
     load    [$i1 + 0], $i1              # |      1,400 |      1,400 |
     load    [$i1 + 0], $f1              # |      1,400 |      1,400 |
-    load    [$i27 + 0], $f2             # |      1,400 |      1,400 |
+    load    [$i25 + 0], $f2             # |      1,400 |      1,400 |
     fmul    $f1, $f2, $f1               # |      1,400 |      1,400 |
     load    [$i1 + 1], $f2              # |      1,400 |      1,400 |
-    load    [$i27 + 1], $f3             # |      1,400 |      1,400 |
+    load    [$i25 + 1], $f3             # |      1,400 |      1,400 |
     fmul    $f2, $f3, $f2               # |      1,400 |      1,400 |
     fadd    $f1, $f2, $f1               # |      1,400 |      1,400 |
     load    [$i1 + 2], $f2              # |      1,400 |      1,400 |
-    load    [$i27 + 2], $f3             # |      1,400 |      1,400 |
+    load    [$i25 + 2], $f3             # |      1,400 |      1,400 |
     fmul    $f2, $f3, $f2               # |      1,400 |      1,400 |
     fadd    $f1, $f2, $f1               # |      1,400 |      1,400 |
-    bg      $f0, $f1, ble_else.32882    # |      1,400 |      1,400 |
-ble_then.32882:
-    load    [$i22 + 118], $i21          # |        125 |        125 |
-    fmul    $f1, $fc1, $f14             # |        125 |        125 |
-    jal     trace_diffuse_ray.2926, $ra4# |        125 |        125 |
-    li      116, $i24                   # |        125 |        125 |
+    bg      $f0, $f1, ble_else.22240    # |      1,400 |      1,400 |
+ble_then.22240:
+    load    [$i20 + 118], $i19          # |        126 |        126 |
+    fmul    $f1, $fc1, $f14             # |        126 |        126 |
+    jal     trace_diffuse_ray.2926, $ra4# |        126 |        126 |
+    li      116, $i22                   # |        126 |        126 |
 .count move_args
-    mov     $i27, $i23                  # |        125 |        125 |
-    jal     iter_trace_diffuse_rays.2929, $ra5# |        125 |        125 |
+    mov     $i25, $i21                  # |        126 |        126 |
+    jal     iter_trace_diffuse_rays.2929, $ra5# |        126 |        126 |
 .count b_cont
-    b       ble_cont.32882              # |        125 |        125 |
-ble_else.32882:
-    load    [$i22 + 119], $i21          # |      1,275 |      1,275 |
-    fmul    $f1, $fc2, $f14             # |      1,275 |      1,275 |
-    jal     trace_diffuse_ray.2926, $ra4# |      1,275 |      1,275 |
-    li      116, $i24                   # |      1,275 |      1,275 |
+    b       ble_cont.22240              # |        126 |        126 |
+ble_else.22240:
+    load    [$i20 + 119], $i19          # |      1,274 |      1,274 |
+    fmul    $f1, $fc2, $f14             # |      1,274 |      1,274 |
+    jal     trace_diffuse_ray.2926, $ra4# |      1,274 |      1,274 |
+    li      116, $i22                   # |      1,274 |      1,274 |
 .count move_args
-    mov     $i27, $i23                  # |      1,275 |      1,275 |
-    jal     iter_trace_diffuse_rays.2929, $ra5# |      1,275 |      1,275 |
-ble_cont.32882:
-bne_cont.32881:
-    be      $i29, 3, bne_cont.32883     # |      1,737 |      1,737 |
-bne_then.32883:
-    load    [ext_dirvecs + 3], $i22     # |      1,385 |      1,385 |
-    load    [$i28 + 0], $fg8            # |      1,385 |      1,385 |
-    load    [$i28 + 1], $fg9            # |      1,385 |      1,385 |
-    load    [$i28 + 2], $fg10           # |      1,385 |      1,385 |
+    mov     $i25, $i21                  # |      1,274 |      1,274 |
+    jal     iter_trace_diffuse_rays.2929, $ra5# |      1,274 |      1,274 |
+ble_cont.22240:
+bne_cont.22239:
+    be      $i27, 3, bne_cont.22241     # |      1,737 |      1,737 |
+bne_then.22241:
+    load    [ext_dirvecs + 3], $i20     # |      1,385 |      1,385 |
+    load    [$i26 + 0], $fg8            # |      1,385 |      1,385 |
+    load    [$i26 + 1], $fg9            # |      1,385 |      1,385 |
+    load    [$i26 + 2], $fg10           # |      1,385 |      1,385 |
     sub     $ig0, 1, $i1                # |      1,385 |      1,385 |
 .count move_args
-    mov     $i28, $i2                   # |      1,385 |      1,385 |
+    mov     $i26, $i2                   # |      1,385 |      1,385 |
     call    setup_startp_constants.2831 # |      1,385 |      1,385 |
-    load    [$i22 + 118], $i1           # |      1,385 |      1,385 |
+    load    [$i20 + 118], $i1           # |      1,385 |      1,385 |
     load    [$i1 + 0], $i1              # |      1,385 |      1,385 |
     load    [$i1 + 0], $f1              # |      1,385 |      1,385 |
-    load    [$i27 + 0], $f2             # |      1,385 |      1,385 |
+    load    [$i25 + 0], $f2             # |      1,385 |      1,385 |
     fmul    $f1, $f2, $f1               # |      1,385 |      1,385 |
     load    [$i1 + 1], $f2              # |      1,385 |      1,385 |
-    load    [$i27 + 1], $f3             # |      1,385 |      1,385 |
+    load    [$i25 + 1], $f3             # |      1,385 |      1,385 |
     fmul    $f2, $f3, $f2               # |      1,385 |      1,385 |
     fadd    $f1, $f2, $f1               # |      1,385 |      1,385 |
     load    [$i1 + 2], $f2              # |      1,385 |      1,385 |
-    load    [$i27 + 2], $f3             # |      1,385 |      1,385 |
+    load    [$i25 + 2], $f3             # |      1,385 |      1,385 |
     fmul    $f2, $f3, $f2               # |      1,385 |      1,385 |
     fadd    $f1, $f2, $f1               # |      1,385 |      1,385 |
-    bg      $f0, $f1, ble_else.32884    # |      1,385 |      1,385 |
-ble_then.32884:
-    load    [$i22 + 118], $i21          # |        114 |        114 |
-    fmul    $f1, $fc1, $f14             # |        114 |        114 |
-    jal     trace_diffuse_ray.2926, $ra4# |        114 |        114 |
-    li      116, $i24                   # |        114 |        114 |
+    bg      $f0, $f1, ble_else.22242    # |      1,385 |      1,385 |
+ble_then.22242:
+    load    [$i20 + 118], $i19          # |        115 |        115 |
+    fmul    $f1, $fc1, $f14             # |        115 |        115 |
+    jal     trace_diffuse_ray.2926, $ra4# |        115 |        115 |
+    li      116, $i22                   # |        115 |        115 |
 .count move_args
-    mov     $i27, $i23                  # |        114 |        114 |
-    jal     iter_trace_diffuse_rays.2929, $ra5# |        114 |        114 |
+    mov     $i25, $i21                  # |        115 |        115 |
+    jal     iter_trace_diffuse_rays.2929, $ra5# |        115 |        115 |
 .count b_cont
-    b       ble_cont.32884              # |        114 |        114 |
-ble_else.32884:
-    load    [$i22 + 119], $i21          # |      1,271 |      1,271 |
-    fmul    $f1, $fc2, $f14             # |      1,271 |      1,271 |
-    jal     trace_diffuse_ray.2926, $ra4# |      1,271 |      1,271 |
-    li      116, $i24                   # |      1,271 |      1,271 |
+    b       ble_cont.22242              # |        115 |        115 |
+ble_else.22242:
+    load    [$i20 + 119], $i19          # |      1,270 |      1,270 |
+    fmul    $f1, $fc2, $f14             # |      1,270 |      1,270 |
+    jal     trace_diffuse_ray.2926, $ra4# |      1,270 |      1,270 |
+    li      116, $i22                   # |      1,270 |      1,270 |
 .count move_args
-    mov     $i27, $i23                  # |      1,271 |      1,271 |
-    jal     iter_trace_diffuse_rays.2929, $ra5# |      1,271 |      1,271 |
-ble_cont.32884:
-bne_cont.32883:
-    be      $i29, 4, bne_cont.32885     # |      1,737 |      1,737 |
-bne_then.32885:
-    load    [ext_dirvecs + 4], $i22     # |      1,385 |      1,385 |
-    load    [$i28 + 0], $fg8            # |      1,385 |      1,385 |
-    load    [$i28 + 1], $fg9            # |      1,385 |      1,385 |
-    load    [$i28 + 2], $fg10           # |      1,385 |      1,385 |
+    mov     $i25, $i21                  # |      1,270 |      1,270 |
+    jal     iter_trace_diffuse_rays.2929, $ra5# |      1,270 |      1,270 |
+ble_cont.22242:
+bne_cont.22241:
+    be      $i27, 4, bne_cont.22243     # |      1,737 |      1,737 |
+bne_then.22243:
+    load    [ext_dirvecs + 4], $i20     # |      1,385 |      1,385 |
+    load    [$i26 + 0], $fg8            # |      1,385 |      1,385 |
+    load    [$i26 + 1], $fg9            # |      1,385 |      1,385 |
+    load    [$i26 + 2], $fg10           # |      1,385 |      1,385 |
     sub     $ig0, 1, $i1                # |      1,385 |      1,385 |
 .count move_args
-    mov     $i28, $i2                   # |      1,385 |      1,385 |
+    mov     $i26, $i2                   # |      1,385 |      1,385 |
     call    setup_startp_constants.2831 # |      1,385 |      1,385 |
-    load    [$i22 + 118], $i1           # |      1,385 |      1,385 |
+    load    [$i20 + 118], $i1           # |      1,385 |      1,385 |
     load    [$i1 + 0], $i1              # |      1,385 |      1,385 |
     load    [$i1 + 0], $f1              # |      1,385 |      1,385 |
-    load    [$i27 + 0], $f2             # |      1,385 |      1,385 |
+    load    [$i25 + 0], $f2             # |      1,385 |      1,385 |
     fmul    $f1, $f2, $f1               # |      1,385 |      1,385 |
     load    [$i1 + 1], $f2              # |      1,385 |      1,385 |
-    load    [$i27 + 1], $f3             # |      1,385 |      1,385 |
+    load    [$i25 + 1], $f3             # |      1,385 |      1,385 |
     fmul    $f2, $f3, $f2               # |      1,385 |      1,385 |
     fadd    $f1, $f2, $f1               # |      1,385 |      1,385 |
     load    [$i1 + 2], $f2              # |      1,385 |      1,385 |
-    load    [$i27 + 2], $f3             # |      1,385 |      1,385 |
+    load    [$i25 + 2], $f3             # |      1,385 |      1,385 |
     fmul    $f2, $f3, $f2               # |      1,385 |      1,385 |
     fadd    $f1, $f2, $f1               # |      1,385 |      1,385 |
-    bg      $f0, $f1, ble_else.32886    # |      1,385 |      1,385 |
-ble_then.32886:
-    load    [$i22 + 118], $i21          # |         97 |         97 |
-    fmul    $f1, $fc1, $f14             # |         97 |         97 |
-    jal     trace_diffuse_ray.2926, $ra4# |         97 |         97 |
-    li      116, $i24                   # |         97 |         97 |
+    bg      $f0, $f1, ble_else.22244    # |      1,385 |      1,385 |
+ble_then.22244:
+    load    [$i20 + 118], $i19          # |         98 |         98 |
+    fmul    $f1, $fc1, $f14             # |         98 |         98 |
+    jal     trace_diffuse_ray.2926, $ra4# |         98 |         98 |
+    li      116, $i22                   # |         98 |         98 |
 .count move_args
-    mov     $i27, $i23                  # |         97 |         97 |
-    jal     iter_trace_diffuse_rays.2929, $ra5# |         97 |         97 |
+    mov     $i25, $i21                  # |         98 |         98 |
+    jal     iter_trace_diffuse_rays.2929, $ra5# |         98 |         98 |
 .count b_cont
-    b       ble_cont.32886              # |         97 |         97 |
-ble_else.32886:
-    load    [$i22 + 119], $i21          # |      1,288 |      1,288 |
-    fmul    $f1, $fc2, $f14             # |      1,288 |      1,288 |
-    jal     trace_diffuse_ray.2926, $ra4# |      1,288 |      1,288 |
-    li      116, $i24                   # |      1,288 |      1,288 |
+    b       ble_cont.22244              # |         98 |         98 |
+ble_else.22244:
+    load    [$i20 + 119], $i19          # |      1,287 |      1,287 |
+    fmul    $f1, $fc2, $f14             # |      1,287 |      1,287 |
+    jal     trace_diffuse_ray.2926, $ra4# |      1,287 |      1,287 |
+    li      116, $i22                   # |      1,287 |      1,287 |
 .count move_args
-    mov     $i27, $i23                  # |      1,288 |      1,288 |
-    jal     iter_trace_diffuse_rays.2929, $ra5# |      1,288 |      1,288 |
-ble_cont.32886:
-bne_cont.32885:
-    load    [$i25 + 4], $i1             # |      1,737 |      1,737 |
-    load    [$i1 + $i26], $i1           # |      1,737 |      1,737 |
+    mov     $i25, $i21                  # |      1,287 |      1,287 |
+    jal     iter_trace_diffuse_rays.2929, $ra5# |      1,287 |      1,287 |
+ble_cont.22244:
+bne_cont.22243:
+    load    [$i23 + 4], $i1             # |      1,737 |      1,737 |
+    load    [$i1 + $i24], $i1           # |      1,737 |      1,737 |
     load    [$i1 + 0], $f1              # |      1,737 |      1,737 |
     fmul    $f1, $fg1, $f1              # |      1,737 |      1,737 |
     fadd    $fg4, $f1, $fg4             # |      1,737 |      1,737 |
@@ -8668,282 +7958,283 @@ bne_cont.32885:
 .end calc_diffuse_using_1point
 
 ######################################################################
-# do_without_neighbors($i30, $i25)
+# do_without_neighbors($i28, $i23)
 # $ra = $ra7
-# [$i1 - $i31]
+# [$i1 - $i29]
 # [$f1 - $f14]
 # [$ig2 - $ig3]
 # [$fg0 - $fg11, $fg15 - $fg16]
+# [$ra - $ra6]
 ######################################################################
 .begin do_without_neighbors
 do_without_neighbors.2951:
-    bg      $i25, 4, ble_else.32887     # |      2,430 |      2,430 |
-ble_then.32887:
-    load    [$i30 + 2], $i26            # |      2,430 |      2,430 |
-    load    [$i26 + $i25], $i1          # |      2,430 |      2,430 |
-    bl      $i1, 0, bge_else.32888      # |      2,430 |      2,430 |
-bge_then.32888:
-    load    [$i30 + 3], $i27            # |        143 |        143 |
-    load    [$i27 + $i25], $i1          # |        143 |        143 |
-    bne     $i1, 0, be_else.32889       # |        143 |        143 |
-be_then.32889:
-    add     $i25, 1, $i31               # |         11 |         11 |
-    bg      $i31, 4, ble_else.32890     # |         11 |         11 |
-ble_then.32890:
-    load    [$i26 + $i31], $i1          # |         11 |         11 |
-    bl      $i1, 0, bge_else.32891      # |         11 |         11 |
-bge_then.32891:
-    load    [$i27 + $i31], $i1          # |          1 |          1 |
-    bne     $i1, 0, be_else.32892       # |          1 |          1 |
-be_then.32892:
-    add     $i31, 1, $i25
+    bg      $i23, 4, ble_else.22245     # |      2,430 |      2,430 |
+ble_then.22245:
+    load    [$i28 + 2], $i24            # |      2,430 |      2,430 |
+    load    [$i24 + $i23], $i1          # |      2,430 |      2,430 |
+    bl      $i1, 0, bge_else.22246      # |      2,430 |      2,430 |
+bge_then.22246:
+    load    [$i28 + 3], $i25            # |        143 |        143 |
+    load    [$i25 + $i23], $i1          # |        143 |        143 |
+    bne     $i1, 0, be_else.22247       # |        143 |        143 |
+be_then.22247:
+    add     $i23, 1, $i29               # |         11 |         11 |
+    bg      $i29, 4, ble_else.22248     # |         11 |         11 |
+ble_then.22248:
+    load    [$i24 + $i29], $i1          # |         11 |         11 |
+    bl      $i1, 0, bge_else.22249      # |         11 |         11 |
+bge_then.22249:
+    load    [$i25 + $i29], $i1          # |          1 |          1 |
+    bne     $i1, 0, be_else.22250       # |          1 |          1 |
+be_then.22250:
+    add     $i29, 1, $i23
     b       do_without_neighbors.2951
-be_else.32892:
+be_else.22250:
 .count move_args
-    mov     $i30, $i25                  # |          1 |          1 |
+    mov     $i28, $i23                  # |          1 |          1 |
 .count move_args
-    mov     $i31, $i26                  # |          1 |          1 |
+    mov     $i29, $i24                  # |          1 |          1 |
     jal     calc_diffuse_using_1point.2942, $ra6# |          1 |          1 |
-    add     $i31, 1, $i25               # |          1 |          1 |
+    add     $i29, 1, $i23               # |          1 |          1 |
     b       do_without_neighbors.2951   # |          1 |          1 |
-bge_else.32891:
+bge_else.22249:
     jr      $ra7                        # |         10 |         10 |
-ble_else.32890:
+ble_else.22248:
     jr      $ra7
-be_else.32889:
-    load    [$i30 + 5], $i1             # |        132 |        132 |
-    load    [$i1 + $i25], $i1           # |        132 |        132 |
+be_else.22247:
+    load    [$i28 + 5], $i1             # |        132 |        132 |
+    load    [$i1 + $i23], $i1           # |        132 |        132 |
     load    [$i1 + 0], $fg1             # |        132 |        132 |
     load    [$i1 + 1], $fg2             # |        132 |        132 |
     load    [$i1 + 2], $fg3             # |        132 |        132 |
-    load    [$i30 + 7], $i1             # |        132 |        132 |
-    load    [$i30 + 1], $i2             # |        132 |        132 |
-    load    [$i30 + 6], $i3             # |        132 |        132 |
-    load    [$i1 + $i25], $i28          # |        132 |        132 |
-    load    [$i2 + $i25], $i29          # |        132 |        132 |
-    load    [$i3 + 0], $i31             # |        132 |        132 |
-    be      $i31, 0, bne_cont.32893     # |        132 |        132 |
-bne_then.32893:
-    load    [ext_dirvecs + 0], $i22     # |        107 |        107 |
-    load    [$i29 + 0], $fg8            # |        107 |        107 |
-    load    [$i29 + 1], $fg9            # |        107 |        107 |
-    load    [$i29 + 2], $fg10           # |        107 |        107 |
+    load    [$i28 + 7], $i1             # |        132 |        132 |
+    load    [$i28 + 1], $i2             # |        132 |        132 |
+    load    [$i28 + 6], $i3             # |        132 |        132 |
+    load    [$i1 + $i23], $i26          # |        132 |        132 |
+    load    [$i2 + $i23], $i27          # |        132 |        132 |
+    load    [$i3 + 0], $i29             # |        132 |        132 |
+    be      $i29, 0, bne_cont.22251     # |        132 |        132 |
+bne_then.22251:
+    load    [ext_dirvecs + 0], $i20     # |        107 |        107 |
+    load    [$i27 + 0], $fg8            # |        107 |        107 |
+    load    [$i27 + 1], $fg9            # |        107 |        107 |
+    load    [$i27 + 2], $fg10           # |        107 |        107 |
     sub     $ig0, 1, $i1                # |        107 |        107 |
 .count move_args
-    mov     $i29, $i2                   # |        107 |        107 |
+    mov     $i27, $i2                   # |        107 |        107 |
     call    setup_startp_constants.2831 # |        107 |        107 |
-    load    [$i22 + 118], $i1           # |        107 |        107 |
+    load    [$i20 + 118], $i1           # |        107 |        107 |
     load    [$i1 + 0], $i1              # |        107 |        107 |
     load    [$i1 + 0], $f1              # |        107 |        107 |
-    load    [$i28 + 0], $f2             # |        107 |        107 |
+    load    [$i26 + 0], $f2             # |        107 |        107 |
     fmul    $f1, $f2, $f1               # |        107 |        107 |
     load    [$i1 + 1], $f2              # |        107 |        107 |
-    load    [$i28 + 1], $f3             # |        107 |        107 |
+    load    [$i26 + 1], $f3             # |        107 |        107 |
     fmul    $f2, $f3, $f2               # |        107 |        107 |
     fadd    $f1, $f2, $f1               # |        107 |        107 |
     load    [$i1 + 2], $f2              # |        107 |        107 |
-    load    [$i28 + 2], $f3             # |        107 |        107 |
+    load    [$i26 + 2], $f3             # |        107 |        107 |
     fmul    $f2, $f3, $f2               # |        107 |        107 |
     fadd    $f1, $f2, $f1               # |        107 |        107 |
-    bg      $f0, $f1, ble_else.32894    # |        107 |        107 |
-ble_then.32894:
+    bg      $f0, $f1, ble_else.22252    # |        107 |        107 |
+ble_then.22252:
     fmul    $f1, $fc1, $f14
-    load    [$i22 + 118], $i21
+    load    [$i20 + 118], $i19
     jal     trace_diffuse_ray.2926, $ra4
-    li      116, $i24
+    li      116, $i22
 .count move_args
-    mov     $i28, $i23
+    mov     $i26, $i21
     jal     iter_trace_diffuse_rays.2929, $ra5
 .count b_cont
-    b       ble_cont.32894
-ble_else.32894:
+    b       ble_cont.22252
+ble_else.22252:
     fmul    $f1, $fc2, $f14             # |        107 |        107 |
-    load    [$i22 + 119], $i21          # |        107 |        107 |
+    load    [$i20 + 119], $i19          # |        107 |        107 |
     jal     trace_diffuse_ray.2926, $ra4# |        107 |        107 |
-    li      116, $i24                   # |        107 |        107 |
+    li      116, $i22                   # |        107 |        107 |
 .count move_args
-    mov     $i28, $i23                  # |        107 |        107 |
+    mov     $i26, $i21                  # |        107 |        107 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |        107 |        107 |
-ble_cont.32894:
-bne_cont.32893:
-    be      $i31, 1, bne_cont.32895     # |        132 |        132 |
-bne_then.32895:
-    load    [ext_dirvecs + 1], $i22     # |        104 |        104 |
-    load    [$i29 + 0], $fg8            # |        104 |        104 |
-    load    [$i29 + 1], $fg9            # |        104 |        104 |
-    load    [$i29 + 2], $fg10           # |        104 |        104 |
+ble_cont.22252:
+bne_cont.22251:
+    be      $i29, 1, bne_cont.22253     # |        132 |        132 |
+bne_then.22253:
+    load    [ext_dirvecs + 1], $i20     # |        104 |        104 |
+    load    [$i27 + 0], $fg8            # |        104 |        104 |
+    load    [$i27 + 1], $fg9            # |        104 |        104 |
+    load    [$i27 + 2], $fg10           # |        104 |        104 |
     sub     $ig0, 1, $i1                # |        104 |        104 |
 .count move_args
-    mov     $i29, $i2                   # |        104 |        104 |
+    mov     $i27, $i2                   # |        104 |        104 |
     call    setup_startp_constants.2831 # |        104 |        104 |
-    load    [$i22 + 118], $i1           # |        104 |        104 |
+    load    [$i20 + 118], $i1           # |        104 |        104 |
     load    [$i1 + 0], $i1              # |        104 |        104 |
     load    [$i1 + 0], $f1              # |        104 |        104 |
-    load    [$i28 + 0], $f2             # |        104 |        104 |
+    load    [$i26 + 0], $f2             # |        104 |        104 |
     fmul    $f1, $f2, $f1               # |        104 |        104 |
     load    [$i1 + 1], $f2              # |        104 |        104 |
-    load    [$i28 + 1], $f3             # |        104 |        104 |
+    load    [$i26 + 1], $f3             # |        104 |        104 |
     fmul    $f2, $f3, $f2               # |        104 |        104 |
     fadd    $f1, $f2, $f1               # |        104 |        104 |
     load    [$i1 + 2], $f2              # |        104 |        104 |
-    load    [$i28 + 2], $f3             # |        104 |        104 |
+    load    [$i26 + 2], $f3             # |        104 |        104 |
     fmul    $f2, $f3, $f2               # |        104 |        104 |
     fadd    $f1, $f2, $f1               # |        104 |        104 |
-    bg      $f0, $f1, ble_else.32896    # |        104 |        104 |
-ble_then.32896:
+    bg      $f0, $f1, ble_else.22254    # |        104 |        104 |
+ble_then.22254:
     fmul    $f1, $fc1, $f14
-    load    [$i22 + 118], $i21
+    load    [$i20 + 118], $i19
     jal     trace_diffuse_ray.2926, $ra4
-    li      116, $i24
+    li      116, $i22
 .count move_args
-    mov     $i28, $i23
+    mov     $i26, $i21
     jal     iter_trace_diffuse_rays.2929, $ra5
 .count b_cont
-    b       ble_cont.32896
-ble_else.32896:
+    b       ble_cont.22254
+ble_else.22254:
     fmul    $f1, $fc2, $f14             # |        104 |        104 |
-    load    [$i22 + 119], $i21          # |        104 |        104 |
+    load    [$i20 + 119], $i19          # |        104 |        104 |
     jal     trace_diffuse_ray.2926, $ra4# |        104 |        104 |
-    li      116, $i24                   # |        104 |        104 |
+    li      116, $i22                   # |        104 |        104 |
 .count move_args
-    mov     $i28, $i23                  # |        104 |        104 |
+    mov     $i26, $i21                  # |        104 |        104 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |        104 |        104 |
-ble_cont.32896:
-bne_cont.32895:
-    be      $i31, 2, bne_cont.32897     # |        132 |        132 |
-bne_then.32897:
-    load    [ext_dirvecs + 2], $i22     # |        107 |        107 |
-    load    [$i29 + 0], $fg8            # |        107 |        107 |
-    load    [$i29 + 1], $fg9            # |        107 |        107 |
-    load    [$i29 + 2], $fg10           # |        107 |        107 |
+ble_cont.22254:
+bne_cont.22253:
+    be      $i29, 2, bne_cont.22255     # |        132 |        132 |
+bne_then.22255:
+    load    [ext_dirvecs + 2], $i20     # |        107 |        107 |
+    load    [$i27 + 0], $fg8            # |        107 |        107 |
+    load    [$i27 + 1], $fg9            # |        107 |        107 |
+    load    [$i27 + 2], $fg10           # |        107 |        107 |
     sub     $ig0, 1, $i1                # |        107 |        107 |
 .count move_args
-    mov     $i29, $i2                   # |        107 |        107 |
+    mov     $i27, $i2                   # |        107 |        107 |
     call    setup_startp_constants.2831 # |        107 |        107 |
-    load    [$i22 + 118], $i1           # |        107 |        107 |
+    load    [$i20 + 118], $i1           # |        107 |        107 |
     load    [$i1 + 0], $i1              # |        107 |        107 |
     load    [$i1 + 0], $f1              # |        107 |        107 |
-    load    [$i28 + 0], $f2             # |        107 |        107 |
+    load    [$i26 + 0], $f2             # |        107 |        107 |
     fmul    $f1, $f2, $f1               # |        107 |        107 |
     load    [$i1 + 1], $f2              # |        107 |        107 |
-    load    [$i28 + 1], $f3             # |        107 |        107 |
+    load    [$i26 + 1], $f3             # |        107 |        107 |
     fmul    $f2, $f3, $f2               # |        107 |        107 |
     fadd    $f1, $f2, $f1               # |        107 |        107 |
     load    [$i1 + 2], $f2              # |        107 |        107 |
-    load    [$i28 + 2], $f3             # |        107 |        107 |
+    load    [$i26 + 2], $f3             # |        107 |        107 |
     fmul    $f2, $f3, $f2               # |        107 |        107 |
     fadd    $f1, $f2, $f1               # |        107 |        107 |
-    bg      $f0, $f1, ble_else.32898    # |        107 |        107 |
-ble_then.32898:
+    bg      $f0, $f1, ble_else.22256    # |        107 |        107 |
+ble_then.22256:
     fmul    $f1, $fc1, $f14
-    load    [$i22 + 118], $i21
+    load    [$i20 + 118], $i19
     jal     trace_diffuse_ray.2926, $ra4
-    li      116, $i24
+    li      116, $i22
 .count move_args
-    mov     $i28, $i23
+    mov     $i26, $i21
     jal     iter_trace_diffuse_rays.2929, $ra5
 .count b_cont
-    b       ble_cont.32898
-ble_else.32898:
+    b       ble_cont.22256
+ble_else.22256:
     fmul    $f1, $fc2, $f14             # |        107 |        107 |
-    load    [$i22 + 119], $i21          # |        107 |        107 |
+    load    [$i20 + 119], $i19          # |        107 |        107 |
     jal     trace_diffuse_ray.2926, $ra4# |        107 |        107 |
-    li      116, $i24                   # |        107 |        107 |
+    li      116, $i22                   # |        107 |        107 |
 .count move_args
-    mov     $i28, $i23                  # |        107 |        107 |
+    mov     $i26, $i21                  # |        107 |        107 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |        107 |        107 |
-ble_cont.32898:
-bne_cont.32897:
-    be      $i31, 3, bne_cont.32899     # |        132 |        132 |
-bne_then.32899:
-    load    [ext_dirvecs + 3], $i22     # |        103 |        103 |
-    load    [$i29 + 0], $fg8            # |        103 |        103 |
-    load    [$i29 + 1], $fg9            # |        103 |        103 |
-    load    [$i29 + 2], $fg10           # |        103 |        103 |
+ble_cont.22256:
+bne_cont.22255:
+    be      $i29, 3, bne_cont.22257     # |        132 |        132 |
+bne_then.22257:
+    load    [ext_dirvecs + 3], $i20     # |        103 |        103 |
+    load    [$i27 + 0], $fg8            # |        103 |        103 |
+    load    [$i27 + 1], $fg9            # |        103 |        103 |
+    load    [$i27 + 2], $fg10           # |        103 |        103 |
     sub     $ig0, 1, $i1                # |        103 |        103 |
 .count move_args
-    mov     $i29, $i2                   # |        103 |        103 |
+    mov     $i27, $i2                   # |        103 |        103 |
     call    setup_startp_constants.2831 # |        103 |        103 |
-    load    [$i22 + 118], $i1           # |        103 |        103 |
+    load    [$i20 + 118], $i1           # |        103 |        103 |
     load    [$i1 + 0], $i1              # |        103 |        103 |
     load    [$i1 + 0], $f1              # |        103 |        103 |
-    load    [$i28 + 0], $f2             # |        103 |        103 |
+    load    [$i26 + 0], $f2             # |        103 |        103 |
     fmul    $f1, $f2, $f1               # |        103 |        103 |
     load    [$i1 + 1], $f2              # |        103 |        103 |
-    load    [$i28 + 1], $f3             # |        103 |        103 |
+    load    [$i26 + 1], $f3             # |        103 |        103 |
     fmul    $f2, $f3, $f2               # |        103 |        103 |
     fadd    $f1, $f2, $f1               # |        103 |        103 |
     load    [$i1 + 2], $f2              # |        103 |        103 |
-    load    [$i28 + 2], $f3             # |        103 |        103 |
+    load    [$i26 + 2], $f3             # |        103 |        103 |
     fmul    $f2, $f3, $f2               # |        103 |        103 |
     fadd    $f1, $f2, $f1               # |        103 |        103 |
-    bg      $f0, $f1, ble_else.32900    # |        103 |        103 |
-ble_then.32900:
+    bg      $f0, $f1, ble_else.22258    # |        103 |        103 |
+ble_then.22258:
     fmul    $f1, $fc1, $f14
-    load    [$i22 + 118], $i21
+    load    [$i20 + 118], $i19
     jal     trace_diffuse_ray.2926, $ra4
-    li      116, $i24
+    li      116, $i22
 .count move_args
-    mov     $i28, $i23
+    mov     $i26, $i21
     jal     iter_trace_diffuse_rays.2929, $ra5
 .count b_cont
-    b       ble_cont.32900
-ble_else.32900:
+    b       ble_cont.22258
+ble_else.22258:
     fmul    $f1, $fc2, $f14             # |        103 |        103 |
-    load    [$i22 + 119], $i21          # |        103 |        103 |
+    load    [$i20 + 119], $i19          # |        103 |        103 |
     jal     trace_diffuse_ray.2926, $ra4# |        103 |        103 |
-    li      116, $i24                   # |        103 |        103 |
+    li      116, $i22                   # |        103 |        103 |
 .count move_args
-    mov     $i28, $i23                  # |        103 |        103 |
+    mov     $i26, $i21                  # |        103 |        103 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |        103 |        103 |
-ble_cont.32900:
-bne_cont.32899:
-    be      $i31, 4, bne_cont.32901     # |        132 |        132 |
-bne_then.32901:
-    load    [ext_dirvecs + 4], $i22     # |        107 |        107 |
-    load    [$i29 + 0], $fg8            # |        107 |        107 |
-    load    [$i29 + 1], $fg9            # |        107 |        107 |
-    load    [$i29 + 2], $fg10           # |        107 |        107 |
+ble_cont.22258:
+bne_cont.22257:
+    be      $i29, 4, bne_cont.22259     # |        132 |        132 |
+bne_then.22259:
+    load    [ext_dirvecs + 4], $i20     # |        107 |        107 |
+    load    [$i27 + 0], $fg8            # |        107 |        107 |
+    load    [$i27 + 1], $fg9            # |        107 |        107 |
+    load    [$i27 + 2], $fg10           # |        107 |        107 |
     sub     $ig0, 1, $i1                # |        107 |        107 |
 .count move_args
-    mov     $i29, $i2                   # |        107 |        107 |
+    mov     $i27, $i2                   # |        107 |        107 |
     call    setup_startp_constants.2831 # |        107 |        107 |
-    load    [$i22 + 118], $i1           # |        107 |        107 |
+    load    [$i20 + 118], $i1           # |        107 |        107 |
     load    [$i1 + 0], $i1              # |        107 |        107 |
     load    [$i1 + 0], $f1              # |        107 |        107 |
-    load    [$i28 + 0], $f2             # |        107 |        107 |
+    load    [$i26 + 0], $f2             # |        107 |        107 |
     fmul    $f1, $f2, $f1               # |        107 |        107 |
     load    [$i1 + 1], $f2              # |        107 |        107 |
-    load    [$i28 + 1], $f3             # |        107 |        107 |
+    load    [$i26 + 1], $f3             # |        107 |        107 |
     fmul    $f2, $f3, $f2               # |        107 |        107 |
     fadd    $f1, $f2, $f1               # |        107 |        107 |
     load    [$i1 + 2], $f2              # |        107 |        107 |
-    load    [$i28 + 2], $f3             # |        107 |        107 |
+    load    [$i26 + 2], $f3             # |        107 |        107 |
     fmul    $f2, $f3, $f2               # |        107 |        107 |
     fadd    $f1, $f2, $f1               # |        107 |        107 |
-    bg      $f0, $f1, ble_else.32902    # |        107 |        107 |
-ble_then.32902:
+    bg      $f0, $f1, ble_else.22260    # |        107 |        107 |
+ble_then.22260:
     fmul    $f1, $fc1, $f14
-    load    [$i22 + 118], $i21
+    load    [$i20 + 118], $i19
     jal     trace_diffuse_ray.2926, $ra4
-    li      116, $i24
+    li      116, $i22
 .count move_args
-    mov     $i28, $i23
+    mov     $i26, $i21
     jal     iter_trace_diffuse_rays.2929, $ra5
 .count b_cont
-    b       ble_cont.32902
-ble_else.32902:
+    b       ble_cont.22260
+ble_else.22260:
     fmul    $f1, $fc2, $f14             # |        107 |        107 |
-    load    [$i22 + 119], $i21          # |        107 |        107 |
+    load    [$i20 + 119], $i19          # |        107 |        107 |
     jal     trace_diffuse_ray.2926, $ra4# |        107 |        107 |
-    li      116, $i24                   # |        107 |        107 |
+    li      116, $i22                   # |        107 |        107 |
 .count move_args
-    mov     $i28, $i23                  # |        107 |        107 |
+    mov     $i26, $i21                  # |        107 |        107 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |        107 |        107 |
-ble_cont.32902:
-bne_cont.32901:
-    load    [$i30 + 4], $i1             # |        132 |        132 |
-    load    [$i1 + $i25], $i1           # |        132 |        132 |
+ble_cont.22260:
+bne_cont.22259:
+    load    [$i28 + 4], $i1             # |        132 |        132 |
+    load    [$i1 + $i23], $i1           # |        132 |        132 |
     load    [$i1 + 0], $f1              # |        132 |        132 |
     fmul    $f1, $fg1, $f1              # |        132 |        132 |
     fadd    $fg4, $f1, $fg4             # |        132 |        132 |
@@ -8953,427 +8244,545 @@ bne_cont.32901:
     load    [$i1 + 2], $f1              # |        132 |        132 |
     fmul    $f1, $fg3, $f1              # |        132 |        132 |
     fadd    $fg6, $f1, $fg6             # |        132 |        132 |
-    add     $i25, 1, $i31               # |        132 |        132 |
-    bg      $i31, 4, ble_else.32903     # |        132 |        132 |
-ble_then.32903:
-    load    [$i26 + $i31], $i1          # |        132 |        132 |
-    bl      $i1, 0, bge_else.32904      # |        132 |        132 |
-bge_then.32904:
-    load    [$i27 + $i31], $i1
-    bne     $i1, 0, be_else.32905
-be_then.32905:
-    add     $i31, 1, $i25
+    add     $i23, 1, $i29               # |        132 |        132 |
+    bg      $i29, 4, ble_else.22261     # |        132 |        132 |
+ble_then.22261:
+    load    [$i24 + $i29], $i1          # |        132 |        132 |
+    bl      $i1, 0, bge_else.22262      # |        132 |        132 |
+bge_then.22262:
+    load    [$i25 + $i29], $i1
+    bne     $i1, 0, be_else.22263
+be_then.22263:
+    add     $i29, 1, $i23
     b       do_without_neighbors.2951
-be_else.32905:
+be_else.22263:
 .count move_args
-    mov     $i30, $i25
+    mov     $i28, $i23
 .count move_args
-    mov     $i31, $i26
+    mov     $i29, $i24
     jal     calc_diffuse_using_1point.2942, $ra6
-    add     $i31, 1, $i25
+    add     $i29, 1, $i23
     b       do_without_neighbors.2951
-bge_else.32904:
+bge_else.22262:
     jr      $ra7                        # |        132 |        132 |
-ble_else.32903:
+ble_else.22261:
     jr      $ra7
-bge_else.32888:
+bge_else.22246:
     jr      $ra7                        # |      2,287 |      2,287 |
-ble_else.32887:
+ble_else.22245:
     jr      $ra7
 .end do_without_neighbors
 
 ######################################################################
-# try_exploit_neighbors($i2, $i3, $i4, $i5, $i30)
+# try_exploit_neighbors($i2, $i3, $i4, $i5, $i28)
 # $ra = $ra7
-# [$i1 - $i31]
+# [$i1 - $i29]
 # [$f1 - $f14]
 # [$ig2 - $ig3]
 # [$fg0 - $fg11, $fg15 - $fg16]
+# [$ra - $ra6]
 ######################################################################
 .begin try_exploit_neighbors
 try_exploit_neighbors.2967:
-    bg      $i30, 4, ble_else.32906     # |     23,861 |     23,861 |
-ble_then.32906:
-    load    [$i4 + $i2], $i1            # |     23,861 |     23,861 |
-    load    [$i1 + 2], $i6              # |     23,861 |     23,861 |
-    load    [$i6 + $i30], $i6           # |     23,861 |     23,861 |
-    bl      $i6, 0, bge_else.32907      # |     23,861 |     23,861 |
-bge_then.32907:
-    load    [$i3 + $i2], $i7            # |      9,906 |      9,906 |
-    load    [$i7 + 2], $i8              # |      9,906 |      9,906 |
-    load    [$i8 + $i30], $i8           # |      9,906 |      9,906 |
-    bne     $i8, $i6, be_else.32908     # |      9,906 |      9,906 |
-be_then.32908:
-    load    [$i5 + $i2], $i8            # |      9,429 |      9,429 |
-    load    [$i8 + 2], $i8              # |      9,429 |      9,429 |
-    load    [$i8 + $i30], $i8           # |      9,429 |      9,429 |
-    bne     $i8, $i6, be_else.32909     # |      9,429 |      9,429 |
-be_then.32909:
-    sub     $i2, 1, $i8                 # |      9,028 |      9,028 |
-    load    [$i4 + $i8], $i8            # |      9,028 |      9,028 |
-    load    [$i8 + 2], $i8              # |      9,028 |      9,028 |
-    load    [$i8 + $i30], $i8           # |      9,028 |      9,028 |
-    bne     $i8, $i6, be_else.32910     # |      9,028 |      9,028 |
-be_then.32910:
-    add     $i2, 1, $i8                 # |      8,880 |      8,880 |
-    load    [$i4 + $i8], $i8            # |      8,880 |      8,880 |
-    load    [$i8 + 2], $i8              # |      8,880 |      8,880 |
-    load    [$i8 + $i30], $i8           # |      8,880 |      8,880 |
-    bne     $i8, $i6, be_else.32911     # |      8,880 |      8,880 |
-be_then.32911:
-    li      1, $i6                      # |      8,752 |      8,752 |
+    bg      $i28, 4, ble_else.22264     # |     15,923 |     15,923 |
+ble_then.22264:
+    load    [$i4 + $i2], $i1            # |     15,923 |     15,923 |
+    load    [$i1 + 2], $i6              # |     15,923 |     15,923 |
+    load    [$i6 + $i28], $i6           # |     15,923 |     15,923 |
+    bl      $i6, 0, bge_else.22265      # |     15,923 |     15,923 |
+bge_then.22265:
+    load    [$i3 + $i2], $i7            # |      1,968 |      1,968 |
+    load    [$i7 + 2], $i8              # |      1,968 |      1,968 |
+    load    [$i8 + $i28], $i8           # |      1,968 |      1,968 |
+    bne     $i8, $i6, be_else.22266     # |      1,968 |      1,968 |
+be_then.22266:
+    load    [$i5 + $i2], $i8            # |      1,796 |      1,796 |
+    load    [$i8 + 2], $i8              # |      1,796 |      1,796 |
+    load    [$i8 + $i28], $i8           # |      1,796 |      1,796 |
+    bne     $i8, $i6, be_else.22267     # |      1,796 |      1,796 |
+be_then.22267:
+    sub     $i2, 1, $i8                 # |      1,700 |      1,700 |
+    load    [$i4 + $i8], $i8            # |      1,700 |      1,700 |
+    load    [$i8 + 2], $i8              # |      1,700 |      1,700 |
+    load    [$i8 + $i28], $i8           # |      1,700 |      1,700 |
+    bne     $i8, $i6, be_else.22268     # |      1,700 |      1,700 |
+be_then.22268:
+    add     $i2, 1, $i8                 # |      1,634 |      1,634 |
+    load    [$i4 + $i8], $i8            # |      1,634 |      1,634 |
+    load    [$i8 + 2], $i8              # |      1,634 |      1,634 |
+    load    [$i8 + $i28], $i8           # |      1,634 |      1,634 |
+    bne     $i8, $i6, be_else.22269     # |      1,634 |      1,634 |
+be_then.22269:
+    li      1, $i6                      # |      1,590 |      1,590 |
 .count b_cont
-    b       be_cont.32908               # |      8,752 |      8,752 |
-be_else.32911:
-    li      0, $i6                      # |        128 |        128 |
+    b       be_cont.22266               # |      1,590 |      1,590 |
+be_else.22269:
+    li      0, $i6                      # |         44 |         44 |
 .count b_cont
-    b       be_cont.32908               # |        128 |        128 |
-be_else.32910:
-    li      0, $i6                      # |        148 |        148 |
+    b       be_cont.22266               # |         44 |         44 |
+be_else.22268:
+    li      0, $i6                      # |         66 |         66 |
 .count b_cont
-    b       be_cont.32908               # |        148 |        148 |
-be_else.32909:
-    li      0, $i6                      # |        401 |        401 |
+    b       be_cont.22266               # |         66 |         66 |
+be_else.22267:
+    li      0, $i6                      # |         96 |         96 |
 .count b_cont
-    b       be_cont.32908               # |        401 |        401 |
-be_else.32908:
-    li      0, $i6                      # |        477 |        477 |
-be_cont.32908:
-    bne     $i6, 0, be_else.32912       # |      9,906 |      9,906 |
-be_then.32912:
-    bg      $i30, 4, ble_else.32913     # |      1,154 |      1,154 |
-ble_then.32913:
-    load    [$i4 + $i2], $i31           # |      1,154 |      1,154 |
-    load    [$i31 + 2], $i1             # |      1,154 |      1,154 |
-    load    [$i1 + $i30], $i1           # |      1,154 |      1,154 |
-    bl      $i1, 0, bge_else.32914      # |      1,154 |      1,154 |
-bge_then.32914:
-    load    [$i31 + 3], $i1             # |      1,154 |      1,154 |
-    load    [$i1 + $i30], $i1           # |      1,154 |      1,154 |
-    bne     $i1, 0, be_else.32915       # |      1,154 |      1,154 |
-be_then.32915:
-    add     $i30, 1, $i25               # |        178 |        178 |
+    b       be_cont.22266               # |         96 |         96 |
+be_else.22266:
+    li      0, $i6                      # |        172 |        172 |
+be_cont.22266:
+    bne     $i6, 0, be_else.22270       # |      1,968 |      1,968 |
+be_then.22270:
+    bg      $i28, 4, ble_else.22271     # |        378 |        378 |
+ble_then.22271:
+    load    [$i4 + $i2], $i29           # |        378 |        378 |
+    load    [$i29 + 2], $i1             # |        378 |        378 |
+    load    [$i1 + $i28], $i1           # |        378 |        378 |
+    bl      $i1, 0, bge_else.22272      # |        378 |        378 |
+bge_then.22272:
+    load    [$i29 + 3], $i1             # |        378 |        378 |
+    load    [$i1 + $i28], $i1           # |        378 |        378 |
+    bne     $i1, 0, be_else.22273       # |        378 |        378 |
+be_then.22273:
+    add     $i28, 1, $i23               # |         32 |         32 |
 .count move_args
-    mov     $i31, $i30                  # |        178 |        178 |
-    b       do_without_neighbors.2951   # |        178 |        178 |
-be_else.32915:
+    mov     $i29, $i28                  # |         32 |         32 |
+    b       do_without_neighbors.2951   # |         32 |         32 |
+be_else.22273:
 .count move_args
-    mov     $i31, $i25                  # |        976 |        976 |
+    mov     $i29, $i23                  # |        346 |        346 |
 .count move_args
-    mov     $i30, $i26                  # |        976 |        976 |
-    jal     calc_diffuse_using_1point.2942, $ra6# |        976 |        976 |
-    add     $i30, 1, $i25               # |        976 |        976 |
+    mov     $i28, $i24                  # |        346 |        346 |
+    jal     calc_diffuse_using_1point.2942, $ra6# |        346 |        346 |
+    add     $i28, 1, $i23               # |        346 |        346 |
 .count move_args
-    mov     $i31, $i30                  # |        976 |        976 |
-    b       do_without_neighbors.2951   # |        976 |        976 |
-bge_else.32914:
+    mov     $i29, $i28                  # |        346 |        346 |
+    b       do_without_neighbors.2951   # |        346 |        346 |
+bge_else.22272:
     jr      $ra7
-ble_else.32913:
+ble_else.22271:
     jr      $ra7
-be_else.32912:
-    load    [$i1 + 3], $i1              # |      8,752 |      8,752 |
-    load    [$i1 + $i30], $i1           # |      8,752 |      8,752 |
-    bne     $i1, 0, be_else.32916       # |      8,752 |      8,752 |
-be_then.32916:
-    add     $i30, 1, $i30               # |      3,348 |      3,348 |
-    b       try_exploit_neighbors.2967  # |      3,348 |      3,348 |
-be_else.32916:
-    load    [$i7 + 5], $i1              # |      5,404 |      5,404 |
-    load    [$i1 + $i30], $i1           # |      5,404 |      5,404 |
-    load    [$i1 + 0], $fg1             # |      5,404 |      5,404 |
-    load    [$i1 + 1], $fg2             # |      5,404 |      5,404 |
-    load    [$i1 + 2], $fg3             # |      5,404 |      5,404 |
-    sub     $i2, 1, $i1                 # |      5,404 |      5,404 |
-    load    [$i4 + $i1], $i1            # |      5,404 |      5,404 |
-    load    [$i1 + 5], $i1              # |      5,404 |      5,404 |
-    load    [$i1 + $i30], $i1           # |      5,404 |      5,404 |
-    load    [$i1 + 0], $f1              # |      5,404 |      5,404 |
-    fadd    $fg1, $f1, $fg1             # |      5,404 |      5,404 |
-    load    [$i1 + 1], $f1              # |      5,404 |      5,404 |
-    fadd    $fg2, $f1, $fg2             # |      5,404 |      5,404 |
-    load    [$i1 + 2], $f1              # |      5,404 |      5,404 |
-    fadd    $fg3, $f1, $fg3             # |      5,404 |      5,404 |
-    load    [$i4 + $i2], $i1            # |      5,404 |      5,404 |
-    load    [$i1 + 5], $i1              # |      5,404 |      5,404 |
-    load    [$i1 + $i30], $i1           # |      5,404 |      5,404 |
-    load    [$i1 + 0], $f1              # |      5,404 |      5,404 |
-    fadd    $fg1, $f1, $fg1             # |      5,404 |      5,404 |
-    load    [$i1 + 1], $f1              # |      5,404 |      5,404 |
-    fadd    $fg2, $f1, $fg2             # |      5,404 |      5,404 |
-    load    [$i1 + 2], $f1              # |      5,404 |      5,404 |
-    fadd    $fg3, $f1, $fg3             # |      5,404 |      5,404 |
-    add     $i2, 1, $i1                 # |      5,404 |      5,404 |
-    load    [$i4 + $i1], $i1            # |      5,404 |      5,404 |
-    load    [$i1 + 5], $i1              # |      5,404 |      5,404 |
-    load    [$i1 + $i30], $i1           # |      5,404 |      5,404 |
-    load    [$i1 + 0], $f1              # |      5,404 |      5,404 |
-    fadd    $fg1, $f1, $fg1             # |      5,404 |      5,404 |
-    load    [$i1 + 1], $f1              # |      5,404 |      5,404 |
-    fadd    $fg2, $f1, $fg2             # |      5,404 |      5,404 |
-    load    [$i1 + 2], $f1              # |      5,404 |      5,404 |
-    fadd    $fg3, $f1, $fg3             # |      5,404 |      5,404 |
-    load    [$i5 + $i2], $i1            # |      5,404 |      5,404 |
-    load    [$i1 + 5], $i1              # |      5,404 |      5,404 |
-    load    [$i1 + $i30], $i1           # |      5,404 |      5,404 |
-    load    [$i1 + 0], $f1              # |      5,404 |      5,404 |
-    fadd    $fg1, $f1, $fg1             # |      5,404 |      5,404 |
-    load    [$i1 + 1], $f1              # |      5,404 |      5,404 |
-    fadd    $fg2, $f1, $fg2             # |      5,404 |      5,404 |
-    load    [$i1 + 2], $f1              # |      5,404 |      5,404 |
-    fadd    $fg3, $f1, $fg3             # |      5,404 |      5,404 |
-    load    [$i4 + $i2], $i1            # |      5,404 |      5,404 |
-    load    [$i1 + 4], $i1              # |      5,404 |      5,404 |
-    load    [$i1 + $i30], $i1           # |      5,404 |      5,404 |
-    load    [$i1 + 0], $f1              # |      5,404 |      5,404 |
-    fmul    $f1, $fg1, $f1              # |      5,404 |      5,404 |
-    fadd    $fg4, $f1, $fg4             # |      5,404 |      5,404 |
-    load    [$i1 + 1], $f1              # |      5,404 |      5,404 |
-    fmul    $f1, $fg2, $f1              # |      5,404 |      5,404 |
-    fadd    $fg5, $f1, $fg5             # |      5,404 |      5,404 |
-    load    [$i1 + 2], $f1              # |      5,404 |      5,404 |
-    fmul    $f1, $fg3, $f1              # |      5,404 |      5,404 |
-    fadd    $fg6, $f1, $fg6             # |      5,404 |      5,404 |
-    add     $i30, 1, $i30               # |      5,404 |      5,404 |
-    b       try_exploit_neighbors.2967  # |      5,404 |      5,404 |
-bge_else.32907:
+be_else.22270:
+    load    [$i1 + 3], $i1              # |      1,590 |      1,590 |
+    load    [$i1 + $i28], $i1           # |      1,590 |      1,590 |
+    bne     $i1, 0, be_else.22274       # |      1,590 |      1,590 |
+be_then.22274:
+    add     $i28, 1, $i28               # |         26 |         26 |
+    b       try_exploit_neighbors.2967  # |         26 |         26 |
+be_else.22274:
+    load    [$i7 + 5], $i1              # |      1,564 |      1,564 |
+    load    [$i1 + $i28], $i1           # |      1,564 |      1,564 |
+    load    [$i1 + 0], $fg1             # |      1,564 |      1,564 |
+    load    [$i1 + 1], $fg2             # |      1,564 |      1,564 |
+    load    [$i1 + 2], $fg3             # |      1,564 |      1,564 |
+    sub     $i2, 1, $i1                 # |      1,564 |      1,564 |
+    load    [$i4 + $i1], $i1            # |      1,564 |      1,564 |
+    load    [$i1 + 5], $i1              # |      1,564 |      1,564 |
+    load    [$i1 + $i28], $i1           # |      1,564 |      1,564 |
+    load    [$i1 + 0], $f1              # |      1,564 |      1,564 |
+    fadd    $fg1, $f1, $fg1             # |      1,564 |      1,564 |
+    load    [$i1 + 1], $f1              # |      1,564 |      1,564 |
+    fadd    $fg2, $f1, $fg2             # |      1,564 |      1,564 |
+    load    [$i1 + 2], $f1              # |      1,564 |      1,564 |
+    fadd    $fg3, $f1, $fg3             # |      1,564 |      1,564 |
+    load    [$i4 + $i2], $i1            # |      1,564 |      1,564 |
+    load    [$i1 + 5], $i1              # |      1,564 |      1,564 |
+    load    [$i1 + $i28], $i1           # |      1,564 |      1,564 |
+    load    [$i1 + 0], $f1              # |      1,564 |      1,564 |
+    fadd    $fg1, $f1, $fg1             # |      1,564 |      1,564 |
+    load    [$i1 + 1], $f1              # |      1,564 |      1,564 |
+    fadd    $fg2, $f1, $fg2             # |      1,564 |      1,564 |
+    load    [$i1 + 2], $f1              # |      1,564 |      1,564 |
+    fadd    $fg3, $f1, $fg3             # |      1,564 |      1,564 |
+    add     $i2, 1, $i1                 # |      1,564 |      1,564 |
+    load    [$i4 + $i1], $i1            # |      1,564 |      1,564 |
+    load    [$i1 + 5], $i1              # |      1,564 |      1,564 |
+    load    [$i1 + $i28], $i1           # |      1,564 |      1,564 |
+    load    [$i1 + 0], $f1              # |      1,564 |      1,564 |
+    fadd    $fg1, $f1, $fg1             # |      1,564 |      1,564 |
+    load    [$i1 + 1], $f1              # |      1,564 |      1,564 |
+    fadd    $fg2, $f1, $fg2             # |      1,564 |      1,564 |
+    load    [$i1 + 2], $f1              # |      1,564 |      1,564 |
+    fadd    $fg3, $f1, $fg3             # |      1,564 |      1,564 |
+    load    [$i5 + $i2], $i1            # |      1,564 |      1,564 |
+    load    [$i1 + 5], $i1              # |      1,564 |      1,564 |
+    load    [$i1 + $i28], $i1           # |      1,564 |      1,564 |
+    load    [$i1 + 0], $f1              # |      1,564 |      1,564 |
+    fadd    $fg1, $f1, $fg1             # |      1,564 |      1,564 |
+    load    [$i1 + 1], $f1              # |      1,564 |      1,564 |
+    fadd    $fg2, $f1, $fg2             # |      1,564 |      1,564 |
+    load    [$i1 + 2], $f1              # |      1,564 |      1,564 |
+    fadd    $fg3, $f1, $fg3             # |      1,564 |      1,564 |
+    load    [$i4 + $i2], $i1            # |      1,564 |      1,564 |
+    load    [$i1 + 4], $i1              # |      1,564 |      1,564 |
+    load    [$i1 + $i28], $i1           # |      1,564 |      1,564 |
+    load    [$i1 + 0], $f1              # |      1,564 |      1,564 |
+    fmul    $f1, $fg1, $f1              # |      1,564 |      1,564 |
+    fadd    $fg4, $f1, $fg4             # |      1,564 |      1,564 |
+    load    [$i1 + 1], $f1              # |      1,564 |      1,564 |
+    fmul    $f1, $fg2, $f1              # |      1,564 |      1,564 |
+    fadd    $fg5, $f1, $fg5             # |      1,564 |      1,564 |
+    load    [$i1 + 2], $f1              # |      1,564 |      1,564 |
+    fmul    $f1, $fg3, $f1              # |      1,564 |      1,564 |
+    fadd    $fg6, $f1, $fg6             # |      1,564 |      1,564 |
+    add     $i28, 1, $i28               # |      1,564 |      1,564 |
+    b       try_exploit_neighbors.2967  # |      1,564 |      1,564 |
+bge_else.22265:
     jr      $ra7                        # |     13,955 |     13,955 |
-ble_else.32906:
+ble_else.22264:
     jr      $ra7
 .end try_exploit_neighbors
 
 ######################################################################
-# pretrace_diffuse_rays($i25, $i26)
+# write_ppm_header()
+# $ra = $ra
+# [$i2]
+# []
+# []
+# []
+# [$ra]
+######################################################################
+.begin write_ppm_header
+write_ppm_header.2974:
+.count stack_store_ra
+    store   $ra, [$sp - 1]              # |          1 |          1 |
+.count stack_move
+    sub     $sp, 1, $sp                 # |          1 |          1 |
+    li      80, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      54, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      10, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      49, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      50, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      56, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      32, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      49, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      50, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      56, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      32, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      50, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      53, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+    li      53, $i2                     # |          1 |          1 |
+    call    ext_write                   # |          1 |          1 |
+.count stack_load_ra
+    load    [$sp + 0], $ra              # |          1 |          1 |
+.count stack_move
+    add     $sp, 1, $sp                 # |          1 |          1 |
+    li      10, $i2                     # |          1 |          1 |
+    b       ext_write                   # |          1 |          1 |
+.end write_ppm_header
+
+######################################################################
+# write_rgb_element($f2)
+# $ra = $ra
+# [$i1 - $i4]
+# [$f2 - $f3]
+# []
+# []
+# [$ra]
+######################################################################
+.begin write_rgb_element
+write_rgb_element.2976:
+.count stack_store_ra
+    store   $ra, [$sp - 1]              # |     49,152 |     49,152 |
+.count stack_move
+    sub     $sp, 1, $sp                 # |     49,152 |     49,152 |
+    li      255, $i4                    # |     49,152 |     49,152 |
+    call    ext_int_of_float            # |     49,152 |     49,152 |
+.count stack_load_ra
+    load    [$sp + 0], $ra              # |     49,152 |     49,152 |
+.count stack_move
+    add     $sp, 1, $sp                 # |     49,152 |     49,152 |
+    bg      $i1, $i4, ble_else.22275    # |     49,152 |     49,152 |
+ble_then.22275:
+    bl      $i1, 0, bge_else.22276      # |     33,363 |     33,363 |
+bge_then.22276:
+.count move_args
+    mov     $i1, $i2                    # |     33,363 |     33,363 |
+    b       ext_write                   # |     33,363 |     33,363 |
+bge_else.22276:
+    li      0, $i2
+    b       ext_write
+ble_else.22275:
+    li      255, $i2                    # |     15,789 |     15,789 |
+    b       ext_write                   # |     15,789 |     15,789 |
+.end write_rgb_element
+
+######################################################################
+# write_rgb()
+# $ra = $ra
+# [$i1 - $i4]
+# [$f2 - $f3]
+# []
+# []
+# [$ra]
+######################################################################
+.begin write_rgb
+write_rgb.2978:
+.count stack_store_ra
+    store   $ra, [$sp - 1]              # |     16,384 |     16,384 |
+.count stack_move
+    sub     $sp, 1, $sp                 # |     16,384 |     16,384 |
+.count move_args
+    mov     $fg4, $f2                   # |     16,384 |     16,384 |
+    call    write_rgb_element.2976      # |     16,384 |     16,384 |
+.count move_args
+    mov     $fg5, $f2                   # |     16,384 |     16,384 |
+    call    write_rgb_element.2976      # |     16,384 |     16,384 |
+.count stack_load_ra
+    load    [$sp + 0], $ra              # |     16,384 |     16,384 |
+.count stack_move
+    add     $sp, 1, $sp                 # |     16,384 |     16,384 |
+.count move_args
+    mov     $fg6, $f2                   # |     16,384 |     16,384 |
+    b       write_rgb_element.2976      # |     16,384 |     16,384 |
+.end write_rgb
+
+######################################################################
+# pretrace_diffuse_rays($i23, $i24)
 # $ra = $ra6
-# [$i1 - $i31]
+# [$i1 - $i30]
 # [$f1 - $f14]
 # [$ig2 - $ig3]
 # [$fg0 - $fg3, $fg7 - $fg11, $fg15 - $fg16]
+# [$ra - $ra5]
 ######################################################################
 .begin pretrace_diffuse_rays
 pretrace_diffuse_rays.2980:
-    bg      $i26, 4, ble_else.32917     # |     16,395 |     16,395 |
-ble_then.32917:
-    load    [$i25 + 2], $i27            # |     16,395 |     16,395 |
-    load    [$i27 + $i26], $i1          # |     16,395 |     16,395 |
-    bl      $i1, 0, bge_else.32918      # |     16,395 |     16,395 |
-bge_then.32918:
-    load    [$i25 + 3], $i28            # |      2,101 |      2,101 |
-    load    [$i28 + $i26], $i1          # |      2,101 |      2,101 |
-    bne     $i1, 0, be_else.32919       # |      2,101 |      2,101 |
-be_then.32919:
-    add     $i26, 1, $i26               # |         67 |         67 |
-    bg      $i26, 4, ble_else.32920     # |         67 |         67 |
-ble_then.32920:
-    load    [$i27 + $i26], $i1          # |         67 |         67 |
-    bl      $i1, 0, bge_else.32921      # |         67 |         67 |
-bge_then.32921:
-    load    [$i28 + $i26], $i1          # |         11 |         11 |
-    bne     $i1, 0, be_else.32922       # |         11 |         11 |
-be_then.32922:
-    add     $i26, 1, $i26               # |          2 |          2 |
+    bg      $i24, 4, ble_else.22277     # |     16,395 |     16,395 |
+ble_then.22277:
+    load    [$i23 + 2], $i25            # |     16,395 |     16,395 |
+    load    [$i25 + $i24], $i1          # |     16,395 |     16,395 |
+    bl      $i1, 0, bge_else.22278      # |     16,395 |     16,395 |
+bge_then.22278:
+    load    [$i23 + 3], $i26            # |      2,101 |      2,101 |
+    load    [$i26 + $i24], $i1          # |      2,101 |      2,101 |
+    bne     $i1, 0, be_else.22279       # |      2,101 |      2,101 |
+be_then.22279:
+    add     $i24, 1, $i24               # |         67 |         67 |
+    bg      $i24, 4, ble_else.22280     # |         67 |         67 |
+ble_then.22280:
+    load    [$i25 + $i24], $i1          # |         67 |         67 |
+    bl      $i1, 0, bge_else.22281      # |         67 |         67 |
+bge_then.22281:
+    load    [$i26 + $i24], $i1          # |         11 |         11 |
+    bne     $i1, 0, be_else.22282       # |         11 |         11 |
+be_then.22282:
+    add     $i24, 1, $i24               # |          2 |          2 |
     b       pretrace_diffuse_rays.2980  # |          2 |          2 |
-be_else.32922:
+be_else.22282:
     mov     $f0, $fg1                   # |          9 |          9 |
     mov     $f0, $fg2                   # |          9 |          9 |
     mov     $f0, $fg3                   # |          9 |          9 |
-    load    [$i25 + 6], $i10            # |          9 |          9 |
-    load    [$i25 + 7], $i11            # |          9 |          9 |
-    load    [$i25 + 1], $i1             # |          9 |          9 |
-    load    [$i1 + $i26], $i2           # |          9 |          9 |
+    load    [$i23 + 6], $i8             # |          9 |          9 |
+    load    [$i23 + 7], $i9             # |          9 |          9 |
+    load    [$i23 + 1], $i1             # |          9 |          9 |
+    load    [$i1 + $i24], $i2           # |          9 |          9 |
     load    [$i2 + 0], $fg8             # |          9 |          9 |
     load    [$i2 + 1], $fg9             # |          9 |          9 |
     load    [$i2 + 2], $fg10            # |          9 |          9 |
     sub     $ig0, 1, $i1                # |          9 |          9 |
     call    setup_startp_constants.2831 # |          9 |          9 |
-    load    [$i10 + 0], $i1             # |          9 |          9 |
-    load    [ext_dirvecs + $i1], $i22   # |          9 |          9 |
-    load    [$i22 + 118], $i1           # |          9 |          9 |
+    load    [$i8 + 0], $i1              # |          9 |          9 |
+    load    [ext_dirvecs + $i1], $i20   # |          9 |          9 |
+    load    [$i20 + 118], $i1           # |          9 |          9 |
     load    [$i1 + 0], $i1              # |          9 |          9 |
-    load    [$i11 + $i26], $i23         # |          9 |          9 |
+    load    [$i9 + $i24], $i21          # |          9 |          9 |
     load    [$i1 + 0], $f1              # |          9 |          9 |
-    load    [$i23 + 0], $f2             # |          9 |          9 |
+    load    [$i21 + 0], $f2             # |          9 |          9 |
     fmul    $f1, $f2, $f1               # |          9 |          9 |
     load    [$i1 + 1], $f2              # |          9 |          9 |
-    load    [$i23 + 1], $f3             # |          9 |          9 |
+    load    [$i21 + 1], $f3             # |          9 |          9 |
     fmul    $f2, $f3, $f2               # |          9 |          9 |
     fadd    $f1, $f2, $f1               # |          9 |          9 |
     load    [$i1 + 2], $f2              # |          9 |          9 |
-    load    [$i23 + 2], $f3             # |          9 |          9 |
+    load    [$i21 + 2], $f3             # |          9 |          9 |
     fmul    $f2, $f3, $f2               # |          9 |          9 |
     fadd    $f1, $f2, $f1               # |          9 |          9 |
-    bg      $f0, $f1, ble_else.32923    # |          9 |          9 |
-ble_then.32923:
+    bg      $f0, $f1, ble_else.22283    # |          9 |          9 |
+ble_then.22283:
     fmul    $f1, $fc1, $f14
-    load    [$i22 + 118], $i21
+    load    [$i20 + 118], $i19
     jal     trace_diffuse_ray.2926, $ra4
-    li      116, $i24
+    li      116, $i22
     jal     iter_trace_diffuse_rays.2929, $ra5
 .count b_cont
-    b       ble_cont.32923
-ble_else.32923:
+    b       ble_cont.22283
+ble_else.22283:
     fmul    $f1, $fc2, $f14             # |          9 |          9 |
-    load    [$i22 + 119], $i21          # |          9 |          9 |
+    load    [$i20 + 119], $i19          # |          9 |          9 |
     jal     trace_diffuse_ray.2926, $ra4# |          9 |          9 |
-    li      116, $i24                   # |          9 |          9 |
+    li      116, $i22                   # |          9 |          9 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |          9 |          9 |
-ble_cont.32923:
-    load    [$i25 + 5], $i1             # |          9 |          9 |
-    load    [$i1 + $i26], $i1           # |          9 |          9 |
+ble_cont.22283:
+    load    [$i23 + 5], $i1             # |          9 |          9 |
+    load    [$i1 + $i24], $i1           # |          9 |          9 |
     store   $fg1, [$i1 + 0]             # |          9 |          9 |
     store   $fg2, [$i1 + 1]             # |          9 |          9 |
     store   $fg3, [$i1 + 2]             # |          9 |          9 |
-    add     $i26, 1, $i26               # |          9 |          9 |
+    add     $i24, 1, $i24               # |          9 |          9 |
     b       pretrace_diffuse_rays.2980  # |          9 |          9 |
-bge_else.32921:
+bge_else.22281:
     jr      $ra6                        # |         56 |         56 |
-ble_else.32920:
+ble_else.22280:
     jr      $ra6
-be_else.32919:
+be_else.22279:
     mov     $f0, $fg1                   # |      2,034 |      2,034 |
     mov     $f0, $fg2                   # |      2,034 |      2,034 |
     mov     $f0, $fg3                   # |      2,034 |      2,034 |
-    load    [$i25 + 6], $i10            # |      2,034 |      2,034 |
-    load    [$i25 + 7], $i29            # |      2,034 |      2,034 |
-    load    [$i25 + 1], $i30            # |      2,034 |      2,034 |
-    load    [$i30 + $i26], $i2          # |      2,034 |      2,034 |
+    load    [$i23 + 6], $i27            # |      2,034 |      2,034 |
+    load    [$i23 + 7], $i28            # |      2,034 |      2,034 |
+    load    [$i23 + 1], $i29            # |      2,034 |      2,034 |
+    load    [$i29 + $i24], $i2          # |      2,034 |      2,034 |
     load    [$i2 + 0], $fg8             # |      2,034 |      2,034 |
     load    [$i2 + 1], $fg9             # |      2,034 |      2,034 |
     load    [$i2 + 2], $fg10            # |      2,034 |      2,034 |
     sub     $ig0, 1, $i1                # |      2,034 |      2,034 |
     call    setup_startp_constants.2831 # |      2,034 |      2,034 |
-    load    [$i10 + 0], $i1             # |      2,034 |      2,034 |
-    load    [ext_dirvecs + $i1], $i22   # |      2,034 |      2,034 |
-    load    [$i22 + 118], $i1           # |      2,034 |      2,034 |
+    load    [$i27 + 0], $i1             # |      2,034 |      2,034 |
+    load    [ext_dirvecs + $i1], $i20   # |      2,034 |      2,034 |
+    load    [$i20 + 118], $i1           # |      2,034 |      2,034 |
     load    [$i1 + 0], $i1              # |      2,034 |      2,034 |
     load    [$i1 + 0], $f1              # |      2,034 |      2,034 |
-    load    [$i29 + $i26], $i23         # |      2,034 |      2,034 |
-    load    [$i23 + 0], $f2             # |      2,034 |      2,034 |
+    load    [$i28 + $i24], $i21         # |      2,034 |      2,034 |
+    load    [$i21 + 0], $f2             # |      2,034 |      2,034 |
     fmul    $f1, $f2, $f1               # |      2,034 |      2,034 |
     load    [$i1 + 1], $f2              # |      2,034 |      2,034 |
-    load    [$i23 + 1], $f3             # |      2,034 |      2,034 |
+    load    [$i21 + 1], $f3             # |      2,034 |      2,034 |
     fmul    $f2, $f3, $f2               # |      2,034 |      2,034 |
     fadd    $f1, $f2, $f1               # |      2,034 |      2,034 |
     load    [$i1 + 2], $f2              # |      2,034 |      2,034 |
-    load    [$i23 + 2], $f3             # |      2,034 |      2,034 |
+    load    [$i21 + 2], $f3             # |      2,034 |      2,034 |
     fmul    $f2, $f3, $f2               # |      2,034 |      2,034 |
     fadd    $f1, $f2, $f1               # |      2,034 |      2,034 |
-    bg      $f0, $f1, ble_else.32924    # |      2,034 |      2,034 |
-ble_then.32924:
-    load    [$i22 + 118], $i21          # |        292 |        292 |
-    fmul    $f1, $fc1, $f14             # |        292 |        292 |
-    jal     trace_diffuse_ray.2926, $ra4# |        292 |        292 |
+    bg      $f0, $f1, ble_else.22284    # |      2,034 |      2,034 |
+ble_then.22284:
+    load    [$i20 + 118], $i19          # |        293 |        293 |
+    fmul    $f1, $fc1, $f14             # |        293 |        293 |
+    jal     trace_diffuse_ray.2926, $ra4# |        293 |        293 |
 .count b_cont
-    b       ble_cont.32924              # |        292 |        292 |
-ble_else.32924:
-    load    [$i22 + 119], $i21          # |      1,742 |      1,742 |
-    fmul    $f1, $fc2, $f14             # |      1,742 |      1,742 |
-    jal     trace_diffuse_ray.2926, $ra4# |      1,742 |      1,742 |
-ble_cont.32924:
-    li      116, $i24                   # |      2,034 |      2,034 |
+    b       ble_cont.22284              # |        293 |        293 |
+ble_else.22284:
+    load    [$i20 + 119], $i19          # |      1,741 |      1,741 |
+    fmul    $f1, $fc2, $f14             # |      1,741 |      1,741 |
+    jal     trace_diffuse_ray.2926, $ra4# |      1,741 |      1,741 |
+ble_cont.22284:
+    li      116, $i22                   # |      2,034 |      2,034 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |      2,034 |      2,034 |
-    load    [$i25 + 5], $i31            # |      2,034 |      2,034 |
-    load    [$i31 + $i26], $i1          # |      2,034 |      2,034 |
+    load    [$i23 + 5], $i30            # |      2,034 |      2,034 |
+    load    [$i30 + $i24], $i1          # |      2,034 |      2,034 |
     store   $fg1, [$i1 + 0]             # |      2,034 |      2,034 |
     store   $fg2, [$i1 + 1]             # |      2,034 |      2,034 |
     store   $fg3, [$i1 + 2]             # |      2,034 |      2,034 |
-    add     $i26, 1, $i26               # |      2,034 |      2,034 |
-    bg      $i26, 4, ble_else.32925     # |      2,034 |      2,034 |
-ble_then.32925:
-    load    [$i27 + $i26], $i1          # |      2,034 |      2,034 |
-    bl      $i1, 0, bge_else.32926      # |      2,034 |      2,034 |
-bge_then.32926:
-    load    [$i28 + $i26], $i1
-    bne     $i1, 0, be_else.32927
-be_then.32927:
-    add     $i26, 1, $i26
+    add     $i24, 1, $i24               # |      2,034 |      2,034 |
+    bg      $i24, 4, ble_else.22285     # |      2,034 |      2,034 |
+ble_then.22285:
+    load    [$i25 + $i24], $i1          # |      2,034 |      2,034 |
+    bl      $i1, 0, bge_else.22286      # |      2,034 |      2,034 |
+bge_then.22286:
+    load    [$i26 + $i24], $i1
+    bne     $i1, 0, be_else.22287
+be_then.22287:
+    add     $i24, 1, $i24
     b       pretrace_diffuse_rays.2980
-be_else.32927:
+be_else.22287:
     mov     $f0, $fg1
     mov     $f0, $fg2
     mov     $f0, $fg3
-    load    [$i25 + 6], $i10
-    load    [$i30 + $i26], $i2
+    load    [$i29 + $i24], $i2
     load    [$i2 + 0], $fg8
     load    [$i2 + 1], $fg9
     load    [$i2 + 2], $fg10
     sub     $ig0, 1, $i1
     call    setup_startp_constants.2831
-    load    [$i10 + 0], $i1
-    load    [ext_dirvecs + $i1], $i22
-    load    [$i22 + 118], $i1
+    load    [$i27 + 0], $i1
+    load    [ext_dirvecs + $i1], $i20
+    load    [$i20 + 118], $i1
     load    [$i1 + 0], $i1
-    load    [$i29 + $i26], $i23
+    load    [$i28 + $i24], $i21
     load    [$i1 + 0], $f1
-    load    [$i23 + 0], $f2
+    load    [$i21 + 0], $f2
     fmul    $f1, $f2, $f1
     load    [$i1 + 1], $f2
-    load    [$i23 + 1], $f3
+    load    [$i21 + 1], $f3
     fmul    $f2, $f3, $f2
     fadd    $f1, $f2, $f1
     load    [$i1 + 2], $f2
-    load    [$i23 + 2], $f3
+    load    [$i21 + 2], $f3
     fmul    $f2, $f3, $f2
     fadd    $f1, $f2, $f1
-    bg      $f0, $f1, ble_else.32928
-ble_then.32928:
+    bg      $f0, $f1, ble_else.22288
+ble_then.22288:
     fmul    $f1, $fc1, $f14
-    load    [$i22 + 118], $i21
+    load    [$i20 + 118], $i19
     jal     trace_diffuse_ray.2926, $ra4
-    li      116, $i24
+    li      116, $i22
     jal     iter_trace_diffuse_rays.2929, $ra5
 .count b_cont
-    b       ble_cont.32928
-ble_else.32928:
+    b       ble_cont.22288
+ble_else.22288:
     fmul    $f1, $fc2, $f14
-    load    [$i22 + 119], $i21
+    load    [$i20 + 119], $i19
     jal     trace_diffuse_ray.2926, $ra4
-    li      116, $i24
+    li      116, $i22
     jal     iter_trace_diffuse_rays.2929, $ra5
-ble_cont.32928:
-    load    [$i31 + $i26], $i1
+ble_cont.22288:
+    load    [$i30 + $i24], $i1
     store   $fg1, [$i1 + 0]
     store   $fg2, [$i1 + 1]
     store   $fg3, [$i1 + 2]
-    add     $i26, 1, $i26
+    add     $i24, 1, $i24
     b       pretrace_diffuse_rays.2980
-bge_else.32926:
+bge_else.22286:
     jr      $ra6                        # |      2,034 |      2,034 |
-ble_else.32925:
+ble_else.22285:
     jr      $ra6
-bge_else.32918:
+bge_else.22278:
     jr      $ra6                        # |     14,294 |     14,294 |
-ble_else.32917:
+ble_else.22277:
     jr      $ra6
 .end pretrace_diffuse_rays
 
 ######################################################################
-# pretrace_pixels($i32, $i33, $i34, $f18, $f1, $f2)
+# pretrace_pixels($i31, $i32, $i33, $f18, $f1, $f2)
 # $ra = $ra7
-# [$i1 - $i35]
+# [$i1 - $i34]
 # [$f1 - $f18]
 # [$ig2 - $ig3]
-# [$fg0 - $fg11, $fg15 - $fg16, $fg21 - $fg23]
+# [$fg0 - $fg11, $fg15 - $fg19]
+# [$ra - $ra6]
 ######################################################################
 .begin pretrace_pixels
 pretrace_pixels.2983:
-    bl      $i33, 0, bge_else.32929     # |     16,512 |     16,512 |
-bge_then.32929:
+    bl      $i32, 0, bge_else.22289     # |     16,512 |     16,512 |
+bge_then.22289:
 .count stack_move
     sub     $sp, 2, $sp                 # |     16,384 |     16,384 |
 .count stack_store
     store   $f2, [$sp + 0]              # |     16,384 |     16,384 |
 .count stack_store
     store   $f1, [$sp + 1]              # |     16,384 |     16,384 |
-    load    [ext_screenx_dir + 0], $f4  # |     16,384 |     16,384 |
-    sub     $i33, 64, $i2               # |     16,384 |     16,384 |
+    sub     $i32, 64, $i2               # |     16,384 |     16,384 |
     call    ext_float_of_int            # |     16,384 |     16,384 |
-    fmul    $fg17, $f1, $f1             # |     16,384 |     16,384 |
-    fmul    $f1, $f4, $f2               # |     16,384 |     16,384 |
+    load    [ext_screenx_dir + 0], $f2  # |     16,384 |     16,384 |
+    fmul    $f1, $f2, $f2               # |     16,384 |     16,384 |
     fadd    $f2, $f18, $f2              # |     16,384 |     16,384 |
     store   $f2, [ext_ptrace_dirvec + 0]# |     16,384 |     16,384 |
 .count stack_load
-    load    [$sp + 1], $i35             # |     16,384 |     16,384 |
-    store   $i35, [ext_ptrace_dirvec + 1]# |     16,384 |     16,384 |
+    load    [$sp + 1], $i34             # |     16,384 |     16,384 |
+    store   $i34, [ext_ptrace_dirvec + 1]# |     16,384 |     16,384 |
     load    [ext_screenx_dir + 2], $f2  # |     16,384 |     16,384 |
     fmul    $f1, $f2, $f1               # |     16,384 |     16,384 |
 .count stack_load
@@ -9389,14 +8798,14 @@ bge_then.32929:
     fmul    $f3, $f3, $f3               # |     16,384 |     16,384 |
     fadd    $f2, $f3, $f2               # |     16,384 |     16,384 |
     fsqrt   $f2, $f2                    # |     16,384 |     16,384 |
-    bne     $f2, $f0, be_else.32930     # |     16,384 |     16,384 |
-be_then.32930:
+    bne     $f2, $f0, be_else.22290     # |     16,384 |     16,384 |
+be_then.22290:
     mov     $fc0, $f2
 .count b_cont
-    b       be_cont.32930
-be_else.32930:
+    b       be_cont.22290
+be_else.22290:
     finv    $f2, $f2                    # |     16,384 |     16,384 |
-be_cont.32930:
+be_cont.22290:
     fmul    $f1, $f2, $f1               # |     16,384 |     16,384 |
     store   $f1, [ext_ptrace_dirvec + 0]# |     16,384 |     16,384 |
     load    [ext_ptrace_dirvec + 1], $f1# |     16,384 |     16,384 |
@@ -9408,1272 +8817,547 @@ be_cont.32930:
     mov     $f0, $fg4                   # |     16,384 |     16,384 |
     mov     $f0, $fg5                   # |     16,384 |     16,384 |
     mov     $f0, $fg6                   # |     16,384 |     16,384 |
-    load    [ext_viewpoint + 0], $fg21  # |     16,384 |     16,384 |
-    load    [ext_viewpoint + 1], $fg22  # |     16,384 |     16,384 |
-    load    [ext_viewpoint + 2], $fg23  # |     16,384 |     16,384 |
-    li      ext_ptrace_dirvec, $i26     # |     16,384 |     16,384 |
-    li      0, $i25                     # |     16,384 |     16,384 |
-    load    [$i32 + $i33], $i27         # |     16,384 |     16,384 |
+    load    [ext_viewpoint + 0], $fg17  # |     16,384 |     16,384 |
+    load    [ext_viewpoint + 1], $fg18  # |     16,384 |     16,384 |
+    load    [ext_viewpoint + 2], $fg19  # |     16,384 |     16,384 |
+    li      ext_ptrace_dirvec, $i24     # |     16,384 |     16,384 |
+    li      0, $i23                     # |     16,384 |     16,384 |
+    load    [$i31 + $i32], $i25         # |     16,384 |     16,384 |
 .count move_args
     mov     $fc0, $f16                  # |     16,384 |     16,384 |
 .count move_args
     mov     $f0, $f17                   # |     16,384 |     16,384 |
     jal     trace_ray.2920, $ra5        # |     16,384 |     16,384 |
-    load    [$i32 + $i33], $i1          # |     16,384 |     16,384 |
+    load    [$i31 + $i32], $i1          # |     16,384 |     16,384 |
     load    [$i1 + 0], $i1              # |     16,384 |     16,384 |
     store   $fg4, [$i1 + 0]             # |     16,384 |     16,384 |
     store   $fg5, [$i1 + 1]             # |     16,384 |     16,384 |
     store   $fg6, [$i1 + 2]             # |     16,384 |     16,384 |
-    load    [$i32 + $i33], $i1          # |     16,384 |     16,384 |
+    load    [$i31 + $i32], $i1          # |     16,384 |     16,384 |
     load    [$i1 + 6], $i1              # |     16,384 |     16,384 |
-    store   $i34, [$i1 + 0]             # |     16,384 |     16,384 |
-    load    [$i32 + $i33], $i25         # |     16,384 |     16,384 |
-    load    [$i25 + 2], $i1             # |     16,384 |     16,384 |
+    store   $i33, [$i1 + 0]             # |     16,384 |     16,384 |
+    load    [$i31 + $i32], $i23         # |     16,384 |     16,384 |
+    load    [$i23 + 2], $i1             # |     16,384 |     16,384 |
     load    [$i1 + 0], $i1              # |     16,384 |     16,384 |
-    bl      $i1, 0, bge_cont.32931      # |     16,384 |     16,384 |
-bge_then.32931:
-    load    [$i25 + 3], $i1             # |     16,384 |     16,384 |
+    bl      $i1, 0, bge_cont.22291      # |     16,384 |     16,384 |
+bge_then.22291:
+    load    [$i23 + 3], $i1             # |     16,384 |     16,384 |
     load    [$i1 + 0], $i1              # |     16,384 |     16,384 |
-    bne     $i1, 0, be_else.32932       # |     16,384 |     16,384 |
-be_then.32932:
-    li      1, $i26                     # |      7,301 |      7,301 |
+    bne     $i1, 0, be_else.22292       # |     16,384 |     16,384 |
+be_then.22292:
+    li      1, $i24                     # |      7,301 |      7,301 |
     jal     pretrace_diffuse_rays.2980, $ra6# |      7,301 |      7,301 |
 .count b_cont
-    b       be_cont.32932               # |      7,301 |      7,301 |
-be_else.32932:
-    load    [$i25 + 6], $i1             # |      9,083 |      9,083 |
+    b       be_cont.22292               # |      7,301 |      7,301 |
+be_else.22292:
+    load    [$i23 + 6], $i1             # |      9,083 |      9,083 |
     load    [$i1 + 0], $i1              # |      9,083 |      9,083 |
     mov     $f0, $fg1                   # |      9,083 |      9,083 |
     mov     $f0, $fg2                   # |      9,083 |      9,083 |
     mov     $f0, $fg3                   # |      9,083 |      9,083 |
-    load    [$i25 + 7], $i2             # |      9,083 |      9,083 |
-    load    [$i25 + 1], $i3             # |      9,083 |      9,083 |
-    load    [ext_dirvecs + $i1], $i22   # |      9,083 |      9,083 |
-    load    [$i2 + 0], $i23             # |      9,083 |      9,083 |
+    load    [$i23 + 7], $i2             # |      9,083 |      9,083 |
+    load    [$i23 + 1], $i3             # |      9,083 |      9,083 |
+    load    [ext_dirvecs + $i1], $i20   # |      9,083 |      9,083 |
+    load    [$i2 + 0], $i21             # |      9,083 |      9,083 |
     load    [$i3 + 0], $i2              # |      9,083 |      9,083 |
     load    [$i2 + 0], $fg8             # |      9,083 |      9,083 |
     load    [$i2 + 1], $fg9             # |      9,083 |      9,083 |
     load    [$i2 + 2], $fg10            # |      9,083 |      9,083 |
     sub     $ig0, 1, $i1                # |      9,083 |      9,083 |
     call    setup_startp_constants.2831 # |      9,083 |      9,083 |
-    load    [$i22 + 118], $i1           # |      9,083 |      9,083 |
+    load    [$i20 + 118], $i1           # |      9,083 |      9,083 |
     load    [$i1 + 0], $i1              # |      9,083 |      9,083 |
     load    [$i1 + 0], $f1              # |      9,083 |      9,083 |
-    load    [$i23 + 0], $f2             # |      9,083 |      9,083 |
+    load    [$i21 + 0], $f2             # |      9,083 |      9,083 |
     fmul    $f1, $f2, $f1               # |      9,083 |      9,083 |
     load    [$i1 + 1], $f2              # |      9,083 |      9,083 |
-    load    [$i23 + 1], $f3             # |      9,083 |      9,083 |
+    load    [$i21 + 1], $f3             # |      9,083 |      9,083 |
     fmul    $f2, $f3, $f2               # |      9,083 |      9,083 |
     fadd    $f1, $f2, $f1               # |      9,083 |      9,083 |
     load    [$i1 + 2], $f2              # |      9,083 |      9,083 |
-    load    [$i23 + 2], $f3             # |      9,083 |      9,083 |
+    load    [$i21 + 2], $f3             # |      9,083 |      9,083 |
     fmul    $f2, $f3, $f2               # |      9,083 |      9,083 |
     fadd    $f1, $f2, $f1               # |      9,083 |      9,083 |
-    bg      $f0, $f1, ble_else.32933    # |      9,083 |      9,083 |
-ble_then.32933:
+    bg      $f0, $f1, ble_else.22293    # |      9,083 |      9,083 |
+ble_then.22293:
     fmul    $f1, $fc1, $f14             # |         14 |         14 |
-    load    [$i22 + 118], $i21          # |         14 |         14 |
+    load    [$i20 + 118], $i19          # |         14 |         14 |
     jal     trace_diffuse_ray.2926, $ra4# |         14 |         14 |
-    li      116, $i24                   # |         14 |         14 |
+    li      116, $i22                   # |         14 |         14 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |         14 |         14 |
 .count b_cont
-    b       ble_cont.32933              # |         14 |         14 |
-ble_else.32933:
+    b       ble_cont.22293              # |         14 |         14 |
+ble_else.22293:
     fmul    $f1, $fc2, $f14             # |      9,069 |      9,069 |
-    load    [$i22 + 119], $i21          # |      9,069 |      9,069 |
+    load    [$i20 + 119], $i19          # |      9,069 |      9,069 |
     jal     trace_diffuse_ray.2926, $ra4# |      9,069 |      9,069 |
-    li      116, $i24                   # |      9,069 |      9,069 |
+    li      116, $i22                   # |      9,069 |      9,069 |
     jal     iter_trace_diffuse_rays.2929, $ra5# |      9,069 |      9,069 |
-ble_cont.32933:
-    load    [$i25 + 5], $i1             # |      9,083 |      9,083 |
+ble_cont.22293:
+    load    [$i23 + 5], $i1             # |      9,083 |      9,083 |
     load    [$i1 + 0], $i1              # |      9,083 |      9,083 |
     store   $fg1, [$i1 + 0]             # |      9,083 |      9,083 |
     store   $fg2, [$i1 + 1]             # |      9,083 |      9,083 |
     store   $fg3, [$i1 + 2]             # |      9,083 |      9,083 |
-    li      1, $i26                     # |      9,083 |      9,083 |
+    li      1, $i24                     # |      9,083 |      9,083 |
     jal     pretrace_diffuse_rays.2980, $ra6# |      9,083 |      9,083 |
-be_cont.32932:
-bge_cont.32931:
+be_cont.22292:
+bge_cont.22291:
 .count stack_move
     add     $sp, 2, $sp                 # |     16,384 |     16,384 |
-    sub     $i33, 1, $i33               # |     16,384 |     16,384 |
-    add     $i34, 1, $i34               # |     16,384 |     16,384 |
+    sub     $i32, 1, $i32               # |     16,384 |     16,384 |
+    add     $i33, 1, $i33               # |     16,384 |     16,384 |
 .count move_args
-    mov     $i35, $f1                   # |     16,384 |     16,384 |
+    mov     $i34, $f1                   # |     16,384 |     16,384 |
 .count stack_load
     load    [$sp - 2], $f2              # |     16,384 |     16,384 |
-    bl      $i34, 5, pretrace_pixels.2983# |     16,384 |     16,384 |
-    sub     $i34, 5, $i34               # |      3,277 |      3,277 |
+    bl      $i33, 5, pretrace_pixels.2983# |     16,384 |     16,384 |
+    sub     $i33, 5, $i33               # |      3,277 |      3,277 |
     b       pretrace_pixels.2983        # |      3,277 |      3,277 |
-bge_else.32929:
+bge_else.22289:
     jr      $ra7                        # |        128 |        128 |
 .end pretrace_pixels
 
 ######################################################################
-# scan_pixel($i32, $i33, $i34, $i35, $i36)
+# scan_pixel($i30, $i31, $i32, $i33, $i34)
 # $ra = $ra8
-# [$i1 - $i37]
+# [$i1 - $i34]
 # [$f1 - $f14]
 # [$ig2 - $ig3]
 # [$fg0 - $fg11, $fg15 - $fg16]
+# [$ra - $ra7]
 ######################################################################
 .begin scan_pixel
 scan_pixel.2994:
-    li      128, $i1                    # |      8,256 |      8,256 |
-    bg      $i1, $i32, ble_else.32935   # |      8,256 |      8,256 |
-ble_then.32935:
-    jr      $ra8                        # |         64 |         64 |
-ble_else.32935:
-    load    [$i35 + $i32], $i1          # |      8,192 |      8,192 |
-    load    [$i1 + 0], $i1              # |      8,192 |      8,192 |
-    load    [$i1 + 0], $fg4             # |      8,192 |      8,192 |
-    load    [$i1 + 1], $fg5             # |      8,192 |      8,192 |
-    load    [$i1 + 2], $fg6             # |      8,192 |      8,192 |
-    li      128, $i1                    # |      8,192 |      8,192 |
-    add     $i33, 1, $i37               # |      8,192 |      8,192 |
-    bg      $i1, $i37, ble_else.32936   # |      8,192 |      8,192 |
-ble_then.32936:
-    li      0, $i1                      # |         64 |         64 |
+    li      128, $i1                    # |     16,512 |     16,512 |
+    bg      $i1, $i30, ble_else.22295   # |     16,512 |     16,512 |
+ble_then.22295:
+    jr      $ra8                        # |        128 |        128 |
+ble_else.22295:
+    load    [$i33 + $i30], $i1          # |     16,384 |     16,384 |
+    load    [$i1 + 0], $i1              # |     16,384 |     16,384 |
+    load    [$i1 + 0], $fg4             # |     16,384 |     16,384 |
+    load    [$i1 + 1], $fg5             # |     16,384 |     16,384 |
+    load    [$i1 + 2], $fg6             # |     16,384 |     16,384 |
+    li      128, $i1                    # |     16,384 |     16,384 |
+    add     $i31, 1, $i2                # |     16,384 |     16,384 |
+    bg      $i1, $i2, ble_else.22296    # |     16,384 |     16,384 |
+ble_then.22296:
+    li      0, $i1                      # |        128 |        128 |
 .count b_cont
-    b       ble_cont.32936              # |         64 |         64 |
-ble_else.32936:
-    bg      $i33, 0, ble_else.32937     # |      8,128 |      8,128 |
-ble_then.32937:
-    li      0, $i1                      # |         64 |         64 |
+    b       ble_cont.22296              # |        128 |        128 |
+ble_else.22296:
+    bg      $i31, 0, ble_else.22297     # |     16,256 |     16,256 |
+ble_then.22297:
+    li      0, $i1                      # |        128 |        128 |
 .count b_cont
-    b       ble_cont.32937              # |         64 |         64 |
-ble_else.32937:
-    li      128, $i1                    # |      8,064 |      8,064 |
-    add     $i32, 1, $i2                # |      8,064 |      8,064 |
-    bg      $i1, $i2, ble_else.32938    # |      8,064 |      8,064 |
-ble_then.32938:
-    li      0, $i1                      # |         63 |         63 |
+    b       ble_cont.22297              # |        128 |        128 |
+ble_else.22297:
+    li      128, $i1                    # |     16,128 |     16,128 |
+    add     $i30, 1, $i2                # |     16,128 |     16,128 |
+    bg      $i1, $i2, ble_else.22298    # |     16,128 |     16,128 |
+ble_then.22298:
+    li      0, $i1                      # |        126 |        126 |
 .count b_cont
-    b       ble_cont.32938              # |         63 |         63 |
-ble_else.32938:
-    bg      $i32, 0, ble_else.32939     # |      8,001 |      8,001 |
-ble_then.32939:
-    li      0, $i1                      # |         63 |         63 |
+    b       ble_cont.22298              # |        126 |        126 |
+ble_else.22298:
+    bg      $i30, 0, ble_else.22299     # |     16,002 |     16,002 |
+ble_then.22299:
+    li      0, $i1                      # |        126 |        126 |
 .count b_cont
-    b       ble_cont.32939              # |         63 |         63 |
-ble_else.32939:
-    li      1, $i1                      # |      7,938 |      7,938 |
-ble_cont.32939:
-ble_cont.32938:
-ble_cont.32937:
-ble_cont.32936:
-    li      0, $i26                     # |      8,192 |      8,192 |
-    bne     $i1, 0, be_else.32940       # |      8,192 |      8,192 |
-be_then.32940:
-    load    [$i35 + $i32], $i30         # |        254 |        254 |
-    load    [$i30 + 2], $i1             # |        254 |        254 |
-    load    [$i1 + 0], $i1              # |        254 |        254 |
-    bl      $i1, 0, be_cont.32940       # |        254 |        254 |
-bge_then.32941:
-    load    [$i30 + 3], $i1             # |        254 |        254 |
-    load    [$i1 + 0], $i1              # |        254 |        254 |
-    bne     $i1, 0, be_else.32942       # |        254 |        254 |
-be_then.32942:
-    li      1, $i25                     # |        180 |        180 |
-    jal     do_without_neighbors.2951, $ra7# |        180 |        180 |
+    b       ble_cont.22299              # |        126 |        126 |
+ble_else.22299:
+    li      1, $i1                      # |     15,876 |     15,876 |
+ble_cont.22299:
+ble_cont.22298:
+ble_cont.22297:
+ble_cont.22296:
+    li      0, $i24                     # |     16,384 |     16,384 |
+    bne     $i1, 0, be_else.22300       # |     16,384 |     16,384 |
+be_then.22300:
+    load    [$i33 + $i30], $i28         # |        508 |        508 |
+    load    [$i28 + 2], $i1             # |        508 |        508 |
+    load    [$i1 + 0], $i1              # |        508 |        508 |
+    bl      $i1, 0, be_cont.22300       # |        508 |        508 |
+bge_then.22301:
+    load    [$i28 + 3], $i1             # |        508 |        508 |
+    load    [$i1 + 0], $i1              # |        508 |        508 |
+    bne     $i1, 0, be_else.22302       # |        508 |        508 |
+be_then.22302:
+    li      1, $i23                     # |        360 |        360 |
+    jal     do_without_neighbors.2951, $ra7# |        360 |        360 |
 .count b_cont
-    b       be_cont.32940               # |        180 |        180 |
-be_else.32942:
+    b       be_cont.22300               # |        360 |        360 |
+be_else.22302:
 .count move_args
-    mov     $i30, $i25                  # |         74 |         74 |
-    jal     calc_diffuse_using_1point.2942, $ra6# |         74 |         74 |
-    li      1, $i25                     # |         74 |         74 |
-    jal     do_without_neighbors.2951, $ra7# |         74 |         74 |
+    mov     $i28, $i23                  # |        148 |        148 |
+    jal     calc_diffuse_using_1point.2942, $ra6# |        148 |        148 |
+    li      1, $i23                     # |        148 |        148 |
+    jal     do_without_neighbors.2951, $ra7# |        148 |        148 |
 .count b_cont
-    b       be_cont.32940               # |         74 |         74 |
-be_else.32940:
-    load    [$i35 + $i32], $i1          # |      7,938 |      7,938 |
-    load    [$i1 + 2], $i2              # |      7,938 |      7,938 |
-    load    [$i2 + 0], $i2              # |      7,938 |      7,938 |
-    bl      $i2, 0, bge_cont.32943      # |      7,938 |      7,938 |
-bge_then.32943:
-    load    [$i34 + $i32], $i3          # |      7,938 |      7,938 |
-    load    [$i3 + 2], $i4              # |      7,938 |      7,938 |
-    load    [$i4 + 0], $i4              # |      7,938 |      7,938 |
-    bne     $i4, $i2, be_else.32944     # |      7,938 |      7,938 |
-be_then.32944:
-    load    [$i36 + $i32], $i4          # |      7,620 |      7,620 |
-    load    [$i4 + 2], $i4              # |      7,620 |      7,620 |
-    load    [$i4 + 0], $i4              # |      7,620 |      7,620 |
-    bne     $i4, $i2, be_else.32945     # |      7,620 |      7,620 |
-be_then.32945:
-    sub     $i32, 1, $i4                # |      7,330 |      7,330 |
-    load    [$i35 + $i4], $i4           # |      7,330 |      7,330 |
-    load    [$i4 + 2], $i4              # |      7,330 |      7,330 |
-    load    [$i4 + 0], $i4              # |      7,330 |      7,330 |
-    bne     $i4, $i2, be_else.32946     # |      7,330 |      7,330 |
-be_then.32946:
-    add     $i32, 1, $i4                # |      7,251 |      7,251 |
-    load    [$i35 + $i4], $i4           # |      7,251 |      7,251 |
-    load    [$i4 + 2], $i4              # |      7,251 |      7,251 |
-    load    [$i4 + 0], $i4              # |      7,251 |      7,251 |
-    bne     $i4, $i2, be_else.32947     # |      7,251 |      7,251 |
-be_then.32947:
-    li      1, $i2                      # |      7,171 |      7,171 |
+    b       be_cont.22300               # |        148 |        148 |
+be_else.22300:
+    load    [$i33 + $i30], $i1          # |     15,876 |     15,876 |
+    load    [$i1 + 2], $i2              # |     15,876 |     15,876 |
+    load    [$i2 + 0], $i2              # |     15,876 |     15,876 |
+    bl      $i2, 0, bge_cont.22303      # |     15,876 |     15,876 |
+bge_then.22303:
+    load    [$i32 + $i30], $i3          # |     15,876 |     15,876 |
+    load    [$i3 + 2], $i4              # |     15,876 |     15,876 |
+    load    [$i4 + 0], $i4              # |     15,876 |     15,876 |
+    bne     $i4, $i2, be_else.22304     # |     15,876 |     15,876 |
+be_then.22304:
+    load    [$i34 + $i30], $i4          # |     15,253 |     15,253 |
+    load    [$i4 + 2], $i4              # |     15,253 |     15,253 |
+    load    [$i4 + 0], $i4              # |     15,253 |     15,253 |
+    bne     $i4, $i2, be_else.22305     # |     15,253 |     15,253 |
+be_then.22305:
+    sub     $i30, 1, $i4                # |     14,657 |     14,657 |
+    load    [$i33 + $i4], $i4           # |     14,657 |     14,657 |
+    load    [$i4 + 2], $i4              # |     14,657 |     14,657 |
+    load    [$i4 + 0], $i4              # |     14,657 |     14,657 |
+    bne     $i4, $i2, be_else.22306     # |     14,657 |     14,657 |
+be_then.22306:
+    add     $i30, 1, $i4                # |     14,497 |     14,497 |
+    load    [$i33 + $i4], $i4           # |     14,497 |     14,497 |
+    load    [$i4 + 2], $i4              # |     14,497 |     14,497 |
+    load    [$i4 + 0], $i4              # |     14,497 |     14,497 |
+    bne     $i4, $i2, be_else.22307     # |     14,497 |     14,497 |
+be_then.22307:
+    li      1, $i2                      # |     14,333 |     14,333 |
 .count b_cont
-    b       be_cont.32944               # |      7,171 |      7,171 |
-be_else.32947:
-    li      0, $i2                      # |         80 |         80 |
+    b       be_cont.22304               # |     14,333 |     14,333 |
+be_else.22307:
+    li      0, $i2                      # |        164 |        164 |
 .count b_cont
-    b       be_cont.32944               # |         80 |         80 |
-be_else.32946:
-    li      0, $i2                      # |         79 |         79 |
+    b       be_cont.22304               # |        164 |        164 |
+be_else.22306:
+    li      0, $i2                      # |        160 |        160 |
 .count b_cont
-    b       be_cont.32944               # |         79 |         79 |
-be_else.32945:
-    li      0, $i2                      # |        290 |        290 |
+    b       be_cont.22304               # |        160 |        160 |
+be_else.22305:
+    li      0, $i2                      # |        596 |        596 |
 .count b_cont
-    b       be_cont.32944               # |        290 |        290 |
-be_else.32944:
-    li      0, $i2                      # |        318 |        318 |
-be_cont.32944:
-    bne     $i2, 0, be_else.32948       # |      7,938 |      7,938 |
-be_then.32948:
-    load    [$i35 + $i32], $i30         # |        767 |        767 |
-    load    [$i30 + 2], $i1             # |        767 |        767 |
-    load    [$i1 + 0], $i1              # |        767 |        767 |
-    bl      $i1, 0, be_cont.32948       # |        767 |        767 |
-bge_then.32949:
-    load    [$i30 + 3], $i1             # |        767 |        767 |
-    load    [$i1 + 0], $i1              # |        767 |        767 |
-    bne     $i1, 0, be_else.32950       # |        767 |        767 |
-be_then.32950:
-    li      1, $i25                     # |        155 |        155 |
-    jal     do_without_neighbors.2951, $ra7# |        155 |        155 |
+    b       be_cont.22304               # |        596 |        596 |
+be_else.22304:
+    li      0, $i2                      # |        623 |        623 |
+be_cont.22304:
+    bne     $i2, 0, be_else.22308       # |     15,876 |     15,876 |
+be_then.22308:
+    load    [$i33 + $i30], $i28         # |      1,543 |      1,543 |
+    load    [$i28 + 2], $i1             # |      1,543 |      1,543 |
+    load    [$i1 + 0], $i1              # |      1,543 |      1,543 |
+    bl      $i1, 0, be_cont.22308       # |      1,543 |      1,543 |
+bge_then.22309:
+    load    [$i28 + 3], $i1             # |      1,543 |      1,543 |
+    load    [$i1 + 0], $i1              # |      1,543 |      1,543 |
+    bne     $i1, 0, be_else.22310       # |      1,543 |      1,543 |
+be_then.22310:
+    li      1, $i23                     # |        301 |        301 |
+    jal     do_without_neighbors.2951, $ra7# |        301 |        301 |
 .count b_cont
-    b       be_cont.32948               # |        155 |        155 |
-be_else.32950:
+    b       be_cont.22308               # |        301 |        301 |
+be_else.22310:
 .count move_args
-    mov     $i30, $i25                  # |        612 |        612 |
-    jal     calc_diffuse_using_1point.2942, $ra6# |        612 |        612 |
-    li      1, $i25                     # |        612 |        612 |
-    jal     do_without_neighbors.2951, $ra7# |        612 |        612 |
+    mov     $i28, $i23                  # |      1,242 |      1,242 |
+    jal     calc_diffuse_using_1point.2942, $ra6# |      1,242 |      1,242 |
+    li      1, $i23                     # |      1,242 |      1,242 |
+    jal     do_without_neighbors.2951, $ra7# |      1,242 |      1,242 |
 .count b_cont
-    b       be_cont.32948               # |        612 |        612 |
-be_else.32948:
-    load    [$i1 + 3], $i1              # |      7,171 |      7,171 |
-    load    [$i1 + 0], $i1              # |      7,171 |      7,171 |
+    b       be_cont.22308               # |      1,242 |      1,242 |
+be_else.22308:
+    load    [$i1 + 3], $i1              # |     14,333 |     14,333 |
+    load    [$i1 + 0], $i1              # |     14,333 |     14,333 |
 .count move_args
-    mov     $i36, $i5                   # |      7,171 |      7,171 |
+    mov     $i34, $i5                   # |     14,333 |     14,333 |
 .count move_args
-    mov     $i35, $i4                   # |      7,171 |      7,171 |
+    mov     $i33, $i4                   # |     14,333 |     14,333 |
 .count move_args
-    mov     $i32, $i2                   # |      7,171 |      7,171 |
-    li      1, $i30                     # |      7,171 |      7,171 |
-    bne     $i1, 0, be_else.32951       # |      7,171 |      7,171 |
-be_then.32951:
+    mov     $i30, $i2                   # |     14,333 |     14,333 |
+    li      1, $i28                     # |     14,333 |     14,333 |
+    bne     $i1, 0, be_else.22311       # |     14,333 |     14,333 |
+be_then.22311:
 .count move_args
-    mov     $i34, $i3                   # |      3,318 |      3,318 |
-    jal     try_exploit_neighbors.2967, $ra7# |      3,318 |      3,318 |
+    mov     $i32, $i3                   # |      6,640 |      6,640 |
+    jal     try_exploit_neighbors.2967, $ra7# |      6,640 |      6,640 |
 .count b_cont
-    b       be_cont.32951               # |      3,318 |      3,318 |
-be_else.32951:
-    load    [$i3 + 5], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $fg1             # |      3,853 |      3,853 |
-    load    [$i1 + 1], $fg2             # |      3,853 |      3,853 |
-    load    [$i1 + 2], $fg3             # |      3,853 |      3,853 |
-    sub     $i32, 1, $i1                # |      3,853 |      3,853 |
-    load    [$i35 + $i1], $i1           # |      3,853 |      3,853 |
-    load    [$i1 + 5], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $f1              # |      3,853 |      3,853 |
-    fadd    $fg1, $f1, $fg1             # |      3,853 |      3,853 |
-    load    [$i1 + 1], $f1              # |      3,853 |      3,853 |
-    fadd    $fg2, $f1, $fg2             # |      3,853 |      3,853 |
-    load    [$i1 + 2], $f1              # |      3,853 |      3,853 |
-    fadd    $fg3, $f1, $fg3             # |      3,853 |      3,853 |
-    load    [$i35 + $i32], $i1          # |      3,853 |      3,853 |
-    load    [$i1 + 5], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $f1              # |      3,853 |      3,853 |
-    fadd    $fg1, $f1, $fg1             # |      3,853 |      3,853 |
-    load    [$i1 + 1], $f1              # |      3,853 |      3,853 |
-    fadd    $fg2, $f1, $fg2             # |      3,853 |      3,853 |
-    load    [$i1 + 2], $f1              # |      3,853 |      3,853 |
-    fadd    $fg3, $f1, $fg3             # |      3,853 |      3,853 |
-    add     $i32, 1, $i1                # |      3,853 |      3,853 |
-    load    [$i35 + $i1], $i1           # |      3,853 |      3,853 |
-    load    [$i1 + 5], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $f1              # |      3,853 |      3,853 |
-    fadd    $fg1, $f1, $fg1             # |      3,853 |      3,853 |
-    load    [$i1 + 1], $f1              # |      3,853 |      3,853 |
-    fadd    $fg2, $f1, $fg2             # |      3,853 |      3,853 |
-    load    [$i1 + 2], $f1              # |      3,853 |      3,853 |
-    fadd    $fg3, $f1, $fg3             # |      3,853 |      3,853 |
-    load    [$i36 + $i32], $i1          # |      3,853 |      3,853 |
-    load    [$i1 + 5], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $f1              # |      3,853 |      3,853 |
-    fadd    $fg1, $f1, $fg1             # |      3,853 |      3,853 |
-    load    [$i1 + 1], $f1              # |      3,853 |      3,853 |
-    fadd    $fg2, $f1, $fg2             # |      3,853 |      3,853 |
-    load    [$i1 + 2], $f1              # |      3,853 |      3,853 |
-    fadd    $fg3, $f1, $fg3             # |      3,853 |      3,853 |
-    load    [$i35 + $i32], $i1          # |      3,853 |      3,853 |
-    load    [$i1 + 4], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $i1              # |      3,853 |      3,853 |
-    load    [$i1 + 0], $f1              # |      3,853 |      3,853 |
-    fmul    $f1, $fg1, $f1              # |      3,853 |      3,853 |
-    fadd    $fg4, $f1, $fg4             # |      3,853 |      3,853 |
-    load    [$i1 + 1], $f1              # |      3,853 |      3,853 |
-    fmul    $f1, $fg2, $f1              # |      3,853 |      3,853 |
-    fadd    $fg5, $f1, $fg5             # |      3,853 |      3,853 |
-    load    [$i1 + 2], $f1              # |      3,853 |      3,853 |
-    fmul    $f1, $fg3, $f1              # |      3,853 |      3,853 |
-    fadd    $fg6, $f1, $fg6             # |      3,853 |      3,853 |
+    b       be_cont.22311               # |      6,640 |      6,640 |
+be_else.22311:
+    load    [$i3 + 5], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $fg1             # |      7,693 |      7,693 |
+    load    [$i1 + 1], $fg2             # |      7,693 |      7,693 |
+    load    [$i1 + 2], $fg3             # |      7,693 |      7,693 |
+    sub     $i30, 1, $i1                # |      7,693 |      7,693 |
+    load    [$i33 + $i1], $i1           # |      7,693 |      7,693 |
+    load    [$i1 + 5], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $f1              # |      7,693 |      7,693 |
+    fadd    $fg1, $f1, $fg1             # |      7,693 |      7,693 |
+    load    [$i1 + 1], $f1              # |      7,693 |      7,693 |
+    fadd    $fg2, $f1, $fg2             # |      7,693 |      7,693 |
+    load    [$i1 + 2], $f1              # |      7,693 |      7,693 |
+    fadd    $fg3, $f1, $fg3             # |      7,693 |      7,693 |
+    load    [$i33 + $i30], $i1          # |      7,693 |      7,693 |
+    load    [$i1 + 5], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $f1              # |      7,693 |      7,693 |
+    fadd    $fg1, $f1, $fg1             # |      7,693 |      7,693 |
+    load    [$i1 + 1], $f1              # |      7,693 |      7,693 |
+    fadd    $fg2, $f1, $fg2             # |      7,693 |      7,693 |
+    load    [$i1 + 2], $f1              # |      7,693 |      7,693 |
+    fadd    $fg3, $f1, $fg3             # |      7,693 |      7,693 |
+    add     $i30, 1, $i1                # |      7,693 |      7,693 |
+    load    [$i33 + $i1], $i1           # |      7,693 |      7,693 |
+    load    [$i1 + 5], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $f1              # |      7,693 |      7,693 |
+    fadd    $fg1, $f1, $fg1             # |      7,693 |      7,693 |
+    load    [$i1 + 1], $f1              # |      7,693 |      7,693 |
+    fadd    $fg2, $f1, $fg2             # |      7,693 |      7,693 |
+    load    [$i1 + 2], $f1              # |      7,693 |      7,693 |
+    fadd    $fg3, $f1, $fg3             # |      7,693 |      7,693 |
+    load    [$i34 + $i30], $i1          # |      7,693 |      7,693 |
+    load    [$i1 + 5], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $f1              # |      7,693 |      7,693 |
+    fadd    $fg1, $f1, $fg1             # |      7,693 |      7,693 |
+    load    [$i1 + 1], $f1              # |      7,693 |      7,693 |
+    fadd    $fg2, $f1, $fg2             # |      7,693 |      7,693 |
+    load    [$i1 + 2], $f1              # |      7,693 |      7,693 |
+    fadd    $fg3, $f1, $fg3             # |      7,693 |      7,693 |
+    load    [$i33 + $i30], $i1          # |      7,693 |      7,693 |
+    load    [$i1 + 4], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $i1              # |      7,693 |      7,693 |
+    load    [$i1 + 0], $f1              # |      7,693 |      7,693 |
+    fmul    $f1, $fg1, $f1              # |      7,693 |      7,693 |
+    fadd    $fg4, $f1, $fg4             # |      7,693 |      7,693 |
+    load    [$i1 + 1], $f1              # |      7,693 |      7,693 |
+    fmul    $f1, $fg2, $f1              # |      7,693 |      7,693 |
+    fadd    $fg5, $f1, $fg5             # |      7,693 |      7,693 |
+    load    [$i1 + 2], $f1              # |      7,693 |      7,693 |
+    fmul    $f1, $fg3, $f1              # |      7,693 |      7,693 |
+    fadd    $fg6, $f1, $fg6             # |      7,693 |      7,693 |
 .count move_args
-    mov     $i34, $i3                   # |      3,853 |      3,853 |
-    jal     try_exploit_neighbors.2967, $ra7# |      3,853 |      3,853 |
-be_cont.32951:
-be_cont.32948:
-bge_cont.32943:
-be_cont.32940:
-    li      255, $i4                    # |      8,192 |      8,192 |
-.count move_args
-    mov     $fg4, $f2                   # |      8,192 |      8,192 |
-    call    ext_int_of_float            # |      8,192 |      8,192 |
-    bg      $i1, $i4, ble_else.32952    # |      8,192 |      8,192 |
-ble_then.32952:
-    bl      $i1, 0, bge_else.32953      # |      5,132 |      5,132 |
-bge_then.32953:
-.count move_args
-    mov     $i1, $i2                    # |      5,132 |      5,132 |
-    call    ext_write                   # |      5,132 |      5,132 |
-.count b_cont
-    b       ble_cont.32952              # |      5,132 |      5,132 |
-bge_else.32953:
-    li      0, $i2
-    call    ext_write
-.count b_cont
-    b       ble_cont.32952
-ble_else.32952:
-    li      255, $i2                    # |      3,060 |      3,060 |
-    call    ext_write                   # |      3,060 |      3,060 |
-ble_cont.32952:
-    li      255, $i4                    # |      8,192 |      8,192 |
-.count move_args
-    mov     $fg5, $f2                   # |      8,192 |      8,192 |
-    call    ext_int_of_float            # |      8,192 |      8,192 |
-    bg      $i1, $i4, ble_else.32954    # |      8,192 |      8,192 |
-ble_then.32954:
-    bl      $i1, 0, bge_else.32955      # |      6,128 |      6,128 |
-bge_then.32955:
-.count move_args
-    mov     $i1, $i2                    # |      6,128 |      6,128 |
-    call    ext_write                   # |      6,128 |      6,128 |
-.count b_cont
-    b       ble_cont.32954              # |      6,128 |      6,128 |
-bge_else.32955:
-    li      0, $i2
-    call    ext_write
-.count b_cont
-    b       ble_cont.32954
-ble_else.32954:
-    li      255, $i2                    # |      2,064 |      2,064 |
-    call    ext_write                   # |      2,064 |      2,064 |
-ble_cont.32954:
-    li      255, $i4                    # |      8,192 |      8,192 |
-.count move_args
-    mov     $fg6, $f2                   # |      8,192 |      8,192 |
-    call    ext_int_of_float            # |      8,192 |      8,192 |
-    bg      $i1, $i4, ble_else.32956    # |      8,192 |      8,192 |
-ble_then.32956:
-    bl      $i1, 0, bge_else.32957      # |      5,450 |      5,450 |
-bge_then.32957:
-.count move_args
-    mov     $i1, $i2                    # |      5,450 |      5,450 |
-    call    ext_write                   # |      5,450 |      5,450 |
-.count b_cont
-    b       ble_cont.32956              # |      5,450 |      5,450 |
-bge_else.32957:
-    li      0, $i2
-    call    ext_write
-.count b_cont
-    b       ble_cont.32956
-ble_else.32956:
-    li      255, $i2                    # |      2,742 |      2,742 |
-    call    ext_write                   # |      2,742 |      2,742 |
-ble_cont.32956:
-    li      128, $i1                    # |      8,192 |      8,192 |
-    add     $i32, 1, $i32               # |      8,192 |      8,192 |
-    bg      $i1, $i32, ble_else.32958   # |      8,192 |      8,192 |
-ble_then.32958:
-    jr      $ra8                        # |         64 |         64 |
-ble_else.32958:
-    load    [$i35 + $i32], $i1          # |      8,128 |      8,128 |
-    load    [$i1 + 0], $i1              # |      8,128 |      8,128 |
-    load    [$i1 + 0], $fg4             # |      8,128 |      8,128 |
-    load    [$i1 + 1], $fg5             # |      8,128 |      8,128 |
-    load    [$i1 + 2], $fg6             # |      8,128 |      8,128 |
-    li      128, $i1                    # |      8,128 |      8,128 |
-    bg      $i1, $i37, ble_else.32959   # |      8,128 |      8,128 |
-ble_then.32959:
-    li      0, $i1                      # |         64 |         64 |
-.count b_cont
-    b       ble_cont.32959              # |         64 |         64 |
-ble_else.32959:
-    bg      $i33, 0, ble_else.32960     # |      8,064 |      8,064 |
-ble_then.32960:
-    li      0, $i1                      # |         63 |         63 |
-.count b_cont
-    b       ble_cont.32960              # |         63 |         63 |
-ble_else.32960:
-    li      128, $i1                    # |      8,001 |      8,001 |
-    add     $i32, 1, $i2                # |      8,001 |      8,001 |
-    bg      $i1, $i2, ble_else.32961    # |      8,001 |      8,001 |
-ble_then.32961:
-    li      0, $i1                      # |         63 |         63 |
-.count b_cont
-    b       ble_cont.32961              # |         63 |         63 |
-ble_else.32961:
-    bg      $i32, 0, ble_else.32962     # |      7,938 |      7,938 |
-ble_then.32962:
-    li      0, $i1
-.count b_cont
-    b       ble_cont.32962
-ble_else.32962:
-    li      1, $i1                      # |      7,938 |      7,938 |
-ble_cont.32962:
-ble_cont.32961:
-ble_cont.32960:
-ble_cont.32959:
-    bne     $i1, 0, be_else.32963       # |      8,128 |      8,128 |
-be_then.32963:
-    load    [$i35 + $i32], $i30         # |        190 |        190 |
-    li      0, $i26                     # |        190 |        190 |
-    load    [$i30 + 2], $i1             # |        190 |        190 |
-    load    [$i1 + 0], $i1              # |        190 |        190 |
-    bl      $i1, 0, be_cont.32963       # |        190 |        190 |
-bge_then.32964:
-    load    [$i30 + 3], $i1             # |        190 |        190 |
-    load    [$i1 + 0], $i1              # |        190 |        190 |
-    bne     $i1, 0, be_else.32965       # |        190 |        190 |
-be_then.32965:
-    li      1, $i25                     # |        123 |        123 |
-    jal     do_without_neighbors.2951, $ra7# |        123 |        123 |
-.count b_cont
-    b       be_cont.32963               # |        123 |        123 |
-be_else.32965:
-.count move_args
-    mov     $i30, $i25                  # |         67 |         67 |
-    jal     calc_diffuse_using_1point.2942, $ra6# |         67 |         67 |
-    li      1, $i25                     # |         67 |         67 |
-    jal     do_without_neighbors.2951, $ra7# |         67 |         67 |
-.count b_cont
-    b       be_cont.32963               # |         67 |         67 |
-be_else.32963:
-    li      0, $i30                     # |      7,938 |      7,938 |
-.count move_args
-    mov     $i32, $i2                   # |      7,938 |      7,938 |
-.count move_args
-    mov     $i34, $i3                   # |      7,938 |      7,938 |
-.count move_args
-    mov     $i35, $i4                   # |      7,938 |      7,938 |
-.count move_args
-    mov     $i36, $i5                   # |      7,938 |      7,938 |
-    jal     try_exploit_neighbors.2967, $ra7# |      7,938 |      7,938 |
-be_cont.32963:
-    li      255, $i4                    # |      8,128 |      8,128 |
-.count move_args
-    mov     $fg4, $f2                   # |      8,128 |      8,128 |
-    call    ext_int_of_float            # |      8,128 |      8,128 |
-    bg      $i1, $i4, ble_else.32966    # |      8,128 |      8,128 |
-ble_then.32966:
-    bl      $i1, 0, bge_else.32967      # |      5,076 |      5,076 |
-bge_then.32967:
-    mov     $i1, $i2                    # |      5,076 |      5,076 |
-.count b_cont
-    b       ble_cont.32966              # |      5,076 |      5,076 |
-bge_else.32967:
-    li      0, $i2
-.count b_cont
-    b       ble_cont.32966
-ble_else.32966:
-    li      255, $i2                    # |      3,052 |      3,052 |
-ble_cont.32966:
-    call    ext_write                   # |      8,128 |      8,128 |
-    li      255, $i4                    # |      8,128 |      8,128 |
-.count move_args
-    mov     $fg5, $f2                   # |      8,128 |      8,128 |
-    call    ext_int_of_float            # |      8,128 |      8,128 |
-    bg      $i1, $i4, ble_else.32968    # |      8,128 |      8,128 |
-ble_then.32968:
-    bl      $i1, 0, bge_else.32969      # |      6,031 |      6,031 |
-bge_then.32969:
-    mov     $i1, $i2                    # |      6,031 |      6,031 |
-.count b_cont
-    b       ble_cont.32968              # |      6,031 |      6,031 |
-bge_else.32969:
-    li      0, $i2
-.count b_cont
-    b       ble_cont.32968
-ble_else.32968:
-    li      255, $i2                    # |      2,097 |      2,097 |
-ble_cont.32968:
-    call    ext_write                   # |      8,128 |      8,128 |
-    li      255, $i4                    # |      8,128 |      8,128 |
-.count move_args
-    mov     $fg6, $f2                   # |      8,128 |      8,128 |
-    call    ext_int_of_float            # |      8,128 |      8,128 |
-    bg      $i1, $i4, ble_else.32970    # |      8,128 |      8,128 |
-ble_then.32970:
-    bl      $i1, 0, bge_else.32971      # |      5,384 |      5,384 |
-bge_then.32971:
-    mov     $i1, $i2                    # |      5,384 |      5,384 |
-.count b_cont
-    b       ble_cont.32970              # |      5,384 |      5,384 |
-bge_else.32971:
-    li      0, $i2
-.count b_cont
-    b       ble_cont.32970
-ble_else.32970:
-    li      255, $i2                    # |      2,744 |      2,744 |
-ble_cont.32970:
-    call    ext_write                   # |      8,128 |      8,128 |
-    add     $i32, 1, $i32               # |      8,128 |      8,128 |
-    b       scan_pixel.2994             # |      8,128 |      8,128 |
+    mov     $i32, $i3                   # |      7,693 |      7,693 |
+    jal     try_exploit_neighbors.2967, $ra7# |      7,693 |      7,693 |
+be_cont.22311:
+be_cont.22308:
+bge_cont.22303:
+be_cont.22300:
+    call    write_rgb.2978              # |     16,384 |     16,384 |
+    add     $i30, 1, $i30               # |     16,384 |     16,384 |
+    b       scan_pixel.2994             # |     16,384 |     16,384 |
 .end scan_pixel
 
 ######################################################################
-# scan_line($i37, $i38, $i39, $i40, $i41)
+# scan_line($i35, $i36, $i37, $i38, $i39)
 # $ra = $ra9
-# [$i1 - $i42]
+# [$i1 - $i39]
 # [$f1 - $f18]
 # [$ig2 - $ig3]
-# [$fg0 - $fg11, $fg15 - $fg16, $fg21 - $fg23]
+# [$fg0 - $fg11, $fg15 - $fg19]
+# [$ra - $ra8]
 ######################################################################
 .begin scan_line
 scan_line.3000:
-    li      128, $i1                    # |         65 |         65 |
-    bg      $i1, $i37, ble_else.32972   # |         65 |         65 |
-ble_then.32972:
+    li      128, $i1                    # |        129 |        129 |
+    bg      $i1, $i35, ble_else.22312   # |        129 |        129 |
+ble_then.22312:
     jr      $ra9                        # |          1 |          1 |
-ble_else.32972:
-    bge     $i37, 127, bl_cont.32973    # |         64 |         64 |
-bl_then.32973:
-    add     $i37, 1, $i1                # |         64 |         64 |
-    sub     $i1, 64, $i2                # |         64 |         64 |
-    call    ext_float_of_int            # |         64 |         64 |
-    fmul    $fg17, $f1, $f1             # |         64 |         64 |
-    fmul    $f1, $fg24, $f2             # |         64 |         64 |
-    fadd    $f2, $fg18, $f18            # |         64 |         64 |
-    load    [ext_screeny_dir + 1], $f2  # |         64 |         64 |
-    fmul    $f1, $f2, $f2               # |         64 |         64 |
-    fadd    $f2, $fg19, $f3             # |         64 |         64 |
-    load    [ext_screeny_dir + 2], $f2  # |         64 |         64 |
-    fmul    $f1, $f2, $f1               # |         64 |         64 |
-    fadd    $f1, $fg20, $f2             # |         64 |         64 |
-    li      127, $i33                   # |         64 |         64 |
+ble_else.22312:
+    bge     $i35, 127, bl_cont.22313    # |        128 |        128 |
+bl_then.22313:
+    add     $i35, 1, $i1                # |        127 |        127 |
+    sub     $i1, 64, $i2                # |        127 |        127 |
+    call    ext_float_of_int            # |        127 |        127 |
+    fmul    $f1, $fg23, $f2             # |        127 |        127 |
+    fadd    $f2, $fg20, $f18            # |        127 |        127 |
+    fmul    $f1, $fg24, $f2             # |        127 |        127 |
+    fadd    $f2, $fg21, $f3             # |        127 |        127 |
+    load    [ext_screeny_dir + 2], $f2  # |        127 |        127 |
+    fmul    $f1, $f2, $f1               # |        127 |        127 |
+    fadd    $f1, $fg22, $f2             # |        127 |        127 |
+    li      127, $i32                   # |        127 |        127 |
 .count move_args
-    mov     $i40, $i32                  # |         64 |         64 |
+    mov     $i38, $i31                  # |        127 |        127 |
 .count move_args
-    mov     $i41, $i34                  # |         64 |         64 |
+    mov     $i39, $i33                  # |        127 |        127 |
 .count move_args
-    mov     $f3, $f1                    # |         64 |         64 |
-    jal     pretrace_pixels.2983, $ra7  # |         64 |         64 |
-bl_cont.32973:
-    li      0, $i2                      # |         64 |         64 |
-    load    [$i39 + 0], $i1             # |         64 |         64 |
-    load    [$i1 + 0], $i1              # |         64 |         64 |
-    load    [$i1 + 0], $fg4             # |         64 |         64 |
-    load    [$i1 + 1], $fg5             # |         64 |         64 |
-    load    [$i1 + 2], $fg6             # |         64 |         64 |
-    li      128, $i1                    # |         64 |         64 |
-    add     $i37, 1, $i42               # |         64 |         64 |
-    bg      $i1, $i42, ble_else.32974   # |         64 |         64 |
-ble_then.32974:
-    li      0, $i1
-.count b_cont
-    b       ble_cont.32974
-ble_else.32974:
-    li      0, $i1                      # |         64 |         64 |
-ble_cont.32974:
-    bne     $i1, 0, be_else.32975       # |         64 |         64 |
-be_then.32975:
-    load    [$i39 + 0], $i30            # |         64 |         64 |
-    li      0, $i26                     # |         64 |         64 |
-    load    [$i30 + 2], $i1             # |         64 |         64 |
-    load    [$i1 + 0], $i1              # |         64 |         64 |
-    bl      $i1, 0, be_cont.32975       # |         64 |         64 |
-bge_then.32976:
-    load    [$i30 + 3], $i1             # |         64 |         64 |
-    load    [$i1 + 0], $i1              # |         64 |         64 |
-    bne     $i1, 0, be_else.32977       # |         64 |         64 |
-be_then.32977:
-    li      1, $i25                     # |         57 |         57 |
-    jal     do_without_neighbors.2951, $ra7# |         57 |         57 |
-.count b_cont
-    b       be_cont.32975               # |         57 |         57 |
-be_else.32977:
+    mov     $f3, $f1                    # |        127 |        127 |
+    jal     pretrace_pixels.2983, $ra7  # |        127 |        127 |
+bl_cont.22313:
+    li      0, $i30                     # |        128 |        128 |
 .count move_args
-    mov     $i30, $i25                  # |          7 |          7 |
-    jal     calc_diffuse_using_1point.2942, $ra6# |          7 |          7 |
-    li      1, $i25                     # |          7 |          7 |
-    jal     do_without_neighbors.2951, $ra7# |          7 |          7 |
-.count b_cont
-    b       be_cont.32975               # |          7 |          7 |
-be_else.32975:
-    li      0, $i30
+    mov     $i35, $i31                  # |        128 |        128 |
 .count move_args
-    mov     $i38, $i3
+    mov     $i36, $i32                  # |        128 |        128 |
 .count move_args
-    mov     $i39, $i4
+    mov     $i37, $i33                  # |        128 |        128 |
 .count move_args
-    mov     $i40, $i5
-    jal     try_exploit_neighbors.2967, $ra7
-be_cont.32975:
-    li      255, $i4                    # |         64 |         64 |
+    mov     $i38, $i34                  # |        128 |        128 |
+    jal     scan_pixel.2994, $ra8       # |        128 |        128 |
+    add     $i35, 1, $i35               # |        128 |        128 |
+    add     $i39, 2, $i39               # |        128 |        128 |
 .count move_args
-    mov     $fg4, $f2                   # |         64 |         64 |
-    call    ext_int_of_float            # |         64 |         64 |
-    bg      $i1, $i4, ble_else.32978    # |         64 |         64 |
-ble_then.32978:
-    bl      $i1, 0, bge_else.32979      # |         47 |         47 |
-bge_then.32979:
-    mov     $i1, $i2                    # |         47 |         47 |
-.count b_cont
-    b       ble_cont.32978              # |         47 |         47 |
-bge_else.32979:
-    li      0, $i2
-.count b_cont
-    b       ble_cont.32978
-ble_else.32978:
-    li      255, $i2                    # |         17 |         17 |
-ble_cont.32978:
-    call    ext_write                   # |         64 |         64 |
-    li      255, $i4                    # |         64 |         64 |
+    mov     $i36, $tmp                  # |        128 |        128 |
 .count move_args
-    mov     $fg5, $f2                   # |         64 |         64 |
-    call    ext_int_of_float            # |         64 |         64 |
-    bg      $i1, $i4, ble_else.32980    # |         64 |         64 |
-ble_then.32980:
-    bl      $i1, 0, bge_else.32981      # |         56 |         56 |
-bge_then.32981:
-    mov     $i1, $i2                    # |         56 |         56 |
-.count b_cont
-    b       ble_cont.32980              # |         56 |         56 |
-bge_else.32981:
-    li      0, $i2
-.count b_cont
-    b       ble_cont.32980
-ble_else.32980:
-    li      255, $i2                    # |          8 |          8 |
-ble_cont.32980:
-    call    ext_write                   # |         64 |         64 |
-    li      255, $i4                    # |         64 |         64 |
+    mov     $i37, $i36                  # |        128 |        128 |
 .count move_args
-    mov     $fg6, $f2                   # |         64 |         64 |
-    call    ext_int_of_float            # |         64 |         64 |
-    bg      $i1, $i4, ble_else.32982    # |         64 |         64 |
-ble_then.32982:
-    bl      $i1, 0, bge_else.32983      # |         59 |         59 |
-bge_then.32983:
-    mov     $i1, $i2                    # |         59 |         59 |
-.count b_cont
-    b       ble_cont.32982              # |         59 |         59 |
-bge_else.32983:
-    li      0, $i2
-.count b_cont
-    b       ble_cont.32982
-ble_else.32982:
-    li      255, $i2                    # |          5 |          5 |
-ble_cont.32982:
-    call    ext_write                   # |         64 |         64 |
-    li      1, $i32                     # |         64 |         64 |
+    mov     $i38, $i37                  # |        128 |        128 |
 .count move_args
-    mov     $i37, $i33                  # |         64 |         64 |
-.count move_args
-    mov     $i38, $i34                  # |         64 |         64 |
-.count move_args
-    mov     $i39, $i35                  # |         64 |         64 |
-.count move_args
-    mov     $i40, $i36                  # |         64 |         64 |
-    jal     scan_pixel.2994, $ra8       # |         64 |         64 |
-    li      128, $i1                    # |         64 |         64 |
-    bg      $i1, $i42, ble_else.32984   # |         64 |         64 |
-ble_then.32984:
-    jr      $ra9
-ble_else.32984:
-    add     $i41, 2, $i1                # |         64 |         64 |
-    bl      $i1, 5, bge_else.32985      # |         64 |         64 |
-bge_then.32985:
-    sub     $i1, 5, $i41                # |         25 |         25 |
-.count b_cont
-    b       bge_cont.32985              # |         25 |         25 |
-bge_else.32985:
-    mov     $i1, $i41                   # |         39 |         39 |
-bge_cont.32985:
-    bge     $i42, 127, bl_cont.32986    # |         64 |         64 |
-bl_then.32986:
-    add     $i42, 1, $i1                # |         63 |         63 |
-    li      127, $i33                   # |         63 |         63 |
-    sub     $i1, 64, $i2                # |         63 |         63 |
-    call    ext_float_of_int            # |         63 |         63 |
-    fmul    $fg17, $f1, $f1             # |         63 |         63 |
-    fmul    $f1, $fg24, $f2             # |         63 |         63 |
-    fadd    $f2, $fg18, $f18            # |         63 |         63 |
-    load    [ext_screeny_dir + 1], $f2  # |         63 |         63 |
-    fmul    $f1, $f2, $f2               # |         63 |         63 |
-    fadd    $f2, $fg19, $f3             # |         63 |         63 |
-    load    [ext_screeny_dir + 2], $f2  # |         63 |         63 |
-    fmul    $f1, $f2, $f1               # |         63 |         63 |
-    fadd    $f1, $fg20, $f2             # |         63 |         63 |
-.count move_args
-    mov     $i38, $i32                  # |         63 |         63 |
-.count move_args
-    mov     $i41, $i34                  # |         63 |         63 |
-.count move_args
-    mov     $f3, $f1                    # |         63 |         63 |
-    jal     pretrace_pixels.2983, $ra7  # |         63 |         63 |
-bl_cont.32986:
-    li      0, $i32                     # |         64 |         64 |
-.count move_args
-    mov     $i42, $i33                  # |         64 |         64 |
-.count move_args
-    mov     $i39, $i34                  # |         64 |         64 |
-.count move_args
-    mov     $i40, $i35                  # |         64 |         64 |
-.count move_args
-    mov     $i38, $i36                  # |         64 |         64 |
-    jal     scan_pixel.2994, $ra8       # |         64 |         64 |
-    add     $i42, 1, $i37               # |         64 |         64 |
-    add     $i41, 2, $i41               # |         64 |         64 |
-.count move_args
-    mov     $i38, $tmp                  # |         64 |         64 |
-.count move_args
-    mov     $i40, $i38                  # |         64 |         64 |
-.count move_args
-    mov     $i39, $i40                  # |         64 |         64 |
-.count move_args
-    mov     $tmp, $i39                  # |         64 |         64 |
-    bl      $i41, 5, scan_line.3000     # |         64 |         64 |
-    sub     $i41, 5, $i41               # |         26 |         26 |
-    b       scan_line.3000              # |         26 |         26 |
+    mov     $tmp, $i38                  # |        128 |        128 |
+    bl      $i39, 5, scan_line.3000     # |        128 |        128 |
+    sub     $i39, 5, $i39               # |         51 |         51 |
+    b       scan_line.3000              # |         51 |         51 |
 .end scan_line
 
 ######################################################################
-# $i1 = create_pixel()
+# $i1 = create_float5x3array()
 # $ra = $ra1
+# [$i1 - $i4]
+# [$f2]
+# []
+# []
+# [$ra]
+######################################################################
+.begin create_float5x3array
+create_float5x3array.3006:
+    li      3, $i2                      # |      1,536 |      1,536 |
+.count move_args
+    mov     $f0, $f2                    # |      1,536 |      1,536 |
+    call    ext_create_array_float      # |      1,536 |      1,536 |
+    li      5, $i2                      # |      1,536 |      1,536 |
+.count move_args
+    mov     $i1, $i3                    # |      1,536 |      1,536 |
+    call    ext_create_array_int        # |      1,536 |      1,536 |
+.count move_ret
+    mov     $i1, $i4                    # |      1,536 |      1,536 |
+    li      3, $i2                      # |      1,536 |      1,536 |
+.count move_args
+    mov     $f0, $f2                    # |      1,536 |      1,536 |
+    call    ext_create_array_float      # |      1,536 |      1,536 |
+    store   $i1, [$i4 + 1]              # |      1,536 |      1,536 |
+    li      3, $i2                      # |      1,536 |      1,536 |
+.count move_args
+    mov     $f0, $f2                    # |      1,536 |      1,536 |
+    call    ext_create_array_float      # |      1,536 |      1,536 |
+    store   $i1, [$i4 + 2]              # |      1,536 |      1,536 |
+    li      3, $i2                      # |      1,536 |      1,536 |
+.count move_args
+    mov     $f0, $f2                    # |      1,536 |      1,536 |
+    call    ext_create_array_float      # |      1,536 |      1,536 |
+    store   $i1, [$i4 + 3]              # |      1,536 |      1,536 |
+    li      3, $i2                      # |      1,536 |      1,536 |
+.count move_args
+    mov     $f0, $f2                    # |      1,536 |      1,536 |
+    call    ext_create_array_float      # |      1,536 |      1,536 |
+    store   $i1, [$i4 + 4]              # |      1,536 |      1,536 |
+    mov     $i4, $i1                    # |      1,536 |      1,536 |
+    jr      $ra1                        # |      1,536 |      1,536 |
+.end create_float5x3array
+
+######################################################################
+# $i1 = create_pixel()
+# $ra = $ra2
 # [$i1 - $i11]
 # [$f2]
 # []
 # []
+# [$ra - $ra1]
 ######################################################################
 .begin create_pixel
 create_pixel.3008:
-    li      3, $i2                      # |        192 |        192 |
+    li      3, $i2                      # |        384 |        384 |
 .count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
+    mov     $f0, $f2                    # |        384 |        384 |
+    call    ext_create_array_float      # |        384 |        384 |
 .count move_ret
-    mov     $i1, $i4                    # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    li      5, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $i1, $i3                    # |        192 |        192 |
-    call    ext_create_array_int        # |        192 |        192 |
+    mov     $i1, $i5                    # |        384 |        384 |
+    jal     create_float5x3array.3006, $ra1# |        384 |        384 |
 .count move_ret
-    mov     $i1, $i5                    # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i5 + 1]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i5 + 2]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i5 + 3]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i5 + 4]              # |        192 |        192 |
-    li      5, $i2                      # |        192 |        192 |
-    li      0, $i3                      # |        192 |        192 |
-    call    ext_create_array_int        # |        192 |        192 |
+    mov     $i1, $i6                    # |        384 |        384 |
+    li      5, $i2                      # |        384 |        384 |
+    li      0, $i3                      # |        384 |        384 |
+    call    ext_create_array_int        # |        384 |        384 |
 .count move_ret
-    mov     $i1, $i6                    # |        192 |        192 |
-    li      5, $i2                      # |        192 |        192 |
-    li      0, $i3                      # |        192 |        192 |
-    call    ext_create_array_int        # |        192 |        192 |
+    mov     $i1, $i7                    # |        384 |        384 |
+    li      5, $i2                      # |        384 |        384 |
+    li      0, $i3                      # |        384 |        384 |
+    call    ext_create_array_int        # |        384 |        384 |
 .count move_ret
-    mov     $i1, $i7                    # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    li      5, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $i1, $i3                    # |        192 |        192 |
-    call    ext_create_array_int        # |        192 |        192 |
+    mov     $i1, $i8                    # |        384 |        384 |
+    jal     create_float5x3array.3006, $ra1# |        384 |        384 |
 .count move_ret
-    mov     $i1, $i8                    # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i8 + 1]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i8 + 2]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i8 + 3]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i8 + 4]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    li      5, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $i1, $i3                    # |        192 |        192 |
-    call    ext_create_array_int        # |        192 |        192 |
+    mov     $i1, $i9                    # |        384 |        384 |
+    jal     create_float5x3array.3006, $ra1# |        384 |        384 |
 .count move_ret
-    mov     $i1, $i9                    # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i9 + 1]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i9 + 2]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i9 + 3]              # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i9 + 4]              # |        192 |        192 |
-    li      1, $i2                      # |        192 |        192 |
-    li      0, $i3                      # |        192 |        192 |
-    call    ext_create_array_int        # |        192 |        192 |
+    mov     $i1, $i10                   # |        384 |        384 |
+    li      1, $i2                      # |        384 |        384 |
+    li      0, $i3                      # |        384 |        384 |
+    call    ext_create_array_int        # |        384 |        384 |
 .count move_ret
-    mov     $i1, $i10                   # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    li      5, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $i1, $i3                    # |        192 |        192 |
-    call    ext_create_array_int        # |        192 |        192 |
-.count move_ret
-    mov     $i1, $i11                   # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i11 + 1]             # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i11 + 2]             # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i11 + 3]             # |        192 |        192 |
-    li      3, $i2                      # |        192 |        192 |
-.count move_args
-    mov     $f0, $f2                    # |        192 |        192 |
-    call    ext_create_array_float      # |        192 |        192 |
-    store   $i1, [$i11 + 4]             # |        192 |        192 |
-    mov     $hp, $i1                    # |        192 |        192 |
-    add     $hp, 8, $hp                 # |        192 |        192 |
-    store   $i11, [$i1 + 7]             # |        192 |        192 |
-    store   $i10, [$i1 + 6]             # |        192 |        192 |
-    store   $i9, [$i1 + 5]              # |        192 |        192 |
-    store   $i8, [$i1 + 4]              # |        192 |        192 |
-    store   $i7, [$i1 + 3]              # |        192 |        192 |
-    store   $i6, [$i1 + 2]              # |        192 |        192 |
-    store   $i5, [$i1 + 1]              # |        192 |        192 |
-    store   $i4, [$i1 + 0]              # |        192 |        192 |
-    jr      $ra1                        # |        192 |        192 |
+    mov     $i1, $i11                   # |        384 |        384 |
+    jal     create_float5x3array.3006, $ra1# |        384 |        384 |
+    mov     $hp, $i2                    # |        384 |        384 |
+    add     $hp, 8, $hp                 # |        384 |        384 |
+    store   $i1, [$i2 + 7]              # |        384 |        384 |
+    store   $i11, [$i2 + 6]             # |        384 |        384 |
+    store   $i10, [$i2 + 5]             # |        384 |        384 |
+    store   $i9, [$i2 + 4]              # |        384 |        384 |
+    store   $i8, [$i2 + 3]              # |        384 |        384 |
+    store   $i7, [$i2 + 2]              # |        384 |        384 |
+    store   $i6, [$i2 + 1]              # |        384 |        384 |
+    store   $i5, [$i2 + 0]              # |        384 |        384 |
+    mov     $i2, $i1                    # |        384 |        384 |
+    jr      $ra2                        # |        384 |        384 |
 .end create_pixel
 
 ######################################################################
-# $i1 = init_line_elements($i12, $i4)
-# $ra = $ra2
+# $i1 = init_line_elements($i12, $i13)
+# $ra = $ra3
 # [$i1 - $i13]
 # [$f2]
 # []
 # []
+# [$ra - $ra2]
 ######################################################################
 .begin init_line_elements
 init_line_elements.3010:
-    bl      $i4, 0, bge_else.32988      # |         96 |         96 |
-bge_then.32988:
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-.count move_ret
-    mov     $i1, $i5                    # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    li      5, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $i1, $i3                    # |         96 |         96 |
-    call    ext_create_array_int        # |         96 |         96 |
-.count move_ret
-    mov     $i1, $i6                    # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i6 + 1]              # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i6 + 2]              # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i6 + 3]              # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i6 + 4]              # |         96 |         96 |
-    li      5, $i2                      # |         96 |         96 |
-    li      0, $i3                      # |         96 |         96 |
-    call    ext_create_array_int        # |         96 |         96 |
-.count move_ret
-    mov     $i1, $i7                    # |         96 |         96 |
-    li      5, $i2                      # |         96 |         96 |
-    li      0, $i3                      # |         96 |         96 |
-    call    ext_create_array_int        # |         96 |         96 |
-.count move_ret
-    mov     $i1, $i8                    # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    li      5, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $i1, $i3                    # |         96 |         96 |
-    call    ext_create_array_int        # |         96 |         96 |
-.count move_ret
-    mov     $i1, $i9                    # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i9 + 1]              # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i9 + 2]              # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i9 + 3]              # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i9 + 4]              # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    li      5, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $i1, $i3                    # |         96 |         96 |
-    call    ext_create_array_int        # |         96 |         96 |
-.count move_ret
-    mov     $i1, $i10                   # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i10 + 1]             # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i10 + 2]             # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i10 + 3]             # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i10 + 4]             # |         96 |         96 |
-    li      1, $i2                      # |         96 |         96 |
-    li      0, $i3                      # |         96 |         96 |
-    call    ext_create_array_int        # |         96 |         96 |
-.count move_ret
-    mov     $i1, $i11                   # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    li      5, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $i1, $i3                    # |         96 |         96 |
-    call    ext_create_array_int        # |         96 |         96 |
-.count move_ret
-    mov     $i1, $i13                   # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i13 + 1]             # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i13 + 2]             # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i13 + 3]             # |         96 |         96 |
-    li      3, $i2                      # |         96 |         96 |
-.count move_args
-    mov     $f0, $f2                    # |         96 |         96 |
-    call    ext_create_array_float      # |         96 |         96 |
-    store   $i1, [$i13 + 4]             # |         96 |         96 |
-    mov     $hp, $i1                    # |         96 |         96 |
-    add     $hp, 8, $hp                 # |         96 |         96 |
-    store   $i13, [$i1 + 7]             # |         96 |         96 |
-    store   $i11, [$i1 + 6]             # |         96 |         96 |
-    store   $i10, [$i1 + 5]             # |         96 |         96 |
-    store   $i9, [$i1 + 4]              # |         96 |         96 |
-    store   $i8, [$i1 + 3]              # |         96 |         96 |
-    store   $i7, [$i1 + 2]              # |         96 |         96 |
-    store   $i6, [$i1 + 1]              # |         96 |         96 |
-    store   $i5, [$i1 + 0]              # |         96 |         96 |
+    bl      $i13, 0, bge_else.22315     # |        384 |        384 |
+bge_then.22315:
+    jal     create_pixel.3008, $ra2     # |        381 |        381 |
 .count storer
-    add     $i12, $i4, $tmp             # |         96 |         96 |
-    store   $i1, [$tmp + 0]             # |         96 |         96 |
-    sub     $i4, 1, $i13                # |         96 |         96 |
-    bl      $i13, 0, bge_else.32989     # |         96 |         96 |
-bge_then.32989:
-    jal     create_pixel.3008, $ra1     # |         96 |         96 |
-.count storer
-    add     $i12, $i13, $tmp            # |         96 |         96 |
-    store   $i1, [$tmp + 0]             # |         96 |         96 |
-    sub     $i13, 1, $i4                # |         96 |         96 |
-    bl      $i4, 0, bge_else.32990      # |         96 |         96 |
-bge_then.32990:
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-.count move_ret
-    mov     $i1, $i5                    # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    li      5, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $i1, $i3                    # |         93 |         93 |
-    call    ext_create_array_int        # |         93 |         93 |
-.count move_ret
-    mov     $i1, $i6                    # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i6 + 1]              # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i6 + 2]              # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i6 + 3]              # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i6 + 4]              # |         93 |         93 |
-    li      5, $i2                      # |         93 |         93 |
-    li      0, $i3                      # |         93 |         93 |
-    call    ext_create_array_int        # |         93 |         93 |
-.count move_ret
-    mov     $i1, $i7                    # |         93 |         93 |
-    li      5, $i2                      # |         93 |         93 |
-    li      0, $i3                      # |         93 |         93 |
-    call    ext_create_array_int        # |         93 |         93 |
-.count move_ret
-    mov     $i1, $i8                    # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    li      5, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $i1, $i3                    # |         93 |         93 |
-    call    ext_create_array_int        # |         93 |         93 |
-.count move_ret
-    mov     $i1, $i9                    # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i9 + 1]              # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i9 + 2]              # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i9 + 3]              # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i9 + 4]              # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    li      5, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $i1, $i3                    # |         93 |         93 |
-    call    ext_create_array_int        # |         93 |         93 |
-.count move_ret
-    mov     $i1, $i10                   # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i10 + 1]             # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i10 + 2]             # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i10 + 3]             # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i10 + 4]             # |         93 |         93 |
-    li      1, $i2                      # |         93 |         93 |
-    li      0, $i3                      # |         93 |         93 |
-    call    ext_create_array_int        # |         93 |         93 |
-.count move_ret
-    mov     $i1, $i11                   # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    li      5, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $i1, $i3                    # |         93 |         93 |
-    call    ext_create_array_int        # |         93 |         93 |
-.count move_ret
-    mov     $i1, $i13                   # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i13 + 1]             # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i13 + 2]             # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i13 + 3]             # |         93 |         93 |
-    li      3, $i2                      # |         93 |         93 |
-.count move_args
-    mov     $f0, $f2                    # |         93 |         93 |
-    call    ext_create_array_float      # |         93 |         93 |
-    store   $i1, [$i13 + 4]             # |         93 |         93 |
-    mov     $hp, $i1                    # |         93 |         93 |
-    add     $hp, 8, $hp                 # |         93 |         93 |
-    store   $i13, [$i1 + 7]             # |         93 |         93 |
-    store   $i11, [$i1 + 6]             # |         93 |         93 |
-    store   $i10, [$i1 + 5]             # |         93 |         93 |
-    store   $i9, [$i1 + 4]              # |         93 |         93 |
-    store   $i8, [$i1 + 3]              # |         93 |         93 |
-    store   $i7, [$i1 + 2]              # |         93 |         93 |
-    store   $i6, [$i1 + 1]              # |         93 |         93 |
-    store   $i5, [$i1 + 0]              # |         93 |         93 |
-.count storer
-    add     $i12, $i4, $tmp             # |         93 |         93 |
-    store   $i1, [$tmp + 0]             # |         93 |         93 |
-    sub     $i4, 1, $i13                # |         93 |         93 |
-    bl      $i13, 0, bge_else.32991     # |         93 |         93 |
-bge_then.32991:
-    jal     create_pixel.3008, $ra1     # |         93 |         93 |
-.count storer
-    add     $i12, $i13, $tmp            # |         93 |         93 |
-    store   $i1, [$tmp + 0]             # |         93 |         93 |
-    sub     $i13, 1, $i4                # |         93 |         93 |
-    b       init_line_elements.3010     # |         93 |         93 |
-bge_else.32991:
-    mov     $i12, $i1
-    jr      $ra2
-bge_else.32990:
+    add     $i12, $i13, $tmp            # |        381 |        381 |
+    store   $i1, [$tmp + 0]             # |        381 |        381 |
+    sub     $i13, 1, $i13               # |        381 |        381 |
+    b       init_line_elements.3010     # |        381 |        381 |
+bge_else.22315:
     mov     $i12, $i1                   # |          3 |          3 |
-    jr      $ra2                        # |          3 |          3 |
-bge_else.32989:
-    mov     $i12, $i1
-    jr      $ra2
-bge_else.32988:
-    mov     $i12, $i1
-    jr      $ra2
+    jr      $ra3                        # |          3 |          3 |
 .end init_line_elements
+
+######################################################################
+# $i1 = create_pixelline()
+# $ra = $ra3
+# [$i1 - $i13]
+# [$f2]
+# []
+# []
+# [$ra - $ra2]
+######################################################################
+.begin create_pixelline
+create_pixelline.3013:
+    jal     create_pixel.3008, $ra2     # |          3 |          3 |
+    li      128, $i2                    # |          3 |          3 |
+.count move_args
+    mov     $i1, $i3                    # |          3 |          3 |
+    call    ext_create_array_int        # |          3 |          3 |
+    li      126, $i13                   # |          3 |          3 |
+.count move_args
+    mov     $i1, $i12                   # |          3 |          3 |
+    b       init_line_elements.3010     # |          3 |          3 |
+.end create_pixelline
 
 ######################################################################
 # calc_dirvec($i1, $f1, $f2, $f9, $f10, $i3, $i4)
@@ -10682,11 +9366,12 @@ bge_else.32988:
 # [$f1 - $f13]
 # []
 # []
+# [$ra]
 ######################################################################
 .begin calc_dirvec
 calc_dirvec.3020:
-    bl      $i1, 5, bge_else.32992      # |        600 |        600 |
-bge_then.32992:
+    bl      $i1, 5, bge_else.22316      # |        600 |        600 |
+bge_then.22316:
     load    [ext_dirvecs + $i3], $i1    # |        100 |        100 |
     load    [$i1 + $i4], $i2            # |        100 |        100 |
     load    [$i2 + 0], $i2              # |        100 |        100 |
@@ -10735,9 +9420,9 @@ bge_then.32992:
     store   $f1, [$i1 + 1]              # |        100 |        100 |
     store   $f2, [$i1 + 2]              # |        100 |        100 |
     jr      $ra1                        # |        100 |        100 |
-bge_else.32992:
+bge_else.22316:
     fmul    $f2, $f2, $f1               # |        500 |        500 |
-    fadd    $f1, $fc8, $f1              # |        500 |        500 |
+    fadd    $f1, $fc9, $f1              # |        500 |        500 |
     fsqrt   $f1, $f11                   # |        500 |        500 |
     finv    $f11, $f2                   # |        500 |        500 |
     call    ext_atan                    # |        500 |        500 |
@@ -10754,7 +9439,7 @@ bge_else.32992:
     fmul    $f12, $f1, $f1              # |        500 |        500 |
     fmul    $f1, $f11, $f11             # |        500 |        500 |
     fmul    $f11, $f11, $f1             # |        500 |        500 |
-    fadd    $f1, $fc8, $f1              # |        500 |        500 |
+    fadd    $f1, $fc9, $f1              # |        500 |        500 |
     fsqrt   $f1, $f12                   # |        500 |        500 |
     finv    $f12, $f2                   # |        500 |        500 |
     call    ext_atan                    # |        500 |        500 |
@@ -10780,63 +9465,23 @@ bge_else.32992:
 # calc_dirvecs($i5, $f14, $i6, $i7)
 # $ra = $ra2
 # [$i1 - $i8]
-# [$f1 - $f15]
+# [$f1 - $f16]
 # []
 # []
+# [$ra - $ra1]
 ######################################################################
 .begin calc_dirvecs
 calc_dirvecs.3028:
-    bl      $i5, 0, bge_else.32993      # |         11 |         11 |
-bge_then.32993:
-    li      0, $i1                      # |         11 |         11 |
-.count move_args
-    mov     $i5, $i2                    # |         11 |         11 |
-    call    ext_float_of_int            # |         11 |         11 |
-    fmul    $f1, $fc12, $f15            # |         11 |         11 |
-    fsub    $f15, $fc11, $f9            # |         11 |         11 |
-.count move_args
-    mov     $f0, $f1                    # |         11 |         11 |
-.count move_args
-    mov     $f0, $f2                    # |         11 |         11 |
-.count move_args
-    mov     $f14, $f10                  # |         11 |         11 |
-.count move_args
-    mov     $i6, $i3                    # |         11 |         11 |
-.count move_args
-    mov     $i7, $i4                    # |         11 |         11 |
-    jal     calc_dirvec.3020, $ra1      # |         11 |         11 |
-    li      0, $i1                      # |         11 |         11 |
-    add     $i7, 2, $i8                 # |         11 |         11 |
-    fadd    $f15, $fc8, $f9             # |         11 |         11 |
-.count move_args
-    mov     $f0, $f1                    # |         11 |         11 |
-.count move_args
-    mov     $f0, $f2                    # |         11 |         11 |
-.count move_args
-    mov     $f14, $f10                  # |         11 |         11 |
-.count move_args
-    mov     $i6, $i3                    # |         11 |         11 |
-.count move_args
-    mov     $i8, $i4                    # |         11 |         11 |
-    jal     calc_dirvec.3020, $ra1      # |         11 |         11 |
-    sub     $i5, 1, $i5                 # |         11 |         11 |
-    bl      $i5, 0, bge_else.32994      # |         11 |         11 |
-bge_then.32994:
+    bl      $i5, 0, bge_else.22317      # |         10 |         10 |
+bge_then.22317:
     li      0, $i1                      # |         10 |         10 |
-    add     $i6, 1, $i2                 # |         10 |         10 |
-    bl      $i2, 5, bge_else.32995      # |         10 |         10 |
-bge_then.32995:
-    sub     $i2, 5, $i6                 # |          2 |          2 |
-.count b_cont
-    b       bge_cont.32995              # |          2 |          2 |
-bge_else.32995:
-    mov     $i2, $i6                    # |          8 |          8 |
-bge_cont.32995:
 .count move_args
     mov     $i5, $i2                    # |         10 |         10 |
     call    ext_float_of_int            # |         10 |         10 |
-    fmul    $f1, $fc12, $f15            # |         10 |         10 |
-    fsub    $f15, $fc11, $f9            # |         10 |         10 |
+.count load_float
+    load    [f.21560], $f15             # |         10 |         10 |
+    fmul    $f1, $f15, $f16             # |         10 |         10 |
+    fsub    $f16, $fc11, $f9            # |         10 |         10 |
 .count move_args
     mov     $f0, $f1                    # |         10 |         10 |
 .count move_args
@@ -10849,7 +9494,8 @@ bge_cont.32995:
     mov     $i7, $i4                    # |         10 |         10 |
     jal     calc_dirvec.3020, $ra1      # |         10 |         10 |
     li      0, $i1                      # |         10 |         10 |
-    fadd    $f15, $fc8, $f9             # |         10 |         10 |
+    add     $i7, 2, $i8                 # |         10 |         10 |
+    fadd    $f16, $fc9, $f9             # |         10 |         10 |
 .count move_args
     mov     $f0, $f1                    # |         10 |         10 |
 .count move_args
@@ -10862,23 +9508,65 @@ bge_cont.32995:
     mov     $i8, $i4                    # |         10 |         10 |
     jal     calc_dirvec.3020, $ra1      # |         10 |         10 |
     sub     $i5, 1, $i5                 # |         10 |         10 |
-    bl      $i5, 0, bge_else.32996      # |         10 |         10 |
-bge_then.32996:
+    bl      $i5, 0, bge_else.22318      # |         10 |         10 |
+bge_then.22318:
+    li      0, $i1                      # |         10 |         10 |
+    add     $i6, 1, $i2                 # |         10 |         10 |
+    bl      $i2, 5, bge_else.22319      # |         10 |         10 |
+bge_then.22319:
+    sub     $i2, 5, $i6                 # |          2 |          2 |
+.count b_cont
+    b       bge_cont.22319              # |          2 |          2 |
+bge_else.22319:
+    mov     $i2, $i6                    # |          8 |          8 |
+bge_cont.22319:
+.count move_args
+    mov     $i5, $i2                    # |         10 |         10 |
+    call    ext_float_of_int            # |         10 |         10 |
+    fmul    $f1, $f15, $f16             # |         10 |         10 |
+    fsub    $f16, $fc11, $f9            # |         10 |         10 |
+.count move_args
+    mov     $f0, $f1                    # |         10 |         10 |
+.count move_args
+    mov     $f0, $f2                    # |         10 |         10 |
+.count move_args
+    mov     $f14, $f10                  # |         10 |         10 |
+.count move_args
+    mov     $i6, $i3                    # |         10 |         10 |
+.count move_args
+    mov     $i7, $i4                    # |         10 |         10 |
+    jal     calc_dirvec.3020, $ra1      # |         10 |         10 |
+    li      0, $i1                      # |         10 |         10 |
+    fadd    $f16, $fc9, $f9             # |         10 |         10 |
+.count move_args
+    mov     $f0, $f1                    # |         10 |         10 |
+.count move_args
+    mov     $f0, $f2                    # |         10 |         10 |
+.count move_args
+    mov     $f14, $f10                  # |         10 |         10 |
+.count move_args
+    mov     $i6, $i3                    # |         10 |         10 |
+.count move_args
+    mov     $i8, $i4                    # |         10 |         10 |
+    jal     calc_dirvec.3020, $ra1      # |         10 |         10 |
+    sub     $i5, 1, $i5                 # |         10 |         10 |
+    bl      $i5, 0, bge_else.22320      # |         10 |         10 |
+bge_then.22320:
     li      0, $i1                      # |          5 |          5 |
     add     $i6, 1, $i2                 # |          5 |          5 |
-    bl      $i2, 5, bge_else.32997      # |          5 |          5 |
-bge_then.32997:
+    bl      $i2, 5, bge_else.22321      # |          5 |          5 |
+bge_then.22321:
     sub     $i2, 5, $i6                 # |          1 |          1 |
 .count b_cont
-    b       bge_cont.32997              # |          1 |          1 |
-bge_else.32997:
+    b       bge_cont.22321              # |          1 |          1 |
+bge_else.22321:
     mov     $i2, $i6                    # |          4 |          4 |
-bge_cont.32997:
+bge_cont.22321:
 .count move_args
     mov     $i5, $i2                    # |          5 |          5 |
     call    ext_float_of_int            # |          5 |          5 |
-    fmul    $f1, $fc12, $f15            # |          5 |          5 |
-    fsub    $f15, $fc11, $f9            # |          5 |          5 |
+    fmul    $f1, $f15, $f16             # |          5 |          5 |
+    fsub    $f16, $fc11, $f9            # |          5 |          5 |
 .count move_args
     mov     $f0, $f1                    # |          5 |          5 |
 .count move_args
@@ -10891,7 +9579,7 @@ bge_cont.32997:
     mov     $i7, $i4                    # |          5 |          5 |
     jal     calc_dirvec.3020, $ra1      # |          5 |          5 |
     li      0, $i1                      # |          5 |          5 |
-    fadd    $f15, $fc8, $f9             # |          5 |          5 |
+    fadd    $f16, $fc9, $f9             # |          5 |          5 |
 .count move_args
     mov     $f0, $f1                    # |          5 |          5 |
 .count move_args
@@ -10904,59 +9592,59 @@ bge_cont.32997:
     mov     $i8, $i4                    # |          5 |          5 |
     jal     calc_dirvec.3020, $ra1      # |          5 |          5 |
     sub     $i5, 1, $i5                 # |          5 |          5 |
-    bl      $i5, 0, bge_else.32998      # |          5 |          5 |
-bge_then.32998:
-    li      0, $i1                      # |          1 |          1 |
-    add     $i6, 1, $i2                 # |          1 |          1 |
-    bl      $i2, 5, bge_else.32999      # |          1 |          1 |
-bge_then.32999:
+    bl      $i5, 0, bge_else.22322      # |          5 |          5 |
+bge_then.22322:
+    li      0, $i1
+    add     $i6, 1, $i2
+    bl      $i2, 5, bge_else.22323
+bge_then.22323:
     sub     $i2, 5, $i6
 .count b_cont
-    b       bge_cont.32999
-bge_else.32999:
-    mov     $i2, $i6                    # |          1 |          1 |
-bge_cont.32999:
+    b       bge_cont.22323
+bge_else.22323:
+    mov     $i2, $i6
+bge_cont.22323:
 .count move_args
-    mov     $i5, $i2                    # |          1 |          1 |
-    call    ext_float_of_int            # |          1 |          1 |
-    fmul    $f1, $fc12, $f15            # |          1 |          1 |
-    fsub    $f15, $fc11, $f9            # |          1 |          1 |
+    mov     $i5, $i2
+    call    ext_float_of_int
+    fmul    $f1, $f15, $f15
+    fsub    $f15, $fc11, $f9
 .count move_args
-    mov     $f0, $f1                    # |          1 |          1 |
+    mov     $f0, $f1
 .count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
+    mov     $f0, $f2
 .count move_args
-    mov     $f14, $f10                  # |          1 |          1 |
+    mov     $f14, $f10
 .count move_args
-    mov     $i6, $i3                    # |          1 |          1 |
+    mov     $i6, $i3
 .count move_args
-    mov     $i7, $i4                    # |          1 |          1 |
-    jal     calc_dirvec.3020, $ra1      # |          1 |          1 |
-    li      0, $i1                      # |          1 |          1 |
-    fadd    $f15, $fc8, $f9             # |          1 |          1 |
+    mov     $i7, $i4
+    jal     calc_dirvec.3020, $ra1
+    li      0, $i1
+    fadd    $f15, $fc9, $f9
 .count move_args
-    mov     $f0, $f1                    # |          1 |          1 |
+    mov     $f0, $f1
 .count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
+    mov     $f0, $f2
 .count move_args
-    mov     $f14, $f10                  # |          1 |          1 |
+    mov     $f14, $f10
 .count move_args
-    mov     $i6, $i3                    # |          1 |          1 |
+    mov     $i6, $i3
 .count move_args
-    mov     $i8, $i4                    # |          1 |          1 |
-    jal     calc_dirvec.3020, $ra1      # |          1 |          1 |
-    sub     $i5, 1, $i5                 # |          1 |          1 |
-    add     $i6, 1, $i6                 # |          1 |          1 |
-    bl      $i6, 5, calc_dirvecs.3028   # |          1 |          1 |
+    mov     $i8, $i4
+    jal     calc_dirvec.3020, $ra1
+    sub     $i5, 1, $i5
+    add     $i6, 1, $i6
+    bl      $i6, 5, calc_dirvecs.3028
     sub     $i6, 5, $i6
     b       calc_dirvecs.3028
-bge_else.32998:
-    jr      $ra2                        # |          4 |          4 |
-bge_else.32996:
+bge_else.22322:
     jr      $ra2                        # |          5 |          5 |
-bge_else.32994:
-    jr      $ra2                        # |          1 |          1 |
-bge_else.32993:
+bge_else.22320:
+    jr      $ra2                        # |          5 |          5 |
+bge_else.22318:
+    jr      $ra2
+bge_else.22317:
     jr      $ra2
 .end calc_dirvecs
 
@@ -10964,34 +9652,31 @@ bge_else.32993:
 # calc_dirvec_rows($i9, $i10, $i11)
 # $ra = $ra3
 # [$i1 - $i11]
-# [$f1 - $f18]
+# [$f1 - $f17]
 # []
 # []
+# [$ra - $ra2]
 ######################################################################
 .begin calc_dirvec_rows
 calc_dirvec_rows.3033:
-    bl      $i9, 0, bge_else.33001      # |          5 |          5 |
-bge_then.33001:
-.count stack_move
-    sub     $sp, 1, $sp                 # |          5 |          5 |
+    bl      $i9, 0, bge_else.22325      # |          5 |          5 |
+bge_then.22325:
     li      0, $i1                      # |          5 |          5 |
-    li      4, $i2                      # |          5 |          5 |
-    call    ext_float_of_int            # |          5 |          5 |
-    fmul    $f1, $fc12, $f14            # |          5 |          5 |
-    fsub    $f14, $fc11, $f16           # |          5 |          5 |
 .count move_args
     mov     $i9, $i2                    # |          5 |          5 |
     call    ext_float_of_int            # |          5 |          5 |
-    fmul    $f1, $fc12, $f1             # |          5 |          5 |
-    fsub    $f1, $fc11, $f15            # |          5 |          5 |
+.count load_float
+    load    [f.21560], $f17             # |          5 |          5 |
+    fmul    $f1, $f17, $f1              # |          5 |          5 |
+    fsub    $f1, $fc11, $f14            # |          5 |          5 |
 .count move_args
     mov     $f0, $f1                    # |          5 |          5 |
 .count move_args
     mov     $f0, $f2                    # |          5 |          5 |
 .count move_args
-    mov     $f16, $f9                   # |          5 |          5 |
+    mov     $fc19, $f9                  # |          5 |          5 |
 .count move_args
-    mov     $f15, $f10                  # |          5 |          5 |
+    mov     $f14, $f10                  # |          5 |          5 |
 .count move_args
     mov     $i10, $i3                   # |          5 |          5 |
 .count move_args
@@ -10999,15 +9684,14 @@ bge_then.33001:
     jal     calc_dirvec.3020, $ra1      # |          5 |          5 |
     li      0, $i1                      # |          5 |          5 |
     add     $i11, 2, $i5                # |          5 |          5 |
-    fadd    $f14, $fc8, $f17            # |          5 |          5 |
 .count move_args
     mov     $f0, $f1                    # |          5 |          5 |
 .count move_args
     mov     $f0, $f2                    # |          5 |          5 |
 .count move_args
-    mov     $f17, $f9                   # |          5 |          5 |
+    mov     $fc11, $f9                  # |          5 |          5 |
 .count move_args
-    mov     $f15, $f10                  # |          5 |          5 |
+    mov     $f14, $f10                  # |          5 |          5 |
 .count move_args
     mov     $i10, $i3                   # |          5 |          5 |
 .count move_args
@@ -11015,41 +9699,36 @@ bge_then.33001:
     jal     calc_dirvec.3020, $ra1      # |          5 |          5 |
     li      0, $i1                      # |          5 |          5 |
     add     $i10, 1, $i2                # |          5 |          5 |
-    bl      $i2, 5, bge_else.33002      # |          5 |          5 |
-bge_then.33002:
+    bl      $i2, 5, bge_else.22326      # |          5 |          5 |
+bge_then.22326:
     sub     $i2, 5, $i6                 # |          1 |          1 |
 .count b_cont
-    b       bge_cont.33002              # |          1 |          1 |
-bge_else.33002:
+    b       bge_cont.22326              # |          1 |          1 |
+bge_else.22326:
     mov     $i2, $i6                    # |          4 |          4 |
-bge_cont.33002:
-    li      3, $i2                      # |          5 |          5 |
-    call    ext_float_of_int            # |          5 |          5 |
-    fmul    $f1, $fc12, $f14            # |          5 |          5 |
-    fsub    $f14, $fc11, $f18           # |          5 |          5 |
+bge_cont.22326:
 .count move_args
     mov     $f0, $f1                    # |          5 |          5 |
 .count move_args
     mov     $f0, $f2                    # |          5 |          5 |
 .count move_args
-    mov     $f18, $f9                   # |          5 |          5 |
+    mov     $fc18, $f9                  # |          5 |          5 |
 .count move_args
-    mov     $f15, $f10                  # |          5 |          5 |
+    mov     $f14, $f10                  # |          5 |          5 |
 .count move_args
     mov     $i6, $i3                    # |          5 |          5 |
 .count move_args
     mov     $i11, $i4                   # |          5 |          5 |
     jal     calc_dirvec.3020, $ra1      # |          5 |          5 |
     li      0, $i1                      # |          5 |          5 |
-    fadd    $f14, $fc8, $f9             # |          5 |          5 |
-.count stack_store
-    store   $f9, [$sp + 0]              # |          5 |          5 |
 .count move_args
     mov     $f0, $f1                    # |          5 |          5 |
 .count move_args
     mov     $f0, $f2                    # |          5 |          5 |
 .count move_args
-    mov     $f15, $f10                  # |          5 |          5 |
+    mov     $fc17, $f9                  # |          5 |          5 |
+.count move_args
+    mov     $f14, $f10                  # |          5 |          5 |
 .count move_args
     mov     $i6, $i3                    # |          5 |          5 |
 .count move_args
@@ -11057,34 +9736,36 @@ bge_cont.33002:
     jal     calc_dirvec.3020, $ra1      # |          5 |          5 |
     li      0, $i1                      # |          5 |          5 |
     add     $i6, 1, $i2                 # |          5 |          5 |
-    bl      $i2, 5, bge_cont.33003      # |          5 |          5 |
-bge_then.33003:
-    sub     $i2, 5, $i2                 # |          1 |          1 |
-bge_cont.33003:
-    mov     $i2, $i6                    # |          5 |          5 |
-    li      2, $i2                      # |          5 |          5 |
-    call    ext_float_of_int            # |          5 |          5 |
-    fmul    $f1, $fc12, $f14            # |          5 |          5 |
-    fsub    $f14, $fc11, $f9            # |          5 |          5 |
+    bl      $i2, 5, bge_else.22327      # |          5 |          5 |
+bge_then.22327:
+    sub     $i2, 5, $i6                 # |          1 |          1 |
+.count b_cont
+    b       bge_cont.22327              # |          1 |          1 |
+bge_else.22327:
+    mov     $i2, $i6                    # |          4 |          4 |
+bge_cont.22327:
+.count load_float
+    load    [f.21565], $f9              # |          5 |          5 |
 .count move_args
     mov     $f0, $f1                    # |          5 |          5 |
 .count move_args
     mov     $f0, $f2                    # |          5 |          5 |
 .count move_args
-    mov     $f15, $f10                  # |          5 |          5 |
+    mov     $f14, $f10                  # |          5 |          5 |
 .count move_args
     mov     $i6, $i3                    # |          5 |          5 |
 .count move_args
     mov     $i11, $i4                   # |          5 |          5 |
     jal     calc_dirvec.3020, $ra1      # |          5 |          5 |
     li      0, $i1                      # |          5 |          5 |
-    fadd    $f14, $fc8, $f9             # |          5 |          5 |
 .count move_args
     mov     $f0, $f1                    # |          5 |          5 |
 .count move_args
     mov     $f0, $f2                    # |          5 |          5 |
 .count move_args
-    mov     $f15, $f10                  # |          5 |          5 |
+    mov     $fc4, $f9                   # |          5 |          5 |
+.count move_args
+    mov     $f14, $f10                  # |          5 |          5 |
 .count move_args
     mov     $i6, $i3                    # |          5 |          5 |
 .count move_args
@@ -11092,38 +9773,42 @@ bge_cont.33003:
     jal     calc_dirvec.3020, $ra1      # |          5 |          5 |
     li      1, $i5                      # |          5 |          5 |
     add     $i6, 1, $i1                 # |          5 |          5 |
-    bl      $i1, 5, bge_cont.33004      # |          5 |          5 |
-bge_then.33004:
-    sub     $i1, 5, $i1                 # |          1 |          1 |
-bge_cont.33004:
-    mov     $i1, $i6                    # |          5 |          5 |
-.count move_args
-    mov     $f15, $f14                  # |          5 |          5 |
+    bl      $i1, 5, bge_else.22328      # |          5 |          5 |
+bge_then.22328:
+    sub     $i1, 5, $i6                 # |          1 |          1 |
+.count b_cont
+    b       bge_cont.22328              # |          1 |          1 |
+bge_else.22328:
+    mov     $i1, $i6                    # |          4 |          4 |
+bge_cont.22328:
 .count move_args
     mov     $i11, $i7                   # |          5 |          5 |
     jal     calc_dirvecs.3028, $ra2     # |          5 |          5 |
     sub     $i9, 1, $i9                 # |          5 |          5 |
-    bl      $i9, 0, bge_else.33005      # |          5 |          5 |
-bge_then.33005:
+    bl      $i9, 0, bge_else.22329      # |          5 |          5 |
+bge_then.22329:
     add     $i10, 2, $i1                # |          4 |          4 |
-    bl      $i1, 5, bge_cont.33006      # |          4 |          4 |
-bge_then.33006:
-    sub     $i1, 5, $i1                 # |          1 |          1 |
-bge_cont.33006:
-    mov     $i1, $i10                   # |          4 |          4 |
+    bl      $i1, 5, bge_else.22330      # |          4 |          4 |
+bge_then.22330:
+    sub     $i1, 5, $i10                # |          1 |          1 |
+.count b_cont
+    b       bge_cont.22330              # |          1 |          1 |
+bge_else.22330:
+    mov     $i1, $i10                   # |          3 |          3 |
+bge_cont.22330:
     add     $i11, 4, $i11               # |          4 |          4 |
     li      0, $i1                      # |          4 |          4 |
 .count move_args
     mov     $i9, $i2                    # |          4 |          4 |
     call    ext_float_of_int            # |          4 |          4 |
-    fmul    $f1, $fc12, $f1             # |          4 |          4 |
+    fmul    $f1, $f17, $f1              # |          4 |          4 |
     fsub    $f1, $fc11, $f14            # |          4 |          4 |
 .count move_args
     mov     $f0, $f1                    # |          4 |          4 |
 .count move_args
     mov     $f0, $f2                    # |          4 |          4 |
 .count move_args
-    mov     $f16, $f9                   # |          4 |          4 |
+    mov     $fc19, $f9                  # |          4 |          4 |
 .count move_args
     mov     $f14, $f10                  # |          4 |          4 |
 .count move_args
@@ -11138,7 +9823,7 @@ bge_cont.33006:
 .count move_args
     mov     $f0, $f2                    # |          4 |          4 |
 .count move_args
-    mov     $f17, $f9                   # |          4 |          4 |
+    mov     $fc11, $f9                  # |          4 |          4 |
 .count move_args
     mov     $f14, $f10                  # |          4 |          4 |
 .count move_args
@@ -11148,17 +9833,20 @@ bge_cont.33006:
     jal     calc_dirvec.3020, $ra1      # |          4 |          4 |
     li      0, $i1                      # |          4 |          4 |
     add     $i10, 1, $i2                # |          4 |          4 |
-    bl      $i2, 5, bge_cont.33007      # |          4 |          4 |
-bge_then.33007:
-    sub     $i2, 5, $i2                 # |          1 |          1 |
-bge_cont.33007:
-    mov     $i2, $i6                    # |          4 |          4 |
+    bl      $i2, 5, bge_else.22331      # |          4 |          4 |
+bge_then.22331:
+    sub     $i2, 5, $i6                 # |          1 |          1 |
+.count b_cont
+    b       bge_cont.22331              # |          1 |          1 |
+bge_else.22331:
+    mov     $i2, $i6                    # |          3 |          3 |
+bge_cont.22331:
 .count move_args
     mov     $f0, $f1                    # |          4 |          4 |
 .count move_args
     mov     $f0, $f2                    # |          4 |          4 |
 .count move_args
-    mov     $f18, $f9                   # |          4 |          4 |
+    mov     $fc18, $f9                  # |          4 |          4 |
 .count move_args
     mov     $f14, $f10                  # |          4 |          4 |
 .count move_args
@@ -11167,12 +9855,12 @@ bge_cont.33007:
     mov     $i11, $i4                   # |          4 |          4 |
     jal     calc_dirvec.3020, $ra1      # |          4 |          4 |
     li      0, $i1                      # |          4 |          4 |
-.count stack_load
-    load    [$sp + 0], $f9              # |          4 |          4 |
 .count move_args
     mov     $f0, $f1                    # |          4 |          4 |
 .count move_args
     mov     $f0, $f2                    # |          4 |          4 |
+.count move_args
+    mov     $fc17, $f9                  # |          4 |          4 |
 .count move_args
     mov     $f14, $f10                  # |          4 |          4 |
 .count move_args
@@ -11182,3032 +9870,463 @@ bge_cont.33007:
     jal     calc_dirvec.3020, $ra1      # |          4 |          4 |
     li      2, $i5                      # |          4 |          4 |
     add     $i6, 1, $i1                 # |          4 |          4 |
-    bl      $i1, 5, bge_else.33008      # |          4 |          4 |
-bge_then.33008:
+    bl      $i1, 5, bge_else.22332      # |          4 |          4 |
+bge_then.22332:
     sub     $i1, 5, $i6                 # |          1 |          1 |
 .count b_cont
-    b       bge_cont.33008              # |          1 |          1 |
-bge_else.33008:
+    b       bge_cont.22332              # |          1 |          1 |
+bge_else.22332:
     mov     $i1, $i6                    # |          3 |          3 |
-bge_cont.33008:
+bge_cont.22332:
 .count move_args
     mov     $i11, $i7                   # |          4 |          4 |
     jal     calc_dirvecs.3028, $ra2     # |          4 |          4 |
-.count stack_move
-    add     $sp, 1, $sp                 # |          4 |          4 |
     sub     $i9, 1, $i9                 # |          4 |          4 |
     add     $i10, 2, $i10               # |          4 |          4 |
     add     $i11, 4, $i11               # |          4 |          4 |
     bl      $i10, 5, calc_dirvec_rows.3033# |          4 |          4 |
     sub     $i10, 5, $i10               # |          2 |          2 |
     b       calc_dirvec_rows.3033       # |          2 |          2 |
-bge_else.33005:
-.count stack_move
-    add     $sp, 1, $sp                 # |          1 |          1 |
+bge_else.22329:
     jr      $ra3                        # |          1 |          1 |
-bge_else.33001:
+bge_else.22325:
     jr      $ra3
 .end calc_dirvec_rows
 
 ######################################################################
-# create_dirvec_elements($i4, $i5)
+# $i1 = create_dirvec()
 # $ra = $ra1
+# [$i1 - $i4]
+# [$f2]
+# []
+# []
+# [$ra]
+######################################################################
+.begin create_dirvec
+create_dirvec.3037:
+    li      3, $i2                      # |        601 |        601 |
+.count move_args
+    mov     $f0, $f2                    # |        601 |        601 |
+    call    ext_create_array_float      # |        601 |        601 |
+.count move_ret
+    mov     $i1, $i4                    # |        601 |        601 |
+.count move_args
+    mov     $ig0, $i2                   # |        601 |        601 |
+.count move_args
+    mov     $i4, $i3                    # |        601 |        601 |
+    call    ext_create_array_int        # |        601 |        601 |
+    mov     $hp, $i2                    # |        601 |        601 |
+    add     $hp, 2, $hp                 # |        601 |        601 |
+    store   $i1, [$i2 + 1]              # |        601 |        601 |
+    store   $i4, [$i2 + 0]              # |        601 |        601 |
+    mov     $i2, $i1                    # |        601 |        601 |
+    jr      $ra1                        # |        601 |        601 |
+.end create_dirvec
+
+######################################################################
+# create_dirvec_elements($i5, $i6)
+# $ra = $ra2
 # [$i1 - $i6]
 # [$f2]
 # []
 # []
+# [$ra - $ra1]
 ######################################################################
 .begin create_dirvec_elements
 create_dirvec_elements.3039:
-    bl      $i5, 0, bge_else.33010      # |        150 |        150 |
-bge_then.33010:
-    li      3, $i2                      # |        148 |        148 |
-.count move_args
-    mov     $f0, $f2                    # |        148 |        148 |
-    call    ext_create_array_float      # |        148 |        148 |
-.count move_ret
-    mov     $i1, $i6                    # |        148 |        148 |
-.count move_args
-    mov     $ig0, $i2                   # |        148 |        148 |
-.count move_args
-    mov     $i6, $i3                    # |        148 |        148 |
-    call    ext_create_array_int        # |        148 |        148 |
-    mov     $hp, $i2                    # |        148 |        148 |
-    add     $hp, 2, $hp                 # |        148 |        148 |
-    store   $i1, [$i2 + 1]              # |        148 |        148 |
-    store   $i6, [$i2 + 0]              # |        148 |        148 |
+    bl      $i6, 0, bge_else.22334      # |        600 |        600 |
+bge_then.22334:
+    jal     create_dirvec.3037, $ra1    # |        595 |        595 |
 .count storer
-    add     $i4, $i5, $tmp              # |        148 |        148 |
-    store   $i2, [$tmp + 0]             # |        148 |        148 |
-    sub     $i5, 1, $i5                 # |        148 |        148 |
-    bl      $i5, 0, bge_else.33011      # |        148 |        148 |
-bge_then.33011:
-    li      3, $i2                      # |        146 |        146 |
-.count move_args
-    mov     $f0, $f2                    # |        146 |        146 |
-    call    ext_create_array_float      # |        146 |        146 |
-.count move_ret
-    mov     $i1, $i6                    # |        146 |        146 |
-.count move_args
-    mov     $ig0, $i2                   # |        146 |        146 |
-.count move_args
-    mov     $i6, $i3                    # |        146 |        146 |
-    call    ext_create_array_int        # |        146 |        146 |
-    mov     $hp, $i2                    # |        146 |        146 |
-    add     $hp, 2, $hp                 # |        146 |        146 |
-    store   $i1, [$i2 + 1]              # |        146 |        146 |
-    store   $i6, [$i2 + 0]              # |        146 |        146 |
-.count storer
-    add     $i4, $i5, $tmp              # |        146 |        146 |
-    store   $i2, [$tmp + 0]             # |        146 |        146 |
-    sub     $i5, 1, $i5                 # |        146 |        146 |
-    bl      $i5, 0, bge_else.33012      # |        146 |        146 |
-bge_then.33012:
-    li      3, $i2                      # |        146 |        146 |
-.count move_args
-    mov     $f0, $f2                    # |        146 |        146 |
-    call    ext_create_array_float      # |        146 |        146 |
-.count move_ret
-    mov     $i1, $i6                    # |        146 |        146 |
-.count move_args
-    mov     $ig0, $i2                   # |        146 |        146 |
-.count move_args
-    mov     $i6, $i3                    # |        146 |        146 |
-    call    ext_create_array_int        # |        146 |        146 |
-    mov     $hp, $i2                    # |        146 |        146 |
-    add     $hp, 2, $hp                 # |        146 |        146 |
-    store   $i1, [$i2 + 1]              # |        146 |        146 |
-    store   $i6, [$i2 + 0]              # |        146 |        146 |
-.count storer
-    add     $i4, $i5, $tmp              # |        146 |        146 |
-    store   $i2, [$tmp + 0]             # |        146 |        146 |
-    sub     $i5, 1, $i5                 # |        146 |        146 |
-    bl      $i5, 0, bge_else.33013      # |        146 |        146 |
-bge_then.33013:
-    li      3, $i2                      # |        145 |        145 |
-.count move_args
-    mov     $f0, $f2                    # |        145 |        145 |
-    call    ext_create_array_float      # |        145 |        145 |
-.count move_ret
-    mov     $i1, $i6                    # |        145 |        145 |
-.count move_args
-    mov     $ig0, $i2                   # |        145 |        145 |
-.count move_args
-    mov     $i6, $i3                    # |        145 |        145 |
-    call    ext_create_array_int        # |        145 |        145 |
-    mov     $hp, $i2                    # |        145 |        145 |
-    add     $hp, 2, $hp                 # |        145 |        145 |
-    store   $i1, [$i2 + 1]              # |        145 |        145 |
-    store   $i6, [$i2 + 0]              # |        145 |        145 |
-.count storer
-    add     $i4, $i5, $tmp              # |        145 |        145 |
-    store   $i2, [$tmp + 0]             # |        145 |        145 |
-    sub     $i5, 1, $i5                 # |        145 |        145 |
-    b       create_dirvec_elements.3039 # |        145 |        145 |
-bge_else.33013:
-    jr      $ra1                        # |          1 |          1 |
-bge_else.33012:
-    jr      $ra1
-bge_else.33011:
-    jr      $ra1                        # |          2 |          2 |
-bge_else.33010:
-    jr      $ra1                        # |          2 |          2 |
+    add     $i5, $i6, $tmp              # |        595 |        595 |
+    store   $i1, [$tmp + 0]             # |        595 |        595 |
+    sub     $i6, 1, $i6                 # |        595 |        595 |
+    b       create_dirvec_elements.3039 # |        595 |        595 |
+bge_else.22334:
+    jr      $ra2                        # |          5 |          5 |
 .end create_dirvec_elements
 
 ######################################################################
 # create_dirvecs($i7)
-# $ra = $ra2
+# $ra = $ra3
 # [$i1 - $i7]
 # [$f2]
 # []
 # []
+# [$ra - $ra2]
 ######################################################################
 .begin create_dirvecs
 create_dirvecs.3042:
-    bl      $i7, 0, bge_else.33014      # |          3 |          3 |
-bge_then.33014:
-    li      3, $i2                      # |          2 |          2 |
+    bl      $i7, 0, bge_else.22335      # |          6 |          6 |
+bge_then.22335:
+    jal     create_dirvec.3037, $ra1    # |          5 |          5 |
+    li      120, $i2                    # |          5 |          5 |
 .count move_args
-    mov     $f0, $f2                    # |          2 |          2 |
-    call    ext_create_array_float      # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i4                    # |          2 |          2 |
-.count move_args
-    mov     $ig0, $i2                   # |          2 |          2 |
-.count move_args
-    mov     $i4, $i3                    # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    li      120, $i2                    # |          2 |          2 |
-    mov     $hp, $i3                    # |          2 |          2 |
-    add     $hp, 2, $hp                 # |          2 |          2 |
-    store   $i1, [$i3 + 1]              # |          2 |          2 |
-    store   $i4, [$i3 + 0]              # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    store   $i1, [ext_dirvecs + $i7]    # |          2 |          2 |
-    li      3, $i2                      # |          2 |          2 |
-.count move_args
-    mov     $f0, $f2                    # |          2 |          2 |
-    call    ext_create_array_float      # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i4                    # |          2 |          2 |
-.count move_args
-    mov     $ig0, $i2                   # |          2 |          2 |
-.count move_args
-    mov     $i4, $i3                    # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    load    [ext_dirvecs + $i7], $i6    # |          2 |          2 |
-    mov     $hp, $i2                    # |          2 |          2 |
-    add     $hp, 2, $hp                 # |          2 |          2 |
-    store   $i1, [$i2 + 1]              # |          2 |          2 |
-    store   $i4, [$i2 + 0]              # |          2 |          2 |
-    store   $i2, [$i6 + 118]            # |          2 |          2 |
-    li      3, $i2                      # |          2 |          2 |
-.count move_args
-    mov     $f0, $f2                    # |          2 |          2 |
-    call    ext_create_array_float      # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i4                    # |          2 |          2 |
-.count move_args
-    mov     $ig0, $i2                   # |          2 |          2 |
-.count move_args
-    mov     $i4, $i3                    # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    mov     $hp, $i2                    # |          2 |          2 |
-    add     $hp, 2, $hp                 # |          2 |          2 |
-    store   $i1, [$i2 + 1]              # |          2 |          2 |
-    store   $i4, [$i2 + 0]              # |          2 |          2 |
-    store   $i2, [$i6 + 117]            # |          2 |          2 |
-    li      3, $i2                      # |          2 |          2 |
-.count move_args
-    mov     $f0, $f2                    # |          2 |          2 |
-    call    ext_create_array_float      # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i4                    # |          2 |          2 |
-.count move_args
-    mov     $ig0, $i2                   # |          2 |          2 |
-.count move_args
-    mov     $i4, $i3                    # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    mov     $hp, $i2                    # |          2 |          2 |
-    add     $hp, 2, $hp                 # |          2 |          2 |
-    store   $i1, [$i2 + 1]              # |          2 |          2 |
-    store   $i4, [$i2 + 0]              # |          2 |          2 |
-    store   $i2, [$i6 + 116]            # |          2 |          2 |
-    li      115, $i5                    # |          2 |          2 |
-.count move_args
-    mov     $i6, $i4                    # |          2 |          2 |
-    jal     create_dirvec_elements.3039, $ra1# |          2 |          2 |
-    sub     $i7, 1, $i7                 # |          2 |          2 |
-    bl      $i7, 0, bge_else.33015      # |          2 |          2 |
-bge_then.33015:
-    li      3, $i2                      # |          2 |          2 |
-.count move_args
-    mov     $f0, $f2                    # |          2 |          2 |
-    call    ext_create_array_float      # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i4                    # |          2 |          2 |
-.count move_args
-    mov     $ig0, $i2                   # |          2 |          2 |
-.count move_args
-    mov     $i4, $i3                    # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    li      120, $i2                    # |          2 |          2 |
-    mov     $hp, $i3                    # |          2 |          2 |
-    add     $hp, 2, $hp                 # |          2 |          2 |
-    store   $i1, [$i3 + 1]              # |          2 |          2 |
-    store   $i4, [$i3 + 0]              # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    store   $i1, [ext_dirvecs + $i7]    # |          2 |          2 |
-    li      3, $i2                      # |          2 |          2 |
-.count move_args
-    mov     $f0, $f2                    # |          2 |          2 |
-    call    ext_create_array_float      # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i4                    # |          2 |          2 |
-.count move_args
-    mov     $ig0, $i2                   # |          2 |          2 |
-.count move_args
-    mov     $i4, $i3                    # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    load    [ext_dirvecs + $i7], $i6    # |          2 |          2 |
-    mov     $hp, $i2                    # |          2 |          2 |
-    add     $hp, 2, $hp                 # |          2 |          2 |
-    store   $i1, [$i2 + 1]              # |          2 |          2 |
-    store   $i4, [$i2 + 0]              # |          2 |          2 |
-    store   $i2, [$i6 + 118]            # |          2 |          2 |
-    li      3, $i2                      # |          2 |          2 |
-.count move_args
-    mov     $f0, $f2                    # |          2 |          2 |
-    call    ext_create_array_float      # |          2 |          2 |
-.count move_ret
-    mov     $i1, $i4                    # |          2 |          2 |
-.count move_args
-    mov     $ig0, $i2                   # |          2 |          2 |
-.count move_args
-    mov     $i4, $i3                    # |          2 |          2 |
-    call    ext_create_array_int        # |          2 |          2 |
-    mov     $hp, $i2                    # |          2 |          2 |
-    add     $hp, 2, $hp                 # |          2 |          2 |
-    store   $i1, [$i2 + 1]              # |          2 |          2 |
-    store   $i4, [$i2 + 0]              # |          2 |          2 |
-    store   $i2, [$i6 + 117]            # |          2 |          2 |
-    li      116, $i5                    # |          2 |          2 |
-.count move_args
-    mov     $i6, $i4                    # |          2 |          2 |
-    jal     create_dirvec_elements.3039, $ra1# |          2 |          2 |
-    sub     $i7, 1, $i7                 # |          2 |          2 |
-    b       create_dirvecs.3042         # |          2 |          2 |
-bge_else.33015:
-    jr      $ra2
-bge_else.33014:
-    jr      $ra2                        # |          1 |          1 |
+    mov     $i1, $i3                    # |          5 |          5 |
+    call    ext_create_array_int        # |          5 |          5 |
+    store   $i1, [ext_dirvecs + $i7]    # |          5 |          5 |
+    load    [ext_dirvecs + $i7], $i5    # |          5 |          5 |
+    li      118, $i6                    # |          5 |          5 |
+    jal     create_dirvec_elements.3039, $ra2# |          5 |          5 |
+    sub     $i7, 1, $i7                 # |          5 |          5 |
+    b       create_dirvecs.3042         # |          5 |          5 |
+bge_else.22335:
+    jr      $ra3                        # |          1 |          1 |
 .end create_dirvecs
 
 ######################################################################
-# init_dirvec_constants($i11, $i12)
-# $ra = $ra2
+# init_dirvec_constants($i10, $i11)
+# $ra = $ra3
+# [$i1 - $i11]
+# [$f1 - $f8]
+# []
+# []
+# [$ra - $ra2]
+######################################################################
+.begin init_dirvec_constants
+init_dirvec_constants.3044:
+    bl      $i11, 0, bge_else.22336     # |        605 |        605 |
+bge_then.22336:
+    load    [$i10 + $i11], $i7          # |        600 |        600 |
+    jal     setup_dirvec_constants.2829, $ra2# |        600 |        600 |
+    sub     $i11, 1, $i11               # |        600 |        600 |
+    b       init_dirvec_constants.3044  # |        600 |        600 |
+bge_else.22336:
+    jr      $ra3                        # |          5 |          5 |
+.end init_dirvec_constants
+
+######################################################################
+# init_vecset_constants($i12)
+# $ra = $ra4
 # [$i1 - $i12]
 # [$f1 - $f8]
 # []
 # []
-######################################################################
-.begin init_dirvec_constants
-init_dirvec_constants.3044:
-    bl      $i12, 0, bge_else.33016     # |        152 |        152 |
-bge_then.33016:
-    sub     $ig0, 1, $i4                # |        150 |        150 |
-    load    [$i11 + $i12], $i6          # |        150 |        150 |
-    bl      $i4, 0, bge_cont.33017      # |        150 |        150 |
-bge_then.33017:
-    load    [$i6 + 1], $i5              # |        150 |        150 |
-    load    [ext_objects + $i4], $i7    # |        150 |        150 |
-    load    [$i7 + 1], $i1              # |        150 |        150 |
-    load    [$i6 + 0], $i8              # |        150 |        150 |
-.count move_args
-    mov     $f0, $f2                    # |        150 |        150 |
-    bne     $i1, 1, be_else.33018       # |        150 |        150 |
-be_then.33018:
-    li      6, $i2
-    call    ext_create_array_float
-    load    [$i8 + 0], $f1
-    bne     $f1, $f0, be_else.33019
-be_then.33019:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.33019
-be_else.33019:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33020
-ble_then.33020:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33020
-ble_else.33020:
-    li      1, $i3
-ble_cont.33020:
-    bne     $i2, 0, be_else.33021
-be_then.33021:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33021
-be_else.33021:
-    bne     $i3, 0, be_else.33022
-be_then.33022:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33022
-be_else.33022:
-    li      0, $i2
-be_cont.33022:
-be_cont.33021:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 0], $f1
-    bne     $i2, 0, be_else.33023
-be_then.33023:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-.count b_cont
-    b       be_cont.33023
-be_else.33023:
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-be_cont.33023:
-be_cont.33019:
-    load    [$i8 + 1], $f1
-    bne     $f1, $f0, be_else.33024
-be_then.33024:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.33024
-be_else.33024:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33025
-ble_then.33025:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33025
-ble_else.33025:
-    li      1, $i3
-ble_cont.33025:
-    bne     $i2, 0, be_else.33026
-be_then.33026:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33026
-be_else.33026:
-    bne     $i3, 0, be_else.33027
-be_then.33027:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33027
-be_else.33027:
-    li      0, $i2
-be_cont.33027:
-be_cont.33026:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 1], $f1
-    bne     $i2, 0, be_else.33028
-be_then.33028:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-.count b_cont
-    b       be_cont.33028
-be_else.33028:
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-be_cont.33028:
-be_cont.33024:
-    load    [$i8 + 2], $f1
-    bne     $f1, $f0, be_else.33029
-be_then.33029:
-    store   $f0, [$i1 + 5]
-.count storer
-    add     $i5, $i4, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33018
-be_else.33029:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33030
-ble_then.33030:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33030
-ble_else.33030:
-    li      1, $i3
-ble_cont.33030:
-    bne     $i2, 0, be_else.33031
-be_then.33031:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33031
-be_else.33031:
-    bne     $i3, 0, be_else.33032
-be_then.33032:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33032
-be_else.33032:
-    li      0, $i2
-be_cont.33032:
-be_cont.33031:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 2], $f1
-    bne     $i2, 0, be_cont.33033
-be_then.33033:
-    fneg    $f1, $f1
-be_cont.33033:
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-.count storer
-    add     $i5, $i4, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33018
-be_else.33018:
-    bne     $i1, 2, be_else.33034       # |        150 |        150 |
-be_then.33034:
-    li      4, $i2                      # |        150 |        150 |
-    call    ext_create_array_float      # |        150 |        150 |
-    load    [$i7 + 4], $i2              # |        150 |        150 |
-    load    [$i7 + 4], $i3              # |        150 |        150 |
-    load    [$i7 + 4], $i9              # |        150 |        150 |
-    load    [$i8 + 0], $f1              # |        150 |        150 |
-    load    [$i2 + 0], $f2              # |        150 |        150 |
-    fmul    $f1, $f2, $f1               # |        150 |        150 |
-    load    [$i8 + 1], $f2              # |        150 |        150 |
-    load    [$i3 + 1], $f3              # |        150 |        150 |
-    fmul    $f2, $f3, $f2               # |        150 |        150 |
-    fadd    $f1, $f2, $f1               # |        150 |        150 |
-    load    [$i8 + 2], $f2              # |        150 |        150 |
-    load    [$i9 + 2], $f3              # |        150 |        150 |
-    fmul    $f2, $f3, $f2               # |        150 |        150 |
-    fadd    $f1, $f2, $f1               # |        150 |        150 |
-.count storer
-    add     $i5, $i4, $tmp              # |        150 |        150 |
-    sub     $i4, 1, $i5                 # |        150 |        150 |
-.count move_args
-    mov     $i6, $i4                    # |        150 |        150 |
-    bg      $f1, $f0, ble_else.33035    # |        150 |        150 |
-ble_then.33035:
-    store   $f0, [$i1 + 0]              # |         80 |         80 |
-    store   $i1, [$tmp + 0]             # |         80 |         80 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |         80 |         80 |
-.count b_cont
-    b       be_cont.33034               # |         80 |         80 |
-ble_else.33035:
-    finv    $f1, $f1                    # |         70 |         70 |
-    fneg    $f1, $f2                    # |         70 |         70 |
-    store   $f2, [$i1 + 0]              # |         70 |         70 |
-    load    [$i7 + 4], $i2              # |         70 |         70 |
-    load    [$i2 + 0], $f2              # |         70 |         70 |
-    fmul_n  $f2, $f1, $f2               # |         70 |         70 |
-    store   $f2, [$i1 + 1]              # |         70 |         70 |
-    load    [$i7 + 4], $i2              # |         70 |         70 |
-    load    [$i2 + 1], $f2              # |         70 |         70 |
-    fmul_n  $f2, $f1, $f2               # |         70 |         70 |
-    store   $f2, [$i1 + 2]              # |         70 |         70 |
-    load    [$i7 + 4], $i2              # |         70 |         70 |
-    load    [$i2 + 2], $f2              # |         70 |         70 |
-    fmul_n  $f2, $f1, $f1               # |         70 |         70 |
-    store   $f1, [$i1 + 3]              # |         70 |         70 |
-    store   $i1, [$tmp + 0]             # |         70 |         70 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |         70 |         70 |
-.count b_cont
-    b       be_cont.33034               # |         70 |         70 |
-be_else.33034:
-    li      5, $i2
-    call    ext_create_array_float
-    load    [$i7 + 3], $i2
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f1
-    load    [$i8 + 1], $f2
-    load    [$i8 + 2], $f3
-    fmul    $f1, $f1, $f4
-    load    [$i3 + 0], $f5
-    fmul    $f4, $f5, $f4
-    fmul    $f2, $f2, $f5
-    load    [$i9 + 1], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f3, $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    bne     $i2, 0, be_else.33036
-be_then.33036:
-    mov     $f4, $f1
-.count b_cont
-    b       be_cont.33036
-be_else.33036:
-    fmul    $f2, $f3, $f5
-    load    [$i7 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i7 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i7 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.33036:
-    store   $f1, [$i1 + 0]
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f2
-    load    [$i3 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 1], $f3
-    load    [$i9 + 1], $f4
-    fmul    $f3, $f4, $f4
-    load    [$i8 + 2], $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f6
-    fneg    $f2, $f2
-    fneg    $f4, $f4
-    fneg    $f6, $f6
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33037
-be_then.33037:
-    store   $f2, [$i1 + 1]
-    store   $f4, [$i1 + 2]
-    store   $f6, [$i1 + 3]
-    bne     $f1, $f0, be_else.33038
-be_then.33038:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33037
-be_else.33038:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33037
-be_else.33037:
-    load    [$i7 + 9], $i2
-    load    [$i7 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 9], $i2
-    load    [$i8 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i8 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    bne     $f1, $f0, be_else.33039
-be_then.33039:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33039
-be_else.33039:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-be_cont.33039:
-be_cont.33037:
-be_cont.33034:
-be_cont.33018:
-bge_cont.33017:
-    sub     $i12, 1, $i12               # |        150 |        150 |
-    bl      $i12, 0, bge_else.33040     # |        150 |        150 |
-bge_then.33040:
-    sub     $ig0, 1, $i4                # |        149 |        149 |
-    load    [$i11 + $i12], $i6          # |        149 |        149 |
-    bl      $i4, 0, bge_cont.33041      # |        149 |        149 |
-bge_then.33041:
-    load    [$i6 + 1], $i5              # |        149 |        149 |
-    load    [ext_objects + $i4], $i7    # |        149 |        149 |
-    load    [$i7 + 1], $i1              # |        149 |        149 |
-    load    [$i6 + 0], $i8              # |        149 |        149 |
-.count move_args
-    mov     $f0, $f2                    # |        149 |        149 |
-    bne     $i1, 1, be_else.33042       # |        149 |        149 |
-be_then.33042:
-    li      6, $i2
-    call    ext_create_array_float
-    load    [$i8 + 0], $f1
-    bne     $f1, $f0, be_else.33043
-be_then.33043:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.33043
-be_else.33043:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33044
-ble_then.33044:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33044
-ble_else.33044:
-    li      1, $i3
-ble_cont.33044:
-    bne     $i2, 0, be_else.33045
-be_then.33045:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33045
-be_else.33045:
-    bne     $i3, 0, be_else.33046
-be_then.33046:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33046
-be_else.33046:
-    li      0, $i2
-be_cont.33046:
-be_cont.33045:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 0], $f1
-    bne     $i2, 0, be_else.33047
-be_then.33047:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-.count b_cont
-    b       be_cont.33047
-be_else.33047:
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-be_cont.33047:
-be_cont.33043:
-    load    [$i8 + 1], $f1
-    bne     $f1, $f0, be_else.33048
-be_then.33048:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.33048
-be_else.33048:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33049
-ble_then.33049:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33049
-ble_else.33049:
-    li      1, $i3
-ble_cont.33049:
-    bne     $i2, 0, be_else.33050
-be_then.33050:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33050
-be_else.33050:
-    bne     $i3, 0, be_else.33051
-be_then.33051:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33051
-be_else.33051:
-    li      0, $i2
-be_cont.33051:
-be_cont.33050:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 1], $f1
-    bne     $i2, 0, be_else.33052
-be_then.33052:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-.count b_cont
-    b       be_cont.33052
-be_else.33052:
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-be_cont.33052:
-be_cont.33048:
-    load    [$i8 + 2], $f1
-    bne     $f1, $f0, be_else.33053
-be_then.33053:
-    store   $f0, [$i1 + 5]
-.count storer
-    add     $i5, $i4, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33042
-be_else.33053:
-    load    [$i7 + 6], $i2
-    load    [$i7 + 4], $i3
-    bg      $f0, $f1, ble_else.33054
-ble_then.33054:
-    li      0, $i7
-.count b_cont
-    b       ble_cont.33054
-ble_else.33054:
-    li      1, $i7
-ble_cont.33054:
-    bne     $i2, 0, be_else.33055
-be_then.33055:
-    mov     $i7, $i2
-.count b_cont
-    b       be_cont.33055
-be_else.33055:
-    bne     $i7, 0, be_else.33056
-be_then.33056:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33056
-be_else.33056:
-    li      0, $i2
-be_cont.33056:
-be_cont.33055:
-    load    [$i3 + 2], $f1
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33057
-be_then.33057:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33042
-be_else.33057:
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33042
-be_else.33042:
-    bne     $i1, 2, be_else.33058       # |        149 |        149 |
-be_then.33058:
-    li      4, $i2                      # |        149 |        149 |
-    call    ext_create_array_float      # |        149 |        149 |
-    load    [$i7 + 4], $i2              # |        149 |        149 |
-    load    [$i7 + 4], $i3              # |        149 |        149 |
-    load    [$i7 + 4], $i9              # |        149 |        149 |
-    load    [$i8 + 0], $f1              # |        149 |        149 |
-    load    [$i2 + 0], $f2              # |        149 |        149 |
-    fmul    $f1, $f2, $f1               # |        149 |        149 |
-    load    [$i8 + 1], $f2              # |        149 |        149 |
-    load    [$i3 + 1], $f3              # |        149 |        149 |
-    fmul    $f2, $f3, $f2               # |        149 |        149 |
-    fadd    $f1, $f2, $f1               # |        149 |        149 |
-    load    [$i8 + 2], $f2              # |        149 |        149 |
-    load    [$i9 + 2], $f3              # |        149 |        149 |
-    fmul    $f2, $f3, $f2               # |        149 |        149 |
-    fadd    $f1, $f2, $f1               # |        149 |        149 |
-.count storer
-    add     $i5, $i4, $tmp              # |        149 |        149 |
-    sub     $i4, 1, $i5                 # |        149 |        149 |
-.count move_args
-    mov     $i6, $i4                    # |        149 |        149 |
-    bg      $f1, $f0, ble_else.33059    # |        149 |        149 |
-ble_then.33059:
-    store   $f0, [$i1 + 0]              # |         69 |         69 |
-    store   $i1, [$tmp + 0]             # |         69 |         69 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |         69 |         69 |
-.count b_cont
-    b       be_cont.33058               # |         69 |         69 |
-ble_else.33059:
-    finv    $f1, $f1                    # |         80 |         80 |
-    fneg    $f1, $f2                    # |         80 |         80 |
-    store   $f2, [$i1 + 0]              # |         80 |         80 |
-    load    [$i7 + 4], $i2              # |         80 |         80 |
-    load    [$i2 + 0], $f2              # |         80 |         80 |
-    fmul_n  $f2, $f1, $f2               # |         80 |         80 |
-    store   $f2, [$i1 + 1]              # |         80 |         80 |
-    load    [$i7 + 4], $i2              # |         80 |         80 |
-    load    [$i2 + 1], $f2              # |         80 |         80 |
-    fmul_n  $f2, $f1, $f2               # |         80 |         80 |
-    store   $f2, [$i1 + 2]              # |         80 |         80 |
-    load    [$i7 + 4], $i2              # |         80 |         80 |
-    load    [$i2 + 2], $f2              # |         80 |         80 |
-    fmul_n  $f2, $f1, $f1               # |         80 |         80 |
-    store   $f1, [$i1 + 3]              # |         80 |         80 |
-    store   $i1, [$tmp + 0]             # |         80 |         80 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |         80 |         80 |
-.count b_cont
-    b       be_cont.33058               # |         80 |         80 |
-be_else.33058:
-    li      5, $i2
-    call    ext_create_array_float
-    load    [$i7 + 3], $i2
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f1
-    load    [$i8 + 1], $f2
-    load    [$i8 + 2], $f3
-    fmul    $f1, $f1, $f4
-    load    [$i3 + 0], $f5
-    fmul    $f4, $f5, $f4
-    fmul    $f2, $f2, $f5
-    load    [$i9 + 1], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f3, $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    bne     $i2, 0, be_else.33060
-be_then.33060:
-    mov     $f4, $f1
-.count b_cont
-    b       be_cont.33060
-be_else.33060:
-    fmul    $f2, $f3, $f5
-    load    [$i7 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i7 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i7 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.33060:
-    store   $f1, [$i1 + 0]
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f2
-    load    [$i3 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 1], $f3
-    load    [$i9 + 1], $f4
-    fmul    $f3, $f4, $f4
-    load    [$i8 + 2], $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f6
-    fneg    $f2, $f2
-    fneg    $f4, $f4
-    fneg    $f6, $f6
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33061
-be_then.33061:
-    store   $f2, [$i1 + 1]
-    store   $f4, [$i1 + 2]
-    store   $f6, [$i1 + 3]
-    bne     $f1, $f0, be_else.33062
-be_then.33062:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33061
-be_else.33062:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33061
-be_else.33061:
-    load    [$i7 + 9], $i2
-    load    [$i7 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 9], $i2
-    load    [$i8 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i8 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    bne     $f1, $f0, be_else.33063
-be_then.33063:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33063
-be_else.33063:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-be_cont.33063:
-be_cont.33061:
-be_cont.33058:
-be_cont.33042:
-bge_cont.33041:
-    sub     $i12, 1, $i12               # |        149 |        149 |
-    bl      $i12, 0, bge_else.33064     # |        149 |        149 |
-bge_then.33064:
-    sub     $ig0, 1, $i5                # |        148 |        148 |
-    load    [$i11 + $i12], $i4          # |        148 |        148 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |        148 |        148 |
-    sub     $i12, 1, $i12               # |        148 |        148 |
-    bl      $i12, 0, bge_else.33065     # |        148 |        148 |
-bge_then.33065:
-    sub     $ig0, 1, $i4                # |        147 |        147 |
-    bl      $i4, 0, bge_else.33066      # |        147 |        147 |
-bge_then.33066:
-    load    [$i11 + $i12], $i6          # |        147 |        147 |
-    load    [$i6 + 1], $i5              # |        147 |        147 |
-    load    [ext_objects + $i4], $i7    # |        147 |        147 |
-    load    [$i7 + 1], $i1              # |        147 |        147 |
-    load    [$i6 + 0], $i8              # |        147 |        147 |
-.count move_args
-    mov     $f0, $f2                    # |        147 |        147 |
-    bne     $i1, 1, be_else.33067       # |        147 |        147 |
-be_then.33067:
-    li      6, $i2
-    call    ext_create_array_float
-    load    [$i8 + 0], $f1
-    bne     $f1, $f0, be_else.33068
-be_then.33068:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.33068
-be_else.33068:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33069
-ble_then.33069:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33069
-ble_else.33069:
-    li      1, $i3
-ble_cont.33069:
-    bne     $i2, 0, be_else.33070
-be_then.33070:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33070
-be_else.33070:
-    bne     $i3, 0, be_else.33071
-be_then.33071:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33071
-be_else.33071:
-    li      0, $i2
-be_cont.33071:
-be_cont.33070:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 0], $f1
-    bne     $i2, 0, be_else.33072
-be_then.33072:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-.count b_cont
-    b       be_cont.33072
-be_else.33072:
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-be_cont.33072:
-be_cont.33068:
-    load    [$i8 + 1], $f1
-    bne     $f1, $f0, be_else.33073
-be_then.33073:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.33073
-be_else.33073:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33074
-ble_then.33074:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33074
-ble_else.33074:
-    li      1, $i3
-ble_cont.33074:
-    bne     $i2, 0, be_else.33075
-be_then.33075:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33075
-be_else.33075:
-    bne     $i3, 0, be_else.33076
-be_then.33076:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33076
-be_else.33076:
-    li      0, $i2
-be_cont.33076:
-be_cont.33075:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 1], $f1
-    bne     $i2, 0, be_else.33077
-be_then.33077:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-.count b_cont
-    b       be_cont.33077
-be_else.33077:
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-be_cont.33077:
-be_cont.33073:
-    load    [$i8 + 2], $f1
-    bne     $f1, $f0, be_else.33078
-be_then.33078:
-    store   $f0, [$i1 + 5]
-.count b_cont
-    b       be_cont.33078
-be_else.33078:
-    load    [$i7 + 6], $i2
-    load    [$i7 + 4], $i3
-    bg      $f0, $f1, ble_else.33079
-ble_then.33079:
-    li      0, $i7
-.count b_cont
-    b       ble_cont.33079
-ble_else.33079:
-    li      1, $i7
-ble_cont.33079:
-    bne     $i2, 0, be_else.33080
-be_then.33080:
-    mov     $i7, $i2
-.count b_cont
-    b       be_cont.33080
-be_else.33080:
-    bne     $i7, 0, be_else.33081
-be_then.33081:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33081
-be_else.33081:
-    li      0, $i2
-be_cont.33081:
-be_cont.33080:
-    load    [$i3 + 2], $f1
-    bne     $i2, 0, be_else.33082
-be_then.33082:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-.count b_cont
-    b       be_cont.33082
-be_else.33082:
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-be_cont.33082:
-be_cont.33078:
-.count storer
-    add     $i5, $i4, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-    sub     $i12, 1, $i12
-    b       init_dirvec_constants.3044
-be_else.33067:
-    bne     $i1, 2, be_else.33083       # |        147 |        147 |
-be_then.33083:
-    li      4, $i2                      # |        147 |        147 |
-    call    ext_create_array_float      # |        147 |        147 |
-    load    [$i7 + 4], $i2              # |        147 |        147 |
-    load    [$i7 + 4], $i3              # |        147 |        147 |
-    load    [$i7 + 4], $i9              # |        147 |        147 |
-    load    [$i8 + 0], $f1              # |        147 |        147 |
-    load    [$i2 + 0], $f2              # |        147 |        147 |
-    fmul    $f1, $f2, $f1               # |        147 |        147 |
-    load    [$i8 + 1], $f2              # |        147 |        147 |
-    load    [$i3 + 1], $f3              # |        147 |        147 |
-    fmul    $f2, $f3, $f2               # |        147 |        147 |
-    fadd    $f1, $f2, $f1               # |        147 |        147 |
-    load    [$i8 + 2], $f2              # |        147 |        147 |
-    load    [$i9 + 2], $f3              # |        147 |        147 |
-    fmul    $f2, $f3, $f2               # |        147 |        147 |
-    fadd    $f1, $f2, $f1               # |        147 |        147 |
-.count storer
-    add     $i5, $i4, $tmp              # |        147 |        147 |
-    bg      $f1, $f0, ble_else.33084    # |        147 |        147 |
-ble_then.33084:
-    store   $f0, [$i1 + 0]              # |         68 |         68 |
-    store   $i1, [$tmp + 0]             # |         68 |         68 |
-.count b_cont
-    b       be_cont.33083               # |         68 |         68 |
-ble_else.33084:
-    finv    $f1, $f1                    # |         79 |         79 |
-    fneg    $f1, $f2                    # |         79 |         79 |
-    store   $f2, [$i1 + 0]              # |         79 |         79 |
-    load    [$i7 + 4], $i2              # |         79 |         79 |
-    load    [$i2 + 0], $f2              # |         79 |         79 |
-    fmul_n  $f2, $f1, $f2               # |         79 |         79 |
-    store   $f2, [$i1 + 1]              # |         79 |         79 |
-    load    [$i7 + 4], $i2              # |         79 |         79 |
-    load    [$i2 + 1], $f2              # |         79 |         79 |
-    fmul_n  $f2, $f1, $f2               # |         79 |         79 |
-    store   $f2, [$i1 + 2]              # |         79 |         79 |
-    load    [$i7 + 4], $i2              # |         79 |         79 |
-    load    [$i2 + 2], $f2              # |         79 |         79 |
-    fmul_n  $f2, $f1, $f1               # |         79 |         79 |
-    store   $f1, [$i1 + 3]              # |         79 |         79 |
-    store   $i1, [$tmp + 0]             # |         79 |         79 |
-.count b_cont
-    b       be_cont.33083               # |         79 |         79 |
-be_else.33083:
-    li      5, $i2
-    call    ext_create_array_float
-    load    [$i7 + 3], $i2
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f1
-    load    [$i8 + 1], $f2
-    load    [$i8 + 2], $f3
-    fmul    $f1, $f1, $f4
-    load    [$i3 + 0], $f5
-    fmul    $f4, $f5, $f4
-    fmul    $f2, $f2, $f5
-    load    [$i9 + 1], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f3, $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    bne     $i2, 0, be_else.33085
-be_then.33085:
-    mov     $f4, $f1
-.count b_cont
-    b       be_cont.33085
-be_else.33085:
-    fmul    $f2, $f3, $f5
-    load    [$i7 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i7 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i7 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.33085:
-    store   $f1, [$i1 + 0]
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f2
-    load    [$i3 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 1], $f3
-    load    [$i9 + 1], $f4
-    fmul    $f3, $f4, $f4
-    load    [$i8 + 2], $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f6
-    fneg    $f2, $f2
-    fneg    $f4, $f4
-    fneg    $f6, $f6
-.count storer
-    add     $i5, $i4, $tmp
-    bne     $i2, 0, be_else.33086
-be_then.33086:
-    store   $f2, [$i1 + 1]
-    store   $f4, [$i1 + 2]
-    store   $f6, [$i1 + 3]
-    bne     $f1, $f0, be_else.33087
-be_then.33087:
-    store   $i1, [$tmp + 0]
-.count b_cont
-    b       be_cont.33086
-be_else.33087:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-.count b_cont
-    b       be_cont.33086
-be_else.33086:
-    load    [$i7 + 9], $i2
-    load    [$i7 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 9], $i2
-    load    [$i8 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i8 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    bne     $f1, $f0, be_else.33088
-be_then.33088:
-    store   $i1, [$tmp + 0]
-.count b_cont
-    b       be_cont.33088
-be_else.33088:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-be_cont.33088:
-be_cont.33086:
-be_cont.33083:
-    sub     $i4, 1, $i5                 # |        147 |        147 |
-.count move_args
-    mov     $i6, $i4                    # |        147 |        147 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |        147 |        147 |
-    sub     $i12, 1, $i12               # |        147 |        147 |
-    b       init_dirvec_constants.3044  # |        147 |        147 |
-bge_else.33066:
-    sub     $i12, 1, $i12
-    b       init_dirvec_constants.3044
-bge_else.33065:
-    jr      $ra2                        # |          1 |          1 |
-bge_else.33064:
-    jr      $ra2                        # |          1 |          1 |
-bge_else.33040:
-    jr      $ra2                        # |          1 |          1 |
-bge_else.33016:
-    jr      $ra2                        # |          2 |          2 |
-.end init_dirvec_constants
-
-######################################################################
-# init_vecset_constants($i13)
-# $ra = $ra3
-# [$i1 - $i13]
-# [$f1 - $f8]
-# []
-# []
+# [$ra - $ra3]
 ######################################################################
 .begin init_vecset_constants
 init_vecset_constants.3047:
-    bl      $i13, 0, bge_else.33089     # |          2 |          2 |
-bge_then.33089:
-    sub     $ig0, 1, $i4                # |          1 |          1 |
-    load    [ext_dirvecs + $i13], $i11  # |          1 |          1 |
-    load    [$i11 + 119], $i6           # |          1 |          1 |
-    bl      $i4, 0, bge_cont.33090      # |          1 |          1 |
-bge_then.33090:
-    load    [$i6 + 1], $i5              # |          1 |          1 |
-    load    [ext_objects + $i4], $i7    # |          1 |          1 |
-    load    [$i7 + 1], $i1              # |          1 |          1 |
-    load    [$i6 + 0], $i8              # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    bne     $i1, 1, be_else.33091       # |          1 |          1 |
-be_then.33091:
-    li      6, $i2
-    call    ext_create_array_float
-    load    [$i8 + 0], $f1
-    bne     $f1, $f0, be_else.33092
-be_then.33092:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.33092
-be_else.33092:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33093
-ble_then.33093:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33093
-ble_else.33093:
-    li      1, $i3
-ble_cont.33093:
-    bne     $i2, 0, be_else.33094
-be_then.33094:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33094
-be_else.33094:
-    bne     $i3, 0, be_else.33095
-be_then.33095:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33095
-be_else.33095:
-    li      0, $i2
-be_cont.33095:
-be_cont.33094:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 0], $f1
-    bne     $i2, 0, be_else.33096
-be_then.33096:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-.count b_cont
-    b       be_cont.33096
-be_else.33096:
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-be_cont.33096:
-be_cont.33092:
-    load    [$i8 + 1], $f1
-    bne     $f1, $f0, be_else.33097
-be_then.33097:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.33097
-be_else.33097:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33098
-ble_then.33098:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33098
-ble_else.33098:
-    li      1, $i3
-ble_cont.33098:
-    bne     $i2, 0, be_else.33099
-be_then.33099:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33099
-be_else.33099:
-    bne     $i3, 0, be_else.33100
-be_then.33100:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33100
-be_else.33100:
-    li      0, $i2
-be_cont.33100:
-be_cont.33099:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 1], $f1
-    bne     $i2, 0, be_else.33101
-be_then.33101:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-.count b_cont
-    b       be_cont.33101
-be_else.33101:
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-be_cont.33101:
-be_cont.33097:
-    load    [$i8 + 2], $f1
-    bne     $f1, $f0, be_else.33102
-be_then.33102:
-    store   $f0, [$i1 + 5]
-.count storer
-    add     $i5, $i4, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33091
-be_else.33102:
-    load    [$i7 + 6], $i2
-    load    [$i7 + 4], $i3
-    bg      $f0, $f1, ble_else.33103
-ble_then.33103:
-    li      0, $i7
-.count b_cont
-    b       ble_cont.33103
-ble_else.33103:
-    li      1, $i7
-ble_cont.33103:
-    bne     $i2, 0, be_else.33104
-be_then.33104:
-    mov     $i7, $i2
-.count b_cont
-    b       be_cont.33104
-be_else.33104:
-    bne     $i7, 0, be_else.33105
-be_then.33105:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33105
-be_else.33105:
-    li      0, $i2
-be_cont.33105:
-be_cont.33104:
-    load    [$i3 + 2], $f1
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33106
-be_then.33106:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33091
-be_else.33106:
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33091
-be_else.33091:
-    bne     $i1, 2, be_else.33107       # |          1 |          1 |
-be_then.33107:
-    li      4, $i2                      # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    load    [$i7 + 4], $i2              # |          1 |          1 |
-    load    [$i7 + 4], $i3              # |          1 |          1 |
-    load    [$i7 + 4], $i9              # |          1 |          1 |
-    load    [$i8 + 0], $f1              # |          1 |          1 |
-    load    [$i2 + 0], $f2              # |          1 |          1 |
-    fmul    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i8 + 1], $f2              # |          1 |          1 |
-    load    [$i3 + 1], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i8 + 2], $f2              # |          1 |          1 |
-    load    [$i9 + 2], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-.count storer
-    add     $i5, $i4, $tmp              # |          1 |          1 |
-    sub     $i4, 1, $i5                 # |          1 |          1 |
-.count move_args
-    mov     $i6, $i4                    # |          1 |          1 |
-    bg      $f1, $f0, ble_else.33108    # |          1 |          1 |
-ble_then.33108:
-    store   $f0, [$i1 + 0]              # |          1 |          1 |
-    store   $i1, [$tmp + 0]             # |          1 |          1 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |          1 |          1 |
-.count b_cont
-    b       be_cont.33107               # |          1 |          1 |
-ble_else.33108:
-    finv    $f1, $f1
-    fneg    $f1, $f2
-    store   $f2, [$i1 + 0]
-    load    [$i7 + 4], $i2
-    load    [$i2 + 0], $f2
-    fmul_n  $f2, $f1, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 4], $i2
-    load    [$i2 + 1], $f2
-    fmul_n  $f2, $f1, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i7 + 4], $i2
-    load    [$i2 + 2], $f2
-    fmul_n  $f2, $f1, $f1
-    store   $f1, [$i1 + 3]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33107
-be_else.33107:
-    li      5, $i2
-    call    ext_create_array_float
-    load    [$i7 + 3], $i2
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f1
-    load    [$i8 + 1], $f2
-    load    [$i8 + 2], $f3
-    fmul    $f1, $f1, $f4
-    load    [$i3 + 0], $f5
-    fmul    $f4, $f5, $f4
-    fmul    $f2, $f2, $f5
-    load    [$i9 + 1], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f3, $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    bne     $i2, 0, be_else.33109
-be_then.33109:
-    mov     $f4, $f1
-.count b_cont
-    b       be_cont.33109
-be_else.33109:
-    fmul    $f2, $f3, $f5
-    load    [$i7 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i7 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i7 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.33109:
-    store   $f1, [$i1 + 0]
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f2
-    load    [$i3 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 1], $f3
-    load    [$i9 + 1], $f4
-    fmul    $f3, $f4, $f4
-    load    [$i8 + 2], $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f6
-    fneg    $f2, $f2
-    fneg    $f4, $f4
-    fneg    $f6, $f6
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33110
-be_then.33110:
-    store   $f2, [$i1 + 1]
-    store   $f4, [$i1 + 2]
-    store   $f6, [$i1 + 3]
-    bne     $f1, $f0, be_else.33111
-be_then.33111:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33110
-be_else.33111:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33110
-be_else.33110:
-    load    [$i7 + 9], $i2
-    load    [$i7 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 9], $i2
-    load    [$i8 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i8 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    bne     $f1, $f0, be_else.33112
-be_then.33112:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33112
-be_else.33112:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-be_cont.33112:
-be_cont.33110:
-be_cont.33107:
-be_cont.33091:
-bge_cont.33090:
-    sub     $ig0, 1, $i5                # |          1 |          1 |
-    load    [$i11 + 118], $i4           # |          1 |          1 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |          1 |          1 |
-    sub     $ig0, 1, $i4                # |          1 |          1 |
-    load    [$i11 + 117], $i6           # |          1 |          1 |
-    bl      $i4, 0, bge_cont.33113      # |          1 |          1 |
-bge_then.33113:
-    load    [$i6 + 1], $i5              # |          1 |          1 |
-    load    [ext_objects + $i4], $i7    # |          1 |          1 |
-    load    [$i7 + 1], $i1              # |          1 |          1 |
-    load    [$i6 + 0], $i8              # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    bne     $i1, 1, be_else.33114       # |          1 |          1 |
-be_then.33114:
-    li      6, $i2
-    call    ext_create_array_float
-    load    [$i8 + 0], $f1
-    bne     $f1, $f0, be_else.33115
-be_then.33115:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.33115
-be_else.33115:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33116
-ble_then.33116:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33116
-ble_else.33116:
-    li      1, $i3
-ble_cont.33116:
-    bne     $i2, 0, be_else.33117
-be_then.33117:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33117
-be_else.33117:
-    bne     $i3, 0, be_else.33118
-be_then.33118:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33118
-be_else.33118:
-    li      0, $i2
-be_cont.33118:
-be_cont.33117:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 0], $f1
-    bne     $i2, 0, be_else.33119
-be_then.33119:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-.count b_cont
-    b       be_cont.33119
-be_else.33119:
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-be_cont.33119:
-be_cont.33115:
-    load    [$i8 + 1], $f1
-    bne     $f1, $f0, be_else.33120
-be_then.33120:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.33120
-be_else.33120:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33121
-ble_then.33121:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33121
-ble_else.33121:
-    li      1, $i3
-ble_cont.33121:
-    bne     $i2, 0, be_else.33122
-be_then.33122:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33122
-be_else.33122:
-    bne     $i3, 0, be_else.33123
-be_then.33123:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33123
-be_else.33123:
-    li      0, $i2
-be_cont.33123:
-be_cont.33122:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 1], $f1
-    bne     $i2, 0, be_else.33124
-be_then.33124:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-.count b_cont
-    b       be_cont.33124
-be_else.33124:
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-be_cont.33124:
-be_cont.33120:
-    load    [$i8 + 2], $f1
-    bne     $f1, $f0, be_else.33125
-be_then.33125:
-    store   $f0, [$i1 + 5]
-.count storer
-    add     $i5, $i4, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33114
-be_else.33125:
-    load    [$i7 + 6], $i2
-    load    [$i7 + 4], $i3
-    bg      $f0, $f1, ble_else.33126
-ble_then.33126:
-    li      0, $i7
-.count b_cont
-    b       ble_cont.33126
-ble_else.33126:
-    li      1, $i7
-ble_cont.33126:
-    bne     $i2, 0, be_else.33127
-be_then.33127:
-    mov     $i7, $i2
-.count b_cont
-    b       be_cont.33127
-be_else.33127:
-    bne     $i7, 0, be_else.33128
-be_then.33128:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33128
-be_else.33128:
-    li      0, $i2
-be_cont.33128:
-be_cont.33127:
-    load    [$i3 + 2], $f1
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33129
-be_then.33129:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33114
-be_else.33129:
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33114
-be_else.33114:
-    bne     $i1, 2, be_else.33130       # |          1 |          1 |
-be_then.33130:
-    li      4, $i2                      # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    load    [$i7 + 4], $i2              # |          1 |          1 |
-    load    [$i7 + 4], $i3              # |          1 |          1 |
-    load    [$i7 + 4], $i9              # |          1 |          1 |
-    load    [$i8 + 0], $f1              # |          1 |          1 |
-    load    [$i2 + 0], $f2              # |          1 |          1 |
-    fmul    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i8 + 1], $f2              # |          1 |          1 |
-    load    [$i3 + 1], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i8 + 2], $f2              # |          1 |          1 |
-    load    [$i9 + 2], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-.count storer
-    add     $i5, $i4, $tmp              # |          1 |          1 |
-    sub     $i4, 1, $i5                 # |          1 |          1 |
-.count move_args
-    mov     $i6, $i4                    # |          1 |          1 |
-    bg      $f1, $f0, ble_else.33131    # |          1 |          1 |
-ble_then.33131:
-    store   $f0, [$i1 + 0]              # |          1 |          1 |
-    store   $i1, [$tmp + 0]             # |          1 |          1 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |          1 |          1 |
-.count b_cont
-    b       be_cont.33130               # |          1 |          1 |
-ble_else.33131:
-    finv    $f1, $f1
-    fneg    $f1, $f2
-    store   $f2, [$i1 + 0]
-    load    [$i7 + 4], $i2
-    load    [$i2 + 0], $f2
-    fmul_n  $f2, $f1, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 4], $i2
-    load    [$i2 + 1], $f2
-    fmul_n  $f2, $f1, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i7 + 4], $i2
-    load    [$i2 + 2], $f2
-    fmul_n  $f2, $f1, $f1
-    store   $f1, [$i1 + 3]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33130
-be_else.33130:
-    li      5, $i2
-    call    ext_create_array_float
-    load    [$i7 + 3], $i2
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f1
-    load    [$i8 + 1], $f2
-    load    [$i8 + 2], $f3
-    fmul    $f1, $f1, $f4
-    load    [$i3 + 0], $f5
-    fmul    $f4, $f5, $f4
-    fmul    $f2, $f2, $f5
-    load    [$i9 + 1], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f3, $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    bne     $i2, 0, be_else.33132
-be_then.33132:
-    mov     $f4, $f1
-.count b_cont
-    b       be_cont.33132
-be_else.33132:
-    fmul    $f2, $f3, $f5
-    load    [$i7 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i7 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i7 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.33132:
-    store   $f1, [$i1 + 0]
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f2
-    load    [$i3 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 1], $f3
-    load    [$i9 + 1], $f4
-    fmul    $f3, $f4, $f4
-    load    [$i8 + 2], $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f6
-    fneg    $f2, $f2
-    fneg    $f4, $f4
-    fneg    $f6, $f6
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33133
-be_then.33133:
-    store   $f2, [$i1 + 1]
-    store   $f4, [$i1 + 2]
-    store   $f6, [$i1 + 3]
-    bne     $f1, $f0, be_else.33134
-be_then.33134:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33133
-be_else.33134:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33133
-be_else.33133:
-    load    [$i7 + 9], $i2
-    load    [$i7 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 9], $i2
-    load    [$i8 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i8 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    bne     $f1, $f0, be_else.33135
-be_then.33135:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33135
-be_else.33135:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-be_cont.33135:
-be_cont.33133:
-be_cont.33130:
-be_cont.33114:
-bge_cont.33113:
-    li      116, $i12                   # |          1 |          1 |
-    jal     init_dirvec_constants.3044, $ra2# |          1 |          1 |
-    sub     $i13, 1, $i13               # |          1 |          1 |
-    bl      $i13, 0, bge_else.33136     # |          1 |          1 |
-bge_then.33136:
-    sub     $ig0, 1, $i5                # |          1 |          1 |
-    load    [ext_dirvecs + $i13], $i11  # |          1 |          1 |
-    load    [$i11 + 119], $i4           # |          1 |          1 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |          1 |          1 |
-    sub     $ig0, 1, $i4                # |          1 |          1 |
-    load    [$i11 + 118], $i6           # |          1 |          1 |
-    bl      $i4, 0, bge_cont.33137      # |          1 |          1 |
-bge_then.33137:
-    load    [$i6 + 1], $i5              # |          1 |          1 |
-    load    [ext_objects + $i4], $i7    # |          1 |          1 |
-    load    [$i7 + 1], $i1              # |          1 |          1 |
-    load    [$i6 + 0], $i8              # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    bne     $i1, 1, be_else.33138       # |          1 |          1 |
-be_then.33138:
-    li      6, $i2
-    call    ext_create_array_float
-    load    [$i8 + 0], $f1
-    bne     $f1, $f0, be_else.33139
-be_then.33139:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.33139
-be_else.33139:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33140
-ble_then.33140:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33140
-ble_else.33140:
-    li      1, $i3
-ble_cont.33140:
-    bne     $i2, 0, be_else.33141
-be_then.33141:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33141
-be_else.33141:
-    bne     $i3, 0, be_else.33142
-be_then.33142:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33142
-be_else.33142:
-    li      0, $i2
-be_cont.33142:
-be_cont.33141:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 0], $f1
-    bne     $i2, 0, be_else.33143
-be_then.33143:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-.count b_cont
-    b       be_cont.33143
-be_else.33143:
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-be_cont.33143:
-be_cont.33139:
-    load    [$i8 + 1], $f1
-    bne     $f1, $f0, be_else.33144
-be_then.33144:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.33144
-be_else.33144:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33145
-ble_then.33145:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33145
-ble_else.33145:
-    li      1, $i3
-ble_cont.33145:
-    bne     $i2, 0, be_else.33146
-be_then.33146:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33146
-be_else.33146:
-    bne     $i3, 0, be_else.33147
-be_then.33147:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33147
-be_else.33147:
-    li      0, $i2
-be_cont.33147:
-be_cont.33146:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 1], $f1
-    bne     $i2, 0, be_else.33148
-be_then.33148:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-.count b_cont
-    b       be_cont.33148
-be_else.33148:
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-be_cont.33148:
-be_cont.33144:
-    load    [$i8 + 2], $f1
-    bne     $f1, $f0, be_else.33149
-be_then.33149:
-    store   $f0, [$i1 + 5]
-.count storer
-    add     $i5, $i4, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33138
-be_else.33149:
-    load    [$i7 + 6], $i2
-    load    [$i7 + 4], $i3
-    bg      $f0, $f1, ble_else.33150
-ble_then.33150:
-    li      0, $i7
-.count b_cont
-    b       ble_cont.33150
-ble_else.33150:
-    li      1, $i7
-ble_cont.33150:
-    bne     $i2, 0, be_else.33151
-be_then.33151:
-    mov     $i7, $i2
-.count b_cont
-    b       be_cont.33151
-be_else.33151:
-    bne     $i7, 0, be_else.33152
-be_then.33152:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33152
-be_else.33152:
-    li      0, $i2
-be_cont.33152:
-be_cont.33151:
-    load    [$i3 + 2], $f1
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33153
-be_then.33153:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33138
-be_else.33153:
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33138
-be_else.33138:
-    bne     $i1, 2, be_else.33154       # |          1 |          1 |
-be_then.33154:
-    li      4, $i2                      # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    load    [$i7 + 4], $i2              # |          1 |          1 |
-    load    [$i7 + 4], $i3              # |          1 |          1 |
-    load    [$i7 + 4], $i9              # |          1 |          1 |
-    load    [$i8 + 0], $f1              # |          1 |          1 |
-    load    [$i2 + 0], $f2              # |          1 |          1 |
-    fmul    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i8 + 1], $f2              # |          1 |          1 |
-    load    [$i3 + 1], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i8 + 2], $f2              # |          1 |          1 |
-    load    [$i9 + 2], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-.count storer
-    add     $i5, $i4, $tmp              # |          1 |          1 |
-    sub     $i4, 1, $i5                 # |          1 |          1 |
-.count move_args
-    mov     $i6, $i4                    # |          1 |          1 |
-    bg      $f1, $f0, ble_else.33155    # |          1 |          1 |
-ble_then.33155:
-    store   $f0, [$i1 + 0]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33154
-ble_else.33155:
-    finv    $f1, $f1                    # |          1 |          1 |
-    fneg    $f1, $f2                    # |          1 |          1 |
-    store   $f2, [$i1 + 0]              # |          1 |          1 |
-    load    [$i7 + 4], $i2              # |          1 |          1 |
-    load    [$i2 + 0], $f2              # |          1 |          1 |
-    fmul_n  $f2, $f1, $f2               # |          1 |          1 |
-    store   $f2, [$i1 + 1]              # |          1 |          1 |
-    load    [$i7 + 4], $i2              # |          1 |          1 |
-    load    [$i2 + 1], $f2              # |          1 |          1 |
-    fmul_n  $f2, $f1, $f2               # |          1 |          1 |
-    store   $f2, [$i1 + 2]              # |          1 |          1 |
-    load    [$i7 + 4], $i2              # |          1 |          1 |
-    load    [$i2 + 2], $f2              # |          1 |          1 |
-    fmul_n  $f2, $f1, $f1               # |          1 |          1 |
-    store   $f1, [$i1 + 3]              # |          1 |          1 |
-    store   $i1, [$tmp + 0]             # |          1 |          1 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |          1 |          1 |
-.count b_cont
-    b       be_cont.33154               # |          1 |          1 |
-be_else.33154:
-    li      5, $i2
-    call    ext_create_array_float
-    load    [$i7 + 3], $i2
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f1
-    load    [$i8 + 1], $f2
-    load    [$i8 + 2], $f3
-    fmul    $f1, $f1, $f4
-    load    [$i3 + 0], $f5
-    fmul    $f4, $f5, $f4
-    fmul    $f2, $f2, $f5
-    load    [$i9 + 1], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f3, $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    bne     $i2, 0, be_else.33156
-be_then.33156:
-    mov     $f4, $f1
-.count b_cont
-    b       be_cont.33156
-be_else.33156:
-    fmul    $f2, $f3, $f5
-    load    [$i7 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i7 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i7 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.33156:
-    store   $f1, [$i1 + 0]
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f2
-    load    [$i3 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 1], $f3
-    load    [$i9 + 1], $f4
-    fmul    $f3, $f4, $f4
-    load    [$i8 + 2], $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f6
-    fneg    $f2, $f2
-    fneg    $f4, $f4
-    fneg    $f6, $f6
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33157
-be_then.33157:
-    store   $f2, [$i1 + 1]
-    store   $f4, [$i1 + 2]
-    store   $f6, [$i1 + 3]
-    bne     $f1, $f0, be_else.33158
-be_then.33158:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33157
-be_else.33158:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33157
-be_else.33157:
-    load    [$i7 + 9], $i2
-    load    [$i7 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 9], $i2
-    load    [$i8 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i8 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    bne     $f1, $f0, be_else.33159
-be_then.33159:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33159
-be_else.33159:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-be_cont.33159:
-be_cont.33157:
-be_cont.33154:
-be_cont.33138:
-bge_cont.33137:
-    li      117, $i12                   # |          1 |          1 |
-    jal     init_dirvec_constants.3044, $ra2# |          1 |          1 |
-    sub     $i13, 1, $i13               # |          1 |          1 |
-    bl      $i13, 0, bge_else.33160     # |          1 |          1 |
-bge_then.33160:
-    sub     $ig0, 1, $i4                # |          1 |          1 |
-    load    [ext_dirvecs + $i13], $i11  # |          1 |          1 |
-    load    [$i11 + 119], $i6           # |          1 |          1 |
-    bl      $i4, 0, bge_cont.33161      # |          1 |          1 |
-bge_then.33161:
-    load    [$i6 + 1], $i5              # |          1 |          1 |
-    load    [ext_objects + $i4], $i7    # |          1 |          1 |
-    load    [$i7 + 1], $i1              # |          1 |          1 |
-    load    [$i6 + 0], $i8              # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    bne     $i1, 1, be_else.33162       # |          1 |          1 |
-be_then.33162:
-    li      6, $i2
-    call    ext_create_array_float
-    load    [$i8 + 0], $f1
-    bne     $f1, $f0, be_else.33163
-be_then.33163:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.33163
-be_else.33163:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33164
-ble_then.33164:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33164
-ble_else.33164:
-    li      1, $i3
-ble_cont.33164:
-    bne     $i2, 0, be_else.33165
-be_then.33165:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33165
-be_else.33165:
-    bne     $i3, 0, be_else.33166
-be_then.33166:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33166
-be_else.33166:
-    li      0, $i2
-be_cont.33166:
-be_cont.33165:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 0], $f1
-    bne     $i2, 0, be_else.33167
-be_then.33167:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-.count b_cont
-    b       be_cont.33167
-be_else.33167:
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-be_cont.33167:
-be_cont.33163:
-    load    [$i8 + 1], $f1
-    bne     $f1, $f0, be_else.33168
-be_then.33168:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.33168
-be_else.33168:
-    load    [$i7 + 6], $i2
-    bg      $f0, $f1, ble_else.33169
-ble_then.33169:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33169
-ble_else.33169:
-    li      1, $i3
-ble_cont.33169:
-    bne     $i2, 0, be_else.33170
-be_then.33170:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33170
-be_else.33170:
-    bne     $i3, 0, be_else.33171
-be_then.33171:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33171
-be_else.33171:
-    li      0, $i2
-be_cont.33171:
-be_cont.33170:
-    load    [$i7 + 4], $i3
-    load    [$i3 + 1], $f1
-    bne     $i2, 0, be_else.33172
-be_then.33172:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-.count b_cont
-    b       be_cont.33172
-be_else.33172:
-    store   $f1, [$i1 + 2]
-    load    [$i8 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-be_cont.33172:
-be_cont.33168:
-    load    [$i8 + 2], $f1
-    bne     $f1, $f0, be_else.33173
-be_then.33173:
-    store   $f0, [$i1 + 5]
-.count storer
-    add     $i5, $i4, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33162
-be_else.33173:
-    load    [$i7 + 6], $i2
-    load    [$i7 + 4], $i3
-    bg      $f0, $f1, ble_else.33174
-ble_then.33174:
-    li      0, $i7
-.count b_cont
-    b       ble_cont.33174
-ble_else.33174:
-    li      1, $i7
-ble_cont.33174:
-    bne     $i2, 0, be_else.33175
-be_then.33175:
-    mov     $i7, $i2
-.count b_cont
-    b       be_cont.33175
-be_else.33175:
-    bne     $i7, 0, be_else.33176
-be_then.33176:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33176
-be_else.33176:
-    li      0, $i2
-be_cont.33176:
-be_cont.33175:
-    load    [$i3 + 2], $f1
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33177
-be_then.33177:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33162
-be_else.33177:
-    store   $f1, [$i1 + 4]
-    load    [$i8 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33162
-be_else.33162:
-    bne     $i1, 2, be_else.33178       # |          1 |          1 |
-be_then.33178:
-    li      4, $i2                      # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    load    [$i7 + 4], $i2              # |          1 |          1 |
-    load    [$i7 + 4], $i3              # |          1 |          1 |
-    load    [$i7 + 4], $i9              # |          1 |          1 |
-    load    [$i8 + 0], $f1              # |          1 |          1 |
-    load    [$i2 + 0], $f2              # |          1 |          1 |
-    fmul    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i8 + 1], $f2              # |          1 |          1 |
-    load    [$i3 + 1], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i8 + 2], $f2              # |          1 |          1 |
-    load    [$i9 + 2], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-.count storer
-    add     $i5, $i4, $tmp              # |          1 |          1 |
-    sub     $i4, 1, $i5                 # |          1 |          1 |
-.count move_args
-    mov     $i6, $i4                    # |          1 |          1 |
-    bg      $f1, $f0, ble_else.33179    # |          1 |          1 |
-ble_then.33179:
-    store   $f0, [$i1 + 0]              # |          1 |          1 |
-    store   $i1, [$tmp + 0]             # |          1 |          1 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |          1 |          1 |
-.count b_cont
-    b       be_cont.33178               # |          1 |          1 |
-ble_else.33179:
-    finv    $f1, $f1
-    fneg    $f1, $f2
-    store   $f2, [$i1 + 0]
-    load    [$i7 + 4], $i2
-    load    [$i2 + 0], $f2
-    fmul_n  $f2, $f1, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 4], $i2
-    load    [$i2 + 1], $f2
-    fmul_n  $f2, $f1, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i7 + 4], $i2
-    load    [$i2 + 2], $f2
-    fmul_n  $f2, $f1, $f1
-    store   $f1, [$i1 + 3]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33178
-be_else.33178:
-    li      5, $i2
-    call    ext_create_array_float
-    load    [$i7 + 3], $i2
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f1
-    load    [$i8 + 1], $f2
-    load    [$i8 + 2], $f3
-    fmul    $f1, $f1, $f4
-    load    [$i3 + 0], $f5
-    fmul    $f4, $f5, $f4
-    fmul    $f2, $f2, $f5
-    load    [$i9 + 1], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f3, $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    bne     $i2, 0, be_else.33180
-be_then.33180:
-    mov     $f4, $f1
-.count b_cont
-    b       be_cont.33180
-be_else.33180:
-    fmul    $f2, $f3, $f5
-    load    [$i7 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i7 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i7 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.33180:
-    store   $f1, [$i1 + 0]
-    load    [$i7 + 4], $i3
-    load    [$i7 + 4], $i9
-    load    [$i7 + 4], $i10
-    load    [$i8 + 0], $f2
-    load    [$i3 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 1], $f3
-    load    [$i9 + 1], $f4
-    fmul    $f3, $f4, $f4
-    load    [$i8 + 2], $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f6
-    fneg    $f2, $f2
-    fneg    $f4, $f4
-    fneg    $f6, $f6
-.count storer
-    add     $i5, $i4, $tmp
-    sub     $i4, 1, $i5
-.count move_args
-    mov     $i6, $i4
-    bne     $i2, 0, be_else.33181
-be_then.33181:
-    store   $f2, [$i1 + 1]
-    store   $f4, [$i1 + 2]
-    store   $f6, [$i1 + 3]
-    bne     $f1, $f0, be_else.33182
-be_then.33182:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33181
-be_else.33182:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33181
-be_else.33181:
-    load    [$i7 + 9], $i2
-    load    [$i7 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i7 + 9], $i2
-    load    [$i8 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i8 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i8 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    bne     $f1, $f0, be_else.33183
-be_then.33183:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33183
-be_else.33183:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-be_cont.33183:
-be_cont.33181:
-be_cont.33178:
-be_cont.33162:
-bge_cont.33161:
-    li      118, $i12                   # |          1 |          1 |
-    jal     init_dirvec_constants.3044, $ra2# |          1 |          1 |
-    sub     $i13, 1, $i13               # |          1 |          1 |
-    bl      $i13, 0, bge_else.33184     # |          1 |          1 |
-bge_then.33184:
-    load    [ext_dirvecs + $i13], $i11  # |          1 |          1 |
-    li      119, $i12                   # |          1 |          1 |
-    jal     init_dirvec_constants.3044, $ra2# |          1 |          1 |
-    sub     $i13, 1, $i13               # |          1 |          1 |
-    b       init_vecset_constants.3047  # |          1 |          1 |
-bge_else.33184:
-    jr      $ra3
-bge_else.33160:
-    jr      $ra3
-bge_else.33136:
-    jr      $ra3
-bge_else.33089:
-    jr      $ra3                        # |          1 |          1 |
+    bl      $i12, 0, bge_else.22337     # |          6 |          6 |
+bge_then.22337:
+    load    [ext_dirvecs + $i12], $i10  # |          5 |          5 |
+    li      119, $i11                   # |          5 |          5 |
+    jal     init_dirvec_constants.3044, $ra3# |          5 |          5 |
+    sub     $i12, 1, $i12               # |          5 |          5 |
+    b       init_vecset_constants.3047  # |          5 |          5 |
+bge_else.22337:
+    jr      $ra4                        # |          1 |          1 |
 .end init_vecset_constants
 
 ######################################################################
-# setup_reflections($i11)
-# $ra = $ra2
+# init_dirvecs()
+# $ra = $ra4
+# [$i1 - $i12]
+# [$f1 - $f17]
+# []
+# []
+# [$ra - $ra3]
+######################################################################
+.begin init_dirvecs
+init_dirvecs.3049:
+    li      4, $i7                      # |          1 |          1 |
+    jal     create_dirvecs.3042, $ra3   # |          1 |          1 |
+    li      0, $i5                      # |          1 |          1 |
+    li      0, $i7                      # |          1 |          1 |
+    li      0, $i1                      # |          1 |          1 |
+.count move_args
+    mov     $f0, $f1                    # |          1 |          1 |
+.count move_args
+    mov     $f0, $f2                    # |          1 |          1 |
+.count move_args
+    mov     $fc19, $f9                  # |          1 |          1 |
+.count move_args
+    mov     $fc11, $f10                 # |          1 |          1 |
+.count move_args
+    mov     $i5, $i3                    # |          1 |          1 |
+.count move_args
+    mov     $i7, $i4                    # |          1 |          1 |
+    jal     calc_dirvec.3020, $ra1      # |          1 |          1 |
+    li      0, $i1                      # |          1 |          1 |
+    li      2, $i6                      # |          1 |          1 |
+.count move_args
+    mov     $f0, $f1                    # |          1 |          1 |
+.count move_args
+    mov     $f0, $f2                    # |          1 |          1 |
+.count move_args
+    mov     $fc11, $f9                  # |          1 |          1 |
+.count move_args
+    mov     $fc11, $f10                 # |          1 |          1 |
+.count move_args
+    mov     $i5, $i3                    # |          1 |          1 |
+.count move_args
+    mov     $i6, $i4                    # |          1 |          1 |
+    jal     calc_dirvec.3020, $ra1      # |          1 |          1 |
+    li      0, $i1                      # |          1 |          1 |
+    li      1, $i5                      # |          1 |          1 |
+.count move_args
+    mov     $f0, $f1                    # |          1 |          1 |
+.count move_args
+    mov     $f0, $f2                    # |          1 |          1 |
+.count move_args
+    mov     $fc18, $f9                  # |          1 |          1 |
+.count move_args
+    mov     $fc11, $f10                 # |          1 |          1 |
+.count move_args
+    mov     $i5, $i3                    # |          1 |          1 |
+.count move_args
+    mov     $i7, $i4                    # |          1 |          1 |
+    jal     calc_dirvec.3020, $ra1      # |          1 |          1 |
+    li      0, $i1                      # |          1 |          1 |
+.count move_args
+    mov     $f0, $f1                    # |          1 |          1 |
+.count move_args
+    mov     $f0, $f2                    # |          1 |          1 |
+.count move_args
+    mov     $fc17, $f9                  # |          1 |          1 |
+.count move_args
+    mov     $fc11, $f10                 # |          1 |          1 |
+.count move_args
+    mov     $i5, $i3                    # |          1 |          1 |
+.count move_args
+    mov     $i6, $i4                    # |          1 |          1 |
+    jal     calc_dirvec.3020, $ra1      # |          1 |          1 |
+    li      2, $i5                      # |          1 |          1 |
+    li      2, $i6                      # |          1 |          1 |
+.count move_args
+    mov     $fc11, $f14                 # |          1 |          1 |
+    jal     calc_dirvecs.3028, $ra2     # |          1 |          1 |
+    li      8, $i9                      # |          1 |          1 |
+    li      2, $i10                     # |          1 |          1 |
+    li      4, $i11                     # |          1 |          1 |
+    jal     calc_dirvec_rows.3033, $ra3 # |          1 |          1 |
+    li      4, $i12                     # |          1 |          1 |
+    b       init_vecset_constants.3047  # |          1 |          1 |
+.end init_dirvecs
+
+######################################################################
+# add_reflection($i10, $i11, $f9, $f1, $f3, $f4)
+# $ra = $ra3
+# [$i1 - $i12]
+# [$f1 - $f9]
+# []
+# []
+# [$ra - $ra2]
+######################################################################
+.begin add_reflection
+add_reflection.3051:
+    jal     create_dirvec.3037, $ra1    # |          1 |          1 |
+.count move_ret
+    mov     $i1, $i12                   # |          1 |          1 |
+    load    [$i12 + 0], $i1             # |          1 |          1 |
+    store   $f1, [$i1 + 0]              # |          1 |          1 |
+    store   $f3, [$i1 + 1]              # |          1 |          1 |
+    store   $f4, [$i1 + 2]              # |          1 |          1 |
+.count move_args
+    mov     $i12, $i7                   # |          1 |          1 |
+    jal     setup_dirvec_constants.2829, $ra2# |          1 |          1 |
+    mov     $hp, $i1                    # |          1 |          1 |
+    add     $hp, 3, $hp                 # |          1 |          1 |
+    store   $f9, [$i1 + 2]              # |          1 |          1 |
+    store   $i12, [$i1 + 1]             # |          1 |          1 |
+    store   $i11, [$i1 + 0]             # |          1 |          1 |
+    store   $i1, [ext_reflections + $i10]# |          1 |          1 |
+    jr      $ra3                        # |          1 |          1 |
+.end add_reflection
+
+######################################################################
+# setup_rect_reflection($i1, $i2)
+# $ra = $ra4
 # [$i1 - $i13]
-# [$f1 - $f12]
+# [$f1 - $f13]
 # [$ig4]
 # []
+# [$ra - $ra3]
+######################################################################
+.begin setup_rect_reflection
+setup_rect_reflection.3058:
+    load    [$i2 + 7], $i2
+    add     $i1, $i1, $i1
+    add     $i1, $i1, $i13
+    add     $i13, 1, $i11
+    load    [$i2 + 0], $f1
+    fsub    $fc0, $f1, $f10
+    fneg    $fg12, $f11
+    fneg    $fg13, $f12
+.count move_args
+    mov     $ig4, $i10
+.count move_args
+    mov     $f10, $f9
+.count move_args
+    mov     $fg14, $f1
+.count move_args
+    mov     $f11, $f3
+.count move_args
+    mov     $f12, $f4
+    jal     add_reflection.3051, $ra3
+    add     $ig4, 1, $i10
+    add     $i13, 2, $i11
+    fneg    $fg14, $f13
+.count move_args
+    mov     $f10, $f9
+.count move_args
+    mov     $f13, $f1
+.count move_args
+    mov     $fg12, $f3
+.count move_args
+    mov     $f12, $f4
+    jal     add_reflection.3051, $ra3
+    add     $ig4, 2, $i10
+    add     $i13, 3, $i11
+.count move_args
+    mov     $f10, $f9
+.count move_args
+    mov     $f13, $f1
+.count move_args
+    mov     $f11, $f3
+.count move_args
+    mov     $fg13, $f4
+    jal     add_reflection.3051, $ra3
+    add     $ig4, 3, $ig4
+    jr      $ra4
+.end setup_rect_reflection
+
+######################################################################
+# setup_surface_reflection($i1, $i2)
+# $ra = $ra4
+# [$i1 - $i12]
+# [$f1 - $f9]
+# [$ig4]
+# []
+# [$ra - $ra3]
+######################################################################
+.begin setup_surface_reflection
+setup_surface_reflection.3061:
+    load    [$i2 + 4], $i3              # |          1 |          1 |
+    load    [$i2 + 7], $i2              # |          1 |          1 |
+    load    [$i3 + 0], $f1              # |          1 |          1 |
+    fmul    $fc10, $f1, $f2             # |          1 |          1 |
+    fmul    $fg14, $f1, $f1             # |          1 |          1 |
+    load    [$i3 + 1], $f3              # |          1 |          1 |
+    fmul    $fg12, $f3, $f4             # |          1 |          1 |
+    fadd    $f1, $f4, $f1               # |          1 |          1 |
+    load    [$i3 + 2], $f4              # |          1 |          1 |
+    fmul    $fg13, $f4, $f5             # |          1 |          1 |
+    fadd    $f1, $f5, $f1               # |          1 |          1 |
+    fmul    $f2, $f1, $f2               # |          1 |          1 |
+    fsub    $f2, $fg14, $f2             # |          1 |          1 |
+    fmul    $fc10, $f3, $f3             # |          1 |          1 |
+    fmul    $f3, $f1, $f3               # |          1 |          1 |
+    fsub    $f3, $fg12, $f3             # |          1 |          1 |
+    fmul    $fc10, $f4, $f4             # |          1 |          1 |
+    fmul    $f4, $f1, $f1               # |          1 |          1 |
+    fsub    $f1, $fg13, $f4             # |          1 |          1 |
+    load    [$i2 + 0], $f1              # |          1 |          1 |
+    fsub    $fc0, $f1, $f9              # |          1 |          1 |
+    add     $i1, $i1, $i1               # |          1 |          1 |
+    add     $i1, $i1, $i1               # |          1 |          1 |
+    add     $i1, 1, $i11                # |          1 |          1 |
+.count move_args
+    mov     $ig4, $i10                  # |          1 |          1 |
+.count move_args
+    mov     $f2, $f1                    # |          1 |          1 |
+    jal     add_reflection.3051, $ra3   # |          1 |          1 |
+    add     $ig4, 1, $ig4               # |          1 |          1 |
+    jr      $ra4                        # |          1 |          1 |
+.end setup_surface_reflection
+
+######################################################################
+# setup_reflections($i1)
+# $ra = $ra4
+# [$i1 - $i13]
+# [$f1 - $f13]
+# [$ig4]
+# []
+# [$ra - $ra3]
 ######################################################################
 .begin setup_reflections
 setup_reflections.3064:
-    bl      $i11, 0, bge_else.33185     # |          1 |          1 |
-bge_then.33185:
-    load    [ext_objects + $i11], $i1   # |          1 |          1 |
-    load    [$i1 + 2], $i2              # |          1 |          1 |
-    bne     $i2, 2, be_else.33186       # |          1 |          1 |
-be_then.33186:
-    load    [$i1 + 7], $i2              # |          1 |          1 |
-    load    [$i2 + 0], $f9              # |          1 |          1 |
-    bg      $fc0, $f9, ble_else.33187   # |          1 |          1 |
-ble_then.33187:
-    jr      $ra2
-ble_else.33187:
-    load    [$i1 + 1], $i2              # |          1 |          1 |
-    bne     $i2, 1, be_else.33188       # |          1 |          1 |
-be_then.33188:
-    load    [$i1 + 7], $i12
-    li      3, $i2
-.count move_args
-    mov     $f0, $f2
-    call    ext_create_array_float
-.count move_ret
-    mov     $i1, $i4
-.count move_args
-    mov     $ig0, $i2
-.count move_args
-    mov     $i4, $i3
-    call    ext_create_array_int
-    store   $fg12, [$i4 + 0]
-    fneg    $fg13, $f9
-    store   $f9, [$i4 + 1]
-    fneg    $fg14, $f10
-    store   $f10, [$i4 + 2]
-    sub     $ig0, 1, $i5
-    mov     $hp, $i13
-    add     $hp, 2, $hp
-    store   $i1, [$i13 + 1]
-    store   $i4, [$i13 + 0]
-.count move_args
-    mov     $i13, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-    add     $i11, $i11, $i1
-    add     $i1, $i1, $i11
-    add     $i11, 1, $i1
-    load    [$i12 + 0], $f1
-    fsub    $fc0, $f1, $f11
-    mov     $hp, $i2
-    add     $hp, 3, $hp
-    store   $f11, [$i2 + 2]
-    store   $i13, [$i2 + 1]
-    store   $i1, [$i2 + 0]
-    store   $i2, [ext_reflections + $ig4]
-    li      3, $i2
-.count move_args
-    mov     $f0, $f2
-    call    ext_create_array_float
-.count move_ret
-    mov     $i1, $i4
-.count move_args
-    mov     $ig0, $i2
-.count move_args
-    mov     $i4, $i3
-    call    ext_create_array_int
-    fneg    $fg12, $f12
-    store   $f12, [$i4 + 0]
-    store   $fg13, [$i4 + 1]
-    store   $f10, [$i4 + 2]
-    sub     $ig0, 1, $i5
-    mov     $hp, $i12
-    add     $hp, 2, $hp
-    store   $i1, [$i12 + 1]
-    store   $i4, [$i12 + 0]
-.count move_args
-    mov     $i12, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-    add     $ig4, 1, $i1
-    add     $i11, 2, $i2
-    mov     $hp, $i3
-    add     $hp, 3, $hp
-    store   $f11, [$i3 + 2]
-    store   $i12, [$i3 + 1]
-    store   $i2, [$i3 + 0]
-    store   $i3, [ext_reflections + $i1]
-    li      3, $i2
-.count move_args
-    mov     $f0, $f2
-    call    ext_create_array_float
-.count move_ret
-    mov     $i1, $i4
-.count move_args
-    mov     $ig0, $i2
-.count move_args
-    mov     $i4, $i3
-    call    ext_create_array_int
-    store   $f12, [$i4 + 0]
-    store   $f9, [$i4 + 1]
-    store   $fg14, [$i4 + 2]
-    sub     $ig0, 1, $i5
-    mov     $hp, $i12
-    add     $hp, 2, $hp
-    store   $i1, [$i12 + 1]
-    store   $i4, [$i12 + 0]
-.count move_args
-    mov     $i12, $i4
-    jal     iter_setup_dirvec_constants.2826, $ra1
-    add     $ig4, 2, $i1
-    add     $i11, 3, $i2
-    mov     $hp, $i3
-    add     $hp, 3, $hp
-    store   $f11, [$i3 + 2]
-    store   $i12, [$i3 + 1]
-    store   $i2, [$i3 + 0]
-    store   $i3, [ext_reflections + $i1]
-    add     $ig4, 3, $ig4
-    jr      $ra2
-be_else.33188:
-    bne     $i2, 2, be_else.33189       # |          1 |          1 |
-be_then.33189:
-    load    [$i1 + 4], $i4              # |          1 |          1 |
-    load    [$i1 + 4], $i5              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i6                    # |          1 |          1 |
-.count move_args
-    mov     $ig0, $i2                   # |          1 |          1 |
-.count move_args
-    mov     $i6, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-    load    [$i4 + 0], $f1              # |          1 |          1 |
-    fmul    $fc10, $f1, $f2             # |          1 |          1 |
-    fmul    $fg12, $f1, $f1             # |          1 |          1 |
-    load    [$i5 + 1], $f3              # |          1 |          1 |
-    fmul    $fg13, $f3, $f4             # |          1 |          1 |
-    fadd    $f1, $f4, $f1               # |          1 |          1 |
-    load    [$i5 + 2], $f4              # |          1 |          1 |
-    fmul    $fg14, $f4, $f5             # |          1 |          1 |
-    fadd    $f1, $f5, $f1               # |          1 |          1 |
-    fmul    $f2, $f1, $f2               # |          1 |          1 |
-    fsub    $f2, $fg12, $f2             # |          1 |          1 |
-    store   $f2, [$i6 + 0]              # |          1 |          1 |
-    fmul    $fc10, $f3, $f2             # |          1 |          1 |
-    fmul    $f2, $f1, $f2               # |          1 |          1 |
-    fsub    $f2, $fg13, $f2             # |          1 |          1 |
-    store   $f2, [$i6 + 1]              # |          1 |          1 |
-    fmul    $fc10, $f4, $f2             # |          1 |          1 |
-    fmul    $f2, $f1, $f1               # |          1 |          1 |
-    fsub    $f1, $fg14, $f1             # |          1 |          1 |
-    store   $f1, [$i6 + 2]              # |          1 |          1 |
-    sub     $ig0, 1, $i5                # |          1 |          1 |
-    mov     $hp, $i12                   # |          1 |          1 |
-    add     $hp, 2, $hp                 # |          1 |          1 |
-    store   $i1, [$i12 + 1]             # |          1 |          1 |
-    store   $i6, [$i12 + 0]             # |          1 |          1 |
-.count move_args
-    mov     $i12, $i4                   # |          1 |          1 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |          1 |          1 |
-    fsub    $fc0, $f9, $f1              # |          1 |          1 |
-    add     $i11, $i11, $i1             # |          1 |          1 |
-    add     $i1, $i1, $i1               # |          1 |          1 |
-    add     $i1, 1, $i1                 # |          1 |          1 |
-    mov     $hp, $i2                    # |          1 |          1 |
-    add     $hp, 3, $hp                 # |          1 |          1 |
-    store   $f1, [$i2 + 2]              # |          1 |          1 |
-    store   $i12, [$i2 + 1]             # |          1 |          1 |
-    store   $i1, [$i2 + 0]              # |          1 |          1 |
-    store   $i2, [ext_reflections + $ig4]# |          1 |          1 |
-    add     $ig4, 1, $ig4               # |          1 |          1 |
-    jr      $ra2                        # |          1 |          1 |
-be_else.33189:
-    jr      $ra2
-be_else.33186:
-    jr      $ra2
-bge_else.33185:
-    jr      $ra2
+    bl      $i1, 0, bge_else.22338      # |          1 |          1 |
+bge_then.22338:
+    load    [ext_objects + $i1], $i2    # |          1 |          1 |
+    load    [$i2 + 2], $i3              # |          1 |          1 |
+    bne     $i3, 2, be_else.22339       # |          1 |          1 |
+be_then.22339:
+    load    [$i2 + 7], $i3              # |          1 |          1 |
+    load    [$i3 + 0], $f1              # |          1 |          1 |
+    bg      $fc0, $f1, ble_else.22340   # |          1 |          1 |
+ble_then.22340:
+    jr      $ra4
+ble_else.22340:
+    load    [$i2 + 1], $i3              # |          1 |          1 |
+    be      $i3, 1, setup_rect_reflection.3058# |          1 |          1 |
+    be      $i3, 2, setup_surface_reflection.3061# |          1 |          1 |
+    jr      $ra4
+be_else.22339:
+    jr      $ra4
+bge_else.22338:
+    jr      $ra4
 .end setup_reflections
+
+######################################################################
+# rt()
+# $ra = $ra9
+# [$i1 - $i39]
+# [$f1 - $f18]
+# [$ig0 - $ig4]
+# [$fg0 - $fg24]
+# [$ra - $ra8]
+######################################################################
+.begin rt
+rt.3066:
+    jal     create_pixelline.3013, $ra3 # |          1 |          1 |
+.count move_ret
+    mov     $i1, $i36                   # |          1 |          1 |
+    jal     create_pixelline.3013, $ra3 # |          1 |          1 |
+.count move_ret
+    mov     $i1, $i37                   # |          1 |          1 |
+    jal     create_pixelline.3013, $ra3 # |          1 |          1 |
+.count move_ret
+    mov     $i1, $i38                   # |          1 |          1 |
+    jal     read_parameter.2731, $ra3   # |          1 |          1 |
+    call    write_ppm_header.2974       # |          1 |          1 |
+    jal     init_dirvecs.3049, $ra4     # |          1 |          1 |
+    li      ext_light_dirvec, $i7       # |          1 |          1 |
+    load    [ext_light_dirvec + 0], $i1 # |          1 |          1 |
+    store   $fg14, [$i1 + 0]            # |          1 |          1 |
+    store   $fg12, [$i1 + 1]            # |          1 |          1 |
+    store   $fg13, [$i1 + 2]            # |          1 |          1 |
+    jal     setup_dirvec_constants.2829, $ra2# |          1 |          1 |
+    sub     $ig0, 1, $i1                # |          1 |          1 |
+    jal     setup_reflections.3064, $ra4# |          1 |          1 |
+    li      0, $i33                     # |          1 |          1 |
+    li      127, $i32                   # |          1 |          1 |
+.count load_float
+    load    [f.21573], $f1              # |          1 |          1 |
+    fmul    $f1, $fg23, $f2             # |          1 |          1 |
+    fadd    $f2, $fg20, $f18            # |          1 |          1 |
+    fmul    $f1, $fg24, $f2             # |          1 |          1 |
+    fadd    $f2, $fg21, $f3             # |          1 |          1 |
+    load    [ext_screeny_dir + 2], $f2  # |          1 |          1 |
+    fmul    $f1, $f2, $f1               # |          1 |          1 |
+    fadd    $f1, $fg22, $f2             # |          1 |          1 |
+.count move_args
+    mov     $i37, $i31                  # |          1 |          1 |
+.count move_args
+    mov     $f3, $f1                    # |          1 |          1 |
+    jal     pretrace_pixels.2983, $ra7  # |          1 |          1 |
+    li      0, $i35                     # |          1 |          1 |
+    li      2, $i39                     # |          1 |          1 |
+    b       scan_line.3000              # |          1 |          1 |
+.end rt
 
 ######################################################################
 # $i1 = main()
 # $ra = $ra
-# [$i1 - $i42]
+# [$i1 - $i39]
 # [$f1 - $f18]
 # [$ig0 - $ig4]
 # [$fg0 - $fg24]
+# [$ra - $ra9]
 ######################################################################
 .begin main
 ext_main:
@@ -14215,7 +10334,6 @@ ext_main:
     store   $ra, [$sp - 1]              # |          1 |          1 |
 .count stack_move
     sub     $sp, 1, $sp                 # |          1 |          1 |
-    load    [ext_n_objects + 0], $ig0   # |          1 |          1 |
     load    [ext_solver_dist + 0], $fg0 # |          1 |          1 |
     load    [ext_diffuse_ray + 0], $fg1 # |          1 |          1 |
     load    [ext_diffuse_ray + 1], $fg2 # |          1 |          1 |
@@ -14223,1197 +10341,50 @@ ext_main:
     load    [ext_rgb + 0], $fg4         # |          1 |          1 |
     load    [ext_rgb + 1], $fg5         # |          1 |          1 |
     load    [ext_rgb + 2], $fg6         # |          1 |          1 |
+    load    [ext_n_objects + 0], $ig0   # |          1 |          1 |
     load    [ext_tmin + 0], $fg7        # |          1 |          1 |
     load    [ext_startp_fast + 0], $fg8 # |          1 |          1 |
     load    [ext_startp_fast + 1], $fg9 # |          1 |          1 |
     load    [ext_startp_fast + 2], $fg10# |          1 |          1 |
     load    [ext_texture_color + 1], $fg11# |          1 |          1 |
-    load    [ext_light + 0], $fg12      # |          1 |          1 |
-    load    [ext_light + 1], $fg13      # |          1 |          1 |
-    load    [ext_light + 2], $fg14      # |          1 |          1 |
+    load    [ext_light + 1], $fg12      # |          1 |          1 |
+    load    [ext_light + 2], $fg13      # |          1 |          1 |
+    load    [ext_light + 0], $fg14      # |          1 |          1 |
     load    [ext_texture_color + 2], $fg15# |          1 |          1 |
     load    [ext_or_net + 0], $ig1      # |          1 |          1 |
     load    [ext_intsec_rectside + 0], $ig2# |          1 |          1 |
     load    [ext_texture_color + 0], $fg16# |          1 |          1 |
     load    [ext_intersected_object_id + 0], $ig3# |          1 |          1 |
     load    [ext_n_reflections + 0], $ig4# |          1 |          1 |
-    load    [ext_scan_pitch + 0], $fg17 # |          1 |          1 |
-    load    [ext_screenz_dir + 0], $fg18# |          1 |          1 |
-    load    [ext_screenz_dir + 1], $fg19# |          1 |          1 |
-    load    [ext_screenz_dir + 2], $fg20# |          1 |          1 |
-    load    [ext_startp + 0], $fg21     # |          1 |          1 |
-    load    [ext_startp + 1], $fg22     # |          1 |          1 |
-    load    [ext_startp + 2], $fg23     # |          1 |          1 |
-    load    [ext_screeny_dir + 0], $fg24# |          1 |          1 |
-    load    [f.31942 + 0], $fc0         # |          1 |          1 |
-    load    [f.31966 + 0], $fc1         # |          1 |          1 |
-    load    [f.31965 + 0], $fc2         # |          1 |          1 |
-    load    [f.31943 + 0], $fc3         # |          1 |          1 |
-    load    [f.31941 + 0], $fc4         # |          1 |          1 |
-    load    [f.31968 + 0], $fc5         # |          1 |          1 |
-    load    [f.31967 + 0], $fc6         # |          1 |          1 |
-    load    [f.31946 + 0], $fc7         # |          1 |          1 |
-    load    [f.31955 + 0], $fc8         # |          1 |          1 |
-    load    [f.31953 + 0], $fc9         # |          1 |          1 |
-    load    [f.31940 + 0], $fc10        # |          1 |          1 |
-    load    [f.31997 + 0], $fc11        # |          1 |          1 |
-    load    [f.31996 + 0], $fc12        # |          1 |          1 |
-    load    [f.31961 + 0], $fc13        # |          1 |          1 |
-    load    [f.31960 + 0], $fc14        # |          1 |          1 |
-    load    [f.31950 + 0], $fc15        # |          1 |          1 |
-    load    [f.31945 + 0], $fc16        # |          1 |          1 |
-    load    [f.31951 + 0], $fc17        # |          1 |          1 |
-    load    [f.31949 + 0], $fc18        # |          1 |          1 |
-    load    [f.31948 + 0], $fc19        # |          1 |          1 |
-.count load_float
-    load    [f.32059], $f4              # |          1 |          1 |
-    li      128, $i2                    # |          1 |          1 |
-    call    ext_float_of_int            # |          1 |          1 |
-    finv    $f1, $f1                    # |          1 |          1 |
-    fmul    $f4, $f1, $fg17             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i4                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i5                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 1]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 2]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 3]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 4]              # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-    li      0, $i3                      # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i6                    # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-    li      0, $i3                      # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i7                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i8                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 1]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 2]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 3]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 4]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i9                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 1]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 2]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 3]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 4]              # |          1 |          1 |
-    li      1, $i2                      # |          1 |          1 |
-    li      0, $i3                      # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i10                   # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i11                   # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 1]             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 2]             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 3]             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 4]             # |          1 |          1 |
-    li      128, $i2                    # |          1 |          1 |
-    mov     $hp, $i3                    # |          1 |          1 |
-    add     $hp, 8, $hp                 # |          1 |          1 |
-    store   $i11, [$i3 + 7]             # |          1 |          1 |
-    store   $i10, [$i3 + 6]             # |          1 |          1 |
-    store   $i9, [$i3 + 5]              # |          1 |          1 |
-    store   $i8, [$i3 + 4]              # |          1 |          1 |
-    store   $i7, [$i3 + 3]              # |          1 |          1 |
-    store   $i6, [$i3 + 2]              # |          1 |          1 |
-    store   $i5, [$i3 + 1]              # |          1 |          1 |
-    store   $i4, [$i3 + 0]              # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i12                   # |          1 |          1 |
-    jal     create_pixel.3008, $ra1     # |          1 |          1 |
-    store   $i1, [$i12 + 126]           # |          1 |          1 |
-    li      125, $i4                    # |          1 |          1 |
-    jal     init_line_elements.3010, $ra2# |          1 |          1 |
-.count move_ret
-    mov     $i1, $i38                   # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i4                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i5                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 1]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 2]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 3]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 4]              # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-    li      0, $i3                      # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i6                    # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-    li      0, $i3                      # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i7                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i8                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 1]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 2]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 3]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 4]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i9                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 1]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 2]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 3]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 4]              # |          1 |          1 |
-    li      1, $i2                      # |          1 |          1 |
-    li      0, $i3                      # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i10                   # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i11                   # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 1]             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 2]             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 3]             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 4]             # |          1 |          1 |
-    li      128, $i2                    # |          1 |          1 |
-    mov     $hp, $i3                    # |          1 |          1 |
-    add     $hp, 8, $hp                 # |          1 |          1 |
-    store   $i11, [$i3 + 7]             # |          1 |          1 |
-    store   $i10, [$i3 + 6]             # |          1 |          1 |
-    store   $i9, [$i3 + 5]              # |          1 |          1 |
-    store   $i8, [$i3 + 4]              # |          1 |          1 |
-    store   $i7, [$i3 + 3]              # |          1 |          1 |
-    store   $i6, [$i3 + 2]              # |          1 |          1 |
-    store   $i5, [$i3 + 1]              # |          1 |          1 |
-    store   $i4, [$i3 + 0]              # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i12                   # |          1 |          1 |
-    jal     create_pixel.3008, $ra1     # |          1 |          1 |
-    store   $i1, [$i12 + 126]           # |          1 |          1 |
-    li      125, $i4                    # |          1 |          1 |
-    jal     init_line_elements.3010, $ra2# |          1 |          1 |
-.count move_ret
-    mov     $i1, $i39                   # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i4                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i5                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 1]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 2]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 3]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i5 + 4]              # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-    li      0, $i3                      # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i6                    # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-    li      0, $i3                      # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i7                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i8                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 1]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 2]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 3]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i8 + 4]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i9                    # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 1]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 2]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 3]              # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i9 + 4]              # |          1 |          1 |
-    li      1, $i2                      # |          1 |          1 |
-    li      0, $i3                      # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i10                   # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    li      5, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $i1, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i11                   # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 1]             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 2]             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 3]             # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    store   $i1, [$i11 + 4]             # |          1 |          1 |
-    li      128, $i2                    # |          1 |          1 |
-    mov     $hp, $i3                    # |          1 |          1 |
-    add     $hp, 8, $hp                 # |          1 |          1 |
-    store   $i11, [$i3 + 7]             # |          1 |          1 |
-    store   $i10, [$i3 + 6]             # |          1 |          1 |
-    store   $i9, [$i3 + 5]              # |          1 |          1 |
-    store   $i8, [$i3 + 4]              # |          1 |          1 |
-    store   $i7, [$i3 + 3]              # |          1 |          1 |
-    store   $i6, [$i3 + 2]              # |          1 |          1 |
-    store   $i5, [$i3 + 1]              # |          1 |          1 |
-    store   $i4, [$i3 + 0]              # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i12                   # |          1 |          1 |
-    jal     create_pixel.3008, $ra1     # |          1 |          1 |
-    store   $i1, [$i12 + 126]           # |          1 |          1 |
-    li      125, $i4                    # |          1 |          1 |
-    jal     init_line_elements.3010, $ra2# |          1 |          1 |
-.count move_ret
-    mov     $i1, $i40                   # |          1 |          1 |
-    call    ext_read_float              # |          1 |          1 |
-    store   $f1, [ext_screen + 0]       # |          1 |          1 |
-    call    ext_read_float              # |          1 |          1 |
-    store   $f1, [ext_screen + 1]       # |          1 |          1 |
-    call    ext_read_float              # |          1 |          1 |
-    store   $f1, [ext_screen + 2]       # |          1 |          1 |
-    call    ext_read_float              # |          1 |          1 |
-.count load_float
-    load    [f.31927], $f9              # |          1 |          1 |
-    fmul    $f1, $f9, $f10              # |          1 |          1 |
-.count move_args
-    mov     $f10, $f2                   # |          1 |          1 |
-    call    ext_cos                     # |          1 |          1 |
-.count move_ret
-    mov     $f1, $f11                   # |          1 |          1 |
-.count move_args
-    mov     $f10, $f2                   # |          1 |          1 |
-    call    ext_sin                     # |          1 |          1 |
-.count move_ret
-    mov     $f1, $f10                   # |          1 |          1 |
-    call    ext_read_float              # |          1 |          1 |
-    fmul    $f1, $f9, $f12              # |          1 |          1 |
-.count move_args
-    mov     $f12, $f2                   # |          1 |          1 |
-    call    ext_cos                     # |          1 |          1 |
-.count move_ret
-    mov     $f1, $f8                    # |          1 |          1 |
-.count move_args
-    mov     $f12, $f2                   # |          1 |          1 |
-    call    ext_sin                     # |          1 |          1 |
-    fmul    $f11, $f1, $f2              # |          1 |          1 |
-.count load_float
-    load    [f.32087], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $fg18             # |          1 |          1 |
-.count load_float
-    load    [f.32088], $f2              # |          1 |          1 |
-    fmul    $f10, $f2, $fg19            # |          1 |          1 |
-    fmul    $f11, $f8, $f2              # |          1 |          1 |
-    fmul    $f2, $f3, $fg20             # |          1 |          1 |
-    store   $f8, [ext_screenx_dir + 0]  # |          1 |          1 |
-    fneg    $f1, $f2                    # |          1 |          1 |
-    store   $f2, [ext_screenx_dir + 2]  # |          1 |          1 |
-    fneg    $f10, $f2                   # |          1 |          1 |
-    fmul    $f2, $f1, $fg24             # |          1 |          1 |
-    fneg    $f11, $f1                   # |          1 |          1 |
-    store   $f1, [ext_screeny_dir + 1]  # |          1 |          1 |
-    fmul    $f2, $f8, $f1               # |          1 |          1 |
-    store   $f1, [ext_screeny_dir + 2]  # |          1 |          1 |
-    load    [ext_screen + 0], $f1       # |          1 |          1 |
-    fsub    $f1, $fg18, $f1             # |          1 |          1 |
-    store   $f1, [ext_viewpoint + 0]    # |          1 |          1 |
-    load    [ext_screen + 1], $f1       # |          1 |          1 |
-    fsub    $f1, $fg19, $f1             # |          1 |          1 |
-    store   $f1, [ext_viewpoint + 1]    # |          1 |          1 |
-    load    [ext_screen + 2], $f1       # |          1 |          1 |
-    fsub    $f1, $fg20, $f1             # |          1 |          1 |
-    store   $f1, [ext_viewpoint + 2]    # |          1 |          1 |
-    call    ext_read_int                # |          1 |          1 |
-    call    ext_read_float              # |          1 |          1 |
-    fmul    $f1, $f9, $f8               # |          1 |          1 |
-.count move_args
-    mov     $f8, $f2                    # |          1 |          1 |
-    call    ext_sin                     # |          1 |          1 |
-    fneg    $f1, $fg13                  # |          1 |          1 |
-    call    ext_read_float              # |          1 |          1 |
-.count move_ret
-    mov     $f1, $f10                   # |          1 |          1 |
-.count move_args
-    mov     $f8, $f2                    # |          1 |          1 |
-    call    ext_cos                     # |          1 |          1 |
-.count move_ret
-    mov     $f1, $f11                   # |          1 |          1 |
-    fmul    $f10, $f9, $f8              # |          1 |          1 |
-.count move_args
-    mov     $f8, $f2                    # |          1 |          1 |
-    call    ext_sin                     # |          1 |          1 |
-    fmul    $f11, $f1, $fg12            # |          1 |          1 |
-.count move_args
-    mov     $f8, $f2                    # |          1 |          1 |
-    call    ext_cos                     # |          1 |          1 |
-    fmul    $f11, $f1, $fg14            # |          1 |          1 |
-    call    ext_read_float              # |          1 |          1 |
-    store   $f1, [ext_beam + 0]         # |          1 |          1 |
-    li      0, $i16                     # |          1 |          1 |
-.count move_args
-    mov     $i16, $i6                   # |          1 |          1 |
-    jal     read_nth_object.2719, $ra1  # |          1 |          1 |
-    bne     $i1, 0, be_else.33190       # |          1 |          1 |
-be_then.33190:
-    mov     $i16, $ig0
-.count b_cont
-    b       be_cont.33190
-be_else.33190:
-    li      1, $i16                     # |          1 |          1 |
-.count move_args
-    mov     $i16, $i6                   # |          1 |          1 |
-    jal     read_nth_object.2719, $ra1  # |          1 |          1 |
-    bne     $i1, 0, be_else.33191       # |          1 |          1 |
-be_then.33191:
-    mov     $i16, $ig0
-.count b_cont
-    b       be_cont.33191
-be_else.33191:
-    li      2, $i16                     # |          1 |          1 |
-.count move_args
-    mov     $i16, $i6                   # |          1 |          1 |
-    jal     read_nth_object.2719, $ra1  # |          1 |          1 |
-    bne     $i1, 0, be_else.33192       # |          1 |          1 |
-be_then.33192:
-    mov     $i16, $ig0
-.count b_cont
-    b       be_cont.33192
-be_else.33192:
-    li      3, $i16                     # |          1 |          1 |
-.count move_args
-    mov     $i16, $i6                   # |          1 |          1 |
-    jal     read_nth_object.2719, $ra1  # |          1 |          1 |
-    bne     $i1, 0, be_else.33193       # |          1 |          1 |
-be_then.33193:
-    mov     $i16, $ig0
-.count b_cont
-    b       be_cont.33193
-be_else.33193:
-    li      4, $i16                     # |          1 |          1 |
-    jal     read_object.2721, $ra2      # |          1 |          1 |
-be_cont.33193:
-be_cont.33192:
-be_cont.33191:
-be_cont.33190:
-    call    ext_read_int                # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i6                    # |          1 |          1 |
-    bne     $i6, -1, be_else.33194      # |          1 |          1 |
-be_then.33194:
-    li      1, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-.count b_cont
-    b       be_cont.33194
-be_else.33194:
-    call    ext_read_int                # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i7                    # |          1 |          1 |
-    bne     $i7, -1, be_else.33195      # |          1 |          1 |
-be_then.33195:
-    li      2, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-    store   $i6, [$i1 + 0]
-.count b_cont
-    b       be_cont.33195
-be_else.33195:
-    li      2, $i1                      # |          1 |          1 |
-    call    read_net_item.2725          # |          1 |          1 |
-    store   $i7, [$i1 + 1]              # |          1 |          1 |
-    store   $i6, [$i1 + 0]              # |          1 |          1 |
-be_cont.33195:
-be_cont.33194:
-    load    [$i1 + 0], $i2              # |          1 |          1 |
-    be      $i2, -1, bne_cont.33196     # |          1 |          1 |
-bne_then.33196:
-    store   $i1, [ext_and_net + 0]      # |          1 |          1 |
-    li      1, $i6                      # |          1 |          1 |
-    jal     read_and_network.2729, $ra1 # |          1 |          1 |
-bne_cont.33196:
-    call    ext_read_int                # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i6                    # |          1 |          1 |
-    bne     $i6, -1, be_else.33197      # |          1 |          1 |
-be_then.33197:
-    li      1, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-.count move_ret
-    mov     $i1, $i9
-.count b_cont
-    b       be_cont.33197
-be_else.33197:
-    call    ext_read_int                # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i7                    # |          1 |          1 |
-    bne     $i7, -1, be_else.33198      # |          1 |          1 |
-be_then.33198:
-    li      2, $i2
-    add     $i0, -1, $i3
-    call    ext_create_array_int
-    store   $i6, [$i1 + 0]
-    mov     $i1, $i9
-.count b_cont
-    b       be_cont.33198
-be_else.33198:
-    li      2, $i1                      # |          1 |          1 |
-    call    read_net_item.2725          # |          1 |          1 |
-    store   $i7, [$i1 + 1]              # |          1 |          1 |
-    store   $i6, [$i1 + 0]              # |          1 |          1 |
-    mov     $i1, $i9                    # |          1 |          1 |
-be_cont.33198:
-be_cont.33197:
-    load    [$i9 + 0], $i1              # |          1 |          1 |
-    bne     $i1, -1, be_else.33199      # |          1 |          1 |
-be_then.33199:
-    li      1, $i2
-.count move_args
-    mov     $i9, $i3
-    call    ext_create_array_int
-.count move_ret
-    mov     $i1, $ig1
-.count b_cont
-    b       be_cont.33199
-be_else.33199:
-    li      1, $i1                      # |          1 |          1 |
-    call    read_or_network.2727        # |          1 |          1 |
-    store   $i9, [$i1 + 0]              # |          1 |          1 |
-    mov     $i1, $ig1                   # |          1 |          1 |
-be_cont.33199:
-    li      80, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      54, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      10, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      49, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      50, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      56, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      32, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      49, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      50, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      56, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      32, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      50, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      53, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      53, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      10, $i2                     # |          1 |          1 |
-    call    ext_write                   # |          1 |          1 |
-    li      3, $i2                      # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-.count move_ret
-    mov     $i1, $i4                    # |          1 |          1 |
-.count move_args
-    mov     $ig0, $i2                   # |          1 |          1 |
-.count move_args
-    mov     $i4, $i3                    # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-    li      120, $i2                    # |          1 |          1 |
-    mov     $hp, $i3                    # |          1 |          1 |
-    add     $hp, 2, $hp                 # |          1 |          1 |
-    store   $i1, [$i3 + 1]              # |          1 |          1 |
-    store   $i4, [$i3 + 0]              # |          1 |          1 |
-    call    ext_create_array_int        # |          1 |          1 |
-    store   $i1, [ext_dirvecs + 4]      # |          1 |          1 |
-    load    [ext_dirvecs + 4], $i4      # |          1 |          1 |
-    li      118, $i5                    # |          1 |          1 |
-    jal     create_dirvec_elements.3039, $ra1# |          1 |          1 |
-    li      3, $i7                      # |          1 |          1 |
-    jal     create_dirvecs.3042, $ra2   # |          1 |          1 |
-    li      0, $i6                      # |          1 |          1 |
-    li      0, $i7                      # |          1 |          1 |
-    li      4, $i5                      # |          1 |          1 |
-    li      9, $i2                      # |          1 |          1 |
-    call    ext_float_of_int            # |          1 |          1 |
-    fmul    $f1, $fc12, $f1             # |          1 |          1 |
-    fsub    $f1, $fc11, $f14            # |          1 |          1 |
-    jal     calc_dirvecs.3028, $ra2     # |          1 |          1 |
-    li      8, $i9                      # |          1 |          1 |
-    li      2, $i10                     # |          1 |          1 |
-    li      4, $i11                     # |          1 |          1 |
-    jal     calc_dirvec_rows.3033, $ra3 # |          1 |          1 |
-    load    [ext_dirvecs + 4], $i11     # |          1 |          1 |
-    li      119, $i12                   # |          1 |          1 |
-    jal     init_dirvec_constants.3044, $ra2# |          1 |          1 |
-    li      3, $i13                     # |          1 |          1 |
-    jal     init_vecset_constants.3047, $ra3# |          1 |          1 |
-    li      ext_light_dirvec, $i4       # |          1 |          1 |
-    load    [ext_light_dirvec + 0], $i5 # |          1 |          1 |
-    store   $fg12, [$i5 + 0]            # |          1 |          1 |
-    store   $fg13, [$i5 + 1]            # |          1 |          1 |
-    store   $fg14, [$i5 + 2]            # |          1 |          1 |
-    sub     $ig0, 1, $i6                # |          1 |          1 |
-    bl      $i6, 0, bge_cont.33200      # |          1 |          1 |
-bge_then.33200:
-    load    [ext_light_dirvec + 1], $i7 # |          1 |          1 |
-    load    [ext_objects + $i6], $i8    # |          1 |          1 |
-    load    [$i8 + 1], $i1              # |          1 |          1 |
-.count move_args
-    mov     $f0, $f2                    # |          1 |          1 |
-    bne     $i1, 1, be_else.33201       # |          1 |          1 |
-be_then.33201:
-    li      6, $i2
-    call    ext_create_array_float
-    load    [$i5 + 0], $f1
-    bne     $f1, $f0, be_else.33202
-be_then.33202:
-    store   $f0, [$i1 + 1]
-.count b_cont
-    b       be_cont.33202
-be_else.33202:
-    load    [$i8 + 6], $i2
-    bg      $f0, $f1, ble_else.33203
-ble_then.33203:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33203
-ble_else.33203:
-    li      1, $i3
-ble_cont.33203:
-    bne     $i2, 0, be_else.33204
-be_then.33204:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33204
-be_else.33204:
-    bne     $i3, 0, be_else.33205
-be_then.33205:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33205
-be_else.33205:
-    li      0, $i2
-be_cont.33205:
-be_cont.33204:
-    load    [$i8 + 4], $i3
-    load    [$i3 + 0], $f1
-    bne     $i2, 0, be_else.33206
-be_then.33206:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 0]
-    load    [$i5 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-.count b_cont
-    b       be_cont.33206
-be_else.33206:
-    store   $f1, [$i1 + 0]
-    load    [$i5 + 0], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 1]
-be_cont.33206:
-be_cont.33202:
-    load    [$i5 + 1], $f1
-    bne     $f1, $f0, be_else.33207
-be_then.33207:
-    store   $f0, [$i1 + 3]
-.count b_cont
-    b       be_cont.33207
-be_else.33207:
-    load    [$i8 + 6], $i2
-    bg      $f0, $f1, ble_else.33208
-ble_then.33208:
-    li      0, $i3
-.count b_cont
-    b       ble_cont.33208
-ble_else.33208:
-    li      1, $i3
-ble_cont.33208:
-    bne     $i2, 0, be_else.33209
-be_then.33209:
-    mov     $i3, $i2
-.count b_cont
-    b       be_cont.33209
-be_else.33209:
-    bne     $i3, 0, be_else.33210
-be_then.33210:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33210
-be_else.33210:
-    li      0, $i2
-be_cont.33210:
-be_cont.33209:
-    load    [$i8 + 4], $i3
-    load    [$i3 + 1], $f1
-    bne     $i2, 0, be_else.33211
-be_then.33211:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 2]
-    load    [$i5 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-.count b_cont
-    b       be_cont.33211
-be_else.33211:
-    store   $f1, [$i1 + 2]
-    load    [$i5 + 1], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 3]
-be_cont.33211:
-be_cont.33207:
-    load    [$i5 + 2], $f1
-    bne     $f1, $f0, be_else.33212
-be_then.33212:
-    store   $f0, [$i1 + 5]
-.count storer
-    add     $i7, $i6, $tmp
-    store   $i1, [$tmp + 0]
-    sub     $i6, 1, $i5
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33201
-be_else.33212:
-    load    [$i8 + 6], $i2
-    load    [$i8 + 4], $i3
-    bg      $f0, $f1, ble_else.33213
-ble_then.33213:
-    li      0, $i8
-.count b_cont
-    b       ble_cont.33213
-ble_else.33213:
-    li      1, $i8
-ble_cont.33213:
-    bne     $i2, 0, be_else.33214
-be_then.33214:
-    mov     $i8, $i2
-.count b_cont
-    b       be_cont.33214
-be_else.33214:
-    bne     $i8, 0, be_else.33215
-be_then.33215:
-    li      1, $i2
-.count b_cont
-    b       be_cont.33215
-be_else.33215:
-    li      0, $i2
-be_cont.33215:
-be_cont.33214:
-    load    [$i3 + 2], $f1
-.count storer
-    add     $i7, $i6, $tmp
-    bne     $i2, 0, be_else.33216
-be_then.33216:
-    fneg    $f1, $f1
-    store   $f1, [$i1 + 4]
-    load    [$i5 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    sub     $i6, 1, $i5
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33201
-be_else.33216:
-    store   $f1, [$i1 + 4]
-    load    [$i5 + 2], $f1
-    finv    $f1, $f1
-    store   $f1, [$i1 + 5]
-    store   $i1, [$tmp + 0]
-    sub     $i6, 1, $i5
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33201
-be_else.33201:
-    bne     $i1, 2, be_else.33217       # |          1 |          1 |
-be_then.33217:
-    li      4, $i2                      # |          1 |          1 |
-    call    ext_create_array_float      # |          1 |          1 |
-    load    [$i8 + 4], $i2              # |          1 |          1 |
-    load    [$i8 + 4], $i3              # |          1 |          1 |
-    load    [$i8 + 4], $i9              # |          1 |          1 |
-    load    [$i5 + 0], $f1              # |          1 |          1 |
-    load    [$i2 + 0], $f2              # |          1 |          1 |
-    fmul    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i5 + 1], $f2              # |          1 |          1 |
-    load    [$i3 + 1], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-    load    [$i5 + 2], $f2              # |          1 |          1 |
-    load    [$i9 + 2], $f3              # |          1 |          1 |
-    fmul    $f2, $f3, $f2               # |          1 |          1 |
-    fadd    $f1, $f2, $f1               # |          1 |          1 |
-    sub     $i6, 1, $i5                 # |          1 |          1 |
-.count storer
-    add     $i7, $i6, $tmp              # |          1 |          1 |
-    bg      $f1, $f0, ble_else.33218    # |          1 |          1 |
-ble_then.33218:
-    store   $f0, [$i1 + 0]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33217
-ble_else.33218:
-    finv    $f1, $f1                    # |          1 |          1 |
-    fneg    $f1, $f2                    # |          1 |          1 |
-    store   $f2, [$i1 + 0]              # |          1 |          1 |
-    load    [$i8 + 4], $i2              # |          1 |          1 |
-    load    [$i2 + 0], $f2              # |          1 |          1 |
-    fmul_n  $f2, $f1, $f2               # |          1 |          1 |
-    store   $f2, [$i1 + 1]              # |          1 |          1 |
-    load    [$i8 + 4], $i2              # |          1 |          1 |
-    load    [$i2 + 1], $f2              # |          1 |          1 |
-    fmul_n  $f2, $f1, $f2               # |          1 |          1 |
-    store   $f2, [$i1 + 2]              # |          1 |          1 |
-    load    [$i8 + 4], $i2              # |          1 |          1 |
-    load    [$i2 + 2], $f2              # |          1 |          1 |
-    fmul_n  $f2, $f1, $f1               # |          1 |          1 |
-    store   $f1, [$i1 + 3]              # |          1 |          1 |
-    store   $i1, [$tmp + 0]             # |          1 |          1 |
-    jal     iter_setup_dirvec_constants.2826, $ra1# |          1 |          1 |
-.count b_cont
-    b       be_cont.33217               # |          1 |          1 |
-be_else.33217:
-    li      5, $i2
-    call    ext_create_array_float
-    load    [$i8 + 3], $i2
-    load    [$i8 + 4], $i3
-    load    [$i8 + 4], $i9
-    load    [$i8 + 4], $i10
-    load    [$i5 + 0], $f1
-    load    [$i5 + 1], $f2
-    load    [$i5 + 2], $f3
-    fmul    $f1, $f1, $f4
-    load    [$i3 + 0], $f5
-    fmul    $f4, $f5, $f4
-    fmul    $f2, $f2, $f5
-    load    [$i9 + 1], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f3, $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    bne     $i2, 0, be_else.33219
-be_then.33219:
-    mov     $f4, $f1
-.count b_cont
-    b       be_cont.33219
-be_else.33219:
-    fmul    $f2, $f3, $f5
-    load    [$i8 + 9], $i3
-    load    [$i3 + 0], $f6
-    fmul    $f5, $f6, $f5
-    fadd    $f4, $f5, $f4
-    fmul    $f3, $f1, $f3
-    load    [$i8 + 9], $i3
-    load    [$i3 + 1], $f5
-    fmul    $f3, $f5, $f3
-    fadd    $f4, $f3, $f3
-    fmul    $f1, $f2, $f1
-    load    [$i8 + 9], $i3
-    load    [$i3 + 2], $f2
-    fmul    $f1, $f2, $f1
-    fadd    $f3, $f1, $f1
-be_cont.33219:
-    store   $f1, [$i1 + 0]
-    load    [$i8 + 4], $i3
-    load    [$i8 + 4], $i9
-    load    [$i8 + 4], $i10
-    load    [$i5 + 0], $f2
-    load    [$i3 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i5 + 1], $f3
-    load    [$i9 + 1], $f4
-    fmul    $f3, $f4, $f4
-    load    [$i5 + 2], $f5
-    load    [$i10 + 2], $f6
-    fmul    $f5, $f6, $f6
-    fneg    $f2, $f2
-    fneg    $f4, $f4
-    fneg    $f6, $f6
-.count storer
-    add     $i7, $i6, $tmp
-    bne     $i2, 0, be_else.33220
-be_then.33220:
-    store   $f2, [$i1 + 1]
-    store   $f4, [$i1 + 2]
-    store   $f6, [$i1 + 3]
-    sub     $i6, 1, $i5
-    bne     $f1, $f0, be_else.33221
-be_then.33221:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33220
-be_else.33221:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33220
-be_else.33220:
-    load    [$i8 + 9], $i2
-    load    [$i8 + 9], $i3
-    load    [$i2 + 1], $f7
-    fmul    $f5, $f7, $f5
-    load    [$i3 + 2], $f8
-    fmul    $f3, $f8, $f3
-    fadd    $f5, $f3, $f3
-    fmul    $f3, $fc3, $f3
-    fsub    $f2, $f3, $f2
-    store   $f2, [$i1 + 1]
-    load    [$i8 + 9], $i2
-    load    [$i5 + 2], $f2
-    load    [$i2 + 0], $f3
-    fmul    $f2, $f3, $f2
-    load    [$i5 + 0], $f5
-    fmul    $f5, $f8, $f5
-    fadd    $f2, $f5, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f4, $f2, $f2
-    store   $f2, [$i1 + 2]
-    load    [$i5 + 1], $f2
-    fmul    $f2, $f3, $f2
-    load    [$i5 + 0], $f3
-    fmul    $f3, $f7, $f3
-    fadd    $f2, $f3, $f2
-    fmul    $f2, $fc3, $f2
-    fsub    $f6, $f2, $f2
-    store   $f2, [$i1 + 3]
-    sub     $i6, 1, $i5
-    bne     $f1, $f0, be_else.33222
-be_then.33222:
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-.count b_cont
-    b       be_cont.33222
-be_else.33222:
-    finv    $f1, $f1
-    store   $f1, [$i1 + 4]
-    store   $i1, [$tmp + 0]
-    jal     iter_setup_dirvec_constants.2826, $ra1
-be_cont.33222:
-be_cont.33220:
-be_cont.33217:
-be_cont.33201:
-bge_cont.33200:
-    sub     $ig0, 1, $i11               # |          1 |          1 |
-    jal     setup_reflections.3064, $ra2# |          1 |          1 |
-    li      0, $i34                     # |          1 |          1 |
-    li      127, $i33                   # |          1 |          1 |
-    add     $i0, -64, $i2               # |          1 |          1 |
-    call    ext_float_of_int            # |          1 |          1 |
-    fmul    $fg17, $f1, $f1             # |          1 |          1 |
-    fmul    $f1, $fg24, $f2             # |          1 |          1 |
-    fadd    $f2, $fg18, $f18            # |          1 |          1 |
-    load    [ext_screeny_dir + 1], $f2  # |          1 |          1 |
-    fmul    $f1, $f2, $f2               # |          1 |          1 |
-    fadd    $f2, $fg19, $f3             # |          1 |          1 |
-    load    [ext_screeny_dir + 2], $f2  # |          1 |          1 |
-    fmul    $f1, $f2, $f1               # |          1 |          1 |
-    fadd    $f1, $fg20, $f2             # |          1 |          1 |
-.count move_args
-    mov     $i39, $i32                  # |          1 |          1 |
-.count move_args
-    mov     $f3, $f1                    # |          1 |          1 |
-    jal     pretrace_pixels.2983, $ra7  # |          1 |          1 |
-    li      0, $i37                     # |          1 |          1 |
-    li      2, $i41                     # |          1 |          1 |
-    jal     scan_line.3000, $ra9        # |          1 |          1 |
+    load    [ext_startp + 0], $fg17     # |          1 |          1 |
+    load    [ext_startp + 1], $fg18     # |          1 |          1 |
+    load    [ext_startp + 2], $fg19     # |          1 |          1 |
+    load    [ext_screenz_dir + 0], $fg20# |          1 |          1 |
+    load    [ext_screenz_dir + 1], $fg21# |          1 |          1 |
+    load    [ext_screenz_dir + 2], $fg22# |          1 |          1 |
+    load    [ext_screeny_dir + 0], $fg23# |          1 |          1 |
+    load    [ext_screeny_dir + 1], $fg24# |          1 |          1 |
+    load    [f.21523 + 0], $fc0         # |          1 |          1 |
+    load    [f.21548 + 0], $fc1         # |          1 |          1 |
+    load    [f.21547 + 0], $fc2         # |          1 |          1 |
+    load    [f.21522 + 0], $fc3         # |          1 |          1 |
+    load    [f.21524 + 0], $fc4         # |          1 |          1 |
+    load    [f.21550 + 0], $fc5         # |          1 |          1 |
+    load    [f.21549 + 0], $fc6         # |          1 |          1 |
+    load    [f.21527 + 0], $fc7         # |          1 |          1 |
+    load    [f.21537 + 0], $fc8         # |          1 |          1 |
+    load    [f.21536 + 0], $fc9         # |          1 |          1 |
+    load    [f.21521 + 0], $fc10        # |          1 |          1 |
+    load    [f.21561 + 0], $fc11        # |          1 |          1 |
+    load    [f.21543 + 0], $fc12        # |          1 |          1 |
+    load    [f.21542 + 0], $fc13        # |          1 |          1 |
+    load    [f.21531 + 0], $fc14        # |          1 |          1 |
+    load    [f.21526 + 0], $fc15        # |          1 |          1 |
+    load    [f.21505 + 0], $fc16        # |          1 |          1 |
+    load    [f.21564 + 0], $fc17        # |          1 |          1 |
+    load    [f.21563 + 0], $fc18        # |          1 |          1 |
+    load    [f.21562 + 0], $fc19        # |          1 |          1 |
+    jal     rt.3066, $ra9               # |          1 |          1 |
 .count stack_load_ra
     load    [$sp + 0], $ra              # |          1 |          1 |
 .count stack_move

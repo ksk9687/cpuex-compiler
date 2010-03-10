@@ -24,7 +24,7 @@ let rec count env = function
 and count' env = function
   | Ld(L(l), C(i)) | St(_, L(l), C(i)) -> inc l i env
   | SetL(l) | Ld(L(l), _) | St(_, L(l), _) -> rem l env
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | If(_, e1, e2) ->
       count (count env e1) e2
   | _ -> env
 

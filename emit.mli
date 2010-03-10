@@ -1,1 +1,1 @@
-val f : out_channel -> Scalar.prog -> unit
+val f : out_channel -> Block.prog -> unit

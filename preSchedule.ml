@@ -62,7 +62,7 @@ let addMax x y xs =
 
 let rec noEffect = function
   | CallDir _ | St _ -> false
-  | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+  | If(_, e1, e2) ->
       (noEffect' e1) && (noEffect' e2)
   | _ -> true
 and noEffect' = function
@@ -73,7 +73,7 @@ and noEffect' = function
 let rec getFirst depth st ld writes = function
   | Let(id, exp, e) -> (
       match exp with
-        | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+        | If(_, e1, e2) ->
             let write = getWrite id in
             let exps = (getFirst (depth + 1) st true writes e1) @ (getFirst (depth + 1) st true writes e2) in
             if noEffect exp then (getFirst depth st ld (write@writes) e) @ exps
@@ -91,7 +91,7 @@ let rec getFirst depth st ld writes = function
     )
   | Ans(exp) -> (
       match exp with
-        | IfEq(_, _, e1, e2) | IfLE(_, _, e1, e2) | IfGE(_, _, e1, e2) | IfFEq(_, _, e1, e2) | IfFLE(_, _, e1, e2) ->
+        | If(_, e1, e2) ->
             (getFirst (depth + 1) st true writes e1) @ (getFirst (depth + 1) st true writes e2)
         | _ -> []
     )
@@ -100,7 +100,7 @@ let rec getFirst depth st ld writes = function
 let rec getCritical time = function
   | Let(id, exp, e) -> (
       match exp with
-        | IfEq _ | IfLE _ | IfGE _ | IfFEq _ | IfFLE _ ->
+        | If _ ->
             List.fold_left
               (fun t r ->
                 if M.mem r time then max t (M.find r time)
@@ -132,17 +132,9 @@ let rec getCritical time = function
 
 let rec remove id exp = function
   | Let(id', exp', e) when id' = id -> (assert (exp = exp'); e)
-  | Let(id', IfEq(x, y, e1, e2), e) -> Let(id', IfEq(x, y, remove id exp e1, remove id exp e2), remove id exp e)
-  | Let(id', IfLE(x, y, e1, e2), e) -> Let(id', IfLE(x, y, remove id exp e1, remove id exp e2), remove id exp e)
-  | Let(id', IfGE(x, y, e1, e2), e) -> Let(id', IfGE(x, y, remove id exp e1, remove id exp e2), remove id exp e)
-  | Let(id', IfFEq(x, y, e1, e2), e) -> Let(id', IfFEq(x, y, remove id exp e1, remove id exp e2), remove id exp e)
-  | Let(id', IfFLE(x, y, e1, e2), e) -> Let(id', IfFLE(x, y, remove id exp e1, remove id exp e2), remove id exp e)
+  | Let(id', If(cmp, e1, e2), e) -> Let(id', If(cmp, remove id exp e1, remove id exp e2), remove id exp e)
   | Let(id', exp', e) -> Let(id', exp', remove id exp e)
-  | Ans(IfEq(x, y, e1, e2)) -> Ans(IfEq(x, y, remove id exp e1, remove id exp e2))
-  | Ans(IfLE(x, y, e1, e2)) -> Ans(IfLE(x, y, remove id exp e1, remove id exp e2))
-  | Ans(IfGE(x, y, e1, e2)) -> Ans(IfGE(x, y, remove id exp e1, remove id exp e2))
-  | Ans(IfFEq(x, y, e1, e2)) -> Ans(IfFEq(x, y, remove id exp e1, remove id exp e2))
-  | Ans(IfFLE(x, y, e1, e2)) -> Ans(IfFLE(x, y, remove id exp e1, remove id exp e2))
+  | Ans(If(cmp, e1, e2)) -> Ans(If(cmp, remove id exp e1, remove id exp e2))
   | e -> e
 
 let aging write =
@@ -157,20 +149,12 @@ let rec g awrite e =
   match e with
     | Ans(exp) when (inter write (getRead exp) = []) -> ((*!!!!*)
         match exp with
-          | IfEq(x, y, e1, e2) -> Ans(IfEq(x, y, g [] e1, g [] e2))
-          | IfLE(x, y, e1, e2) -> Ans(IfLE(x, y, g [] e1, g [] e2))
-          | IfGE(x, y, e1, e2) -> Ans(IfGE(x, y, g [] e1, g [] e2))
-          | IfFEq(x, y, e1, e2) -> Ans(IfFEq(x, y, g [] e1, g [] e2))
-          | IfFLE(x, y, e1, e2) -> Ans(IfFLE(x, y, g [] e1, g [] e2))
+          | If(cmp, e1, e2) -> Ans(If(cmp, g [] e1, g [] e2))
           | exp -> Ans(exp)
       )
     | Let(id, exp, e) when (inter write (getRead exp) = []) -> (
         match exp with
-          | IfEq(x, y, e1, e2) -> Let(id, IfEq(x, y, g [] e1, g [] e2), g [] e)
-          | IfLE(x, y, e1, e2) -> Let(id, IfLE(x, y, g [] e1, g [] e2), g [] e)
-          | IfGE(x, y, e1, e2) -> Let(id, IfGE(x, y, g [] e1, g [] e2), g [] e)
-          | IfFEq(x, y, e1, e2) -> Let(id, IfFEq(x, y, g [] e1, g [] e2), g [] e)
-          | IfFLE(x, y, e1, e2) -> Let(id, IfFLE(x, y, g [] e1, g [] e2), g [] e)
+          | If(cmp, e1, e2) -> Let(id, If(cmp, g [] e1, g [] e2), g [] e)
           | exp -> Let(id, exp, g ((getDelay exp, getWrite id) :: awrite) e)
       )
     | e ->
