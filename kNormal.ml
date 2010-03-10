@@ -236,4 +236,4 @@ and string_fundef indent {name = (i,t); args = list; body = b} =
   ^ (string_t (indent ^ "  ") b)
 
 let string t =
-  print_string (string_t "" t); t
+  Format.eprintf "%s@." (string_t "" t); t

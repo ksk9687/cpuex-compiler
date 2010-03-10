@@ -152,10 +152,14 @@ let rec g env = function
 	      no_effect_fun := S.add (fst xt) !no_effect_fun;
       LetRec({ name = xt; args = yts; body = g M.empty e1 }, g env e2)
   | LetTuple (xts, y, e) ->
-      ignore (List.fold_left
-		(fun num (x,_) -> addtag (Var(x)) (y ^ string_of_int num); num + 1)
-		0
-		xts); (* y という Tuple に対して n 番目の要素を "yn" と番号づけする *)
+      let _, env' =
+	List.fold_left
+	  (fun (i,env) (x,_) ->
+	     let num = y ^ string_of_int i in
+	       addtag (Var(x)) num; (i + 1, M.add num x env)
+	  )
+	  (0,env)
+	  xts in (* y という Tuple に対して n 番目の要素を "yn" と番号づけする *)
       LetTuple (xts, y, g env e)
 
 let f x =
