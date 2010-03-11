@@ -116,7 +116,7 @@ let getBlockID b =
 let rec same exps1 exps2 =
   if exps1 = [] && exps2 = [] then true
   else
-	  let exps = inter (getFirst [] [] exps1) (getFirst [] [] exps2) in
+	  let exps = inter (getFirst S.empty S.empty exps1) (getFirst S.empty S.empty exps2) in
 	  if exps = [] then false
     else
       let exp = List.hd exps in
@@ -172,6 +172,30 @@ let rec g env b =
             change := true;
             b.exps <- b.exps @ b1.exps;
             b.last <- b1.last;
+            b
+        | CmpJmp(cmp, b1, b2) when (M.find b1.label !inCount) = 1 && List.exists
+                                     (fun (_, exp) ->
+                                       noEffect exp && S.is_empty (S.inter (getWrite exp) (fv b2))
+                                     ) (getFirst (getRead' cmp) S.empty (List.rev b.exps)) ->
+            change := true;
+            let exp = List.find
+              (fun (_, exp) ->
+                noEffect exp && S.is_empty (S.inter (getWrite exp) (fv b2))
+              ) (getFirst (getRead' cmp) S.empty (List.rev b.exps)) in
+            b.exps <- List.rev (removeFirst exp (List.rev b.exps));
+            b1.exps <- exp :: b1.exps;
+            b
+        | CmpJmp(cmp, b1, b2) when (M.find b2.label !inCount) = 1 && List.exists
+                                     (fun (_, exp) ->
+                                       noEffect exp && S.is_empty (S.inter (getWrite exp) (fv b1))
+                                     ) (getFirst (getRead' cmp) S.empty (List.rev b.exps)) ->
+            change := true;
+            let exp = List.find
+              (fun (_, exp) ->
+                noEffect exp && S.is_empty (S.inter (getWrite exp) (fv b1))
+              ) (getFirst (getRead' cmp) S.empty (List.rev b.exps)) in
+            b.exps <- List.rev (removeFirst exp (List.rev b.exps));
+            b2.exps <- exp :: b2.exps;
             b
         | CmpJmp(Cmpi(mask, x, i), b1, b2) when M.mem x env ->
             change := true;

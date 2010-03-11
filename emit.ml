@@ -71,8 +71,8 @@ let h oc (x, b) =
   setCount b;
   used := S.empty;
   g oc b;
-  Printf.fprintf oc ".end %s\n" name;
-  Format.eprintf "%s: %d@." x (S.cardinal !used)
+(*  Format.eprintf "%s: %d@." x (S.cardinal !used); *)
+  Printf.fprintf oc ".end %s\n" name
 
 let f oc (Prog(data, fundefs)) =
   Asm.output_header oc;

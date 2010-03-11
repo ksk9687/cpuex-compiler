@@ -44,9 +44,9 @@ let builtInFuns = M.add_list
    ("ext_int_of_float", { arg_regs = ["$f2"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$f2"; "$f3"]; need_ra = true });
    ("ext_read_int", { arg_regs = []; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$i4"; "$i5"]; need_ra = true });
    ("ext_read_float", { arg_regs = []; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$i4"; "$i5"; "$f1"]; need_ra = true });
-   ("ext_write", { arg_regs = ["$i2"]; ret_reg = "$dummy"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"]; need_ra = true });
-   ("ext_create_array_int", { arg_regs = ["$i2"; "$i3"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"]; need_ra = true });
-   ("ext_create_array_float", { arg_regs = ["$i2"; "$f2"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"; "$f2"]; need_ra = true });
+   ("ext_write", { arg_regs = ["$i2"]; ret_reg = "$dummy"; reg_ra = "$ra"; use_regs = S.of_list []; need_ra = true });
+   ("ext_create_array_int", { arg_regs = ["$i2"; "$i3"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"]; need_ra = true });
+   ("ext_create_array_float", { arg_regs = ["$i2"; "$f2"]; ret_reg = "$i1"; reg_ra = "$ra"; use_regs = S.of_list ["$i1"; "$i2"; "$i3"]; need_ra = true });
    ("ext_atan", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"]; need_ra = true });
    ("ext_sin", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"; "$f6"; "$f7"]; need_ra = true });
    ("ext_cos", { arg_regs = ["$f2"]; ret_reg = "$f1"; reg_ra = "$ra"; use_regs = S.of_list ["$i2"; "$f1"; "$f2"; "$f3"; "$f4"; "$f5"; "$f6"; "$f7"; "$f8"]; need_ra = true });

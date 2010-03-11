@@ -223,16 +223,21 @@ let rec get_use_regs tail = function
   | Let((x, _), e, t) -> S.add x (S.union (get_use_regs' false e) (get_use_regs tail t))
   | Forget(x, t) -> S.add x (get_use_regs tail t)
 and get_use_regs' tail = function
-  | CallDir(x, _) when tail ->
-      Asm.get_use_regs x
-  | CallDir(x, _) ->
-      S.add (get_reg_ra x) (Asm.get_use_regs x)
+  | CallDir(x, ys) ->
+      let use = Asm.get_use_regs x in
+      let use = List.fold_left2
+        (fun use r y ->
+          if r = y then use
+          else S.add r use
+        ) use (get_arg_regs x) ys in
+      if tail then use
+      else S.add (get_reg_ra x) use
   | If(_, e1, e2) ->
       S.union (get_use_regs tail e1) (get_use_regs tail e2)
   | _ -> S.empty
 
 let h { name = x; args = xs; body = e; ret = t } =
-  if not (S.mem x !fixed) then
+  if not (S.mem x !fixed) then (
     let data = M.find x !fundata in
     let (arg_regs, _) = List.fold_left2
       (fun (arg_regs, regenv) x r ->
@@ -243,7 +248,7 @@ let h { name = x; args = xs; body = e; ret = t } =
       ) ([], M.empty) xs data.arg_regs in
     let data = { data with arg_regs = arg_regs } in
     fundata := M.add x data !fundata
-  else ();
+  );
   let data = M.find x !fundata in
   Format.eprintf "%s%s(%s)@." (if t = Type.Unit then "" else data.ret_reg ^ " = ") (Id.name x) (String.concat ", " data.arg_regs);
   Format.eprintf "$ra = %s (%s)@." data.reg_ra (if data.need_ra then "save" else "non_save");
@@ -254,7 +259,7 @@ let h { name = x; args = xs; body = e; ret = t } =
   let (e, _) = g_repeat (data.ret_reg, t) (Ans(ret)) regenv e in
   let data = { data with use_regs = S.empty } in
   fundata := M.add x data !fundata;
-  let env = S.union (S.add data.ret_reg (S.of_list (data.arg_regs))) (get_use_regs true e) in
+  let env = S.add data.ret_reg (get_use_regs true e) in
   let data = { data with use_regs = env } in
   fundata := M.add x data !fundata;
   List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) alliregs;
