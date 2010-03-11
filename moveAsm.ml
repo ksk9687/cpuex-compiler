@@ -148,7 +148,7 @@ let rec g' last env = function
       let (env, exps) = g' last env exps in
       (env, (s, exp) :: exps)
 
-let rec g b =
+let rec g env b =
   if M.mem b.label !memo then
     M.find b.label !memo
   else try
@@ -158,7 +158,8 @@ let rec g b =
     memo := M.add b.label b' !memo;
     b'
   with Not_found ->
-    let (env, exps) = g' b.last M.empty b.exps in
+    let env = if (M.find b.label !inCount) = 1 then env else M.empty in
+    let (env, exps) = g' b.last env b.exps in
     b.exps <- exps;
     let b' =
       match b.last with
@@ -194,10 +195,10 @@ let rec g b =
               b1.exps <- removeFirst exp b1.exps;
               b2.exps <- removeFirst exp b2.exps
             );
-            b.last <- CmpJmp(cmp, g b1, g b2);
+            b.last <- CmpJmp(cmp, g env b1, g env b2);
             b
         | CmpJmp(cmp, b1, b2) ->
-            b.last <- CmpJmp(cmp, g b1, g b2);
+            b.last <- CmpJmp(cmp, g env b1, g env b2);
             b
         | _ -> b in
     memo := M.add b.label b' !memo;
@@ -210,7 +211,7 @@ let rec h b =
   initFV b.label;
   memo := M.empty;
   blocks := [];
-  let b = g b in
+  let b = g M.empty b in
   if !change then h b
   else b
 
