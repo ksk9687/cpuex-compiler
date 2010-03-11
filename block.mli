@@ -36,11 +36,16 @@ val string_of_cmp : cmp -> string
 val string_of_exp : exp -> string
 val neg_mask : mask -> mask
 val neg : cmp -> cmp
+val cmp : mask -> 'a -> 'a -> bool
+
+val getRead' : cmp -> S.t
+val getRead : exp -> S.t
+val getWrite : exp -> S.t
 
 val inCount : int M.t ref
-val get : block -> int
-val incr : block -> unit
-val decr : block -> unit
 val setCount : block -> unit
+val fv' : last -> (string * exp) list -> S.t
+val fv : block -> S.t
+val initFV : Id.t -> unit
 
 val f : Asm.prog -> prog

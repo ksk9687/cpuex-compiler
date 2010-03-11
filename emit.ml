@@ -2,6 +2,13 @@ open Block
 
 let used = ref S.empty
 
+let get b =
+  try M.find b.label !inCount
+  with Not_found -> 0
+
+let decr b =
+  inCount := M.add b.label ((get b) - 1) !inCount
+
 let rec g oc b =
   assert (b.label <> "");
   (if (S.mem b.label !used) then (Format.eprintf "Error: %s, %d@." b.label (M.find b.label !inCount); assert false));

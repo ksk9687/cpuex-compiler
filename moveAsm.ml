@@ -85,23 +85,6 @@ let rec schedule awrite = function
 
 *)
 
-let getRead' = function
-  | Cmp(_, x, y) -> [x; y]
-  | Cmpi(_, x, _) -> [x]
-
-let getRead = function
-  | Li _ | Call _ -> []
-  | Addi(x, _, _) | Mov(x, _) | FInv(_, x, _) | FSqrt(_, x, _) | FAbs(x, _) | FNeg(x, _) -> [x]
-  | Add(x, y, _) | Sub(x, y, _) | FAdd(_, x, y, _) | FSub(_, x, y, _) | FMul(_, x, y, _) | Store(x, y, _) -> [x; y]
-  | Load(x, _, y) -> [x; y; "memory"]
-  | Loadr(x, y, z) -> [x; y; z; "memory"]
-
-let getWrite = function
-  | Li(_, x) | Addi(_, _, x) | Mov(_, x) | Add(_, _, x) | Sub(_, _, x) | Call(_, x) |
-    FAdd(_, _, _, x) | FSub(_, _, _, x) | FMul(_, _, _, x) | FInv(_, _, x) | FSqrt(_, _, x) |
-    FAbs(_, x) | FNeg(_, x) | Load(_, _, x) | Loadr(_, _, x) -> [x]
-  | Store _ -> ["memory"]
-
 let inter xs ys =
   List.fold_left (fun zs x -> if List.mem x ys then x :: zs else zs) [] xs
 
@@ -115,10 +98,11 @@ let rec getFirst reads writes = function
   | (s, exp) :: exps ->
       let read = getRead exp in
       let write = getWrite exp in
-      if (inter (reads @ writes) write) <> [] || (inter writes read) <> [] then
-        getFirst (read @ reads) (write @ writes) exps
+      if (not (S.is_empty (S.inter (S.union reads writes) write))) ||
+         (not (S.is_empty (S.inter writes read))) then
+        getFirst (S.union read reads) (S.union write writes) exps
       else
-        (s, exp) :: (getFirst (read @ reads) (write @ writes)) exps
+        (s, exp) :: (getFirst (S.union read reads) (S.union write writes)) exps
 
 let getBlockID b =
   let str = match b.last with
@@ -144,12 +128,25 @@ let rec find (exps, str) = function
   | b' :: bs -> find (exps, str) bs
 *)
 
-let removeCmpJmp env b =
-  b
-
 let change = ref false
 let memo = ref M.empty
 let blocks = ref []
+
+let noEffect exp =
+  S.subset (getWrite exp) (S.of_list (Asm.alliregs @ Asm.allfregs))
+
+let rec g' last env = function
+  | [] -> (env, [])
+  | (s, exp) :: exps when noEffect exp && S.is_empty (S.inter (getWrite exp) (fv' last exps)) ->
+      change := true;
+      g' last env exps
+  | (s, exp) :: exps ->
+      let env = match exp with
+			  | Li(C(i), d) -> M.add d i env
+        | Call _ -> M.empty
+        | exp -> S.fold (fun r env -> M.remove r env) (getWrite exp) env in
+      let (env, exps) = g' last env exps in
+      (env, (s, exp) :: exps)
 
 let rec g b =
   if M.mem b.label !memo then
@@ -161,21 +158,35 @@ let rec g b =
     memo := M.add b.label b' !memo;
     b'
   with Not_found ->
+    let (env, exps) = g' b.last M.empty b.exps in
+    b.exps <- exps;
     let b' =
-      match b.exps, b.last with
-        | _, Cont(b1) ->
+      match b.last with
+        | Cont(b1) ->
             change := true;
             b.exps <- b.exps @ b1.exps;
             b.last <- b1.last;
             b
-        | _, CmpJmp(_, b1, b2) when b1.label = b2.label ->
+        | CmpJmp(_, b1, b2) when b1.label = b2.label ->
             change := true;
             b.exps <- b.exps @ b1.exps;
             b.last <- b1.last;
             b
-        | _, CmpJmp(cmp, b1, b2) when (get b1) = 1 && (get b2) = 1 ->
+        | CmpJmp(Cmpi(mask, x, i), b1, b2) when M.mem x env ->
+            change := true;
+            let j = M.find x env in
+            if cmp mask j i then (
+              b.exps <- b.exps @ b1.exps;
+              b.last <- b1.last;
+              b
+            ) else (
+              b.exps <- b.exps @ b2.exps;
+              b.last <- b2.last;
+              b
+            )
+        | CmpJmp(cmp, b1, b2) when (M.find b1.label !inCount) = 1 && (M.find b2.label !inCount) = 1 ->
             let rs = getRead' cmp in
-            let exps = inter (getFirst rs [] b1.exps) (getFirst rs [] b2.exps) in
+            let exps = inter (getFirst rs S.empty b1.exps) (getFirst rs S.empty b2.exps) in
             if exps <> [] then (
               change := true;
               let exp = List.hd exps in
@@ -185,7 +196,7 @@ let rec g b =
             );
             b.last <- CmpJmp(cmp, g b1, g b2);
             b
-        | _, CmpJmp(cmp, b1, b2) ->
+        | CmpJmp(cmp, b1, b2) ->
             b.last <- CmpJmp(cmp, g b1, g b2);
             b
         | _ -> b in
@@ -196,6 +207,7 @@ let rec g b =
 let rec h b =
   change := false;
   setCount b;
+  initFV b.label;
   memo := M.empty;
   blocks := [];
   let b = g b in

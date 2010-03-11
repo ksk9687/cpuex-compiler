@@ -88,36 +88,77 @@ let neg = function
   | Cmp(mask, x, y) -> Cmp(neg_mask mask, x, y)
   | Cmpi(mask, x, i) -> Cmpi(neg_mask mask, x, i)
 
-let used = ref S.empty
+let cmp mask x y =
+  match mask with
+    | BL -> x < y
+    | BE -> x = y
+    | BLE -> x <= y
+    | BGE -> x >= y
+    | BNE -> x <> y
+    | BG -> x > y
+
+let getRead' = function
+  | Cmp(_, x, y) -> S.of_list [x; y]
+  | Cmpi(_, x, _) -> S.of_list [x]
+
+let getRead = function
+  | Li _ -> S.empty
+  | Addi(x, _, _) | Mov(x, _) | FInv(_, x, _) | FSqrt(_, x, _) | FAbs(x, _) | FNeg(x, _) -> S.of_list [x]
+  | Add(x, y, _) | Sub(x, y, _) | FAdd(_, x, y, _) | FSub(_, x, y, _) | FMul(_, x, y, _) | Store(x, y, _) -> S.of_list [x; y]
+  | Load(x, _, y) -> S.of_list [x; y; "memory"]
+  | Loadr(x, y, z) -> S.of_list [x; y; z; "memory"]
+  | Call(x, _) -> S.of_list (Asm.get_arg_regs x)
+
+let getWrite = function
+  | Li(_, x) | Addi(_, _, x) | Mov(_, x) | Add(_, _, x) | Sub(_, _, x) |
+    FAdd(_, _, _, x) | FSub(_, _, _, x) | FMul(_, _, _, x) | FInv(_, _, x) | FSqrt(_, _, x) |
+    FAbs(_, x) | FNeg(_, x) | Load(_, _, x) | Loadr(_, _, x) -> S.of_list [x]
+  | Store _ -> S.of_list ["memory"]
+  | Call(x, ra) -> S.add ra (Asm.get_use_regs x)
+
 let inCount = ref M.empty
 
-let get b =
-  try M.find b.label !inCount
-  with Not_found -> 0
-
-let incr b =
-  inCount := M.add b.label ((get b) + 1) !inCount
-
-let decr b =
-  inCount := M.add b.label ((get b) - 1) !inCount
-
 let rec count b =
-  incr b;
-  if not (S.mem b.label !used) then (
-    used := S.add b.label !used;
+  if not (M.mem b.label !inCount) then (
+    inCount := M.add b.label 1 !inCount;
     match b.last with
       | Cont(b1) -> count b1
       | CmpJmp(_, b1, b2) ->
           count b1;
           count b2
       | _ -> ()
+  ) else (
+    inCount := M.add b.label ((M.find b.label !inCount) + 1) !inCount
   )
 
 let setCount b =
-  used := S.empty;
   inCount := M.empty;
   count b
 
+let fvs = ref M.empty
+let ret_reg = ref Asm.reg_tmp
+
+let rec fv' last = function
+  | [] -> (
+      match last with
+        | Ret _ -> S.of_list [!ret_reg]
+        | Jmp(x) -> S.of_list (Asm.get_arg_regs x)
+        | CmpJmp(cmp, b1, b2) -> S.union (getRead' cmp) (S.union (fv b1) (fv b2))
+        | Cont(b1) -> fv b1
+      )
+  | (_, exp) :: exps ->
+      S.union (getRead exp) (S.diff (fv' last exps) (getWrite exp))
+and fv b =
+  if M.mem b.label !fvs then
+    M.find b.label !fvs
+  else
+    let rs = fv' b.last b.exps in
+    fvs := M.add b.label rs !fvs;
+    rs
+
+let initFV x =
+  ret_reg := Asm.get_ret_reg x;
+  fvs := M.empty
 
 let rec seq b1 b2 =
   let _ = match b1.last with
@@ -133,7 +174,6 @@ let rec seq b1 b2 =
 
 let exp s exp = { exps = [s, exp]; last = Ret(""); label = "" }
 
-let ret_reg = ref Asm.reg_tmp
 let reg_ra = ref Asm.reg_ra
 let need_ra = ref true
 
