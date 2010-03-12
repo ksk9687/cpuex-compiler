@@ -75,8 +75,8 @@ let h oc (x, b) =
   Printf.fprintf oc ".end %s\n" name
 
 let f oc (Prog(data, fundefs)) =
-  Asm.output_header oc;
+  if not !Id.lib then Asm.output_header oc;
   List.iter
-    (fun (x, d) -> if d <> 0.0 then Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
+    (fun (x, d) -> if d <> 0.0 || !Sfl.off then Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d)
     data;
-  List.iter (h oc) fundefs
+  List.iter (h oc) (if !Id.lib then (List.rev (List.tl (List.rev fundefs))) else fundefs)

@@ -99,6 +99,7 @@ let h { Closure.name = (x, t); Closure.args = yts; Closure.body = e } =
       | Type.Float -> (iregs, List.tl fregs, xs @ [x], rs @ [List.hd fregs])
       | _ -> (List.tl iregs, fregs, xs @ [x], rs @ [List.hd iregs])
     ) (List.tl alliregs, List.tl allfregs, [], []) yts in
+  Format.eprintf "%s: %s@." x (Type.string_of_t t);
   match t with
   | Type.Fun(_, t2) ->
       let ret_reg = (match t2 with
@@ -136,7 +137,7 @@ let rec pow diffs =
 
 let set_data' sames calls diffs x e =
   let (same, diff) = get_calls true (S.empty, S.empty) e in
-  Format.eprintf "%s@.Tail: %s@.NonTail: %s@.@." x (String.concat ", " (S.elements same)) (String.concat ", " (S.elements diff));
+(*  Format.eprintf "%s@.Tail: %s@.NonTail: %s@.@." x (String.concat ", " (S.elements same)) (String.concat ", " (S.elements diff)); *)
   (connect x same sames, M.add x (S.add x (S.union same diff)) calls, M.add x diff diffs)
 let set_data fundefs e =
   let sames = M.mapi (fun x _ -> S.singleton x) !fundata in
@@ -194,5 +195,5 @@ let f (Closure.Prog(fundefs, e)) =
     ) !Typing.extenv;
   let fundefs = List.map h fundefs in
   let e = h { Closure.name = ("ext_main", Type.Fun([], Type.Int)); Closure.args = []; Closure.body = e } in
-  set_data fundefs e;
+  if not !off then set_data fundefs e;
   Prog(!data, fundefs, e)

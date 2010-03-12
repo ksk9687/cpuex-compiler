@@ -1,5 +1,7 @@
 open KNormal
 
+let off = ref false
+
 let memi x env =
   try (match M.find x env with Int(_) -> true | _ -> false)
   with Not_found -> false
@@ -113,15 +115,18 @@ let makeConstarray () =
       !extarray []
 
 let f e =
-  extarray := M.empty;
-  setExtarray M.empty e;
-  let constarray = makeConstarray () in
-    List.iter
-      (fun ((a,n),e)->
-	 match e with
-	   | Unit -> Format.eprintf "Const : %s.(%d) -> Unit@." a n
-	   | Int(i) -> Format.eprintf "Const : %s.(%d) -> Int(%d)@." a n i
-	   | Float(f) -> Format.eprintf "Const : %s.(%d) -> Float(%f)@." a n f
-	   | _ -> assert false)
-      constarray;
-    g constarray M.empty e
+  if !off then e
+  else (
+	  extarray := M.empty;
+	  setExtarray M.empty e;
+	  let constarray = makeConstarray () in
+	    List.iter
+	      (fun ((a,n),e)->
+		 match e with
+		   | Unit -> Format.eprintf "Const : %s.(%d) -> Unit@." a n
+		   | Int(i) -> Format.eprintf "Const : %s.(%d) -> Int(%d)@." a n i
+		   | Float(f) -> Format.eprintf "Const : %s.(%d) -> Float(%f)@." a n f
+		   | _ -> assert false)
+	      constarray;
+	    g constarray M.empty e
+  )

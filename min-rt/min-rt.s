@@ -305,7 +305,7 @@ ext_create_array_float:
 .end create_array
 
 ######################################################################
-# 三角関数
+# 三角関数用テーブル
 ######################################################################
 ext_atan_table:
 	.float 0.785398163397448279
@@ -334,188 +334,250 @@ ext_atan_table:
 	.float 1.19209289550780681e-07
 	.float 5.96046447753905522e-08
 
-f._186:	.float  6.2831853072E+00
-f._185:	.float  3.1415926536E+00
-f._184:	.float  1.5707963268E+00
-f._183:	.float  6.0725293501E-01
-f._182:	.float  1.0000000000E+00
-f._181:	.float  5.0000000000E-01
+######################################################################
+#
+# 		↑　ここまで lib_asm.s
+#
+######################################################################
+f._164:	.float  6.2831853072E+00
+f._163:	.float  3.1415926536E+00
+f._162:	.float  1.5707963268E+00
+f._161:	.float  6.0725293501E-01
+f._160:	.float  1.0000000000E+00
+f._159:	.float  5.0000000000E-01
+f._158:	.float  0.0000000000E+00
 
 ######################################################################
-# $f1 = atan($f2)
+# $f1 = cordic_atan_rec($i2, $f2, $f3, $f4, $f5)
 # $ra = $ra
-# [$i2]
+# [$i1 - $i2]
 # [$f1 - $f5]
+# []
+# []
+# []
 ######################################################################
-.begin atan
-ext_atan:
-.count load_float
-	load    [f._182], $f5
-	li      0, $i2
-.count move_args
-	mov     $f2, $f3
-.count move_args
-	mov     $f0, $f4
-.count move_args
-	mov     $f5, $f2
-	b       cordic_rec._146
-
-cordic_rec._146:
-	bne     $i2, 25, be_else._188
-be_then._188:
+.begin cordic_atan_rec
+ext_cordic_atan_rec:
+	bne     $i2, 25, bne._165
+be._165:
 	mov     $f4, $f1
-	ret
-be_else._188:
+	ret     
+bne._165:
+.count load_float
+	load    [f._158], $f1
+	add     $i2, 1, $i1
+	bg      $f3, $f1, bg._166
+ble._166:
 	fmul    $f5, $f3, $f1
-	bg      $f3, $f0, ble_else._189
-ble_then._189:
 	fsub    $f2, $f1, $f1
 	fmul    $f5, $f2, $f2
 	fadd    $f3, $f2, $f3
 	load    [ext_atan_table + $i2], $f2
 	fsub    $f4, $f2, $f4
 .count load_float
-	load    [f._181], $f2
+	load    [f._159], $f2
 	fmul    $f5, $f2, $f5
-	add     $i2, 1, $i2
+.count move_args
+	mov     $i1, $i2
 .count move_args
 	mov     $f1, $f2
-	b       cordic_rec._146
-ble_else._189:
+	b       ext_cordic_atan_rec
+bg._166:
+	fmul    $f5, $f3, $f1
 	fadd    $f2, $f1, $f1
 	fmul    $f5, $f2, $f2
 	fsub    $f3, $f2, $f3
 	load    [ext_atan_table + $i2], $f2
 	fadd    $f4, $f2, $f4
 .count load_float
-	load    [f._181], $f2
+	load    [f._159], $f2
 	fmul    $f5, $f2, $f5
-	add     $i2, 1, $i2
+.count move_args
+	mov     $i1, $i2
 .count move_args
 	mov     $f1, $f2
-	b       cordic_rec._146
+	b       ext_cordic_atan_rec
+.end cordic_atan_rec
+
+######################################################################
+# $f1 = atan($f2)
+# $ra = $ra
+# [$i1 - $i2]
+# [$f1 - $f5]
+# []
+# []
+# []
+######################################################################
+.begin atan
+ext_atan:
+	li      0, $i2
+.count load_float
+	load    [f._160], $f1
+.count load_float
+	load    [f._158], $f4
+.count load_float
+	load    [f._160], $f5
+.count move_args
+	mov     $f2, $f3
+.count move_args
+	mov     $f1, $f2
+	b       ext_cordic_atan_rec
 .end atan
 
 ######################################################################
-# $f1 = sin($f2)
+# $f1 = cordic_sin_rec($f2, $i2, $f3, $f4, $f5, $f6)
 # $ra = $ra
-# [$i2]
-# [$f1 - $f7]
+# [$i1 - $i2]
+# [$f1, $f3 - $f6]
+# []
+# []
+# []
 ######################################################################
-.begin sin
-ext_sin:
-	bg      $f0, $f2, ble_else._192
-ble_then._192:
-.count load_float
-	load    [f._184], $f7
-	bg      $f7, $f2, cordic_sin._82
-.count load_float
-	load    [f._185], $f7
-	bg      $f7, $f2, ble_else._194
-ble_then._194:
-.count load_float
-	load    [f._186], $f1
-	bg      $f1, $f2, ble_else._195
-ble_then._195:
-	fsub    $f2, $f1, $f2
-	b       ext_sin
-ble_else._195:
-.count stack_move
-	sub     $sp, 1, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
-	fsub    $f1, $f2, $f2
-	call    ext_sin
-.count stack_load
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
-	fneg    $f1, $f1
-	ret
-ble_else._194:
-	fsub    $f7, $f2, $f2
-	b       cordic_sin._82
-ble_else._192:
-.count stack_move
-	sub     $sp, 1, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
-	fneg    $f2, $f2
-	call    ext_sin
-.count stack_load
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
-	fneg    $f1, $f1
-	ret
-
-cordic_rec._111:
-	bne     $i2, 25, be_else._190
-be_then._190:
+.begin cordic_sin_rec
+ext_cordic_sin_rec:
+	bne     $i2, 25, bne._167
+be._167:
 	mov     $f4, $f1
-	ret
-be_else._190:
+	ret     
+bne._167:
 	fmul    $f6, $f4, $f1
-	bg      $f2, $f5, ble_else._191
-ble_then._191:
+	add     $i2, 1, $i1
+	bg      $f2, $f5, bg._168
+ble._168:
 	fadd    $f3, $f1, $f1
 	fmul    $f6, $f3, $f3
 	fsub    $f4, $f3, $f4
 	load    [ext_atan_table + $i2], $f3
 	fsub    $f5, $f3, $f5
 .count load_float
-	load    [f._181], $f3
+	load    [f._159], $f3
 	fmul    $f6, $f3, $f6
-	add     $i2, 1, $i2
+.count move_args
+	mov     $i1, $i2
 .count move_args
 	mov     $f1, $f3
-	b       cordic_rec._111
-ble_else._191:
+	b       ext_cordic_sin_rec
+bg._168:
 	fsub    $f3, $f1, $f1
 	fmul    $f6, $f3, $f3
 	fadd    $f4, $f3, $f4
 	load    [ext_atan_table + $i2], $f3
 	fadd    $f5, $f3, $f5
 .count load_float
-	load    [f._181], $f3
+	load    [f._159], $f3
 	fmul    $f6, $f3, $f6
-	add     $i2, 1, $i2
+.count move_args
+	mov     $i1, $i2
 .count move_args
 	mov     $f1, $f3
-	b       cordic_rec._111
+	b       ext_cordic_sin_rec
+.end cordic_sin_rec
 
-cordic_sin._82:
-.count load_float
-	load    [f._183], $f3
-.count load_float
-	load    [f._182], $f6
+######################################################################
+# $f1 = cordic_sin($f2)
+# $ra = $ra
+# [$i1 - $i2]
+# [$f1, $f3 - $f6]
+# []
+# []
+# []
+######################################################################
+.begin cordic_sin
+ext_cordic_sin:
 	li      0, $i2
-.count move_args
-	mov     $f0, $f4
-.count move_args
-	mov     $f0, $f5
-	b       cordic_rec._111
+.count load_float
+	load    [f._161], $f3
+.count load_float
+	load    [f._158], $f4
+.count load_float
+	load    [f._158], $f5
+.count load_float
+	load    [f._160], $f6
+	b       ext_cordic_sin_rec
+.end cordic_sin
+
+######################################################################
+# $f1 = sin($f2)
+# $ra = $ra
+# [$i1 - $i2]
+# [$f1 - $f6]
+# []
+# []
+# [$ra]
+######################################################################
+.begin sin
+ext_sin:
+.count load_float
+	load    [f._158], $f1
+	bg      $f1, $f2, bg._169
+ble._169:
+.count load_float
+	load    [f._162], $f1
+	bg      $f1, $f2, ext_cordic_sin
+ble._170:
+.count load_float
+	load    [f._163], $f1
+	bg      $f1, $f2, bg._171
+ble._171:
+.count load_float
+	load    [f._164], $f1
+	bg      $f1, $f2, bg._172
+ble._172:
+.count load_float
+	load    [f._164], $f1
+	fsub    $f2, $f1, $f2
+	b       ext_sin
+bg._172:
+.count stack_store_ra
+	store   $ra, [$sp - 1]
+.count stack_move
+	add     $sp, -1, $sp
+.count load_float
+	load    [f._164], $f1
+	fsub    $f1, $f2, $f2
+	call    ext_sin
+.count stack_load_ra
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	fneg    $f1, $f1
+	ret     
+bg._171:
+.count load_float
+	load    [f._163], $f1
+	fsub    $f1, $f2, $f2
+	b       ext_cordic_sin
+bg._169:
+.count stack_store_ra
+	store   $ra, [$sp - 1]
+.count stack_move
+	add     $sp, -1, $sp
+	fneg    $f2, $f2
+	call    ext_sin
+.count stack_load_ra
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	fneg    $f1, $f1
+	ret     
 .end sin
 
 ######################################################################
 # $f1 = cos($f2)
 # $ra = $ra
-# [$i2]
-# [$f1 - $f8]
+# [$i1 - $i2]
+# [$f1 - $f6]
+# []
+# []
+# [$ra]
 ######################################################################
 .begin cos
 ext_cos:
 .count load_float
-	load    [f._184], $f8
-	fsub    $f8, $f2, $f2
+	load    [f._162], $f1
+	fsub    $f1, $f2, $f2
 	b       ext_sin
 .end cos
-
-######################################################################
-#
-# 		↑　ここまで lib_asm.s
-#
-######################################################################
 ext_n_objects:
 	.skip	1
 ext_objects:
@@ -1041,91 +1103,91 @@ bne.22031:
 	load    [$i15 + 0], $f2
 	call    ext_cos
 .count move_ret
-	mov     $f1, $f9
+	mov     $f1, $f7
 	load    [$i15 + 0], $f2
 	call    ext_sin
 .count move_ret
-	mov     $f1, $f10
+	mov     $f1, $f8
 	load    [$i15 + 1], $f2
+	call    ext_cos
+.count move_ret
+	mov     $f1, $f9
+	load    [$i15 + 1], $f2
+	call    ext_sin
+.count move_ret
+	mov     $f1, $f10
+	load    [$i15 + 2], $f2
 	call    ext_cos
 .count move_ret
 	mov     $f1, $f11
-	load    [$i15 + 1], $f2
-	call    ext_sin
-.count move_ret
-	mov     $f1, $f12
-	load    [$i15 + 2], $f2
-	call    ext_cos
-.count move_ret
-	mov     $f1, $f8
 	load    [$i15 + 2], $f2
 	call    ext_sin
-	fmul    $f11, $f8, $f2
+	fmul    $f9, $f11, $f2
 	fmul    $f2, $f2, $f3
 	load    [$i11 + 0], $f4
 	fmul    $f4, $f3, $f3
-	fmul    $f11, $f1, $f5
+	fmul    $f9, $f1, $f5
 	fmul    $f5, $f5, $f6
-	load    [$i11 + 1], $f7
-	fmul    $f7, $f6, $f6
+	load    [$i11 + 1], $f12
+	fmul    $f12, $f6, $f6
 	fadd    $f3, $f6, $f3
-	fneg    $f12, $f6
+	fneg    $f10, $f6
 	fmul    $f6, $f6, $f13
 	load    [$i11 + 2], $f14
 	fmul    $f14, $f13, $f13
 	fadd    $f3, $f13, $f3
 	store   $f3, [$i11 + 0]
-	fmul    $f10, $f12, $f3
-	fmul    $f3, $f8, $f13
-	fmul    $f9, $f1, $f15
+	fmul    $f8, $f10, $f3
+	fmul    $f3, $f11, $f13
+	fmul    $f7, $f1, $f15
 	fsub    $f13, $f15, $f13
 	fmul    $f13, $f13, $f15
 	fmul    $f4, $f15, $f15
 	fmul    $f3, $f1, $f3
-	fmul    $f9, $f8, $f16
+	fmul    $f7, $f11, $f16
 	fadd    $f3, $f16, $f3
 	fmul    $f3, $f3, $f16
-	fmul    $f7, $f16, $f16
+	fmul    $f12, $f16, $f16
 	fadd    $f15, $f16, $f15
-	fmul    $f10, $f11, $f16
+	fmul    $f8, $f9, $f16
 	fmul    $f16, $f16, $f17
 	fmul    $f14, $f17, $f17
 	fadd    $f15, $f17, $f15
 	store   $f15, [$i11 + 1]
-	fmul    $f9, $f12, $f12
-	fmul    $f12, $f8, $f15
-	fmul    $f10, $f1, $f17
+	fmul    $f7, $f10, $f10
+	fmul    $f10, $f11, $f15
+	fmul    $f8, $f1, $f17
 	fadd    $f15, $f17, $f15
 	fmul    $f15, $f15, $f17
 	fmul    $f4, $f17, $f17
-	fmul    $f12, $f1, $f1
-	fmul    $f10, $f8, $f8
+	fmul    $f10, $f1, $f1
+	fmul    $f8, $f11, $f8
 	fsub    $f1, $f8, $f1
 	fmul    $f1, $f1, $f8
-	fmul    $f7, $f8, $f8
+	fmul    $f12, $f8, $f8
 	fadd    $f17, $f8, $f8
-	fmul    $f9, $f11, $f9
-	fmul    $f9, $f9, $f10
-	fmul    $f14, $f10, $f10
-	fadd    $f8, $f10, $f8
+	fmul    $f7, $f9, $f7
+	fmul    $f7, $f7, $f9
+	fmul    $f14, $f9, $f9
+	fadd    $f8, $f9, $f8
 	store   $f8, [$i11 + 2]
 	fmul    $f4, $f13, $f8
 	fmul    $f8, $f15, $f8
-	fmul    $f7, $f3, $f10
-	fmul    $f10, $f1, $f10
-	fadd    $f8, $f10, $f8
-	fmul    $f14, $f16, $f10
-	fmul    $f10, $f9, $f10
-	fadd    $f8, $f10, $f8
+	fmul    $f12, $f3, $f9
+	fmul    $f9, $f1, $f9
+	fadd    $f8, $f9, $f8
+	fmul    $f14, $f16, $f9
+	fmul    $f9, $f7, $f9
+	fadd    $f8, $f9, $f8
 	fmul    $fc10, $f8, $f8
 	store   $f8, [$i15 + 0]
 	fmul    $f4, $f2, $f2
 	fmul    $f2, $f15, $f4
-	fmul    $f7, $f5, $f5
+	fmul    $f12, $f5, $f5
 	fmul    $f5, $f1, $f1
 	fadd    $f4, $f1, $f1
 	fmul    $f14, $f6, $f4
-	fmul    $f4, $f9, $f6
+	fmul    $f4, $f7, $f6
 	fadd    $f1, $f6, $f1
 	fmul    $fc10, $f1, $f1
 	store   $f1, [$i15 + 1]
@@ -4731,7 +4793,7 @@ bg.22455:
 ######################################################################
 # utexture($i1)
 # $ra = $ra1
-# [$i1 - $i3]
+# [$i1 - $i4]
 # [$f1 - $f9]
 # []
 # [$fg11, $fg15 - $fg16]
@@ -4831,20 +4893,20 @@ bne.22462:
 	bne     $i2, 4, bne.22463
 be.22463:
 	load    [$i1 + 5], $i3
-	load    [$i1 + 4], $i1
+	load    [$i1 + 4], $i4
 .count load_float
 	load    [f.21953], $f6
 	load    [ext_intersection_point + 0], $f1
 	load    [$i3 + 0], $f2
 	fsub    $f1, $f2, $f1
-	load    [$i1 + 0], $f2
+	load    [$i4 + 0], $f2
 	fsqrt   $f2, $f2
 	fmul    $f1, $f2, $f7
 	fabs    $f7, $f1
 	load    [ext_intersection_point + 2], $f2
 	load    [$i3 + 2], $f3
 	fsub    $f2, $f3, $f2
-	load    [$i1 + 2], $f3
+	load    [$i4 + 2], $f3
 	fsqrt   $f3, $f3
 	fmul    $f2, $f3, $f8
 	bg      $f6, $f1, bg.22464
@@ -4860,7 +4922,7 @@ ble.22464:
 	load    [ext_intersection_point + 1], $f3
 	load    [$i3 + 1], $f4
 	fsub    $f3, $f4, $f3
-	load    [$i1 + 1], $f4
+	load    [$i4 + 1], $f4
 	fsqrt   $f4, $f4
 	fmul    $f3, $f4, $f3
 	ble     $f6, $f2, ble.22465
@@ -4876,7 +4938,7 @@ bg.22464:
 	load    [ext_intersection_point + 1], $f3
 	load    [$i3 + 1], $f4
 	fsub    $f3, $f4, $f3
-	load    [$i1 + 1], $f4
+	load    [$i4 + 1], $f4
 	fsqrt   $f4, $f4
 	fmul    $f3, $f4, $f3
 	bg      $f6, $f2, bg.22465
@@ -7877,19 +7939,19 @@ create_pixelline.3013:
 .end create_pixelline
 
 ######################################################################
-# calc_dirvec($i1, $f1, $f2, $f9, $f10, $i3, $i4)
+# calc_dirvec($i3, $f1, $f2, $f7, $f8, $i5, $i4)
 # $ra = $ra1
-# [$i1 - $i2]
-# [$f1 - $f8, $f11 - $f13]
+# [$i1 - $i3]
+# [$f1 - $f6, $f9 - $f12]
 # []
 # []
 # [$ra]
 ######################################################################
 .begin calc_dirvec
 calc_dirvec.3020:
-	bl      $i1, 5, bl.22652
+	bl      $i3, 5, bl.22652
 bge.22652:
-	load    [ext_dirvecs + $i3], $i1
+	load    [ext_dirvecs + $i5], $i1
 	load    [$i1 + $i4], $i2
 	load    [$i2 + 0], $i2
 	fmul    $f1, $f1, $f3
@@ -7940,282 +8002,268 @@ bge.22652:
 bl.22652:
 	fmul    $f2, $f2, $f1
 	fadd    $f1, $fc9, $f1
-	fsqrt   $f1, $f11
-	finv    $f11, $f2
+	fsqrt   $f1, $f9
+	finv    $f9, $f2
 	call    ext_atan
-	fmul    $f1, $f9, $f8
+	fmul    $f1, $f7, $f10
 .count move_args
-	mov     $f8, $f2
+	mov     $f10, $f2
+	call    ext_sin
+.count move_ret
+	mov     $f1, $f11
+.count move_args
+	mov     $f10, $f2
+	call    ext_cos
+	finv    $f1, $f1
+	fmul    $f11, $f1, $f1
+	fmul    $f1, $f9, $f9
+	fmul    $f9, $f9, $f1
+	fadd    $f1, $fc9, $f1
+	fsqrt   $f1, $f10
+	finv    $f10, $f2
+	call    ext_atan
+	fmul    $f1, $f8, $f11
+.count move_args
+	mov     $f11, $f2
 	call    ext_sin
 .count move_ret
 	mov     $f1, $f12
 .count move_args
-	mov     $f8, $f2
+	mov     $f11, $f2
 	call    ext_cos
 	finv    $f1, $f1
 	fmul    $f12, $f1, $f1
-	fmul    $f1, $f11, $f11
-	fmul    $f11, $f11, $f1
-	fadd    $f1, $fc9, $f1
-	fsqrt   $f1, $f12
-	finv    $f12, $f2
-	call    ext_atan
-	fmul    $f1, $f10, $f8
+	fmul    $f1, $f10, $f2
+	add     $i3, 1, $i3
 .count move_args
-	mov     $f8, $f2
-	call    ext_sin
-.count move_ret
-	mov     $f1, $f13
-.count move_args
-	mov     $f8, $f2
-	call    ext_cos
-	finv    $f1, $f1
-	fmul    $f13, $f1, $f1
-	fmul    $f1, $f12, $f2
-	add     $i1, 1, $i1
-.count move_args
-	mov     $f11, $f1
+	mov     $f9, $f1
 	b       calc_dirvec.3020
 .end calc_dirvec
 
 ######################################################################
-# calc_dirvecs($i5, $f10, $i6, $i7)
+# calc_dirvecs($i6, $f8, $i5, $i7)
 # $ra = $ra2
 # [$i1 - $i6, $i8]
-# [$f1 - $f9, $f11 - $f14]
+# [$f1 - $f7, $f9 - $f13]
 # []
 # []
 # [$ra - $ra1]
 ######################################################################
 .begin calc_dirvecs
 calc_dirvecs.3028:
-	bl      $i5, 0, bl.22653
+	bl      $i6, 0, bl.22653
 bge.22653:
 	li      0, $i1
 .count move_args
-	mov     $i5, $i2
+	mov     $i6, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc16, $f14
-	fsub    $f14, $fc11, $f9
+	fmul    $f1, $fc16, $f13
+	fsub    $f13, $fc11, $f7
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
-.count move_args
-	mov     $i6, $i3
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
+	li      0, $i3
 	add     $i7, 2, $i8
-	fadd    $f14, $fc9, $f9
+	fadd    $f13, $fc9, $f7
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i6, $i3
-.count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
-	add     $i5, -1, $i5
-	bl      $i5, 0, bl.22653
+	add     $i6, -1, $i6
+	bl      $i6, 0, bl.22653
 bge.22654:
 	li      0, $i1
-	add     $i6, 1, $i2
+	add     $i5, 1, $i2
 	bl      $i2, 5, bl.22655
 bge.22655:
-	add     $i2, -5, $i6
+	add     $i2, -5, $i5
 .count move_args
-	mov     $i5, $i2
+	mov     $i6, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc16, $f14
-	fsub    $f14, $fc11, $f9
+	fmul    $f1, $fc16, $f13
+	fsub    $f13, $fc11, $f7
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
-.count move_args
-	mov     $i6, $i3
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	fadd    $f14, $fc9, $f9
+	li      0, $i3
+	fadd    $f13, $fc9, $f7
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i6, $i3
-.count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
-	add     $i5, -1, $i5
-	bge     $i5, 0, bge.22656
+	add     $i6, -1, $i6
+	bge     $i6, 0, bge.22656
 .count dual_jmp
 	b       bl.22653
 bl.22655:
-	mov     $i2, $i6
+	mov     $i2, $i5
 .count move_args
-	mov     $i5, $i2
+	mov     $i6, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc16, $f14
-	fsub    $f14, $fc11, $f9
+	fmul    $f1, $fc16, $f13
+	fsub    $f13, $fc11, $f7
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
-.count move_args
-	mov     $i6, $i3
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	fadd    $f14, $fc9, $f9
+	li      0, $i3
+	fadd    $f13, $fc9, $f7
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i6, $i3
-.count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
-	add     $i5, -1, $i5
-	bl      $i5, 0, bl.22653
+	add     $i6, -1, $i6
+	bl      $i6, 0, bl.22653
 bge.22656:
 	li      0, $i1
-	add     $i6, 1, $i2
+	add     $i5, 1, $i2
 	bl      $i2, 5, bl.22657
 bge.22657:
-	add     $i2, -5, $i6
+	add     $i2, -5, $i5
 .count move_args
-	mov     $i5, $i2
+	mov     $i6, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc16, $f14
-	fsub    $f14, $fc11, $f9
+	fmul    $f1, $fc16, $f13
+	fsub    $f13, $fc11, $f7
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
-.count move_args
-	mov     $i6, $i3
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	fadd    $f14, $fc9, $f9
+	li      0, $i3
+	fadd    $f13, $fc9, $f7
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i6, $i3
-.count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
-	add     $i5, -1, $i5
-	bge     $i5, 0, bge.22658
+	add     $i6, -1, $i6
+	bge     $i6, 0, bge.22658
 .count dual_jmp
 	b       bl.22653
 bl.22657:
-	mov     $i2, $i6
+	mov     $i2, $i5
 .count move_args
-	mov     $i5, $i2
+	mov     $i6, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc16, $f14
-	fsub    $f14, $fc11, $f9
+	fmul    $f1, $fc16, $f13
+	fsub    $f13, $fc11, $f7
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
-.count move_args
-	mov     $i6, $i3
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	fadd    $f14, $fc9, $f9
+	li      0, $i3
+	fadd    $f13, $fc9, $f7
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i6, $i3
-.count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
-	add     $i5, -1, $i5
-	bl      $i5, 0, bl.22653
+	add     $i6, -1, $i6
+	bl      $i6, 0, bl.22653
 bge.22658:
 	li      0, $i1
-	add     $i6, 1, $i2
+	add     $i5, 1, $i2
 	bl      $i2, 5, bl.22659
 bge.22659:
-	add     $i2, -5, $i6
+	add     $i2, -5, $i5
 .count move_args
-	mov     $i5, $i2
+	mov     $i6, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc16, $f14
-	fsub    $f14, $fc11, $f9
+	fmul    $f1, $fc16, $f13
+	fsub    $f13, $fc11, $f7
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
-.count move_args
-	mov     $i6, $i3
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	fadd    $f14, $fc9, $f9
+	li      0, $i3
+	fadd    $f13, $fc9, $f7
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i6, $i3
-.count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
-	add     $i5, -1, $i5
-	add     $i6, 1, $i6
-	bl      $i6, 5, calc_dirvecs.3028
+	add     $i6, -1, $i6
+	add     $i5, 1, $i5
+	bl      $i5, 5, calc_dirvecs.3028
 .count dual_jmp
 	b       bge.22660
 bl.22659:
-	mov     $i2, $i6
+	mov     $i2, $i5
 .count move_args
-	mov     $i5, $i2
+	mov     $i6, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc16, $f14
-	fsub    $f14, $fc11, $f9
+	fmul    $f1, $fc16, $f13
+	fsub    $f13, $fc11, $f7
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
-.count move_args
-	mov     $i6, $i3
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	fadd    $f14, $fc9, $f9
+	li      0, $i3
+	fadd    $f13, $fc9, $f7
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i6, $i3
-.count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
-	add     $i5, -1, $i5
-	add     $i6, 1, $i6
-	bl      $i6, 5, calc_dirvecs.3028
+	add     $i6, -1, $i6
+	add     $i5, 1, $i5
+	bl      $i5, 5, calc_dirvecs.3028
 bge.22660:
-	add     $i6, -5, $i6
+	add     $i5, -5, $i5
 	b       calc_dirvecs.3028
 bl.22653:
 	jr      $ra2
@@ -8225,7 +8273,7 @@ bl.22653:
 # calc_dirvec_rows($i9, $i10, $i7)
 # $ra = $ra3
 # [$i1 - $i10]
-# [$f1 - $f17]
+# [$f1 - $f16]
 # []
 # []
 # [$ra - $ra2]
@@ -8236,38 +8284,40 @@ calc_dirvec_rows.3033:
 bge.22661:
 	li      0, $i1
 .count load_float
-	load    [f.21987], $f15
+	load    [f.21987], $f14
 .count move_args
 	mov     $i9, $i2
 	call    ext_float_of_int
 	fmul    $f1, $fc16, $f1
-	fsub    $f1, $fc11, $f10
+	fsub    $f1, $fc11, $f8
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $f15, $f9
+	mov     $f14, $f7
 .count move_args
-	mov     $i10, $i3
+	mov     $i10, $i5
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	add     $i7, 2, $i5
+	li      0, $i3
+	add     $i7, 2, $i6
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $fc11, $f9
+	mov     $fc11, $f7
 .count move_args
-	mov     $i10, $i3
+	mov     $i10, $i5
 .count move_args
-	mov     $i5, $i4
+	mov     $i6, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	add     $i10, 1, $i2
+	li      0, $i3
+	add     $i10, 1, $i1
 .count move_args
 	mov     $i7, $i4
 .count move_args
@@ -8275,52 +8325,52 @@ bge.22661:
 .count move_args
 	mov     $f0, $f1
 .count load_float
-	load    [f.21988], $f16
+	load    [f.21988], $f15
 .count move_args
-	mov     $f16, $f9
-	bl      $i2, 5, bl.22662
+	mov     $f15, $f7
+	bl      $i1, 5, bl.22662
 bge.22662:
-	add     $i2, -5, $i3
+	add     $i1, -5, $i5
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
+	li      0, $i3
 .count load_float
-	load    [f.21989], $f17
+	load    [f.21989], $f16
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $f17, $f9
+	mov     $f16, $f7
 .count move_args
-	mov     $i5, $i4
+	mov     $i6, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	add     $i3, 1, $i2
-	bge     $i2, 5, bge.22663
+	li      0, $i3
+	add     $i5, 1, $i1
+	bge     $i1, 5, bge.22663
 .count dual_jmp
 	b       bl.22663
 bl.22662:
-	mov     $i2, $i3
+	mov     $i1, $i5
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
+	li      0, $i3
 .count load_float
-	load    [f.21989], $f17
+	load    [f.21989], $f16
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $f17, $f9
+	mov     $f16, $f7
 .count move_args
-	mov     $i5, $i4
+	mov     $i6, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	add     $i3, 1, $i2
-	bl      $i2, 5, bl.22663
+	li      0, $i3
+	add     $i5, 1, $i1
+	bl      $i1, 5, bl.22663
 bge.22663:
-	add     $i2, -5, $i3
+	add     $i1, -5, $i5
 .count load_float
-	load    [f.21990], $f9
+	load    [f.21990], $f7
 .count move_args
 	mov     $f0, $f1
 .count move_args
@@ -8328,25 +8378,25 @@ bge.22663:
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
+	li      0, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $fc4, $f9
+	mov     $fc4, $f7
 .count move_args
-	mov     $i5, $i4
+	mov     $i6, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      1, $i5
-	add     $i3, 1, $i1
+	li      1, $i6
+	add     $i5, 1, $i1
 	bge     $i1, 5, bge.22664
 .count dual_jmp
 	b       bl.22664
 bl.22663:
-	mov     $i2, $i3
+	mov     $i1, $i5
 .count load_float
-	load    [f.21990], $f9
+	load    [f.21990], $f7
 .count move_args
 	mov     $f0, $f1
 .count move_args
@@ -8354,28 +8404,28 @@ bl.22663:
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
+	li      0, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $fc4, $f9
+	mov     $fc4, $f7
 .count move_args
-	mov     $i5, $i4
+	mov     $i6, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      1, $i5
-	add     $i3, 1, $i1
+	li      1, $i6
+	add     $i5, 1, $i1
 	bl      $i1, 5, bl.22664
 bge.22664:
-	add     $i1, -5, $i6
+	add     $i1, -5, $i5
 	jal     calc_dirvecs.3028, $ra2
 	add     $i9, -1, $i9
 	bge     $i9, 0, bge.22665
 .count dual_jmp
 	b       bl.22661
 bl.22664:
-	mov     $i1, $i6
+	mov     $i1, $i5
 	jal     calc_dirvecs.3028, $ra2
 	add     $i9, -1, $i9
 	bl      $i9, 0, bl.22661
@@ -8390,34 +8440,36 @@ bge.22666:
 	li      0, $i1
 	call    ext_float_of_int
 	fmul    $f1, $fc16, $f1
-	fsub    $f1, $fc11, $f10
+	fsub    $f1, $fc11, $f8
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $f15, $f9
+	mov     $f14, $f7
 .count move_args
-	mov     $i10, $i3
+	mov     $i10, $i5
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	add     $i7, 2, $i5
+	li      0, $i3
+	add     $i7, 2, $i6
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $fc11, $f9
+	mov     $fc11, $f7
 .count move_args
-	mov     $i10, $i3
+	mov     $i10, $i5
 .count move_args
-	mov     $i5, $i4
+	mov     $i6, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	add     $i10, 1, $i2
-	bge     $i2, 5, bge.22667
+	li      0, $i3
+	add     $i10, 1, $i1
+	bge     $i1, 5, bge.22667
 .count dual_jmp
 	b       bl.22667
 bl.22666:
@@ -8425,86 +8477,88 @@ bl.22666:
 	li      0, $i1
 	call    ext_float_of_int
 	fmul    $f1, $fc16, $f1
-	fsub    $f1, $fc11, $f10
+	fsub    $f1, $fc11, $f8
+.count move_args
+	mov     $i1, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $f15, $f9
+	mov     $f14, $f7
 .count move_args
-	mov     $i10, $i3
+	mov     $i10, $i5
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	add     $i7, 2, $i5
+	li      0, $i3
+	add     $i7, 2, $i6
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $fc11, $f9
+	mov     $fc11, $f7
 .count move_args
-	mov     $i10, $i3
+	mov     $i10, $i5
 .count move_args
-	mov     $i5, $i4
+	mov     $i6, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
-	add     $i10, 1, $i2
-	bl      $i2, 5, bl.22667
+	li      0, $i3
+	add     $i10, 1, $i1
+	bl      $i1, 5, bl.22667
 bge.22667:
-	add     $i2, -5, $i3
+	add     $i1, -5, $i5
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $f16, $f9
+	mov     $f15, $f7
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
+	li      0, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $f17, $f9
+	mov     $f16, $f7
 .count move_args
-	mov     $i5, $i4
+	mov     $i6, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      2, $i5
-	add     $i3, 1, $i1
+	li      2, $i6
+	add     $i5, 1, $i1
 	bge     $i1, 5, bge.22668
 .count dual_jmp
 	b       bl.22668
 bl.22667:
-	mov     $i2, $i3
+	mov     $i1, $i5
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $f16, $f9
+	mov     $f15, $f7
 .count move_args
 	mov     $i7, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i1
+	li      0, $i3
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $f17, $f9
+	mov     $f16, $f7
 .count move_args
-	mov     $i5, $i4
+	mov     $i6, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      2, $i5
-	add     $i3, 1, $i1
+	li      2, $i6
+	add     $i5, 1, $i1
 	bl      $i1, 5, bl.22668
 bge.22668:
-	add     $i1, -5, $i6
+	add     $i1, -5, $i5
 	jal     calc_dirvecs.3028, $ra2
 	add     $i9, -1, $i9
 	add     $i10, 2, $i10
@@ -8512,7 +8566,7 @@ bge.22668:
 .count dual_jmp
 	b       bl.22669
 bl.22668:
-	mov     $i1, $i6
+	mov     $i1, $i5
 	jal     calc_dirvecs.3028, $ra2
 	add     $i9, -1, $i9
 	add     $i10, 2, $i10
@@ -8760,8 +8814,20 @@ ext_main:
 	store   $f1, [ext_screen + 2]
 	call    ext_read_float
 .count load_float
-	load    [f.21933], $f9
-	fmul    $f1, $f9, $f10
+	load    [f.21933], $f7
+	fmul    $f1, $f7, $f8
+.count move_args
+	mov     $f8, $f2
+	call    ext_cos
+.count move_ret
+	mov     $f1, $f9
+.count move_args
+	mov     $f8, $f2
+	call    ext_sin
+.count move_ret
+	mov     $f1, $f8
+	call    ext_read_float
+	fmul    $f1, $f7, $f10
 .count move_args
 	mov     $f10, $f2
 	call    ext_cos
@@ -8770,34 +8836,22 @@ ext_main:
 .count move_args
 	mov     $f10, $f2
 	call    ext_sin
-.count move_ret
-	mov     $f1, $f10
-	call    ext_read_float
-	fmul    $f1, $f9, $f12
-.count move_args
-	mov     $f12, $f2
-	call    ext_cos
-.count move_ret
-	mov     $f1, $f8
-.count move_args
-	mov     $f12, $f2
-	call    ext_sin
-	fmul    $f11, $f1, $f2
+	fmul    $f9, $f1, $f2
 .count load_float
 	load    [f.21998], $f3
 	fmul    $f2, $f3, $fg20
 .count load_float
 	load    [f.21999], $f2
-	fmul    $f10, $f2, $fg21
-	fmul    $f11, $f8, $f2
+	fmul    $f8, $f2, $fg21
+	fmul    $f9, $f11, $f2
 	fmul    $f2, $f3, $fg22
-	store   $f8, [ext_screenx_dir + 0]
+	store   $f11, [ext_screenx_dir + 0]
 	fneg    $f1, $f2
 	store   $f2, [ext_screenx_dir + 2]
-	fneg    $f10, $f2
+	fneg    $f8, $f2
 	fmul    $f2, $f1, $fg23
-	fneg    $f11, $fg24
-	fmul    $f2, $f8, $f1
+	fneg    $f9, $fg24
+	fmul    $f2, $f11, $f1
 	store   $f1, [ext_screeny_dir + 2]
 	load    [ext_screen + 0], $f1
 	fsub    $f1, $fg20, $f1
@@ -8810,28 +8864,28 @@ ext_main:
 	store   $f1, [ext_viewpoint + 2]
 	call    ext_read_int
 	call    ext_read_float
-	fmul    $f1, $f9, $f8
+	fmul    $f1, $f7, $f8
 .count move_args
 	mov     $f8, $f2
 	call    ext_sin
 	fneg    $f1, $fg12
 	call    ext_read_float
 .count move_ret
-	mov     $f1, $f10
+	mov     $f1, $f9
 .count move_args
 	mov     $f8, $f2
 	call    ext_cos
 .count move_ret
-	mov     $f1, $f11
-	fmul    $f10, $f9, $f8
+	mov     $f1, $f8
+	fmul    $f9, $f7, $f7
 .count move_args
-	mov     $f8, $f2
+	mov     $f7, $f2
 	call    ext_sin
-	fmul    $f11, $f1, $fg14
+	fmul    $f8, $f1, $fg14
 .count move_args
-	mov     $f8, $f2
+	mov     $f7, $f2
 	call    ext_cos
-	fmul    $f11, $f1, $fg13
+	fmul    $f8, $f1, $fg13
 	call    ext_read_float
 	store   $f1, [ext_beam + 0]
 	li      0, $i6
@@ -8874,11 +8928,11 @@ ext_main:
 	call    ext_write
 	li      4, $i6
 	jal     create_dirvecs.3042, $ra3
-	li      0, $i6
+	li      0, $i5
 	li      0, $i7
-	li      4, $i5
+	li      4, $i6
 .count move_args
-	mov     $fc11, $f10
+	mov     $fc11, $f8
 	jal     calc_dirvecs.3028, $ra2
 	li      8, $i9
 	li      2, $i10

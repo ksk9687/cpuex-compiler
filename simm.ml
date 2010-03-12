@@ -1,5 +1,7 @@
 open Asm
 
+let off = ref false
+
 let replace env = function
   | V(x) when M.mem x env -> C(M.find x env)
   | x' -> x'
@@ -35,4 +37,5 @@ let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g M.empty e; ret = t }
 
 let f (Prog(data, fundefs, e)) =
-  Prog(data, List.map h fundefs, h e)
+  if !off then Prog(data, fundefs, e)
+  else Prog(data, List.map h fundefs, h e)

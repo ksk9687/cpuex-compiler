@@ -1,0 +1,438 @@
+*****object*****
+(int, int, int, int, float[3], float[3], bool, float[2], float[3], float[3], float[4])
+(texturetype, form, reflectiontype, isrot, abc, xyz, invert, surfparams, color, param, ctbl)
+texturetype: テクスチャ種 0:無し 1:市松模様 2:縞模様 3:同心円模様 4:斑点
+form: 物体の形状 0:直方体 1:平面 2:二次曲面 3:円錐
+reflectiontype: 反射特性 0:拡散反射のみ 1:拡散＋非完全鏡面反射 2:拡散＋完全鏡面反射
+isrot: 回転の有無 true:回転あり false:回転無し 2次曲面と円錐のみ有効
+abc: 物体形状のパラメータ
+xyz: 物体の中心座標
+isinvert: 曲面の外側が真かどうかのフラグ true:外側が真 false:内側が真
+surfparams: [diffuse; hilight]
+color: 物体色RGB
+param: 物体の曲面方程式
+ctbl: 光線の発射点をあらかじめ計算した場合の定数テーブル
+
+*****dirvec*****
+(float[3], (float[n])[n_object])
+(vec, const)
+vec: ベクトル
+const: 各オブジェクトに対して作った solver 高速化用定数テーブル
+
+*****reflection*****
+(int, dirvec, float)
+(surface_id, dvec, bright)
+surface_id: 面番号 オブジェクト番号*4 + (solverの返り値)
+dvec: 光源光の反射方向ベクトル(光と逆向き)
+bright: 物体の反射率
+
+*****pixel*****
+(float[3], (float[3])[5], int[5], bool[5], (float[3])[5], (float[3])[5], int[1], (float[3])[5])
+(rgb, intersection_points, surface_ids, calc_diffuse, energy, received_ray_20percent, group_id, nvectors)
+rgb: 直接光追跡で得られたピクセルのRGB値
+intersection_points: 飛ばした光が物体と衝突した点の配列
+surface_ids: 飛ばした光が衝突した物体面番号の配列 オブジェクト番号 * 4 + (solverの返り値)
+calc_diffuse: 間接受光を計算するか否かのフラグ
+energy: 衝突点の間接受光エネルギーがピクセル輝度に与える寄与の大きさ
+received_ray_20percent: 衝突点の間接受光エネルギーを光線本数を1/5に間引きして計算した値
+group_id: このピクセルのグループ ID
+nvectors: 各衝突点における法線ベクトル
+
+*****定数*****
+image_size
+	int[2]
+	画像サイズ
+	128で固定
+
+image_center
+	int[2]
+	画像の中心
+	64で固定
+
+scan_pitch
+	float[1]
+	3次元上のピクセル間隔
+	1.0で固定
+
+*****環境*****
+screen
+	float[3]
+	Screen の中心座標
+
+screenx_dir, screeny_dir, screenz_dir
+	float[3]
+	画面上のx,y,z軸の3次元空間上の方向
+
+viewpoint
+	float[3]
+	視点の座標
+
+light
+	float[3]
+	光源方向ベクトル
+
+light_dirvec
+	dirvec
+	光源光の前処理済み方向ベクトル
+
+beam
+	float[1]
+	鏡面ハイライト強度
+
+n_objects
+	int[1]
+	オブジェクトの個数
+
+objects
+	object[60]
+	オブジェクトのデータを入れるベクトル
+
+and_net
+	(int[n])[50]
+	AND ネットワークを保持
+	
+or_net
+	((int[n])[m])[1]
+	OR ネットワークを保持
+
+n_reflections
+	int[1]
+	reflectionsの有効な要素数
+
+reflections
+	reflection[180]
+	鏡平面の反射情報
+
+*****変数*****
+solver_dist
+	float[1]
+	solver の交点 の t の値
+
+intsec_rectside
+	int[1]
+	交点の直方体表面での方向
+
+tmin
+	float[1]
+	発見した交点の最小の t
+
+intersection_point
+	float[3]
+	交点の座標
+
+intersected_object_id
+	int[1]
+	衝突したオブジェクト番号
+
+nvector
+	float[3]
+	法線ベクトル
+
+texture_color
+	float[3]
+	交点の色
+
+diffuse_ray
+	float[3]
+	計算中の間接受光強度を保持
+
+rgb
+	float[3]
+	スクリーン上の点の明るさ
+
+startp
+	float[3]
+	judge_intersectionに与える光線始点
+
+startp_fast
+	float[3]
+	judge_intersection_fastに与える光線始点
+
+ptrace_dirvec
+	float[3]
+	直接光追跡で使う光方向ベクトル
+
+dirvecs
+	(dirvec[120])[5]
+	間接光サンプリングに使う方向ベクトル
+
+*****rt*****
+一回のみ
+call:
+	create_pixelline
+	read_parameter
+	write_ppm_header
+	init_dirvecs
+	setup_dirvec_constants
+	setup_reflections
+	pretrace_line
+	scan_line
+	
+	*****create_pixelline*****
+	call:
+		create_pixel
+		init_line_elements
+		
+		*****create_pixel*****
+		
+		*****init_line_elements*****
+		ループ
+		call:
+			create_pixel
+
+	*****read_parameter*****
+	一回のみ
+	call:
+		read_screen_settings
+		read_light
+		read_all_object
+		read_and_network
+		read_or_network
+
+		*****read_screen_settings*****
+		一回のみ
+
+		*****read_light*****
+		一回のみ
+
+		*****read_all_object*****
+		一回のみ
+		call:
+			read_object
+
+			*****read_object*****
+			ループ
+			call:
+				read_nth_object
+
+				*****read_nth_object*****
+				call:
+					rotate_quadratic_matrix
+
+					*****rotate_quadratic_matrix*****
+					実行されない
+
+		*****read_and_network*****
+		ループ
+		call:
+			read_net_item
+
+			*****read_net_item*****
+			ループ
+
+		*****read_or_network*****
+		ループ
+		call: read_net_item
+
+	*****write_ppm_header*****
+	一回のみ
+	
+	*****init_dirvecs*****
+	一回のみ
+	call:
+		create_dirvecs
+		calc_dirvec_rows
+		init_vecset_constants
+		
+		*****create_dirvecs*****
+		ループ
+		call:
+			create_dirvec
+			create_dirvec_elements
+			
+			*****create_dirvec*****
+			
+			*****create_dirvec_elements*****
+			ループ
+			call:
+				create_dirvec
+		
+		*****calc_dirvec_rows*****
+		ループ
+		call:
+			calc_dirvecs
+			
+			*****calc_dirvecs*****
+			ループ
+			call:
+				calc_dirvec
+				
+				*****calc_dirvec*****
+				ループ
+
+		*****init_vecset_constants*****
+		ループ
+		call:
+			init_dirvec_constants
+			
+			*****init_dirvec_constants*****
+			ループ
+			call:
+				setup_dirvec_constants
+
+	*****setup_dirvec_constants*****
+	call:
+		iter_setup_dirvec_constants
+	
+		*****iter_setup_dirvec_constants*****
+		ループ
+		call:
+			setup_rect_table
+			setup_surface_table
+			setup_second_table
+			
+			*****setup_rect_table*****
+			
+			*****setup_surface_table*****
+			
+			*****setup_second_table*****
+
+	*****setup_reflections*****
+	一回のみ
+	call:
+		setup_rect_reflection
+		setup_surface_reflection
+		
+		*****setup_rect_reflection*****
+		実行されない
+		call:
+			add_reflection
+			
+			*****add_reflection*****
+			call:
+				create_dirvec
+				setup_dirvec_constants
+		
+		*****setup_surface_reflection*****
+		call:
+			add_reflection
+	
+	*****pretrace_line*****
+	call:
+		pretrace_pixels
+		
+		*****pretrace_pixels*****
+		ループ
+		call:
+			trace_ray
+			pretrace_diffuse_rays
+			
+			*****trace_ray*****
+			ループ
+			call:
+				judge_intersection
+				shadow_check_one_or_matrix
+				setup_startp
+				trace_reflections
+				
+				*****judge_intersection*****
+				call:
+					trace_or_matrix
+					
+					*****trace_or_matrix*****
+					ループ
+					call:
+						solve_one_or_network
+						solver
+						
+						*****solve_one_or_network*****
+						ループ
+						call:
+							solve_each_element
+							
+							*****solve_each_element*****
+							ループ
+							call:
+								solver
+								check_all_inside
+								
+								*****solver*****
+								
+								*****check_all_inside*****
+								ループ
+								call:
+									is_outside
+									
+									*****is_outside*****
+				
+				*****shadow_check_one_or_matrix*****
+				ループ
+				call:
+					shadow_check_one_or_group
+					solver_fast
+					
+					*****shadow_check_one_or_group*****
+					ループ
+					call:
+						shadow_check_and_group
+						
+						*****shadow_check_and_group*****
+						ループ
+						call:
+							solver_fast
+							check_all_inside
+							
+							*****solver_fast*****
+				
+				*****setup_startp*****
+				call:
+					setup_startp_constants
+					
+					*****setup_startp_constants*****
+					ループ
+				
+				*****trace_reflections*****
+				ループ
+				call:
+					judge_intersection_fast
+					
+					*****judge_intersection_fast*****
+			
+			*****pretrace_diffuse_rays*****
+			ループ
+			call:
+				trace_diffuse_rays
+				
+				*****trace_diffuse_rays*****
+				call:
+					setup_startp
+					iter_trace_diffuse_rays
+					
+					*****iter_trace_diffuse_rays*****
+					ループ
+					call:
+						trace_diffuse_ray
+						
+						*****trace_diffuse_ray*****
+						call:
+							judge_intersection_fast
+							shadow_check_one_or_matrix
+			
+	*****scan_line*****
+	ループ
+	call:
+		scan_pixel
+		
+		*****scan_pixel*****
+		ループ
+		call:
+			try_exploit_neighbors
+			do_without_neighbors
+			
+			*****try_exploit_neighbors*****
+			ループ
+			call:
+				do_without_neighbors
+				calc_diffuse_using_5points
+				
+				*****calc_diffuse_using_5points*****
+			
+			*****do_without_neighbors*****
+			ループ
+			call:
+				calc_diffuse_using_1point
+				trace_diffuse_ray_80percent 
+				
+				*****trace_diffuse_ray_80percent*****
+				call:
+					trace_diffuse_rays

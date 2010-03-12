@@ -1,5 +1,7 @@
 open KNormal
 
+let off = ref false
+
 let find x env = try M.find x env with Not_found -> x
 
 let rec g env = function
@@ -36,4 +38,6 @@ let rec g env = function
   | ExtArray(x, t) -> ExtArray(x, t)
   | ExtFunApp(x, ys) -> ExtFunApp(x, List.map (fun y -> find y env) ys)
 
-let f = g M.empty
+let f e =
+  if !off then e
+  else g M.empty e

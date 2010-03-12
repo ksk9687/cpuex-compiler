@@ -1,5 +1,7 @@
 open KNormal
 
+let off = ref false
+
 let find x env = try M.find x env with Not_found -> x
 
 let rec rename env = function
@@ -58,5 +60,7 @@ let rec g env = function
 	LetTuple(xts, y, g env' (rename rnenv e))
   | e -> e
 
-let f = g M.empty
+let f e =
+  if !off then e
+  else g M.empty e
 

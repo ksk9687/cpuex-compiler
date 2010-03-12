@@ -17,10 +17,10 @@ let lexbuf outchan l =
     (MoveAsm.f
       (Block.f
         (RegAlloc.f
-          (AbsNegFlag.f
-            (Beta2.f
-              (Sglobal.f
-                (PreSchedule.f
+          (PreSchedule.f
+            (AbsNegFlag.f
+              (Beta2.f
+                (Sglobal.f
                   (Sfl.f
                     (Slabel.f
                       (Simm.f
@@ -49,10 +49,31 @@ let () =
   Arg.parse
     [("-inline", Arg.Int(fun i -> Inline.threshold := i), "maximum size of functions inlined");
      ("-inline_cont", Arg.Int(fun i -> Inline.threshold2 := i), "maximum size of continuations inlined");
-     ("-iter", Arg.Int(fun i -> limit := i), "maximum number of optimizations iterated")]
+     ("-iter", Arg.Int(fun i -> limit := i), "maximum number of optimizations iterated");
+     ("-noMovelet", Arg.Unit(fun () -> Movelet.off := true), "");
+     ("-noConstArg", Arg.Unit(fun () -> ConstArg.off := true), "");
+     ("-noMovelet", Arg.Unit(fun () -> Movelet.off := true), "");
+     ("-noConstFold", Arg.Unit(fun () -> ConstFold.off := true), "");
+     ("-noCse", Arg.Unit(fun () -> Cse.off := true), "");
+     ("-noConstArray", Arg.Unit(fun () -> ConstArray.off := true), "");
+     ("-noInline", Arg.Unit(fun () -> Inline.off := true), "");
+     ("-noAssoc", Arg.Unit(fun () -> Assoc.off := true), "");
+     ("-noBetaTuple", Arg.Unit(fun () -> BetaTuple.off := true), "");
+     ("-noBeta", Arg.Unit(fun () -> Beta.off := true), "");
+     ("-noChangeArgs", Arg.Unit(fun () -> Asm.off := true), "");
+     ("-noSimm", Arg.Unit(fun () -> Simm.off := true), "");
+     ("-noSlabel", Arg.Unit(fun () -> Slabel.off := true), "");
+     ("-noSfl", Arg.Unit(fun () -> Sfl.off := true), "");
+     ("-noSglobal", Arg.Unit(fun () -> Sglobal.off := true), "");
+     ("-noBeta2", Arg.Unit(fun () -> Beta2.off := true), "");
+     ("-noAbsNegFlag", Arg.Unit(fun () -> AbsNegFlag.off := true), "");
+     ("-noPreSchedule", Arg.Unit(fun () -> PreSchedule.off := true), "");
+     ("-noMoveAsm", Arg.Unit(fun () -> MoveAsm.off := true), "");
+     ("-lib", Arg.Unit(fun () -> Id.lib := true; Asm.off := true; Sfl.off := true; Sglobal.off := true), "");
+    ]
     (fun s -> files := !files @ [s])
     ("Mitou Min-Caml Compiler (C) Eijiro Sumii\n" ^
-     Printf.sprintf "usage: %s [-inline m] [-inline_cont m] [-iter n] ...filenames without \".ml\"..." Sys.argv.(0));
+     Printf.sprintf "usage: %s [-inline m] [-inline_cont m] [-iter n] [-noHoge] [-lib] ...filenames without \".ml\"..." Sys.argv.(0));
   List.iter
     (fun f -> ignore (file f))
     !files

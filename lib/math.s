@@ -1,170 +1,239 @@
-f._186:	.float  6.2831853072E+00
-f._185:	.float  3.1415926536E+00
-f._184:	.float  1.5707963268E+00
-f._183:	.float  6.0725293501E-01
-f._182:	.float  1.0000000000E+00
-f._181:	.float  5.0000000000E-01
+f._164:	.float  6.2831853072E+00
+f._163:	.float  3.1415926536E+00
+f._162:	.float  1.5707963268E+00
+f._161:	.float  6.0725293501E-01
+f._160:	.float  1.0000000000E+00
+f._159:	.float  5.0000000000E-01
+f._158:	.float  0.0000000000E+00
 
 ######################################################################
-# $f1 = atan($f2)
-# [$i2, $f1, $f2, $f3, $f4, $f5]
+# $f1 = cordic_atan_rec($i2, $f2, $f3, $f4, $f5)
+# $ra = $ra
+# [$i1 - $i2]
+# [$f1 - $f5]
+# []
+# []
+# []
 ######################################################################
-.begin atan
-min_caml_atan:
-.count load_float
-	load    [f._182], $f5
-	li      0, $i2
-.count move_args
-	mov     $f2, $f3
-.count move_args
-	mov     $f0, $f4
-.count move_args
-	mov     $f5, $f2
-	b       cordic_rec._146
-
-cordic_rec._146:
-	bne     $i2, 25, be_else._188
-be_then._188:
+.begin cordic_atan_rec
+ext_cordic_atan_rec:
+	bne     $i2, 25, bne._165
+be._165:
 	mov     $f4, $f1
-	ret
-be_else._188:
+	ret     
+bne._165:
+.count load_float
+	load    [f._158], $f1
+	add     $i2, 1, $i1
+	bg      $f3, $f1, bg._166
+ble._166:
 	fmul    $f5, $f3, $f1
-	bg      $f3, $f0, ble_else._189
-ble_then._189:
 	fsub    $f2, $f1, $f1
 	fmul    $f5, $f2, $f2
 	fadd    $f3, $f2, $f3
-	load    [min_caml_atan_table + $i2], $f2
+	load    [ext_atan_table + $i2], $f2
 	fsub    $f4, $f2, $f4
 .count load_float
-	load    [f._181], $f2
+	load    [f._159], $f2
 	fmul    $f5, $f2, $f5
-	add     $i2, 1, $i2
+.count move_args
+	mov     $i1, $i2
 .count move_args
 	mov     $f1, $f2
-	b       cordic_rec._146
-ble_else._189:
+	b       ext_cordic_atan_rec
+bg._166:
+	fmul    $f5, $f3, $f1
 	fadd    $f2, $f1, $f1
 	fmul    $f5, $f2, $f2
 	fsub    $f3, $f2, $f3
-	load    [min_caml_atan_table + $i2], $f2
+	load    [ext_atan_table + $i2], $f2
 	fadd    $f4, $f2, $f4
 .count load_float
-	load    [f._181], $f2
+	load    [f._159], $f2
 	fmul    $f5, $f2, $f5
-	add     $i2, 1, $i2
+.count move_args
+	mov     $i1, $i2
 .count move_args
 	mov     $f1, $f2
-	b       cordic_rec._146
+	b       ext_cordic_atan_rec
+.end cordic_atan_rec
+
+######################################################################
+# $f1 = atan($f2)
+# $ra = $ra
+# [$i1 - $i2]
+# [$f1 - $f5]
+# []
+# []
+# []
+######################################################################
+.begin atan
+ext_atan:
+	li      0, $i2
+.count load_float
+	load    [f._160], $f1
+.count load_float
+	load    [f._158], $f4
+.count load_float
+	load    [f._160], $f5
+.count move_args
+	mov     $f2, $f3
+.count move_args
+	mov     $f1, $f2
+	b       ext_cordic_atan_rec
 .end atan
 
 ######################################################################
-# $f1 = sin($f2)
-# [$i2, $f1, $f2, $f3, $f4, $f5, $f6, $f7]
+# $f1 = cordic_sin_rec($f2, $i2, $f3, $f4, $f5, $f6)
+# $ra = $ra
+# [$i1 - $i2]
+# [$f1, $f3 - $f6]
+# []
+# []
+# []
 ######################################################################
-.begin sin
-min_caml_sin:
-	bg      $f0, $f2, ble_else._192
-ble_then._192:
-.count load_float
-	load    [f._184], $f7
-	bg      $f7, $f2, cordic_sin._82
-.count load_float
-	load    [f._185], $f7
-	bg      $f7, $f2, ble_else._194
-ble_then._194:
-.count load_float
-	load    [f._186], $f1
-	bg      $f1, $f2, ble_else._195
-ble_then._195:
-	fsub    $f2, $f1, $f2
-	b       min_caml_sin
-ble_else._195:
-.count stack_move
-	sub     $sp, 1, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
-	fsub    $f1, $f2, $f2
-	call    min_caml_sin
-.count stack_load
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
-	fneg    $f1, $f1
-	ret
-ble_else._194:
-	fsub    $f7, $f2, $f2
-	b       cordic_sin._82
-ble_else._192:
-.count stack_move
-	sub     $sp, 1, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
-	fneg    $f2, $f2
-	call    min_caml_sin
-.count stack_load
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
-	fneg    $f1, $f1
-	ret
-
-cordic_rec._111:
-	bne     $i2, 25, be_else._190
-be_then._190:
+.begin cordic_sin_rec
+ext_cordic_sin_rec:
+	bne     $i2, 25, bne._167
+be._167:
 	mov     $f4, $f1
-	ret
-be_else._190:
+	ret     
+bne._167:
 	fmul    $f6, $f4, $f1
-	bg      $f2, $f5, ble_else._191
-ble_then._191:
+	add     $i2, 1, $i1
+	bg      $f2, $f5, bg._168
+ble._168:
 	fadd    $f3, $f1, $f1
 	fmul    $f6, $f3, $f3
 	fsub    $f4, $f3, $f4
-	load    [min_caml_atan_table + $i2], $f3
+	load    [ext_atan_table + $i2], $f3
 	fsub    $f5, $f3, $f5
 .count load_float
-	load    [f._181], $f3
+	load    [f._159], $f3
 	fmul    $f6, $f3, $f6
-	add     $i2, 1, $i2
+.count move_args
+	mov     $i1, $i2
 .count move_args
 	mov     $f1, $f3
-	b       cordic_rec._111
-ble_else._191:
+	b       ext_cordic_sin_rec
+bg._168:
 	fsub    $f3, $f1, $f1
 	fmul    $f6, $f3, $f3
 	fadd    $f4, $f3, $f4
-	load    [min_caml_atan_table + $i2], $f3
+	load    [ext_atan_table + $i2], $f3
 	fadd    $f5, $f3, $f5
 .count load_float
-	load    [f._181], $f3
+	load    [f._159], $f3
 	fmul    $f6, $f3, $f6
-	add     $i2, 1, $i2
+.count move_args
+	mov     $i1, $i2
 .count move_args
 	mov     $f1, $f3
-	b       cordic_rec._111
+	b       ext_cordic_sin_rec
+.end cordic_sin_rec
 
-cordic_sin._82:
-.count load_float
-	load    [f._183], $f3
-.count load_float
-	load    [f._182], $f6
+######################################################################
+# $f1 = cordic_sin($f2)
+# $ra = $ra
+# [$i1 - $i2]
+# [$f1, $f3 - $f6]
+# []
+# []
+# []
+######################################################################
+.begin cordic_sin
+ext_cordic_sin:
 	li      0, $i2
-.count move_args
-	mov     $f0, $f4
-.count move_args
-	mov     $f0, $f5
-	b       cordic_rec._111
+.count load_float
+	load    [f._161], $f3
+.count load_float
+	load    [f._158], $f4
+.count load_float
+	load    [f._158], $f5
+.count load_float
+	load    [f._160], $f6
+	b       ext_cordic_sin_rec
+.end cordic_sin
+
+######################################################################
+# $f1 = sin($f2)
+# $ra = $ra
+# [$i1 - $i2]
+# [$f1 - $f6]
+# []
+# []
+# [$ra]
+######################################################################
+.begin sin
+ext_sin:
+.count load_float
+	load    [f._158], $f1
+	bg      $f1, $f2, bg._169
+ble._169:
+.count load_float
+	load    [f._162], $f1
+	bg      $f1, $f2, ext_cordic_sin
+ble._170:
+.count load_float
+	load    [f._163], $f1
+	bg      $f1, $f2, bg._171
+ble._171:
+.count load_float
+	load    [f._164], $f1
+	bg      $f1, $f2, bg._172
+ble._172:
+.count load_float
+	load    [f._164], $f1
+	fsub    $f2, $f1, $f2
+	b       ext_sin
+bg._172:
+.count stack_store_ra
+	store   $ra, [$sp - 1]
+.count stack_move
+	add     $sp, -1, $sp
+.count load_float
+	load    [f._164], $f1
+	fsub    $f1, $f2, $f2
+	call    ext_sin
+.count stack_load_ra
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	fneg    $f1, $f1
+	ret     
+bg._171:
+.count load_float
+	load    [f._163], $f1
+	fsub    $f1, $f2, $f2
+	b       ext_cordic_sin
+bg._169:
+.count stack_store_ra
+	store   $ra, [$sp - 1]
+.count stack_move
+	add     $sp, -1, $sp
+	fneg    $f2, $f2
+	call    ext_sin
+.count stack_load_ra
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	fneg    $f1, $f1
+	ret     
 .end sin
 
 ######################################################################
 # $f1 = cos($f2)
-# [$i2, $f1, $f2, $f3, $f4, $f5, $f6, $f7, $f8]
+# $ra = $ra
+# [$i1 - $i2]
+# [$f1 - $f6]
+# []
+# []
+# [$ra]
 ######################################################################
 .begin cos
-min_caml_cos:
+ext_cos:
 .count load_float
-	load    [f._184], $f8
-	fsub    $f8, $f2, $f2
-	b       min_caml_sin
+	load    [f._162], $f1
+	fsub    $f1, $f2, $f2
+	b       ext_sin
 .end cos

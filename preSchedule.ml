@@ -1,5 +1,7 @@
 open Asm
 
+let off = ref true
+
 (* sglobalの後でやる場合はgetFirstあたりをもう一度考えなおす *)
 (*
 let str_id_or_imm = function
@@ -193,8 +195,8 @@ let f' (Prog(data, fundefs, e)) =
   Prog(data, fundefs, e)
 
 let rec f e =
-  let e' = f' e in
-  if e = e' then e
-  else f e'
-
-let f e = e
+  if !off then e
+  else
+	  let e' = f' e in
+	  if e = e' then e
+	  else f e'

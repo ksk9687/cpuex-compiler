@@ -1,5 +1,7 @@
 open KNormal
 
+let off = ref false
+
 (* elimを改造して、let式の位置の最適化を行った *)
 
 let noeffectfun =
@@ -76,7 +78,7 @@ let rec g env letenv = function
       let e1' = g env' M.empty e1 in
       let e2' = g env' letenv e2 in
       let xs = fv e1 in
-      if S.mem x (fv e2') then
+      if S.mem x (fv e2') && not !Id.lib then
 	let e = LetRec({ name = (x, t); args = yts; body = e1' }, e2') in
 	  S.fold (insert letenv) xs e
       else (
@@ -95,4 +97,6 @@ let rec g env letenv = function
   | e ->
       S.fold (insert letenv) (fv e) e
 
-let f x = g S.empty M.empty x
+let f e =
+  if !off then e
+  else g S.empty M.empty e

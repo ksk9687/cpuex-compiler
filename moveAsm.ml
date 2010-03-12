@@ -1,5 +1,7 @@
 open Block
 
+let off = ref false
+
 (*
 let delay =
   List.fold_left
@@ -240,5 +242,5 @@ let rec h b =
   else b
 
 let f (Prog(data, fundefs)) =
-  let fundefs = List.map (fun (f, b) -> (f, h b)) fundefs in
-  Prog(data, fundefs)
+  if !off then Prog(data, fundefs)
+  else Prog(data, List.map (fun (f, b) -> (f, h b)) fundefs)

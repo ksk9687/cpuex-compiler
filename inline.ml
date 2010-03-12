@@ -1,5 +1,7 @@
 open KNormal
 
+let off = ref false
+
 let threshold = ref 0
 let threshold2 = ref 0
 
@@ -74,9 +76,12 @@ let rec g io env = function
   | e -> e
 
 let f e =
-  Format.eprintf "Before: %d@." (size e);
-  counts := M.empty;
-  count 1 e;
-  let e = g S.empty M.empty e in
-  Format.eprintf "After : %d@." (size e);
-  e
+  if !off then e
+  else (
+	  Format.eprintf "Before: %d@." (size e);
+	  counts := M.empty;
+	  count 1 e;
+	  let e = g S.empty M.empty e in
+	  Format.eprintf "After : %d@." (size e);
+	  e
+  )

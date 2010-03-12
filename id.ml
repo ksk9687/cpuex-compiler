@@ -1,5 +1,7 @@
 type t = string
 
+let lib = ref false
+
 let rec pp_list = function
   | [] -> ""
   | [x] -> x
@@ -8,7 +10,8 @@ let rec pp_list = function
 let counter = ref 0
 let genid s =
   incr counter;
-  Printf.sprintf "%s.%d" s !counter
+  if !lib then Printf.sprintf "%s._%d" s !counter
+  else Printf.sprintf "%s.%d" s !counter
 
 let rec id_of_typ = function
   | Type.Unit -> "u"
@@ -26,5 +29,5 @@ let gentmp typ =
 let name s =
   try String.sub s 0 (String.index s '.')
   with Not_found ->
-    if (String.length s) >= 4 && (String.sub s 0 4) = "ext_" then String.sub s 4 ((String.length s) - 4)
+    if Util.startWith s "ext_" then String.sub s 4 ((String.length s) - 4)
     else s

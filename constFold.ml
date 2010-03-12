@@ -1,5 +1,7 @@
 open KNormal
 
+let off = ref false
+
 let memi x env =
   try (match M.find x env with Int(_) -> true | _ -> false)
   with Not_found -> false
@@ -151,4 +153,6 @@ let rec g env fenv = function
       Float(floor (findf y env))
   | e -> e
 
-let f = g M.empty M.empty
+let f e =
+  if !off then e
+  else g M.empty M.empty e

@@ -22,7 +22,9 @@ let rec g env = function
       Let((x', t), g env e1, g (M.add x x' env) e2)
   | Var(x) -> Var(find x env)
   | LetRec({ name = (x, t); args = yts; body = e1 }, e2) ->
-      let env = M.add x (Id.genid x) env in
+      let env =
+        if !Id.lib && not (Util.startWith x "ext_") then M.add x ("ext_" ^ x) env
+        else M.add x (Id.genid x) env in
       let ys = List.map fst yts in
       let env' = M.add_list2 ys (List.map Id.genid ys) env in
       LetRec({ name = (find x env, t);

@@ -189,13 +189,16 @@ and g'_if dest cont regenv exp constr e1 e2 =
     | xs -> insert_forget xs exp (snd dest)
 and g'_call id dest cont regenv exp constr ys =
   fixed := S.add id !fixed;
+  let args = get_arg_regs id in
   let xs = List.filter
     (fun x ->
       if is_reg x || x = fst dest then false
-      else if not (M.mem x regenv) then false (* ??? *)
+      else if not (M.mem x regenv) then false
       else
         let r = M.find x regenv in
-        S.mem r (get_use_regs id)
+        if S.mem r (get_use_regs id) then true
+        else if List.mem r args && List.assoc r (List.combine args ys) <> x then true
+        else false
     ) (fv cont)	in
   match xs with
     | [] ->
@@ -206,7 +209,7 @@ and g'_call id dest cont regenv exp constr ys =
               else if List.mem r allfregs then Type.Float
               else assert false in
             find y t regenv
-          ) ys (get_arg_regs id) in
+          ) ys args in
         NoSpill(Ans(constr ys), regenv)
     | xs -> insert_forget xs exp (snd dest)
 and g_repeat dest cont regenv e =
@@ -237,7 +240,7 @@ and get_use_regs' tail = function
   | _ -> S.empty
 
 let h { name = x; args = xs; body = e; ret = t } =
-  if not (S.mem x !fixed) then (
+  if not (S.mem x !fixed || !off) then (
     let data = M.find x !fundata in
     let (arg_regs, _) = List.fold_left2
       (fun (arg_regs, regenv) x r ->

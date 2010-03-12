@@ -1,5 +1,7 @@
 open KNormal
 
+let off = ref false
+
 type arg =
   | First
   | Const of t
@@ -79,7 +81,10 @@ let rec g = function
   | LetTuple(xts, y, e) -> LetTuple(xts, y, g e)
   | e -> e
 
-let f x =
-  constArgs := M.empty;
-  setConstArgs M.empty x;
-  g x
+let f e =
+  if !off then e
+  else (
+	  constArgs := M.empty;
+	  setConstArgs M.empty e;
+	  g e
+  )

@@ -14,3 +14,5 @@ let shuffle xs =
         xs
     ) [] xs
 
+let startWith s t =
+  (String.length s) >= (String.length t) && (String.sub s 0 (String.length t)) = t

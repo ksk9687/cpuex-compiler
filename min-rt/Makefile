@@ -31,16 +31,16 @@ cui: min-rt.s
 min-rt.bin: $(SIM) min-rt.s
 	$(RUN_SIM) -asm min-rt.bin min-rt.s
 
-min-rt.s: $(MIN_CAML) min-rt.ml globals.s $(LIB)/lib_ml.ml $(LIB)/macro.s $(LIB)/lib_asm.s Makefile
+min-rt.s: $(MIN_CAML) min-rt.ml globals.s $(LIB)/lib_ml.ml $(LIB)/macro.s $(LIB)/lib_asm.s $(LIB)/math.s Makefile
 	cat $(LIB)/lib_ml.ml min-rt.ml > tmp.ml
 	$(MIN_CAML) $(MIN_CAML_OPTION) tmp
-	cat $(LIB)/macro.s $(LIB)/lib_asm.s globals.s tmp.s > min-rt.s
+	cat $(LIB)/macro.s $(LIB)/lib_asm.s $(LIB)/math.s globals.s tmp.s > min-rt.s
 	rm tmp.ml tmp.s
 
 inline0:
 	cat $(LIB)/lib_ml.ml min-rt.ml > tmp.ml
 	$(MIN_CAML) tmp
-	cat $(LIB)/macro.s $(LIB)/lib_asm.s globals.s tmp.s > min-rt.s
+	cat $(LIB)/macro.s $(LIB)/lib_asm.s $(LIB)/math.s globals.s tmp.s > min-rt.s
 	rm tmp.ml tmp.s
 
 inst.coe: boot.s

@@ -1,5 +1,7 @@
 open KNormal
 
+let off = ref false
+
 let no_effect_fun = ref S.empty
 
 module CM =(* CSE用のMap KNormal.tをkeyとする *)
@@ -162,6 +164,9 @@ let rec g env = function
 	  xts in (* y という Tuple に対して n 番目の要素を "yn" と番号づけする *)
       LetTuple (xts, y, g env e)
 
-let f x =
-  no_effect_fun := Movelet.noeffectfun;
-  g M.empty x
+let f e =
+  if !off then e
+  else (
+	  no_effect_fun := Movelet.noeffectfun;
+	  g M.empty e
+  )

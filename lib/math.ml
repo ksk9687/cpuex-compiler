@@ -1,22 +1,22 @@
 let rec atan a =
-  let rec cordic_rec i x y z p =
+  let rec cordic_atan_rec i x y z p =
     if i = 25 then z
     else
       if y > 0.0 then
-        cordic_rec (i + 1) (x +. p *. y) (y -. p *. x) (z +. atan_table.(i)) (p *. 0.5)
+        cordic_atan_rec (i + 1) (x +. p *. y) (y -. p *. x) (z +. atan_table.(i)) (p *. 0.5)
       else
-        cordic_rec (i + 1) (x -. p *. y) (y +. p *. x) (z -. atan_table.(i)) (p *. 0.5)
-  in cordic_rec 0 1.0 a 0.0 1.0
+        cordic_atan_rec (i + 1) (x -. p *. y) (y +. p *. x) (z -. atan_table.(i)) (p *. 0.5)
+  in cordic_atan_rec 0 1.0 a 0.0 1.0
 in
 let rec cordic_sin a =
-  let rec cordic_rec a i x y z p =
+  let rec cordic_sin_rec a i x y z p =
     if i = 25 then y
     else
       if a > z then
-        cordic_rec a (i + 1) (x -. p *. y) (y +. p *. x) (z +. atan_table.(i)) (p *. 0.5)
+        cordic_sin_rec a (i + 1) (x -. p *. y) (y +. p *. x) (z +. atan_table.(i)) (p *. 0.5)
       else
-        cordic_rec a (i + 1) (x +. p *. y) (y -. p *. x) (z -. atan_table.(i)) (p *. 0.5)
-  in cordic_rec a 0 0.607252935008881778 0.0 0.0 1.0
+        cordic_sin_rec a (i + 1) (x +. p *. y) (y -. p *. x) (z -. atan_table.(i)) (p *. 0.5)
+  in cordic_sin_rec a 0 0.607252935008881778 0.0 0.0 1.0
 in
 let rec sin a =
   if a < 0.0 then -. sin (-. a)
@@ -26,5 +26,4 @@ let rec sin a =
   else sin (a -. 6.28318530717958)
 in
 let rec cos a = sin (1.570796326794895 -. a)
-in
-(atan x.(0)) +. (cos x.(0))
+in 0

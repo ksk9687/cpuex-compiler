@@ -13,7 +13,7 @@ RUN_SIM = java -jar -Xmx256M -Xss32M $(SIM) -cpu $(CPU)
 	cat $(LIB)/lib_ml.ml $< > tmp.ml
 	$(MIN_CAML) $(MIN_CAML_OPTION) tmp
 	touch $*_asm.s
-	cat $(LIB)/macro.s $(LIB)/lib_asm.s $(LIB)/debug.s $*_asm.s tmp.s > $@
+	cat $(LIB)/macro.s $(LIB)/lib_asm.s $(LIB)/math.s $(LIB)/debug.s $*_asm.s tmp.s > $@
 	rm tmp.ml tmp.s
 
 .s.bin:

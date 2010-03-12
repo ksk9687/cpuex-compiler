@@ -1,5 +1,7 @@
 open Asm
 
+let off = ref false
+
 let is_const r = List.mem r reg_fcs || r = reg_i0 || r = reg_f0
 
 let rec getAllPut env = function
@@ -92,6 +94,8 @@ let f' (Prog(data, fundefs, e)) =
   Prog(data, List.map (h puts) fundefs, h puts e)
 
 let rec f e =
-  let e' = f' e in
-  if e' = e then e
-  else f e'
+  if !off then e
+  else
+	  let e' = f' e in
+	  if e' = e then e
+	  else f e'

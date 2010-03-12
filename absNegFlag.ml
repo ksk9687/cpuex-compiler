@@ -1,5 +1,7 @@
 open Asm
 
+let off = ref false
+
 let rec check x = function
   | Ans(exp) -> check' x exp
   | Let(_, exp, e) ->
@@ -52,4 +54,5 @@ let h { name = l; args = xs; body = e; ret = t } =
   { name = l; args = xs; body = g Non S.empty M.empty e; ret = t }
 
 let f (Prog(data, fundefs, e)) =
-  Prog(data, List.map h fundefs, h e)
+  if !off then Prog(data, fundefs, e)
+  else Prog(data, List.map h fundefs, h e)
