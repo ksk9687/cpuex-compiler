@@ -78,7 +78,7 @@ let rec g env letenv = function
       let e1' = g env' M.empty e1 in
       let e2' = g env' letenv e2 in
       let xs = fv e1 in
-      if S.mem x (fv e2') && not !Id.lib then
+      if S.mem x (fv e2') || !Id.lib then
 	let e = LetRec({ name = (x, t); args = yts; body = e1' }, e2') in
 	  S.fold (insert letenv) xs e
       else (
