@@ -90,12 +90,12 @@
 .define { call %Imm } { jal %1, $ra }
 .define { ret } { jr $ra }
 
-#スタックとヒープの初期化($hp=0x4000,$sp=0x20000)
+#スタックとヒープの初期化($hp=0x2000,$sp=0x20000)
 	li      0, $i0
 	mov     $i0, $f0
 	li      0x2000, $hp
-	sll     $hp, $hp
 	sll     $hp, $sp
+	sll     $sp, $sp
 	sll     $sp, $sp
 	sll     $sp, $sp
 	call    ext_main

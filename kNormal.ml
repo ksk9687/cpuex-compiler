@@ -159,10 +159,10 @@ let rec g env = function
           let _, t2 as g_e2 = g env e2 in
           insert_let g_e2
             (fun y ->
-              ExtFunApp("create_array" ^ (if t2 = Type.Float then "_float" else "_int"), [x; y]), Type.Array(t2)))
+              ExtFunApp("create_array" ^ (if t2 = Type.Float then "_float" else "_int"), [x; y]), Type.Array(t2, Type.Variable)))
   | Syntax.Get(e1, e2) ->
       (match g env e1 with
-      |        _, Type.Array(t) as g_e1 ->
+      |        _, Type.Array(t, _) as g_e1 ->
           insert_let g_e1
             (fun x -> insert_let (g env e2)
                 (fun y -> Get(x, y), t))

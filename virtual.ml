@@ -61,33 +61,40 @@ let rec g env = function
         ) [] ys in
       Ans(CallDir(x, xs))
   | Closure.Tuple(xs) ->
+      let t = Type.Tuple(List.map (fun x -> M.find x env) xs) in
       let y = Id.genid "t" in
-      let (offset, store) =
-        expand
-          (List.map (fun x -> (x, M.find x env)) xs)
-          (0, Ans(Mov(y)))
-          (fun x _ offset store -> seq(St(x, V(y), C(offset)), store)) in
-      Let((y, Type.Tuple(List.map (fun x -> M.find x env) xs)), Mov(reg_hp),
-          Let((reg_hp, Type.Int), Add(reg_hp, C(offset)),
-              store))
+      let (size, ps) = List.assoc t !Expand.expandEnv in
+      let e = List.fold_right2
+        (fun (p, n, b) x e ->
+          if b then
+            let rec copy i e =
+              if i = n then e
+              else
+                let z = Id.genid "e" in
+                Let((z, Type.Int), Ld(V(x), C(i)), seq(St(z, V(y), C(p + i)), copy (i + 1) e))
+            in copy 0 (Let((x, M.find x env), Add(y, C(p)), e))
+          else seq(St(x, V(y), C(p)), e)
+        ) ps xs (Ans(Mov(y))) in
+      Let((y, t), Mov(reg_hp),
+          Let((reg_hp, Type.Int), Add(reg_hp, C(size)), e))
   | Closure.LetTuple(xts, y, e2) ->
+      let t = M.find y env in
+      let (size, ps) = List.assoc t !Expand.expandEnv in
       let s = Closure.fv e2 in
-      let (offset, load) =
-        expand
-          xts
-          (0, g (M.add_list xts env) e2)
-          (fun x t offset load ->
-            if not (S.mem x s) then load else
-            Let((x, t), Ld(V(y), C(offset)), load)) in
-      load
+      List.fold_right2
+        (fun (p, n, b) (x, t) e ->
+          if not (S.mem x s) then e
+          else if b then Let((x, t), Add(y, C(p)), e)
+          else Let((x, t), Ld(V(y), C(p)), e)
+        ) ps xts (g (M.add_list xts env) e2)
   | Closure.Get(x, y) ->
       (match M.find x env with
-      | Type.Array(Type.Unit) -> Ans(Nop)
+      | Type.Array(Type.Unit, _) -> Ans(Nop)
       | Type.Array(_) -> Ans(Ld(V(x), V(y)))
       | _ -> assert false)
   | Closure.Put(x, y, z) ->
       (match M.find x env with
-      | Type.Array(Type.Unit) -> Ans(Nop)
+      | Type.Array(Type.Unit, _) -> Ans(Nop)
       | Type.Array(_) -> Ans(St(z, V(x), V(y)))
       | _ -> assert false)
   | Closure.ExtArray(x) -> Ans(SetL(x))
@@ -99,7 +106,6 @@ let h { Closure.name = (x, t); Closure.args = yts; Closure.body = e } =
       | Type.Float -> (iregs, List.tl fregs, xs @ [x], rs @ [List.hd fregs])
       | _ -> (List.tl iregs, fregs, xs @ [x], rs @ [List.hd iregs])
     ) (List.tl alliregs, List.tl allfregs, [], []) yts in
-  Format.eprintf "%s: %s@." x (Type.string_of_t t);
   match t with
   | Type.Fun(_, t2) ->
       let ret_reg = (match t2 with
@@ -185,8 +191,9 @@ let set_data fundefs e =
 let f (Closure.Prog(fundefs, e)) =
   data := [];
   fundata := builtInFuns;
-  M.iter (fun x t -> match t with
-      | Type.Fun(ts, y) when not (M.mem x !fundata) ->
+  M.iter (fun x t ->
+    match t with
+      | Type.Fun(ts, y) when not (M.mem x !fundata || M.mem (Id.name x) BuiltIn.builtInEnv) ->
           Format.eprintf "ExtFunction: %s@." (Id.name x);
           let args = List.map (fun t -> ("", t)) ts in
           let _ = h { Closure.name = (x, t); Closure.args = args; Closure.body = Closure.Unit } in

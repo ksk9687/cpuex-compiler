@@ -53,10 +53,8 @@ ext_ptrace_dirvec:
 ext_dirvecs:
 	.skip	5
 ext_light_dirvec:
-	.int	light_dirvec_v3
-	.int	light_dirvec_consts
-light_dirvec_v3:
 	.skip	3
+	.int	light_dirvec_consts
 light_dirvec_consts:
 	.skip	60
 ext_reflections:

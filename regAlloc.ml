@@ -46,7 +46,8 @@ type alloc_result =
   | Alloc of Id.t
   | Spill of Id.t
 let rec alloc dest cont exp regenv x t =
-  assert (not (M.mem x regenv));
+  let x = if M.mem x regenv then M.find x regenv else x in
+(*  assert (not (M.mem x regenv)); *)
   let all =
     match t with
     | Type.Unit -> []
@@ -112,7 +113,7 @@ let insert_forget xs exp t =
 let rec g dest cont regenv = function
   | Ans(exp) -> g'_and_restore dest cont regenv exp
   | Let((x, t) as xt, exp, e) ->
-      assert (not (M.mem x regenv));
+(*      assert (not (M.mem x regenv)); *)
       let cont' = concat e dest cont in
       (match g'_and_restore xt cont' regenv exp with
       | ToSpill(e1, ys) -> ToSpill(concat e1 xt e, ys)

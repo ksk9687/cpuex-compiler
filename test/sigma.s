@@ -46,13 +46,15 @@
 .define { load [%iReg + %Imm], %iReg } { load %1 %2 %3 }
 .define { load [%iReg + %iReg], %iReg } { loadr %1 %2 %3 }
 .define { store %iReg, [%iReg + %Imm] } { store %2 %3 %1 }
-.define { store_inst %iReg, [%iReg + %Imm] } { store_inst %2 %3 %1 }
+.define { store_inst %iReg, %iReg } { store_inst %2 %1 }
 .define { load [%iReg + %Imm], %fReg } { fload %1 %2 %3 }
 .define { load [%iReg + %iReg], %fReg } { floadr %1 %2 %3 }
 .define { store %fReg, [%iReg + %Imm] } { fstore %2 %3 %1 }
 .define { mov %iReg, %fReg } { imovf %1 %2 }
 .define { mov %fReg, %iReg } { fmovi %1 %2 }
 .define { write %iReg, %iReg } { write %1 %2 }
+.define { ledout %iReg, %iReg } { ledout %1 %2 }
+.define { ledout %Imm, %iReg } { ledouti %1 %2 }
 
 #疑似命令
 .define { add %iReg, -%Imm, %iReg } { sub %1, %2, %3 }
@@ -88,12 +90,12 @@
 .define { call %Imm } { jal %1, $ra }
 .define { ret } { jr $ra }
 
-#スタックとヒープの初期化($hp=0x4000,$sp=0x20000)
+#スタックとヒープの初期化($hp=0x2000,$sp=0x20000)
 	li      0, $i0
 	mov     $i0, $f0
 	li      0x2000, $hp
-	sll     $hp, $hp
 	sll     $hp, $sp
+	sll     $sp, $sp
 	sll     $sp, $sp
 	sll     $sp, $sp
 	call    ext_main
@@ -123,7 +125,9 @@ FLOAT_MAGICFHX:
 
 ######################################################################
 # $f1 = floor($f2)
-# $ra, [$f1 - $f3]
+# $ra = $ra
+# []
+# [$f1 - $f3]
 ######################################################################
 .begin floor
 ext_floor:
@@ -152,7 +156,9 @@ FLOOR_RET:
 
 ######################################################################
 # $f1 = float_of_int($i2)
-# $ra, [$i2 - $i4, $f1 - $f3]
+# $ra = $ra
+# [$i2 - $i4]
+# [$f1 - $f3]
 ######################################################################
 .begin float_of_int
 ext_float_of_int:
@@ -186,7 +192,9 @@ ITOF_LOOP:
 
 ######################################################################
 # $i1 = int_of_float($f2)
-# $ra, [$i1 - $i3, $f2 - $f3]
+# $ra = $ra
+# [$i1 - $i3]
+# [$f2 - $f3]
 ######################################################################
 .begin int_of_float
 ext_int_of_float:
@@ -220,7 +228,9 @@ FTOI_LOOP:
 
 ######################################################################
 # $i1 = read_int()
-# $ra, [$i1 - $i5]
+# $ra = $ra
+# [$i1 - $i5]
+# []
 ######################################################################
 .begin read
 ext_read_int:
@@ -242,7 +252,9 @@ sll_loop:
 
 ######################################################################
 # $f1 = read_float()
-# $ra, [$i1 - $i5, $f1]
+# $ra = $ra
+# [$i1 - $i5]
+# [$f1]
 ######################################################################
 ext_read_float:
 	mov $ra, $tmp
@@ -253,7 +265,9 @@ ext_read_float:
 
 ######################################################################
 # write($i2)
-# $ra, [$i2]
+# $ra = $ra
+# []
+# []
 ######################################################################
 .begin write
 ext_write:
@@ -264,7 +278,9 @@ ext_write:
 
 ######################################################################
 # $i1 = create_array_int($i2, $i3)
-# $ra, [$i1 - $i3]
+# $ra = $ra
+# [$i1 - $i2]
+# []
 ######################################################################
 .begin create_array
 ext_create_array_int:
@@ -279,7 +295,9 @@ create_array_loop:
 
 ######################################################################
 # $i1 = create_array_float($i2, $f2)
-# $ra, [$i1 - $i3, $f2]
+# $ra = $ra
+# [$i1 - $i3]
+# []
 ######################################################################
 ext_create_array_float:
 	mov $f2, $i3
@@ -287,7 +305,7 @@ ext_create_array_float:
 .end create_array
 
 ######################################################################
-# 三角関数
+# 三角関数用テーブル
 ######################################################################
 ext_atan_table:
 	.float 0.785398163397448279
@@ -316,21 +334,77 @@ ext_atan_table:
 	.float 1.19209289550780681e-07
 	.float 5.96046447753905522e-08
 
-f._186:	.float  6.2831853072E+00
-f._185:	.float  3.1415926536E+00
-f._184:	.float  1.5707963268E+00
-f._183:	.float  6.0725293501E-01
-f._182:	.float  1.0000000000E+00
-f._181:	.float  5.0000000000E-01
+######################################################################
+#
+# 		↑　ここまで lib_asm.s
+#
+######################################################################
+f._164:	.float  6.2831853072E+00
+f._163:	.float  3.1415926536E+00
+f._162:	.float  1.5707963268E+00
+f._161:	.float  6.0725293501E-01
+f._160:	.float  1.0000000000E+00
+f._159:	.float  5.0000000000E-01
+
+######################################################################
+# $f1 = cordic_atan_rec($i2, $f2, $f3, $f4, $f5)
+# $ra = $ra
+# [$i2]
+# [$f1 - $f5]
+# []
+# []
+# []
+######################################################################
+.begin cordic_atan_rec
+ext_cordic_atan_rec:
+	bne     $i2, 25, bne._165
+be._165:
+	mov     $f4, $f1
+	ret     
+bne._165:
+	fmul    $f5, $f3, $f1
+	bg      $f3, $f0, bg._166
+ble._166:
+	fsub    $f2, $f1, $f1
+	fmul    $f5, $f2, $f2
+	fadd    $f3, $f2, $f3
+	load    [ext_atan_table + $i2], $f2
+	fsub    $f4, $f2, $f4
+.count load_float
+	load    [f._159], $f2
+	fmul    $f5, $f2, $f5
+	add     $i2, 1, $i2
+.count move_args
+	mov     $f1, $f2
+	b       ext_cordic_atan_rec
+bg._166:
+	fadd    $f2, $f1, $f1
+	fmul    $f5, $f2, $f2
+	fsub    $f3, $f2, $f3
+	load    [ext_atan_table + $i2], $f2
+	fadd    $f4, $f2, $f4
+.count load_float
+	load    [f._159], $f2
+	fmul    $f5, $f2, $f5
+	add     $i2, 1, $i2
+.count move_args
+	mov     $f1, $f2
+	b       ext_cordic_atan_rec
+.end cordic_atan_rec
 
 ######################################################################
 # $f1 = atan($f2)
-# $ra, [$i2, $f1 - $f5]
+# $ra = $ra
+# [$i2]
+# [$f1 - $f5]
+# []
+# []
+# []
 ######################################################################
 .begin atan
 ext_atan:
 .count load_float
-	load    [f._182], $f5
+	load    [f._160], $f5
 	li      0, $i2
 .count move_args
 	mov     $f2, $f3
@@ -338,160 +412,152 @@ ext_atan:
 	mov     $f0, $f4
 .count move_args
 	mov     $f5, $f2
-	b       cordic_rec._146
-
-cordic_rec._146:
-	bne     $i2, 25, be_else._188
-be_then._188:
-	mov     $f4, $f1
-	ret
-be_else._188:
-	fmul    $f5, $f3, $f1
-	bg      $f3, $f0, ble_else._189
-ble_then._189:
-	fsub    $f2, $f1, $f1
-	fmul    $f5, $f2, $f2
-	fadd    $f3, $f2, $f3
-	load    [ext_atan_table + $i2], $f2
-	fsub    $f4, $f2, $f4
-.count load_float
-	load    [f._181], $f2
-	fmul    $f5, $f2, $f5
-	add     $i2, 1, $i2
-.count move_args
-	mov     $f1, $f2
-	b       cordic_rec._146
-ble_else._189:
-	fadd    $f2, $f1, $f1
-	fmul    $f5, $f2, $f2
-	fsub    $f3, $f2, $f3
-	load    [ext_atan_table + $i2], $f2
-	fadd    $f4, $f2, $f4
-.count load_float
-	load    [f._181], $f2
-	fmul    $f5, $f2, $f5
-	add     $i2, 1, $i2
-.count move_args
-	mov     $f1, $f2
-	b       cordic_rec._146
+	b       ext_cordic_atan_rec
 .end atan
 
 ######################################################################
-# $f1 = sin($f2)
-# $ra, [$i2, $f1 - $f7]
+# $f1 = cordic_sin_rec($f2, $i2, $f3, $f4, $f5, $f6)
+# $ra = $ra
+# [$i2]
+# [$f1, $f3 - $f6]
+# []
+# []
+# []
 ######################################################################
-.begin sin
-ext_sin:
-	bg      $f0, $f2, ble_else._192
-ble_then._192:
-.count load_float
-	load    [f._184], $f7
-	bg      $f7, $f2, cordic_sin._82
-.count load_float
-	load    [f._185], $f7
-	bg      $f7, $f2, ble_else._194
-ble_then._194:
-.count load_float
-	load    [f._186], $f1
-	bg      $f1, $f2, ble_else._195
-ble_then._195:
-	fsub    $f2, $f1, $f2
-	b       ext_sin
-ble_else._195:
-.count stack_move
-	sub     $sp, 1, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
-	fsub    $f1, $f2, $f2
-	call    ext_sin
-.count stack_load
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
-	fneg    $f1, $f1
-	ret
-ble_else._194:
-	fsub    $f7, $f2, $f2
-	b       cordic_sin._82
-ble_else._192:
-.count stack_move
-	sub     $sp, 1, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
-	fneg    $f2, $f2
-	call    ext_sin
-.count stack_load
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
-	fneg    $f1, $f1
-	ret
-
-cordic_rec._111:
-	bne     $i2, 25, be_else._190
-be_then._190:
+.begin cordic_sin_rec
+ext_cordic_sin_rec:
+	bne     $i2, 25, bne._167
+be._167:
 	mov     $f4, $f1
-	ret
-be_else._190:
+	ret     
+bne._167:
 	fmul    $f6, $f4, $f1
-	bg      $f2, $f5, ble_else._191
-ble_then._191:
+	bg      $f2, $f5, bg._168
+ble._168:
 	fadd    $f3, $f1, $f1
 	fmul    $f6, $f3, $f3
 	fsub    $f4, $f3, $f4
 	load    [ext_atan_table + $i2], $f3
 	fsub    $f5, $f3, $f5
 .count load_float
-	load    [f._181], $f3
+	load    [f._159], $f3
 	fmul    $f6, $f3, $f6
 	add     $i2, 1, $i2
 .count move_args
 	mov     $f1, $f3
-	b       cordic_rec._111
-ble_else._191:
+	b       ext_cordic_sin_rec
+bg._168:
 	fsub    $f3, $f1, $f1
 	fmul    $f6, $f3, $f3
 	fadd    $f4, $f3, $f4
 	load    [ext_atan_table + $i2], $f3
 	fadd    $f5, $f3, $f5
 .count load_float
-	load    [f._181], $f3
+	load    [f._159], $f3
 	fmul    $f6, $f3, $f6
 	add     $i2, 1, $i2
 .count move_args
 	mov     $f1, $f3
-	b       cordic_rec._111
+	b       ext_cordic_sin_rec
+.end cordic_sin_rec
 
-cordic_sin._82:
+######################################################################
+# $f1 = cordic_sin($f2)
+# $ra = $ra
+# [$i2]
+# [$f1, $f3 - $f6]
+# []
+# []
+# []
+######################################################################
+.begin cordic_sin
+ext_cordic_sin:
 .count load_float
-	load    [f._183], $f3
+	load    [f._161], $f3
 .count load_float
-	load    [f._182], $f6
+	load    [f._160], $f6
 	li      0, $i2
 .count move_args
 	mov     $f0, $f4
 .count move_args
 	mov     $f0, $f5
-	b       cordic_rec._111
+	b       ext_cordic_sin_rec
+.end cordic_sin
+
+######################################################################
+# $f1 = sin($f2)
+# $ra = $ra
+# [$i2]
+# [$f1 - $f6]
+# []
+# []
+# [$ra]
+######################################################################
+.begin sin
+ext_sin:
+	bg      $f0, $f2, bg._169
+ble._169:
+.count load_float
+	load    [f._162], $f1
+	bg      $f1, $f2, ext_cordic_sin
+ble._170:
+.count load_float
+	load    [f._163], $f1
+	bg      $f1, $f2, bg._171
+ble._171:
+.count load_float
+	load    [f._164], $f1
+	bg      $f1, $f2, bg._172
+ble._172:
+	fsub    $f2, $f1, $f2
+	b       ext_sin
+bg._172:
+.count stack_store_ra
+	store   $ra, [$sp - 1]
+.count stack_move
+	add     $sp, -1, $sp
+	fsub    $f1, $f2, $f2
+	call    ext_sin
+.count stack_load_ra
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	fneg    $f1, $f1
+	ret     
+bg._171:
+	fsub    $f1, $f2, $f2
+	b       ext_cordic_sin
+bg._169:
+.count stack_store_ra
+	store   $ra, [$sp - 1]
+.count stack_move
+	add     $sp, -1, $sp
+	fneg    $f2, $f2
+	call    ext_sin
+.count stack_load_ra
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	fneg    $f1, $f1
+	ret     
 .end sin
 
 ######################################################################
 # $f1 = cos($f2)
-# $ra, [$i2, $f1 - $f8]
+# $ra = $ra
+# [$i2]
+# [$f1 - $f6]
+# []
+# []
+# [$ra]
 ######################################################################
 .begin cos
 ext_cos:
 .count load_float
-	load    [f._184], $f8
-	fsub    $f8, $f2, $f2
+	load    [f._162], $f1
+	fsub    $f1, $f2, $f2
 	b       ext_sin
 .end cos
-
-######################################################################
-#
-# 		↑　ここまで lib_asm.s
-#
-######################################################################
 ######################################################################
 #
 # 		↓　ここから debug.s
@@ -506,12 +572,12 @@ read_loop:
 	ret
 
 ext_ledout:
-	ledout $i2
+	ledout $i2, $tmp
 	ret
 
 ext_ledout_float:
 	mov $f2, $i2
-	ledout $i2
+	ledout $i2, $tmp
 	ret
 
 ext_break:
@@ -523,24 +589,16 @@ ext_break:
 # 		↑　ここまで debug.s
 #
 ######################################################################
-.define $ig0 $i51
-.define $i51 orz
-.define $ig1 $i52
-.define $i52 orz
-.define $ig2 $i53
-.define $i53 orz
-.define $ig3 $i54
-.define $i54 orz
-.define $ig4 $i55
-.define $i55 orz
-.define $ig5 $i56
-.define $i56 orz
-.define $ig6 $i57
-.define $i57 orz
-.define $ig7 $i58
-.define $i58 orz
-.define $ig8 $i59
-.define $i59 orz
+.define $ig0 $i46
+.define $i46 orz
+.define $ig1 $i47
+.define $i47 orz
+.define $ig2 $i48
+.define $i48 orz
+.define $ig3 $i49
+.define $i49 orz
+.define $ig4 $i50
+.define $i50 orz
 .define $fg0 $f19
 .define $f19 orz
 .define $fg1 $f20
@@ -631,60 +689,88 @@ ext_break:
 .define $f62 orz
 .define $fc19 $f63
 .define $f63 orz
+.define $ra1 $i51
+.define $i51 orz
+.define $ra2 $i52
+.define $i52 orz
+.define $ra3 $i53
+.define $i53 orz
+.define $ra4 $i54
+.define $i54 orz
+.define $ra5 $i55
+.define $i55 orz
+.define $ra6 $i56
+.define $i56 orz
+.define $ra7 $i57
+.define $i57 orz
+.define $ra8 $i58
+.define $i58 orz
+.define $ra9 $i59
+.define $i59 orz
 
 ######################################################################
-# sigma
+# $f1 = sigma($i1)
+# $ra = $ra
+# [$i1 - $i4]
+# [$f1 - $f3]
+# []
+# []
+# [$ra]
 ######################################################################
 .begin sigma
 sigma.18:
-	bne     $i2, 0, be_else.37
-be_then.37:
+	bne     $i1, 0, bne.34
+be.34:
 	mov     $f0, $f1
-	ret
-be_else.37:
+	ret     
+bne.34:
+.count stack_store_ra
+	store   $ra, [$sp - 2]
 .count stack_move
-	sub     $sp, 3, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
-.count stack_store
-	store   $i2, [$sp + 1]
+	add     $sp, -2, $sp
+.count move_args
+	mov     $i1, $i2
 	call    ext_float_of_int
 	fmul    $f1, $f1, $f1
 .count stack_store
-	store   $f1, [$sp + 2]
-.count stack_load
-	load    [$sp + 1], $i1
-	sub     $i1, 1, $i2
+	store   $f1, [$sp + 1]
+	add     $i1, -1, $i1
 	call    sigma.18
-.count stack_load
+.count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
-	add     $sp, 3, $sp
+	add     $sp, 2, $sp
 .count stack_load
 	load    [$sp - 1], $f2
 	fadd    $f1, $f2, $f1
-	ret
+	ret     
 .end sigma
 
 ######################################################################
-# main
+# $i1 = main()
+# $ra = $ra
+# [$i1 - $i45]
+# [$f1 - $f18]
+# [$ig0 - $ig4]
+# [$fg0 - $fg24]
+# [$ra - $ra9]
 ######################################################################
 .begin main
 ext_main:
+.count stack_store_ra
+	store   $ra, [$sp - 1]
 .count stack_move
-	sub     $sp, 1, $sp
-.count stack_store
-	store   $ra, [$sp + 0]
-	li      5, $i2
+	add     $sp, -1, $sp
+	li      5, $i1
 	call    sigma.18
-.count move_ret
+.count move_args
 	mov     $f1, $f2
 	call    ext_int_of_float
-.count move_ret
-	mov     $i1, $i2
-.count stack_load
+.count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
 	add     $sp, 1, $sp
+.count move_args
+	mov     $i1, $i2
 	b       ext_ledout
 .end main

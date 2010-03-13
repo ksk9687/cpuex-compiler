@@ -5,7 +5,7 @@ let off = ref false
 let gtable = ref []
 
 let getInnerType t i = match t with
-    | Type.Array(t) -> t
+    | Type.Array(t, _) -> t
     | Type.Tuple(ts) -> List.nth ts i
     | _ -> assert false
 

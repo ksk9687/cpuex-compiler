@@ -27,11 +27,12 @@ let lexbuf outchan l =
                         (Virtual.f
                           (Closure.f
                             (iter !limit
-                              (Alpha.f
-                                (KNormal.f
-                                  (BuiltIn.f
-                                    (Typing.f
-                                      (Parser.exp Lexer.token l))))))))))))))))))
+                              (Expand.f
+                                (Alpha.f
+                                  (KNormal.f
+	                                  (BuiltIn.f
+	                                    (Typing.f
+	                                      (Parser.exp Lexer.token l)))))))))))))))))))
 
 let string s = lexbuf stdout (Lexing.from_string s)
 
@@ -50,9 +51,9 @@ let () =
     [("-inline", Arg.Int(fun i -> Inline.threshold := i), "maximum size of functions inlined");
      ("-inline_cont", Arg.Int(fun i -> Inline.threshold2 := i), "maximum size of continuations inlined");
      ("-iter", Arg.Int(fun i -> limit := i), "maximum number of optimizations iterated");
+     ("-noExpand", Arg.Unit(fun () -> Expand.off := true), "");
      ("-noMovelet", Arg.Unit(fun () -> Movelet.off := true), "");
      ("-noConstArg", Arg.Unit(fun () -> ConstArg.off := true), "");
-     ("-noMovelet", Arg.Unit(fun () -> Movelet.off := true), "");
      ("-noConstFold", Arg.Unit(fun () -> ConstFold.off := true), "");
      ("-noCse", Arg.Unit(fun () -> Cse.off := true), "");
      ("-noConstArray", Arg.Unit(fun () -> ConstArray.off := true), "");

@@ -4,7 +4,18 @@ let builtInEnv = M.add_list [
   ("fless", Type.Fun([Type.Float; Type.Float], Type.Bool));
   ("fispos", Type.Fun([Type.Float], Type.Bool));
   ("fisneg", Type.Fun([Type.Float], Type.Bool));
-  ("fiszero", Type.Fun([Type.Float], Type.Bool))
+  ("fiszero", Type.Fun([Type.Float], Type.Bool));
+  ("fabs", Type.Fun([Type.Float], Type.Float));
+  ("sqrt", Type.Fun([Type.Float], Type.Float));
+  ("floor", Type.Fun([Type.Float], Type.Float));
+  ("float_of_int", Type.Fun([Type.Int], Type.Float));
+  ("int_of_float", Type.Fun([Type.Float], Type.Int));
+  ("read_int", Type.Fun([Type.Unit], Type.Int));
+  ("read_float", Type.Fun([Type.Unit], Type.Float));
+  ("write", Type.Fun([Type.Int], Type.Unit));
+  ("atan", Type.Fun([Type.Float], Type.Float));
+  ("sin", Type.Fun([Type.Float], Type.Float));
+  ("cos", Type.Fun([Type.Float], Type.Float));
 ] M.empty
 
 let rec f = function

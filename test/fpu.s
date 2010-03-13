@@ -707,45 +707,22 @@ ext_break:
 .define $i58 orz
 .define $ra9 $i59
 .define $i59 orz
+f.57:	.float  1.0000000000E+00
 
 ######################################################################
-# $i1 = fib($i1)
+# set($i1)
 # $ra = $ra
-# [$i1 - $i2]
 # []
 # []
 # []
-# [$ra]
+# []
+# []
 ######################################################################
-.begin fib
-fib.17:
-	bg      $i1, 1, bg.33
-ble.33:
+.begin set
+set.29:
+	store   $fc0, [$i1 + 0]
 	ret     
-bg.33:
-.count stack_store_ra
-	store   $ra, [$sp - 3]
-.count stack_move
-	add     $sp, -3, $sp
-.count stack_store
-	store   $i1, [$sp + 1]
-	add     $i1, -1, $i1
-	call    fib.17
-.count stack_store
-	store   $i1, [$sp + 2]
-.count stack_load
-	load    [$sp + 1], $i1
-	add     $i1, -2, $i1
-	call    fib.17
-.count stack_load_ra
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 3, $sp
-.count stack_load
-	load    [$sp - 1], $i2
-	add     $i2, $i1, $i1
-	ret     
-.end fib
+.end set
 
 ######################################################################
 # $i1 = main()
@@ -762,13 +739,64 @@ ext_main:
 	store   $ra, [$sp - 1]
 .count stack_move
 	add     $sp, -1, $sp
-	li      10, $i1
-	call    fib.17
+	load    [f.57 + 0], $fc0
+	li      55, $i2
+	call    ext_float_of_int
+.count move_args
+	mov     $f1, $f2
+	call    ext_int_of_float
+	bne     $i1, 55, bne.60
+be.60:
+	li      1, $i5
+	add     $i0, -1, $i2
+	call    ext_float_of_int
+	fabs    $f1, $f2
+	call    ext_int_of_float
+	bne     $i1, 1, bne.61
+be.61:
+.count move_args
+	mov     $i5, $i2
+.count move_args
+	mov     $f0, $f2
+	call    ext_create_array_float
+	call    set.29
+	load    [$i1 + 0], $f2
+	call    ext_int_of_float
+	bne     $i1, 1, bne.62
+be.62:
+	li      4, $i2
+	call    ext_ledout
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
 	add     $sp, 1, $sp
-.count move_args
-	mov     $i1, $i2
-	b       ext_ledout
+	li      0, $i1
+	ret     
+bne.62:
+	li      3, $i2
+	call    ext_ledout
+.count stack_load_ra
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	li      0, $i1
+	ret     
+bne.61:
+	li      2, $i2
+	call    ext_ledout
+.count stack_load_ra
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	li      0, $i1
+	ret     
+bne.60:
+	li      1, $i2
+	call    ext_ledout
+.count stack_load_ra
+	load    [$sp + 0], $ra
+.count stack_move
+	add     $sp, 1, $sp
+	li      0, $i1
+	ret     
 .end main
