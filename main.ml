@@ -22,17 +22,16 @@ let lexbuf outchan l =
               (Beta2.f
                 (Sglobal.f
                   (Sfl.f
-                    (Slabel.f
-                      (Simm.f
-                        (Virtual.f
-                          (Closure.f
-                            (iter !limit
-                              (Expand.f
-                                (Alpha.f
-                                  (KNormal.f
-	                                  (BuiltIn.f
-	                                    (Typing.f
-	                                      (Parser.exp Lexer.token l)))))))))))))))))))
+                    (ConstFold2.f
+                      (Virtual.f
+                        (Closure.f
+                          (iter !limit
+                            (Expand.f
+                              (Alpha.f
+                                (KNormal.f
+	                                (BuiltIn.f
+	                                  (Typing.f
+	                                    (Parser.exp Lexer.token l))))))))))))))))))
 
 let string s = lexbuf stdout (Lexing.from_string s)
 
@@ -62,10 +61,9 @@ let () =
      ("-noBetaTuple", Arg.Unit(fun () -> BetaTuple.off := true), "");
      ("-noBeta", Arg.Unit(fun () -> Beta.off := true), "");
      ("-noChangeArgs", Arg.Unit(fun () -> Asm.off := true), "");
-     ("-noSimm", Arg.Unit(fun () -> Simm.off := true), "");
-     ("-noSlabel", Arg.Unit(fun () -> Slabel.off := true), "");
      ("-noSfl", Arg.Unit(fun () -> Sfl.off := true), "");
      ("-noSglobal", Arg.Unit(fun () -> Sglobal.off := true), "");
+     ("-noConstFold2", Arg.Unit(fun () -> ConstFold2.off := true), "");
      ("-noBeta2", Arg.Unit(fun () -> Beta2.off := true), "");
      ("-noAbsNegFlag", Arg.Unit(fun () -> AbsNegFlag.off := true), "");
      ("-noPreSchedule", Arg.Unit(fun () -> PreSchedule.off := true), "");

@@ -105,8 +105,8 @@ let getRead = function
   | Li _ -> S.empty
   | Addi(x, _, _) | Mov(x, _) | FInv(_, x, _) | FSqrt(_, x, _) | FAbs(x, _) | FNeg(x, _) -> S.of_list [x]
   | Add(x, y, _) | Sub(x, y, _) | FAdd(_, x, y, _) | FSub(_, x, y, _) | FMul(_, x, y, _) | Store(x, y, _) -> S.of_list [x; y]
-  | Load(x, _, y) -> S.of_list [x; y; "memory"]
-  | Loadr(x, y, z) -> S.of_list [x; y; z; "memory"]
+  | Load(x, _, _) -> S.of_list [x; "memory"]
+  | Loadr(x, y, _) -> S.of_list [x; y; "memory"]
   | Call(x, _) -> S.of_list (Asm.get_arg_regs x)
 
 let getWrite = function

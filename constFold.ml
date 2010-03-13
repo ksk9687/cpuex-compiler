@@ -58,38 +58,38 @@ let rec g env fenv = function
   | FAdd(x, y) when memf x env && memfadd y fenv  ->
       let z,f = findfadd y fenv in
       let x' = Id.gentmp Type.Float in
-	Let((x', Type.Float), Float(findf x env +. f), FAdd(x', z))
+      Let((x', Type.Float), Float(findf x env +. f), FAdd(x', z))
   | FAdd(x, y) when memf y env && memfadd x fenv  ->
       let z,f = findfadd x fenv in
       let y' = Id.gentmp Type.Float in
-	Let((y', Type.Float), Float(findf y env +. f), FAdd(y', z))
+      Let((y', Type.Float), Float(findf y env +. f), FAdd(y', z))
   | FAdd(x, y) when memf x env && memfsub y fenv  ->
       let f,z = findfsub y fenv in
       let x' = Id.gentmp Type.Float in
-	Let((x', Type.Float), Float(findf x env +. f), FSub(x', z))
+      Let((x', Type.Float), Float(findf x env +. f), FSub(x', z))
   | FAdd(x, y) when memf y env && memfsub x fenv  ->
       let f,z = findfsub x fenv in
       let y' = Id.gentmp Type.Float in
-	Let((y', Type.Float), Float(findf y env +. f), FSub(y', z))
+      Let((y', Type.Float), Float(findf y env +. f), FSub(y', z))
   | FSub(x, y) when memf x env && memf y env -> Float(findf x env -. findf y env)
   | FSub(x, y) when memf x env && M.find x env = Float (0.) -> g env fenv (FNeg (y))
   | FSub(x, y) when memf y env && M.find y env = Float (0.) -> g env fenv (Var (x))
   | FSub(x, y) when memf x env && memfadd y fenv  -> (* x - (z + f) = (x - f) - z *)
       let z,f = findfadd y fenv in
       let x' = Id.gentmp Type.Float in
-	Let((x', Type.Float), Float(findf x env -. f), FSub(x', z))
+      Let((x', Type.Float), Float(findf x env -. f), FSub(x', z))
   | FSub(x, y) when memf y env && memfadd x fenv  -> (* (z + f) - y = z + (f - y) *)
       let z,f = findfadd x fenv in
       let y' = Id.gentmp Type.Float in
-	Let((y', Type.Float), Float(f -. findf y env), FAdd(z, y'))
+      Let((y', Type.Float), Float(f -. findf y env), FAdd(z, y'))
   | FSub(x, y) when memf x env && memfsub y fenv  -> (* x - (f - z) = (x - f) + z *)
       let f,z = findfsub y fenv in
       let x' = Id.gentmp Type.Float in
-	Let((x', Type.Float), Float(findf x env -. f), FAdd(x', z))
+      Let((x', Type.Float), Float(findf x env -. f), FAdd(x', z))
   | FSub(x, y) when memf y env && memfsub x fenv  -> (* (f - z) - y = (f - y) - z *)
       let f,z = findfsub x fenv in
       let y' = Id.gentmp Type.Float in
-	Let((y', Type.Float), Float(f -. findf y env), FSub(y', z))
+      Let((y', Type.Float), Float(f -. findf y env), FSub(y', z))
   | FMul(x, y) when memf x env && memf y env -> Float(findf x env *. findf y env)
   | FMul(x, y) when memf x env && M.find x env = Float (1.) -> g env fenv (Var (y))
   | FMul(x, y) when memf y env && M.find y env = Float (1.) -> g env fenv (Var (x))
@@ -100,11 +100,11 @@ let rec g env fenv = function
   | FMul(x, y) when memf x env && memfmul y fenv  ->
       let z,f = findfmul y fenv in
       let x' = Id.gentmp Type.Float in
-	Let((x', Type.Float), Float(findf x env *. f), FMul(x', z))
+      Let((x', Type.Float), Float(findf x env *. f), FMul(x', z))
   | FMul(x, y) when memf y env && memfmul x fenv  ->
       let z,f = findfmul x fenv in
       let y' = Id.gentmp Type.Float in
-	Let((y', Type.Float), Float(findf y env *. f), FMul(y', z))
+      Let((y', Type.Float), Float(findf y env *. f), FMul(y', z))
   | IfEq(x, y, e1, e2) when memi x env && memi y env -> if findi x env = findi y env then g env fenv e1 else g env fenv e2
   | IfEq(x, y, e1, e2) when memf x env && memf y env -> if findf x env = findf y env then g env fenv e1 else g env fenv e2
   | IfEq(x, y, e1, e2) -> IfEq(x, y, g env fenv e1, g env fenv e2)
@@ -114,24 +114,22 @@ let rec g env fenv = function
   | Let((x, t), e1, e2) ->
       let e1' = g env fenv e1 in
       let fenv' = 
-	(match e1' with
-	  | FAdd (y, z) when memf y env -> M.add x (Addi(z, findf y env)) fenv
-	  | FAdd (y, z) when memf z env -> M.add x (Addi(y, findf z env)) fenv
-	  | FSub (y, z) when memf y env -> M.add x (Subi(findf y env, z)) fenv
-	  | FSub (y, z) when memf z env -> M.add x (Addi(y, -. findf z env)) fenv
-	  | FMul (y, z) when memf y env -> M.add x (Muli(z, findf y env)) fenv
-	  | FMul (y, z) when memf z env -> M.add x (Muli(y, findf z env)) fenv
-	  | _ -> fenv) in
+        (match e1' with
+          | FAdd (y, z) when memf y env -> M.add x (Addi(z, findf y env)) fenv
+          | FAdd (y, z) when memf z env -> M.add x (Addi(y, findf z env)) fenv
+          | FSub (y, z) when memf y env -> M.add x (Subi(findf y env, z)) fenv
+          | FSub (y, z) when memf z env -> M.add x (Addi(y, -. findf z env)) fenv
+          | FMul (y, z) when memf y env -> M.add x (Muli(z, findf y env)) fenv
+          | FMul (y, z) when memf z env -> M.add x (Muli(y, findf z env)) fenv
+          | _ -> fenv) in
       let e2' = g (M.add x e1' env) fenv' e2 in
       Let((x, t), e1', e2')
   | LetRec({ name = x; args = ys; body = e1 }, e2) ->
       LetRec({ name = x; args = ys; body = g env fenv e1 }, g env fenv e2)
   | LetTuple(xts, y, e) when memt y env ->
       List.fold_left2
-        (fun e' xt z -> Let(xt, Var(z), e'))
-        (g env fenv e)
-        xts
-        (findt y env)
+        (fun e' xt z -> Let(xt, Var(z), e')
+        ) (g env fenv e) xts (findt y env)
   | LetTuple(xts, y, e) -> LetTuple(xts, y, g env fenv e)
   | ExtFunApp(x, [y]) when x = "float_of_int" & memi y env ->
       Float(float_of_int (findi y env))
