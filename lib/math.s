@@ -1,4 +1,3 @@
-#.align 2
 f._177:	.float  1.5707963268E+00
 f._176:	.float  6.2831853072E+00
 f._175:	.float  1.5915494309E-01
@@ -22,6 +21,7 @@ f._164:	.float  5.0000000000E-01
 # []
 # []
 ######################################################################
+.align 2
 .begin atan_sub
 ext_atan_sub:
 .count load_float
@@ -55,6 +55,7 @@ ble._182:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin atan
 ext_atan:
 .count stack_store_ra
@@ -64,10 +65,10 @@ ext_atan:
 	fabs    $f2, $f3
 .count stack_store
 	store   $f2, [$sp + 1]
-.count move_args
-	mov     $f0, $f4
 .count load_float
 	load    [f._165], $f7
+.count move_args
+	mov     $f0, $f4
 .count load_float
 	load    [f._167], $f1
 	ble     $f3, $f7, ble._184
@@ -138,6 +139,7 @@ bg._186:
 # []
 # []
 ######################################################################
+.align 2
 .begin tan_sub
 ext_tan_sub:
 .count load_float
@@ -165,6 +167,7 @@ ble._190:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin tan
 ext_tan:
 .count stack_store_ra
@@ -174,14 +177,14 @@ ext_tan:
 	fmul    $f2, $f2, $f3
 .count stack_store
 	store   $f2, [$sp + 1]
-.count move_args
-	mov     $f0, $f4
 .count load_float
 	load    [f._173], $f1
 .count move_args
-	mov     $f1, $f2
+	mov     $f0, $f4
 .count load_float
 	load    [f._165], $f6
+.count move_args
+	mov     $f1, $f2
 	call    ext_tan_sub
 	fsub    $f6, $f1, $f1
 .count stack_load_ra
@@ -204,6 +207,7 @@ ext_tan:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin sin
 ext_sin:
 .count stack_store_ra
@@ -278,10 +282,10 @@ bg._199:
 	fmul    $f1, $f1, $f2
 .count stack_load_ra
 	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
 .count load_float
 	load    [f._165], $f3
+.count stack_move
+	add     $sp, 1, $sp
 	fmul    $f8, $f1, $f1
 	fadd    $f3, $f2, $f2
 	finv    $f2, $f2
@@ -294,10 +298,10 @@ ble._199:
 	fmul    $f1, $f1, $f2
 .count stack_load_ra
 	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
 .count load_float
 	load    [f._165], $f3
+.count stack_move
+	add     $sp, 1, $sp
 	fmul    $f8, $f1, $f1
 	fadd    $f3, $f2, $f2
 	finv    $f2, $f2
@@ -315,6 +319,7 @@ ble._199:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin cos
 ext_cos:
 .count load_float
