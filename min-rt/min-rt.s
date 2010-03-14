@@ -305,41 +305,17 @@ ext_create_array_float:
 .end create_array
 
 ######################################################################
-# 三角関数用テーブル
-######################################################################
-ext_atan_table:
-	.float 0.785398163397448279
-	.float 0.463647609000806094
-	.float 0.244978663126864143
-	.float 0.124354994546761438
-	.float 0.06241880999595735
-	.float 0.0312398334302682774
-	.float 0.0156237286204768313
-	.float 0.00781234106010111114
-	.float 0.00390623013196697176
-	.float 0.00195312251647881876
-	.float 0.000976562189559319459
-	.float 0.00048828121119489829
-	.float 0.000244140620149361771
-	.float 0.000122070311893670208
-	.float 6.10351561742087726e-05
-	.float 3.05175781155260957e-05
-	.float 1.52587890613157615e-05
-	.float 7.62939453110197e-06
-	.float 3.81469726560649614e-06
-	.float 1.90734863281018696e-06
-	.float 9.53674316405960844e-07
-	.float 4.76837158203088842e-07
-	.float 2.38418579101557974e-07
-	.float 1.19209289550780681e-07
-	.float 5.96046447753905522e-08
-
-######################################################################
 #
 # 		↑　ここまで lib_asm.s
 #
 ######################################################################
-#.align 2
+#######################################################################
+#
+# 		↓　ここから math.s
+#
+######################################################################
+
+.align 2
 f._171:	.float  1.5707963268E+00
 f._170:	.float  5.0000000000E-01
 f._169:	.float  6.2831853072E+00
@@ -354,6 +330,7 @@ f._160:	.float  1.0000000000E+00
 f._159:	.float  2.0000000000E+00
 f._158:	.float  1.1500000000E+01
 
+.begin atan
 ######################################################################
 # $f1 = atan_sub($f2, $f3)
 # $ra = $ra
@@ -363,7 +340,6 @@ f._158:	.float  1.1500000000E+01
 # []
 # [$ra]
 ######################################################################
-.begin atan_sub
 ext_atan_sub:
 .count load_float
 	load    [f._158], $f1
@@ -402,7 +378,6 @@ bg._182:
 ble._182:
 	mov     $f0, $f1
 	ret     
-.end atan_sub
 
 ######################################################################
 # $f1 = atan($f2)
@@ -413,7 +388,6 @@ ble._182:
 # []
 # [$ra]
 ######################################################################
-.begin atan
 ext_atan:
 .count stack_store_ra
 	store   $ra, [$sp - 2]
@@ -483,6 +457,7 @@ bg._188:
 	ret     
 .end atan
 
+.begin sin
 ######################################################################
 # $f1 = tan_sub($f2, $f3)
 # $ra = $ra
@@ -492,7 +467,6 @@ bg._188:
 # []
 # [$ra]
 ######################################################################
-.begin tan_sub
 ext_tan_sub:
 .count load_float
 	load    [f._165], $f4
@@ -524,8 +498,7 @@ ble._192:
 	load    [$sp - 2], $f2
 	finv    $f1, $f1
 	fmul    $f2, $f1, $f1
-	ret     
-.end tan_sub
+	ret
 
 ######################################################################
 # $f1 = tan($f2)
@@ -536,7 +509,6 @@ ble._192:
 # []
 # [$ra]
 ######################################################################
-.begin tan
 ext_tan:
 .count stack_store_ra
 	store   $ra, [$sp - 2]
@@ -562,7 +534,6 @@ ext_tan:
 	finv    $f1, $f1
 	fmul    $f2, $f1, $f1
 	ret     
-.end tan
 
 ######################################################################
 # $f1 = sin($f2)
@@ -573,7 +544,6 @@ ext_tan:
 # []
 # [$ra]
 ######################################################################
-.begin sin
 ext_sin:
 .count stack_store_ra
 	store   $ra, [$sp - 1]
@@ -691,6 +661,12 @@ ext_cos:
 	fsub    $f1, $f2, $f2
 	b       ext_sin
 .end cos
+
+######################################################################
+#
+# 		↑　ここまで math.s
+#
+######################################################################
 ext_n_objects:
 	.skip	1
 ext_objects:
@@ -866,7 +842,6 @@ ext_n_reflections:
 .define $i58 orz
 .define $ra9 $i59
 .define $i59 orz
-#.align 2
 f.22102:	.float  -6.4000000000E+01
 f.22101:	.float  -2.0000000000E+02
 f.22100:	.float  2.0000000000E+02
@@ -917,6 +892,7 @@ f.21933:	.float  1.7453293000E-02
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin read_nth_object
 read_nth_object.2719:
 	call    ext_read_int
@@ -1373,6 +1349,7 @@ be.22113:
 # []
 # [$ra - $ra1]
 ######################################################################
+.align 2
 .begin read_object
 read_object.2721:
 	bge     $i6, 60, bge.22134
@@ -1398,6 +1375,7 @@ bge.22134:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin read_net_item
 read_net_item.2725:
 .count stack_store_ra
@@ -1448,6 +1426,7 @@ be.22137:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin read_or_network
 read_or_network.2727:
 .count stack_store_ra
@@ -1501,6 +1480,7 @@ be.22141:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin read_and_network
 read_and_network.2729:
 	li      0, $i1
@@ -1526,16 +1506,17 @@ be.22144:
 # [$fg0]
 # []
 ######################################################################
+.align 2
 .begin solver
 solver.2773:
 	load    [ext_objects + $i1], $i1
 	load    [$i2 + 0], $f4
 	load    [$i1 + 1], $i3
 	load    [$i1 + 9], $f1
-	fsub    $fg19, $f1, $f1
 	load    [$i1 + 8], $f2
-	fsub    $fg18, $f2, $f2
+	fsub    $fg19, $f1, $f1
 	load    [$i1 + 7], $f3
+	fsub    $fg18, $f2, $f2
 	fsub    $fg17, $f3, $f3
 	bne     $i3, 1, bne.22145
 be.22145:
@@ -1571,8 +1552,8 @@ bne.22785:
 	ble     $f5, $f6, ble.22152
 bg.22151:
 	load    [$i2 + 2], $f5
-	fmul    $f4, $f5, $f5
 	load    [$i1 + 6], $f6
+	fmul    $f4, $f5, $f5
 	fadd_a  $f5, $f1, $f5
 	bg      $f6, $f5, bg.22152
 ble.22152:
@@ -1609,8 +1590,8 @@ bne.22788:
 	ble     $f5, $f6, ble.22160
 bg.22159:
 	load    [$i2 + 0], $f5
-	load    [$i1 + 4], $f6
 	fmul    $f4, $f5, $f5
+	load    [$i1 + 4], $f6
 	fadd_a  $f5, $f3, $f5
 	bg      $f6, $f5, bg.22160
 ble.22160:
@@ -1647,8 +1628,8 @@ bne.22791:
 	ble     $f5, $f3, ble.22176
 bg.22167:
 	load    [$i2 + 1], $f3
-	fmul    $f1, $f3, $f3
 	load    [$i1 + 5], $f4
+	fmul    $f1, $f3, $f3
 	fadd_a  $f3, $f2, $f2
 	ble     $f4, $f2, ble.22176
 bg.22168:
@@ -1667,20 +1648,20 @@ bne.22145:
 	bne     $i3, 2, bne.22169
 be.22169:
 	load    [$i1 + 4], $f5
-	load    [$i2 + 1], $f6
 	fmul    $f4, $f5, $f4
+	load    [$i2 + 1], $f6
 	load    [$i1 + 5], $f7
-	fmul    $f6, $f7, $f6
 	load    [$i2 + 2], $f8
-	fadd    $f4, $f6, $f4
+	fmul    $f6, $f7, $f6
 	load    [$i1 + 6], $f9
 	fmul    $f8, $f9, $f8
+	fadd    $f4, $f6, $f4
 	fadd    $f4, $f8, $f4
 	ble     $f4, $f0, ble.22176
 bg.22170:
 	fmul    $f5, $f3, $f3
-	li      1, $i1
 	fmul    $f7, $f2, $f2
+	li      1, $i1
 	fmul    $f9, $f1, $f1
 	finv    $f4, $f4
 	fadd    $f3, $f2, $f2
@@ -1689,14 +1670,14 @@ bg.22170:
 	ret     
 bne.22169:
 	load    [$i2 + 1], $f5
-	load    [$i1 + 3], $i4
 	fmul    $f4, $f4, $f7
-	load    [$i2 + 2], $f6
+	load    [$i1 + 3], $i4
 	fmul    $f5, $f5, $f8
-	load    [$i1 + 4], $f9
+	load    [$i2 + 2], $f6
 	fmul    $f6, $f6, $f11
-	load    [$i1 + 5], $f10
+	load    [$i1 + 4], $f9
 	fmul    $f7, $f9, $f7
+	load    [$i1 + 5], $f10
 	fmul    $f8, $f10, $f8
 	load    [$i1 + 6], $f12
 	fmul    $f11, $f12, $f11
@@ -1733,14 +1714,14 @@ bne.22172:
 	be      $i4, 0, be.22173
 bne.22173:
 	fmul    $f6, $f2, $f11
-	load    [$i1 + 16], $f14
 	fmul    $f5, $f1, $f13
-	load    [$i1 + 17], $f16
+	load    [$i1 + 16], $f14
 	fmul    $f4, $f1, $f15
+	load    [$i1 + 17], $f16
 	fmul    $f6, $f3, $f6
 	fadd    $f11, $f13, $f11
-	load    [$i1 + 18], $f13
 	fmul    $f4, $f2, $f4
+	load    [$i1 + 18], $f13
 	fmul    $f5, $f3, $f5
 	fadd    $f15, $f6, $f6
 	fmul    $f11, $f14, $f11
@@ -1817,8 +1798,8 @@ bne.22177:
 	ret     
 be.22177:
 	fneg    $f1, $f1
-	fsub    $f1, $f4, $f1
 	li      1, $i1
+	fsub    $f1, $f4, $f1
 	fmul    $f1, $f2, $fg0
 	ret     
 ble.22176:
@@ -1835,6 +1816,7 @@ ble.22176:
 # [$fg0]
 # []
 ######################################################################
+.align 2
 .begin solver_fast
 solver_fast.2796:
 	load    [ext_objects + $i1], $i2
@@ -2016,6 +1998,7 @@ ble.22195:
 # [$fg0]
 # []
 ######################################################################
+.align 2
 .begin solver_fast2
 solver_fast2.2814:
 	load    [ext_objects + $i1], $i3
@@ -2028,8 +2011,8 @@ solver_fast2.2814:
 	bne     $i5, 1, bne.22197
 be.22197:
 	load    [$i1 + 0], $f4
-	load    [$i3 + 5], $f5
 	fsub    $f4, $f1, $f4
+	load    [$i3 + 5], $f5
 	load    [$i2 + 1], $f6
 	load    [$i1 + 1], $f7
 	fmul    $f4, $f7, $f4
@@ -2038,8 +2021,8 @@ be.22197:
 	ble     $f5, $f6, be.22200
 bg.22198:
 	load    [$i2 + 2], $f6
-	fmul    $f4, $f6, $f6
 	load    [$i3 + 6], $f7
+	fmul    $f4, $f6, $f6
 	fadd_a  $f6, $f3, $f6
 	ble     $f7, $f6, be.22200
 bg.22199:
@@ -2047,8 +2030,8 @@ bg.22199:
 	bne     $f6, $f0, bne.22200
 be.22200:
 	load    [$i1 + 2], $f4
-	load    [$i3 + 4], $f6
 	fsub    $f4, $f2, $f4
+	load    [$i3 + 4], $f6
 	load    [$i2 + 0], $f7
 	load    [$i1 + 3], $f8
 	fmul    $f4, $f8, $f4
@@ -2057,8 +2040,8 @@ be.22200:
 	ble     $f6, $f7, be.22204
 bg.22202:
 	load    [$i2 + 2], $f7
-	fmul    $f4, $f7, $f7
 	load    [$i3 + 6], $f8
+	fmul    $f4, $f7, $f7
 	fadd_a  $f7, $f3, $f7
 	ble     $f8, $f7, be.22204
 bg.22203:
@@ -2066,8 +2049,8 @@ bg.22203:
 	bne     $f7, $f0, bne.22204
 be.22204:
 	load    [$i1 + 4], $f4
-	load    [$i2 + 0], $f7
 	fsub    $f4, $f3, $f3
+	load    [$i2 + 0], $f7
 	load    [$i1 + 5], $f8
 	fmul    $f3, $f8, $f3
 	fmul    $f3, $f7, $f4
@@ -2100,10 +2083,10 @@ bne.22209:
 	be      $f4, $f0, ble.22212
 bne.22211:
 	load    [$i1 + 1], $f5
-	load    [$i1 + 2], $f6
 	fmul    $f5, $f1, $f1
-	load    [$i1 + 3], $f7
+	load    [$i1 + 2], $f6
 	fmul    $f6, $f2, $f2
+	load    [$i1 + 3], $f7
 	fmul    $f7, $f3, $f3
 	load    [$i3 + 22], $f5
 	fadd    $f1, $f2, $f1
@@ -2114,9 +2097,9 @@ bne.22211:
 	ble     $f2, $f0, ble.22212
 bg.22212:
 	load    [$i3 + 10], $i2
-	fsqrt   $f2, $f2
 	load    [$i1 + 4], $f3
 	li      1, $i1
+	fsqrt   $f2, $f2
 	be      $i2, 0, be.22213
 bne.22213:
 	fadd    $f1, $f2, $f1
@@ -2148,6 +2131,7 @@ ble.22212:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin setup_rect_table
 setup_rect_table.2817:
 	li      6, $i2
@@ -2262,6 +2246,7 @@ be.22224:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin setup_surface_table
 setup_surface_table.2820:
 	li      4, $i2
@@ -2308,6 +2293,7 @@ ble.22229:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin setup_second_table
 setup_second_table.2823:
 	li      5, $i2
@@ -2424,6 +2410,7 @@ be.22233:
 # []
 # [$ra - $ra1]
 ######################################################################
+.align 2
 .begin iter_setup_dirvec_constants
 iter_setup_dirvec_constants.2826:
 	bl      $i6, 0, bl.22234
@@ -2474,6 +2461,7 @@ bl.22234:
 # []
 # [$ra - $ra1]
 ######################################################################
+.align 2
 .begin setup_dirvec_constants
 setup_dirvec_constants.2829:
 	add     $ig0, -1, $i6
@@ -2489,6 +2477,7 @@ setup_dirvec_constants.2829:
 # []
 # []
 ######################################################################
+.align 2
 .begin setup_startp_constants
 setup_startp_constants.2831:
 	bl      $i1, 0, bl.22237
@@ -2513,14 +2502,14 @@ bne.22238:
 bg.22239:
 	load    [$i3 + 3], $i5
 	load    [$i3 + 19], $f1
-	load    [$i3 + 20], $f2
 	fmul    $f1, $f1, $f4
-	load    [$i3 + 21], $f3
+	load    [$i3 + 20], $f2
 	fmul    $f2, $f2, $f5
-	load    [$i3 + 4], $f6
+	load    [$i3 + 21], $f3
 	fmul    $f3, $f3, $f8
-	load    [$i3 + 5], $f7
+	load    [$i3 + 4], $f6
 	fmul    $f4, $f6, $f4
+	load    [$i3 + 5], $f7
 	fmul    $f5, $f7, $f5
 	load    [$i3 + 6], $f6
 	fmul    $f8, $f6, $f6
@@ -2560,16 +2549,16 @@ ble.22239:
 	b       setup_startp_constants.2831
 be.22238:
 	load    [$i3 + 4], $f1
+	add     $i1, -1, $i1
 	load    [$i3 + 19], $f2
 	fmul    $f1, $f2, $f1
 	load    [$i3 + 5], $f3
-	add     $i1, -1, $i1
 	load    [$i3 + 20], $f4
-	fmul    $f3, $f4, $f3
 	load    [$i3 + 6], $f2
-	fadd    $f1, $f3, $f1
+	fmul    $f3, $f4, $f3
 	load    [$i3 + 21], $f4
 	fmul    $f2, $f4, $f2
+	fadd    $f1, $f3, $f1
 	fadd    $f1, $f2, $f1
 	store   $f1, [$i3 + 22]
 	b       setup_startp_constants.2831
@@ -2586,6 +2575,7 @@ bl.22237:
 # []
 # []
 ######################################################################
+.align 2
 .begin check_all_inside
 check_all_inside.2856:
 	load    [$i3 + $i1], $i2
@@ -3038,6 +3028,7 @@ be.22296:
 # [$fg0]
 # [$ra]
 ######################################################################
+.align 2
 .begin shadow_check_and_group
 shadow_check_and_group.2862:
 	load    [$i3 + $i7], $i1
@@ -3048,29 +3039,29 @@ bne.22313:
 	load    [ext_intersection_point + 0], $f1
 	load    [$i2 + 1], $i5
 	load    [$i2 + 7], $f2
-	load    [ext_intersection_point + 1], $f3
 	fsub    $f1, $f2, $f1
+	load    [ext_intersection_point + 1], $f3
 	load    [$i2 + 8], $f4
-	fsub    $f3, $f4, $f3
 	load    [ext_intersection_point + 2], $f2
+	fsub    $f3, $f4, $f3
 	load    [$i2 + 9], $f5
-	load    [$i4 + $i1], $i4
 	fsub    $f2, $f5, $f2
+	load    [$i4 + $i1], $i4
 	load    [$i4 + 0], $f4
 	bne     $i5, 1, bne.22314
 be.22314:
 	fsub    $f4, $f1, $f4
 	load    [$i2 + 5], $f5
 	load    [$i4 + 1], $f7
-	fmul    $f4, $f7, $f4
 	load    [%{ext_light_dirvec + 0} + 1], $f6
+	fmul    $f4, $f7, $f4
 	fmul    $f4, $f6, $f6
 	fadd_a  $f6, $f3, $f6
 	ble     $f5, $f6, be.22317
 bg.22315:
 	load    [%{ext_light_dirvec + 0} + 2], $f5
-	fmul    $f4, $f5, $f5
 	load    [$i2 + 6], $f6
+	fmul    $f4, $f5, $f5
 	fadd_a  $f5, $f2, $f5
 	ble     $f6, $f5, be.22317
 bg.22316:
@@ -3078,8 +3069,8 @@ bg.22316:
 	bne     $f5, $f0, bne.22317
 be.22317:
 	load    [$i4 + 2], $f4
-	load    [$i2 + 4], $f5
 	fsub    $f4, $f3, $f4
+	load    [$i2 + 4], $f5
 	load    [%{ext_light_dirvec + 0} + 0], $f6
 	load    [$i4 + 3], $f7
 	fmul    $f4, $f7, $f4
@@ -3088,8 +3079,8 @@ be.22317:
 	ble     $f5, $f6, be.22321
 bg.22319:
 	load    [%{ext_light_dirvec + 0} + 2], $f5
-	fmul    $f4, $f5, $f5
 	load    [$i2 + 6], $f6
+	fmul    $f4, $f5, $f5
 	fadd_a  $f5, $f2, $f5
 	ble     $f6, $f5, be.22321
 bg.22320:
@@ -3104,8 +3095,8 @@ bne.22317:
 	b       bg.22334
 be.22321:
 	load    [$i4 + 4], $f4
-	load    [$i2 + 4], $f5
 	fsub    $f4, $f2, $f2
+	load    [$i2 + 4], $f5
 	load    [%{ext_light_dirvec + 0} + 0], $f6
 	load    [$i4 + 5], $f4
 	fmul    $f2, $f4, $f2
@@ -3114,8 +3105,8 @@ be.22321:
 	ble     $f5, $f1, ble.22334
 bg.22323:
 	load    [%{ext_light_dirvec + 0} + 1], $f1
-	fmul    $f2, $f1, $f1
 	load    [$i2 + 5], $f4
+	fmul    $f2, $f1, $f1
 	fadd_a  $f1, $f3, $f1
 	ble     $f4, $f1, ble.22334
 bg.22324:
@@ -3134,20 +3125,20 @@ bne.22326:
 	be      $f4, $f0, ble.22334
 bne.22328:
 	load    [$i4 + 1], $f5
-	load    [$i4 + 2], $f6
 	fmul    $f5, $f1, $f5
-	load    [$i4 + 3], $f7
+	load    [$i4 + 2], $f6
 	fmul    $f6, $f3, $f6
+	load    [$i4 + 3], $f7
 	fmul    $f7, $f2, $f7
-	load    [$i2 + 4], $f10
 	fmul    $f1, $f1, $f8
-	load    [$i2 + 5], $f11
+	load    [$i2 + 4], $f10
 	fmul    $f3, $f3, $f9
-	load    [$i2 + 3], $i6
+	load    [$i2 + 5], $f11
 	fadd    $f5, $f6, $f5
+	load    [$i2 + 3], $i6
 	fmul    $f8, $f10, $f6
-	fmul    $f9, $f11, $f8
 	load    [$i2 + 6], $f10
+	fmul    $f9, $f11, $f8
 	fmul    $f2, $f2, $f9
 	fadd    $f5, $f7, $f5
 	fadd    $f6, $f8, $f6
@@ -3187,8 +3178,8 @@ be.22330:
 	ble     $f1, $f0, ble.22334
 bg.22331:
 	load    [$i2 + 10], $i2
-	load    [$i4 + 4], $f2
 	fsqrt   $f1, $f1
+	load    [$i4 + 4], $f2
 	be      $i2, 0, be.22332
 bne.22332:
 	fadd    $f5, $f1, $f1
@@ -3210,10 +3201,10 @@ be.22326:
 	ble     $f0, $f4, ble.22334
 bg.22327:
 	load    [$i4 + 1], $f4
-	fmul    $f4, $f1, $f1
 	load    [$i4 + 2], $f5
-	fmul    $f5, $f3, $f3
+	fmul    $f4, $f1, $f1
 	load    [$i4 + 3], $f6
+	fmul    $f5, $f3, $f3
 	fmul    $f6, $f2, $f2
 	fadd    $f1, $f3, $f1
 	fadd    $f1, $f2, $fg0
@@ -3233,21 +3224,21 @@ bg.22334:
 bne.22337:
 	fadd    $fg0, $fc11, $f1
 	load    [ext_objects + $i1], $i1
-	fmul    $fg14, $f1, $f5
 	load    [ext_intersection_point + 0], $f2
-	fmul    $fg12, $f1, $f7
+	fmul    $fg14, $f1, $f5
 	load    [ext_intersection_point + 1], $f3
-	fmul    $fg13, $f1, $f1
+	fmul    $fg12, $f1, $f7
 	load    [$i1 + 1], $i2
-	fadd    $f5, $f2, $f2
+	fmul    $fg13, $f1, $f1
 	load    [$i1 + 7], $f4
-	fadd    $f7, $f3, $f3
+	fadd    $f5, $f2, $f2
 	load    [$i1 + 8], $f6
-	fsub    $f2, $f4, $f4
+	fadd    $f7, $f3, $f3
 	load    [$i1 + 9], $f8
-	fsub    $f3, $f6, $f5
+	fsub    $f2, $f4, $f4
 	load    [ext_intersection_point + 2], $f9
 	fadd    $f1, $f9, $f1
+	fsub    $f3, $f6, $f5
 	fsub    $f1, $f8, $f6
 	bne     $i2, 1, bne.22338
 be.22338:
@@ -3281,14 +3272,14 @@ bne.22338:
 bne.22345:
 	load    [$i1 + 10], $i4
 	fmul    $f4, $f4, $f7
-	fmul    $f5, $f5, $f8
 	load    [$i1 + 4], $f9
+	fmul    $f5, $f5, $f8
 	load    [$i1 + 5], $f10
 	fmul    $f6, $f6, $f11
+	load    [$i1 + 3], $i5
 	fmul    $f7, $f9, $f7
 	load    [$i1 + 6], $f9
 	fmul    $f8, $f10, $f8
-	load    [$i1 + 3], $i5
 	fmul    $f11, $f9, $f9
 	fadd    $f7, $f8, $f7
 	fadd    $f7, $f9, $f7
@@ -3330,10 +3321,10 @@ ble.22351:
 be.22345:
 	load    [$i1 + 10], $i2
 	load    [$i1 + 4], $f7
-	load    [$i1 + 5], $f8
 	fmul    $f7, $f4, $f4
-	load    [$i1 + 6], $f9
+	load    [$i1 + 5], $f8
 	fmul    $f8, $f5, $f5
+	load    [$i1 + 6], $f9
 	fmul    $f9, $f6, $f6
 	fadd    $f4, $f5, $f4
 	fadd    $f4, $f6, $f4
@@ -3367,6 +3358,7 @@ bne.22353:
 # [$fg0]
 # [$ra - $ra1]
 ######################################################################
+.align 2
 .begin shadow_check_one_or_group
 shadow_check_one_or_group.2865:
 	load    [$i9 + $i8], $i1
@@ -3459,6 +3451,7 @@ be.22370:
 # [$fg0]
 # [$ra - $ra2]
 ######################################################################
+.align 2
 .begin shadow_check_one_or_matrix
 shadow_check_one_or_matrix.2868:
 	load    [$i11 + $i10], $i9
@@ -3778,6 +3771,7 @@ be.22429:
 # [$fg0, $fg7]
 # [$ra]
 ######################################################################
+.align 2
 .begin solve_each_element
 solve_each_element.2871:
 	load    [$i3 + $i7], $i9
@@ -4138,6 +4132,7 @@ bne.22479:
 # [$fg0, $fg7]
 # [$ra - $ra1]
 ######################################################################
+.align 2
 .begin solve_one_or_network
 solve_one_or_network.2875:
 	load    [$i12 + $i11], $i1
@@ -4210,6 +4205,7 @@ be.22490:
 # [$fg0, $fg7]
 # [$ra - $ra2]
 ######################################################################
+.align 2
 .begin trace_or_matrix
 trace_or_matrix.2879:
 	load    [$i14 + $i13], $i12
@@ -4341,6 +4337,7 @@ ble.22508:
 # [$fg0, $fg7]
 # [$ra]
 ######################################################################
+.align 2
 .begin solve_each_element_fast
 solve_each_element_fast.2885:
 	load    [$i3 + $i7], $i9
@@ -4523,6 +4520,7 @@ be.22528:
 # [$fg0, $fg7]
 # [$ra - $ra1]
 ######################################################################
+.align 2
 .begin solve_one_or_network_fast
 solve_one_or_network_fast.2889:
 	load    [$i12 + $i11], $i1
@@ -4595,6 +4593,7 @@ be.22539:
 # [$fg0, $fg7]
 # [$ra - $ra2]
 ######################################################################
+.align 2
 .begin trace_or_matrix_fast
 trace_or_matrix_fast.2893:
 	load    [$i14 + $i13], $i12
@@ -4726,6 +4725,7 @@ ble.22557:
 # [$fg11, $fg15 - $fg16]
 # [$ra]
 ######################################################################
+.align 2
 .begin utexture
 utexture.2908:
 	load    [$i2 + 0], $i1
@@ -4921,13 +4921,14 @@ bg.22812:
 # [$fg0, $fg4 - $fg7]
 # [$ra - $ra3]
 ######################################################################
+.align 2
 .begin trace_reflections
 trace_reflections.2915:
 	bl      $i15, 0, bl.22569
 bge.22569:
 	load    [$ig1 + 0], $i12
-	mov     $fc10, $fg7
 	load    [ext_reflections + $i15], $i17
+	mov     $fc10, $fg7
 	load    [$i12 + 0], $i1
 	bne     $i1, -1, bne.22570
 be.22570:
@@ -5010,17 +5011,17 @@ be.22581:
 	bne     $i1, 0, bne.22581
 be.22582:
 	load    [$i17 + 5], $f1
-	load    [ext_nvector + 0], $f2
 	fmul    $f1, $f15, $f4
+	load    [ext_nvector + 0], $f2
 	load    [$i17 + 1], $f3
-	fmul    $f2, $f3, $f2
 	load    [ext_nvector + 1], $f5
+	fmul    $f2, $f3, $f2
 	load    [$i17 + 2], $f6
-	load    [ext_nvector + 2], $f7
 	fmul    $f5, $f6, $f5
+	load    [ext_nvector + 2], $f7
+	fadd    $f2, $f5, $f2
 	load    [$i17 + 3], $f8
 	fmul    $f7, $f8, $f7
-	fadd    $f2, $f5, $f2
 	fadd    $f2, $f7, $f2
 	fmul    $f4, $f2, $f2
 	ble     $f2, $f0, ble.22583
@@ -5029,11 +5030,11 @@ bg.22583:
 	fmul    $f2, $fg11, $f5
 	fmul    $f2, $fg15, $f2
 	fadd    $fg4, $f4, $fg4
-	fadd    $fg5, $f5, $fg5
 	load    [$i16 + 1], $f4
+	fadd    $fg5, $f5, $fg5
+	load    [$i16 + 2], $f5
 	fadd    $fg6, $f2, $fg6
 	load    [$i16 + 0], $f2
-	load    [$i16 + 2], $f5
 	fmul    $f2, $f3, $f2
 	fmul    $f4, $f6, $f3
 	fmul    $f5, $f8, $f4
@@ -5045,10 +5046,10 @@ bg.22583:
 	b       bg.22584
 ble.22583:
 	load    [$i16 + 0], $f2
-	load    [$i16 + 1], $f4
 	fmul    $f2, $f3, $f2
-	load    [$i16 + 2], $f5
+	load    [$i16 + 1], $f4
 	fmul    $f4, $f6, $f3
+	load    [$i16 + 2], $f5
 	fmul    $f5, $f8, $f4
 	fadd    $f2, $f3, $f2
 	fadd    $f2, $f4, $f2
@@ -5079,6 +5080,7 @@ bl.22569:
 # [$fg0, $fg4 - $fg11, $fg15 - $fg19]
 # [$ra - $ra4]
 ######################################################################
+.align 2
 .begin trace_ray
 trace_ray.2920:
 	bg      $i18, 4, bg.22585
@@ -5789,6 +5791,7 @@ be.22627:
 # [$fg0 - $fg3, $fg7, $fg11, $fg15 - $fg16]
 # [$ra - $ra3]
 ######################################################################
+.align 2
 .begin trace_diffuse_ray
 trace_diffuse_ray.2926:
 	load    [$ig1 + 0], $i12
@@ -5870,9 +5873,9 @@ bne.22639:
 be.22642:
 	fneg    $f1, $f1
 	store   $f1, [ext_nvector + 0]
-	load    [$i12 + 5], $f1
 .count move_args
 	mov     $i12, $i2
+	load    [$i12 + 5], $f1
 	fneg    $f1, $f1
 	store   $f1, [ext_nvector + 1]
 	load    [$i12 + 6], $f1
@@ -5888,52 +5891,52 @@ bne.22642:
 	load    [$i12 + 3], $i1
 	load    [ext_intersection_point + 0], $f2
 	load    [$i12 + 7], $f3
-	fsub    $f2, $f3, $f2
 	load    [$i12 + 5], $f4
-	fmul    $f2, $f1, $f1
+	fsub    $f2, $f3, $f2
 	load    [ext_intersection_point + 1], $f5
+	fmul    $f2, $f1, $f1
 	load    [$i12 + 8], $f3
-	load    [$i12 + 6], $f6
 	fsub    $f5, $f3, $f3
-	load    [ext_intersection_point + 2], $f7
+	load    [$i12 + 6], $f6
 	fmul    $f3, $f4, $f4
+	load    [ext_intersection_point + 2], $f7
 	load    [$i12 + 9], $f8
 	fsub    $f7, $f8, $f5
 	fmul    $f5, $f6, $f6
 	be      $i1, 0, be.22643
 bne.22643:
 	load    [$i12 + 18], $f7
-	fmul    $f3, $f7, $f7
 	load    [$i12 + 17], $f8
+	fmul    $f3, $f7, $f7
 	fmul    $f5, $f8, $f8
 	fadd    $f7, $f8, $f7
 	fmul    $f7, $fc3, $f7
 	fadd    $f1, $f7, $f1
 	store   $f1, [ext_nvector + 0]
 	load    [$i12 + 18], $f1
-	fmul    $f2, $f1, $f1
 	load    [$i12 + 16], $f7
+	fmul    $f2, $f1, $f1
 	fmul    $f5, $f7, $f5
 	fadd    $f1, $f5, $f1
 	fmul    $f1, $fc3, $f1
 	fadd    $f4, $f1, $f1
 	store   $f1, [ext_nvector + 1]
 	load    [$i12 + 17], $f1
-	fmul    $f2, $f1, $f1
 	load    [$i12 + 16], $f4
+	fmul    $f2, $f1, $f1
 	fmul    $f3, $f4, $f2
 	fadd    $f1, $f2, $f1
 	fmul    $f1, $fc3, $f1
 	fadd    $f6, $f1, $f1
 	store   $f1, [ext_nvector + 2]
 	load    [ext_nvector + 0], $f1
-	fmul    $f1, $f1, $f3
 	load    [ext_nvector + 1], $f2
-	fmul    $f2, $f2, $f2
+	fmul    $f1, $f1, $f3
 	load    [$i12 + 10], $i1
-	fadd    $f3, $f2, $f2
+	fmul    $f2, $f2, $f2
 	load    [ext_nvector + 2], $f4
 	fmul    $f4, $f4, $f4
+	fadd    $f3, $f2, $f2
 	fadd    $f2, $f4, $f2
 	fsqrt   $f2, $f2
 	be      $f2, $f0, be.22644
@@ -5944,21 +5947,21 @@ be.22643:
 	store   $f4, [ext_nvector + 1]
 	store   $f6, [ext_nvector + 2]
 	load    [ext_nvector + 0], $f1
-	load    [ext_nvector + 1], $f2
 	fmul    $f1, $f1, $f3
-	load    [$i12 + 10], $i1
+	load    [ext_nvector + 1], $f2
 	fmul    $f2, $f2, $f2
+	load    [$i12 + 10], $i1
+	fadd    $f3, $f2, $f2
 	load    [ext_nvector + 2], $f4
 	fmul    $f4, $f4, $f4
-	fadd    $f3, $f2, $f2
 	fadd    $f2, $f4, $f2
 	fsqrt   $f2, $f2
 	bne     $f2, $f0, bne.22644
 be.22644:
 	mov     $fc0, $f2
+	fmul    $f1, $f2, $f1
 .count move_args
 	mov     $i12, $i2
-	fmul    $f1, $f2, $f1
 	store   $f1, [ext_nvector + 0]
 	load    [ext_nvector + 1], $f1
 	fmul    $f1, $f2, $f1
@@ -6011,9 +6014,9 @@ be.22645:
 be.22639:
 	add     $ig2, -1, $i1
 	store   $f0, [ext_nvector + 0]
+	store   $f0, [ext_nvector + 1]
 .count move_args
 	mov     $i12, $i2
-	store   $f0, [ext_nvector + 1]
 	store   $f0, [ext_nvector + 2]
 	load    [$i8 + $i1], $f1
 	bne     $f1, $f0, bne.22640
@@ -6096,10 +6099,10 @@ be.22660:
 	bne     $i1, 0, bne.22657
 be.22661:
 	load    [ext_nvector + 0], $f1
-	fmul    $f1, $fg14, $f1
 	load    [ext_nvector + 1], $f2
-	fmul    $f2, $fg12, $f2
+	fmul    $f1, $fg14, $f1
 	load    [ext_nvector + 2], $f3
+	fmul    $f2, $fg12, $f2
 	fmul    $f3, $fg13, $f3
 	fadd    $f1, $f2, $f1
 	load    [$i12 + 11], $f2
@@ -6139,6 +6142,7 @@ bne.22657:
 # [$fg0 - $fg3, $fg7, $fg11, $fg15 - $fg16]
 # [$ra - $ra4]
 ######################################################################
+.align 2
 .begin iter_trace_diffuse_rays
 iter_trace_diffuse_rays.2929:
 	bl      $i17, 0, bl.22663
@@ -6211,13 +6215,14 @@ bl.22663:
 # [$fg0 - $fg11, $fg15 - $fg16]
 # [$ra - $ra5]
 ######################################################################
+.align 2
 .begin calc_diffuse_using_1point
 calc_diffuse_using_1point.2942:
 	add     $i18, 23, $i1
-	add     $i18, 29, $i2
 	load    [$i1 + $i19], $i1
-	add     $i18, 3, $i3
+	add     $i18, 29, $i2
 	load    [$i2 + $i19], $i16
+	add     $i18, 3, $i3
 	load    [$i1 + 0], $fg1
 	load    [$i1 + 1], $fg2
 	load    [$i1 + 2], $fg3
@@ -6230,24 +6235,24 @@ be.22669:
 	b       bne.22671
 bne.22669:
 	load    [ext_dirvecs + 0], $i15
-	add     $ig0, -1, $i1
 	load    [$i20 + 0], $fg8
+	add     $ig0, -1, $i1
+	load    [$i20 + 1], $fg9
 .count move_args
 	mov     $i20, $i2
-	load    [$i20 + 1], $fg9
 	load    [$i20 + 2], $fg10
 	call    setup_startp_constants.2831
 	load    [$i15 + 118], $i1
 	load    [$i16 + 0], $f1
 	load    [$i16 + 1], $f2
 	load    [$i1 + 0], $f3
-	fmul    $f3, $f1, $f1
 	load    [$i1 + 1], $f4
-	fmul    $f4, $f2, $f2
+	fmul    $f3, $f1, $f1
 	load    [$i1 + 2], $f5
-	fadd    $f1, $f2, $f1
+	fmul    $f4, $f2, $f2
 	load    [$i16 + 2], $f3
 	fmul    $f5, $f3, $f3
+	fadd    $f1, $f2, $f1
 	fadd    $f1, $f3, $f1
 	ble     $f0, $f1, ble.22670
 bg.22670:
@@ -6272,24 +6277,24 @@ be.22671:
 	b       bne.22673
 bne.22671:
 	load    [ext_dirvecs + 1], $i15
-	load    [$i20 + 0], $fg8
 	add     $ig0, -1, $i1
-	load    [$i20 + 1], $fg9
+	load    [$i20 + 0], $fg8
 .count move_args
 	mov     $i20, $i2
+	load    [$i20 + 1], $fg9
 	load    [$i20 + 2], $fg10
 	call    setup_startp_constants.2831
 	load    [$i15 + 118], $i1
 	load    [$i16 + 0], $f1
 	load    [$i16 + 1], $f2
 	load    [$i1 + 0], $f3
-	load    [$i1 + 1], $f4
 	fmul    $f3, $f1, $f1
-	load    [$i1 + 2], $f5
+	load    [$i1 + 1], $f4
 	fmul    $f4, $f2, $f2
+	load    [$i1 + 2], $f5
+	fadd    $f1, $f2, $f1
 	load    [$i16 + 2], $f3
 	fmul    $f5, $f3, $f3
-	fadd    $f1, $f2, $f1
 	fadd    $f1, $f3, $f1
 	ble     $f0, $f1, ble.22672
 bg.22672:
@@ -6314,24 +6319,24 @@ be.22673:
 	b       bne.22675
 bne.22673:
 	load    [ext_dirvecs + 2], $i15
-	add     $ig0, -1, $i1
 	load    [$i20 + 0], $fg8
+	add     $ig0, -1, $i1
+	load    [$i20 + 1], $fg9
 .count move_args
 	mov     $i20, $i2
-	load    [$i20 + 1], $fg9
 	load    [$i20 + 2], $fg10
 	call    setup_startp_constants.2831
 	load    [$i15 + 118], $i1
 	load    [$i16 + 0], $f1
 	load    [$i16 + 1], $f2
 	load    [$i1 + 0], $f3
-	fmul    $f3, $f1, $f1
 	load    [$i1 + 1], $f4
-	fmul    $f4, $f2, $f2
+	fmul    $f3, $f1, $f1
 	load    [$i1 + 2], $f5
-	fadd    $f1, $f2, $f1
+	fmul    $f4, $f2, $f2
 	load    [$i16 + 2], $f3
 	fmul    $f5, $f3, $f3
+	fadd    $f1, $f2, $f1
 	fadd    $f1, $f3, $f1
 	ble     $f0, $f1, ble.22674
 bg.22674:
@@ -6356,24 +6361,24 @@ be.22675:
 	b       bne.22677
 bne.22675:
 	load    [ext_dirvecs + 3], $i15
-	load    [$i20 + 0], $fg8
 	add     $ig0, -1, $i1
-	load    [$i20 + 1], $fg9
+	load    [$i20 + 0], $fg8
 .count move_args
 	mov     $i20, $i2
+	load    [$i20 + 1], $fg9
 	load    [$i20 + 2], $fg10
 	call    setup_startp_constants.2831
 	load    [$i15 + 118], $i1
 	load    [$i16 + 0], $f1
 	load    [$i16 + 1], $f2
 	load    [$i1 + 0], $f3
-	load    [$i1 + 1], $f4
 	fmul    $f3, $f1, $f1
-	load    [$i1 + 2], $f5
+	load    [$i1 + 1], $f4
 	fmul    $f4, $f2, $f2
+	load    [$i1 + 2], $f5
+	fadd    $f1, $f2, $f1
 	load    [$i16 + 2], $f3
 	fmul    $f5, $f3, $f3
-	fadd    $f1, $f2, $f1
 	fadd    $f1, $f3, $f1
 	ble     $f0, $f1, ble.22676
 bg.22676:
@@ -6394,24 +6399,24 @@ ble.22676:
 	be      $i21, 4, be.22677
 bne.22677:
 	load    [ext_dirvecs + 4], $i15
-	add     $ig0, -1, $i1
 	load    [$i20 + 0], $fg8
+	add     $ig0, -1, $i1
+	load    [$i20 + 1], $fg9
 .count move_args
 	mov     $i20, $i2
-	load    [$i20 + 1], $fg9
 	load    [$i20 + 2], $fg10
 	call    setup_startp_constants.2831
 	load    [$i15 + 118], $i1
 	load    [$i16 + 0], $f1
 	load    [$i16 + 1], $f2
 	load    [$i1 + 0], $f3
-	fmul    $f3, $f1, $f1
 	load    [$i1 + 1], $f4
-	fmul    $f4, $f2, $f2
+	fmul    $f3, $f1, $f1
 	load    [$i1 + 2], $f5
-	fadd    $f1, $f2, $f1
+	fmul    $f4, $f2, $f2
 	load    [$i16 + 2], $f3
 	fmul    $f5, $f3, $f3
+	fadd    $f1, $f2, $f1
 	fadd    $f1, $f3, $f1
 	ble     $f0, $f1, ble.22678
 bg.22678:
@@ -6423,10 +6428,10 @@ bg.22678:
 	add     $i18, 18, $i1
 	load    [$i1 + $i19], $i1
 	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
 	fmul    $f1, $fg1, $f1
-	load    [$i1 + 2], $f3
+	load    [$i1 + 1], $f2
 	fmul    $f2, $fg2, $f2
+	load    [$i1 + 2], $f3
 	fmul    $f3, $fg3, $f3
 	fadd    $fg4, $f1, $fg4
 	fadd    $fg5, $f2, $fg5
@@ -6441,10 +6446,10 @@ ble.22678:
 	add     $i18, 18, $i1
 	load    [$i1 + $i19], $i1
 	load    [$i1 + 0], $f1
-	fmul    $f1, $fg1, $f1
 	load    [$i1 + 1], $f2
-	fmul    $f2, $fg2, $f2
+	fmul    $f1, $fg1, $f1
 	load    [$i1 + 2], $f3
+	fmul    $f2, $fg2, $f2
 	fmul    $f3, $fg3, $f3
 	fadd    $fg4, $f1, $fg4
 	fadd    $fg5, $f2, $fg5
@@ -6454,10 +6459,10 @@ be.22677:
 	add     $i18, 18, $i1
 	load    [$i1 + $i19], $i1
 	load    [$i1 + 0], $f1
-	fmul    $f1, $fg1, $f1
 	load    [$i1 + 1], $f2
-	fmul    $f2, $fg2, $f2
+	fmul    $f1, $fg1, $f1
 	load    [$i1 + 2], $f3
+	fmul    $f2, $fg2, $f2
 	fmul    $f3, $fg3, $f3
 	fadd    $fg4, $f1, $fg4
 	fadd    $fg5, $f2, $fg5
@@ -6474,6 +6479,7 @@ be.22677:
 # [$fg0 - $fg11, $fg15 - $fg16]
 # [$ra - $ra6]
 ######################################################################
+.align 2
 .begin do_without_neighbors
 do_without_neighbors.2951:
 	bg      $i22, 4, bg.22679
@@ -6786,6 +6792,7 @@ bg.22679:
 # [$fg0 - $fg11, $fg15 - $fg16]
 # [$ra - $ra6]
 ######################################################################
+.align 2
 .begin try_exploit_neighbors
 try_exploit_neighbors.2967:
 	bg      $i19, 4, bg.22698
@@ -6914,6 +6921,7 @@ be.22708:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin write_rgb_element
 write_rgb_element.2976:
 .count stack_store_ra
@@ -6950,6 +6958,7 @@ bg.22711:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin write_rgb
 write_rgb.2978:
 .count stack_store_ra
@@ -6980,6 +6989,7 @@ write_rgb.2978:
 # [$fg0 - $fg3, $fg7 - $fg11, $fg15 - $fg16]
 # [$ra - $ra5]
 ######################################################################
+.align 2
 .begin pretrace_diffuse_rays
 pretrace_diffuse_rays.2980:
 	bg      $i19, 4, bg.22715
@@ -7182,6 +7192,7 @@ bg.22715:
 # [$fg0 - $fg11, $fg15 - $fg19]
 # [$ra - $ra6]
 ######################################################################
+.align 2
 .begin pretrace_pixels
 pretrace_pixels.2983:
 	bl      $i27, 0, bl.22727
@@ -7361,6 +7372,7 @@ bl.22727:
 # [$fg0 - $fg11, $fg15 - $fg16]
 # [$ra - $ra7]
 ######################################################################
+.align 2
 .begin scan_pixel
 scan_pixel.2994:
 	li      128, $i1
@@ -7368,8 +7380,8 @@ scan_pixel.2994:
 bg.22733:
 	load    [$i27 + $i24], $i1
 	li      128, $i2
-	load    [$i1 + 0], $fg4
 	add     $i25, 1, $i3
+	load    [$i1 + 0], $fg4
 	load    [$i1 + 1], $fg5
 	load    [$i1 + 2], $fg6
 	ble     $i2, $i3, ble.22736
@@ -7427,6 +7439,7 @@ bne.22749:
 	load    [$i1 + 23], $i1
 	load    [$i2 + 1], $fg2
 	load    [$i2 + 2], $fg3
+	add     $i24, 1, $i2
 	load    [$i1 + 0], $f1
 	fadd    $fg1, $f1, $fg1
 	load    [$i1 + 1], $f2
@@ -7434,41 +7447,40 @@ bne.22749:
 	load    [$i1 + 2], $f3
 	fadd    $fg3, $f3, $fg3
 	load    [$i3 + 23], $i1
-	add     $i24, 1, $i2
 	load    [$i28 + $i24], $i3
 	load    [$i27 + $i2], $i2
 	load    [$i1 + 0], $f1
-	fadd    $fg1, $f1, $fg1
 	load    [$i1 + 1], $f2
-	fadd    $fg2, $f2, $fg2
+	fadd    $fg1, $f1, $fg1
 	load    [$i1 + 2], $f3
-	fadd    $fg3, $f3, $fg3
+	fadd    $fg2, $f2, $fg2
 	load    [$i2 + 23], $i1
-	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
-	fadd    $fg1, $f1, $fg1
-	load    [$i1 + 2], $f3
-	fadd    $fg2, $f2, $fg2
-	load    [$i3 + 23], $i1
 	fadd    $fg3, $f3, $fg3
-	load    [$i27 + $i24], $i2
+	load    [$i1 + 0], $f1
+	fadd    $fg1, $f1, $fg1
+	load    [$i1 + 1], $f2
+	fadd    $fg2, $f2, $fg2
+	load    [$i1 + 2], $f3
+	fadd    $fg3, $f3, $fg3
+	load    [$i3 + 23], $i1
 .count move_args
 	mov     $i26, $i3
+	load    [$i27 + $i24], $i2
 	load    [$i1 + 0], $f1
-	fadd    $fg1, $f1, $fg1
 	load    [$i1 + 1], $f2
-	fadd    $fg2, $f2, $fg2
+	fadd    $fg1, $f1, $fg1
 	load    [$i1 + 2], $f3
-	fadd    $fg3, $f3, $fg3
+	fadd    $fg2, $f2, $fg2
 	load    [$i2 + 18], $i1
-.count move_args
-	mov     $i24, $i2
+	fadd    $fg3, $f3, $fg3
 	load    [$i1 + 0], $f1
 	fmul    $f1, $fg1, $f1
 	load    [$i1 + 1], $f2
 	fmul    $f2, $fg2, $f2
 	load    [$i1 + 2], $f3
 	fmul    $f3, $fg3, $f3
+.count move_args
+	mov     $i24, $i2
 	fadd    $fg4, $f1, $fg4
 	fadd    $fg5, $f2, $fg5
 	fadd    $fg6, $f3, $fg6
@@ -7523,6 +7535,7 @@ ble.22733:
 # [$fg0 - $fg11, $fg15 - $fg19]
 # [$ra - $ra8]
 ######################################################################
+.align 2
 .begin scan_line
 scan_line.3000:
 	li      128, $i1
@@ -7613,6 +7626,7 @@ ble.22750:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin create_float5x3array
 create_float5x3array.3006:
 	li      3, $i2
@@ -7623,10 +7637,10 @@ create_float5x3array.3006:
 .count move_args
 	mov     $i1, $i3
 	call    ext_create_array_int
-.count move_args
-	mov     $f0, $f2
 .count move_ret
 	mov     $i1, $i4
+.count move_args
+	mov     $f0, $f2
 	li      3, $i2
 	call    ext_create_array_float
 	store   $i1, [$i4 + 1]
@@ -7658,6 +7672,7 @@ create_float5x3array.3006:
 # []
 # [$ra - $ra1]
 ######################################################################
+.align 2
 .begin create_pixel
 create_pixel.3008:
 	li      3, $i2
@@ -7774,6 +7789,7 @@ create_pixel.3008:
 # []
 # [$ra - $ra2]
 ######################################################################
+.align 2
 .begin init_line_elements
 init_line_elements.3010:
 	bge     $i13, 0, bge.22753
@@ -7785,9 +7801,9 @@ bge.22753:
 	add     $i13, -1, $i2
 .count storer
 	add     $i12, $i13, $tmp
-	store   $i1, [$tmp + 0]
 .count move_args
 	mov     $i2, $i13
+	store   $i1, [$tmp + 0]
 	b       init_line_elements.3010
 .end init_line_elements
 
@@ -7800,6 +7816,7 @@ bge.22753:
 # []
 # [$ra - $ra2]
 ######################################################################
+.align 2
 .begin create_pixelline
 create_pixelline.3013:
 	jal     create_pixel.3008, $ra2
@@ -7822,6 +7839,7 @@ create_pixelline.3013:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin calc_dirvec
 calc_dirvec.3020:
 	bge     $i2, 5, bge.22754
@@ -7867,25 +7885,25 @@ bl.22754:
 bge.22754:
 	load    [ext_dirvecs + $i3], $i1
 	fmul    $f1, $f1, $f3
-	load    [$i1 + $i4], $i2
 	fmul    $f2, $f2, $f4
+	load    [$i1 + $i4], $i2
 	add     $i4, 40, $i3
-	add     $i4, 80, $i5
 	fadd    $f3, $f4, $f3
-	add     $i4, 1, $i6
+	add     $i4, 80, $i5
 	fadd    $f3, $fc0, $f3
-	add     $i4, 41, $i7
+	add     $i4, 1, $i6
 	fsqrt   $f3, $f3
-	add     $i4, 81, $i4
+	add     $i4, 41, $i7
 	finv    $f3, $f3
+	add     $i4, 81, $i4
 	fmul    $f1, $f3, $f1
-	store   $f1, [$i2 + 0]
 	fmul    $f2, $f3, $f2
-	store   $f2, [$i2 + 1]
+	store   $f1, [$i2 + 0]
 	fneg    $f3, $f4
+	store   $f2, [$i2 + 1]
 	store   $f3, [$i2 + 2]
-	load    [$i1 + $i3], $i2
 	fneg    $f2, $f5
+	load    [$i1 + $i3], $i2
 	fneg    $f1, $f6
 	store   $f1, [$i2 + 0]
 	store   $f3, [$i2 + 1]
@@ -7918,6 +7936,7 @@ bge.22754:
 # []
 # [$ra - $ra1]
 ######################################################################
+.align 2
 .begin calc_dirvecs
 calc_dirvecs.3028:
 	bl      $i8, 0, bl.22755
@@ -7932,18 +7951,18 @@ bge.22755:
 .count move_args
 	mov     $f0, $f1
 .count move_args
+	mov     $i9, $i3
+.count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i9, $i3
-	fsub    $f14, $fc8, $f8
-.count move_args
 	mov     $i10, $i4
+	fsub    $f14, $fc8, $f8
 	jal     calc_dirvec.3020, $ra1
-	fadd    $f14, $fc6, $f8
 	add     $i10, 2, $i11
+	fadd    $f14, $fc6, $f8
+	li      0, $i2
 .count move_args
 	mov     $f0, $f1
-	li      0, $i2
 .count move_args
 	mov     $f0, $f2
 .count move_args
@@ -7968,21 +7987,21 @@ bl.22757:
 .count move_args
 	mov     $f0, $f1
 .count move_args
+	mov     $i9, $i3
+.count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i9, $i3
-	fsub    $f14, $fc8, $f8
-.count move_args
 	mov     $i10, $i4
+	fsub    $f14, $fc8, $f8
 	jal     calc_dirvec.3020, $ra1
-	fadd    $f14, $fc6, $f8
 	li      0, $i2
+	fadd    $f14, $fc6, $f8
 .count move_args
 	mov     $f0, $f1
 .count move_args
-	mov     $f0, $f2
-.count move_args
 	mov     $i9, $i3
+.count move_args
+	mov     $f0, $f2
 .count move_args
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
@@ -8000,21 +8019,21 @@ bge.22757:
 .count move_args
 	mov     $f0, $f1
 .count move_args
-	mov     $i9, $i3
-.count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i10, $i4
+	mov     $i9, $i3
 	fsub    $f14, $fc8, $f8
+.count move_args
+	mov     $i10, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i2
 	fadd    $f14, $fc6, $f8
+	li      0, $i2
 .count move_args
 	mov     $f0, $f1
 .count move_args
-	mov     $i9, $i3
-.count move_args
 	mov     $f0, $f2
+.count move_args
+	mov     $i9, $i3
 .count move_args
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
@@ -8035,21 +8054,21 @@ bl.22759:
 .count move_args
 	mov     $f0, $f1
 .count move_args
+	mov     $i9, $i3
+.count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i9, $i3
-	fsub    $f14, $fc8, $f8
-.count move_args
 	mov     $i10, $i4
+	fsub    $f14, $fc8, $f8
 	jal     calc_dirvec.3020, $ra1
-	fadd    $f14, $fc6, $f8
 	li      0, $i2
+	fadd    $f14, $fc6, $f8
 .count move_args
 	mov     $f0, $f1
 .count move_args
-	mov     $f0, $f2
-.count move_args
 	mov     $i9, $i3
+.count move_args
+	mov     $f0, $f2
 .count move_args
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
@@ -8068,21 +8087,21 @@ bge.22759:
 .count move_args
 	mov     $f0, $f1
 .count move_args
-	mov     $i9, $i3
-.count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i10, $i4
+	mov     $i9, $i3
 	fsub    $f14, $fc8, $f8
+.count move_args
+	mov     $i10, $i4
 	jal     calc_dirvec.3020, $ra1
-	li      0, $i2
 	fadd    $f14, $fc6, $f8
+	li      0, $i2
 .count move_args
 	mov     $f0, $f1
 .count move_args
-	mov     $i9, $i3
-.count move_args
 	mov     $f0, $f2
+.count move_args
+	mov     $i9, $i3
 .count move_args
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
@@ -8103,21 +8122,21 @@ bl.22761:
 .count move_args
 	mov     $f0, $f1
 .count move_args
+	mov     $i9, $i3
+.count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i9, $i3
-	fsub    $f14, $fc8, $f8
-.count move_args
 	mov     $i10, $i4
+	fsub    $f14, $fc8, $f8
 	jal     calc_dirvec.3020, $ra1
-	fadd    $f14, $fc6, $f8
 	li      0, $i2
+	fadd    $f14, $fc6, $f8
 .count move_args
 	mov     $f0, $f1
 .count move_args
-	mov     $f0, $f2
-.count move_args
 	mov     $i9, $i3
+.count move_args
+	mov     $f0, $f2
 .count move_args
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
@@ -8136,21 +8155,21 @@ bge.22761:
 .count move_args
 	mov     $f0, $f1
 .count move_args
+	mov     $i9, $i3
+.count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i9, $i3
-	fsub    $f14, $fc8, $f8
-.count move_args
 	mov     $i10, $i4
+	fsub    $f14, $fc8, $f8
 	jal     calc_dirvec.3020, $ra1
-	fadd    $f14, $fc6, $f8
 	li      0, $i2
+	fadd    $f14, $fc6, $f8
 .count move_args
 	mov     $f0, $f1
 .count move_args
-	mov     $f0, $f2
-.count move_args
 	mov     $i9, $i3
+.count move_args
+	mov     $f0, $f2
 .count move_args
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
@@ -8177,6 +8196,7 @@ bl.22755:
 # []
 # [$ra - $ra2]
 ######################################################################
+.align 2
 .begin calc_dirvec_rows
 calc_dirvec_rows.3033:
 	bl      $i12, 0, bl.22763
@@ -8521,6 +8541,7 @@ bl.22763:
 # []
 # [$ra]
 ######################################################################
+.align 2
 .begin create_dirvec
 create_dirvec.3037:
 	li      3, $i2
@@ -8534,8 +8555,8 @@ create_dirvec.3037:
 	call    ext_create_array_int
 	load    [$i3 + 0], $i2
 	mov     $hp, $i4
-	store   $i2, [$i4 + 0]
 	add     $hp, 4, $hp
+	store   $i2, [$i4 + 0]
 	load    [$i3 + 1], $i2
 	store   $i2, [$i4 + 1]
 	load    [$i3 + 2], $i2
@@ -8554,6 +8575,7 @@ create_dirvec.3037:
 # []
 # [$ra - $ra1]
 ######################################################################
+.align 2
 .begin create_dirvec_elements
 create_dirvec_elements.3039:
 	bge     $i6, 0, bge.22772
@@ -8579,6 +8601,7 @@ bge.22772:
 # []
 # [$ra - $ra2]
 ######################################################################
+.align 2
 .begin create_dirvecs
 create_dirvecs.3042:
 	bge     $i7, 0, bge.22773
@@ -8607,6 +8630,7 @@ bge.22773:
 # []
 # [$ra - $ra2]
 ######################################################################
+.align 2
 .begin init_dirvec_constants
 init_dirvec_constants.3044:
 	bge     $i9, 0, bge.22774
@@ -8628,6 +8652,7 @@ bge.22774:
 # []
 # [$ra - $ra3]
 ######################################################################
+.align 2
 .begin init_vecset_constants
 init_vecset_constants.3047:
 	bge     $i10, 0, bge.22775
@@ -8650,6 +8675,7 @@ bge.22775:
 # []
 # [$ra - $ra2]
 ######################################################################
+.align 2
 .begin add_reflection
 add_reflection.3051:
 	jal     create_dirvec.3037, $ra1
@@ -8661,8 +8687,8 @@ add_reflection.3051:
 	jal     setup_dirvec_constants.2829, $ra2
 	mov     $hp, $i1
 	store   $i9, [$i1 + 0]
-	add     $hp, 6, $hp
 	load    [$i4 + 0], $i2
+	add     $hp, 6, $hp
 	store   $i2, [$i1 + 1]
 	load    [$i4 + 1], $i2
 	store   $i2, [$i1 + 2]
@@ -8684,6 +8710,7 @@ add_reflection.3051:
 # [$fg0 - $fg21]
 # [$ra - $ra9]
 ######################################################################
+.align 2
 .begin main
 ext_main:
 .count stack_store_ra
@@ -8780,14 +8807,14 @@ ext_main:
 	fneg    $f8, $f4
 	fneg    $f1, $f5
 	fmul    $f2, $fc19, $f2
-	store   $f2, [ext_screenz_dir + 2]
 	fmul    $f3, $fc19, $fg20
-	store   $f11, [ext_screenx_dir + 0]
+	store   $f2, [ext_screenz_dir + 2]
 	fmul    $f4, $f1, $f1
-	store   $f5, [ext_screenx_dir + 2]
+	store   $f11, [ext_screenx_dir + 0]
 	fmul    $f4, $f11, $f3
-	store   $f1, [ext_screeny_dir + 0]
+	store   $f5, [ext_screenx_dir + 2]
 	fneg    $f9, $f4
+	store   $f1, [ext_screeny_dir + 0]
 	store   $f4, [ext_screeny_dir + 1]
 	store   $f3, [ext_screeny_dir + 2]
 	load    [ext_screen + 0], $f1
@@ -8866,9 +8893,9 @@ ext_main:
 	call    ext_write
 	li      4, $i7
 	jal     create_dirvecs.3042, $ra3
-	li      0, $i9
 .count move_args
 	mov     $fc8, $f9
+	li      0, $i9
 	li      0, $i10
 	li      4, $i8
 	jal     calc_dirvecs.3028, $ra2
@@ -8878,8 +8905,8 @@ ext_main:
 	jal     calc_dirvec_rows.3033, $ra3
 	li      4, $i10
 	jal     init_vecset_constants.3047, $ra4
-	store   $fg14, [%{ext_light_dirvec + 0} + 0]
 	li      ext_light_dirvec, $i4
+	store   $fg14, [%{ext_light_dirvec + 0} + 0]
 	store   $fg12, [%{ext_light_dirvec + 0} + 1]
 	store   $fg13, [%{ext_light_dirvec + 0} + 2]
 	jal     setup_dirvec_constants.2829, $ra2
@@ -8899,14 +8926,14 @@ bne.22780:
 	be      $i3, 2, be.22781
 bl.22777:
 	li      127, $i27
-	load    [ext_screeny_dir + 0], $f1
 	li      0, $i28
+	load    [ext_screeny_dir + 0], $f1
 	load    [ext_screeny_dir + 1], $f2
-	load    [ext_screeny_dir + 2], $f3
 	fmul    $fc17, $f1, $f1
+	load    [ext_screeny_dir + 2], $f3
 	fmul    $fc17, $f2, $f2
-	load    [ext_screenz_dir + 2], $f4
 	fmul    $fc17, $f3, $f3
+	load    [ext_screenz_dir + 2], $f4
 	fadd    $f1, $fg20, $f19
 	fadd    $f2, $fg21, $f20
 	fadd    $f3, $f4, $f21
@@ -8924,20 +8951,20 @@ bl.22777:
 	ret     
 be.22781:
 	load    [$i2 + 4], $f2
-	load    [$i2 + 5], $f3
 	fmul    $fc7, $f2, $f5
-	load    [$i2 + 6], $f4
+	load    [$i2 + 5], $f3
 	fmul    $fg14, $f2, $f2
+	load    [$i2 + 6], $f4
 	fmul    $fg12, $f3, $f6
-	add     $i1, $i1, $i1
 	fmul    $fg13, $f4, $f7
+	add     $i1, $i1, $i1
+	fmul    $fc7, $f3, $f3
 .count move_args
 	mov     $ig4, $i8
-	fmul    $fc7, $f3, $f3
-	add     $i1, $i1, $i1
 	fmul    $fc7, $f4, $f4
-	add     $i1, 1, $i9
+	add     $i1, $i1, $i1
 	fsub    $fc0, $f1, $f9
+	add     $i1, 1, $i9
 	fadd    $f2, $f6, $f1
 	fadd    $f1, $f7, $f1
 	fmul    $f5, $f1, $f2
@@ -8949,15 +8976,15 @@ be.22781:
 .count move_args
 	mov     $f2, $f1
 	jal     add_reflection.3051, $ra3
-	load    [ext_screeny_dir + 0], $f1
 	add     $ig4, 1, $ig4
-	load    [ext_screeny_dir + 1], $f2
+	load    [ext_screeny_dir + 0], $f1
 	li      127, $i27
-	load    [ext_screeny_dir + 2], $f3
+	load    [ext_screeny_dir + 1], $f2
 	li      0, $i28
+	load    [ext_screeny_dir + 2], $f3
 	fmul    $fc17, $f1, $f1
-	fmul    $fc17, $f2, $f2
 	load    [ext_screenz_dir + 2], $f4
+	fmul    $fc17, $f2, $f2
 	fmul    $fc17, $f3, $f3
 	fadd    $f1, $fg20, $f19
 	fadd    $f2, $fg21, $f20
@@ -8979,11 +9006,11 @@ be.22780:
 	load    [$i2 + 11], $f1
 	add     $i1, $i1, $i10
 	fneg    $fg12, $f10
-	add     $i10, 1, $i9
 	fneg    $fg13, $f11
+	add     $i10, 1, $i9
+	fsub    $fc0, $f1, $f9
 .count move_args
 	mov     $ig4, $i8
-	fsub    $fc0, $f1, $f9
 .count move_args
 	mov     $fg14, $f1
 .count move_args
@@ -8993,32 +9020,32 @@ be.22780:
 	jal     add_reflection.3051, $ra3
 	fneg    $fg14, $f12
 	add     $ig4, 1, $i8
+	add     $i10, 2, $i9
 .count move_args
 	mov     $f12, $f1
-	add     $i10, 2, $i9
 .count move_args
 	mov     $fg12, $f3
 .count move_args
 	mov     $f11, $f4
 	jal     add_reflection.3051, $ra3
-	add     $ig4, 2, $i8
 .count move_args
 	mov     $f12, $f1
-	add     $i10, 3, $i9
+	add     $ig4, 2, $i8
 .count move_args
 	mov     $f10, $f3
+	add     $i10, 3, $i9
 .count move_args
 	mov     $fg13, $f4
 	jal     add_reflection.3051, $ra3
-	add     $ig4, 3, $ig4
 	load    [ext_screeny_dir + 0], $f1
-	li      127, $i27
+	add     $ig4, 3, $ig4
 	load    [ext_screeny_dir + 1], $f2
-	li      0, $i28
+	li      127, $i27
 	load    [ext_screeny_dir + 2], $f3
+	li      0, $i28
 	fmul    $fc17, $f1, $f1
-	load    [ext_screenz_dir + 2], $f4
 	fmul    $fc17, $f2, $f2
+	load    [ext_screenz_dir + 2], $f4
 	fmul    $fc17, $f3, $f3
 	fadd    $f1, $fg20, $f19
 	fadd    $f2, $fg21, $f20

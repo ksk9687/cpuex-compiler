@@ -107,23 +107,22 @@ let rec g oc b =
 let h oc (x, b) =
   let name = Id.name x in
   Asm.output_fun_header oc x name;
+  Printf.fprintf oc ".align 2\n";
   Printf.fprintf oc ".begin %s\n" name;
   used := S.empty;
   inCount := M.empty;
   setCount b;
   used := S.empty;
+  pc := 0;
   g oc b;
 (*  Format.eprintf "%s: %d@." x (S.cardinal !used); *)
   Printf.fprintf oc ".end %s\n" name
 
 let f oc (Prog(data, fundefs)) =
   if not !Id.lib then Asm.output_header oc;
-  Printf.fprintf oc "#.align 2\n";
-  pc := 0;
   miss := 0;
   List.iter
     (fun (x, d) -> if d <> 0.0 then Printf.fprintf oc "%s:\t%-8s%.10E\n" x ".float" d
     ) data;
   List.iter (h oc) (if !Id.lib then (List.rev (List.tl (List.rev fundefs))) else fundefs);
-  Format.eprintf "MissCount: %d@.Size: %d@." !miss !pc
-
+  Format.eprintf "MissCount: %d@." !miss
