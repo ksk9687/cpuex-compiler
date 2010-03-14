@@ -7,11 +7,11 @@ let rec fabs x = if x < 0.0 then -. x else x in
 
 let rec sin x =
   let rec tan x = (* -pi/4 <= x <= pi/4 *)
-    let rec tan_sub i xx =
-      if i > 10.5 then 0.
-      else xx /. (i -. (tan_sub (i +. 2.) xx)) 
+    let rec tan_sub i xx y =
+      if i < 2.5 then y
+      else tan_sub (i -. 2.) xx (xx /. (i -. y))
     in
-      x /. (1. -. (tan_sub 3. (x *. x)))
+      x /. (1. -. (tan_sub 9. (x *. x) 0.0))
   in
   let pi = 3.14159265358979323846264 in
   let pi2 = pi *. 2.0 in

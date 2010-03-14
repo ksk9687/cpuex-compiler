@@ -16,11 +16,11 @@ let rec atan x =
     if (fabs x) > 1.0 then 1.0 /. x
     else x
   in
-  let rec atan_sub i xx =
-    if i >= 11.5 then 0.0
-    else (i *. i *. xx) /. (2.0 *. i +. 1.0 +. (atan_sub (i +. 1.0) xx))
+  let rec atan_sub i xx y =
+    if i < 0.5 then y
+    else atan_sub (i -. 1.0) xx ((i *. i *. xx) /. (2.0 *. i +. 1.0 +. y))
   in
-  let a = atan_sub 1.0 (x *. x) in
+  let a = atan_sub 11.0 (x *. x) 0.0 in
   let b = x /. (1.0 +. a) in
     if sgn > 0 then pi /. 2.0 -. b
     else if sgn < 0 then -. pi /. 2.0 -. b

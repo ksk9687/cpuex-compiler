@@ -9,11 +9,11 @@ let rec atan x =
     if (fabs x) > 1.0 then 1.0 /. x
     else x
   in
-  let rec atan_sub i xx =
-    if i >= 11.5 then 0.0
-    else (i *. i *. xx) /. (2.0 *. i +. 1.0 +. (atan_sub (i +. 1.0) xx))
+  let rec atan_sub i xx y =
+    if i < 0.5 then y
+    else atan_sub (i -. 1.0) xx ((i *. i *. xx) /. (2.0 *. i +. 1.0 +. y))
   in
-  let a = atan_sub 1.0 (x *. x) in
+  let a = atan_sub 11.0 (x *. x) 0.0 in
   let b = x /. (1.0 +. a) in
     if sgn > 0 then pi /. 2.0 -. b
     else if sgn < 0 then -. pi /. 2.0 -. b
@@ -21,11 +21,11 @@ let rec atan x =
 in
 let rec sin x =
   let rec tan x = (* -pi/4 <= x <= pi/4 *)
-    let rec tan_sub i xx =
-      if i > 10.5 then 0.
-      else xx /. (i -. (tan_sub (i +. 2.) xx)) 
+    let rec tan_sub i xx y =
+      if i < 2.5 then y
+      else tan_sub (i -. 2.) xx (xx /. (i -. y))
     in
-      x /. (1. -. (tan_sub 3. (x *. x)))
+      x /. (1. -. (tan_sub 9. (x *. x) 0.0))
   in
   let pi = 3.14159265358979323846264 in
   let pi2 = pi *. 2.0 in
