@@ -10,6 +10,9 @@ let rec pp_list = function
 let counter = ref 0
 let genid s =
   incr counter;
+  let s =
+    try String.sub s 0 (String.index s '.')
+    with Not_found -> s in
   if !lib then Printf.sprintf "%s._%d" s !counter
   else Printf.sprintf "%s.%d" s !counter
 
@@ -23,8 +26,7 @@ let rec id_of_typ = function
   | Type.Array _ -> "a" 
   | Type.Var _ -> assert false
 let gentmp typ =
-  incr counter;
-  Printf.sprintf "T%s%d" (id_of_typ typ) !counter
+  genid ("T" ^ (id_of_typ typ))
 
 let name s =
   try String.sub s 0 (String.index s '.')

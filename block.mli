@@ -28,6 +28,7 @@ type last =
   | Cont of block
 and block = { mutable exps : (string * exp) list; mutable last : last; mutable label : string }
 type prog = Prog of (Id.t * float) list * (Id.t * block) list
+type unitid = ALU | FPU | LOADSTORE | JMP
 
 val string_of_imm : imm -> string
 val string_of_flg : flg -> string
@@ -41,6 +42,9 @@ val cmp : mask -> 'a -> 'a -> bool
 val getRead' : cmp -> S.t
 val getRead : exp -> S.t
 val getWrite : exp -> S.t
+val getUnit : exp -> unitid
+val removeFirst : (string * exp) -> (string * exp) list -> (string * exp) list
+val getFirst : S.t -> S.t -> (string * exp) list -> (string * exp) list
 
 val inCount : int M.t ref
 val setCount : block -> unit

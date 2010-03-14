@@ -2,109 +2,8 @@ open Block
 
 let off = ref false
 
-(*
-let delay =
-  List.fold_left
-    (fun m (n,list) ->
-       List.fold_left (fun m x -> M.add x n m) m list)
-    M.empty
-(*    [(0,["store";"mov";"li";"add";"addi";"sub";"subi";"sll";"cmp";"cmpi";"fcmp";"fabs";"fneg"]);
-     (1,["load";"loadr";"read";"write"]);
-     (2,["fadd";"fsub";"fmul";"finv";"fsqrt"])]*)
-    [(0,["store";"mov"]);
-     (1,["li";"add";"addi";"sub";"subi";"sll";"cmp";"cmpi";"fcmp";"fabs";"fneg";"read";"write"]);
-     (2,["load";"loadr"]);
-     (3,[]);
-     (4,["fadd";"fsub";"fmul";"finv";"fsqrt"])]
-
-let getDelay exp =
-  let Exp(_, inst, _, _) = exp in
-  try
-    M.find inst delay
-  with Not_found -> print_string inst; assert false
-
-let addMax x y xs =
-  if M.mem x xs then M.add x (max (M.find x xs) y) xs
-  else M.add x y xs
-
-let rec getCritical time = function
-  | Seq(exp, e) ->
-      let t = List.fold_left
-        (fun t r ->
-          if M.mem r time then max t (M.find r time)
-          else t
-        ) 0 (getRead exp) in
-      let d = t + (getDelay exp) + 1 in
-      let time = List.fold_left
-        (fun time r -> addMax r d time
-        ) time (getWrite exp) in
-      max t (getCritical time e)
-  | _ -> 0
-
-let rec addLast e = function
-  | End -> e
-  | Call(s, e', ra) -> Call(s, addLast e e', ra)
-  | Seq(exp, e') -> Seq(exp, addLast e e')
-  | CmpJmp(cmp, b, bn, e1, e2, e3, rs) -> CmpJmp(cmp, b, bn, e1, e2, addLast e e3, rs)
-  | _ -> assert false
-
-let aging write =
-  let write' = List.map (fun (x, y) -> (x - 1, y)) write in
-  List.filter (fun (x, _) -> x >= 0) write'
-
-let miss = ref 0
-
-let rec schedule awrite = function
-  | End | Ret _ | Jmp _ as e -> e
-  | Call(s, e, ra) -> Call(s, schedule [] e, ra)
-  | CmpJmp(cmp, b, bn, e1, e2, e3, rs) -> CmpJmp(cmp, b, bn, schedule [] e1, schedule [] e2, schedule [] e3, rs)
-  | Seq(exp, e) as es ->
-      let awrite = aging awrite in
-      let write = List.fold_left (fun x (_, y) -> y @ x) [] awrite in
-      let exps = getFirst [] write es in
-      if exps <> [] then
-        let time = List.fold_left
-          (fun time (t, rs) -> List.fold_left
-            (fun time r -> addMax r t time
-            ) time rs
-          ) M.empty awrite in
-        let ts = List.map
-          (fun exp ->
-            let t = getDelay exp in
-            let time = List.fold_left
-              (fun time r -> addMax r t time
-              ) time (getWrite exp) in
-            (getCritical time (remove exp es), exp)
-          ) exps in
-        let (_, exp) = List.fold_left
-          (fun (t, exp) (t', exp') ->
-            if t > t' then (t', exp')
-            else (t, exp)
-          ) (List.hd ts) (List.tl ts) in
-        Seq(exp, schedule ((getDelay exp, getWrite exp) :: awrite) (remove exp es))
-      else
-        (incr miss; schedule awrite es)
-
-*)
-
 let inter xs ys =
   List.fold_left (fun zs x -> if List.mem x ys then x :: zs else zs) [] xs
-
-let rec removeFirst exp = function
-  | exp' :: exps when exp' = exp -> exps
-  | exp' :: exps -> exp' :: removeFirst exp exps
-  | _ -> assert false
-
-let rec getFirst reads writes = function
-  | (_, Call _) :: _  | [] -> []
-  | (s, exp) :: exps ->
-      let read = getRead exp in
-      let write = getWrite exp in
-      if (not (S.is_empty (S.inter (S.union reads writes) write))) ||
-         (not (S.is_empty (S.inter writes read))) then
-        getFirst (S.union read reads) (S.union write writes) exps
-      else
-        (s, exp) :: (getFirst (S.union read reads) (S.union write writes)) exps
 
 let getBlockID b =
   let str = match b.last with
@@ -145,22 +44,28 @@ let rec g' last env = function
   | (s, exp) :: exps ->
       let env = match exp with
 			  | Li(C(i), d) -> M.add d i env
+        | Mov(s, d) when M.mem s env -> M.add d (M.find s env) env
         | Call _ -> M.empty
         | exp -> S.fold (fun r env -> M.remove r env) (getWrite exp) env in
       let (env, exps) = g' last env exps in
       (env, (s, exp) :: exps)
 
 let rec g env b =
-  if M.mem b.label !memo then
+  if (M.find b.label !inCount) <> 1 && not (M.is_empty env) then
+    let (env, exps) = g' b.last env b.exps in
+    match b.last with
+	    | CmpJmp(Cmpi(mask, x, i), b1, b2) when M.mem x env ->
+	        change := true;
+	        let j = M.find x env in
+	        if cmp mask j i then (
+            { exps = exps @ b1.exps; last = b1.last; label = Id.genid b.label }
+	        ) else (
+            { exps = exps @ b2.exps; last = b2.last; label = Id.genid b.label }
+	        )
+      | _ -> g M.empty b
+  else if M.mem b.label !memo then
     M.find b.label !memo
-  else try
-(*    let b' = find (getBlockID b) !blocks in *)
-    let b' = List.assoc (getBlockID b) !blocks in
-    change := true;
-    memo := M.add b.label b' !memo;
-    b'
-  with Not_found ->
-    let env = if (M.find b.label !inCount) = 1 then env else M.empty in
+  else
     let (env, exps) = g' b.last env b.exps in
     b.exps <- exps;
     let b' =
@@ -227,9 +132,89 @@ let rec g env b =
             b.last <- CmpJmp(cmp, g env b1, g env b2);
             b
         | _ -> b in
-    memo := M.add b.label b' !memo;
-    blocks := (getBlockID b', b') :: !blocks;
-    b'
+    let id = getBlockID b' in
+    try
+      (* let b' = find (getBlockID b) !blocks in *)
+      let b' = List.assoc id !blocks in
+      change := true;
+      memo := M.add b.label b' !memo;
+      b'
+    with Not_found ->
+      memo := M.add b.label b' !memo;
+      blocks := (id, b') :: !blocks;
+      b'
+
+let miss = ref 0
+
+let getDelay = function
+  | Li _ | Addi _ | Add _ | Sub _ -> 1
+  | Load _ | Loadr _ -> 2
+  | FAdd _ | FSub _ | FMul _ | FInv _ | FSqrt _ -> 4
+  | _ -> 0
+
+let addMax x y xs =
+  if M.mem x xs then M.add x (max (M.find x xs) y) xs
+  else M.add x y xs
+
+let rec getCritical time = function
+  | [] | (_, Call _) :: _ -> 0
+  | (_, exp) :: exps ->
+      let t = S.fold
+        (fun r t ->
+          if M.mem r time then max t (M.find r time)
+          else t
+        ) (getRead exp) 0 in
+      let d = t + (getDelay exp) + 1 in
+      let time = S.fold
+        (fun r time -> addMax r d time
+        ) (getWrite exp) time in
+      max t (getCritical time exps)
+
+let aging write =
+  let write' = List.map (fun (x, y) -> (x - 1, y)) write in
+  List.filter (fun (x, _) -> x >= 0) write'
+
+let rec schedule' awrite = function
+  | [] -> []
+  | (s, Call(x, ra)) :: exps -> (s, Call(x, ra)) :: (schedule' [] exps)
+  | es ->
+      let awrite = aging awrite in
+      let write = List.fold_left (fun write (_, y) -> S.union y write) S.empty awrite in
+      let exps = getFirst S.empty write es in
+      if exps <> [] then
+        let time = List.fold_left
+          (fun time (t, rs) -> S.fold
+            (fun r time -> addMax r t time
+            ) rs time
+          ) M.empty awrite in
+        let ts = List.map
+          (fun (s, exp) ->
+            let t = getDelay exp in
+            let time = S.fold
+              (fun r time -> addMax r t time
+              ) (getWrite exp) time in
+            (getCritical time (removeFirst (s, exp) es), (s, exp))
+          ) exps in
+        let (_, (s, exp)) = List.fold_left
+          (fun (t, exp) (t', exp') ->
+            if t > t' then (t', exp')
+            else (t, exp)
+          ) (List.hd ts) (List.tl ts) in
+        (s, exp) :: (schedule' ((getDelay exp, getWrite exp) :: awrite) (removeFirst (s, exp) es))
+      else
+        (incr miss; schedule' awrite es)
+
+let rec schedule b =
+  if not (M.mem b.label !memo) then (
+    memo := M.add b.label b !memo;
+	  b.exps <- schedule' [] b.exps;
+	  match b.last with
+	    | CmpJmp(_, b1, b2) ->
+	        schedule b1;
+	        schedule b2
+	    | Cont(b1) -> schedule b1
+	    | _ -> ()
+  )
 
 let rec h b =
   change := false;
@@ -239,8 +224,16 @@ let rec h b =
   blocks := [];
   let b = g M.empty b in
   if !change then h b
-  else b
+  else (
+    memo := M.empty;
+    schedule b; b
+  )
 
 let f (Prog(data, fundefs)) =
   if !off then Prog(data, fundefs)
-  else Prog(data, List.map (fun (f, b) -> (f, h b)) fundefs)
+  else (
+    miss := 0;
+    let e = Prog(data, List.map (fun (f, b) -> (f, h b)) fundefs) in
+ 	  Format.eprintf "MissCount: %d@." !miss;
+    e
+  )

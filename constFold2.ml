@@ -73,14 +73,11 @@ let rec g env = function
       Let((x, t), g' env exp, g env e)
   | Let((x, t), exp, e) ->
       let exp' = g' env exp in
-      if exp' <> exp then
-        g env (Let((x, t), exp', e))
+      let e' = g (M.add x exp' env) e in
+      if (match exp' with St _ | CallDir _ | If _ -> true | _ -> false) || (List.mem x (fv e')) then
+        Let((x, t), exp', e')
       else
-	      let e' = g (M.add x exp' env) e in
-	      if (match exp' with Set _ | SetL _ -> false | _ -> true) || (List.mem x (fv e')) then
-	        Let((x, t), exp', e')
-	      else
-          e'
+        e'
   | e -> apply2 (g env) (g' env) e
 and g' env = function
   | Mov(x) when memi x env -> Set(findi x env)
@@ -151,6 +148,6 @@ let f' (Prog(data, fundefs, e)) =
 let rec f e =
   if !off then e
   else
-	  let e' = f' e in
-	  if e' = e then e
-	  else f e'
+    let e' = f' e in
+    if e' = e then e
+    else f e'

@@ -274,6 +274,9 @@ ext_read_float:
 ext_write:
 	write $i2, $tmp
 	bg $tmp, 0, ext_write
+write2:
+	write $ra, $tmp
+	bg $tmp, 0, write2
 	ret
 .end write
 

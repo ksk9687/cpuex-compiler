@@ -62,9 +62,9 @@ let get_use_regs x = (M.find x !fundata).use_regs
 let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
 let niregs = 45
-let nfregs = 18
+let nfregs = 21
 let nig = 5
-let nfg = 25
+let nfg = 22
 let nfc = 20
 let nra = 10
 let iregs = Array.init niregs (fun i -> Printf.sprintf "$i%d" (i + 1))
@@ -83,6 +83,8 @@ let reg_fgs = Array.to_list (Array.init nfg (fun i -> Printf.sprintf "$fg%d" i))
 let reg_fcs = Array.to_list (Array.init nfc (fun i -> Printf.sprintf "$fc%d" i))
 let reg_ras = reg_ra :: Array.to_list (Array.init (nra - 1) (fun i -> Printf.sprintf "$ra%d" (i + 1)))
 let allregs = alliregs @ allfregs @ reg_igs @ reg_fgs @ reg_ras
+let is_ireg x = List.mem x (reg_tmp :: reg_sp :: reg_hp :: reg_i0 :: alliregs @ reg_igs @ reg_ras)
+let is_freg x = List.mem x (reg_f0 :: allfregs @ reg_fgs @ reg_fcs)
 
 let output_header oc =
   let _ = List.fold_left

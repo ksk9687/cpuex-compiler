@@ -61,6 +61,8 @@ val reg_fgs : Id.t list
 val reg_fcs : Id.t list
 val reg_ras : Id.t list
 val allregs : Id.t list
+val is_ireg : Id.t -> bool
+val is_freg : Id.t -> bool
 val output_header : out_channel -> unit
 val output_fun_header : out_channel -> Id.t -> Id.t -> unit
 

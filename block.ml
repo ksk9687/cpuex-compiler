@@ -28,6 +28,7 @@ type last =
   | Cont of block
 and block = { mutable exps : (string * exp) list; mutable last : last; mutable label : string }
 type prog = Prog of (Id.t * float) list * (Id.t * block) list
+type unitid = ALU | FPU | LOADSTORE | JMP
 
 let string_of_imm = function
   | C(i) -> string_of_int i
@@ -115,6 +116,32 @@ let getWrite = function
     FAbs(_, x) | FNeg(_, x) | Load(_, _, x) | Loadr(_, _, x) -> S.of_list [x]
   | Store _ -> S.of_list ["memory"]
   | Call(x, ra) -> S.add ra (Asm.get_use_regs x)
+
+let getUnit = function
+  | Li _ | Addi _ | Add _ | Sub _ | Call _ -> ALU
+  | FAdd _ | FSub _ | FMul _ | FInv _ | FSqrt _ | FAbs _ | FNeg _ -> FPU
+  | Load _ | Loadr _ | Store _ -> LOADSTORE
+  | Mov(s, d) ->
+      match Asm.is_ireg s, Asm.is_ireg d with
+        | true, true -> ALU
+        | false, false -> FPU
+        | _ -> LOADSTORE
+
+let rec removeFirst exp = function
+  | exp' :: exps when exp' = exp -> exps
+  | exp' :: exps -> exp' :: removeFirst exp exps
+  | _ -> assert false
+
+let rec getFirst reads writes = function
+  | (_, Call _) :: _  | [] -> []
+  | (s, exp) :: exps ->
+      let read = getRead exp in
+      let write = getWrite exp in
+      if (not (S.is_empty (S.inter (S.union reads writes) write))) ||
+         (not (S.is_empty (S.inter writes read))) then
+        getFirst (S.union read reads) (S.union write writes) exps
+      else
+        (s, exp) :: (getFirst (S.union read reads) (S.union write writes)) exps
 
 let inCount = ref M.empty
 
