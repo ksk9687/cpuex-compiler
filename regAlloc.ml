@@ -255,6 +255,7 @@ let h { name = x; args = xs; body = e; ret = t } =
   );
   let data = M.find x !fundata in
   Format.eprintf "%s%s(%s)@." (if t = Type.Unit then "" else data.ret_reg ^ " = ") (Id.name x) (String.concat ", " data.arg_regs);
+  Format.eprintf "(%s)@." (String.concat ", " (List.map (fun x -> Id.name x) xs));
   Format.eprintf "$ra = %s (%s)@." data.reg_ra (if data.need_ra then "save" else "non_save");
   let regenv = List.fold_left2
     (fun env x r -> M.add x r env

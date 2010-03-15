@@ -61,18 +61,14 @@ let get_use_regs x = (M.find x !fundata).use_regs
 
 let seq(e1, e2) = Let((Id.gentmp Type.Unit, Type.Unit), e1, e2)
 
-
-let niregs = 31
-let nfregs = 21
+let niregs = 32
+let nfregs = 26
 let nig = 5
-let nfg = 22
-let nfig = 14
-let nfc = 20
-let nra = 10
-let check () =
-  if niregs + nig + nfig + nra + 4 <> 64 then assert false
-  else if nfregs + nfg + nfc + 1 <> 64 then assert false
-  else ()
+let nfg = 20
+let nfig = 15
+let nfc = 17
+let nra = 8
+let _ = assert (niregs + nig + nfig + nra + 4 = 64 && nfregs + nfg + nfc + 1 = 64)
 let iregs = Array.init niregs (fun i -> Printf.sprintf "$i%d" (i + 1))
 let fregs = Array.init nfregs (fun i -> Printf.sprintf "$f%d" (i + 1))
 let alliregs = Array.to_list iregs
@@ -89,8 +85,8 @@ let reg_fgs = Array.to_list (Array.init nfg (fun i -> Printf.sprintf "$fg%d" i))
 let reg_figs = Array.to_list (Array.init nfig (fun i -> Printf.sprintf "$fig%d" i))
 let reg_fcs = Array.to_list (Array.init nfc (fun i -> Printf.sprintf "$fc%d" i))
 let reg_ras = reg_ra :: Array.to_list (Array.init (nra - 1) (fun i -> Printf.sprintf "$ra%d" (i + 1)))
-let allregs = alliregs @ allfregs @ reg_igs @ reg_figs @ reg_fgs @ reg_ras 
-let is_ireg x = List.mem x (reg_tmp :: reg_sp :: reg_hp :: reg_i0 :: alliregs @ reg_igs @ reg_ras @ reg_figs)
+let allregs = alliregs @ allfregs @ reg_igs @ reg_fgs @ reg_igs @ reg_figs @ reg_ras
+let is_ireg x = List.mem x (reg_tmp :: reg_sp :: reg_hp :: reg_i0 :: alliregs @ reg_igs @ reg_figs @ reg_ras)
 let is_freg x = List.mem x (reg_f0 :: allfregs @ reg_fgs @ reg_fcs)
 
 let output_header oc =
@@ -134,8 +130,8 @@ let output_fun_header oc x name =
   Printf.fprintf oc "# [%s]\n" (out alliregs data.use_regs);
   Printf.fprintf oc "# [%s]\n" (out allfregs data.use_regs);
   Printf.fprintf oc "# [%s]\n" (out reg_igs data.use_regs);
-  Printf.fprintf oc "# [%s]\n" (out reg_figs data.use_regs);
   Printf.fprintf oc "# [%s]\n" (out reg_fgs data.use_regs);
+  Printf.fprintf oc "# [%s]\n" (out reg_figs data.use_regs);
   Printf.fprintf oc "# [%s]\n" (out reg_ras data.use_regs);
   Printf.fprintf oc "######################################################################\n"
 

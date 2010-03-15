@@ -195,4 +195,5 @@ let f e =
   with Unify _ -> failwith "top level does not have type unit"); *)
   ignore(g BuiltIn.builtInEnv e);
   extenv := M.map deref_typ !extenv;
+  extenv := M.map (Type.remove_len true) !extenv;
   deref_term e

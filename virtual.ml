@@ -61,9 +61,9 @@ let rec g env = function
         ) [] ys in
       Ans(CallDir(x, xs))
   | Closure.Tuple(xs) ->
-      let t = Type.Tuple(List.map (fun x -> M.find x env) xs) in
+      let t = Type.remove_len true (Type.Tuple(List.map (fun x -> M.find x env) xs)) in
       let y = Id.genid "t" in
-      let (size, ps) = List.assoc t !Expand.expandEnv in
+      let (size, ps) = Expand.get t in
       let e = List.fold_right2
         (fun (p, n, b) x e ->
           if b then
@@ -78,8 +78,8 @@ let rec g env = function
       Let((y, t), Mov(reg_hp),
           Let((reg_hp, Type.Int), Add(reg_hp, C(size)), e))
   | Closure.LetTuple(xts, y, e2) ->
-      let t = M.find y env in
-      let (size, ps) = List.assoc t !Expand.expandEnv in
+      let t = Type.remove_len true (M.find y env) in
+      let (size, ps) = Expand.get t in
       let s = Closure.fv e2 in
       List.fold_right2
         (fun (p, n, b) (x, t) e ->
@@ -91,7 +91,7 @@ let rec g env = function
       (match M.find x env with
       | Type.Array(Type.Unit, _) -> Ans(Nop)
       | Type.Array(_) -> Ans(Ld(V(x), V(y)))
-      | _ -> assert false)
+      | t -> Format.eprintf "%s: %s@." (Type.string_of_t t) x; assert false)
   | Closure.Put(x, y, z) ->
       (match M.find x env with
       | Type.Array(Type.Unit, _) -> Ans(Nop)

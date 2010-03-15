@@ -4,8 +4,6 @@ let off = ref false
 
 let expandEnv = ref []
 
-let rec g e = e
-
 let rec init ts =
   let (size, ps) = List.fold_left
     (fun (p, ps) t ->
@@ -13,6 +11,17 @@ let rec init ts =
         | _ -> (p + 1, ps @ [p, 1, false])
     ) (0, []) ts in
   (size, ps)
+
+let get t =
+  try List.assoc t !expandEnv
+  with Not_found ->
+    Format.eprintf "Expand: %s@." (Type.string_of_t t);
+    match t with
+      | Type.Tuple(ts) ->
+          let v = init ts in
+          expandEnv := (t, v) :: !expandEnv;
+          v
+      | _ -> assert false
 
 let rec expand ts =
   let (size, ps) = List.fold_left
@@ -28,8 +37,25 @@ let rec expand ts =
     ) (0, []) ts in
   (size, ps)
 
-let rec check = function
+let rec check env = function
   | Let((x, t), e1, e2) ->
+      check env e1;
+      check (M.add x t env) e2
+  | LetRec({ name = (x, t); args = xts; body = e1 }, e2) ->
+(*      Format.eprintf "%s: %s@." x (Type.string_of_t t);*)
+      check (M.add_list xts env) e1;
+      check (M.add x t env) e2
+  | Tuple(xs) ->
+      let ts = List.map (fun x -> M.find x env) xs in
+      let t = Type.remove_len true (Type.Tuple(ts)) in
+      if not (List.mem_assoc t !expandEnv) then (
+        if !off then
+          expandEnv := (t, init ts) :: !expandEnv
+        else
+          expandEnv := (t, expand ts) :: !expandEnv
+      )
+  | LetTuple(xts, y, e) ->
+      let t = Type.remove_len true (M.find y env) in
       (match t with
         | Type.Tuple(ts) when not (List.mem_assoc t !expandEnv) ->
             if !off then
@@ -37,13 +63,7 @@ let rec check = function
             else
               expandEnv := (t, expand ts) :: !expandEnv;
         | _ -> ());
-      check e1;
-      check e2
-  | LetRec({body = e1}, e2) ->
-      check e1;
-      check e2
-  | LetTuple(xts, _, e) ->
-      check e
+      check (M.add_list xts env) e
   | _ -> ()
 
 let f e =
@@ -52,7 +72,7 @@ let f e =
       Format.eprintf "%s: %s@." x (Type.string_of_t t)
     ) !Typing.extenv;
   expandEnv := [];
-  check e;
+  check M.empty e;
   List.iter
     (fun (t, (_, ps)) ->
       let ss = List.map

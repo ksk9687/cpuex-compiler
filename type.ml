@@ -35,3 +35,9 @@ let rec string_of_t = function
 		match !t' with
 			| None -> "None"
 			| Some(t) -> string_of_t t
+
+let rec remove_len len = function
+  | Fun(t1s, t2) -> Fun(List.map (remove_len false) t1s, (remove_len false) t2)
+  | Tuple(ts) -> Tuple(List.map (remove_len false) ts)
+  | Array(t, i) -> Array(remove_len true t, if len then Variable else i)
+  | t -> t

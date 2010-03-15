@@ -106,7 +106,7 @@
 # 		↑　ここまで macro.s
 #
 ######################################################################
-#######################################################################
+######################################################################
 #
 # 		↓　ここから lib_asm.s
 #
@@ -221,8 +221,8 @@ ext_int_of_float:
 	neg $i1, $i1
 	jr $tmp
 FTOI_MAIN:
-#	load [FLOAT_HALF], $f3
-#	fadd $f2, $f3, $f2
+	load [FLOAT_HALF], $f3
+	fadd $f2, $f3, $f2
 	load [FLOAT_MAGICF], $f3
 	load [FLOAT_MAGICFHX], $i2
 	bge $f2, $f3, FTOI_BIG
@@ -323,40 +323,16 @@ ext_create_array_float:
 .end create_array
 
 ######################################################################
-# 三角関数用テーブル
-######################################################################
-ext_atan_table:
-	.float 0.785398163397448279
-	.float 0.463647609000806094
-	.float 0.244978663126864143
-	.float 0.124354994546761438
-	.float 0.06241880999595735
-	.float 0.0312398334302682774
-	.float 0.0156237286204768313
-	.float 0.00781234106010111114
-	.float 0.00390623013196697176
-	.float 0.00195312251647881876
-	.float 0.000976562189559319459
-	.float 0.00048828121119489829
-	.float 0.000244140620149361771
-	.float 0.000122070311893670208
-	.float 6.10351561742087726e-05
-	.float 3.05175781155260957e-05
-	.float 1.52587890613157615e-05
-	.float 7.62939453110197e-06
-	.float 3.81469726560649614e-06
-	.float 1.90734863281018696e-06
-	.float 9.53674316405960844e-07
-	.float 4.76837158203088842e-07
-	.float 2.38418579101557974e-07
-	.float 1.19209289550780681e-07
-	.float 5.96046447753905522e-08
-
-######################################################################
 #
 # 		↑　ここまで lib_asm.s
 #
 ######################################################################
+######################################################################
+#
+# 		↓　ここから math.s
+#
+######################################################################
+
 f._177:	.float  1.5707963268E+00
 f._176:	.float  6.2831853072E+00
 f._175:	.float  1.5915494309E-01
@@ -686,6 +662,12 @@ ext_cos:
 	fsub    $f1, $f2, $f2
 	b       ext_sin
 .end cos
+
+######################################################################
+#
+# 		↑　ここまで math.s
+#
+######################################################################
 ext_n_objects:
 	.skip	1
 ext_objects:
@@ -749,205 +731,197 @@ ext_reflections:
 	.skip	180
 ext_n_reflections:
 	.skip	1
-.define $ig0 $i32
-.define $i32 orz
-.define $ig1 $i33
+.define $ig0 $i33
 .define $i33 orz
-.define $ig2 $i34
+.define $ig1 $i34
 .define $i34 orz
-.define $ig3 $i35
+.define $ig2 $i35
 .define $i35 orz
-.define $ig4 $i36
+.define $ig3 $i36
 .define $i36 orz
-.define $fig0 $i37
+.define $ig4 $i37
 .define $i37 orz
-.define $fig1 $i38
+.define $fig0 $i38
 .define $i38 orz
-.define $fig2 $i39
+.define $fig1 $i39
 .define $i39 orz
-.define $fig3 $i40
+.define $fig2 $i40
 .define $i40 orz
-.define $fig4 $i41
+.define $fig3 $i41
 .define $i41 orz
-.define $fig5 $i42
+.define $fig4 $i42
 .define $i42 orz
-.define $fig6 $i43
+.define $fig5 $i43
 .define $i43 orz
-.define $fig7 $i44
+.define $fig6 $i44
 .define $i44 orz
-.define $fig8 $i45
+.define $fig7 $i45
 .define $i45 orz
-.define $fig9 $i46
+.define $fig8 $i46
 .define $i46 orz
-.define $fig10 $i47
+.define $fig9 $i47
 .define $i47 orz
-.define $fig11 $i48
+.define $fig10 $i48
 .define $i48 orz
-.define $fig12 $i49
+.define $fig11 $i49
 .define $i49 orz
-.define $fig13 $i50
+.define $fig12 $i50
 .define $i50 orz
-.define $fg0 $f22
-.define $f22 orz
-.define $fg1 $f23
-.define $f23 orz
-.define $fg2 $f24
-.define $f24 orz
-.define $fg3 $f25
-.define $f25 orz
-.define $fg4 $f26
-.define $f26 orz
-.define $fg5 $f27
-.define $f27 orz
-.define $fg6 $f28
-.define $f28 orz
-.define $fg7 $f29
-.define $f29 orz
-.define $fg8 $f30
-.define $f30 orz
-.define $fg9 $f31
-.define $f31 orz
-.define $fg10 $f32
-.define $f32 orz
-.define $fg11 $f33
-.define $f33 orz
-.define $fg12 $f34
-.define $f34 orz
-.define $fg13 $f35
-.define $f35 orz
-.define $fg14 $f36
-.define $f36 orz
-.define $fg15 $f37
-.define $f37 orz
-.define $fg16 $f38
-.define $f38 orz
-.define $fg17 $f39
-.define $f39 orz
-.define $fg18 $f40
-.define $f40 orz
-.define $fg19 $f41
-.define $f41 orz
-.define $fg20 $f42
-.define $f42 orz
-.define $fg21 $f43
-.define $f43 orz
-.define $fc0 $f44
-.define $f44 orz
-.define $fc1 $f45
-.define $f45 orz
-.define $fc2 $f46
-.define $f46 orz
-.define $fc3 $f47
-.define $f47 orz
-.define $fc4 $f48
-.define $f48 orz
-.define $fc5 $f49
-.define $f49 orz
-.define $fc6 $f50
-.define $f50 orz
-.define $fc7 $f51
-.define $f51 orz
-.define $fc8 $f52
-.define $f52 orz
-.define $fc9 $f53
-.define $f53 orz
-.define $fc10 $f54
-.define $f54 orz
-.define $fc11 $f55
-.define $f55 orz
-.define $fc12 $f56
-.define $f56 orz
-.define $fc13 $f57
-.define $f57 orz
-.define $fc14 $f58
-.define $f58 orz
-.define $fc15 $f59
-.define $f59 orz
-.define $fc16 $f60
-.define $f60 orz
-.define $fc17 $f61
-.define $f61 orz
-.define $fc18 $f62
-.define $f62 orz
-.define $fc19 $f63
-.define $f63 orz
-.define $ra1 $i51
+.define $fig13 $i51
 .define $i51 orz
-.define $ra2 $i52
+.define $fig14 $i52
 .define $i52 orz
-.define $ra3 $i53
+.define $fg0 $f27
+.define $f27 orz
+.define $fg1 $f28
+.define $f28 orz
+.define $fg2 $f29
+.define $f29 orz
+.define $fg3 $f30
+.define $f30 orz
+.define $fg4 $f31
+.define $f31 orz
+.define $fg5 $f32
+.define $f32 orz
+.define $fg6 $f33
+.define $f33 orz
+.define $fg7 $f34
+.define $f34 orz
+.define $fg8 $f35
+.define $f35 orz
+.define $fg9 $f36
+.define $f36 orz
+.define $fg10 $f37
+.define $f37 orz
+.define $fg11 $f38
+.define $f38 orz
+.define $fg12 $f39
+.define $f39 orz
+.define $fg13 $f40
+.define $f40 orz
+.define $fg14 $f41
+.define $f41 orz
+.define $fg15 $f42
+.define $f42 orz
+.define $fg16 $f43
+.define $f43 orz
+.define $fg17 $f44
+.define $f44 orz
+.define $fg18 $f45
+.define $f45 orz
+.define $fg19 $f46
+.define $f46 orz
+.define $fc0 $f47
+.define $f47 orz
+.define $fc1 $f48
+.define $f48 orz
+.define $fc2 $f49
+.define $f49 orz
+.define $fc3 $f50
+.define $f50 orz
+.define $fc4 $f51
+.define $f51 orz
+.define $fc5 $f52
+.define $f52 orz
+.define $fc6 $f53
+.define $f53 orz
+.define $fc7 $f54
+.define $f54 orz
+.define $fc8 $f55
+.define $f55 orz
+.define $fc9 $f56
+.define $f56 orz
+.define $fc10 $f57
+.define $f57 orz
+.define $fc11 $f58
+.define $f58 orz
+.define $fc12 $f59
+.define $f59 orz
+.define $fc13 $f60
+.define $f60 orz
+.define $fc14 $f61
+.define $f61 orz
+.define $fc15 $f62
+.define $f62 orz
+.define $fc16 $f63
+.define $f63 orz
+.define $ra1 $i53
 .define $i53 orz
-.define $ra4 $i54
+.define $ra2 $i54
 .define $i54 orz
-.define $ra5 $i55
+.define $ra3 $i55
 .define $i55 orz
-.define $ra6 $i56
+.define $ra4 $i56
 .define $i56 orz
-.define $ra7 $i57
+.define $ra5 $i57
 .define $i57 orz
-.define $ra8 $i58
+.define $ra6 $i58
 .define $i58 orz
-.define $ra9 $i59
+.define $ra7 $i59
 .define $i59 orz
-f.22159:	.float  -6.4000000000E+01
-f.22158:	.float  -2.0000000000E+02
-f.22157:	.float  2.0000000000E+02
-f.22137:	.float  -5.0000000000E-01
-f.22136:	.float  7.0000000000E-01
-f.22135:	.float  -3.0000000000E-01
-f.22134:	.float  -1.0000000000E-01
-f.22133:	.float  2.0000000000E-01
-f.22132:	.float  9.0000000000E-01
-f.22062:	.float  1.5000000000E+02
-f.22061:	.float  -1.5000000000E+02
-f.22060:	.float  6.6666666667E-03
-f.22059:	.float  -6.6666666667E-03
-f.22058:	.float  -2.0000000000E+00
-f.22057:	.float  3.9062500000E-03
-f.22056:	.float  2.5600000000E+02
-f.22055:	.float  1.0000000000E+08
-f.22054:	.float  1.0000000000E+09
-f.22053:	.float  1.0000000000E+01
-f.22052:	.float  5.0000000000E-02
-f.22051:	.float  2.0000000000E+01
-f.22050:	.float  2.5000000000E-01
-f.22049:	.float  2.5500000000E+02
-f.22048:	.float  1.0000000000E-01
-f.22047:	.float  8.5000000000E+02
-f.22046:	.float  1.5000000000E-01
-f.22045:	.float  9.5492964444E+00
-f.22044:	.float  3.1830988148E-01
-f.22043:	.float  3.1415927000E+00
-f.22042:	.float  3.0000000000E+01
-f.22041:	.float  1.5000000000E+01
-f.22040:	.float  1.0000000000E-04
-f.22039:	.float  -1.0000000000E-01
-f.22038:	.float  1.0000000000E-02
-f.22037:	.float  -2.0000000000E-01
-f.22036:	.float  5.0000000000E-01
-f.22035:	.float  1.0000000000E+00
-f.22034:	.float  -1.0000000000E+00
-f.22033:	.float  2.0000000000E+00
-f.21990:	.float  1.7453293000E-02
+f.28102:	.float  -6.4000000000E+01
+f.28101:	.float  -2.0000000000E+02
+f.28100:	.float  2.0000000000E+02
+f.28080:	.float  -5.0000000000E-01
+f.28079:	.float  7.0000000000E-01
+f.28078:	.float  -3.0000000000E-01
+f.28077:	.float  -1.0000000000E-01
+f.28076:	.float  9.0000000000E-01
+f.28075:	.float  2.0000000000E-01
+f.28005:	.float  6.6666666667E-03
+f.28004:	.float  1.5000000000E+02
+f.28003:	.float  -6.6666666667E-03
+f.28002:	.float  -1.5000000000E+02
+f.28001:	.float  -2.0000000000E+00
+f.28000:	.float  3.9062500000E-03
+f.27999:	.float  2.5600000000E+02
+f.27998:	.float  2.0000000000E+01
+f.27997:	.float  5.0000000000E-02
+f.27996:	.float  2.5000000000E-01
+f.27995:	.float  1.0000000000E-01
+f.27994:	.float  1.0000000000E+01
+f.27993:	.float  8.5000000000E+02
+f.27992:	.float  3.3333333333E+00
+f.27991:	.float  3.0000000000E-01
+f.27990:	.float  2.5500000000E+02
+f.27989:	.float  1.5000000000E-01
+f.27988:	.float  9.5492964444E+00
+f.27987:	.float  3.1830988148E-01
+f.27986:	.float  3.1415927000E+00
+f.27985:	.float  3.0000000000E+01
+f.27984:	.float  1.5000000000E+01
+f.27983:	.float  1.0000000000E-04
+f.27982:	.float  1.0000000000E+08
+f.27981:	.float  1.0000000000E+09
+f.27980:	.float  -1.0000000000E-01
+f.27979:	.float  1.0000000000E-02
+f.27978:	.float  -2.0000000000E-01
+f.27977:	.float  5.0000000000E-01
+f.27976:	.float  2.0000000000E+00
+f.27975:	.float  1.0000000000E+00
+f.27974:	.float  -1.0000000000E+00
+f.27931:	.float  1.7453293000E-02
 
 ######################################################################
-# $i1 = read_nth_object($i6)
+# read_object($i6)
 # $ra = $ra1
-# [$i1 - $i5, $i7 - $i15]
-# [$f1 - $f21]
-# []
+# [$i1 - $i16]
+# [$f1 - $f17]
+# [$ig0]
 # []
 # []
 # [$ra]
 ######################################################################
 .align 2
-.begin read_nth_object
-read_nth_object.2719:
+.begin read_object
+read_object.2721:
+	bge     $i6, 60, bge.28113
+bl.28113:
 	call    ext_read_int
 .count move_ret
 	mov     $i1, $i7
-	be      $i7, -1, be.22200
-bne.22200:
+	be      $i7, -1, be.28114
+bne.28114:
 	call    ext_read_int
 .count move_ret
 	mov     $i1, $i8
@@ -955,10 +929,10 @@ bne.22200:
 .count move_ret
 	mov     $i1, $i9
 	call    ext_read_int
-.count move_ret
-	mov     $i1, $i10
 .count move_args
 	mov     $f0, $f2
+.count move_ret
+	mov     $i1, $i10
 	li      3, $i2
 	call    ext_create_array_float
 .count move_ret
@@ -982,21 +956,12 @@ bne.22200:
 	call    ext_read_float
 	store   $f1, [$i12 + 2]
 	call    ext_read_float
-.count move_ret
-	mov     $f1, $f3
+.count move_args
+	mov     $f0, $f2
 	li      2, $i2
-.count move_args
-	mov     $f0, $f2
-	call    ext_create_array_float
-.count move_ret
-	mov     $i1, $i13
-	call    ext_read_float
-	store   $f1, [$i13 + 0]
-	call    ext_read_float
-	store   $f1, [$i13 + 1]
-	li      3, $i2
-.count move_args
-	mov     $f0, $f2
+	ble     $f0, $f1, ble.28115
+bg.28115:
+	li      1, $i13
 	call    ext_create_array_float
 .count move_ret
 	mov     $i1, $i14
@@ -1004,251 +969,200 @@ bne.22200:
 	store   $f1, [$i14 + 0]
 	call    ext_read_float
 	store   $f1, [$i14 + 1]
-	call    ext_read_float
-	store   $f1, [$i14 + 2]
 	li      3, $i2
 .count move_args
 	mov     $f0, $f2
 	call    ext_create_array_float
 .count move_ret
 	mov     $i1, $i15
-	be      $i10, 0, be.22201
-bne.22201:
 	call    ext_read_float
-	fmul    $f1, $fc16, $f1
 	store   $f1, [$i15 + 0]
 	call    ext_read_float
-	fmul    $f1, $fc16, $f1
 	store   $f1, [$i15 + 1]
 	call    ext_read_float
-	fmul    $f1, $fc16, $f1
-	li      4, $i2
-.count move_args
-	mov     $f0, $f2
 	store   $f1, [$i15 + 2]
-	call    ext_create_array_float
-	ble     $f0, $f3, ble.22202
-.count dual_jmp
-	b       bg.22202
-be.22201:
-	li      4, $i2
+	li      3, $i2
 .count move_args
 	mov     $f0, $f2
 	call    ext_create_array_float
-	ble     $f0, $f3, ble.22202
-bg.22202:
-	li      1, $i2
-	be      $i8, 2, be.22203
+.count move_ret
+	mov     $i1, $i16
+	be      $i10, 0, be.28116
 .count dual_jmp
-	b       bne.22203
-ble.22202:
-	li      0, $i2
-	be      $i8, 2, be.22203
-bne.22203:
-	mov     $hp, $i4
-	mov     $i2, $i3
-	store   $i7, [$i4 + 0]
+	b       bne.28116
+ble.28115:
+	li      0, $i13
+	call    ext_create_array_float
+.count move_ret
+	mov     $i1, $i14
+	call    ext_read_float
+	store   $f1, [$i14 + 0]
+	call    ext_read_float
+	store   $f1, [$i14 + 1]
+	li      3, $i2
+.count move_args
+	mov     $f0, $f2
+	call    ext_create_array_float
+.count move_ret
+	mov     $i1, $i15
+	call    ext_read_float
+	store   $f1, [$i15 + 0]
+	call    ext_read_float
+	store   $f1, [$i15 + 1]
+	call    ext_read_float
+	store   $f1, [$i15 + 2]
+	li      3, $i2
+.count move_args
+	mov     $f0, $f2
+	call    ext_create_array_float
+.count move_ret
+	mov     $i1, $i16
+	be      $i10, 0, be.28116
+bne.28116:
+	call    ext_read_float
+.count load_float
+	load    [f.27931], $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, [$i16 + 0]
+	call    ext_read_float
+	fmul    $f1, $f2, $f1
+	store   $f1, [$i16 + 1]
+	call    ext_read_float
+	fmul    $f1, $f2, $f1
+	store   $f1, [$i16 + 2]
+	be      $i8, 2, be.28117
+.count dual_jmp
+	b       bne.28117
+be.28116:
+	be      $i8, 2, be.28117
+bne.28117:
+	mov     $i13, $i4
+.count move_args
+	mov     $f0, $f2
+	li      4, $i2
+	call    ext_create_array_float
+	mov     $hp, $i2
+	store   $i7, [$i2 + 0]
 	add     $hp, 23, $hp
-	store   $i8, [$i4 + 1]
-	store   $i9, [$i4 + 2]
-	store   $i10, [$i4 + 3]
-	load    [$i11 + 0], $i5
-	store   $i5, [$i4 + 4]
-	load    [$i11 + 1], $i5
-	store   $i5, [$i4 + 5]
-	load    [$i11 + 2], $i5
-	add     $i4, 4, $i11
-	store   $i5, [$i4 + 6]
-	load    [$i12 + 0], $i5
-	store   $i5, [$i4 + 7]
-	load    [$i12 + 1], $i5
-	store   $i5, [$i4 + 8]
-	load    [$i12 + 2], $i5
-	store   $i5, [$i4 + 9]
-	store   $i3, [$i4 + 10]
-	load    [$i13 + 0], $i3
-	store   $i3, [$i4 + 11]
-	load    [$i13 + 1], $i3
-	store   $i3, [$i4 + 12]
+	store   $i8, [$i2 + 1]
+	store   $i9, [$i2 + 2]
+	store   $i10, [$i2 + 3]
+	load    [$i11 + 0], $i3
+	store   $i3, [$i2 + 4]
+	load    [$i11 + 1], $i3
+	store   $i3, [$i2 + 5]
+	load    [$i11 + 2], $i3
+	add     $i2, 4, $i11
+	store   $i3, [$i2 + 6]
+	load    [$i12 + 0], $i3
+	store   $i3, [$i2 + 7]
+	load    [$i12 + 1], $i3
+	store   $i3, [$i2 + 8]
+	load    [$i12 + 2], $i3
+	store   $i3, [$i2 + 9]
+	store   $i4, [$i2 + 10]
 	load    [$i14 + 0], $i3
-	store   $i3, [$i4 + 13]
+	store   $i3, [$i2 + 11]
 	load    [$i14 + 1], $i3
-	store   $i3, [$i4 + 14]
-	load    [$i14 + 2], $i3
-	store   $i3, [$i4 + 15]
+	store   $i3, [$i2 + 12]
 	load    [$i15 + 0], $i3
-	store   $i3, [$i4 + 16]
+	store   $i3, [$i2 + 13]
 	load    [$i15 + 1], $i3
-	store   $i3, [$i4 + 17]
+	store   $i3, [$i2 + 14]
 	load    [$i15 + 2], $i3
-	add     $i4, 16, $i15
-	store   $i3, [$i4 + 18]
+	store   $i3, [$i2 + 15]
+	load    [$i16 + 0], $i3
+	store   $i3, [$i2 + 16]
+	load    [$i16 + 1], $i3
+	store   $i3, [$i2 + 17]
+	load    [$i16 + 2], $i3
+	add     $i2, 16, $i16
+	store   $i3, [$i2 + 18]
 	load    [$i1 + 0], $i3
-	store   $i3, [$i4 + 19]
+	store   $i3, [$i2 + 19]
 	load    [$i1 + 1], $i3
-	store   $i3, [$i4 + 20]
+	store   $i3, [$i2 + 20]
 	load    [$i1 + 2], $i3
-	add     $i4, 19, $i1
-	store   $i3, [$i4 + 21]
-	store   $i1, [$i4 + 22]
-	store   $i4, [ext_objects + $i6]
-	be      $i8, 3, be.22204
+	add     $i2, 19, $i1
+	store   $i3, [$i2 + 21]
+	store   $i1, [$i2 + 22]
+	store   $i2, [ext_objects + $i6]
+	be      $i8, 3, be.28118
 .count dual_jmp
-	b       bne.22204
-be.22203:
-	mov     $hp, $i4
-	store   $i7, [$i4 + 0]
-	li      1, $i3
-	store   $i8, [$i4 + 1]
+	b       bne.28118
+be.28117:
+	li      1, $i4
+.count move_args
+	mov     $f0, $f2
+	li      4, $i2
+	call    ext_create_array_float
+	mov     $hp, $i2
+	store   $i7, [$i2 + 0]
 	add     $hp, 23, $hp
-	store   $i9, [$i4 + 2]
-	store   $i10, [$i4 + 3]
-	load    [$i11 + 0], $i5
-	store   $i5, [$i4 + 4]
-	load    [$i11 + 1], $i5
-	store   $i5, [$i4 + 5]
-	load    [$i11 + 2], $i5
-	add     $i4, 4, $i11
-	store   $i5, [$i4 + 6]
-	load    [$i12 + 0], $i5
-	store   $i5, [$i4 + 7]
-	load    [$i12 + 1], $i5
-	store   $i5, [$i4 + 8]
-	load    [$i12 + 2], $i5
-	store   $i5, [$i4 + 9]
-	store   $i3, [$i4 + 10]
-	load    [$i13 + 0], $i3
-	store   $i3, [$i4 + 11]
-	load    [$i13 + 1], $i3
-	store   $i3, [$i4 + 12]
+	store   $i8, [$i2 + 1]
+	store   $i9, [$i2 + 2]
+	store   $i10, [$i2 + 3]
+	load    [$i11 + 0], $i3
+	store   $i3, [$i2 + 4]
+	load    [$i11 + 1], $i3
+	store   $i3, [$i2 + 5]
+	load    [$i11 + 2], $i3
+	add     $i2, 4, $i11
+	store   $i3, [$i2 + 6]
+	load    [$i12 + 0], $i3
+	store   $i3, [$i2 + 7]
+	load    [$i12 + 1], $i3
+	store   $i3, [$i2 + 8]
+	load    [$i12 + 2], $i3
+	store   $i3, [$i2 + 9]
+	store   $i4, [$i2 + 10]
 	load    [$i14 + 0], $i3
-	store   $i3, [$i4 + 13]
+	store   $i3, [$i2 + 11]
 	load    [$i14 + 1], $i3
-	store   $i3, [$i4 + 14]
-	load    [$i14 + 2], $i3
-	store   $i3, [$i4 + 15]
+	store   $i3, [$i2 + 12]
 	load    [$i15 + 0], $i3
-	store   $i3, [$i4 + 16]
+	store   $i3, [$i2 + 13]
 	load    [$i15 + 1], $i3
-	store   $i3, [$i4 + 17]
+	store   $i3, [$i2 + 14]
 	load    [$i15 + 2], $i3
-	add     $i4, 16, $i15
-	store   $i3, [$i4 + 18]
+	store   $i3, [$i2 + 15]
+	load    [$i16 + 0], $i3
+	store   $i3, [$i2 + 16]
+	load    [$i16 + 1], $i3
+	store   $i3, [$i2 + 17]
+	load    [$i16 + 2], $i3
+	add     $i2, 16, $i16
+	store   $i3, [$i2 + 18]
 	load    [$i1 + 0], $i3
-	store   $i3, [$i4 + 19]
+	store   $i3, [$i2 + 19]
 	load    [$i1 + 1], $i3
-	store   $i3, [$i4 + 20]
+	store   $i3, [$i2 + 20]
 	load    [$i1 + 2], $i3
-	add     $i4, 19, $i1
-	store   $i3, [$i4 + 21]
-	store   $i1, [$i4 + 22]
-	store   $i4, [ext_objects + $i6]
-	bne     $i8, 3, bne.22204
-be.22204:
-	load    [$i11 + 0], $f1
-	be      $f1, $f0, be.22206
-bne.22205:
-	bne     $f1, $f0, bne.22206
-be.22206:
-	mov     $f0, $f1
-	store   $f1, [$i11 + 0]
-	load    [$i11 + 1], $f1
-	be      $f1, $f0, be.22209
+	add     $i2, 19, $i1
+	store   $i3, [$i2 + 21]
+	store   $i1, [$i2 + 22]
+	store   $i2, [ext_objects + $i6]
+	be      $i8, 3, be.28118
+bne.28118:
+	be      $i8, 2, be.28128
+bne.28128:
+	be      $i10, 0, be.28132
 .count dual_jmp
-	b       bne.22208
-bne.22206:
-	ble     $f1, $f0, ble.22207
-bg.22207:
-	fmul    $f1, $f1, $f1
-	finv    $f1, $f1
-	store   $f1, [$i11 + 0]
-	load    [$i11 + 1], $f1
-	be      $f1, $f0, be.22209
-.count dual_jmp
-	b       bne.22208
-ble.22207:
-	fmul    $f1, $f1, $f1
-	finv_n  $f1, $f1
-	store   $f1, [$i11 + 0]
-	load    [$i11 + 1], $f1
-	be      $f1, $f0, be.22209
-bne.22208:
-	bne     $f1, $f0, bne.22209
-be.22209:
-	mov     $f0, $f1
-	store   $f1, [$i11 + 1]
-	load    [$i11 + 2], $f1
-	be      $f1, $f0, be.22211
-.count dual_jmp
-	b       bne.22211
-bne.22209:
-	ble     $f1, $f0, ble.22210
-bg.22210:
-	fmul    $f1, $f1, $f1
-	finv    $f1, $f1
-	store   $f1, [$i11 + 1]
-	load    [$i11 + 2], $f1
-	be      $f1, $f0, be.22211
-.count dual_jmp
-	b       bne.22211
-ble.22210:
-	fmul    $f1, $f1, $f1
-	finv_n  $f1, $f1
-	store   $f1, [$i11 + 1]
-	load    [$i11 + 2], $f1
-	bne     $f1, $f0, bne.22211
-be.22211:
-	store   $f0, [$i11 + 2]
-	be      $i10, 0, be.22221
-.count dual_jmp
-	b       bne.22221
-bne.22211:
-	fmul    $f1, $f1, $f2
-	finv    $f2, $f2
-	bne     $f1, $f0, bne.22213
-be.22213:
-	mov     $f0, $f1
-	fmul    $f1, $f2, $f1
-	store   $f1, [$i11 + 2]
-	be      $i10, 0, be.22221
-.count dual_jmp
-	b       bne.22221
-bne.22213:
-	ble     $f1, $f0, ble.22214
-bg.22214:
-	mov     $fc0, $f1
-	fmul    $f1, $f2, $f1
-	store   $f1, [$i11 + 2]
-	be      $i10, 0, be.22221
-.count dual_jmp
-	b       bne.22221
-ble.22214:
-	mov     $fc12, $f1
-	fmul    $f1, $f2, $f1
-	store   $f1, [$i11 + 2]
-	be      $i10, 0, be.22221
-.count dual_jmp
-	b       bne.22221
-bne.22204:
-	be      $i8, 2, be.22216
-bne.22216:
-	be      $i10, 0, be.22221
-.count dual_jmp
-	b       bne.22221
-be.22216:
-	load    [$i11 + 0], $f1
-	load    [$i11 + 1], $f2
-	fmul    $f1, $f1, $f4
+	b       bne.28132
+be.28128:
 	load    [$i11 + 2], $f3
-	fmul    $f2, $f2, $f2
 	fmul    $f3, $f3, $f3
+	load    [$i11 + 1], $f2
+	fmul    $f2, $f2, $f2
+	load    [$i11 + 0], $f1
+	fmul    $f1, $f1, $f4
 	fadd    $f4, $f2, $f2
 	fadd    $f2, $f3, $f2
 	fsqrt   $f2, $f2
-	be      $i2, 0, be.22217
-bne.22217:
-	be      $f2, $f0, be.22218
-bne.22877:
+	be      $i13, 0, be.28129
+bne.28129:
+	be      $f2, $f0, be.28130
+bne.28721:
 	finv    $f2, $f2
 	fmul    $f1, $f2, $f1
 	store   $f1, [$i11 + 0]
@@ -1258,12 +1172,12 @@ bne.22877:
 	load    [$i11 + 2], $f1
 	fmul    $f1, $f2, $f1
 	store   $f1, [$i11 + 2]
-	be      $i10, 0, be.22221
+	be      $i10, 0, be.28132
 .count dual_jmp
-	b       bne.22221
-be.22217:
-	be      $f2, $f0, be.22218
-bne.22878:
+	b       bne.28132
+be.28129:
+	be      $f2, $f0, be.28130
+bne.28722:
 	finv_n  $f2, $f2
 	fmul    $f1, $f2, $f1
 	store   $f1, [$i11 + 0]
@@ -1273,10 +1187,10 @@ bne.22878:
 	load    [$i11 + 2], $f1
 	fmul    $f1, $f2, $f1
 	store   $f1, [$i11 + 2]
-	be      $i10, 0, be.22221
+	be      $i10, 0, be.28132
 .count dual_jmp
-	b       bne.22221
-be.22218:
+	b       bne.28132
+be.28130:
 	mov     $fc0, $f2
 	fmul    $f1, $f2, $f1
 	store   $f1, [$i11 + 0]
@@ -1286,141 +1200,236 @@ be.22218:
 	load    [$i11 + 2], $f1
 	fmul    $f1, $f2, $f1
 	store   $f1, [$i11 + 2]
-	be      $i10, 0, be.22221
-bne.22221:
-	load    [$i15 + 0], $f2
+	be      $i10, 0, be.28132
+.count dual_jmp
+	b       bne.28132
+be.28118:
+	load    [$i11 + 0], $f1
+	bne     $f1, $f0, bne.28119
+be.28119:
+	mov     $f0, $f1
+	store   $f1, [$i11 + 0]
+	load    [$i11 + 1], $f1
+	be      $f1, $f0, be.28122
+.count dual_jmp
+	b       bne.28122
+bne.28119:
+	bne     $f1, $f0, bne.28120
+be.28120:
+	fmul    $f1, $f1, $f1
+	mov     $f0, $f2
+	finv    $f1, $f1
+	fmul    $f2, $f1, $f1
+	store   $f1, [$i11 + 0]
+	load    [$i11 + 1], $f1
+	be      $f1, $f0, be.28122
+.count dual_jmp
+	b       bne.28122
+bne.28120:
+	ble     $f1, $f0, ble.28121
+bg.28121:
+	fmul    $f1, $f1, $f1
+	mov     $fc0, $f2
+	finv    $f1, $f1
+	fmul    $f2, $f1, $f1
+	store   $f1, [$i11 + 0]
+	load    [$i11 + 1], $f1
+	be      $f1, $f0, be.28122
+.count dual_jmp
+	b       bne.28122
+ble.28121:
+	fmul    $f1, $f1, $f1
+	mov     $fc6, $f2
+	finv    $f1, $f1
+	fmul    $f2, $f1, $f1
+	store   $f1, [$i11 + 0]
+	load    [$i11 + 1], $f1
+	bne     $f1, $f0, bne.28122
+be.28122:
+	mov     $f0, $f1
+	store   $f1, [$i11 + 1]
+	load    [$i11 + 2], $f1
+	be      $f1, $f0, be.28125
+.count dual_jmp
+	b       bne.28125
+bne.28122:
+	bne     $f1, $f0, bne.28123
+be.28123:
+	fmul    $f1, $f1, $f1
+	mov     $f0, $f2
+	finv    $f1, $f1
+	fmul    $f2, $f1, $f1
+	store   $f1, [$i11 + 1]
+	load    [$i11 + 2], $f1
+	be      $f1, $f0, be.28125
+.count dual_jmp
+	b       bne.28125
+bne.28123:
+	ble     $f1, $f0, ble.28124
+bg.28124:
+	fmul    $f1, $f1, $f1
+	mov     $fc0, $f2
+	finv    $f1, $f1
+	fmul    $f2, $f1, $f1
+	store   $f1, [$i11 + 1]
+	load    [$i11 + 2], $f1
+	be      $f1, $f0, be.28125
+.count dual_jmp
+	b       bne.28125
+ble.28124:
+	fmul    $f1, $f1, $f1
+	mov     $fc6, $f2
+	finv    $f1, $f1
+	fmul    $f2, $f1, $f1
+	store   $f1, [$i11 + 1]
+	load    [$i11 + 2], $f1
+	bne     $f1, $f0, bne.28125
+be.28125:
+	mov     $f0, $f1
+	store   $f1, [$i11 + 2]
+	be      $i10, 0, be.28132
+.count dual_jmp
+	b       bne.28132
+bne.28125:
+	bne     $f1, $f0, bne.28126
+be.28126:
+	fmul    $f1, $f1, $f1
+	mov     $f0, $f2
+	finv    $f1, $f1
+	fmul    $f2, $f1, $f1
+	store   $f1, [$i11 + 2]
+	be      $i10, 0, be.28132
+.count dual_jmp
+	b       bne.28132
+bne.28126:
+	ble     $f1, $f0, ble.28127
+bg.28127:
+	fmul    $f1, $f1, $f1
+	mov     $fc0, $f2
+	finv    $f1, $f1
+	fmul    $f2, $f1, $f1
+	store   $f1, [$i11 + 2]
+	be      $i10, 0, be.28132
+.count dual_jmp
+	b       bne.28132
+ble.28127:
+	fmul    $f1, $f1, $f1
+	mov     $fc6, $f2
+	finv    $f1, $f1
+	fmul    $f2, $f1, $f1
+	store   $f1, [$i11 + 2]
+	be      $i10, 0, be.28132
+bne.28132:
+	load    [$i16 + 0], $f2
 	call    ext_cos
 .count move_ret
 	mov     $f1, $f9
-	load    [$i15 + 0], $f2
+	load    [$i16 + 0], $f2
 	call    ext_sin
 .count move_ret
 	mov     $f1, $f10
-	load    [$i15 + 1], $f2
+	load    [$i16 + 1], $f2
 	call    ext_cos
 .count move_ret
 	mov     $f1, $f11
-	load    [$i15 + 1], $f2
+	load    [$i16 + 1], $f2
 	call    ext_sin
 .count move_ret
 	mov     $f1, $f12
-	load    [$i15 + 2], $f2
+	load    [$i16 + 2], $f2
 	call    ext_cos
 .count move_ret
 	mov     $f1, $f13
-	load    [$i15 + 2], $f2
+	load    [$i16 + 2], $f2
 	call    ext_sin
 	fmul    $f10, $f12, $f2
-	load    [$i11 + 0], $f3
-	fmul    $f11, $f13, $f4
-	load    [$i11 + 1], $f5
-	fmul    $f11, $f1, $f6
-	load    [$i11 + 2], $f7
-	fneg    $f12, $f8
-	li      1, $i1
-	fmul    $f4, $f4, $f14
-	fmul    $f8, $f8, $f15
-	fmul    $f6, $f6, $f16
-	fmul    $f2, $f13, $f17
-	fmul    $f9, $f1, $f18
-	fmul    $f3, $f14, $f14
-	fmul    $f7, $f15, $f15
-	fmul    $f5, $f16, $f16
+	add     $i6, 1, $i6
+	fmul    $f11, $f13, $f3
+	fmul    $f9, $f1, $f4
+	fmul    $f2, $f13, $f5
+	fmul    $f9, $f12, $f6
+	fmul    $f10, $f1, $f7
+	fsub    $f5, $f4, $f4
+	fmul    $f6, $f13, $f5
+	fmul    $f11, $f1, $f8
 	fmul    $f2, $f1, $f2
-	fsub    $f17, $f18, $f17
-	fmul    $f9, $f13, $f18
-	fmul    $f9, $f12, $f12
-	fadd    $f14, $f16, $f14
-	fmul    $f10, $f11, $f16
-	fmul    $f17, $f17, $f19
-	fadd    $f2, $f18, $f2
-	fmul    $f12, $f13, $f18
+	fmul    $f9, $f13, $f14
+	fadd    $f5, $f7, $f5
+	fmul    $f6, $f1, $f1
+	fadd    $f2, $f14, $f2
+	fmul    $f10, $f13, $f6
+	fneg    $f12, $f7
+	load    [$i11 + 2], $f12
+	fmul    $f10, $f11, $f10
+	fsub    $f1, $f6, $f1
+	fmul    $f9, $f11, $f6
+	load    [$i11 + 0], $f9
+	load    [$i11 + 1], $f11
+	fmul    $f3, $f3, $f13
+	fmul    $f8, $f8, $f14
+	fmul    $f7, $f7, $f15
+	fmul    $f9, $f13, $f13
+	fmul    $f11, $f14, $f14
+	fmul    $f12, $f15, $f15
+	fmul    $f4, $f4, $f16
+	fadd    $f13, $f14, $f13
+	fmul    $f2, $f2, $f14
+	fmul    $f9, $f16, $f16
+	fadd    $f13, $f15, $f13
+	fmul    $f11, $f14, $f14
+	store   $f13, [$i11 + 0]
+	fmul    $f10, $f10, $f15
+	fadd    $f16, $f14, $f13
+	fmul    $f12, $f15, $f14
+	fmul    $f5, $f5, $f15
+	fmul    $f1, $f1, $f16
+	fadd    $f13, $f14, $f13
+	fmul    $f9, $f15, $f14
+	store   $f13, [$i11 + 1]
+	fmul    $f11, $f16, $f15
+	fmul    $f6, $f6, $f13
 	fadd    $f14, $f15, $f14
-	fmul    $f16, $f16, $f15
-	store   $f14, [$i11 + 0]
-	fmul    $f3, $f19, $f19
-	fmul    $f2, $f2, $f20
-	fmul    $f10, $f1, $f21
-	fmul    $f7, $f15, $f14
-	fmul    $f12, $f1, $f1
-	fmul    $f10, $f13, $f10
-	fmul    $f5, $f20, $f12
-	fadd    $f18, $f21, $f13
-	fmul    $f9, $f11, $f9
-	fmul    $f3, $f17, $f11
-	fsub    $f1, $f10, $f1
-	fadd    $f19, $f12, $f10
-	fmul    $f13, $f13, $f12
-	fmul    $f9, $f9, $f15
-	fmul    $f11, $f13, $f11
-	fmul    $f1, $f1, $f18
-	fadd    $f10, $f14, $f10
-	store   $f10, [$i11 + 1]
-	fmul    $f3, $f12, $f12
-	fmul    $f7, $f15, $f14
-	fmul    $f5, $f2, $f15
-	fmul    $f5, $f18, $f18
-	fmul    $f7, $f16, $f10
+.count load_float
+	load    [f.27976], $f15
+	fmul    $f12, $f13, $f13
+	fmul    $f9, $f4, $f16
+	fmul    $f11, $f2, $f17
+	fadd    $f14, $f13, $f13
+	fmul    $f16, $f5, $f14
+	store   $f13, [$i11 + 2]
+	fmul    $f17, $f1, $f16
+	fmul    $f12, $f10, $f13
+	fadd    $f14, $f16, $f14
+	fmul    $f9, $f3, $f3
+	fmul    $f11, $f8, $f8
+	fmul    $f13, $f6, $f9
+	fmul    $f3, $f5, $f5
+	fmul    $f8, $f1, $f1
+	fadd    $f14, $f9, $f9
+	fmul    $f12, $f7, $f7
+	fadd    $f5, $f1, $f1
+	fmul    $f15, $f9, $f5
+	fmul    $f7, $f6, $f6
+	store   $f5, [$i16 + 0]
 	fmul    $f3, $f4, $f3
-	fmul    $f5, $f6, $f4
-	fadd    $f12, $f18, $f5
-	fmul    $f15, $f1, $f6
-	fmul    $f10, $f9, $f10
-	fmul    $f3, $f13, $f12
-	fmul    $f4, $f1, $f1
-	fadd    $f5, $f14, $f5
-	store   $f5, [$i11 + 2]
-	fadd    $f11, $f6, $f6
-	fmul    $f7, $f8, $f7
-	fmul    $f3, $f17, $f3
-	fmul    $f4, $f2, $f2
-	fadd    $f6, $f10, $f4
-	fadd    $f12, $f1, $f1
-	fmul    $f7, $f9, $f5
+	fmul    $f8, $f2, $f2
+	fadd    $f1, $f6, $f1
 	fadd    $f3, $f2, $f2
-	fmul    $f7, $f16, $f3
-	fmul    $fc5, $f4, $f4
-	fadd    $f1, $f5, $f1
-	store   $f4, [$i15 + 0]
+	fmul    $f7, $f10, $f3
+	fmul    $f15, $f1, $f1
 	fadd    $f2, $f3, $f2
-	fmul    $fc5, $f1, $f1
-	fmul    $fc5, $f2, $f2
-	store   $f1, [$i15 + 1]
-	store   $f2, [$i15 + 2]
-	jr      $ra1
-be.22221:
-	li      1, $i1
-	jr      $ra1
-be.22200:
-	li      0, $i1
-	jr      $ra1
-.end read_nth_object
-
-######################################################################
-# read_object($i6)
-# $ra = $ra2
-# [$i1 - $i15]
-# [$f1 - $f21]
-# [$ig0]
-# []
-# []
-# [$ra - $ra1]
-######################################################################
-.align 2
-.begin read_object
-read_object.2721:
-	bge     $i6, 60, bge.22222
-bl.22222:
-	jal     read_nth_object.2719, $ra1
-	be      $i1, 0, be.22223
-bne.22223:
+	store   $f1, [$i16 + 1]
+	fmul    $f15, $f2, $f1
+	store   $f1, [$i16 + 2]
+	b       read_object.2721
+be.28132:
 	add     $i6, 1, $i6
 	b       read_object.2721
-be.22223:
+be.28114:
 	mov     $i6, $ig0
-	jr      $ra2
-bge.22222:
-	jr      $ra2
+	jr      $ra1
+bge.28113:
+	jr      $ra1
 .end read_object
 
 ######################################################################
@@ -1443,8 +1452,8 @@ read_net_item.2725:
 .count stack_store
 	store   $i1, [$sp + 1]
 	call    ext_read_int
-	be      $i1, -1, be.22225
-bne.22225:
+	be      $i1, -1, be.28135
+bne.28135:
 .count stack_store
 	store   $i1, [$sp + 2]
 .count stack_load
@@ -1463,7 +1472,7 @@ bne.22225:
 	add     $i1, $i2, $tmp
 	store   $i3, [$tmp + 0]
 	ret     
-be.22225:
+be.28135:
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
@@ -1497,8 +1506,8 @@ read_or_network.2727:
 	li      0, $i1
 	call    read_net_item.2725
 	load    [$i1 + 0], $i2
-	be      $i2, -1, be.22229
-bne.22229:
+	be      $i2, -1, be.28139
+bne.28139:
 .count stack_store
 	store   $i1, [$sp + 2]
 .count stack_load
@@ -1517,7 +1526,7 @@ bne.22229:
 	add     $i1, $i2, $tmp
 	store   $i3, [$tmp + 0]
 	ret     
-be.22229:
+be.28139:
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
@@ -1546,998 +1555,278 @@ read_and_network.2729:
 	li      0, $i1
 	call    read_net_item.2725
 	load    [$i1 + 0], $i2
-	be      $i2, -1, be.22232
-bne.22232:
+	be      $i2, -1, be.28142
+bne.28142:
 	add     $i6, 1, $i2
 	store   $i1, [ext_and_net + $i6]
 .count move_args
 	mov     $i2, $i6
 	b       read_and_network.2729
-be.22232:
+be.28142:
 	jr      $ra1
 .end read_and_network
 
 ######################################################################
-# $i1 = solver($i1, $i2)
-# $ra = $ra
-# [$i1, $i3 - $i4]
-# [$f1 - $f17]
-# []
-# []
-# [$fg0]
-# []
-######################################################################
-.align 2
-.begin solver
-solver.2773:
-	load    [ext_objects + $i1], $i1
-	load    [$i2 + 0], $f4
-	load    [$i1 + 1], $i3
-	load    [$i1 + 9], $f1
-	load    [$i1 + 8], $f2
-	fsub    $fg19, $f1, $f1
-	load    [$i1 + 7], $f3
-	fsub    $fg18, $f2, $f2
-	fsub    $fg17, $f3, $f3
-	bne     $i3, 1, bne.22233
-be.22233:
-	be      $f4, $f0, ble.22240
-bne.22234:
-	finv    $f4, $f5
-	load    [$i1 + 4], $f6
-	load    [$i1 + 10], $i4
-	ble     $f0, $f4, ble.22235
-bg.22235:
-	be      $i4, 0, be.22236
-.count dual_jmp
-	b       bne.22879
-ble.22235:
-	be      $i4, 0, bne.22879
-be.22236:
-	mov     $f6, $f4
-	load    [$i2 + 1], $f6
-	fsub    $f4, $f3, $f4
-	load    [$i1 + 5], $f7
-	fmul    $f4, $f5, $f4
-	fmul    $f4, $f6, $f5
-	fadd_a  $f5, $f2, $f5
-	ble     $f7, $f5, ble.22240
-.count dual_jmp
-	b       bg.22239
-bne.22879:
-	fneg    $f6, $f4
-	fsub    $f4, $f3, $f4
-	load    [$i2 + 1], $f6
-	load    [$i1 + 5], $f7
-	fmul    $f4, $f5, $f4
-	fmul    $f4, $f6, $f5
-	fadd_a  $f5, $f2, $f5
-	ble     $f7, $f5, ble.22240
-bg.22239:
-	load    [$i2 + 2], $f5
-	load    [$i1 + 6], $f6
-	fmul    $f4, $f5, $f5
-	fadd_a  $f5, $f1, $f5
-	bg      $f6, $f5, bg.22240
-ble.22240:
-	load    [$i2 + 1], $f4
-	be      $f4, $f0, ble.22248
-bne.22242:
-	finv    $f4, $f5
-	load    [$i1 + 5], $f6
-	load    [$i1 + 10], $i4
-	ble     $f0, $f4, ble.22243
-bg.22243:
-	be      $i4, 0, be.22244
-.count dual_jmp
-	b       bne.22882
-ble.22243:
-	be      $i4, 0, bne.22882
-be.22244:
-	mov     $f6, $f4
-	fsub    $f4, $f2, $f4
-	load    [$i2 + 2], $f6
-	load    [$i1 + 6], $f7
-	fmul    $f4, $f5, $f4
-	fmul    $f4, $f6, $f5
-	fadd_a  $f5, $f1, $f5
-	ble     $f7, $f5, ble.22248
-.count dual_jmp
-	b       bg.22247
-bne.22882:
-	fneg    $f6, $f4
-	load    [$i2 + 2], $f6
-	fsub    $f4, $f2, $f4
-	load    [$i1 + 6], $f7
-	fmul    $f4, $f5, $f4
-	fmul    $f4, $f6, $f5
-	fadd_a  $f5, $f1, $f5
-	ble     $f7, $f5, ble.22248
-bg.22247:
-	load    [$i2 + 0], $f5
-	fmul    $f4, $f5, $f5
-	load    [$i1 + 4], $f6
-	fadd_a  $f5, $f3, $f5
-	bg      $f6, $f5, bg.22248
-ble.22248:
-	load    [$i2 + 2], $f4
-	be      $f4, $f0, ble.22264
-bne.22250:
-	load    [$i1 + 10], $i3
-	load    [$i1 + 4], $f5
-	load    [$i1 + 6], $f6
-	ble     $f0, $f4, ble.22251
-bg.22251:
-	finv    $f4, $f4
-	be      $i3, 0, be.22252
-.count dual_jmp
-	b       bne.22885
-ble.22251:
-	finv    $f4, $f4
-	be      $i3, 0, bne.22885
-be.22252:
-	fsub    $f6, $f1, $f1
-	load    [$i2 + 0], $f6
-	fmul    $f1, $f4, $f1
-	fmul    $f1, $f6, $f4
-	fadd_a  $f4, $f3, $f3
-	ble     $f5, $f3, ble.22264
-.count dual_jmp
-	b       bg.22255
-bne.22885:
-	fneg    $f6, $f6
-	fsub    $f6, $f1, $f1
-	load    [$i2 + 0], $f6
-	fmul    $f1, $f4, $f1
-	fmul    $f1, $f6, $f4
-	fadd_a  $f4, $f3, $f3
-	ble     $f5, $f3, ble.22264
-bg.22255:
-	load    [$i2 + 1], $f3
-	fmul    $f1, $f3, $f3
-	load    [$i1 + 5], $f4
-	fadd_a  $f3, $f2, $f2
-	ble     $f4, $f2, ble.22264
-bg.22256:
-	mov     $f1, $fg0
-	li      3, $i1
-	ret     
-bg.22248:
-	mov     $f4, $fg0
-	li      2, $i1
-	ret     
-bg.22240:
-	mov     $f4, $fg0
-	li      1, $i1
-	ret     
-bne.22233:
-	bne     $i3, 2, bne.22257
-be.22257:
-	load    [$i1 + 4], $f5
-	load    [$i2 + 1], $f6
-	fmul    $f4, $f5, $f4
-	load    [$i1 + 5], $f7
-	fmul    $f6, $f7, $f6
-	load    [$i2 + 2], $f8
-	fadd    $f4, $f6, $f4
-	load    [$i1 + 6], $f9
-	fmul    $f8, $f9, $f8
-	fadd    $f4, $f8, $f4
-	ble     $f4, $f0, ble.22264
-bg.22258:
-	finv    $f4, $f4
-	li      1, $i1
-	fmul    $f5, $f3, $f3
-	fmul    $f7, $f2, $f2
-	fmul    $f9, $f1, $f1
-	fadd    $f3, $f2, $f2
-	fadd_n  $f2, $f1, $f1
-	fmul    $f1, $f4, $fg0
-	ret     
-bne.22257:
-	load    [$i2 + 1], $f5
-	load    [$i1 + 3], $i4
-	fmul    $f4, $f4, $f7
-	load    [$i1 + 4], $f6
-	fmul    $f5, $f5, $f8
-	load    [$i1 + 5], $f9
-	fmul    $f7, $f6, $f7
-	load    [$i2 + 2], $f10
-	fmul    $f8, $f9, $f8
-	load    [$i1 + 6], $f11
-	fmul    $f10, $f10, $f12
-	fadd    $f7, $f8, $f7
-	fmul    $f12, $f11, $f8
-	fadd    $f7, $f8, $f7
-	be      $i4, 0, be.22259
-bne.22259:
-	fmul    $f5, $f10, $f8
-	load    [$i1 + 18], $f12
-	load    [$i1 + 16], $f13
-	fmul    $f4, $f5, $f14
-	load    [$i1 + 17], $f15
-	fmul    $f10, $f4, $f16
-	fmul    $f8, $f13, $f8
-	fmul    $f14, $f12, $f12
-	fmul    $f16, $f15, $f13
-	fadd    $f7, $f8, $f7
-	fadd    $f7, $f13, $f7
-	fadd    $f7, $f12, $f7
-	be      $f7, $f0, ble.22264
-.count dual_jmp
-	b       bne.22260
-be.22259:
-	be      $f7, $f0, ble.22264
-bne.22260:
-	fmul    $f3, $f3, $f8
-	fmul    $f2, $f2, $f12
-	fmul    $f1, $f1, $f13
-	fmul    $f8, $f6, $f8
-	fmul    $f12, $f9, $f12
-	fmul    $f13, $f11, $f13
-	fadd    $f8, $f12, $f8
-	fadd    $f8, $f13, $f8
-	be      $i4, 0, be.22261
-bne.22261:
-	fmul    $f2, $f1, $f12
-	load    [$i1 + 18], $f13
-	load    [$i1 + 16], $f14
-	fmul    $f3, $f2, $f15
-	load    [$i1 + 17], $f16
-	fmul    $f1, $f3, $f17
-	fmul    $f12, $f14, $f12
-	fmul    $f15, $f13, $f13
-	fmul    $f17, $f16, $f14
-	fadd    $f8, $f12, $f8
-	fadd    $f8, $f14, $f8
-	fadd    $f8, $f13, $f8
-	be      $i3, 3, be.22262
-.count dual_jmp
-	b       bne.22262
-be.22261:
-	be      $i3, 3, be.22262
-bne.22262:
-	fmul    $f7, $f8, $f8
-	fmul    $f4, $f3, $f12
-	fmul    $f5, $f2, $f13
-	fmul    $f10, $f1, $f14
-	fmul    $f12, $f6, $f6
-	fmul    $f13, $f9, $f9
-	fmul    $f14, $f11, $f11
-	fadd    $f6, $f9, $f6
-	fadd    $f6, $f11, $f6
-	be      $i4, 0, be.22263
-.count dual_jmp
-	b       bne.22263
-be.22262:
-	fsub    $f8, $fc0, $f8
-	fmul    $f4, $f3, $f12
-	fmul    $f5, $f2, $f13
-	fmul    $f10, $f1, $f14
-	fmul    $f7, $f8, $f8
-	fmul    $f12, $f6, $f6
-	fmul    $f13, $f9, $f9
-	fmul    $f14, $f11, $f11
-	fadd    $f6, $f9, $f6
-	fadd    $f6, $f11, $f6
-	be      $i4, 0, be.22263
-bne.22263:
-	load    [$i1 + 18], $f9
-	fmul    $f5, $f3, $f11
-	load    [$i1 + 17], $f13
-	fmul    $f4, $f2, $f12
-	load    [$i1 + 16], $f14
-	fmul    $f10, $f3, $f3
-	fmul    $f4, $f1, $f4
-	fadd    $f12, $f11, $f11
-	fmul    $f5, $f1, $f1
-	fmul    $f10, $f2, $f2
-	fadd    $f4, $f3, $f3
-	fmul    $f11, $f9, $f4
-	fadd    $f2, $f1, $f1
-	fmul    $f3, $f13, $f2
-	fmul    $f1, $f14, $f1
-	fadd    $f1, $f2, $f1
-	fadd    $f1, $f4, $f1
-	fmul    $f1, $fc3, $f1
-	fadd    $f6, $f1, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f8, $f2
-	ble     $f2, $f0, ble.22264
-.count dual_jmp
-	b       bg.22264
-be.22263:
-	mov     $f6, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f8, $f2
-	ble     $f2, $f0, ble.22264
-bg.22264:
-	load    [$i1 + 10], $i1
-	fsqrt   $f2, $f2
-	finv    $f7, $f3
-	be      $i1, 0, be.22265
-bne.22265:
-	fsub    $f2, $f1, $f1
-	li      1, $i1
-	fmul    $f1, $f3, $fg0
-	ret     
-be.22265:
-	fneg    $f2, $f2
-	li      1, $i1
-	fsub    $f2, $f1, $f1
-	fmul    $f1, $f3, $fg0
-	ret     
-ble.22264:
-	li      0, $i1
-	ret     
-.end solver
-
-######################################################################
-# $i1 = solver_fast($i1)
-# $ra = $ra
-# [$i1 - $i4]
-# [$f1 - $f11]
-# []
-# []
-# [$fg0]
-# []
-######################################################################
-.align 2
-.begin solver_fast
-solver_fast.2796:
-	load    [ext_objects + $i1], $i2
-	load    [ext_light_dirvec + 3], $i3
-	load    [ext_intersection_point + 2], $f1
-	load    [$i2 + 1], $i4
-	load    [$i3 + $i1], $i1
-	load    [$i2 + 9], $f2
-	load    [$i2 + 8], $f3
-	fsub    $f1, $f2, $f1
-	load    [ext_intersection_point + 1], $f4
-	fsub    $f4, $f3, $f3
-	load    [$i2 + 7], $f2
-	load    [ext_intersection_point + 0], $f5
-	load    [$i1 + 0], $f4
-	fsub    $f5, $f2, $f2
-	bne     $i4, 1, bne.22266
-be.22266:
-	fsub    $f4, $f2, $f4
-	load    [$i1 + 1], $f5
-	fmul    $f4, $f5, $f4
-	load    [%{ext_light_dirvec + 0} + 1], $f6
-	fmul    $f4, $f6, $f6
-	load    [$i2 + 5], $f7
-	fadd_a  $f6, $f3, $f6
-	ble     $f7, $f6, be.22269
-bg.22267:
-	load    [%{ext_light_dirvec + 0} + 2], $f6
-	load    [$i2 + 6], $f8
-	fmul    $f4, $f6, $f6
-	fadd_a  $f6, $f1, $f6
-	ble     $f8, $f6, be.22269
-bg.22268:
-	bne     $f5, $f0, bne.22269
-be.22269:
-	load    [$i1 + 2], $f4
-	load    [$i1 + 3], $f5
-	fsub    $f4, $f3, $f4
-	load    [%{ext_light_dirvec + 0} + 0], $f6
-	fmul    $f4, $f5, $f4
-	load    [$i2 + 4], $f8
-	fmul    $f4, $f6, $f6
-	fadd_a  $f6, $f2, $f6
-	ble     $f8, $f6, be.22273
-bg.22271:
-	load    [%{ext_light_dirvec + 0} + 2], $f6
-	fmul    $f4, $f6, $f6
-	load    [$i2 + 6], $f9
-	fadd_a  $f6, $f1, $f6
-	ble     $f9, $f6, be.22273
-bg.22272:
-	bne     $f5, $f0, bne.22273
-be.22273:
-	load    [$i1 + 4], $f4
-	fsub    $f4, $f1, $f1
-	load    [$i1 + 5], $f5
-	fmul    $f1, $f5, $f1
-	load    [%{ext_light_dirvec + 0} + 0], $f6
-	fmul    $f1, $f6, $f4
-	fadd_a  $f4, $f2, $f2
-	ble     $f8, $f2, ble.22283
-bg.22275:
-	load    [%{ext_light_dirvec + 0} + 1], $f2
-	fmul    $f1, $f2, $f2
-	fadd_a  $f2, $f3, $f2
-	ble     $f7, $f2, ble.22283
-bg.22276:
-	be      $f5, $f0, ble.22283
-bne.22277:
-	mov     $f1, $fg0
-	li      3, $i1
-	ret     
-bne.22273:
-	mov     $f4, $fg0
-	li      2, $i1
-	ret     
-bne.22269:
-	mov     $f4, $fg0
-	li      1, $i1
-	ret     
-bne.22266:
-	be      $i4, 2, be.22278
-bne.22278:
-	be      $f4, $f0, ble.22283
-bne.22280:
-	load    [$i2 + 3], $i3
-	fmul    $f2, $f2, $f5
-	fmul    $f3, $f3, $f6
-	load    [$i2 + 4], $f7
-	load    [$i2 + 5], $f8
-	fmul    $f1, $f1, $f9
-	fmul    $f5, $f7, $f5
-	load    [$i2 + 6], $f7
-	fmul    $f6, $f8, $f6
-	fmul    $f9, $f7, $f7
-	fadd    $f5, $f6, $f5
-	fadd    $f5, $f7, $f5
-	be      $i3, 0, be.22281
-bne.22281:
-	fmul    $f3, $f1, $f6
-	load    [$i2 + 18], $f7
-	fmul    $f2, $f3, $f9
-	load    [$i2 + 16], $f8
-	fmul    $f1, $f2, $f11
-	load    [$i2 + 17], $f10
-	fmul    $f6, $f8, $f6
-	fmul    $f9, $f7, $f7
-	fmul    $f11, $f10, $f8
-	fadd    $f5, $f6, $f5
-	fadd    $f5, $f8, $f5
-	fadd    $f5, $f7, $f5
-	be      $i4, 3, be.22282
-.count dual_jmp
-	b       bne.22282
-be.22281:
-	be      $i4, 3, be.22282
-bne.22282:
-	fmul    $f4, $f5, $f4
-	load    [$i1 + 3], $f5
-	load    [$i1 + 2], $f6
-	fmul    $f5, $f1, $f1
-	load    [$i1 + 1], $f7
-	fmul    $f6, $f3, $f3
-	fmul    $f7, $f2, $f2
-	fadd    $f2, $f3, $f2
-	fadd    $f2, $f1, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f4, $f2
-	ble     $f2, $f0, ble.22283
-.count dual_jmp
-	b       bg.22283
-be.22282:
-	fsub    $f5, $fc0, $f5
-	load    [$i1 + 2], $f6
-	fmul    $f6, $f3, $f3
-	load    [$i1 + 1], $f7
-	fmul    $f7, $f2, $f2
-	fmul    $f4, $f5, $f4
-	load    [$i1 + 3], $f5
-	fmul    $f5, $f1, $f1
-	fadd    $f2, $f3, $f2
-	fadd    $f2, $f1, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f4, $f2
-	ble     $f2, $f0, ble.22283
-bg.22283:
-	load    [$i2 + 10], $i2
-	fsqrt   $f2, $f2
-	load    [$i1 + 4], $f3
-	li      1, $i1
-	be      $i2, 0, be.22284
-bne.22284:
-	fadd    $f1, $f2, $f1
-	fmul    $f1, $f3, $fg0
-	ret     
-be.22284:
-	fsub    $f1, $f2, $f1
-	fmul    $f1, $f3, $fg0
-	ret     
-be.22278:
-	ble     $f0, $f4, ble.22283
-bg.22279:
-	load    [$i1 + 3], $f4
-	fmul    $f4, $f1, $f1
-	load    [$i1 + 2], $f5
-	fmul    $f5, $f3, $f3
-	load    [$i1 + 1], $f6
-	fmul    $f6, $f2, $f2
-	li      1, $i1
-	fadd    $f2, $f3, $f2
-	fadd    $f2, $f1, $fg0
-	ret     
-ble.22283:
-	li      0, $i1
-	ret     
-.end solver_fast
-
-######################################################################
-# $i1 = solver_fast2($i1, $i2)
-# $ra = $ra
-# [$i1 - $i5]
-# [$f1 - $f9]
-# []
-# []
-# [$fg0]
-# []
-######################################################################
-.align 2
-.begin solver_fast2
-solver_fast2.2814:
-	load    [ext_objects + $i1], $i3
-	load    [$i2 + 3], $i4
-	load    [$i3 + 1], $i5
-	load    [$i4 + $i1], $i1
-	load    [$i3 + 21], $f1
-	load    [$i3 + 20], $f2
-	load    [$i3 + 19], $f3
-	bne     $i5, 1, bne.22285
-be.22285:
-	load    [$i1 + 0], $f4
-	fsub    $f4, $f3, $f4
-	load    [$i1 + 1], $f5
-	fmul    $f4, $f5, $f4
-	load    [$i2 + 1], $f6
-	fmul    $f4, $f6, $f6
-	load    [$i3 + 5], $f7
-	fadd_a  $f6, $f2, $f6
-	ble     $f7, $f6, be.22288
-bg.22286:
-	load    [$i2 + 2], $f6
-	load    [$i3 + 6], $f8
-	fmul    $f4, $f6, $f6
-	fadd_a  $f6, $f1, $f6
-	ble     $f8, $f6, be.22288
-bg.22287:
-	bne     $f5, $f0, bne.22288
-be.22288:
-	load    [$i1 + 2], $f4
-	load    [$i1 + 3], $f5
-	fsub    $f4, $f2, $f4
-	load    [$i2 + 0], $f6
-	fmul    $f4, $f5, $f4
-	load    [$i3 + 4], $f8
-	fmul    $f4, $f6, $f6
-	fadd_a  $f6, $f3, $f6
-	ble     $f8, $f6, be.22292
-bg.22290:
-	load    [$i2 + 2], $f6
-	fmul    $f4, $f6, $f6
-	load    [$i3 + 6], $f9
-	fadd_a  $f6, $f1, $f6
-	ble     $f9, $f6, be.22292
-bg.22291:
-	bne     $f5, $f0, bne.22292
-be.22292:
-	load    [$i1 + 4], $f4
-	fsub    $f4, $f1, $f1
-	load    [$i1 + 5], $f5
-	fmul    $f1, $f5, $f1
-	load    [$i2 + 0], $f6
-	fmul    $f1, $f6, $f4
-	fadd_a  $f4, $f3, $f3
-	ble     $f8, $f3, ble.22300
-bg.22294:
-	load    [$i2 + 1], $f3
-	fmul    $f1, $f3, $f3
-	fadd_a  $f3, $f2, $f2
-	ble     $f7, $f2, ble.22300
-bg.22295:
-	be      $f5, $f0, ble.22300
-bne.22296:
-	mov     $f1, $fg0
-	li      3, $i1
-	ret     
-bne.22292:
-	mov     $f4, $fg0
-	li      2, $i1
-	ret     
-bne.22288:
-	mov     $f4, $fg0
-	li      1, $i1
-	ret     
-bne.22285:
-	be      $i5, 2, be.22297
-bne.22297:
-	load    [$i1 + 0], $f4
-	be      $f4, $f0, ble.22300
-bne.22299:
-	load    [$i3 + 22], $f5
-	load    [$i1 + 3], $f6
-	fmul    $f4, $f5, $f4
-	load    [$i1 + 2], $f7
-	fmul    $f6, $f1, $f1
-	load    [$i1 + 1], $f8
-	fmul    $f7, $f2, $f2
-	fmul    $f8, $f3, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f4, $f2
-	ble     $f2, $f0, ble.22300
-bg.22300:
-	load    [$i3 + 10], $i2
-	fsqrt   $f2, $f2
-	load    [$i1 + 4], $f3
-	li      1, $i1
-	be      $i2, 0, be.22301
-bne.22301:
-	fadd    $f1, $f2, $f1
-	fmul    $f1, $f3, $fg0
-	ret     
-be.22301:
-	fsub    $f1, $f2, $f1
-	fmul    $f1, $f3, $fg0
-	ret     
-be.22297:
-	load    [$i1 + 0], $f1
-	ble     $f0, $f1, ble.22300
-bg.22298:
-	load    [$i3 + 22], $f2
-	li      1, $i1
-	fmul    $f1, $f2, $fg0
-	ret     
-ble.22300:
-	li      0, $i1
-	ret     
-.end solver_fast2
-
-######################################################################
-# $i1 = setup_rect_table($i4, $i5)
+# iter_setup_dirvec_constants($f1, $f3, $f4, $i4, $i5)
 # $ra = $ra1
-# [$i1 - $i3]
-# [$f1 - $f2]
+# [$i1 - $i3, $i5 - $i6]
+# [$f2, $f5 - $f11]
 # []
 # []
 # []
 # [$ra]
-######################################################################
-.align 2
-.begin setup_rect_table
-setup_rect_table.2817:
-	li      6, $i2
-.count move_args
-	mov     $f0, $f2
-	call    ext_create_array_float
-	load    [$i4 + 0], $f1
-	bne     $f1, $f0, bne.22302
-be.22302:
-	store   $f0, [$i1 + 1]
-	load    [$i4 + 1], $f1
-	be      $f1, $f0, be.22307
-.count dual_jmp
-	b       bne.22307
-bne.22302:
-	load    [$i5 + 10], $i2
-	ble     $f0, $f1, ble.22303
-bg.22303:
-	load    [$i5 + 4], $f1
-	be      $i2, 0, be.22304
-.count dual_jmp
-	b       bne.22888
-ble.22303:
-	load    [$i5 + 4], $f1
-	be      $i2, 0, bne.22888
-be.22304:
-	store   $f1, [$i1 + 0]
-	load    [$i4 + 0], $f1
-	finv    $f1, $f1
-	store   $f1, [$i1 + 1]
-	load    [$i4 + 1], $f1
-	be      $f1, $f0, be.22307
-.count dual_jmp
-	b       bne.22307
-bne.22888:
-	fneg    $f1, $f1
-	store   $f1, [$i1 + 0]
-	load    [$i4 + 0], $f1
-	finv    $f1, $f1
-	store   $f1, [$i1 + 1]
-	load    [$i4 + 1], $f1
-	bne     $f1, $f0, bne.22307
-be.22307:
-	store   $f0, [$i1 + 3]
-	load    [$i4 + 2], $f1
-	be      $f1, $f0, be.22312
-.count dual_jmp
-	b       bne.22312
-bne.22307:
-	load    [$i5 + 10], $i2
-	ble     $f0, $f1, ble.22308
-bg.22308:
-	load    [$i5 + 5], $f1
-	be      $i2, 0, be.22309
-.count dual_jmp
-	b       bne.22891
-ble.22308:
-	load    [$i5 + 5], $f1
-	be      $i2, 0, bne.22891
-be.22309:
-	store   $f1, [$i1 + 2]
-	load    [$i4 + 1], $f1
-	finv    $f1, $f1
-	store   $f1, [$i1 + 3]
-	load    [$i4 + 2], $f1
-	be      $f1, $f0, be.22312
-.count dual_jmp
-	b       bne.22312
-bne.22891:
-	fneg    $f1, $f1
-	store   $f1, [$i1 + 2]
-	load    [$i4 + 1], $f1
-	finv    $f1, $f1
-	store   $f1, [$i1 + 3]
-	load    [$i4 + 2], $f1
-	be      $f1, $f0, be.22312
-bne.22312:
-	load    [$i5 + 10], $i2
-	ble     $f0, $f1, ble.22313
-bg.22313:
-	load    [$i5 + 6], $f1
-	be      $i2, 0, be.22895
-.count dual_jmp
-	b       bne.22894
-ble.22313:
-	load    [$i5 + 6], $f1
-	be      $i2, 0, bne.22894
-be.22895:
-	store   $f1, [$i1 + 4]
-	load    [$i4 + 2], $f1
-	finv    $f1, $f1
-	store   $f1, [$i1 + 5]
-	jr      $ra1
-bne.22894:
-	fneg    $f1, $f1
-	store   $f1, [$i1 + 4]
-	load    [$i4 + 2], $f1
-	finv    $f1, $f1
-	store   $f1, [$i1 + 5]
-	jr      $ra1
-be.22312:
-	store   $f0, [$i1 + 5]
-	jr      $ra1
-.end setup_rect_table
-
-######################################################################
-# $i1 = setup_surface_table($i4, $i5)
-# $ra = $ra1
-# [$i1 - $i3]
-# [$f1 - $f5]
-# []
-# []
-# []
-# [$ra]
-######################################################################
-.align 2
-.begin setup_surface_table
-setup_surface_table.2820:
-	li      4, $i2
-.count move_args
-	mov     $f0, $f2
-	call    ext_create_array_float
-	load    [$i5 + 6], $f1
-	load    [$i4 + 2], $f2
-	fmul    $f2, $f1, $f1
-	load    [$i5 + 5], $f3
-	load    [$i4 + 1], $f4
-	load    [$i5 + 4], $f2
-	fmul    $f4, $f3, $f3
-	load    [$i4 + 0], $f5
-	fmul    $f5, $f2, $f2
-	fadd    $f2, $f3, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f1, $f0, ble.22317
-bg.22317:
-	finv    $f1, $f1
-	fneg    $f1, $f2
-	store   $f2, [$i1 + 0]
-	load    [$i5 + 4], $f2
-	fmul_n  $f2, $f1, $f2
-	store   $f2, [$i1 + 1]
-	load    [$i5 + 5], $f2
-	fmul_n  $f2, $f1, $f2
-	store   $f2, [$i1 + 2]
-	load    [$i5 + 6], $f2
-	fmul_n  $f2, $f1, $f1
-	store   $f1, [$i1 + 3]
-	jr      $ra1
-ble.22317:
-	store   $f0, [$i1 + 0]
-	jr      $ra1
-.end setup_surface_table
-
-######################################################################
-# $i1 = setup_second_table($i4, $i5)
-# $ra = $ra1
-# [$i1 - $i3]
-# [$f1 - $f9]
-# []
-# []
-# []
-# [$ra]
-######################################################################
-.align 2
-.begin setup_second_table
-setup_second_table.2823:
-	li      5, $i2
-.count move_args
-	mov     $f0, $f2
-	call    ext_create_array_float
-	load    [$i5 + 3], $i2
-	load    [$i5 + 6], $f1
-	load    [$i4 + 2], $f2
-	load    [$i5 + 5], $f3
-	fmul    $f2, $f2, $f6
-	load    [$i4 + 1], $f4
-	fmul    $f4, $f4, $f7
-	load    [$i4 + 0], $f5
-	fmul    $f5, $f5, $f8
-	load    [$i5 + 4], $f9
-	fmul    $f6, $f1, $f1
-	fmul    $f7, $f3, $f3
-	fmul    $f8, $f9, $f6
-	fadd    $f6, $f3, $f3
-	fadd    $f3, $f1, $f1
-	be      $i2, 0, be.22318
-bne.22318:
-	fmul    $f4, $f2, $f3
-	load    [$i5 + 16], $f6
-	fmul    $f2, $f5, $f7
-	load    [$i5 + 17], $f8
-	fmul    $f5, $f4, $f9
-	fmul    $f3, $f6, $f3
-	load    [$i5 + 18], $f6
-	fmul    $f7, $f8, $f7
-	fmul    $f9, $f6, $f6
-	fadd    $f1, $f3, $f1
-	fadd    $f1, $f7, $f1
-	fadd    $f1, $f6, $f1
-	store   $f1, [$i1 + 0]
-	load    [$i5 + 6], $f3
-	fmul_n  $f2, $f3, $f2
-	load    [$i5 + 5], $f6
-	fmul_n  $f4, $f6, $f3
-	load    [$i5 + 4], $f7
-	fmul_n  $f5, $f7, $f4
-	be      $i2, 0, be.22319
-.count dual_jmp
-	b       bne.22319
-be.22318:
-	store   $f1, [$i1 + 0]
-	load    [$i5 + 6], $f3
-	load    [$i5 + 5], $f6
-	fmul_n  $f2, $f3, $f2
-	load    [$i5 + 4], $f7
-	fmul_n  $f4, $f6, $f3
-	fmul_n  $f5, $f7, $f4
-	be      $i2, 0, be.22319
-bne.22319:
-	load    [$i5 + 18], $f5
-	load    [$i4 + 1], $f6
-	load    [$i5 + 17], $f7
-	fmul    $f6, $f5, $f6
-	load    [$i4 + 2], $f8
-	fmul    $f8, $f7, $f8
-	fadd    $f8, $f6, $f6
-	fmul    $f6, $fc3, $f6
-	fsub    $f4, $f6, $f4
-	store   $f4, [$i1 + 1]
-	load    [$i4 + 0], $f4
-	fmul    $f4, $f5, $f4
-	load    [$i5 + 16], $f6
-	load    [$i4 + 2], $f8
-	fmul    $f8, $f6, $f5
-	fadd    $f5, $f4, $f4
-	fmul    $f4, $fc3, $f4
-	fsub    $f3, $f4, $f3
-	store   $f3, [$i1 + 2]
-	load    [$i4 + 0], $f3
-	load    [$i4 + 1], $f4
-	fmul    $f3, $f7, $f3
-	fmul    $f4, $f6, $f4
-	fadd    $f4, $f3, $f3
-	fmul    $f3, $fc3, $f3
-	fsub    $f2, $f3, $f2
-	store   $f2, [$i1 + 3]
-	be      $f1, $f0, be.22321
-.count dual_jmp
-	b       bne.22321
-be.22319:
-	store   $f4, [$i1 + 1]
-	store   $f3, [$i1 + 2]
-	store   $f2, [$i1 + 3]
-	be      $f1, $f0, be.22321
-bne.22321:
-	finv    $f1, $f1
-	store   $f1, [$i1 + 4]
-	jr      $ra1
-be.22321:
-	jr      $ra1
-.end setup_second_table
-
-######################################################################
-# iter_setup_dirvec_constants($i4, $i6)
-# $ra = $ra2
-# [$i1 - $i3, $i5 - $i7]
-# [$f1 - $f9]
-# []
-# []
-# []
-# [$ra - $ra1]
 ######################################################################
 .align 2
 .begin iter_setup_dirvec_constants
 iter_setup_dirvec_constants.2826:
-	bl      $i6, 0, bl.22322
-bge.22322:
-	load    [ext_objects + $i6], $i5
-	load    [$i4 + 3], $i7
-	load    [$i5 + 1], $i1
-	be      $i1, 1, be.22323
-bne.22323:
-	be      $i1, 2, be.22324
-bne.22324:
-	jal     setup_second_table.2823, $ra1
-	add     $i6, -1, $i2
-.count storer
-	add     $i7, $i6, $tmp
-	store   $i1, [$tmp + 0]
+	bl      $i5, 0, bl.28143
+bge.28143:
+	load    [ext_objects + $i5], $i6
 .count move_args
-	mov     $i2, $i6
-	b       iter_setup_dirvec_constants.2826
-be.22324:
-	jal     setup_surface_table.2820, $ra1
-	add     $i6, -1, $i2
+	mov     $f0, $f2
+	load    [$i6 + 1], $i1
+	be      $i1, 1, be.28144
+bne.28144:
+	be      $i1, 2, be.28160
+bne.28160:
+	li      5, $i2
+	call    ext_create_array_float
+	fmul    $f1, $f1, $f2
+	load    [$i6 + 4], $f5
+	fmul    $f3, $f3, $f6
+	load    [$i6 + 5], $f7
+	fmul    $f2, $f5, $f2
+	load    [$i6 + 6], $f9
+	fmul    $f4, $f4, $f8
+	load    [$i6 + 3], $i2
+	fmul    $f6, $f7, $f6
+	fadd    $f2, $f6, $f2
+	fmul    $f8, $f9, $f6
+	fmul_n  $f1, $f5, $f5
+	fadd    $f2, $f6, $f2
+	be      $i2, 0, be.28162
+bne.28162:
+	fmul    $f3, $f4, $f6
+	load    [$i6 + 16], $f8
+	fmul    $f4, $f1, $f10
+	load    [$i6 + 17], $f11
+	fmul    $f6, $f8, $f6
+	fmul    $f1, $f3, $f8
+	fmul    $f10, $f11, $f10
+	fadd    $f2, $f6, $f2
+	load    [$i6 + 18], $f6
+	fadd    $f2, $f10, $f2
+	fmul    $f8, $f6, $f6
+	fadd    $f2, $f6, $f2
+	fmul_n  $f3, $f7, $f6
+	store   $f2, [$i1 + 0]
+	fmul_n  $f4, $f9, $f7
+	be      $i2, 0, be.28163
+.count dual_jmp
+	b       bne.28163
+be.28162:
+	fmul_n  $f3, $f7, $f6
+	fmul_n  $f4, $f9, $f7
+	store   $f2, [$i1 + 0]
+	be      $i2, 0, be.28163
+bne.28163:
+	load    [$i6 + 17], $f8
+	load    [$i6 + 18], $f9
+	fmul    $f4, $f8, $f8
+	fmul    $f3, $f9, $f9
+	fadd    $f8, $f9, $f8
+	fmul    $f8, $fc2, $f8
+	fsub    $f5, $f8, $f5
+	store   $f5, [$i1 + 1]
+	load    [$i6 + 16], $f5
+	load    [$i6 + 18], $f8
+	fmul    $f4, $f5, $f5
+	fmul    $f1, $f8, $f8
+	fadd    $f5, $f8, $f5
+	fmul    $f5, $fc2, $f5
+	fsub    $f6, $f5, $f5
+	store   $f5, [$i1 + 2]
+	load    [$i6 + 16], $f5
+	load    [$i6 + 17], $f6
+	fmul    $f3, $f5, $f5
+	fmul    $f1, $f6, $f6
+	fadd    $f5, $f6, $f5
+	fmul    $f5, $fc2, $f5
+	fsub    $f7, $f5, $f5
+	store   $f5, [$i1 + 3]
+	be      $f2, $f0, be.28164
+.count dual_jmp
+	b       bne.28164
+be.28163:
+	store   $f5, [$i1 + 1]
+	store   $f6, [$i1 + 2]
+	store   $f7, [$i1 + 3]
+	be      $f2, $f0, be.28164
+bne.28164:
+	finv    $f2, $f2
 .count storer
-	add     $i7, $i6, $tmp
+	add     $i4, $i5, $tmp
+	store   $f2, [$i1 + 4]
+	add     $i5, -1, $i5
 	store   $i1, [$tmp + 0]
-.count move_args
-	mov     $i2, $i6
 	b       iter_setup_dirvec_constants.2826
-be.22323:
-	jal     setup_rect_table.2817, $ra1
-	add     $i6, -1, $i2
+be.28164:
 .count storer
-	add     $i7, $i6, $tmp
+	add     $i4, $i5, $tmp
+	add     $i5, -1, $i5
 	store   $i1, [$tmp + 0]
-.count move_args
-	mov     $i2, $i6
 	b       iter_setup_dirvec_constants.2826
-bl.22322:
-	jr      $ra2
+be.28160:
+	li      4, $i2
+	call    ext_create_array_float
+	load    [$i6 + 4], $f2
+	load    [$i6 + 5], $f5
+	fmul    $f1, $f2, $f2
+	load    [$i6 + 6], $f6
+	fmul    $f3, $f5, $f5
+	fmul    $f4, $f6, $f6
+.count storer
+	add     $i4, $i5, $tmp
+	fadd    $f2, $f5, $f2
+	add     $i5, -1, $i5
+	fadd    $f2, $f6, $f2
+	ble     $f2, $f0, ble.28161
+bg.28161:
+	finv    $f2, $f2
+	fneg    $f2, $f5
+	store   $f5, [$i1 + 0]
+	load    [$i6 + 4], $f5
+	fmul_n  $f5, $f2, $f5
+	store   $f5, [$i1 + 1]
+	load    [$i6 + 5], $f5
+	fmul_n  $f5, $f2, $f5
+	store   $f5, [$i1 + 2]
+	load    [$i6 + 6], $f5
+	fmul_n  $f5, $f2, $f2
+	store   $f2, [$i1 + 3]
+	store   $i1, [$tmp + 0]
+	b       iter_setup_dirvec_constants.2826
+ble.28161:
+	store   $f0, [$i1 + 0]
+	store   $i1, [$tmp + 0]
+	b       iter_setup_dirvec_constants.2826
+be.28144:
+	li      6, $i2
+	call    ext_create_array_float
+	bne     $f1, $f0, bne.28145
+be.28145:
+	store   $f0, [$i1 + 1]
+	be      $f3, $f0, be.28150
+.count dual_jmp
+	b       bne.28150
+bne.28145:
+	load    [$i6 + 10], $i2
+	load    [$i6 + 4], $f2
+	finv    $f1, $f5
+	ble     $f0, $f1, ble.28146
+bg.28146:
+	be      $i2, 0, be.28147
+.count dual_jmp
+	b       bne.28723
+ble.28146:
+	be      $i2, 0, bne.28723
+be.28147:
+	store   $f2, [$i1 + 0]
+	store   $f5, [$i1 + 1]
+	be      $f3, $f0, be.28150
+.count dual_jmp
+	b       bne.28150
+bne.28723:
+	fneg    $f2, $f2
+	store   $f2, [$i1 + 0]
+	store   $f5, [$i1 + 1]
+	bne     $f3, $f0, bne.28150
+be.28150:
+	store   $f0, [$i1 + 3]
+	be      $f4, $f0, be.28155
+.count dual_jmp
+	b       bne.28155
+bne.28150:
+	load    [$i6 + 10], $i2
+	load    [$i6 + 5], $f2
+	finv    $f3, $f5
+	ble     $f0, $f3, ble.28151
+bg.28151:
+	be      $i2, 0, be.28152
+.count dual_jmp
+	b       bne.28726
+ble.28151:
+	be      $i2, 0, bne.28726
+be.28152:
+	store   $f2, [$i1 + 2]
+	store   $f5, [$i1 + 3]
+	be      $f4, $f0, be.28155
+.count dual_jmp
+	b       bne.28155
+bne.28726:
+	fneg    $f2, $f2
+	store   $f2, [$i1 + 2]
+	store   $f5, [$i1 + 3]
+	be      $f4, $f0, be.28155
+bne.28155:
+	load    [$i6 + 10], $i2
+	finv    $f4, $f5
+	load    [$i6 + 6], $f2
+.count storer
+	add     $i4, $i5, $tmp
+	ble     $f0, $f4, ble.28156
+bg.28156:
+	be      $i2, 0, be.28157
+.count dual_jmp
+	b       bne.28729
+ble.28156:
+	be      $i2, 0, bne.28729
+be.28157:
+	store   $f2, [$i1 + 4]
+	add     $i5, -1, $i5
+	store   $f5, [$i1 + 5]
+	store   $i1, [$tmp + 0]
+	b       iter_setup_dirvec_constants.2826
+bne.28729:
+	fneg    $f2, $f2
+	store   $f2, [$i1 + 4]
+	add     $i5, -1, $i5
+	store   $f5, [$i1 + 5]
+	store   $i1, [$tmp + 0]
+	b       iter_setup_dirvec_constants.2826
+be.28155:
+.count storer
+	add     $i4, $i5, $tmp
+	store   $f0, [$i1 + 5]
+	add     $i5, -1, $i5
+	store   $i1, [$tmp + 0]
+	b       iter_setup_dirvec_constants.2826
+bl.28143:
+	jr      $ra1
 .end iter_setup_dirvec_constants
 
 ######################################################################
-# setup_dirvec_constants($i4)
-# $ra = $ra2
-# [$i1 - $i3, $i5 - $i7]
-# [$f1 - $f9]
+# setup_dirvec_constants($f1, $f3, $f4, $i4)
+# $ra = $ra1
+# [$i1 - $i3, $i5 - $i6]
+# [$f2, $f5 - $f11]
 # []
 # []
 # []
-# [$ra - $ra1]
+# [$ra]
 ######################################################################
 .align 2
 .begin setup_dirvec_constants
 setup_dirvec_constants.2829:
-	add     $ig0, -1, $i6
+	add     $ig0, -1, $i5
 	b       iter_setup_dirvec_constants.2826
 .end setup_dirvec_constants
 
 ######################################################################
-# setup_startp_constants($i2, $i1)
+# setup_startp_constants($f2, $f3, $f4, $i1)
 # $ra = $ra
-# [$i1, $i3 - $i5]
-# [$f1 - $f8]
+# [$i1 - $i4]
+# [$f1, $f5 - $f10]
 # []
 # []
 # []
@@ -2546,97 +1835,178 @@ setup_dirvec_constants.2829:
 .align 2
 .begin setup_startp_constants
 setup_startp_constants.2831:
-	bl      $i1, 0, bl.22325
-bge.22325:
-	load    [ext_objects + $i1], $i3
-	load    [$i2 + 0], $f1
-	load    [$i3 + 7], $f2
-	fsub    $f1, $f2, $f1
-	store   $f1, [$i3 + 19]
-	load    [$i3 + 8], $f1
-	load    [$i2 + 1], $f2
+	bl      $i1, 0, bl.28165
+bge.28165:
+	load    [ext_objects + $i1], $i2
+	load    [$i2 + 7], $f1
 	fsub    $f2, $f1, $f1
-	store   $f1, [$i3 + 20]
-	load    [$i3 + 9], $f1
-	load    [$i2 + 2], $f2
-	fsub    $f2, $f1, $f1
-	store   $f1, [$i3 + 21]
-	load    [$i3 + 1], $i4
-	be      $i4, 2, be.22326
-bne.22326:
-	ble     $i4, 2, ble.22327
-bg.22327:
-	load    [$i3 + 3], $i5
-	load    [$i3 + 19], $f1
-	fmul    $f1, $f1, $f4
-	load    [$i3 + 20], $f2
-	fmul    $f2, $f2, $f5
-	load    [$i3 + 4], $f3
-	fmul    $f4, $f3, $f3
-	load    [$i3 + 5], $f6
-	fmul    $f5, $f6, $f4
-	load    [$i3 + 21], $f7
-	fmul    $f7, $f7, $f5
-	load    [$i3 + 6], $f8
-	fadd    $f3, $f4, $f3
-	fmul    $f5, $f8, $f4
-	fadd    $f3, $f4, $f3
-	be      $i5, 0, be.22328
-bne.22328:
-	fmul    $f2, $f7, $f4
-	load    [$i3 + 18], $f5
-	fmul    $f1, $f2, $f2
-	load    [$i3 + 16], $f6
-	fmul    $f7, $f1, $f1
-	load    [$i3 + 17], $f8
-	fmul    $f4, $f6, $f4
-	fmul    $f2, $f5, $f2
-	fmul    $f1, $f8, $f1
-	fadd    $f3, $f4, $f3
-	fadd    $f3, $f1, $f1
-	fadd    $f1, $f2, $f1
-	be      $i4, 3, be.22329
-.count dual_jmp
-	b       bne.22329
-be.22328:
-	mov     $f3, $f1
-	be      $i4, 3, be.22329
-bne.22329:
+	store   $f1, [$i2 + 19]
+	load    [$i2 + 8], $f1
+	fsub    $f3, $f1, $f1
+	store   $f1, [$i2 + 20]
+	load    [$i2 + 9], $f1
+	fsub    $f4, $f1, $f1
+	store   $f1, [$i2 + 21]
+	load    [$i2 + 1], $i3
+	bne     $i3, 2, bne.28166
+be.28166:
+	load    [$i2 + 19], $f1
+	load    [$i2 + 20], $f5
 	add     $i1, -1, $i1
-	store   $f1, [$i3 + 22]
-	b       setup_startp_constants.2831
-be.22329:
+	load    [$i2 + 21], $f6
+	load    [$i2 + 4], $f7
+	load    [$i2 + 5], $f8
+	fmul    $f7, $f1, $f1
+	load    [$i2 + 6], $f9
+	fmul    $f8, $f5, $f5
+	fmul    $f9, $f6, $f6
+	fadd    $f1, $f5, $f1
+	fadd    $f1, $f6, $f1
+	store   $f1, [$i2 + 22]
+	bge     $i1, 0, bge.28170
+.count dual_jmp
+	b       bl.28165
+bne.28166:
+	bg      $i3, 2, bg.28167
+ble.28167:
+	add     $i1, -1, $i1
+	bge     $i1, 0, bge.28170
+.count dual_jmp
+	b       bl.28165
+bg.28167:
+	load    [$i2 + 19], $f1
+	fmul    $f1, $f1, $f7
+	load    [$i2 + 20], $f5
+	fmul    $f5, $f5, $f9
+	load    [$i2 + 21], $f6
+	load    [$i2 + 4], $f8
+	load    [$i2 + 5], $f10
+	fmul    $f7, $f8, $f7
+	fmul    $f6, $f6, $f8
+	load    [$i2 + 3], $i4
+	fmul    $f9, $f10, $f9
+	load    [$i2 + 6], $f10
+	fadd    $f7, $f9, $f7
+	fmul    $f8, $f10, $f8
+	fadd    $f7, $f8, $f7
+	be      $i4, 0, be.28168
+bne.28168:
+	fmul    $f5, $f6, $f8
+	load    [$i2 + 16], $f9
+	fmul    $f6, $f1, $f6
+	load    [$i2 + 17], $f10
+	fmul    $f8, $f9, $f8
+	fmul    $f1, $f5, $f1
+	fmul    $f6, $f10, $f5
+	fadd    $f7, $f8, $f6
+	load    [$i2 + 18], $f7
+	fadd    $f6, $f5, $f5
+	fmul    $f1, $f7, $f1
+	fadd    $f5, $f1, $f1
+	be      $i3, 3, be.28169
+.count dual_jmp
+	b       bne.28169
+be.28168:
+	mov     $f7, $f1
+	be      $i3, 3, be.28169
+bne.28169:
+	store   $f1, [$i2 + 22]
+	add     $i1, -1, $i1
+	bge     $i1, 0, bge.28170
+.count dual_jmp
+	b       bl.28165
+be.28169:
 	fsub    $f1, $fc0, $f1
 	add     $i1, -1, $i1
-	store   $f1, [$i3 + 22]
-	b       setup_startp_constants.2831
-ble.22327:
+	store   $f1, [$i2 + 22]
+	bl      $i1, 0, bl.28165
+bge.28170:
+	load    [ext_objects + $i1], $i2
+	load    [$i2 + 7], $f1
+	fsub    $f2, $f1, $f1
+	store   $f1, [$i2 + 19]
+	load    [$i2 + 8], $f1
+	fsub    $f3, $f1, $f1
+	store   $f1, [$i2 + 20]
+	load    [$i2 + 9], $f1
+	fsub    $f4, $f1, $f1
+	store   $f1, [$i2 + 21]
+	load    [$i2 + 1], $i3
+	be      $i3, 2, be.28171
+bne.28171:
+	ble     $i3, 2, ble.28172
+bg.28172:
+	load    [$i2 + 19], $f1
+	load    [$i2 + 20], $f5
+	fmul    $f1, $f1, $f7
+	load    [$i2 + 21], $f6
+	fmul    $f5, $f5, $f9
+	load    [$i2 + 4], $f8
+	fmul    $f7, $f8, $f7
+	load    [$i2 + 5], $f10
+	fmul    $f6, $f6, $f8
+	fmul    $f9, $f10, $f9
+	load    [$i2 + 6], $f10
+	load    [$i2 + 3], $i4
+	fadd    $f7, $f9, $f7
+	fmul    $f8, $f10, $f8
+	fadd    $f7, $f8, $f7
+	be      $i4, 0, be.28173
+bne.28173:
+	fmul    $f5, $f6, $f8
+	load    [$i2 + 16], $f9
+	fmul    $f6, $f1, $f6
+	load    [$i2 + 17], $f10
+	fmul    $f8, $f9, $f8
+	fmul    $f1, $f5, $f1
+	fmul    $f6, $f10, $f5
+	fadd    $f7, $f8, $f6
+	load    [$i2 + 18], $f7
+	fadd    $f6, $f5, $f5
+	fmul    $f1, $f7, $f1
+	fadd    $f5, $f1, $f1
+	be      $i3, 3, be.28174
+.count dual_jmp
+	b       bne.28174
+be.28173:
+	mov     $f7, $f1
+	be      $i3, 3, be.28174
+bne.28174:
+	store   $f1, [$i2 + 22]
 	add     $i1, -1, $i1
 	b       setup_startp_constants.2831
-be.22326:
-	load    [$i3 + 19], $f1
+be.28174:
+	fsub    $f1, $fc0, $f1
 	add     $i1, -1, $i1
-	load    [$i3 + 4], $f2
-	fmul    $f2, $f1, $f1
-	load    [$i3 + 20], $f3
-	load    [$i3 + 5], $f4
-	load    [$i3 + 21], $f2
-	fmul    $f4, $f3, $f3
-	load    [$i3 + 6], $f4
-	fmul    $f4, $f2, $f2
-	fadd    $f1, $f3, $f1
-	fadd    $f1, $f2, $f1
-	store   $f1, [$i3 + 22]
+	store   $f1, [$i2 + 22]
 	b       setup_startp_constants.2831
-bl.22325:
+ble.28172:
+	add     $i1, -1, $i1
+	b       setup_startp_constants.2831
+be.28171:
+	load    [$i2 + 19], $f1
+	add     $i1, -1, $i1
+	load    [$i2 + 20], $f5
+	load    [$i2 + 21], $f6
+	load    [$i2 + 4], $f7
+	fmul    $f7, $f1, $f1
+	load    [$i2 + 5], $f8
+	fmul    $f8, $f5, $f5
+	load    [$i2 + 6], $f9
+	fmul    $f9, $f6, $f6
+	fadd    $f1, $f5, $f1
+	fadd    $f1, $f6, $f1
+	store   $f1, [$i2 + 22]
+	b       setup_startp_constants.2831
+bl.28165:
 	ret     
 .end setup_startp_constants
 
 ######################################################################
 # $i1 = check_all_inside($i1, $i3, $f2, $f3, $f4)
 # $ra = $ra
-# [$i1 - $i2, $i4 - $i6]
-# [$f1, $f5 - $f12]
+# [$i1 - $i2, $i4 - $i5]
+# [$f1, $f5 - $f10]
 # []
 # []
 # []
@@ -2646,743 +2016,517 @@ bl.22325:
 .begin check_all_inside
 check_all_inside.2856:
 	load    [$i3 + $i1], $i2
-	be      $i2, -1, be.22384
-bne.22330:
+	be      $i2, -1, be.28194
+bne.28175:
 	load    [ext_objects + $i2], $i2
 	load    [$i2 + 1], $i4
-	load    [$i2 + 9], $f1
-	fsub    $f4, $f1, $f1
+	load    [$i2 + 7], $f1
+	fsub    $f2, $f1, $f1
 	load    [$i2 + 8], $f5
 	fsub    $f3, $f5, $f5
-	load    [$i2 + 7], $f6
-	fsub    $f2, $f6, $f6
-	bne     $i4, 1, bne.22331
-be.22331:
+	load    [$i2 + 9], $f6
+	fsub    $f4, $f6, $f6
+	bne     $i4, 1, bne.28176
+be.28176:
 	load    [$i2 + 4], $f7
-	fabs    $f6, $f6
-	ble     $f7, $f6, ble.22334
-bg.22332:
-	load    [$i2 + 5], $f6
-	fabs    $f5, $f5
-	bg      $f6, $f5, bg.22334
-ble.22334:
-	load    [$i2 + 10], $i2
-	be      $i2, 0, bne.22346
-.count dual_jmp
-	b       be.22346
-bg.22334:
-	load    [$i2 + 6], $f5
 	fabs    $f1, $f1
+	ble     $f7, $f1, ble.28178
+bg.28177:
+	load    [$i2 + 5], $f1
+	fabs    $f5, $f5
+	bg      $f1, $f5, bg.28178
+ble.28178:
 	load    [$i2 + 10], $i2
-	ble     $f5, $f1, ble.22344
+	be      $i2, 0, bne.28735
 .count dual_jmp
-	b       bg.22344
-bne.22331:
-	bne     $i4, 2, bne.22338
-be.22338:
+	b       be.28190
+bg.28178:
+	load    [$i2 + 6], $f1
+	fabs    $f6, $f5
+	load    [$i2 + 10], $i2
+	ble     $f1, $f5, ble.28189
+.count dual_jmp
+	b       bg.28189
+bne.28176:
+	bne     $i4, 2, bne.28182
+be.28182:
 	load    [$i2 + 4], $f7
-	fmul    $f7, $f6, $f6
+	fmul    $f7, $f1, $f1
 	load    [$i2 + 5], $f8
 	fmul    $f8, $f5, $f5
 	load    [$i2 + 6], $f9
-	fmul    $f9, $f1, $f1
+	fmul    $f9, $f6, $f6
 	load    [$i2 + 10], $i2
-	fadd    $f6, $f5, $f5
-	fadd    $f5, $f1, $f1
-	ble     $f0, $f1, ble.22344
-.count dual_jmp
-	b       bg.22344
-bne.22338:
-	fmul    $f6, $f6, $f7
-	fmul    $f5, $f5, $f8
-	load    [$i2 + 4], $f9
-	load    [$i2 + 5], $f10
-	fmul    $f1, $f1, $f11
-	fmul    $f7, $f9, $f7
-	load    [$i2 + 6], $f9
-	fmul    $f8, $f10, $f8
-	load    [$i2 + 3], $i5
-	fmul    $f11, $f9, $f9
-	fadd    $f7, $f8, $f7
-	fadd    $f7, $f9, $f7
-	be      $i5, 0, be.22342
-bne.22342:
-	fmul    $f5, $f1, $f8
-	load    [$i2 + 16], $f9
-	fmul    $f1, $f6, $f1
-	load    [$i2 + 17], $f10
-	fmul    $f6, $f5, $f5
-	fmul    $f8, $f9, $f6
-	load    [$i2 + 18], $f8
-	fmul    $f1, $f10, $f1
-	fmul    $f5, $f8, $f5
-	fadd    $f7, $f6, $f6
-	fadd    $f6, $f1, $f1
 	fadd    $f1, $f5, $f1
-	be      $i4, 3, be.22343
+	fadd    $f1, $f6, $f1
+	ble     $f0, $f1, ble.28189
 .count dual_jmp
-	b       bne.22343
-be.22342:
+	b       bg.28189
+bne.28182:
+	fmul    $f1, $f1, $f7
+	load    [$i2 + 4], $f8
+	fmul    $f5, $f5, $f9
+	load    [$i2 + 5], $f10
+	fmul    $f7, $f8, $f7
+	fmul    $f6, $f6, $f8
+	load    [$i2 + 3], $i5
+	fmul    $f9, $f10, $f9
+	load    [$i2 + 6], $f10
+	fadd    $f7, $f9, $f7
+	fmul    $f8, $f10, $f8
+	fadd    $f7, $f8, $f7
+	be      $i5, 0, be.28187
+bne.28187:
+	fmul    $f5, $f6, $f8
+	load    [$i2 + 16], $f9
+	fmul    $f6, $f1, $f6
+	load    [$i2 + 17], $f10
+	fmul    $f8, $f9, $f8
+	fmul    $f1, $f5, $f1
+	fmul    $f6, $f10, $f5
+	fadd    $f7, $f8, $f6
+	load    [$i2 + 18], $f7
+	fadd    $f6, $f5, $f5
+	fmul    $f1, $f7, $f1
+	fadd    $f5, $f1, $f1
+	be      $i4, 3, be.28188
+.count dual_jmp
+	b       bne.28188
+be.28187:
 	mov     $f7, $f1
-	be      $i4, 3, be.22343
-bne.22343:
+	be      $i4, 3, be.28188
+bne.28188:
 	load    [$i2 + 10], $i2
-	ble     $f0, $f1, ble.22344
+	ble     $f0, $f1, ble.28189
 .count dual_jmp
-	b       bg.22344
-be.22343:
+	b       bg.28189
+be.28188:
 	fsub    $f1, $fc0, $f1
 	load    [$i2 + 10], $i2
-	ble     $f0, $f1, ble.22344
-bg.22344:
-	be      $i2, 0, be.22346
+	ble     $f0, $f1, ble.28189
+bg.28189:
+	be      $i2, 0, be.28190
 .count dual_jmp
-	b       bne.22346
-ble.22344:
-	be      $i2, 0, bne.22346
-be.22346:
+	b       bne.28735
+ble.28189:
+	be      $i2, 0, bne.28735
+be.28190:
 	add     $i1, 1, $i2
 	load    [$i3 + $i2], $i2
-	be      $i2, -1, be.22384
-bne.22348:
+	be      $i2, -1, be.28194
+bne.28194:
 	load    [ext_objects + $i2], $i2
 	load    [$i2 + 1], $i4
-	load    [$i2 + 9], $f1
-	fsub    $f4, $f1, $f1
+	load    [$i2 + 7], $f1
+	fsub    $f2, $f1, $f1
 	load    [$i2 + 8], $f5
 	fsub    $f3, $f5, $f5
-	load    [$i2 + 7], $f6
-	fsub    $f2, $f6, $f6
-	bne     $i4, 1, bne.22349
-be.22349:
+	load    [$i2 + 9], $f6
+	fsub    $f4, $f6, $f6
+	bne     $i4, 1, bne.28195
+be.28195:
 	load    [$i2 + 4], $f7
-	fabs    $f6, $f6
-	ble     $f7, $f6, ble.22362
-bg.22350:
-	load    [$i2 + 5], $f6
-	fabs    $f5, $f5
-	ble     $f6, $f5, ble.22362
-bg.22352:
-	load    [$i2 + 6], $f5
 	fabs    $f1, $f1
+	ble     $f7, $f1, ble.28197
+bg.28196:
+	load    [$i2 + 5], $f1
+	fabs    $f5, $f5
+	ble     $f1, $f5, ble.28197
+bg.28197:
+	load    [$i2 + 6], $f1
+	fabs    $f6, $f5
 	load    [$i2 + 10], $i2
-	ble     $f5, $f1, ble.22357
+	ble     $f1, $f5, ble.28208
 .count dual_jmp
-	b       bg.22357
-bne.22349:
-	load    [$i2 + 6], $f7
-	be      $i4, 2, be.22356
-bne.22356:
-	load    [$i2 + 3], $i5
-	fmul    $f1, $f1, $f8
-	load    [$i2 + 5], $f9
-	fmul    $f5, $f5, $f10
-	fmul    $f6, $f6, $f11
-	load    [$i2 + 4], $f12
-	fmul    $f8, $f7, $f7
-	fmul    $f10, $f9, $f8
-	fmul    $f11, $f12, $f9
-	fadd    $f9, $f8, $f8
-	fadd    $f8, $f7, $f7
-	be      $i5, 0, be.22360
-bne.22360:
-	fmul    $f5, $f1, $f8
-	load    [$i2 + 18], $f9
-	load    [$i2 + 16], $f10
-	fmul    $f6, $f5, $f5
-	load    [$i2 + 17], $f11
-	fmul    $f1, $f6, $f1
-	fmul    $f8, $f10, $f6
-	fmul    $f5, $f9, $f5
-	fmul    $f1, $f11, $f1
-	fadd    $f7, $f6, $f6
-	fadd    $f6, $f1, $f1
-	fadd    $f1, $f5, $f1
-	be      $i4, 3, be.22361
-.count dual_jmp
-	b       bne.22361
-be.22360:
-	mov     $f7, $f1
-	be      $i4, 3, be.22361
-bne.22361:
-	ble     $f0, $f1, ble.22362
-.count dual_jmp
-	b       bg.22362
-be.22361:
-	fsub    $f1, $fc0, $f1
-	ble     $f0, $f1, ble.22362
-bg.22362:
+	b       bg.28208
+ble.28197:
 	load    [$i2 + 10], $i2
-	be      $i2, 0, be.22364
+	be      $i2, 0, bne.28735
 .count dual_jmp
-	b       bne.22346
-ble.22362:
-	load    [$i2 + 10], $i2
-	be      $i2, 0, bne.22346
-.count dual_jmp
-	b       be.22364
-be.22356:
-	load    [$i2 + 5], $f8
-	fmul    $f7, $f1, $f1
-	load    [$i2 + 4], $f9
-	fmul    $f8, $f5, $f5
-	fmul    $f9, $f6, $f6
-	load    [$i2 + 10], $i2
-	fadd    $f6, $f5, $f5
-	fadd    $f5, $f1, $f1
-	ble     $f0, $f1, ble.22357
-bg.22357:
-	be      $i2, 0, be.22364
-.count dual_jmp
-	b       bne.22346
-ble.22357:
-	be      $i2, 0, bne.22346
-be.22364:
-	add     $i1, 2, $i2
-	load    [$i3 + $i2], $i2
-	be      $i2, -1, be.22384
-bne.22366:
-	load    [ext_objects + $i2], $i2
-	load    [$i2 + 1], $i4
-	load    [$i2 + 9], $f1
-	load    [$i2 + 8], $f5
-	fsub    $f4, $f1, $f1
-	load    [$i2 + 7], $f6
-	fsub    $f3, $f5, $f5
-	fsub    $f2, $f6, $f6
-	bne     $i4, 1, bne.22367
-be.22367:
+	b       be.28209
+bne.28195:
+	bne     $i4, 2, bne.28201
+be.28201:
 	load    [$i2 + 4], $f7
-	fabs    $f6, $f6
-	ble     $f7, $f6, ble.22370
-bg.22368:
-	load    [$i2 + 5], $f6
-	fabs    $f5, $f5
-	bg      $f6, $f5, bg.22370
-ble.22370:
-	load    [$i2 + 10], $i2
-	be      $i2, 0, bne.22346
-.count dual_jmp
-	b       be.22382
-bg.22370:
-	load    [$i2 + 6], $f5
-	fabs    $f1, $f1
-	load    [$i2 + 10], $i2
-	ble     $f5, $f1, ble.22372
-bg.22372:
-	be      $i2, 0, be.22382
-.count dual_jmp
-	b       bne.22346
-ble.22372:
-	be      $i2, 0, bne.22346
-.count dual_jmp
-	b       be.22382
-bne.22367:
-	load    [$i2 + 6], $f7
-	be      $i4, 2, be.22374
-bne.22374:
-	load    [$i2 + 10], $i5
-	fmul    $f1, $f1, $f8
-	load    [$i2 + 5], $f9
-	fmul    $f5, $f5, $f10
-	load    [$i2 + 4], $f12
-	fmul    $f6, $f6, $f11
-	load    [$i2 + 3], $i6
-	fmul    $f8, $f7, $f7
-	fmul    $f10, $f9, $f8
-	fmul    $f11, $f12, $f9
-	fadd    $f9, $f8, $f8
-	fadd    $f8, $f7, $f7
-	be      $i6, 0, be.22378
-bne.22378:
-	fmul    $f5, $f1, $f8
-	load    [$i2 + 16], $f9
-	fmul    $f1, $f6, $f1
-	load    [$i2 + 17], $f10
-	fmul    $f6, $f5, $f5
-	fmul    $f8, $f9, $f6
-	load    [$i2 + 18], $f8
-	fmul    $f1, $f10, $f1
-	fmul    $f5, $f8, $f5
-	fadd    $f7, $f6, $f6
-	fadd    $f6, $f1, $f1
-	fadd    $f1, $f5, $f1
-	be      $i4, 3, be.22379
-.count dual_jmp
-	b       bne.22379
-be.22378:
-	mov     $f7, $f1
-	be      $i4, 3, be.22379
-bne.22379:
-	ble     $f0, $f1, ble.22380
-.count dual_jmp
-	b       bg.22380
-be.22379:
-	fsub    $f1, $fc0, $f1
-	ble     $f0, $f1, ble.22380
-bg.22380:
-	be      $i5, 0, be.22382
-.count dual_jmp
-	b       bne.22346
-ble.22380:
-	be      $i5, 0, bne.22346
-.count dual_jmp
-	b       be.22382
-be.22374:
-	load    [$i2 + 10], $i4
 	fmul    $f7, $f1, $f1
 	load    [$i2 + 5], $f8
 	fmul    $f8, $f5, $f5
-	load    [$i2 + 4], $f9
+	load    [$i2 + 6], $f9
 	fmul    $f9, $f6, $f6
-	fadd    $f6, $f5, $f5
-	fadd    $f5, $f1, $f1
-	ble     $f0, $f1, ble.22375
-bg.22375:
-	be      $i4, 0, be.22382
-.count dual_jmp
-	b       bne.22346
-ble.22375:
-	be      $i4, 0, bne.22346
-be.22382:
-	add     $i1, 3, $i2
-	load    [$i3 + $i2], $i2
-	be      $i2, -1, be.22384
-bne.22384:
-	load    [ext_objects + $i2], $i2
-	load    [$i2 + 1], $i4
-	load    [$i2 + 9], $f1
-	load    [$i2 + 8], $f5
-	fsub    $f4, $f1, $f1
-	load    [$i2 + 7], $f6
-	fsub    $f3, $f5, $f5
-	fsub    $f2, $f6, $f6
-	bne     $i4, 1, bne.22385
-be.22385:
-	load    [$i2 + 4], $f7
-	fabs    $f6, $f6
-	ble     $f7, $f6, ble.22387
-bg.22386:
-	load    [$i2 + 5], $f6
-	fabs    $f5, $f5
-	bg      $f6, $f5, bg.22387
-ble.22387:
 	load    [$i2 + 10], $i2
-	be      $i2, 0, bne.22346
+	fadd    $f1, $f5, $f1
+	fadd    $f1, $f6, $f1
+	ble     $f0, $f1, ble.28208
 .count dual_jmp
-	b       be.22903
-bg.22387:
-	load    [$i2 + 6], $f5
-	fabs    $f1, $f1
-	load    [$i2 + 10], $i2
-	ble     $f5, $f1, ble.22388
-bg.22388:
-	be      $i2, 0, be.22903
-.count dual_jmp
-	b       bne.22346
-ble.22388:
-	be      $i2, 0, bne.22346
-.count dual_jmp
-	b       be.22903
-bne.22385:
-	be      $i4, 2, be.22392
-bne.22392:
-	load    [$i2 + 3], $i5
-	fmul    $f6, $f6, $f7
-	load    [$i2 + 10], $i6
-	fmul    $f5, $f5, $f8
-	load    [$i2 + 4], $f9
-	fmul    $f1, $f1, $f11
+	b       bg.28208
+bne.28201:
+	fmul    $f1, $f1, $f7
+	load    [$i2 + 4], $f8
+	fmul    $f5, $f5, $f9
 	load    [$i2 + 5], $f10
-	fmul    $f7, $f9, $f7
-	fmul    $f8, $f10, $f8
-	load    [$i2 + 6], $f9
-	fmul    $f11, $f9, $f9
-	fadd    $f7, $f8, $f7
+	fmul    $f7, $f8, $f7
+	fmul    $f6, $f6, $f8
+	load    [$i2 + 3], $i5
+	fmul    $f9, $f10, $f9
+	load    [$i2 + 6], $f10
 	fadd    $f7, $f9, $f7
-	be      $i5, 0, be.22397
-bne.22397:
-	fmul    $f5, $f1, $f8
-	load    [$i2 + 18], $f9
-	load    [$i2 + 16], $f10
-	fmul    $f6, $f5, $f5
-	load    [$i2 + 17], $f11
-	fmul    $f1, $f6, $f1
-	fmul    $f8, $f10, $f6
-	fmul    $f5, $f9, $f5
-	fmul    $f1, $f11, $f1
-	fadd    $f7, $f6, $f6
-	fadd    $f6, $f1, $f1
-	fadd    $f1, $f5, $f1
-	be      $i4, 3, be.22398
-.count dual_jmp
-	b       bne.22398
-be.22397:
-	mov     $f7, $f1
-	be      $i4, 3, be.22398
-bne.22398:
-	ble     $f0, $f1, ble.22399
-.count dual_jmp
-	b       bg.22399
-be.22398:
-	fsub    $f1, $fc0, $f1
-	ble     $f0, $f1, ble.22399
-bg.22399:
-	be      $i6, 0, be.22903
-.count dual_jmp
-	b       bne.22346
-ble.22399:
-	be      $i6, 0, bne.22346
-.count dual_jmp
-	b       be.22903
-be.22392:
-	load    [$i2 + 10], $i4
-	load    [$i2 + 4], $f7
-	load    [$i2 + 5], $f8
-	fmul    $f7, $f6, $f6
-	load    [$i2 + 6], $f9
-	fmul    $f8, $f5, $f5
-	fmul    $f9, $f1, $f1
+	fmul    $f8, $f10, $f8
+	fadd    $f7, $f8, $f7
+	be      $i5, 0, be.28206
+bne.28206:
+	fmul    $f5, $f6, $f8
+	load    [$i2 + 16], $f9
+	fmul    $f6, $f1, $f6
+	load    [$i2 + 17], $f10
+	fmul    $f8, $f9, $f8
+	fmul    $f1, $f5, $f1
+	fmul    $f6, $f10, $f5
+	fadd    $f7, $f8, $f6
+	load    [$i2 + 18], $f7
 	fadd    $f6, $f5, $f5
+	fmul    $f1, $f7, $f1
 	fadd    $f5, $f1, $f1
-	ble     $f0, $f1, ble.22393
-bg.22393:
-	be      $i4, 0, be.22903
+	be      $i4, 3, be.28207
 .count dual_jmp
-	b       bne.22346
-ble.22393:
-	be      $i4, 0, bne.22346
-be.22903:
-	add     $i1, 4, $i1
+	b       bne.28207
+be.28206:
+	mov     $f7, $f1
+	be      $i4, 3, be.28207
+bne.28207:
+	load    [$i2 + 10], $i2
+	ble     $f0, $f1, ble.28208
+.count dual_jmp
+	b       bg.28208
+be.28207:
+	fsub    $f1, $fc0, $f1
+	load    [$i2 + 10], $i2
+	ble     $f0, $f1, ble.28208
+bg.28208:
+	be      $i2, 0, be.28209
+.count dual_jmp
+	b       bne.28735
+ble.28208:
+	be      $i2, 0, bne.28735
+be.28209:
+	add     $i1, 2, $i1
 	b       check_all_inside.2856
-bne.22346:
+bne.28735:
 	li      0, $i1
 	ret     
-be.22384:
+be.28194:
 	li      1, $i1
 	ret     
 .end check_all_inside
 
 ######################################################################
-# $i1 = shadow_check_and_group($i7, $i3)
+# $i1 = shadow_check_and_group($i6, $i3)
 # $ra = $ra1
 # [$i1 - $i2, $i4 - $i7]
-# [$f1 - $f12]
-# []
+# [$f1 - $f10]
 # []
 # [$fg0]
+# []
 # [$ra]
 ######################################################################
 .align 2
 .begin shadow_check_and_group
 shadow_check_and_group.2862:
-	load    [$i3 + $i7], $i1
-	be      $i1, -1, be.22426
-bne.22403:
+	load    [$i3 + $i6], $i1
+	be      $i1, -1, be.28237
+bne.28213:
 	load    [ext_objects + $i1], $i2
 	load    [ext_light_dirvec + 3], $i4
-	load    [ext_intersection_point + 2], $f1
 	load    [$i2 + 1], $i5
+	load    [$i2 + 7], $f1
+	load    [$i2 + 8], $f2
+	fsub    $fg1, $f1, $f1
+	load    [$i2 + 9], $f3
+	fsub    $fg3, $f2, $f2
 	load    [$i4 + $i1], $i4
-	load    [$i2 + 9], $f2
-	load    [$i2 + 8], $f3
-	fsub    $f1, $f2, $f1
-	load    [ext_intersection_point + 1], $f4
-	fsub    $f4, $f3, $f3
-	load    [$i2 + 7], $f2
-	load    [ext_intersection_point + 0], $f5
+	fsub    $fg2, $f3, $f3
 	load    [$i4 + 0], $f4
-	fsub    $f5, $f2, $f2
-	bne     $i5, 1, bne.22404
-be.22404:
-	fsub    $f4, $f2, $f4
+	bne     $i5, 1, bne.28214
+be.28214:
 	load    [$i4 + 1], $f5
+	fsub    $f4, $f1, $f4
+	load    [$i2 + 5], $f6
 	fmul    $f4, $f5, $f4
-	load    [%{ext_light_dirvec + 0} + 1], $f6
+	load    [%{ext_light_dirvec + 0} + 1], $f7
+	fmul    $f4, $f7, $f7
+	fadd_a  $f7, $f2, $f7
+	ble     $f6, $f7, be.28217
+bg.28215:
+	load    [%{ext_light_dirvec + 0} + 2], $f6
 	fmul    $f4, $f6, $f6
-	load    [$i2 + 5], $f7
+	load    [$i2 + 6], $f7
 	fadd_a  $f6, $f3, $f6
-	ble     $f7, $f6, be.22407
-bg.22405:
-	load    [%{ext_light_dirvec + 0} + 2], $f6
-	load    [$i2 + 6], $f7
-	fmul    $f4, $f6, $f6
-	fadd_a  $f6, $f1, $f6
-	ble     $f7, $f6, be.22407
-bg.22406:
-	bne     $f5, $f0, bne.22407
-be.22407:
+	ble     $f7, $f6, be.28217
+bg.28216:
+	bne     $f5, $f0, bne.28217
+be.28217:
 	load    [$i4 + 2], $f4
+	fsub    $f4, $f2, $f4
 	load    [$i4 + 3], $f5
-	fsub    $f4, $f3, $f4
-	load    [%{ext_light_dirvec + 0} + 0], $f6
 	fmul    $f4, $f5, $f4
-	load    [$i2 + 4], $f7
-	fmul    $f4, $f6, $f6
-	fadd_a  $f6, $f2, $f6
-	ble     $f7, $f6, be.22411
-bg.22409:
+	load    [$i2 + 4], $f6
+	load    [%{ext_light_dirvec + 0} + 0], $f7
+	fmul    $f4, $f7, $f7
+	fadd_a  $f7, $f1, $f7
+	ble     $f6, $f7, be.28221
+bg.28219:
 	load    [%{ext_light_dirvec + 0} + 2], $f6
-	fmul    $f4, $f6, $f6
 	load    [$i2 + 6], $f7
-	fadd_a  $f6, $f1, $f6
-	ble     $f7, $f6, be.22411
-bg.22410:
-	be      $f5, $f0, be.22411
-bne.22407:
+	fmul    $f4, $f6, $f6
+	fadd_a  $f6, $f3, $f6
+	ble     $f7, $f6, be.28221
+bg.28220:
+	be      $f5, $f0, be.28221
+bne.28217:
 	mov     $f4, $fg0
 .count load_float
-	load    [f.22037], $f1
-	ble     $f1, $fg0, ble.22424
+	load    [f.27978], $f1
+	ble     $f1, $fg0, ble.28235
 .count dual_jmp
-	b       bg.22424
-be.22411:
+	b       bg.28235
+be.28221:
 	load    [$i4 + 4], $f4
-	fsub    $f4, $f1, $f1
 	load    [$i4 + 5], $f5
-	fmul    $f1, $f5, $f1
-	load    [%{ext_light_dirvec + 0} + 0], $f6
-	fmul    $f1, $f6, $f6
-	load    [$i2 + 4], $f4
-	fadd_a  $f6, $f2, $f2
-	ble     $f4, $f2, ble.22424
-bg.22413:
-	load    [%{ext_light_dirvec + 0} + 1], $f2
+	fsub    $f4, $f3, $f3
+	load    [$i2 + 4], $f6
+	fmul    $f3, $f5, $f3
+	load    [%{ext_light_dirvec + 0} + 0], $f4
+	fmul    $f3, $f4, $f4
+	fadd_a  $f4, $f1, $f1
+	ble     $f6, $f1, ble.28235
+bg.28223:
+	load    [%{ext_light_dirvec + 0} + 1], $f1
+	fmul    $f3, $f1, $f1
 	load    [$i2 + 5], $f4
-	fmul    $f1, $f2, $f2
-	fadd_a  $f2, $f3, $f2
-	ble     $f4, $f2, ble.22424
-bg.22414:
-	be      $f5, $f0, ble.22424
-bne.22415:
-	mov     $f1, $fg0
+	fadd_a  $f1, $f2, $f1
+	ble     $f4, $f1, ble.28235
+bg.28224:
+	be      $f5, $f0, ble.28235
+bne.28225:
+	mov     $f3, $fg0
 .count load_float
-	load    [f.22037], $f1
-	ble     $f1, $fg0, ble.22424
+	load    [f.27978], $f1
+	ble     $f1, $fg0, ble.28235
 .count dual_jmp
-	b       bg.22424
-bne.22404:
-	be      $i5, 2, be.22416
-bne.22416:
-	be      $f4, $f0, ble.22424
-bne.22418:
-	fmul    $f2, $f2, $f5
-	fmul    $f3, $f3, $f6
-	load    [$i2 + 4], $f7
-	load    [$i2 + 5], $f8
-	fmul    $f1, $f1, $f9
-	fmul    $f5, $f7, $f5
-	load    [$i2 + 6], $f7
-	fmul    $f6, $f8, $f6
-	load    [$i2 + 3], $i6
-	fmul    $f9, $f7, $f7
+	b       bg.28235
+bne.28214:
+	be      $i5, 2, be.28227
+bne.28227:
+	be      $f4, $f0, ble.28235
+bne.28229:
+	load    [$i4 + 2], $f6
+	fmul    $f6, $f2, $f6
+	load    [$i4 + 1], $f5
+	fmul    $f5, $f1, $f5
+	load    [$i4 + 3], $f7
+	fmul    $f7, $f3, $f7
+	fmul    $f1, $f1, $f8
+	load    [$i2 + 5], $f10
 	fadd    $f5, $f6, $f5
+	load    [$i2 + 4], $f6
+	fmul    $f2, $f2, $f9
+	load    [$i2 + 3], $i7
 	fadd    $f5, $f7, $f5
-	be      $i6, 0, be.22419
-bne.22419:
-	fmul    $f3, $f1, $f6
-	load    [$i2 + 16], $f7
-	fmul    $f1, $f2, $f8
+	fmul    $f8, $f6, $f6
+	fmul    $f9, $f10, $f7
+	load    [$i2 + 6], $f9
+	fmul    $f3, $f3, $f8
+	fadd    $f6, $f7, $f6
+	fmul    $f8, $f9, $f7
+	fadd    $f6, $f7, $f6
+	be      $i7, 0, be.28230
+bne.28230:
+	fmul    $f2, $f3, $f7
+	load    [$i2 + 16], $f8
+	fmul    $f3, $f1, $f3
 	load    [$i2 + 17], $f9
-	fmul    $f2, $f3, $f10
-	fmul    $f6, $f7, $f6
-	load    [$i2 + 18], $f7
-	fmul    $f8, $f9, $f8
-	fmul    $f10, $f7, $f7
-	fadd    $f5, $f6, $f5
-	fadd    $f5, $f8, $f5
-	fadd    $f5, $f7, $f5
-	be      $i5, 3, be.22420
-.count dual_jmp
-	b       bne.22420
-be.22419:
-	be      $i5, 3, be.22420
-bne.22420:
-	fmul    $f4, $f5, $f4
-	load    [$i4 + 3], $f5
-	fmul    $f5, $f1, $f1
-	load    [$i4 + 2], $f6
-	fmul    $f6, $f3, $f3
-	load    [$i4 + 1], $f7
-	fmul    $f7, $f2, $f2
-	fadd    $f2, $f3, $f2
+	fmul    $f7, $f8, $f7
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f9, $f2
+	fadd    $f6, $f7, $f3
+	load    [$i2 + 18], $f6
+	fadd    $f3, $f2, $f2
+	fmul    $f1, $f6, $f1
 	fadd    $f2, $f1, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f4, $f2
-	ble     $f2, $f0, ble.22424
+	be      $i5, 3, be.28231
 .count dual_jmp
-	b       bg.22421
-be.22420:
-	fsub    $f5, $fc0, $f5
-	load    [$i4 + 2], $f6
-	load    [$i4 + 1], $f7
-	fmul    $f6, $f3, $f3
-	fmul    $f7, $f2, $f2
-	fmul    $f4, $f5, $f4
-	load    [$i4 + 3], $f5
-	fmul    $f5, $f1, $f1
-	fadd    $f2, $f3, $f2
-	fadd    $f2, $f1, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f4, $f2
-	ble     $f2, $f0, ble.22424
-bg.22421:
+	b       bne.28231
+be.28230:
+	mov     $f6, $f1
+	be      $i5, 3, be.28231
+bne.28231:
+	fmul    $f5, $f5, $f2
+	fmul    $f4, $f1, $f1
+	fsub    $f2, $f1, $f1
+	ble     $f1, $f0, ble.28235
+.count dual_jmp
+	b       bg.28232
+be.28231:
+	fsub    $f1, $fc0, $f1
+	fmul    $f5, $f5, $f2
+	fmul    $f4, $f1, $f1
+	fsub    $f2, $f1, $f1
+	ble     $f1, $f0, ble.28235
+bg.28232:
 	load    [$i2 + 10], $i2
-	load    [$i4 + 4], $f3
-	fsqrt   $f2, $f2
-	be      $i2, 0, be.22422
-bne.22422:
-	fadd    $f1, $f2, $f1
-	fmul    $f1, $f3, $fg0
+	load    [$i4 + 4], $f2
+	fsqrt   $f1, $f1
+	be      $i2, 0, be.28233
+bne.28233:
+	fadd    $f5, $f1, $f1
+	fmul    $f1, $f2, $fg0
 .count load_float
-	load    [f.22037], $f1
-	ble     $f1, $fg0, ble.22424
+	load    [f.27978], $f1
+	ble     $f1, $fg0, ble.28235
 .count dual_jmp
-	b       bg.22424
-be.22422:
-	fsub    $f1, $f2, $f1
-	fmul    $f1, $f3, $fg0
+	b       bg.28235
+be.28233:
+	fsub    $f5, $f1, $f1
+	fmul    $f1, $f2, $fg0
 .count load_float
-	load    [f.22037], $f1
-	ble     $f1, $fg0, ble.22424
+	load    [f.27978], $f1
+	ble     $f1, $fg0, ble.28235
 .count dual_jmp
-	b       bg.22424
-be.22416:
-	ble     $f0, $f4, ble.22424
-bg.22417:
-	load    [$i4 + 3], $f4
+	b       bg.28235
+be.28227:
+	ble     $f0, $f4, ble.28235
+bg.28228:
+	load    [$i4 + 1], $f4
 	fmul    $f4, $f1, $f1
 	load    [$i4 + 2], $f5
-	fmul    $f5, $f3, $f3
-	load    [$i4 + 1], $f6
-	fmul    $f6, $f2, $f2
-	fadd    $f2, $f3, $f2
-	fadd    $f2, $f1, $fg0
+	fmul    $f5, $f2, $f2
+	load    [$i4 + 3], $f6
+	fmul    $f6, $f3, $f3
+	fadd    $f1, $f2, $f1
+	fadd    $f1, $f3, $fg0
 .count load_float
-	load    [f.22037], $f1
-	bg      $f1, $fg0, bg.22424
-ble.22424:
+	load    [f.27978], $f1
+	bg      $f1, $fg0, bg.28235
+ble.28235:
 	load    [ext_objects + $i1], $i1
 	load    [$i1 + 10], $i1
-	bne     $i1, 0, bne.22443
-be.22426:
+	bne     $i1, 0, bne.28747
+be.28237:
 	li      0, $i1
 	jr      $ra1
-bg.22424:
+bg.28235:
 	load    [$i3 + 0], $i1
-	be      $i1, -1, bne.22445
-bne.22427:
-	fadd    $fg0, $fc11, $f1
+	be      $i1, -1, bne.28257
+bne.28238:
+.count load_float
+	load    [f.27979], $f1
 	load    [ext_objects + $i1], $i1
-	fmul    $fg12, $f1, $f4
-	load    [ext_intersection_point + 2], $f2
-	fmul    $fg13, $f1, $f6
-	load    [ext_intersection_point + 1], $f3
+	fadd    $fg0, $f1, $f1
+	load    [$i1 + 8], $f5
+	fmul    $fg16, $f1, $f2
+	load    [$i1 + 9], $f6
+	fmul    $fg14, $f1, $f3
 	fmul    $fg15, $f1, $f1
 	load    [$i1 + 1], $i2
-	fadd    $f4, $f2, $f4
-	load    [$i1 + 9], $f5
-	fadd    $f6, $f3, $f3
-	load    [$i1 + 8], $f7
-	fsub    $f4, $f5, $f5
-	load    [ext_intersection_point + 0], $f8
-	fadd    $f1, $f8, $f2
+	fadd    $f2, $fg1, $f2
+	fadd    $f3, $fg3, $f3
+	fadd    $f1, $fg2, $f4
 	load    [$i1 + 7], $f1
-	fsub    $f3, $f7, $f6
+	fsub    $f3, $f5, $f5
+	fsub    $f4, $f6, $f6
 	fsub    $f2, $f1, $f1
-	bne     $i2, 1, bne.22428
-be.22428:
+	bne     $i2, 1, bne.28239
+be.28239:
 	load    [$i1 + 4], $f7
 	fabs    $f1, $f1
-	ble     $f7, $f1, ble.22441
-bg.22429:
+	ble     $f7, $f1, ble.28241
+bg.28240:
 	load    [$i1 + 5], $f1
-	fabs    $f6, $f6
-	ble     $f1, $f6, ble.22441
-bg.22431:
-	load    [$i1 + 6], $f1
 	fabs    $f5, $f5
+	ble     $f1, $f5, ble.28241
+bg.28241:
+	load    [$i1 + 6], $f1
+	fabs    $f6, $f5
 	load    [$i1 + 10], $i1
-	ble     $f1, $f5, ble.22436
+	ble     $f1, $f5, ble.28252
 .count dual_jmp
-	b       bg.22436
-bne.22428:
-	load    [$i1 + 6], $f7
-	be      $i2, 2, be.22435
-bne.22435:
-	fmul    $f5, $f5, $f8
-	load    [$i1 + 5], $f9
-	fmul    $f6, $f6, $f10
-	fmul    $f1, $f1, $f11
-	load    [$i1 + 4], $f12
-	fmul    $f8, $f7, $f7
-	load    [$i1 + 3], $i4
-	fmul    $f10, $f9, $f8
-	fmul    $f11, $f12, $f9
-	fadd    $f9, $f8, $f8
-	fadd    $f8, $f7, $f7
-	be      $i4, 0, be.22439
-bne.22439:
-	fmul    $f6, $f5, $f8
-	load    [$i1 + 18], $f9
-	fmul    $f1, $f6, $f6
-	load    [$i1 + 16], $f10
-	fmul    $f5, $f1, $f1
-	load    [$i1 + 17], $f11
-	fmul    $f8, $f10, $f5
-	fmul    $f6, $f9, $f6
-	fmul    $f1, $f11, $f1
-	fadd    $f7, $f5, $f5
-	fadd    $f5, $f1, $f1
-	fadd    $f1, $f6, $f1
-	be      $i2, 3, be.22440
-.count dual_jmp
-	b       bne.22440
-be.22439:
-	mov     $f7, $f1
-	be      $i2, 3, be.22440
-bne.22440:
-	ble     $f0, $f1, ble.22441
-.count dual_jmp
-	b       bg.22441
-be.22440:
-	fsub    $f1, $fc0, $f1
-	ble     $f0, $f1, ble.22441
-bg.22441:
+	b       bg.28252
+ble.28241:
 	load    [$i1 + 10], $i1
-	be      $i1, 0, be.22443
+	be      $i1, 0, bne.28747
 .count dual_jmp
-	b       bne.22443
-ble.22441:
-	load    [$i1 + 10], $i1
-	be      $i1, 0, bne.22443
-.count dual_jmp
-	b       be.22443
-be.22435:
+	b       be.28253
+bne.28239:
+	bne     $i2, 2, bne.28245
+be.28245:
+	load    [$i1 + 4], $f7
 	load    [$i1 + 5], $f8
-	load    [$i1 + 4], $f9
-	fmul    $f7, $f5, $f5
-	fmul    $f8, $f6, $f6
+	fmul    $f7, $f1, $f1
+	load    [$i1 + 6], $f9
+	fmul    $f8, $f5, $f5
+	fmul    $f9, $f6, $f6
 	load    [$i1 + 10], $i1
-	fmul    $f9, $f1, $f1
-	fadd    $f1, $f6, $f1
 	fadd    $f1, $f5, $f1
-	ble     $f0, $f1, ble.22436
-bg.22436:
-	be      $i1, 0, be.22443
+	fadd    $f1, $f6, $f1
+	ble     $f0, $f1, ble.28252
 .count dual_jmp
-	b       bne.22443
-ble.22436:
-	be      $i1, 0, bne.22443
-be.22443:
+	b       bg.28252
+bne.28245:
+	fmul    $f1, $f1, $f7
+	load    [$i1 + 4], $f8
+	fmul    $f5, $f5, $f9
+	load    [$i1 + 5], $f10
+	fmul    $f7, $f8, $f7
+	load    [$i1 + 3], $i4
+	fmul    $f6, $f6, $f8
+	fmul    $f9, $f10, $f9
+	load    [$i1 + 6], $f10
+	fadd    $f7, $f9, $f7
+	fmul    $f8, $f10, $f8
+	fadd    $f7, $f8, $f7
+	be      $i4, 0, be.28250
+bne.28250:
+	fmul    $f5, $f6, $f8
+	load    [$i1 + 16], $f9
+	fmul    $f6, $f1, $f6
+	load    [$i1 + 17], $f10
+	fmul    $f8, $f9, $f8
+	fmul    $f1, $f5, $f1
+	fmul    $f6, $f10, $f5
+	fadd    $f7, $f8, $f6
+	load    [$i1 + 18], $f7
+	fadd    $f6, $f5, $f5
+	fmul    $f1, $f7, $f1
+	fadd    $f5, $f1, $f1
+	be      $i2, 3, be.28251
+.count dual_jmp
+	b       bne.28251
+be.28250:
+	mov     $f7, $f1
+	be      $i2, 3, be.28251
+bne.28251:
+	load    [$i1 + 10], $i1
+	ble     $f0, $f1, ble.28252
+.count dual_jmp
+	b       bg.28252
+be.28251:
+	fsub    $f1, $fc0, $f1
+	load    [$i1 + 10], $i1
+	ble     $f0, $f1, ble.28252
+bg.28252:
+	be      $i1, 0, be.28253
+.count dual_jmp
+	b       bne.28747
+ble.28252:
+	be      $i1, 0, bne.28747
+be.28253:
 	li      1, $i1
 	call    check_all_inside.2856
-	be      $i1, 0, bne.22443
-bne.22445:
+	be      $i1, 0, bne.28747
+bne.28257:
 	li      1, $i1
 	jr      $ra1
-bne.22443:
-	add     $i7, 1, $i7
+bne.28747:
+	add     $i6, 1, $i6
 	b       shadow_check_and_group.2862
 .end shadow_check_and_group
 
@@ -3390,92 +2534,92 @@ bne.22443:
 # $i1 = shadow_check_one_or_group($i8, $i9)
 # $ra = $ra2
 # [$i1 - $i8]
-# [$f1 - $f12]
-# []
+# [$f1 - $f10]
 # []
 # [$fg0]
+# []
 # [$ra - $ra1]
 ######################################################################
 .align 2
 .begin shadow_check_one_or_group
 shadow_check_one_or_group.2865:
 	load    [$i9 + $i8], $i1
-	be      $i1, -1, be.22460
-bne.22446:
+	be      $i1, -1, be.28272
+bne.28258:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22447
-be.22447:
+	bne     $i1, 0, bne.28259
+be.28259:
 	add     $i8, 1, $i1
 	load    [$i9 + $i1], $i1
-	be      $i1, -1, be.22460
-bne.22448:
+	be      $i1, -1, be.28272
+bne.28260:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22447
-be.22449:
+	bne     $i1, 0, bne.28259
+be.28261:
 	add     $i8, 2, $i1
 	load    [$i9 + $i1], $i1
-	be      $i1, -1, be.22460
-bne.22450:
+	be      $i1, -1, be.28272
+bne.28262:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22447
-be.22451:
+	bne     $i1, 0, bne.28259
+be.28263:
 	add     $i8, 3, $i1
 	load    [$i9 + $i1], $i1
-	be      $i1, -1, be.22460
-bne.22452:
+	be      $i1, -1, be.28272
+bne.28264:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22447
-be.22453:
+	bne     $i1, 0, bne.28259
+be.28265:
 	add     $i8, 4, $i1
 	load    [$i9 + $i1], $i1
-	be      $i1, -1, be.22460
-bne.22454:
+	be      $i1, -1, be.28272
+bne.28266:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22447
-be.22455:
+	bne     $i1, 0, bne.28259
+be.28267:
 	add     $i8, 5, $i1
 	load    [$i9 + $i1], $i1
-	be      $i1, -1, be.22460
-bne.22456:
+	be      $i1, -1, be.28272
+bne.28268:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22447
-be.22457:
+	bne     $i1, 0, bne.28259
+be.28269:
 	add     $i8, 6, $i1
 	load    [$i9 + $i1], $i1
-	be      $i1, -1, be.22460
-bne.22458:
+	be      $i1, -1, be.28272
+bne.28270:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22447
-be.22459:
+	bne     $i1, 0, bne.28259
+be.28271:
 	add     $i8, 7, $i1
 	load    [$i9 + $i1], $i1
-	be      $i1, -1, be.22460
-bne.22460:
+	be      $i1, -1, be.28272
+bne.28272:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	be      $i1, 0, be.22461
-bne.22447:
+	be      $i1, 0, be.28273
+bne.28259:
 	li      1, $i1
 	jr      $ra2
-be.22461:
+be.28273:
 	add     $i8, 8, $i8
 	b       shadow_check_one_or_group.2865
-be.22460:
+be.28272:
 	li      0, $i1
 	jr      $ra2
 .end shadow_check_one_or_group
@@ -3484,10 +2628,10 @@ be.22460:
 # $i1 = shadow_check_one_or_matrix($i10, $i11)
 # $ra = $ra3
 # [$i1 - $i10]
-# [$f1 - $f12]
-# []
+# [$f1 - $f10]
 # []
 # [$fg0]
+# []
 # [$ra - $ra2]
 ######################################################################
 .align 2
@@ -3495,2134 +2639,2357 @@ be.22460:
 shadow_check_one_or_matrix.2868:
 	load    [$i11 + $i10], $i9
 	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22519
-bne.22462:
-	be      $i1, 99, bne.22486
-bne.22463:
+	be      $i1, -1, be.28274
+bne.28274:
+	be      $i1, 99, bne.28299
+bne.28275:
 	load    [ext_objects + $i1], $i2
 	load    [ext_light_dirvec + 3], $i3
-	load    [ext_intersection_point + 0], $f1
-	load    [ext_intersection_point + 1], $f2
-	load    [$i2 + 7], $f3
-	fsub    $f1, $f3, $f1
-	load    [$i2 + 8], $f4
-	fsub    $f2, $f4, $f2
-	load    [ext_intersection_point + 2], $f5
+	load    [$i2 + 7], $f1
+	fsub    $fg1, $f1, $f1
+	load    [$i2 + 8], $f2
+	fsub    $fg3, $f2, $f2
 	load    [$i2 + 9], $f3
+	fsub    $fg2, $f3, $f3
 	load    [$i3 + $i1], $i1
-	fsub    $f5, $f3, $f3
-	load    [$i2 + 1], $i4
+	load    [$i2 + 1], $i3
 	load    [$i1 + 0], $f4
-	bne     $i4, 1, bne.22464
-be.22464:
-	fsub    $f4, $f1, $f4
+	bne     $i3, 1, bne.28276
+be.28276:
 	load    [$i1 + 1], $f5
+	fsub    $f4, $f1, $f4
+	load    [$i2 + 5], $f6
 	fmul    $f4, $f5, $f4
-	load    [%{ext_light_dirvec + 0} + 1], $f6
-	fmul    $f4, $f6, $f6
-	load    [$i2 + 5], $f7
-	fadd_a  $f6, $f2, $f6
-	ble     $f7, $f6, be.22467
-bg.22465:
+	load    [%{ext_light_dirvec + 0} + 1], $f7
+	fmul    $f4, $f7, $f7
+	fadd_a  $f7, $f2, $f7
+	ble     $f6, $f7, be.28279
+bg.28277:
 	load    [%{ext_light_dirvec + 0} + 2], $f6
-	load    [$i2 + 6], $f7
 	fmul    $f4, $f6, $f6
+	load    [$i2 + 6], $f7
 	fadd_a  $f6, $f3, $f6
-	ble     $f7, $f6, be.22467
-bg.22466:
-	bne     $f5, $f0, bne.22467
-be.22467:
+	ble     $f7, $f6, be.28279
+bg.28278:
+	bne     $f5, $f0, bne.28279
+be.28279:
 	load    [$i1 + 2], $f4
-	load    [$i1 + 3], $f5
 	fsub    $f4, $f2, $f4
-	load    [%{ext_light_dirvec + 0} + 0], $f6
+	load    [$i1 + 3], $f5
 	fmul    $f4, $f5, $f4
-	load    [$i2 + 4], $f7
-	fmul    $f4, $f6, $f6
-	fadd_a  $f6, $f1, $f6
-	ble     $f7, $f6, be.22471
-bg.22469:
+	load    [$i2 + 4], $f6
+	load    [%{ext_light_dirvec + 0} + 0], $f7
+	fmul    $f4, $f7, $f7
+	fadd_a  $f7, $f1, $f7
+	ble     $f6, $f7, be.28283
+bg.28281:
 	load    [%{ext_light_dirvec + 0} + 2], $f6
+	load    [$i2 + 6], $f7
 	fmul    $f4, $f6, $f6
-	load    [$i2 + 6], $f7
 	fadd_a  $f6, $f3, $f6
-	ble     $f7, $f6, be.22471
-bg.22470:
-	be      $f5, $f0, be.22471
-bne.22467:
+	ble     $f7, $f6, be.28283
+bg.28282:
+	be      $f5, $f0, be.28283
+bne.28279:
 	mov     $f4, $fg0
-	ble     $fc4, $fg0, be.22518
+	ble     $fc7, $fg0, be.28328
 .count dual_jmp
-	b       bg.22484
-be.22471:
+	b       bg.28297
+be.28283:
 	load    [$i1 + 4], $f4
-	load    [$i1 + 5], $f5
 	fsub    $f4, $f3, $f3
-	load    [%{ext_light_dirvec + 0} + 0], $f6
+	load    [$i1 + 5], $f5
 	fmul    $f3, $f5, $f3
-	load    [$i2 + 4], $f4
-	fmul    $f3, $f6, $f6
-	fadd_a  $f6, $f1, $f1
-	ble     $f4, $f1, be.22518
-bg.22473:
+	load    [$i2 + 4], $f6
+	load    [%{ext_light_dirvec + 0} + 0], $f4
+	fmul    $f3, $f4, $f4
+	fadd_a  $f4, $f1, $f1
+	ble     $f6, $f1, be.28328
+bg.28285:
 	load    [%{ext_light_dirvec + 0} + 1], $f1
-	fmul    $f3, $f1, $f1
 	load    [$i2 + 5], $f4
+	fmul    $f3, $f1, $f1
 	fadd_a  $f1, $f2, $f1
-	ble     $f4, $f1, be.22518
-bg.22474:
-	be      $f5, $f0, be.22518
-bne.22475:
+	ble     $f4, $f1, be.28328
+bg.28286:
+	be      $f5, $f0, be.28328
+bne.28287:
 	mov     $f3, $fg0
-	ble     $fc4, $fg0, be.22518
+	ble     $fc7, $fg0, be.28328
 .count dual_jmp
-	b       bg.22484
-bne.22464:
-	be      $i4, 2, be.22476
-bne.22476:
-	be      $f4, $f0, be.22518
-bne.22478:
-	fmul    $f1, $f1, $f5
-	fmul    $f2, $f2, $f6
-	load    [$i2 + 4], $f7
-	load    [$i2 + 5], $f8
-	fmul    $f3, $f3, $f9
-	fmul    $f5, $f7, $f5
-	load    [$i2 + 6], $f7
-	fmul    $f6, $f8, $f6
-	load    [$i2 + 3], $i3
-	fmul    $f9, $f7, $f7
+	b       bg.28297
+bne.28276:
+	be      $i3, 2, be.28289
+bne.28289:
+	be      $f4, $f0, be.28328
+bne.28291:
+	load    [$i1 + 2], $f6
+	fmul    $f6, $f2, $f6
+	load    [$i1 + 1], $f5
+	fmul    $f5, $f1, $f5
+	load    [$i1 + 3], $f7
+	fmul    $f7, $f3, $f7
+	fmul    $f1, $f1, $f8
+	load    [$i2 + 5], $f10
 	fadd    $f5, $f6, $f5
+	load    [$i2 + 4], $f6
+	fmul    $f2, $f2, $f9
+	load    [$i2 + 3], $i4
 	fadd    $f5, $f7, $f5
-	be      $i3, 0, be.22479
-bne.22479:
-	fmul    $f2, $f3, $f6
-	load    [$i2 + 16], $f7
-	fmul    $f3, $f1, $f8
+	fmul    $f8, $f6, $f6
+	fmul    $f9, $f10, $f7
+	load    [$i2 + 6], $f9
+	fmul    $f3, $f3, $f8
+	fadd    $f6, $f7, $f6
+	fmul    $f8, $f9, $f7
+	fadd    $f6, $f7, $f6
+	be      $i4, 0, be.28292
+bne.28292:
+	fmul    $f2, $f3, $f7
+	load    [$i2 + 16], $f8
+	fmul    $f3, $f1, $f3
 	load    [$i2 + 17], $f9
-	fmul    $f1, $f2, $f10
-	fmul    $f6, $f7, $f6
-	load    [$i2 + 18], $f7
-	fmul    $f8, $f9, $f8
-	fmul    $f10, $f7, $f7
-	fadd    $f5, $f6, $f5
-	fadd    $f5, $f8, $f5
-	fadd    $f5, $f7, $f5
-	be      $i4, 3, be.22480
+	fmul    $f7, $f8, $f7
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f9, $f2
+	fadd    $f6, $f7, $f3
+	load    [$i2 + 18], $f6
+	fadd    $f3, $f2, $f2
+	fmul    $f1, $f6, $f1
+	fadd    $f2, $f1, $f1
+	be      $i3, 3, be.28293
 .count dual_jmp
-	b       bne.22480
-be.22479:
-	be      $i4, 3, be.22480
-bne.22480:
-	fmul    $f4, $f5, $f4
-	load    [$i1 + 3], $f5
-	fmul    $f5, $f3, $f3
-	load    [$i1 + 2], $f6
-	fmul    $f6, $f2, $f2
-	load    [$i1 + 1], $f7
-	fmul    $f7, $f1, $f1
-	fadd    $f1, $f2, $f1
-	fadd    $f1, $f3, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f4, $f2
-	ble     $f2, $f0, be.22518
+	b       bne.28293
+be.28292:
+	mov     $f6, $f1
+	be      $i3, 3, be.28293
+bne.28293:
+	fmul    $f5, $f5, $f2
+	fmul    $f4, $f1, $f1
+	fsub    $f2, $f1, $f1
+	ble     $f1, $f0, be.28328
 .count dual_jmp
-	b       bg.22481
-be.22480:
-	fsub    $f5, $fc0, $f5
-	load    [$i1 + 2], $f6
-	load    [$i1 + 1], $f7
-	fmul    $f6, $f2, $f2
-	fmul    $f7, $f1, $f1
-	fmul    $f4, $f5, $f4
-	load    [$i1 + 3], $f5
-	fmul    $f5, $f3, $f3
-	fadd    $f1, $f2, $f1
-	fadd    $f1, $f3, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f4, $f2
-	ble     $f2, $f0, be.22518
-bg.22481:
+	b       bg.28294
+be.28293:
+	fsub    $f1, $fc0, $f1
+	fmul    $f5, $f5, $f2
+	fmul    $f4, $f1, $f1
+	fsub    $f2, $f1, $f1
+	ble     $f1, $f0, be.28328
+bg.28294:
 	load    [$i2 + 10], $i2
-	load    [$i1 + 4], $f3
-	fsqrt   $f2, $f2
-	be      $i2, 0, be.22482
-bne.22482:
-	fadd    $f1, $f2, $f1
-	fmul    $f1, $f3, $fg0
-	ble     $fc4, $fg0, be.22518
+	load    [$i1 + 4], $f2
+	fsqrt   $f1, $f1
+	be      $i2, 0, be.28295
+bne.28295:
+	fadd    $f5, $f1, $f1
+	fmul    $f1, $f2, $fg0
+	ble     $fc7, $fg0, be.28328
 .count dual_jmp
-	b       bg.22484
-be.22482:
-	fsub    $f1, $f2, $f1
-	fmul    $f1, $f3, $fg0
-	ble     $fc4, $fg0, be.22518
+	b       bg.28297
+be.28295:
+	fsub    $f5, $f1, $f1
+	fmul    $f1, $f2, $fg0
+	ble     $fc7, $fg0, be.28328
 .count dual_jmp
-	b       bg.22484
-be.22476:
-	ble     $f0, $f4, be.22518
-bg.22477:
-	load    [$i1 + 3], $f4
-	fmul    $f4, $f3, $f3
+	b       bg.28297
+be.28289:
+	ble     $f0, $f4, be.28328
+bg.28290:
+	load    [$i1 + 1], $f4
+	fmul    $f4, $f1, $f1
 	load    [$i1 + 2], $f5
 	fmul    $f5, $f2, $f2
-	load    [$i1 + 1], $f6
-	fmul    $f6, $f1, $f1
+	load    [$i1 + 3], $f6
+	fmul    $f6, $f3, $f3
 	fadd    $f1, $f2, $f1
 	fadd    $f1, $f3, $fg0
-	ble     $fc4, $fg0, be.22518
-bg.22484:
+	ble     $fc7, $fg0, be.28328
+bg.28297:
 	load    [$i9 + 1], $i1
-	be      $i1, -1, be.22518
-bne.22485:
+	be      $i1, -1, be.28328
+bne.28298:
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
+	li      0, $i6
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22486
-be.22486:
-	li      2, $i8
-	jal     shadow_check_one_or_group.2865, $ra2
-	be      $i1, 0, be.22518
-bne.22486:
-	load    [$i9 + 1], $i1
-	be      $i1, -1, be.22518
-bne.22504:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22500
-be.22505:
+	bne     $i1, 0, bne.28299
+be.28299:
 	load    [$i9 + 2], $i1
-	be      $i1, -1, be.22518
-bne.22506:
+	be      $i1, -1, be.28328
+bne.28300:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22500
-be.22507:
+	bne     $i1, 0, bne.28299
+be.28301:
 	load    [$i9 + 3], $i1
-	be      $i1, -1, be.22518
-bne.22508:
+	be      $i1, -1, be.28328
+bne.28302:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22500
-be.22509:
+	bne     $i1, 0, bne.28299
+be.28303:
 	load    [$i9 + 4], $i1
-	be      $i1, -1, be.22518
-bne.22510:
+	be      $i1, -1, be.28328
+bne.28304:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22500
-be.22511:
+	bne     $i1, 0, bne.28299
+be.28305:
 	load    [$i9 + 5], $i1
-	be      $i1, -1, be.22518
-bne.22512:
+	be      $i1, -1, be.28328
+bne.28306:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22500
-be.22513:
+	bne     $i1, 0, bne.28299
+be.28307:
 	load    [$i9 + 6], $i1
-	be      $i1, -1, be.22518
-bne.22514:
+	be      $i1, -1, be.28328
+bne.28308:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22500
-be.22515:
+	bne     $i1, 0, bne.28299
+be.28309:
 	load    [$i9 + 7], $i1
-	be      $i1, -1, be.22518
-bne.22516:
+	be      $i1, -1, be.28328
+bne.28310:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22500
-be.22517:
+	bne     $i1, 0, bne.28299
+be.28311:
 	li      8, $i8
 	jal     shadow_check_one_or_group.2865, $ra2
-	bne     $i1, 0, bne.22500
-be.22518:
-	add     $i10, 1, $i1
-	load    [$i11 + $i1], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22519
-bne.22519:
-	be      $i1, 99, bne.22524
-bne.22520:
-	call    solver_fast.2796
-	be      $i1, 0, be.22503
-bne.22521:
-	ble     $fc4, $fg0, be.22503
-bg.22522:
+	be      $i1, 0, be.28328
+bne.28299:
 	load    [$i9 + 1], $i1
-	be      $i1, -1, be.22503
-bne.22523:
+	be      $i1, -1, be.28328
+bne.28314:
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
+	li      0, $i6
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22524
-be.22524:
+	bne     $i1, 0, bne.28315
+be.28315:
 	load    [$i9 + 2], $i1
-	be      $i1, -1, be.22503
-bne.22525:
+	be      $i1, -1, be.28328
+bne.28316:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22524
-be.22526:
-	li      3, $i8
+	bne     $i1, 0, bne.28315
+be.28317:
+	load    [$i9 + 3], $i1
+	be      $i1, -1, be.28328
+bne.28318:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     shadow_check_and_group.2862, $ra1
+	bne     $i1, 0, bne.28315
+be.28319:
+	load    [$i9 + 4], $i1
+	be      $i1, -1, be.28328
+bne.28320:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     shadow_check_and_group.2862, $ra1
+	bne     $i1, 0, bne.28315
+be.28321:
+	load    [$i9 + 5], $i1
+	be      $i1, -1, be.28328
+bne.28322:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     shadow_check_and_group.2862, $ra1
+	bne     $i1, 0, bne.28315
+be.28323:
+	load    [$i9 + 6], $i1
+	be      $i1, -1, be.28328
+bne.28324:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     shadow_check_and_group.2862, $ra1
+	bne     $i1, 0, bne.28315
+be.28325:
+	load    [$i9 + 7], $i1
+	be      $i1, -1, be.28328
+bne.28326:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     shadow_check_and_group.2862, $ra1
+	bne     $i1, 0, bne.28315
+be.28327:
+	li      8, $i8
 	jal     shadow_check_one_or_group.2865, $ra2
-	be      $i1, 0, be.22503
-bne.22524:
-	load    [$i9 + 1], $i1
-	be      $i1, -1, be.22503
-bne.22529:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22500
-be.22500:
-	load    [$i9 + 2], $i1
-	be      $i1, -1, be.22503
-bne.22501:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22500
-be.22502:
-	li      3, $i8
-	jal     shadow_check_one_or_group.2865, $ra2
-	be      $i1, 0, be.22503
-bne.22500:
+	be      $i1, 0, be.28328
+bne.28315:
 	li      1, $i1
 	jr      $ra3
-be.22503:
-	add     $i10, 2, $i10
+be.28328:
+	add     $i10, 1, $i10
 	b       shadow_check_one_or_matrix.2868
-be.22519:
+be.28274:
 	li      0, $i1
 	jr      $ra3
 .end shadow_check_one_or_matrix
 
 ######################################################################
-# solve_each_element($i7, $i3, $i8)
+# solve_each_element($i6, $i3, $f11, $f12, $f13)
 # $ra = $ra1
-# [$i1 - $i2, $i4 - $i7, $i9 - $i10]
-# [$f1 - $f16]
-# [$ig2, $ig4]
+# [$i1 - $i2, $i4 - $i8]
+# [$f1 - $f10, $f14 - $f16]
+# [$ig2 - $ig3]
+# [$fg0 - $fg3, $fg11]
 # []
-# [$fg0, $fg7]
 # [$ra]
 ######################################################################
 .align 2
 .begin solve_each_element
 solve_each_element.2871:
-	load    [$i3 + $i7], $i9
-	be      $i9, -1, be.22569
-bne.22534:
-	load    [ext_objects + $i9], $i1
+	load    [$i3 + $i6], $i7
+	be      $i7, -1, be.28365
+bne.28329:
+	load    [ext_objects + $i7], $i1
+	mov     $fig0, $f1
+	mov     $fig1, $f2
 	load    [$i1 + 1], $i2
-	load    [$i1 + 9], $f1
-	fsub    $fg19, $f1, $f1
-	load    [$i1 + 8], $f2
-	fsub    $fg18, $f2, $f2
 	load    [$i1 + 7], $f3
-	fsub    $fg17, $f3, $f3
-	bne     $i2, 1, bne.22535
-be.22535:
-	load    [$i8 + 0], $f4
-	be      $f4, $f0, ble.22542
-bne.22536:
+	fsub    $f1, $f3, $f1
+	load    [$i1 + 8], $f4
+	fsub    $f2, $f4, $f2
+	load    [$i1 + 9], $f5
+	mov     $fig2, $f3
+	fsub    $f3, $f5, $f3
+	bne     $i2, 1, bne.28330
+be.28330:
+	be      $f11, $f0, ble.28337
+bne.28331:
 	load    [$i1 + 10], $i2
-	load    [$i1 + 4], $f5
-	ble     $f0, $f4, ble.22537
-bg.22537:
-	be      $i2, 0, be.22538
+	load    [$i1 + 4], $f4
+	ble     $f0, $f11, ble.28332
+bg.28332:
+	be      $i2, 0, be.28333
 .count dual_jmp
-	b       bne.22906
-ble.22537:
-	be      $i2, 0, bne.22906
-be.22538:
-	fsub    $f5, $f3, $f5
-	finv    $f4, $f4
+	b       bne.28750
+ble.28332:
+	be      $i2, 0, bne.28750
+be.28333:
+	finv    $f11, $f5
+	fsub    $f4, $f1, $f4
 	load    [$i1 + 5], $f6
-	load    [$i8 + 1], $f7
-	fmul    $f5, $f4, $f4
-	fmul    $f4, $f7, $f5
-	fadd_a  $f5, $f2, $f5
-	ble     $f6, $f5, ble.22542
-.count dual_jmp
-	b       bg.22541
-bne.22906:
-	fneg    $f5, $f5
-	load    [$i1 + 5], $f6
-	fsub    $f5, $f3, $f5
-	load    [$i8 + 1], $f7
-	finv    $f4, $f4
-	fmul    $f5, $f4, $f4
-	fmul    $f4, $f7, $f5
-	fadd_a  $f5, $f2, $f5
-	ble     $f6, $f5, ble.22542
-bg.22541:
-	load    [$i8 + 2], $f5
-	load    [$i1 + 6], $f6
-	fmul    $f4, $f5, $f5
-	fadd_a  $f5, $f1, $f5
-	ble     $f6, $f5, ble.22542
-bg.22542:
-	mov     $f4, $fg0
-	li      1, $i10
-	ble     $fg0, $f0, bne.22569
-.count dual_jmp
-	b       bg.22570
-ble.22542:
-	load    [$i8 + 1], $f4
-	be      $f4, $f0, ble.22550
-bne.22544:
-	load    [$i1 + 10], $i2
-	load    [$i1 + 5], $f5
-	ble     $f0, $f4, ble.22545
-bg.22545:
-	be      $i2, 0, be.22546
-.count dual_jmp
-	b       bne.22909
-ble.22545:
-	be      $i2, 0, bne.22909
-be.22546:
-	fsub    $f5, $f2, $f5
-	load    [$i1 + 6], $f6
-	finv    $f4, $f4
-	load    [$i8 + 2], $f7
-	fmul    $f5, $f4, $f4
-	fmul    $f4, $f7, $f5
-	fadd_a  $f5, $f1, $f5
-	ble     $f6, $f5, ble.22550
-.count dual_jmp
-	b       bg.22549
-bne.22909:
-	fneg    $f5, $f5
-	fsub    $f5, $f2, $f5
-	load    [$i1 + 6], $f6
-	finv    $f4, $f4
-	load    [$i8 + 2], $f7
-	fmul    $f5, $f4, $f4
-	fmul    $f4, $f7, $f5
-	fadd_a  $f5, $f1, $f5
-	ble     $f6, $f5, ble.22550
-bg.22549:
-	load    [$i8 + 0], $f5
-	fmul    $f4, $f5, $f5
-	load    [$i1 + 4], $f6
-	fadd_a  $f5, $f3, $f5
-	ble     $f6, $f5, ble.22550
-bg.22550:
-	mov     $f4, $fg0
-	li      2, $i10
-	ble     $fg0, $f0, bne.22569
-.count dual_jmp
-	b       bg.22570
-ble.22550:
-	load    [$i8 + 2], $f4
-	be      $f4, $f0, ble.22566
-bne.22552:
-	finv    $f4, $f5
-	load    [$i1 + 6], $f6
-	load    [$i1 + 10], $i4
-	ble     $f0, $f4, ble.22553
-bg.22553:
-	be      $i4, 0, be.22554
-.count dual_jmp
-	b       bne.22912
-ble.22553:
-	be      $i4, 0, bne.22912
-be.22554:
-	mov     $f6, $f4
-	load    [$i1 + 4], $f6
-	fsub    $f4, $f1, $f1
-	load    [$i8 + 0], $f4
-	fmul    $f1, $f5, $f1
-	fmul    $f1, $f4, $f4
-	fadd_a  $f4, $f3, $f3
-	ble     $f6, $f3, ble.22566
-.count dual_jmp
-	b       bg.22557
-bne.22912:
-	fneg    $f6, $f4
-	fsub    $f4, $f1, $f1
-	load    [$i8 + 0], $f4
-	load    [$i1 + 4], $f6
-	fmul    $f1, $f5, $f1
-	fmul    $f1, $f4, $f4
-	fadd_a  $f4, $f3, $f3
-	ble     $f6, $f3, ble.22566
-bg.22557:
-	load    [$i8 + 1], $f3
-	load    [$i1 + 5], $f4
-	fmul    $f1, $f3, $f3
-	fadd_a  $f3, $f2, $f2
-	ble     $f4, $f2, ble.22566
-bg.22558:
-	mov     $f1, $fg0
-	li      3, $i10
-	ble     $fg0, $f0, bne.22569
-.count dual_jmp
-	b       bg.22570
-bne.22535:
-	bne     $i2, 2, bne.22559
-be.22559:
-	load    [$i8 + 0], $f4
-	load    [$i1 + 4], $f5
 	fmul    $f4, $f5, $f4
-	load    [$i8 + 1], $f6
-	load    [$i1 + 5], $f7
-	load    [$i8 + 2], $f8
-	fmul    $f6, $f7, $f6
-	load    [$i1 + 6], $f9
-	fmul    $f8, $f9, $f8
-	fadd    $f4, $f6, $f4
-	fadd    $f4, $f8, $f4
-	ble     $f4, $f0, ble.22566
-bg.22560:
-	finv    $f4, $f4
-	fmul    $f5, $f3, $f3
-	li      1, $i10
-	fmul    $f7, $f2, $f2
-	fmul    $f9, $f1, $f1
-	fadd    $f3, $f2, $f2
-	fadd_n  $f2, $f1, $f1
-	fmul    $f1, $f4, $fg0
-	ble     $fg0, $f0, bne.22569
+	fmul    $f4, $f12, $f5
+	fadd_a  $f5, $f2, $f5
+	ble     $f6, $f5, ble.28337
 .count dual_jmp
-	b       bg.22570
-bne.22559:
-	load    [$i1 + 3], $i4
-	load    [$i1 + 6], $f4
-	load    [$i8 + 2], $f5
+	b       bg.28336
+bne.28750:
+	fneg    $f4, $f4
+	finv    $f11, $f5
 	load    [$i1 + 5], $f6
-	fmul    $f5, $f5, $f9
-	load    [$i8 + 1], $f7
-	fmul    $f7, $f7, $f10
-	load    [$i8 + 0], $f8
-	fmul    $f8, $f8, $f11
-	load    [$i1 + 4], $f12
-	fmul    $f9, $f4, $f9
-	fmul    $f10, $f6, $f10
-	fmul    $f11, $f12, $f11
-	fadd    $f11, $f10, $f10
-	fadd    $f10, $f9, $f9
-	be      $i4, 0, be.22561
-bne.22561:
-	fmul    $f7, $f5, $f10
-	load    [$i1 + 16], $f11
-	fmul    $f5, $f8, $f13
-	load    [$i1 + 17], $f14
-	fmul    $f8, $f7, $f15
-	fmul    $f10, $f11, $f10
-	load    [$i1 + 18], $f11
-	fmul    $f13, $f14, $f13
-	fmul    $f15, $f11, $f11
-	fadd    $f9, $f10, $f9
-	fadd    $f9, $f13, $f9
-	fadd    $f9, $f11, $f9
-	be      $f9, $f0, ble.22566
+	fsub    $f4, $f1, $f4
+	fmul    $f4, $f5, $f4
+	fmul    $f4, $f12, $f5
+	fadd_a  $f5, $f2, $f5
+	ble     $f6, $f5, ble.28337
+bg.28336:
+	fmul    $f4, $f13, $f5
+	load    [$i1 + 6], $f6
+	fadd_a  $f5, $f3, $f5
+	ble     $f6, $f5, ble.28337
+bg.28337:
+	mov     $f4, $fg0
+	li      1, $i8
+	ble     $fg0, $f0, bne.28762
 .count dual_jmp
-	b       bne.22562
-be.22561:
-	be      $f9, $f0, ble.22566
-bne.22562:
-	fmul    $f1, $f1, $f10
-	fmul    $f2, $f2, $f11
-	fmul    $f3, $f3, $f13
-	fmul    $f10, $f4, $f10
-	fmul    $f11, $f6, $f11
-	fmul    $f13, $f12, $f13
-	fadd    $f13, $f11, $f11
-	fadd    $f11, $f10, $f10
-	be      $i4, 0, be.22563
-bne.22563:
-	fmul    $f2, $f1, $f11
-	load    [$i1 + 16], $f13
-	fmul    $f1, $f3, $f14
-	load    [$i1 + 17], $f15
-	fmul    $f3, $f2, $f16
-	fmul    $f11, $f13, $f11
-	load    [$i1 + 18], $f13
-	fmul    $f14, $f15, $f14
-	fmul    $f16, $f13, $f13
-	fadd    $f10, $f11, $f10
-	fadd    $f10, $f14, $f10
-	fadd    $f10, $f13, $f10
-	be      $i2, 3, be.22564
+	b       bg.28366
+ble.28337:
+	be      $f12, $f0, ble.28345
+bne.28339:
+	load    [$i1 + 10], $i2
+	load    [$i1 + 5], $f4
+	ble     $f0, $f12, ble.28340
+bg.28340:
+	be      $i2, 0, be.28341
 .count dual_jmp
-	b       bne.22564
-be.22563:
-	be      $i2, 3, be.22564
-bne.22564:
-	fmul    $f9, $f10, $f10
-	fmul    $f5, $f1, $f11
-	fmul    $f7, $f2, $f13
-	fmul    $f8, $f3, $f14
-	fmul    $f11, $f4, $f4
-	fmul    $f13, $f6, $f6
-	fmul    $f14, $f12, $f11
-	fadd    $f11, $f6, $f6
-	fadd    $f6, $f4, $f4
-	be      $i4, 0, be.22565
+	b       bne.28753
+ble.28340:
+	be      $i2, 0, bne.28753
+be.28341:
+	finv    $f12, $f5
+	load    [$i1 + 6], $f6
+	fsub    $f4, $f2, $f4
+	fmul    $f4, $f5, $f4
+	fmul    $f4, $f13, $f5
+	fadd_a  $f5, $f3, $f5
+	ble     $f6, $f5, ble.28345
 .count dual_jmp
-	b       bne.22565
-be.22564:
-	fsub    $f10, $fc0, $f10
-	fmul    $f5, $f1, $f11
-	fmul    $f7, $f2, $f13
-	fmul    $f8, $f3, $f14
-	fmul    $f9, $f10, $f10
-	fmul    $f11, $f4, $f4
-	fmul    $f13, $f6, $f6
-	fmul    $f14, $f12, $f11
-	fadd    $f11, $f6, $f6
-	fadd    $f6, $f4, $f4
-	be      $i4, 0, be.22565
-bne.22565:
-	fmul    $f5, $f2, $f6
-	load    [$i1 + 16], $f12
-	fmul    $f7, $f1, $f11
-	load    [$i1 + 17], $f13
-	fmul    $f8, $f1, $f1
-	fmul    $f5, $f3, $f5
-	fadd    $f6, $f11, $f6
-	fmul    $f8, $f2, $f2
-	fmul    $f7, $f3, $f3
-	fadd    $f1, $f5, $f1
-	load    [$i1 + 18], $f5
-	fmul    $f6, $f12, $f6
-	fadd    $f2, $f3, $f2
-	fmul    $f1, $f13, $f1
-	fmul    $f2, $f5, $f2
-	fadd    $f6, $f1, $f1
+	b       bg.28344
+bne.28753:
+	fneg    $f4, $f4
+	load    [$i1 + 6], $f6
+	finv    $f12, $f5
+	fsub    $f4, $f2, $f4
+	fmul    $f4, $f5, $f4
+	fmul    $f4, $f13, $f5
+	fadd_a  $f5, $f3, $f5
+	ble     $f6, $f5, ble.28345
+bg.28344:
+	fmul    $f4, $f11, $f5
+	load    [$i1 + 4], $f6
+	fadd_a  $f5, $f1, $f5
+	ble     $f6, $f5, ble.28345
+bg.28345:
+	mov     $f4, $fg0
+	li      2, $i8
+	ble     $fg0, $f0, bne.28762
+.count dual_jmp
+	b       bg.28366
+ble.28345:
+	be      $f13, $f0, ble.28362
+bne.28347:
+	load    [$i1 + 10], $i2
+	load    [$i1 + 6], $f4
+	ble     $f0, $f13, ble.28348
+bg.28348:
+	be      $i2, 0, be.28349
+.count dual_jmp
+	b       bne.28759
+ble.28348:
+	be      $i2, 0, bne.28759
+be.28349:
+	finv    $f13, $f5
+	fsub    $f4, $f3, $f3
+	load    [$i1 + 4], $f4
+	fmul    $f3, $f5, $f3
+	fmul    $f3, $f11, $f5
+	fadd_a  $f5, $f1, $f1
+	ble     $f4, $f1, ble.28362
+.count dual_jmp
+	b       bg.28352
+bne.28759:
+	fneg    $f4, $f4
+	finv    $f13, $f5
+	fsub    $f4, $f3, $f3
+	load    [$i1 + 4], $f4
+	fmul    $f3, $f5, $f3
+	fmul    $f3, $f11, $f5
+	fadd_a  $f5, $f1, $f1
+	ble     $f4, $f1, ble.28362
+bg.28352:
+	fmul    $f3, $f12, $f1
+	load    [$i1 + 5], $f4
+	fadd_a  $f1, $f2, $f1
+	ble     $f4, $f1, ble.28362
+bg.28353:
+	mov     $f3, $fg0
+	li      3, $i8
+	ble     $fg0, $f0, bne.28762
+.count dual_jmp
+	b       bg.28366
+bne.28330:
+	bne     $i2, 2, bne.28355
+be.28355:
+	load    [$i1 + 4], $f4
+	fmul    $f11, $f4, $f7
+	load    [$i1 + 5], $f5
+	fmul    $f12, $f5, $f8
+	load    [$i1 + 6], $f6
+	fmul    $f13, $f6, $f9
+	fadd    $f7, $f8, $f7
+	fadd    $f7, $f9, $f7
+	ble     $f7, $f0, ble.28362
+bg.28356:
+	fmul    $f4, $f1, $f1
+	fmul    $f5, $f2, $f2
+	li      1, $i8
+	fmul    $f6, $f3, $f3
+	finv    $f7, $f4
 	fadd    $f1, $f2, $f1
-	fmul    $f1, $fc3, $f1
-	fadd    $f4, $f1, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f10, $f2
-	ble     $f2, $f0, ble.22566
+	fadd_n  $f1, $f3, $f1
+	fmul    $f1, $f4, $fg0
+	ble     $fg0, $f0, bne.28762
 .count dual_jmp
-	b       bg.22566
-be.22565:
-	mov     $f4, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f10, $f2
-	bg      $f2, $f0, bg.22566
-ble.22566:
-	load    [ext_objects + $i9], $i1
+	b       bg.28366
+bne.28355:
+	fmul    $f11, $f11, $f4
+	load    [$i1 + 4], $f5
+	fmul    $f12, $f12, $f6
+	load    [$i1 + 5], $f7
+	fmul    $f4, $f5, $f4
+	fmul    $f13, $f13, $f8
+	load    [$i1 + 6], $f9
+	fmul    $f6, $f7, $f6
+	load    [$i1 + 3], $i4
+	fadd    $f4, $f6, $f4
+	fmul    $f8, $f9, $f6
+	fadd    $f4, $f6, $f4
+	be      $i4, 0, be.28357
+bne.28357:
+	fmul    $f12, $f13, $f6
+	load    [$i1 + 16], $f8
+	fmul    $f13, $f11, $f10
+	load    [$i1 + 17], $f14
+	fmul    $f6, $f8, $f6
+	fmul    $f11, $f12, $f8
+	fmul    $f10, $f14, $f10
+	fadd    $f4, $f6, $f4
+	load    [$i1 + 18], $f6
+	fadd    $f4, $f10, $f4
+	fmul    $f8, $f6, $f6
+	fadd    $f4, $f6, $f4
+	be      $f4, $f0, ble.28362
+.count dual_jmp
+	b       bne.28358
+be.28357:
+	be      $f4, $f0, ble.28362
+bne.28358:
+	fmul    $f11, $f1, $f6
+	fmul    $f12, $f2, $f8
+	fmul    $f13, $f3, $f10
+	fmul    $f6, $f5, $f6
+	fmul    $f8, $f7, $f8
+	fmul    $f10, $f9, $f10
+	fadd    $f6, $f8, $f6
+	fadd    $f6, $f10, $f6
+	be      $i4, 0, be.28359
+bne.28359:
+	fmul    $f13, $f2, $f8
+	load    [$i1 + 16], $f14
+	fmul    $f12, $f3, $f10
+	fmul    $f11, $f3, $f15
+	fmul    $f13, $f1, $f16
+	fadd    $f8, $f10, $f8
+	load    [$i1 + 17], $f10
+	fadd    $f15, $f16, $f15
+	fmul    $f8, $f14, $f8
+	fmul    $f11, $f2, $f14
+	fmul    $f12, $f1, $f16
+	fmul    $f15, $f10, $f10
+	load    [$i1 + 18], $f15
+	fadd    $f14, $f16, $f14
+	fadd    $f8, $f10, $f8
+	fmul    $f14, $f15, $f10
+	fmul    $f3, $f3, $f14
+	fadd    $f8, $f10, $f8
+	fmul    $f2, $f2, $f10
+	fmul    $f8, $fc2, $f8
+	fmul    $f10, $f7, $f7
+	fadd    $f6, $f8, $f6
+	fmul    $f1, $f1, $f8
+	fmul    $f8, $f5, $f5
+	fmul    $f14, $f9, $f8
+	fadd    $f5, $f7, $f5
+	fadd    $f5, $f8, $f5
+	be      $i4, 0, be.28360
+.count dual_jmp
+	b       bne.28360
+be.28359:
+	fmul    $f1, $f1, $f8
+	fmul    $f2, $f2, $f10
+	fmul    $f3, $f3, $f14
+	fmul    $f8, $f5, $f5
+	fmul    $f10, $f7, $f7
+	fmul    $f14, $f9, $f8
+	fadd    $f5, $f7, $f5
+	fadd    $f5, $f8, $f5
+	be      $i4, 0, be.28360
+bne.28360:
+	fmul    $f2, $f3, $f7
+	load    [$i1 + 16], $f8
+	fmul    $f3, $f1, $f3
+	load    [$i1 + 17], $f9
+	fmul    $f7, $f8, $f7
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f9, $f2
+	fadd    $f5, $f7, $f3
+	load    [$i1 + 18], $f5
+	fadd    $f3, $f2, $f2
+	fmul    $f1, $f5, $f1
+	fadd    $f2, $f1, $f1
+	be      $i2, 3, be.28361
+.count dual_jmp
+	b       bne.28361
+be.28360:
+	mov     $f5, $f1
+	be      $i2, 3, be.28361
+bne.28361:
+	fmul    $f6, $f6, $f2
+	fmul    $f4, $f1, $f1
+	fsub    $f2, $f1, $f1
+	ble     $f1, $f0, ble.28362
+.count dual_jmp
+	b       bg.28362
+be.28361:
+	fsub    $f1, $fc0, $f1
+	fmul    $f6, $f6, $f2
+	fmul    $f4, $f1, $f1
+	fsub    $f2, $f1, $f1
+	bg      $f1, $f0, bg.28362
+ble.28362:
+	load    [ext_objects + $i7], $i1
 	load    [$i1 + 10], $i1
-	bne     $i1, 0, bne.22569
-be.22569:
+	bne     $i1, 0, bne.28762
+be.28365:
 	jr      $ra1
-bg.22566:
+bg.28362:
+	fsqrt   $f1, $f1
 	load    [$i1 + 10], $i1
-	fsqrt   $f2, $f2
-	li      1, $i10
-	finv    $f9, $f3
-	be      $i1, 0, be.22567
-bne.22567:
-	fsub    $f2, $f1, $f1
-	fmul    $f1, $f3, $fg0
-	ble     $fg0, $f0, bne.22569
+	li      1, $i8
+	finv    $f4, $f2
+	be      $i1, 0, be.28363
+bne.28363:
+	fsub    $f1, $f6, $f1
+	fmul    $f1, $f2, $fg0
+	ble     $fg0, $f0, bne.28762
 .count dual_jmp
-	b       bg.22570
-be.22567:
-	fneg    $f2, $f2
+	b       bg.28366
+be.28363:
+	fneg    $f1, $f1
+	fsub    $f1, $f6, $f1
+	fmul    $f1, $f2, $fg0
+	ble     $fg0, $f0, bne.28762
+bg.28366:
+	ble     $fg11, $fg0, bne.28762
+bg.28367:
+.count load_float
+	load    [f.27979], $f1
+	fadd    $fg0, $f1, $f14
+	mov     $fig0, $f2
+	fmul    $f11, $f14, $f4
+	mov     $fig1, $f3
+	fmul    $f12, $f14, $f5
+	mov     $fig2, $f1
+	fmul    $f13, $f14, $f6
+	load    [$i3 + 0], $i1
+	fadd    $f4, $f2, $f2
+	fadd    $f5, $f3, $f3
+	fadd    $f6, $f1, $f4
+	be      $i1, -1, bne.28387
+bne.28368:
+	load    [ext_objects + $i1], $i1
+	load    [$i1 + 7], $f1
 	fsub    $f2, $f1, $f1
-	fmul    $f1, $f3, $fg0
-	ble     $fg0, $f0, bne.22569
-bg.22570:
-	ble     $fg7, $fg0, bne.22569
-bg.22571:
-	fadd    $fg0, $fc11, $f13
-	load    [$i8 + 2], $f1
-	li      0, $i1
-	load    [$i8 + 1], $f2
-	fmul    $f2, $f13, $f2
-	load    [$i8 + 0], $f3
-	fmul    $f1, $f13, $f1
-	fmul    $f3, $f13, $f3
-	fadd    $f2, $fg18, $f14
-	fadd    $f1, $fg19, $f4
-	fadd    $f3, $fg17, $f2
-.count move_args
-	mov     $f14, $f3
+	load    [$i1 + 8], $f5
+	fsub    $f3, $f5, $f5
+	load    [$i1 + 9], $f6
+	fsub    $f4, $f6, $f6
+	load    [$i1 + 1], $i2
+	bne     $i2, 1, bne.28369
+be.28369:
+	load    [$i1 + 4], $f7
+	fabs    $f1, $f1
+	ble     $f7, $f1, ble.28371
+bg.28370:
+	load    [$i1 + 5], $f1
+	fabs    $f5, $f5
+	ble     $f1, $f5, ble.28371
+bg.28371:
+	load    [$i1 + 6], $f1
+	fabs    $f6, $f5
+	load    [$i1 + 10], $i1
+	ble     $f1, $f5, ble.28382
+.count dual_jmp
+	b       bg.28382
+ble.28371:
+	load    [$i1 + 10], $i1
+	be      $i1, 0, bne.28762
+.count dual_jmp
+	b       be.28383
+bne.28369:
+	bne     $i2, 2, bne.28375
+be.28375:
+	load    [$i1 + 4], $f7
+	load    [$i1 + 5], $f8
+	fmul    $f7, $f1, $f1
+	load    [$i1 + 6], $f9
+	fmul    $f8, $f5, $f5
+	fmul    $f9, $f6, $f6
+	load    [$i1 + 10], $i1
+	fadd    $f1, $f5, $f1
+	fadd    $f1, $f6, $f1
+	ble     $f0, $f1, ble.28382
+.count dual_jmp
+	b       bg.28382
+bne.28375:
+	fmul    $f1, $f1, $f7
+	load    [$i1 + 4], $f8
+	fmul    $f5, $f5, $f9
+	load    [$i1 + 5], $f10
+	fmul    $f7, $f8, $f7
+	load    [$i1 + 3], $i4
+	fmul    $f6, $f6, $f8
+	fmul    $f9, $f10, $f9
+	load    [$i1 + 6], $f10
+	fadd    $f7, $f9, $f7
+	fmul    $f8, $f10, $f8
+	fadd    $f7, $f8, $f7
+	be      $i4, 0, be.28380
+bne.28380:
+	fmul    $f5, $f6, $f8
+	load    [$i1 + 16], $f9
+	fmul    $f6, $f1, $f6
+	load    [$i1 + 17], $f10
+	fmul    $f8, $f9, $f8
+	fmul    $f1, $f5, $f1
+	fmul    $f6, $f10, $f5
+	fadd    $f7, $f8, $f6
+	load    [$i1 + 18], $f7
+	fadd    $f6, $f5, $f5
+	fmul    $f1, $f7, $f1
+	fadd    $f5, $f1, $f1
+	be      $i2, 3, be.28381
+.count dual_jmp
+	b       bne.28381
+be.28380:
+	mov     $f7, $f1
+	be      $i2, 3, be.28381
+bne.28381:
+	load    [$i1 + 10], $i1
+	ble     $f0, $f1, ble.28382
+.count dual_jmp
+	b       bg.28382
+be.28381:
+	fsub    $f1, $fc0, $f1
+	load    [$i1 + 10], $i1
+	ble     $f0, $f1, ble.28382
+bg.28382:
+	be      $i1, 0, be.28383
+.count dual_jmp
+	b       bne.28762
+ble.28382:
+	be      $i1, 0, bne.28762
+be.28383:
+	li      1, $i1
 	call    check_all_inside.2856
-	add     $i7, 1, $i7
-	be      $i1, 0, solve_each_element.2871
-bne.22572:
-	mov     $f13, $fg7
-	store   $f2, [ext_intersection_point + 0]
-	store   $f14, [ext_intersection_point + 1]
-	mov     $i9, $ig4
-	store   $f4, [ext_intersection_point + 2]
-	mov     $i10, $ig2
+	be      $i1, 0, bne.28762
+bne.28387:
+	mov     $f14, $fg11
+	mov     $f2, $fg1
+	mov     $i7, $ig3
+	mov     $f3, $fg3
+	mov     $i8, $ig2
+	mov     $f4, $fg2
+	add     $i6, 1, $i6
 	b       solve_each_element.2871
-bne.22569:
-	add     $i7, 1, $i7
+bne.28762:
+	add     $i6, 1, $i6
 	b       solve_each_element.2871
 .end solve_each_element
 
 ######################################################################
-# solve_one_or_network($i11, $i12, $i8)
+# solve_one_or_network($i9, $i10, $f11, $f12, $f13)
 # $ra = $ra2
-# [$i1 - $i7, $i9 - $i11]
-# [$f1 - $f16]
-# [$ig2, $ig4]
+# [$i1 - $i9]
+# [$f1 - $f10, $f14 - $f16]
+# [$ig2 - $ig3]
+# [$fg0 - $fg3, $fg11]
 # []
-# [$fg0, $fg7]
 # [$ra - $ra1]
 ######################################################################
 .align 2
 .begin solve_one_or_network
 solve_one_or_network.2875:
-	load    [$i12 + $i11], $i1
-	be      $i1, -1, be.22580
-bne.22573:
+	load    [$i10 + $i9], $i1
+	be      $i1, -1, be.28395
+bne.28388:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element.2871, $ra1
-	add     $i11, 1, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22580
-bne.22574:
+	add     $i9, 1, $i1
+	load    [$i10 + $i1], $i1
+	be      $i1, -1, be.28395
+bne.28389:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element.2871, $ra1
-	add     $i11, 2, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22580
-bne.22575:
+	add     $i9, 2, $i1
+	load    [$i10 + $i1], $i1
+	be      $i1, -1, be.28395
+bne.28390:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element.2871, $ra1
-	add     $i11, 3, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22580
-bne.22576:
+	add     $i9, 3, $i1
+	load    [$i10 + $i1], $i1
+	be      $i1, -1, be.28395
+bne.28391:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element.2871, $ra1
-	add     $i11, 4, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22580
-bne.22577:
+	add     $i9, 4, $i1
+	load    [$i10 + $i1], $i1
+	be      $i1, -1, be.28395
+bne.28392:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element.2871, $ra1
-	add     $i11, 5, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22580
-bne.22578:
+	add     $i9, 5, $i1
+	load    [$i10 + $i1], $i1
+	be      $i1, -1, be.28395
+bne.28393:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element.2871, $ra1
-	add     $i11, 6, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22580
-bne.22579:
+	add     $i9, 6, $i1
+	load    [$i10 + $i1], $i1
+	be      $i1, -1, be.28395
+bne.28394:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element.2871, $ra1
-	add     $i11, 7, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22580
-bne.22580:
+	add     $i9, 7, $i1
+	load    [$i10 + $i1], $i1
+	be      $i1, -1, be.28395
+bne.28395:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element.2871, $ra1
-	add     $i11, 8, $i11
+	add     $i9, 8, $i9
 	b       solve_one_or_network.2875
-be.22580:
+be.28395:
 	jr      $ra2
 .end solve_one_or_network
 
 ######################################################################
-# trace_or_matrix($i13, $i14, $i8)
+# trace_or_matrix($i11, $i12, $f11, $f12, $f13)
 # $ra = $ra3
-# [$i1 - $i7, $i9 - $i13]
-# [$f1 - $f17]
-# [$ig2, $ig4]
+# [$i1 - $i11]
+# [$f1 - $f10, $f14 - $f16]
+# [$ig2 - $ig3]
+# [$fg0 - $fg3, $fg11]
 # []
-# [$fg0, $fg7]
 # [$ra - $ra2]
 ######################################################################
 .align 2
 .begin trace_or_matrix
 trace_or_matrix.2879:
-	load    [$i14 + $i13], $i12
-	load    [$i12 + 0], $i1
-	be      $i1, -1, be.22589
-bne.22581:
-	bne     $i1, 99, bne.22582
-be.22582:
-	load    [$i12 + 1], $i1
-	be      $i1, -1, be.22588
-bne.22583:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 2], $i1
-	be      $i1, -1, be.22588
-bne.22584:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 3], $i1
-	be      $i1, -1, be.22588
-bne.22585:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 4], $i1
-	be      $i1, -1, be.22588
-bne.22586:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 5], $i1
-	be      $i1, -1, be.22588
-bne.22587:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 6], $i1
-	be      $i1, -1, be.22588
-bne.22588:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	li      7, $i11
-	jal     solve_one_or_network.2875, $ra2
-	add     $i13, 1, $i1
-	load    [$i14 + $i1], $i12
-	load    [$i12 + 0], $i1
-	be      $i1, -1, be.22589
+	load    [$i12 + $i11], $i10
+	load    [$i10 + 0], $i1
+	be      $i1, -1, be.28396
+bne.28396:
+	be      $i1, 99, bg.28440
+bne.28397:
+	load    [ext_objects + $i1], $i1
+	mov     $fig0, $f1
+	mov     $fig1, $f2
+	load    [$i1 + 7], $f3
+	load    [$i1 + 8], $f4
+	fsub    $f1, $f3, $f1
+	load    [$i1 + 9], $f5
+	fsub    $f2, $f4, $f2
+	mov     $fig2, $f3
+	fsub    $f3, $f5, $f3
+	load    [$i1 + 1], $i2
+	bne     $i2, 1, bne.28405
+be.28405:
+	be      $f11, $f0, ble.28412
+bne.28406:
+	load    [$i1 + 10], $i2
+	load    [$i1 + 4], $f4
+	ble     $f0, $f11, ble.28407
+bg.28407:
+	be      $i2, 0, be.28408
 .count dual_jmp
-	b       bne.22589
-be.22588:
-	add     $i13, 1, $i1
-	load    [$i14 + $i1], $i12
-	load    [$i12 + 0], $i1
-	be      $i1, -1, be.22589
-bne.22589:
-	be      $i1, 99, be.22590
-bne.22590:
-.count move_args
-	mov     $i8, $i2
-	call    solver.2773
-	be      $i1, 0, ble.22596
-bne.22595:
-	ble     $fg7, $fg0, ble.22596
-bg.22596:
-	li      1, $i11
+	b       bne.28765
+ble.28407:
+	be      $i2, 0, bne.28765
+be.28408:
+	finv    $f11, $f5
+	fsub    $f4, $f1, $f4
+	load    [$i1 + 5], $f6
+	fmul    $f4, $f5, $f4
+	fmul    $f4, $f12, $f5
+	fadd_a  $f5, $f2, $f5
+	ble     $f6, $f5, ble.28412
+.count dual_jmp
+	b       bg.28411
+bne.28765:
+	fneg    $f4, $f4
+	finv    $f11, $f5
+	load    [$i1 + 5], $f6
+	fsub    $f4, $f1, $f4
+	fmul    $f4, $f5, $f4
+	fmul    $f4, $f12, $f5
+	fadd_a  $f5, $f2, $f5
+	ble     $f6, $f5, ble.28412
+bg.28411:
+	fmul    $f4, $f13, $f5
+	load    [$i1 + 6], $f6
+	fadd_a  $f5, $f3, $f5
+	bg      $f6, $f5, bg.28412
+ble.28412:
+	be      $f12, $f0, ble.28420
+bne.28414:
+	load    [$i1 + 10], $i2
+	load    [$i1 + 5], $f4
+	ble     $f0, $f12, ble.28415
+bg.28415:
+	be      $i2, 0, be.28416
+.count dual_jmp
+	b       bne.28768
+ble.28415:
+	be      $i2, 0, bne.28768
+be.28416:
+	finv    $f12, $f5
+	load    [$i1 + 6], $f6
+	fsub    $f4, $f2, $f4
+	fmul    $f4, $f5, $f4
+	fmul    $f4, $f13, $f5
+	fadd_a  $f5, $f3, $f5
+	ble     $f6, $f5, ble.28420
+.count dual_jmp
+	b       bg.28419
+bne.28768:
+	fneg    $f4, $f4
+	load    [$i1 + 6], $f6
+	finv    $f12, $f5
+	fsub    $f4, $f2, $f4
+	fmul    $f4, $f5, $f4
+	fmul    $f4, $f13, $f5
+	fadd_a  $f5, $f3, $f5
+	ble     $f6, $f5, ble.28420
+bg.28419:
+	fmul    $f4, $f11, $f5
+	load    [$i1 + 4], $f6
+	fadd_a  $f5, $f1, $f5
+	ble     $f6, $f5, ble.28420
+bg.28412:
+	mov     $f4, $fg0
+	ble     $fg11, $fg0, be.28447
+.count dual_jmp
+	b       bg.28440
+ble.28420:
+	be      $f13, $f0, be.28447
+bne.28422:
+	load    [$i1 + 10], $i2
+	load    [$i1 + 6], $f4
+	ble     $f0, $f13, ble.28423
+bg.28423:
+	be      $i2, 0, be.28424
+.count dual_jmp
+	b       bne.28771
+ble.28423:
+	be      $i2, 0, bne.28771
+be.28424:
+	finv    $f13, $f5
+	fsub    $f4, $f3, $f3
+	load    [$i1 + 4], $f4
+	fmul    $f3, $f5, $f3
+	fmul    $f3, $f11, $f5
+	fadd_a  $f5, $f1, $f1
+	ble     $f4, $f1, be.28447
+.count dual_jmp
+	b       bg.28427
+bne.28771:
+	fneg    $f4, $f4
+	finv    $f13, $f5
+	fsub    $f4, $f3, $f3
+	load    [$i1 + 4], $f4
+	fmul    $f3, $f5, $f3
+	fmul    $f3, $f11, $f5
+	fadd_a  $f5, $f1, $f1
+	ble     $f4, $f1, be.28447
+bg.28427:
+	fmul    $f3, $f12, $f1
+	load    [$i1 + 5], $f4
+	fadd_a  $f1, $f2, $f1
+	ble     $f4, $f1, be.28447
+bg.28428:
+	mov     $f3, $fg0
+	ble     $fg11, $fg0, be.28447
+.count dual_jmp
+	b       bg.28440
+bne.28405:
+	bne     $i2, 2, bne.28430
+be.28430:
+	load    [$i1 + 4], $f4
+	fmul    $f11, $f4, $f7
+	load    [$i1 + 5], $f5
+	fmul    $f12, $f5, $f8
+	load    [$i1 + 6], $f6
+	fmul    $f13, $f6, $f9
+	fadd    $f7, $f8, $f7
+	fadd    $f7, $f9, $f7
+	ble     $f7, $f0, be.28447
+bg.28431:
+	fmul    $f4, $f1, $f1
+	fmul    $f5, $f2, $f2
+	fmul    $f6, $f3, $f3
+	finv    $f7, $f4
+	fadd    $f1, $f2, $f1
+	fadd_n  $f1, $f3, $f1
+	fmul    $f1, $f4, $fg0
+	ble     $fg11, $fg0, be.28447
+.count dual_jmp
+	b       bg.28440
+bne.28430:
+	fmul    $f11, $f11, $f4
+	load    [$i1 + 4], $f5
+	fmul    $f12, $f12, $f6
+	load    [$i1 + 5], $f7
+	fmul    $f4, $f5, $f4
+	load    [$i1 + 6], $f9
+	fmul    $f13, $f13, $f8
+	load    [$i1 + 3], $i3
+	fmul    $f6, $f7, $f6
+	fadd    $f4, $f6, $f4
+	fmul    $f8, $f9, $f6
+	fadd    $f4, $f6, $f4
+	be      $i3, 0, be.28432
+bne.28432:
+	fmul    $f12, $f13, $f6
+	load    [$i1 + 16], $f8
+	fmul    $f13, $f11, $f10
+	load    [$i1 + 17], $f14
+	fmul    $f6, $f8, $f6
+	fmul    $f11, $f12, $f8
+	fmul    $f10, $f14, $f10
+	fadd    $f4, $f6, $f4
+	load    [$i1 + 18], $f6
+	fadd    $f4, $f10, $f4
+	fmul    $f8, $f6, $f6
+	fadd    $f4, $f6, $f4
+	be      $f4, $f0, be.28447
+.count dual_jmp
+	b       bne.28433
+be.28432:
+	be      $f4, $f0, be.28447
+bne.28433:
+	fmul    $f11, $f1, $f6
+	fmul    $f12, $f2, $f8
+	fmul    $f13, $f3, $f10
+	fmul    $f6, $f5, $f6
+	fmul    $f8, $f7, $f8
+	fmul    $f10, $f9, $f10
+	fadd    $f6, $f8, $f6
+	fadd    $f6, $f10, $f6
+	be      $i3, 0, be.28434
+bne.28434:
+	fmul    $f13, $f2, $f8
+	fmul    $f12, $f3, $f10
+	load    [$i1 + 16], $f14
+	fmul    $f11, $f3, $f15
+	fmul    $f13, $f1, $f16
+	fadd    $f8, $f10, $f8
+	load    [$i1 + 17], $f10
+	fadd    $f15, $f16, $f15
+	fmul    $f8, $f14, $f8
+	fmul    $f11, $f2, $f14
+	fmul    $f12, $f1, $f16
+	fmul    $f15, $f10, $f10
+	load    [$i1 + 18], $f15
+	fadd    $f14, $f16, $f14
+	fadd    $f8, $f10, $f8
+	fmul    $f14, $f15, $f10
+	fmul    $f3, $f3, $f14
+	fadd    $f8, $f10, $f8
+	fmul    $f2, $f2, $f10
+	fmul    $f8, $fc2, $f8
+	fmul    $f10, $f7, $f7
+	fadd    $f6, $f8, $f6
+	fmul    $f1, $f1, $f8
+	fmul    $f8, $f5, $f5
+	fmul    $f14, $f9, $f8
+	fadd    $f5, $f7, $f5
+	fadd    $f5, $f8, $f5
+	be      $i3, 0, be.28435
+.count dual_jmp
+	b       bne.28435
+be.28434:
+	fmul    $f1, $f1, $f8
+	fmul    $f2, $f2, $f10
+	fmul    $f3, $f3, $f14
+	fmul    $f8, $f5, $f5
+	fmul    $f10, $f7, $f7
+	fmul    $f14, $f9, $f8
+	fadd    $f5, $f7, $f5
+	fadd    $f5, $f8, $f5
+	be      $i3, 0, be.28435
+bne.28435:
+	fmul    $f2, $f3, $f7
+	load    [$i1 + 16], $f8
+	fmul    $f3, $f1, $f3
+	load    [$i1 + 17], $f9
+	fmul    $f7, $f8, $f7
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f9, $f2
+	fadd    $f5, $f7, $f3
+	load    [$i1 + 18], $f5
+	fadd    $f3, $f2, $f2
+	fmul    $f1, $f5, $f1
+	fadd    $f2, $f1, $f1
+	be      $i2, 3, be.28436
+.count dual_jmp
+	b       bne.28436
+be.28435:
+	mov     $f5, $f1
+	be      $i2, 3, be.28436
+bne.28436:
+	fmul    $f6, $f6, $f2
+	fmul    $f4, $f1, $f1
+	fsub    $f2, $f1, $f1
+	ble     $f1, $f0, be.28447
+.count dual_jmp
+	b       bg.28437
+be.28436:
+	fsub    $f1, $fc0, $f1
+	fmul    $f6, $f6, $f2
+	fmul    $f4, $f1, $f1
+	fsub    $f2, $f1, $f1
+	ble     $f1, $f0, be.28447
+bg.28437:
+	fsqrt   $f1, $f1
+	load    [$i1 + 10], $i1
+	finv    $f4, $f2
+	be      $i1, 0, be.28438
+bne.28438:
+	fsub    $f1, $f6, $f1
+	fmul    $f1, $f2, $fg0
+	ble     $fg11, $fg0, be.28447
+.count dual_jmp
+	b       bg.28440
+be.28438:
+	fneg    $f1, $f1
+	fsub    $f1, $f6, $f1
+	fmul    $f1, $f2, $fg0
+	ble     $fg11, $fg0, be.28447
+bg.28440:
+	load    [$i10 + 1], $i1
+	be      $i1, -1, be.28447
+bne.28441:
+	load    [ext_and_net + $i1], $i3
+	li      0, $i6
+	jal     solve_each_element.2871, $ra1
+	load    [$i10 + 2], $i1
+	be      $i1, -1, be.28447
+bne.28442:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element.2871, $ra1
+	load    [$i10 + 3], $i1
+	be      $i1, -1, be.28447
+bne.28443:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element.2871, $ra1
+	load    [$i10 + 4], $i1
+	be      $i1, -1, be.28447
+bne.28444:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element.2871, $ra1
+	load    [$i10 + 5], $i1
+	be      $i1, -1, be.28447
+bne.28445:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element.2871, $ra1
+	load    [$i10 + 6], $i1
+	be      $i1, -1, be.28447
+bne.28446:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element.2871, $ra1
+	load    [$i10 + 7], $i1
+	be      $i1, -1, be.28447
+bne.28447:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element.2871, $ra1
+	li      8, $i9
 	jal     solve_one_or_network.2875, $ra2
-	add     $i13, 2, $i13
+	add     $i11, 1, $i11
 	b       trace_or_matrix.2879
-be.22590:
-	load    [$i12 + 1], $i1
-	be      $i1, -1, ble.22596
-bne.22591:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 2], $i1
-	be      $i1, -1, ble.22596
-bne.22592:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 3], $i1
-	be      $i1, -1, ble.22596
-bne.22593:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 4], $i1
-	be      $i1, -1, ble.22596
-bne.22594:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	li      5, $i11
-	jal     solve_one_or_network.2875, $ra2
-	add     $i13, 2, $i13
+be.28447:
+	add     $i11, 1, $i11
 	b       trace_or_matrix.2879
-ble.22596:
-	add     $i13, 2, $i13
-	b       trace_or_matrix.2879
-be.22589:
+be.28396:
 	jr      $ra3
-bne.22582:
-.count move_args
-	mov     $i8, $i2
-	call    solver.2773
-	be      $i1, 0, ble.22598
-bne.22597:
-	ble     $fg7, $fg0, ble.22598
-bg.22598:
-	li      1, $i11
-	jal     solve_one_or_network.2875, $ra2
-	add     $i13, 1, $i13
-	b       trace_or_matrix.2879
-ble.22598:
-	add     $i13, 1, $i13
-	b       trace_or_matrix.2879
 .end trace_or_matrix
 
 ######################################################################
-# solve_each_element_fast($i7, $i3, $i8)
+# solve_each_element_fast($i6, $i3, $f11, $f12, $f13, $i7)
 # $ra = $ra1
-# [$i1 - $i2, $i4 - $i7, $i9 - $i10]
-# [$f1 - $f14]
-# [$ig2, $ig4]
+# [$i1 - $i2, $i4 - $i6, $i8 - $i9]
+# [$f1 - $f10, $f14 - $f16]
+# [$ig2 - $ig3]
+# [$fg0 - $fg3, $fg11]
 # []
-# [$fg0, $fg7]
 # [$ra]
 ######################################################################
 .align 2
 .begin solve_each_element_fast
 solve_each_element_fast.2885:
-	load    [$i3 + $i7], $i9
-	be      $i9, -1, be.22618
-bne.22599:
-	load    [ext_objects + $i9], $i1
-	load    [$i8 + 3], $i2
+	load    [$i3 + $i6], $i8
+	be      $i8, -1, be.28468
+bne.28448:
+	load    [ext_objects + $i8], $i1
+	load    [$i7 + $i8], $i2
 	load    [$i1 + 1], $i4
-	load    [$i2 + $i9], $i2
-	load    [$i1 + 21], $f1
+	load    [$i1 + 19], $f1
 	load    [$i1 + 20], $f2
-	load    [$i1 + 19], $f3
-	bne     $i4, 1, bne.22600
-be.22600:
+	load    [$i1 + 21], $f3
+	bne     $i4, 1, bne.28449
+be.28449:
 	load    [$i2 + 0], $f4
-	fsub    $f4, $f3, $f4
 	load    [$i2 + 1], $f5
+	fsub    $f4, $f1, $f4
+	load    [$i1 + 5], $f6
 	fmul    $f4, $f5, $f4
-	load    [$i8 + 1], $f6
-	fmul    $f4, $f6, $f6
-	load    [$i1 + 5], $f7
-	fadd_a  $f6, $f2, $f6
-	ble     $f7, $f6, be.22603
-bg.22601:
-	load    [$i8 + 2], $f6
+	fmul    $f4, $f12, $f7
+	fadd_a  $f7, $f2, $f7
+	ble     $f6, $f7, be.28452
+bg.28450:
+	fmul    $f4, $f13, $f6
 	load    [$i1 + 6], $f7
-	fmul    $f4, $f6, $f6
-	fadd_a  $f6, $f1, $f6
-	ble     $f7, $f6, be.22603
-bg.22602:
-	be      $f5, $f0, be.22603
-bne.22603:
-	mov     $f4, $fg0
-	li      1, $i10
-	ble     $fg0, $f0, bne.22618
-.count dual_jmp
-	b       bg.22619
-be.22603:
-	load    [$i2 + 2], $f4
-	load    [$i2 + 3], $f5
-	fsub    $f4, $f2, $f4
-	load    [$i8 + 0], $f6
-	fmul    $f4, $f5, $f4
-	load    [$i1 + 4], $f7
-	fmul    $f4, $f6, $f6
 	fadd_a  $f6, $f3, $f6
-	ble     $f7, $f6, be.22607
-bg.22605:
-	load    [$i8 + 2], $f6
-	fmul    $f4, $f6, $f6
-	load    [$i1 + 6], $f7
-	fadd_a  $f6, $f1, $f6
-	ble     $f7, $f6, be.22607
-bg.22606:
-	be      $f5, $f0, be.22607
-bne.22607:
+	ble     $f7, $f6, be.28452
+bg.28451:
+	be      $f5, $f0, be.28452
+bne.28452:
 	mov     $f4, $fg0
-	li      2, $i10
-	ble     $fg0, $f0, bne.22618
+	li      1, $i9
+	ble     $fg0, $f0, bne.28777
 .count dual_jmp
-	b       bg.22619
-be.22607:
-	load    [$i2 + 4], $f4
-	fsub    $f4, $f1, $f1
-	load    [$i2 + 5], $f5
-	fmul    $f1, $f5, $f1
-	load    [$i8 + 0], $f6
-	fmul    $f1, $f6, $f6
-	load    [$i1 + 4], $f4
-	fadd_a  $f6, $f3, $f3
-	ble     $f4, $f3, ble.22615
-bg.22609:
-	load    [$i8 + 1], $f3
-	load    [$i1 + 5], $f4
-	fmul    $f1, $f3, $f3
-	fadd_a  $f3, $f2, $f2
-	ble     $f4, $f2, ble.22615
-bg.22610:
-	be      $f5, $f0, ble.22615
-bne.22611:
-	mov     $f1, $fg0
-	li      3, $i10
-	ble     $fg0, $f0, bne.22618
-.count dual_jmp
-	b       bg.22619
-bne.22600:
-	be      $i4, 2, be.22612
-bne.22612:
-	load    [$i2 + 0], $f4
-	be      $f4, $f0, ble.22615
-bne.22614:
-	load    [$i1 + 22], $f5
+	b       bg.28469
+be.28452:
+	load    [$i2 + 2], $f4
+	fsub    $f4, $f2, $f4
+	load    [$i2 + 3], $f5
 	fmul    $f4, $f5, $f4
-	load    [$i2 + 3], $f6
-	fmul    $f6, $f1, $f1
-	load    [$i2 + 2], $f7
-	fmul    $f7, $f2, $f2
-	load    [$i2 + 1], $f8
-	fmul    $f8, $f3, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	fmul    $f1, $f1, $f2
-	fsub    $f2, $f4, $f2
-	ble     $f2, $f0, ble.22615
-bg.22615:
+	load    [$i1 + 4], $f6
+	fmul    $f4, $f11, $f7
+	fadd_a  $f7, $f1, $f7
+	ble     $f6, $f7, be.28456
+bg.28454:
+	fmul    $f4, $f13, $f6
+	load    [$i1 + 6], $f7
+	fadd_a  $f6, $f3, $f6
+	ble     $f7, $f6, be.28456
+bg.28455:
+	be      $f5, $f0, be.28456
+bne.28456:
+	mov     $f4, $fg0
+	li      2, $i9
+	ble     $fg0, $f0, bne.28777
+.count dual_jmp
+	b       bg.28469
+be.28456:
+	load    [$i2 + 4], $f4
+	load    [$i2 + 5], $f5
+	fsub    $f4, $f3, $f3
+	load    [$i1 + 4], $f6
+	fmul    $f3, $f5, $f3
+	fmul    $f3, $f11, $f4
+	fadd_a  $f4, $f1, $f1
+	ble     $f6, $f1, ble.28465
+bg.28458:
+	fmul    $f3, $f12, $f1
+	load    [$i1 + 5], $f4
+	fadd_a  $f1, $f2, $f1
+	ble     $f4, $f1, ble.28465
+bg.28459:
+	be      $f5, $f0, ble.28465
+bne.28460:
+	mov     $f3, $fg0
+	li      3, $i9
+	ble     $fg0, $f0, bne.28777
+.count dual_jmp
+	b       bg.28469
+bne.28449:
+	be      $i4, 2, be.28462
+bne.28462:
+	load    [$i2 + 0], $f4
+	be      $f4, $f0, ble.28465
+bne.28464:
+	load    [$i2 + 1], $f5
+	load    [$i2 + 2], $f6
+	fmul    $f5, $f1, $f1
+	load    [$i2 + 3], $f7
+	fmul    $f6, $f2, $f2
+	fmul    $f7, $f3, $f3
+	load    [$i1 + 22], $f5
+	fadd    $f1, $f2, $f1
+	fmul    $f4, $f5, $f2
+	fadd    $f1, $f3, $f1
+	fmul    $f1, $f1, $f3
+	fsub    $f3, $f2, $f2
+	ble     $f2, $f0, ble.28465
+bg.28465:
 	load    [$i1 + 10], $i1
-	li      1, $i10
+	li      1, $i9
 	load    [$i2 + 4], $f3
 	fsqrt   $f2, $f2
-	be      $i1, 0, be.22616
-bne.22616:
+	be      $i1, 0, be.28466
+bne.28466:
 	fadd    $f1, $f2, $f1
 	fmul    $f1, $f3, $fg0
-	ble     $fg0, $f0, bne.22618
+	ble     $fg0, $f0, bne.28777
 .count dual_jmp
-	b       bg.22619
-be.22616:
+	b       bg.28469
+be.28466:
 	fsub    $f1, $f2, $f1
 	fmul    $f1, $f3, $fg0
-	ble     $fg0, $f0, bne.22618
+	ble     $fg0, $f0, bne.28777
 .count dual_jmp
-	b       bg.22619
-be.22612:
+	b       bg.28469
+be.28462:
 	load    [$i2 + 0], $f1
-	ble     $f0, $f1, ble.22615
-bg.22613:
+	ble     $f0, $f1, ble.28465
+bg.28463:
 	load    [$i1 + 22], $f2
-	li      1, $i10
+	li      1, $i9
 	fmul    $f1, $f2, $fg0
-	ble     $fg0, $f0, bne.22618
-bg.22619:
-	ble     $fg7, $fg0, bne.22618
-bg.22620:
-	fadd    $fg0, $fc11, $f13
-	load    [$i8 + 2], $f1
-	li      0, $i1
-	load    [$i8 + 1], $f2
-	fmul    $f2, $f13, $f2
-	load    [$i8 + 0], $f3
-	fmul    $f1, $f13, $f1
-	fmul    $f3, $f13, $f3
-	fadd    $f2, $fg9, $f14
-	fadd    $f1, $fg10, $f4
-	fadd    $f3, $fg8, $f2
-.count move_args
-	mov     $f14, $f3
-	call    check_all_inside.2856
-	add     $i7, 1, $i7
-	be      $i1, 0, solve_each_element_fast.2885
-bne.22621:
-	mov     $f13, $fg7
-	store   $f2, [ext_intersection_point + 0]
-	store   $f14, [ext_intersection_point + 1]
-	mov     $i9, $ig4
-	store   $f4, [ext_intersection_point + 2]
-	mov     $i10, $ig2
-	b       solve_each_element_fast.2885
-ble.22615:
-	load    [ext_objects + $i9], $i1
+	ble     $fg0, $f0, bne.28777
+bg.28469:
+	ble     $fg11, $fg0, bne.28777
+bg.28470:
+.count load_float
+	load    [f.27979], $f1
+	fadd    $fg0, $f1, $f14
+	load    [$i3 + 0], $i1
+	fmul    $f11, $f14, $f1
+	fmul    $f12, $f14, $f2
+	fmul    $f13, $f14, $f3
+	fadd    $f1, $fg17, $f15
+	fadd    $f2, $fg18, $f16
+	fadd    $f3, $fg19, $f4
+	be      $i1, -1, bne.28490
+bne.28471:
+	load    [ext_objects + $i1], $i1
+	load    [$i1 + 7], $f1
+	load    [$i1 + 8], $f2
+	fsub    $f15, $f1, $f1
+	load    [$i1 + 9], $f3
+	fsub    $f16, $f2, $f2
+	fsub    $f4, $f3, $f3
+	load    [$i1 + 1], $i2
+	bne     $i2, 1, bne.28472
+be.28472:
+	load    [$i1 + 4], $f5
+	fabs    $f1, $f1
+	ble     $f5, $f1, ble.28474
+bg.28473:
+	load    [$i1 + 5], $f1
+	fabs    $f2, $f2
+	ble     $f1, $f2, ble.28474
+bg.28474:
+	load    [$i1 + 6], $f1
+	fabs    $f3, $f2
 	load    [$i1 + 10], $i1
-	be      $i1, 0, be.22618
-bne.22618:
-	add     $i7, 1, $i7
+	ble     $f1, $f2, ble.28485
+.count dual_jmp
+	b       bg.28485
+ble.28474:
+	load    [$i1 + 10], $i1
+	be      $i1, 0, bne.28777
+.count dual_jmp
+	b       be.28486
+bne.28472:
+	bne     $i2, 2, bne.28478
+be.28478:
+	load    [$i1 + 4], $f5
+	fmul    $f5, $f1, $f1
+	load    [$i1 + 5], $f6
+	fmul    $f6, $f2, $f2
+	load    [$i1 + 6], $f7
+	fmul    $f7, $f3, $f3
+	load    [$i1 + 10], $i1
+	fadd    $f1, $f2, $f1
+	fadd    $f1, $f3, $f1
+	ble     $f0, $f1, ble.28485
+.count dual_jmp
+	b       bg.28485
+bne.28478:
+	fmul    $f1, $f1, $f5
+	load    [$i1 + 4], $f6
+	fmul    $f2, $f2, $f7
+	load    [$i1 + 5], $f8
+	fmul    $f5, $f6, $f5
+	fmul    $f3, $f3, $f6
+	load    [$i1 + 3], $i4
+	fmul    $f7, $f8, $f7
+	load    [$i1 + 6], $f8
+	fadd    $f5, $f7, $f5
+	fmul    $f6, $f8, $f6
+	fadd    $f5, $f6, $f5
+	be      $i4, 0, be.28483
+bne.28483:
+	fmul    $f2, $f3, $f6
+	load    [$i1 + 16], $f7
+	fmul    $f3, $f1, $f3
+	load    [$i1 + 17], $f8
+	fmul    $f6, $f7, $f6
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f8, $f2
+	fadd    $f5, $f6, $f3
+	load    [$i1 + 18], $f5
+	fadd    $f3, $f2, $f2
+	fmul    $f1, $f5, $f1
+	fadd    $f2, $f1, $f1
+	be      $i2, 3, be.28484
+.count dual_jmp
+	b       bne.28484
+be.28483:
+	mov     $f5, $f1
+	be      $i2, 3, be.28484
+bne.28484:
+	load    [$i1 + 10], $i1
+	ble     $f0, $f1, ble.28485
+.count dual_jmp
+	b       bg.28485
+be.28484:
+	fsub    $f1, $fc0, $f1
+	load    [$i1 + 10], $i1
+	ble     $f0, $f1, ble.28485
+bg.28485:
+	be      $i1, 0, be.28486
+.count dual_jmp
+	b       bne.28777
+ble.28485:
+	be      $i1, 0, bne.28777
+be.28486:
+	li      1, $i1
+.count move_args
+	mov     $f15, $f2
+.count move_args
+	mov     $f16, $f3
+	call    check_all_inside.2856
+	be      $i1, 0, bne.28777
+bne.28490:
+	mov     $f14, $fg11
+	mov     $i8, $ig3
+	mov     $f15, $fg1
+	mov     $i9, $ig2
+	mov     $f16, $fg3
+	add     $i6, 1, $i6
+	mov     $f4, $fg2
 	b       solve_each_element_fast.2885
-be.22618:
+ble.28465:
+	load    [ext_objects + $i8], $i1
+	load    [$i1 + 10], $i1
+	be      $i1, 0, be.28468
+bne.28777:
+	add     $i6, 1, $i6
+	b       solve_each_element_fast.2885
+be.28468:
 	jr      $ra1
 .end solve_each_element_fast
 
 ######################################################################
-# solve_one_or_network_fast($i11, $i12, $i8)
+# solve_one_or_network_fast($i10, $i11, $f11, $f12, $f13, $i7)
 # $ra = $ra2
-# [$i1 - $i7, $i9 - $i11]
-# [$f1 - $f14]
-# [$ig2, $ig4]
+# [$i1 - $i6, $i8 - $i10]
+# [$f1 - $f10, $f14 - $f16]
+# [$ig2 - $ig3]
+# [$fg0 - $fg3, $fg11]
 # []
-# [$fg0, $fg7]
 # [$ra - $ra1]
 ######################################################################
 .align 2
 .begin solve_one_or_network_fast
 solve_one_or_network_fast.2889:
-	load    [$i12 + $i11], $i1
-	be      $i1, -1, be.22629
-bne.22622:
+	load    [$i11 + $i10], $i1
+	be      $i1, -1, be.28498
+bne.28491:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element_fast.2885, $ra1
-	add     $i11, 1, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22629
-bne.22623:
+	add     $i10, 1, $i1
+	load    [$i11 + $i1], $i1
+	be      $i1, -1, be.28498
+bne.28492:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element_fast.2885, $ra1
-	add     $i11, 2, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22629
-bne.22624:
+	add     $i10, 2, $i1
+	load    [$i11 + $i1], $i1
+	be      $i1, -1, be.28498
+bne.28493:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element_fast.2885, $ra1
-	add     $i11, 3, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22629
-bne.22625:
+	add     $i10, 3, $i1
+	load    [$i11 + $i1], $i1
+	be      $i1, -1, be.28498
+bne.28494:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element_fast.2885, $ra1
-	add     $i11, 4, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22629
-bne.22626:
+	add     $i10, 4, $i1
+	load    [$i11 + $i1], $i1
+	be      $i1, -1, be.28498
+bne.28495:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element_fast.2885, $ra1
-	add     $i11, 5, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22629
-bne.22627:
+	add     $i10, 5, $i1
+	load    [$i11 + $i1], $i1
+	be      $i1, -1, be.28498
+bne.28496:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element_fast.2885, $ra1
-	add     $i11, 6, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22629
-bne.22628:
+	add     $i10, 6, $i1
+	load    [$i11 + $i1], $i1
+	be      $i1, -1, be.28498
+bne.28497:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element_fast.2885, $ra1
-	add     $i11, 7, $i1
-	load    [$i12 + $i1], $i1
-	be      $i1, -1, be.22629
-bne.22629:
+	add     $i10, 7, $i1
+	load    [$i11 + $i1], $i1
+	be      $i1, -1, be.28498
+bne.28498:
+	li      0, $i6
 	load    [ext_and_net + $i1], $i3
-	li      0, $i7
 	jal     solve_each_element_fast.2885, $ra1
-	add     $i11, 8, $i11
+	add     $i10, 8, $i10
 	b       solve_one_or_network_fast.2889
-be.22629:
+be.28498:
 	jr      $ra2
 .end solve_one_or_network_fast
 
 ######################################################################
-# trace_or_matrix_fast($i13, $i14, $i8)
+# trace_or_matrix_fast($i12, $i13, $f11, $f12, $f13, $i7)
 # $ra = $ra3
-# [$i1 - $i7, $i9 - $i13]
-# [$f1 - $f14]
-# [$ig2, $ig4]
+# [$i1 - $i6, $i8 - $i12]
+# [$f1 - $f10, $f14 - $f16]
+# [$ig2 - $ig3]
+# [$fg0 - $fg3, $fg11]
 # []
-# [$fg0, $fg7]
 # [$ra - $ra2]
 ######################################################################
 .align 2
 .begin trace_or_matrix_fast
 trace_or_matrix_fast.2893:
-	load    [$i14 + $i13], $i12
-	load    [$i12 + 0], $i1
-	be      $i1, -1, be.22638
-bne.22630:
-	bne     $i1, 99, bne.22631
-be.22631:
-	load    [$i12 + 1], $i1
-	be      $i1, -1, be.22637
-bne.22632:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 2], $i1
-	be      $i1, -1, be.22637
-bne.22633:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 3], $i1
-	be      $i1, -1, be.22637
-bne.22634:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 4], $i1
-	be      $i1, -1, be.22637
-bne.22635:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 5], $i1
-	be      $i1, -1, be.22637
-bne.22636:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 6], $i1
-	be      $i1, -1, be.22637
-bne.22637:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	li      7, $i11
-	jal     solve_one_or_network_fast.2889, $ra2
-	add     $i13, 1, $i1
-	load    [$i14 + $i1], $i12
-	load    [$i12 + 0], $i1
-	be      $i1, -1, be.22638
+	load    [$i13 + $i12], $i11
+	load    [$i11 + 0], $i1
+	be      $i1, -1, be.28499
+bne.28499:
+	be      $i1, 99, bg.28527
+bne.28500:
+	load    [ext_objects + $i1], $i2
+	load    [$i7 + $i1], $i1
+	load    [$i2 + 19], $f1
+	load    [$i2 + 20], $f2
+	load    [$i2 + 21], $f3
+	load    [$i2 + 1], $i3
+	bne     $i3, 1, bne.28508
+be.28508:
+	load    [$i1 + 0], $f4
+	load    [$i1 + 1], $f5
+	fsub    $f4, $f1, $f4
+	load    [$i2 + 5], $f6
+	fmul    $f4, $f5, $f4
+	fmul    $f4, $f12, $f7
+	fadd_a  $f7, $f2, $f7
+	ble     $f6, $f7, be.28511
+bg.28509:
+	fmul    $f4, $f13, $f6
+	load    [$i2 + 6], $f7
+	fadd_a  $f6, $f3, $f6
+	ble     $f7, $f6, be.28511
+bg.28510:
+	bne     $f5, $f0, bne.28511
+be.28511:
+	load    [$i1 + 2], $f4
+	fsub    $f4, $f2, $f4
+	load    [$i1 + 3], $f5
+	fmul    $f4, $f5, $f4
+	load    [$i2 + 4], $f6
+	fmul    $f4, $f11, $f7
+	fadd_a  $f7, $f1, $f7
+	ble     $f6, $f7, be.28515
+bg.28513:
+	fmul    $f4, $f13, $f6
+	load    [$i2 + 6], $f7
+	fadd_a  $f6, $f3, $f6
+	ble     $f7, $f6, be.28515
+bg.28514:
+	be      $f5, $f0, be.28515
+bne.28511:
+	mov     $f4, $fg0
+	ble     $fg11, $fg0, be.28534
 .count dual_jmp
-	b       bne.22638
-be.22637:
-	add     $i13, 1, $i1
-	load    [$i14 + $i1], $i12
-	load    [$i12 + 0], $i1
-	be      $i1, -1, be.22638
-bne.22638:
-	be      $i1, 99, be.22639
-bne.22639:
-.count move_args
-	mov     $i8, $i2
-	call    solver_fast2.2814
-	be      $i1, 0, ble.22645
-bne.22644:
-	ble     $fg7, $fg0, ble.22645
-bg.22645:
-	li      1, $i11
+	b       bg.28527
+be.28515:
+	load    [$i1 + 4], $f4
+	fsub    $f4, $f3, $f3
+	load    [$i1 + 5], $f5
+	fmul    $f3, $f5, $f3
+	load    [$i2 + 4], $f6
+	fmul    $f3, $f11, $f4
+	fadd_a  $f4, $f1, $f1
+	ble     $f6, $f1, be.28534
+bg.28517:
+	fmul    $f3, $f12, $f1
+	load    [$i2 + 5], $f4
+	fadd_a  $f1, $f2, $f1
+	ble     $f4, $f1, be.28534
+bg.28518:
+	be      $f5, $f0, be.28534
+bne.28519:
+	mov     $f3, $fg0
+	ble     $fg11, $fg0, be.28534
+.count dual_jmp
+	b       bg.28527
+bne.28508:
+	be      $i3, 2, be.28521
+bne.28521:
+	load    [$i1 + 0], $f4
+	be      $f4, $f0, be.28534
+bne.28523:
+	load    [$i1 + 1], $f5
+	load    [$i1 + 2], $f6
+	fmul    $f5, $f1, $f1
+	load    [$i1 + 3], $f7
+	fmul    $f6, $f2, $f2
+	fmul    $f7, $f3, $f3
+	load    [$i2 + 22], $f5
+	fadd    $f1, $f2, $f1
+	fmul    $f4, $f5, $f2
+	fadd    $f1, $f3, $f1
+	fmul    $f1, $f1, $f3
+	fsub    $f3, $f2, $f2
+	ble     $f2, $f0, be.28534
+bg.28524:
+	load    [$i2 + 10], $i2
+	fsqrt   $f2, $f2
+	load    [$i1 + 4], $f3
+	be      $i2, 0, be.28525
+bne.28525:
+	fadd    $f1, $f2, $f1
+	fmul    $f1, $f3, $fg0
+	ble     $fg11, $fg0, be.28534
+.count dual_jmp
+	b       bg.28527
+be.28525:
+	fsub    $f1, $f2, $f1
+	fmul    $f1, $f3, $fg0
+	ble     $fg11, $fg0, be.28534
+.count dual_jmp
+	b       bg.28527
+be.28521:
+	load    [$i1 + 0], $f1
+	ble     $f0, $f1, be.28534
+bg.28522:
+	load    [$i2 + 22], $f2
+	fmul    $f1, $f2, $fg0
+	ble     $fg11, $fg0, be.28534
+bg.28527:
+	load    [$i11 + 1], $i1
+	be      $i1, -1, be.28534
+bne.28528:
+	load    [ext_and_net + $i1], $i3
+	li      0, $i6
+	jal     solve_each_element_fast.2885, $ra1
+	load    [$i11 + 2], $i1
+	be      $i1, -1, be.28534
+bne.28529:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element_fast.2885, $ra1
+	load    [$i11 + 3], $i1
+	be      $i1, -1, be.28534
+bne.28530:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element_fast.2885, $ra1
+	load    [$i11 + 4], $i1
+	be      $i1, -1, be.28534
+bne.28531:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element_fast.2885, $ra1
+	load    [$i11 + 5], $i1
+	be      $i1, -1, be.28534
+bne.28532:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element_fast.2885, $ra1
+	load    [$i11 + 6], $i1
+	be      $i1, -1, be.28534
+bne.28533:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element_fast.2885, $ra1
+	load    [$i11 + 7], $i1
+	be      $i1, -1, be.28534
+bne.28534:
+	li      0, $i6
+	load    [ext_and_net + $i1], $i3
+	jal     solve_each_element_fast.2885, $ra1
+	li      8, $i10
 	jal     solve_one_or_network_fast.2889, $ra2
-	add     $i13, 2, $i13
+	add     $i12, 1, $i12
 	b       trace_or_matrix_fast.2893
-be.22639:
-	load    [$i12 + 1], $i1
-	be      $i1, -1, ble.22645
-bne.22640:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 2], $i1
-	be      $i1, -1, ble.22645
-bne.22641:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 3], $i1
-	be      $i1, -1, ble.22645
-bne.22642:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 4], $i1
-	be      $i1, -1, ble.22645
-bne.22643:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	li      5, $i11
-	jal     solve_one_or_network_fast.2889, $ra2
-	add     $i13, 2, $i13
+be.28534:
+	add     $i12, 1, $i12
 	b       trace_or_matrix_fast.2893
-ble.22645:
-	add     $i13, 2, $i13
-	b       trace_or_matrix_fast.2893
-be.22638:
+be.28499:
 	jr      $ra3
-bne.22631:
-.count move_args
-	mov     $i8, $i2
-	call    solver_fast2.2814
-	be      $i1, 0, ble.22647
-bne.22646:
-	ble     $fg7, $fg0, ble.22647
-bg.22647:
-	li      1, $i11
-	jal     solve_one_or_network_fast.2889, $ra2
-	add     $i13, 1, $i13
-	b       trace_or_matrix_fast.2893
-ble.22647:
-	add     $i13, 1, $i13
-	b       trace_or_matrix_fast.2893
 .end trace_or_matrix_fast
 
 ######################################################################
-# utexture($i2)
-# $ra = $ra1
-# [$i1]
-# [$f1 - $f12]
-# []
-# []
-# [$fg11, $fg14, $fg16]
-# [$ra]
-######################################################################
-.align 2
-.begin utexture
-utexture.2908:
-	load    [$i2 + 0], $i1
-	load    [$i2 + 13], $fg16
-	load    [$i2 + 14], $fg11
-	load    [$i2 + 15], $fg14
-	be      $i1, 1, be.22648
-bne.22648:
-	be      $i1, 2, be.22653
-bne.22653:
-	be      $i1, 3, be.22654
-bne.22654:
-	bne     $i1, 4, bne.22655
-be.22655:
-	load    [$i2 + 6], $f1
-	fsqrt   $f1, $f1
-	load    [$i2 + 9], $f2
-	load    [ext_intersection_point + 2], $f3
-	load    [$i2 + 4], $f4
-	fsub    $f3, $f2, $f2
-	load    [$i2 + 7], $f3
-	fsqrt   $f4, $f4
-	load    [ext_intersection_point + 0], $f5
-	fsub    $f5, $f3, $f3
-.count load_float
-	load    [f.22040], $f9
-	fmul    $f2, $f1, $f10
-	fmul    $f3, $f4, $f11
-	fabs    $f11, $f1
-	ble     $f9, $f1, ble.22656
-bg.22656:
-	mov     $fc15, $f12
-	fmul    $f10, $f10, $f1
-	load    [$i2 + 5], $f3
-	fmul    $f11, $f11, $f2
-	load    [$i2 + 8], $f4
-	load    [ext_intersection_point + 1], $f5
-	fsqrt   $f3, $f3
-	fadd    $f2, $f1, $f1
-	fsub    $f5, $f4, $f2
-	fabs    $f1, $f4
-	fmul    $f2, $f3, $f2
-	ble     $f9, $f4, ble.22657
-.count dual_jmp
-	b       bg.22657
-ble.22656:
-	finv    $f11, $f1
-	fmul_a  $f10, $f1, $f2
-	call    ext_atan
-	fmul    $fc14, $f1, $f12
-	fmul    $f10, $f10, $f1
-	load    [$i2 + 5], $f3
-	fmul    $f11, $f11, $f2
-	load    [$i2 + 8], $f4
-	load    [ext_intersection_point + 1], $f5
-	fsqrt   $f3, $f3
-	fadd    $f2, $f1, $f1
-	fsub    $f5, $f4, $f2
-	fabs    $f1, $f4
-	fmul    $f2, $f3, $f2
-	ble     $f9, $f4, ble.22657
-bg.22657:
-	mov     $fc15, $f4
-.count move_args
-	mov     $f4, $f2
-	call    ext_floor
-	fsub    $f4, $f1, $f1
-.count move_args
-	mov     $f12, $f2
-	fsub    $fc3, $f1, $f1
-	fmul    $f1, $f1, $f4
-	call    ext_floor
-	fsub    $f12, $f1, $f1
-.count load_float
-	load    [f.22046], $f2
-	fsub    $fc3, $f1, $f1
-	fmul    $f1, $f1, $f1
-	fsub    $f2, $f1, $f1
-	fsub    $f1, $f4, $f1
-	ble     $f0, $f1, ble.22658
-.count dual_jmp
-	b       bg.22658
-ble.22657:
-	finv    $f1, $f1
-	fmul_a  $f2, $f1, $f2
-	call    ext_atan
-	fmul    $fc14, $f1, $f4
-.count move_args
-	mov     $f4, $f2
-	call    ext_floor
-	fsub    $f4, $f1, $f1
-.count move_args
-	mov     $f12, $f2
-	fsub    $fc3, $f1, $f1
-	fmul    $f1, $f1, $f4
-	call    ext_floor
-	fsub    $f12, $f1, $f1
-.count load_float
-	load    [f.22046], $f2
-	fsub    $fc3, $f1, $f1
-	fmul    $f1, $f1, $f1
-	fsub    $f2, $f1, $f1
-	fsub    $f1, $f4, $f1
-	ble     $f0, $f1, ble.22658
-bg.22658:
-	mov     $f0, $fg14
-	jr      $ra1
-ble.22658:
-.count load_float
-	load    [f.22047], $f2
-	fmul    $f2, $f1, $fg14
-	jr      $ra1
-bne.22655:
-	jr      $ra1
-be.22654:
-.count load_float
-	load    [f.22043], $f4
-	load    [$i2 + 9], $f1
-	load    [ext_intersection_point + 2], $f2
-	load    [$i2 + 7], $f3
-	fsub    $f2, $f1, $f1
-	load    [ext_intersection_point + 0], $f5
-	fsub    $f5, $f3, $f2
-	fmul    $f1, $f1, $f1
-	fmul    $f2, $f2, $f2
-	fadd    $f2, $f1, $f1
-	fsqrt   $f1, $f1
-	fmul    $f1, $fc7, $f5
-.count move_args
-	mov     $f5, $f2
-	call    ext_floor
-	fsub    $f5, $f1, $f1
-	fmul    $f1, $f4, $f2
-	call    ext_cos
-	fmul    $f1, $f1, $f1
-	fsub    $fc0, $f1, $f2
-	fmul    $f1, $fc6, $fg11
-	fmul    $f2, $fc6, $fg14
-	jr      $ra1
-be.22653:
-.count load_float
-	load    [f.22050], $f1
-	load    [ext_intersection_point + 1], $f2
-	fmul    $f2, $f1, $f2
-	call    ext_sin
-	fmul    $f1, $f1, $f1
-	fsub    $fc0, $f1, $f2
-	fmul    $fc6, $f1, $fg16
-	fmul    $fc6, $f2, $fg11
-	jr      $ra1
-be.22648:
-	load    [$i2 + 7], $f1
-	load    [ext_intersection_point + 0], $f2
-.count load_float
-	load    [f.22051], $f4
-	fsub    $f2, $f1, $f6
-.count load_float
-	load    [f.22052], $f5
-	fmul    $f6, $f5, $f2
-	call    ext_floor
-	fmul    $f1, $f4, $f1
-.count load_float
-	load    [f.22053], $f7
-	fsub    $f6, $f1, $f1
-	load    [ext_intersection_point + 2], $f2
-	ble     $f7, $f1, ble.22649
-bg.22649:
-	load    [$i2 + 9], $f1
-	li      1, $i1
-	fsub    $f2, $f1, $f6
-	fmul    $f6, $f5, $f2
-	call    ext_floor
-	fmul    $f1, $f4, $f1
-	fsub    $f6, $f1, $f1
-	ble     $f7, $f1, ble.22650
-.count dual_jmp
-	b       bg.22650
-ble.22649:
-	load    [$i2 + 9], $f1
-	li      0, $i1
-	fsub    $f2, $f1, $f6
-	fmul    $f6, $f5, $f2
-	call    ext_floor
-	fmul    $f1, $f4, $f1
-	fsub    $f6, $f1, $f1
-	ble     $f7, $f1, ble.22650
-bg.22650:
-	be      $i1, 0, be.22652
-.count dual_jmp
-	b       bne.22652
-ble.22650:
-	be      $i1, 0, bne.22652
-be.22652:
-	mov     $f0, $fg11
-	jr      $ra1
-bne.22652:
-	mov     $fc6, $fg11
-	jr      $ra1
-.end utexture
-
-######################################################################
-# trace_reflections($i15, $f15, $f16, $i16)
+# trace_reflections($i14, $f17, $f18, $f19, $f20, $f21)
 # $ra = $ra4
-# [$i1 - $i15, $i17]
-# [$f1 - $f14]
-# [$ig2, $ig4]
+# [$i1 - $i15]
+# [$f1 - $f16]
+# [$ig2 - $ig3]
+# [$fg0 - $fg3, $fg7 - $fg9, $fg11]
 # []
-# [$fg0, $fg4 - $fg7]
 # [$ra - $ra3]
 ######################################################################
 .align 2
 .begin trace_reflections
 trace_reflections.2915:
-	bl      $i15, 0, bl.22659
-bge.22659:
-	load    [$ig1 + 0], $i12
-	load    [ext_reflections + $i15], $i17
-	mov     $fc10, $fg7
-	load    [$i12 + 0], $i1
-	bne     $i1, -1, bne.22660
-be.22660:
-	ble     $fg7, $fc4, bne.22671
-.count dual_jmp
-	b       bg.22668
-bne.22660:
-	add     $i17, 1, $i8
-	be      $i1, 99, be.22661
-bne.22661:
+	bl      $i14, 0, bl.28535
+bge.28535:
+	load    [ext_reflections + $i14], $i15
+	mov     $fc9, $fg11
+	li      0, $i12
+	load    [$i15 + 4], $i7
 .count move_args
-	mov     $i8, $i2
-	call    solver_fast2.2814
-	be      $i1, 0, ble.22667
-bne.22666:
-	ble     $fg7, $fg0, ble.22667
-bg.22667:
-	li      1, $i11
-	jal     solve_one_or_network_fast.2889, $ra2
-	li      1, $i13
-.count move_args
-	mov     $ig1, $i14
+	mov     $ig1, $i13
+	load    [$i15 + 1], $f11
+	load    [$i15 + 2], $f12
+	load    [$i15 + 3], $f13
 	jal     trace_or_matrix_fast.2893, $ra3
-	ble     $fg7, $fc4, bne.22671
-.count dual_jmp
-	b       bg.22668
-be.22661:
-	load    [$i12 + 1], $i1
-	be      $i1, -1, ble.22667
-bne.22662:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 2], $i1
-	be      $i1, -1, ble.22667
-bne.22663:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 3], $i1
-	be      $i1, -1, ble.22667
-bne.22664:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 4], $i1
-	be      $i1, -1, ble.22667
-bne.22665:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	li      5, $i11
-	jal     solve_one_or_network_fast.2889, $ra2
-	li      1, $i13
-.count move_args
-	mov     $ig1, $i14
-	jal     trace_or_matrix_fast.2893, $ra3
-	ble     $fg7, $fc4, bne.22671
-.count dual_jmp
-	b       bg.22668
-ble.22667:
-	li      1, $i13
-.count move_args
-	mov     $ig1, $i14
-	jal     trace_or_matrix_fast.2893, $ra3
-	ble     $fg7, $fc4, bne.22671
-bg.22668:
-	ble     $fc9, $fg7, bne.22671
-bg.22669:
-	add     $ig4, $ig4, $i1
-	load    [$i17 + 0], $i2
+	ble     $fg11, $fc7, bne.28539
+bg.28536:
+	ble     $fc8, $fg11, bne.28539
+bg.28537:
+	add     $ig3, $ig3, $i1
+	load    [$i15 + 0], $i2
 	add     $i1, $i1, $i1
 	add     $i1, $ig2, $i1
-	bne     $i1, $i2, bne.22671
-be.22671:
+	bne     $i1, $i2, bne.28539
+be.28539:
 	li      0, $i10
 .count move_args
 	mov     $ig1, $i11
 	jal     shadow_check_one_or_matrix.2868, $ra3
-	bne     $i1, 0, bne.22671
-be.22672:
-	load    [$i17 + 5], $f1
-	fmul    $f1, $f15, $f8
-	load    [$i17 + 1], $f2
-	load    [ext_nvector + 0], $f3
-	load    [$i17 + 2], $f4
-	fmul    $f3, $f2, $f3
-	load    [ext_nvector + 1], $f5
-	fmul    $f5, $f4, $f5
-	load    [$i17 + 3], $f6
-	fadd    $f3, $f5, $f3
-	load    [ext_nvector + 2], $f7
-	fmul    $f7, $f6, $f7
-	fadd    $f3, $f7, $f3
-	fmul    $f8, $f3, $f3
-	ble     $f3, $f0, ble.22673
-bg.22673:
-	fmul    $f3, $fg16, $f5
-	fmul    $f3, $fg11, $f7
-	fmul    $f3, $fg14, $f3
-	fadd    $fg4, $f5, $fg4
-	load    [$i16 + 1], $f5
-	fadd    $fg5, $f7, $fg5
-	load    [$i16 + 2], $f7
-	fadd    $fg6, $f3, $fg6
-	load    [$i16 + 0], $f3
-	fmul    $f3, $f2, $f2
-	fmul    $f5, $f4, $f3
-	fmul    $f7, $f6, $f4
-	fadd    $f2, $f3, $f2
-	fadd    $f2, $f4, $f2
+	bne     $i1, 0, bne.28539
+be.28540:
+	load    [ext_nvector + 0], $f1
+	load    [$i15 + 1], $f2
 	fmul    $f1, $f2, $f1
-	ble     $f1, $f0, bne.22671
+	load    [ext_nvector + 1], $f3
+	fmul    $f19, $f2, $f2
+	load    [$i15 + 2], $f4
+	fmul    $f3, $f4, $f3
+	load    [ext_nvector + 2], $f5
+	fadd    $f1, $f3, $f1
+	load    [$i15 + 3], $f6
+	fmul    $f5, $f6, $f3
+	load    [$i15 + 5], $f7
+	fmul    $f7, $f17, $f5
+	fmul    $f20, $f4, $f4
+	fadd    $f1, $f3, $f1
+	fmul    $f21, $f6, $f3
+	fadd    $f2, $f4, $f2
+	fmul    $f5, $f1, $f1
+	fadd    $f2, $f3, $f2
+	fmul    $f7, $f2, $f2
+	ble     $f1, $f0, ble.28541
+bg.28541:
+	fmul    $f1, $fg13, $f3
+	fmul    $f1, $fg10, $f4
+	fmul    $f1, $fg12, $f1
+	fadd    $fg7, $f3, $fg7
+	fadd    $fg8, $f4, $fg8
+	fadd    $fg9, $f1, $fg9
+	ble     $f2, $f0, bne.28539
 .count dual_jmp
-	b       bg.22674
-ble.22673:
-	load    [$i16 + 0], $f3
-	fmul    $f3, $f2, $f2
-	load    [$i16 + 1], $f5
-	fmul    $f5, $f4, $f3
-	load    [$i16 + 2], $f7
-	fmul    $f7, $f6, $f4
-	fadd    $f2, $f3, $f2
-	fadd    $f2, $f4, $f2
-	fmul    $f1, $f2, $f1
-	ble     $f1, $f0, bne.22671
-bg.22674:
+	b       bg.28542
+ble.28541:
+	ble     $f2, $f0, bne.28539
+bg.28542:
+	fmul    $f2, $f2, $f1
+	add     $i14, -1, $i14
 	fmul    $f1, $f1, $f1
-	add     $i15, -1, $i15
-	fmul    $f1, $f1, $f1
-	fmul    $f1, $f16, $f1
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f1, $fg5
-	fadd    $fg6, $f1, $fg6
+	fmul    $f1, $f18, $f1
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f1, $fg8
+	fadd    $fg9, $f1, $fg9
 	b       trace_reflections.2915
-bne.22671:
-	add     $i15, -1, $i15
+bne.28539:
+	add     $i14, -1, $i14
 	b       trace_reflections.2915
-bl.22659:
+bl.28535:
 	jr      $ra4
 .end trace_reflections
 
 ######################################################################
-# trace_ray($i18, $f18, $i16, $i19, $f19)
+# trace_ray($i16, $f22, $i17, $i18, $i19, $i20, $i21, $i22, $f23)
 # $ra = $ra5
-# [$i1 - $i15, $i17 - $i18, $i20 - $i21]
-# [$f1 - $f19]
-# [$ig2, $ig4]
-# []
-# [$fg0, $fg4 - $fg11, $fg14, $fg16 - $fg19]
+# [$i1 - $i16, $i23]
+# [$f1 - $f23]
+# [$ig2 - $ig3]
+# [$fg0 - $fg3, $fg7 - $fg13, $fg17 - $fg19]
+# [$fig0 - $fig2]
 # [$ra - $ra4]
 ######################################################################
 .align 2
 .begin trace_ray
 trace_ray.2920:
-	bg      $i18, 4, bg.22675
-ble.22675:
-	load    [$ig1 + 0], $i12
-	mov     $fc10, $fg7
-	load    [$i12 + 0], $i1
-	bne     $i1, -1, bne.22676
-be.22676:
-	add     $i19, 8, $i20
-	ble     $fg7, $fc4, ble.22685
-.count dual_jmp
-	b       bg.22684
-bne.22676:
-	be      $i1, 99, be.22677
-bne.22677:
+	bg      $i16, 4, bg.28543
+ble.28543:
+	mov     $fc9, $fg11
+	li      0, $i11
+	load    [$i17 + 0], $f11
+	load    [$i17 + 1], $f12
 .count move_args
-	mov     $i16, $i2
-	call    solver.2773
-.count move_args
-	mov     $i16, $i8
-	be      $i1, 0, ble.22683
-bne.22682:
-	ble     $fg7, $fg0, ble.22683
-bg.22683:
-	li      1, $i11
-	jal     solve_one_or_network.2875, $ra2
-	li      1, $i13
-.count move_args
-	mov     $ig1, $i14
-.count move_args
-	mov     $i16, $i8
+	mov     $ig1, $i12
+	load    [$i17 + 2], $f13
 	jal     trace_or_matrix.2879, $ra3
-	add     $i19, 8, $i20
-	ble     $fg7, $fc4, ble.22685
-.count dual_jmp
-	b       bg.22684
-be.22677:
-	load    [$i12 + 1], $i1
-.count move_args
-	mov     $i16, $i8
-	be      $i1, -1, ble.22683
-bne.22678:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 2], $i1
-.count move_args
-	mov     $i16, $i8
-	be      $i1, -1, ble.22683
-bne.22679:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 3], $i1
-.count move_args
-	mov     $i16, $i8
-	be      $i1, -1, ble.22683
-bne.22680:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	load    [$i12 + 4], $i1
-.count move_args
-	mov     $i16, $i8
-	be      $i1, -1, ble.22683
-bne.22681:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element.2871, $ra1
-	li      5, $i11
-.count move_args
-	mov     $i16, $i8
-	jal     solve_one_or_network.2875, $ra2
-	li      1, $i13
-.count move_args
-	mov     $ig1, $i14
-.count move_args
-	mov     $i16, $i8
-	jal     trace_or_matrix.2879, $ra3
-	add     $i19, 8, $i20
-	ble     $fg7, $fc4, ble.22685
-.count dual_jmp
-	b       bg.22684
-ble.22683:
-	li      1, $i13
-.count move_args
-	mov     $ig1, $i14
-	jal     trace_or_matrix.2879, $ra3
-	add     $i19, 8, $i20
-	ble     $fg7, $fc4, ble.22685
-bg.22684:
-	bg      $fc9, $fg7, bg.22685
-ble.22685:
+	ble     $fg11, $fc7, ble.28545
+bg.28544:
+	bg      $fc8, $fg11, bg.28545
+ble.28545:
 	add     $i0, -1, $i1
 .count storer
-	add     $i20, $i18, $tmp
+	add     $i19, $i16, $tmp
 	store   $i1, [$tmp + 0]
-	be      $i18, 0, bg.22675
-bne.22687:
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	fmul    $f1, $fg12, $f1
-	load    [$i16 + 0], $f3
-	fmul    $f2, $fg13, $f2
+	be      $i16, 0, bg.28543
+bne.28547:
+	load    [$i17 + 0], $f1
+	fmul    $f1, $fg16, $f1
+	load    [$i17 + 1], $f2
+	fmul    $f2, $fg14, $f2
+	load    [$i17 + 2], $f3
 	fmul    $f3, $fg15, $f3
-	fadd    $f3, $f2, $f2
-	fadd_n  $f2, $f1, $f1
-	ble     $f1, $f0, bg.22675
-bg.22688:
-	fmul    $f1, $f1, $f2
-	mov     $fig12, $f3
-	fmul    $f2, $f1, $f1
-	fmul    $f1, $f18, $f1
-	fmul    $f1, $f3, $f1
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f1, $fg5
-	fadd    $fg6, $f1, $fg6
-	jr      $ra5
-bg.22685:
-	load    [ext_objects + $ig4], $i21
-	load    [$i21 + 1], $i1
-	be      $i1, 1, be.22689
-bne.22689:
-	bne     $i1, 2, bne.22692
-be.22692:
-	load    [$i21 + 4], $f1
-.count move_args
-	mov     $i21, $i2
-	fneg    $f1, $f1
-	store   $f1, [ext_nvector + 0]
-	load    [$i21 + 5], $f1
-	fneg    $f1, $f1
-	store   $f1, [ext_nvector + 1]
-	load    [$i21 + 6], $f1
-	fneg    $f1, $f1
-	store   $f1, [ext_nvector + 2]
-	load    [ext_intersection_point + 0], $fg17
-	load    [ext_intersection_point + 1], $fg18
-	load    [ext_intersection_point + 2], $fg19
-	jal     utexture.2908, $ra1
-	add     $ig4, $ig4, $i1
-	add     $i19, 3, $i2
-	add     $i1, $i1, $i1
-	add     $i19, 13, $i3
-	add     $i1, $ig2, $i1
-.count storer
-	add     $i20, $i18, $tmp
-	store   $i1, [$tmp + 0]
-	load    [ext_intersection_point + 0], $f1
-	load    [$i2 + $i18], $i1
-	store   $f1, [$i1 + 0]
-	load    [ext_intersection_point + 1], $f1
-	store   $f1, [$i1 + 1]
-	load    [ext_intersection_point + 2], $f1
-	store   $f1, [$i1 + 2]
-	load    [$i21 + 11], $f1
-	fmul    $f1, $f18, $f15
-	ble     $fc3, $f1, ble.22696
-.count dual_jmp
-	b       bg.22696
-bne.22692:
-	load    [$i21 + 9], $f1
-	load    [ext_intersection_point + 2], $f2
-	fsub    $f2, $f1, $f1
-	load    [$i21 + 8], $f3
-	load    [ext_intersection_point + 1], $f4
-	load    [$i21 + 7], $f2
-	fsub    $f4, $f3, $f3
-	load    [ext_intersection_point + 0], $f5
-	fsub    $f5, $f2, $f2
-	load    [$i21 + 6], $f4
-	fmul    $f1, $f4, $f4
-	load    [$i21 + 5], $f5
-	fmul    $f3, $f5, $f5
-	load    [$i21 + 4], $f6
-	fmul    $f2, $f6, $f6
-	load    [$i21 + 3], $i1
-	be      $i1, 0, be.22693
-bne.22693:
-	load    [$i21 + 18], $f7
-	fmul    $f3, $f7, $f7
-	load    [$i21 + 17], $f8
-	fmul    $f1, $f8, $f8
-	fadd    $f7, $f8, $f7
-	fmul    $f7, $fc3, $f7
-	fadd    $f6, $f7, $f6
-	store   $f6, [ext_nvector + 0]
-	load    [$i21 + 18], $f6
-	fmul    $f2, $f6, $f6
-	load    [$i21 + 16], $f7
-	fmul    $f1, $f7, $f1
-	fadd    $f6, $f1, $f1
-	fmul    $f1, $fc3, $f1
-	fadd    $f5, $f1, $f1
-	store   $f1, [ext_nvector + 1]
-	load    [$i21 + 17], $f1
-	fmul    $f2, $f1, $f1
-	load    [$i21 + 16], $f5
-	fmul    $f3, $f5, $f2
 	fadd    $f1, $f2, $f1
-	fmul    $f1, $fc3, $f1
-	fadd    $f4, $f1, $f1
+	fadd_n  $f1, $f3, $f1
+	ble     $f1, $f0, bg.28543
+bg.28548:
+	fmul    $f1, $f1, $f2
+	mov     $fig9, $f3
+	fmul    $f2, $f1, $f1
+	fmul    $f1, $f22, $f1
+	fmul    $f1, $f3, $f1
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f1, $fg8
+	fadd    $fg9, $f1, $fg9
+	jr      $ra5
+bg.28545:
+	load    [ext_objects + $ig3], $i23
+	load    [$i23 + 1], $i1
+	be      $i1, 1, be.28549
+bne.28549:
+	bne     $i1, 2, bne.28552
+be.28552:
+	load    [$i23 + 4], $f1
+	fneg    $f1, $f1
+	mov     $fg1, $fig0
+	mov     $fg3, $fig1
+	store   $f1, [ext_nvector + 0]
+	load    [$i23 + 5], $f1
+	mov     $fg2, $fig2
+	fneg    $f1, $f1
+	store   $f1, [ext_nvector + 1]
+	load    [$i23 + 6], $f1
+	fneg    $f1, $f1
 	store   $f1, [ext_nvector + 2]
-	load    [ext_nvector + 2], $f1
-	fmul    $f1, $f1, $f1
-	load    [ext_nvector + 1], $f2
-	fmul    $f2, $f2, $f2
-	load    [ext_nvector + 0], $f3
-	fmul    $f3, $f3, $f4
-	load    [$i21 + 10], $i1
-	fadd    $f4, $f2, $f2
-	fadd    $f2, $f1, $f1
-	fsqrt   $f1, $f1
-	be      $f1, $f0, be.22694
+	load    [$i23 + 0], $i1
+	load    [$i23 + 13], $fg13
+	load    [$i23 + 14], $fg10
+	load    [$i23 + 15], $fg12
+	be      $i1, 1, be.28556
 .count dual_jmp
-	b       bne.22694
-be.22693:
-	store   $f6, [ext_nvector + 0]
+	b       bne.28556
+bne.28552:
+	load    [$i23 + 7], $f1
+	fsub    $fg1, $f1, $f1
+	load    [$i23 + 8], $f2
+	fsub    $fg3, $f2, $f2
+	load    [$i23 + 9], $f3
+	fsub    $fg2, $f3, $f3
+	load    [$i23 + 4], $f4
+	fmul    $f1, $f4, $f4
+	load    [$i23 + 5], $f5
+	fmul    $f2, $f5, $f5
+	load    [$i23 + 6], $f6
+	fmul    $f3, $f6, $f6
+	load    [$i23 + 3], $i1
+	be      $i1, 0, be.28553
+bne.28553:
+	load    [$i23 + 18], $f7
+	fmul    $f2, $f7, $f7
+	load    [$i23 + 17], $f8
+	fmul    $f3, $f8, $f8
+	fadd    $f7, $f8, $f7
+	fmul    $f7, $fc2, $f7
+	fadd    $f4, $f7, $f4
+	store   $f4, [ext_nvector + 0]
+	load    [$i23 + 18], $f4
+	fmul    $f1, $f4, $f4
+	load    [$i23 + 16], $f7
+	fmul    $f3, $f7, $f3
+	fadd    $f4, $f3, $f3
+	fmul    $f3, $fc2, $f3
+	fadd    $f5, $f3, $f3
+	store   $f3, [ext_nvector + 1]
+	load    [$i23 + 17], $f3
+	fmul    $f1, $f3, $f1
+	load    [$i23 + 16], $f4
+	fmul    $f2, $f4, $f2
+	fadd    $f1, $f2, $f1
+	fmul    $f1, $fc2, $f1
+	fadd    $f6, $f1, $f1
+	store   $f1, [ext_nvector + 2]
+	load    [$i23 + 10], $i1
+	load    [ext_nvector + 0], $f1
+	load    [ext_nvector + 1], $f2
+	fmul    $f1, $f1, $f4
+	load    [ext_nvector + 2], $f3
+	fmul    $f2, $f2, $f2
+	fmul    $f3, $f3, $f3
+	fadd    $f4, $f2, $f2
+	fadd    $f2, $f3, $f2
+	fsqrt   $f2, $f2
+	be      $f2, $f0, be.28554
+.count dual_jmp
+	b       bne.28554
+be.28553:
+	store   $f4, [ext_nvector + 0]
 	store   $f5, [ext_nvector + 1]
-	store   $f4, [ext_nvector + 2]
-	load    [ext_nvector + 2], $f1
+	store   $f6, [ext_nvector + 2]
+	load    [$i23 + 10], $i1
+	load    [ext_nvector + 0], $f1
+	fmul    $f1, $f1, $f4
 	load    [ext_nvector + 1], $f2
-	fmul    $f1, $f1, $f1
-	load    [ext_nvector + 0], $f3
 	fmul    $f2, $f2, $f2
-	fmul    $f3, $f3, $f4
-	load    [$i21 + 10], $i1
+	load    [ext_nvector + 2], $f3
+	fmul    $f3, $f3, $f3
 	fadd    $f4, $f2, $f2
-	fadd    $f2, $f1, $f1
-	fsqrt   $f1, $f1
-	bne     $f1, $f0, bne.22694
-be.22694:
-	mov     $fc0, $f1
-.count move_args
-	mov     $i21, $i2
-	fmul    $f3, $f1, $f2
-	store   $f2, [ext_nvector + 0]
-	load    [ext_nvector + 1], $f2
-	fmul    $f2, $f1, $f2
-	store   $f2, [ext_nvector + 1]
-	load    [ext_nvector + 2], $f2
-	fmul    $f2, $f1, $f1
+	fadd    $f2, $f3, $f2
+	fsqrt   $f2, $f2
+	bne     $f2, $f0, bne.28554
+be.28554:
+	mov     $fc0, $f2
+	mov     $fg1, $fig0
+	fmul    $f1, $f2, $f1
+	mov     $fg3, $fig1
+	store   $f1, [ext_nvector + 0]
+	load    [ext_nvector + 1], $f1
+	mov     $fg2, $fig2
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 1]
+	load    [ext_nvector + 2], $f1
+	fmul    $f1, $f2, $f1
 	store   $f1, [ext_nvector + 2]
-	load    [ext_intersection_point + 0], $fg17
-	load    [ext_intersection_point + 1], $fg18
-	load    [ext_intersection_point + 2], $fg19
-	jal     utexture.2908, $ra1
-	add     $ig4, $ig4, $i1
-	add     $i19, 3, $i2
-	add     $i1, $i1, $i1
-	add     $i19, 13, $i3
-	add     $i1, $ig2, $i1
-.count storer
-	add     $i20, $i18, $tmp
-	store   $i1, [$tmp + 0]
-	load    [ext_intersection_point + 0], $f1
-	load    [$i2 + $i18], $i1
-	store   $f1, [$i1 + 0]
-	load    [ext_intersection_point + 1], $f1
-	store   $f1, [$i1 + 1]
-	load    [ext_intersection_point + 2], $f1
-	store   $f1, [$i1 + 2]
-	load    [$i21 + 11], $f1
-	fmul    $f1, $f18, $f15
-	ble     $fc3, $f1, ble.22696
+	load    [$i23 + 0], $i1
+	load    [$i23 + 13], $fg13
+	load    [$i23 + 14], $fg10
+	load    [$i23 + 15], $fg12
+	be      $i1, 1, be.28556
 .count dual_jmp
-	b       bg.22696
-bne.22694:
-.count move_args
-	mov     $i21, $i2
-	be      $i1, 0, be.22695
-bne.22695:
-	finv_n  $f1, $f1
-	fmul    $f3, $f1, $f2
-	store   $f2, [ext_nvector + 0]
-	load    [ext_nvector + 1], $f2
-	fmul    $f2, $f1, $f2
-	store   $f2, [ext_nvector + 1]
-	load    [ext_nvector + 2], $f2
-	fmul    $f2, $f1, $f1
+	b       bne.28556
+bne.28554:
+	mov     $fg2, $fig2
+	mov     $fg3, $fig1
+	mov     $fg1, $fig0
+	be      $i1, 0, be.28555
+bne.28555:
+	finv_n  $f2, $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 0]
+	load    [ext_nvector + 1], $f1
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 1]
+	load    [ext_nvector + 2], $f1
+	fmul    $f1, $f2, $f1
 	store   $f1, [ext_nvector + 2]
-	load    [ext_intersection_point + 0], $fg17
-	load    [ext_intersection_point + 1], $fg18
-	load    [ext_intersection_point + 2], $fg19
-	jal     utexture.2908, $ra1
-	add     $ig4, $ig4, $i1
-	add     $i19, 3, $i2
-	add     $i1, $i1, $i1
-	add     $i19, 13, $i3
-	add     $i1, $ig2, $i1
-.count storer
-	add     $i20, $i18, $tmp
-	store   $i1, [$tmp + 0]
-	load    [ext_intersection_point + 0], $f1
-	load    [$i2 + $i18], $i1
-	store   $f1, [$i1 + 0]
-	load    [ext_intersection_point + 1], $f1
-	store   $f1, [$i1 + 1]
-	load    [ext_intersection_point + 2], $f1
-	store   $f1, [$i1 + 2]
-	load    [$i21 + 11], $f1
-	fmul    $f1, $f18, $f15
-	ble     $fc3, $f1, ble.22696
+	load    [$i23 + 0], $i1
+	load    [$i23 + 13], $fg13
+	load    [$i23 + 14], $fg10
+	load    [$i23 + 15], $fg12
+	be      $i1, 1, be.28556
 .count dual_jmp
-	b       bg.22696
-be.22695:
-	finv    $f1, $f1
-	fmul    $f3, $f1, $f2
-	store   $f2, [ext_nvector + 0]
-	load    [ext_nvector + 1], $f2
-	fmul    $f2, $f1, $f2
-	store   $f2, [ext_nvector + 1]
-	load    [ext_nvector + 2], $f2
-	fmul    $f2, $f1, $f1
+	b       bne.28556
+be.28555:
+	finv    $f2, $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 0]
+	load    [ext_nvector + 1], $f1
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 1]
+	load    [ext_nvector + 2], $f1
+	fmul    $f1, $f2, $f1
 	store   $f1, [ext_nvector + 2]
-	load    [ext_intersection_point + 0], $fg17
-	load    [ext_intersection_point + 1], $fg18
-	load    [ext_intersection_point + 2], $fg19
-	jal     utexture.2908, $ra1
-	add     $ig4, $ig4, $i1
-	add     $i19, 3, $i2
-	add     $i1, $i1, $i1
-	add     $i19, 13, $i3
-	add     $i1, $ig2, $i1
-.count storer
-	add     $i20, $i18, $tmp
-	store   $i1, [$tmp + 0]
-	load    [ext_intersection_point + 0], $f1
-	load    [$i2 + $i18], $i1
-	store   $f1, [$i1 + 0]
-	load    [ext_intersection_point + 1], $f1
-	store   $f1, [$i1 + 1]
-	load    [ext_intersection_point + 2], $f1
-	store   $f1, [$i1 + 2]
-	load    [$i21 + 11], $f1
-	fmul    $f1, $f18, $f15
-	ble     $fc3, $f1, ble.22696
+	load    [$i23 + 0], $i1
+	load    [$i23 + 13], $fg13
+	load    [$i23 + 14], $fg10
+	load    [$i23 + 15], $fg12
+	be      $i1, 1, be.28556
 .count dual_jmp
-	b       bg.22696
-be.22689:
+	b       bne.28556
+be.28549:
 	add     $ig2, -1, $i1
 	store   $f0, [ext_nvector + 0]
 	store   $f0, [ext_nvector + 1]
-.count move_args
-	mov     $i21, $i2
 	store   $f0, [ext_nvector + 2]
-	load    [$i16 + $i1], $f1
-	bne     $f1, $f0, bne.22690
-be.22690:
-	store   $f0, [ext_nvector + $i1]
-	load    [ext_intersection_point + 0], $fg17
-	load    [ext_intersection_point + 1], $fg18
-	load    [ext_intersection_point + 2], $fg19
-	jal     utexture.2908, $ra1
-	add     $ig4, $ig4, $i1
-	add     $i19, 3, $i2
-	add     $i1, $i1, $i1
-	add     $i19, 13, $i3
-	add     $i1, $ig2, $i1
-.count storer
-	add     $i20, $i18, $tmp
-	store   $i1, [$tmp + 0]
-	load    [ext_intersection_point + 0], $f1
-	load    [$i2 + $i18], $i1
-	store   $f1, [$i1 + 0]
-	load    [ext_intersection_point + 1], $f1
-	store   $f1, [$i1 + 1]
-	load    [ext_intersection_point + 2], $f1
-	store   $f1, [$i1 + 2]
-	load    [$i21 + 11], $f1
-	fmul    $f1, $f18, $f15
-	ble     $fc3, $f1, ble.22696
+	load    [$i17 + $i1], $f1
+	mov     $fg2, $fig2
+	mov     $fg3, $fig1
+	mov     $fg1, $fig0
+	bne     $f1, $f0, bne.28550
+be.28550:
+	mov     $f0, $f1
+	fneg    $f1, $f1
+	store   $f1, [ext_nvector + $i1]
+	load    [$i23 + 0], $i1
+	load    [$i23 + 13], $fg13
+	load    [$i23 + 14], $fg10
+	load    [$i23 + 15], $fg12
+	be      $i1, 1, be.28556
 .count dual_jmp
-	b       bg.22696
-bne.22690:
-	ble     $f1, $f0, ble.22691
-bg.22691:
-	store   $fc12, [ext_nvector + $i1]
-	load    [ext_intersection_point + 0], $fg17
-	load    [ext_intersection_point + 1], $fg18
-	load    [ext_intersection_point + 2], $fg19
-	jal     utexture.2908, $ra1
-	add     $ig4, $ig4, $i1
-	add     $i19, 3, $i2
-	add     $i1, $i1, $i1
-	add     $i19, 13, $i3
-	add     $i1, $ig2, $i1
-.count storer
-	add     $i20, $i18, $tmp
-	store   $i1, [$tmp + 0]
-	load    [ext_intersection_point + 0], $f1
-	load    [$i2 + $i18], $i1
-	store   $f1, [$i1 + 0]
-	load    [ext_intersection_point + 1], $f1
-	store   $f1, [$i1 + 1]
-	load    [ext_intersection_point + 2], $f1
-	store   $f1, [$i1 + 2]
-	load    [$i21 + 11], $f1
-	fmul    $f1, $f18, $f15
-	ble     $fc3, $f1, ble.22696
+	b       bne.28556
+bne.28550:
+	ble     $f1, $f0, ble.28551
+bg.28551:
+	mov     $fc0, $f1
+	fneg    $f1, $f1
+	store   $f1, [ext_nvector + $i1]
+	load    [$i23 + 0], $i1
+	load    [$i23 + 13], $fg13
+	load    [$i23 + 14], $fg10
+	load    [$i23 + 15], $fg12
+	be      $i1, 1, be.28556
 .count dual_jmp
-	b       bg.22696
-ble.22691:
-	store   $fc0, [ext_nvector + $i1]
-	load    [ext_intersection_point + 0], $fg17
-	load    [ext_intersection_point + 1], $fg18
-	load    [ext_intersection_point + 2], $fg19
-	jal     utexture.2908, $ra1
-	add     $ig4, $ig4, $i1
-	add     $i19, 3, $i2
+	b       bne.28556
+ble.28551:
+	mov     $fc6, $f1
+	fneg    $f1, $f1
+	store   $f1, [ext_nvector + $i1]
+	load    [$i23 + 0], $i1
+	load    [$i23 + 13], $fg13
+	load    [$i23 + 14], $fg10
+	load    [$i23 + 15], $fg12
+	be      $i1, 1, be.28556
+bne.28556:
+	bne     $i1, 2, bne.28562
+be.28562:
+	fmul    $fg3, $fc12, $f2
+	call    ext_sin
+	fmul    $f1, $f1, $f1
+	add     $ig3, $ig3, $i1
+	fsub    $fc0, $f1, $f2
 	add     $i1, $i1, $i1
-	add     $i19, 13, $i3
+	fmul    $fc1, $f1, $fg13
+.count storer
+	add     $i19, $i16, $tmp
+	fmul    $fc1, $f2, $fg10
+	add     $i1, $ig2, $i1
+	store   $i1, [$tmp + 0]
+	load    [$i18 + $i16], $i1
+	store   $fg1, [$i1 + 0]
+	store   $fg3, [$i1 + 1]
+	store   $fg2, [$i1 + 2]
+	load    [$i23 + 11], $f1
+	fmul    $f1, $f22, $f17
+	ble     $fc2, $f1, ble.28568
+.count dual_jmp
+	b       bg.28568
+bne.28562:
+	bne     $i1, 3, bne.28563
+be.28563:
+	load    [$i23 + 7], $f1
+	load    [$i23 + 9], $f2
+	fsub    $fg1, $f1, $f1
+	fsub    $fg2, $f2, $f2
+	fmul    $f1, $f1, $f1
+	fmul    $f2, $f2, $f2
+	fadd    $f1, $f2, $f1
+	fsqrt   $f1, $f1
+	fmul    $f1, $fc3, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	fsub    $f4, $f1, $f1
+	fmul    $f1, $fc16, $f2
+	call    ext_cos
+	fmul    $f1, $f1, $f1
+	add     $ig3, $ig3, $i1
+	fsub    $fc0, $f1, $f2
+	add     $i1, $i1, $i1
+	fmul    $f1, $fc1, $fg10
+.count storer
+	add     $i19, $i16, $tmp
+	fmul    $f2, $fc1, $fg12
+	add     $i1, $ig2, $i1
+	store   $i1, [$tmp + 0]
+	load    [$i18 + $i16], $i1
+	store   $fg1, [$i1 + 0]
+	store   $fg3, [$i1 + 1]
+	store   $fg2, [$i1 + 2]
+	load    [$i23 + 11], $f1
+	fmul    $f1, $f22, $f17
+	ble     $fc2, $f1, ble.28568
+.count dual_jmp
+	b       bg.28568
+bne.28563:
+	be      $i1, 4, be.28564
+bne.28564:
+	add     $ig3, $ig3, $i1
+.count storer
+	add     $i19, $i16, $tmp
+	add     $i1, $i1, $i1
+	add     $i1, $ig2, $i1
+	store   $i1, [$tmp + 0]
+	load    [$i18 + $i16], $i1
+	store   $fg1, [$i1 + 0]
+	store   $fg3, [$i1 + 1]
+	store   $fg2, [$i1 + 2]
+	load    [$i23 + 11], $f1
+	fmul    $f1, $f22, $f17
+	ble     $fc2, $f1, ble.28568
+.count dual_jmp
+	b       bg.28568
+be.28564:
+	load    [$i23 + 7], $f1
+	fsub    $fg1, $f1, $f1
+	load    [$i23 + 4], $f2
+	fsqrt   $f2, $f2
+	load    [$i23 + 6], $f3
+	fsqrt   $f3, $f3
+	load    [$i23 + 9], $f4
+	fsub    $fg2, $f4, $f4
+.count load_float
+	load    [f.27983], $f9
+	fmul    $f1, $f2, $f1
+	fmul    $f4, $f3, $f2
+	fmul    $f1, $f1, $f3
+	fmul    $f2, $f2, $f4
+	fabs    $f1, $f5
+	fadd    $f3, $f4, $f10
+	ble     $f9, $f5, ble.28565
+bg.28565:
+	mov     $fc5, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	load    [$i23 + 5], $f2
+	load    [$i23 + 8], $f3
+	fsub    $f4, $f1, $f11
+	fsqrt   $f2, $f1
+	fsub    $fg3, $f3, $f2
+	fabs    $f10, $f3
+	fmul    $f2, $f1, $f1
+	ble     $f9, $f3, ble.28566
+.count dual_jmp
+	b       bg.28566
+ble.28565:
+	finv    $f1, $f1
+	fmul_a  $f2, $f1, $f2
+	call    ext_atan
+	fmul    $fc4, $f1, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	load    [$i23 + 5], $f2
+	fsub    $f4, $f1, $f11
+	load    [$i23 + 8], $f3
+	fsqrt   $f2, $f1
+	fsub    $fg3, $f3, $f2
+	fabs    $f10, $f3
+	fmul    $f2, $f1, $f1
+	ble     $f9, $f3, ble.28566
+bg.28566:
+	mov     $fc5, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	fsub    $f4, $f1, $f1
+	fsub    $fc2, $f11, $f2
+	fsub    $fc2, $f1, $f1
+	fmul    $f2, $f2, $f2
+	fmul    $f1, $f1, $f1
+	fsub    $fc15, $f2, $f2
+	fsub    $f2, $f1, $f1
+	ble     $f0, $f1, ble.28567
+.count dual_jmp
+	b       bg.28567
+ble.28566:
+	finv    $f10, $f2
+	fmul_a  $f1, $f2, $f2
+	call    ext_atan
+	fmul    $fc4, $f1, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	fsub    $f4, $f1, $f1
+	fsub    $fc2, $f11, $f2
+	fsub    $fc2, $f1, $f1
+	fmul    $f2, $f2, $f2
+	fmul    $f1, $f1, $f1
+	fsub    $fc15, $f2, $f2
+	fsub    $f2, $f1, $f1
+	ble     $f0, $f1, ble.28567
+bg.28567:
+	add     $ig3, $ig3, $i1
+	mov     $f0, $f1
+	add     $i1, $i1, $i1
+	fmul    $fc14, $f1, $fg12
 	add     $i1, $ig2, $i1
 .count storer
-	add     $i20, $i18, $tmp
+	add     $i19, $i16, $tmp
 	store   $i1, [$tmp + 0]
-	load    [ext_intersection_point + 0], $f1
-	load    [$i2 + $i18], $i1
-	store   $f1, [$i1 + 0]
-	load    [ext_intersection_point + 1], $f1
-	store   $f1, [$i1 + 1]
-	load    [ext_intersection_point + 2], $f1
-	store   $f1, [$i1 + 2]
-	load    [$i21 + 11], $f1
-	fmul    $f1, $f18, $f15
-	ble     $fc3, $f1, ble.22696
-bg.22696:
+	load    [$i18 + $i16], $i1
+	store   $fg1, [$i1 + 0]
+	store   $fg3, [$i1 + 1]
+	store   $fg2, [$i1 + 2]
+	load    [$i23 + 11], $f1
+	fmul    $f1, $f22, $f17
+	ble     $fc2, $f1, ble.28568
+.count dual_jmp
+	b       bg.28568
+ble.28567:
+	add     $ig3, $ig3, $i1
+	fmul    $fc14, $f1, $fg12
+	add     $i1, $i1, $i1
+.count storer
+	add     $i19, $i16, $tmp
+	add     $i1, $ig2, $i1
+	store   $i1, [$tmp + 0]
+	load    [$i18 + $i16], $i1
+	store   $fg1, [$i1 + 0]
+	store   $fg3, [$i1 + 1]
+	store   $fg2, [$i1 + 2]
+	load    [$i23 + 11], $f1
+	fmul    $f1, $f22, $f17
+	ble     $fc2, $f1, ble.28568
+.count dual_jmp
+	b       bg.28568
+be.28556:
+	load    [$i23 + 7], $f1
+	fsub    $fg1, $f1, $f4
+	fmul    $f4, $fc11, $f2
+	call    ext_floor
+	fmul    $f1, $fc10, $f1
+	fsub    $f4, $f1, $f1
+	ble     $fc13, $f1, ble.28557
+bg.28557:
+	load    [$i23 + 9], $f1
+	li      1, $i1
+	fsub    $fg2, $f1, $f4
+	fmul    $f4, $fc11, $f2
+	call    ext_floor
+	fmul    $f1, $fc10, $f1
+	fsub    $f4, $f1, $f1
+	ble     $fc13, $f1, ble.28558
+.count dual_jmp
+	b       bg.28558
+ble.28557:
+	load    [$i23 + 9], $f1
+	li      0, $i1
+	fsub    $fg2, $f1, $f4
+	fmul    $f4, $fc11, $f2
+	call    ext_floor
+	fmul    $f1, $fc10, $f1
+	fsub    $f4, $f1, $f1
+	ble     $fc13, $f1, ble.28558
+bg.28558:
+	be      $i1, 0, be.28781
+.count dual_jmp
+	b       bne.28780
+ble.28558:
+	be      $i1, 0, bne.28780
+be.28781:
+	add     $ig3, $ig3, $i1
+	mov     $f0, $fg10
+	add     $i1, $i1, $i1
+.count storer
+	add     $i19, $i16, $tmp
+	add     $i1, $ig2, $i1
+	store   $i1, [$tmp + 0]
+	load    [$i18 + $i16], $i1
+	store   $fg1, [$i1 + 0]
+	store   $fg3, [$i1 + 1]
+	store   $fg2, [$i1 + 2]
+	load    [$i23 + 11], $f1
+	fmul    $f1, $f22, $f17
+	ble     $fc2, $f1, ble.28568
+.count dual_jmp
+	b       bg.28568
+bne.28780:
+	add     $ig3, $ig3, $i1
+	mov     $fc1, $fg10
+	add     $i1, $i1, $i1
+.count storer
+	add     $i19, $i16, $tmp
+	add     $i1, $ig2, $i1
+	store   $i1, [$tmp + 0]
+	load    [$i18 + $i16], $i1
+	store   $fg1, [$i1 + 0]
+	store   $fg3, [$i1 + 1]
+	store   $fg2, [$i1 + 2]
+	load    [$i23 + 11], $f1
+	fmul    $f1, $f22, $f17
+	ble     $fc2, $f1, ble.28568
+bg.28568:
 	li      0, $i1
 .count storer
-	add     $i3, $i18, $tmp
+	add     $i20, $i16, $tmp
 	store   $i1, [$tmp + 0]
-	load    [$i16 + 0], $f1
-	load    [ext_nvector + 2], $f2
-	load    [$i16 + 2], $f3
-	load    [ext_nvector + 1], $f4
-	fmul    $f3, $f2, $f2
-	load    [$i16 + 1], $f5
-	fmul    $f5, $f4, $f3
-	load    [ext_nvector + 0], $f6
-	fmul    $f1, $f6, $f4
+	li      0, $i10
+	load    [ext_nvector + 0], $f1
 .count load_float
-	load    [f.22058], $f5
-	fadd    $f4, $f3, $f3
-	fadd    $f3, $f2, $f2
-	fmul    $f5, $f2, $f2
-	fmul    $f2, $f6, $f3
-	fadd    $f1, $f3, $f1
-	store   $f1, [$i16 + 0]
+	load    [f.28001], $f2
+.count move_args
+	mov     $ig1, $i11
+	load    [$i17 + 0], $f3
+	fmul    $f3, $f1, $f6
+	load    [$i17 + 1], $f4
+	load    [ext_nvector + 1], $f5
+	load    [$i17 + 2], $f7
+	fmul    $f4, $f5, $f4
+	load    [ext_nvector + 2], $f5
+	fadd    $f6, $f4, $f4
+	fmul    $f7, $f5, $f5
+	fadd    $f4, $f5, $f4
+	fmul    $f2, $f4, $f2
+	fmul    $f2, $f1, $f1
+	fadd    $f3, $f1, $f1
+	store   $f1, [$i17 + 0]
 	load    [ext_nvector + 1], $f1
-	load    [$i16 + 1], $f3
 	fmul    $f2, $f1, $f1
+	load    [$i17 + 1], $f3
 	fadd    $f3, $f1, $f1
-	store   $f1, [$i16 + 1]
+	store   $f1, [$i17 + 1]
 	load    [ext_nvector + 2], $f1
+	load    [$i17 + 2], $f3
 	fmul    $f2, $f1, $f1
-	load    [$i16 + 2], $f3
 	fadd    $f3, $f1, $f1
-	store   $f1, [$i16 + 2]
-	load    [$ig1 + 0], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22697
+	store   $f1, [$i17 + 2]
+	jal     shadow_check_one_or_matrix.2868, $ra3
+	load    [$i23 + 12], $f1
+	fmul    $f22, $f1, $f18
+	be      $i1, 0, be.28569
 .count dual_jmp
-	b       bne.22697
-ble.22696:
+	b       bne.28569
+ble.28568:
 	li      1, $i1
 .count storer
-	add     $i3, $i18, $tmp
-	store   $i1, [$tmp + 0]
-	add     $i19, 18, $i2
-	load    [$i2 + $i18], $i1
+	add     $i20, $i16, $tmp
 .count load_float
-	load    [f.22057], $f1
-	add     $i19, 29, $i3
-	store   $fg16, [$i1 + 0]
-	fmul    $f1, $f15, $f1
-	store   $fg11, [$i1 + 1]
-	store   $fg14, [$i1 + 2]
-	load    [$i2 + $i18], $i1
+	load    [f.28000], $f1
+	store   $i1, [$tmp + 0]
+	fmul    $f1, $f17, $f1
+	load    [$i21 + $i16], $i1
+	li      0, $i10
+	store   $fg13, [$i1 + 0]
+.count move_args
+	mov     $ig1, $i11
+	store   $fg10, [$i1 + 1]
+	store   $fg12, [$i1 + 2]
+	load    [$i21 + $i16], $i1
 	load    [$i1 + 0], $f2
 	fmul    $f2, $f1, $f2
 	store   $f2, [$i1 + 0]
@@ -5632,312 +4999,326 @@ ble.22696:
 	load    [$i1 + 2], $f2
 	fmul    $f2, $f1, $f1
 	store   $f1, [$i1 + 2]
-	load    [$i3 + $i18], $i1
+	load    [$i22 + $i16], $i1
 	load    [ext_nvector + 0], $f1
 	store   $f1, [$i1 + 0]
 	load    [ext_nvector + 1], $f1
 	store   $f1, [$i1 + 1]
 	load    [ext_nvector + 2], $f1
 	store   $f1, [$i1 + 2]
-	load    [$i16 + 0], $f1
-	load    [ext_nvector + 2], $f2
-	load    [$i16 + 2], $f3
-	load    [ext_nvector + 1], $f4
-	fmul    $f3, $f2, $f2
-	load    [$i16 + 1], $f5
-	fmul    $f5, $f4, $f3
-	load    [ext_nvector + 0], $f6
-	fmul    $f1, $f6, $f4
+	load    [ext_nvector + 0], $f1
 .count load_float
-	load    [f.22058], $f5
-	fadd    $f4, $f3, $f3
-	fadd    $f3, $f2, $f2
-	fmul    $f5, $f2, $f2
-	fmul    $f2, $f6, $f3
-	fadd    $f1, $f3, $f1
-	store   $f1, [$i16 + 0]
-	load    [ext_nvector + 1], $f1
-	load    [$i16 + 1], $f3
+	load    [f.28001], $f2
+	load    [$i17 + 0], $f3
+	load    [$i17 + 1], $f4
+	fmul    $f3, $f1, $f6
+	load    [ext_nvector + 1], $f5
+	fmul    $f4, $f5, $f4
+	load    [$i17 + 2], $f7
+	fadd    $f6, $f4, $f4
+	load    [ext_nvector + 2], $f5
+	fmul    $f7, $f5, $f5
+	fadd    $f4, $f5, $f4
+	fmul    $f2, $f4, $f2
 	fmul    $f2, $f1, $f1
 	fadd    $f3, $f1, $f1
-	store   $f1, [$i16 + 1]
+	store   $f1, [$i17 + 0]
+	load    [ext_nvector + 1], $f1
+	load    [$i17 + 1], $f3
+	fmul    $f2, $f1, $f1
+	fadd    $f3, $f1, $f1
+	store   $f1, [$i17 + 1]
 	load    [ext_nvector + 2], $f1
 	fmul    $f2, $f1, $f1
-	load    [$i16 + 2], $f3
+	load    [$i17 + 2], $f3
 	fadd    $f3, $f1, $f1
-	store   $f1, [$i16 + 2]
-	load    [$ig1 + 0], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22697
-bne.22697:
-	be      $i1, 99, bne.22702
-bne.22698:
-	call    solver_fast.2796
-	be      $i1, 0, be.22711
-bne.22699:
-	ble     $fc4, $fg0, be.22711
-bg.22700:
-	load    [$i9 + 1], $i1
-	be      $i1, -1, be.22711
-bne.22701:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22702
-be.22702:
-	load    [$i9 + 2], $i1
-	be      $i1, -1, be.22711
-bne.22703:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22702
-be.22704:
-	li      3, $i8
-	jal     shadow_check_one_or_group.2865, $ra2
-	be      $i1, 0, be.22711
-bne.22702:
-	load    [$i9 + 1], $i1
-	be      $i1, -1, be.22711
-bne.22707:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22708
-be.22708:
-	load    [$i9 + 2], $i1
-	be      $i1, -1, be.22711
-bne.22709:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22708
-be.22710:
-	li      3, $i8
-	jal     shadow_check_one_or_group.2865, $ra2
-	be      $i1, 0, be.22711
-bne.22708:
-	load    [$i21 + 12], $f1
-	li      ext_intersection_point, $i2
-	load    [ext_intersection_point + 0], $fg8
-	fmul    $f18, $f1, $f16
-	load    [ext_intersection_point + 1], $fg9
-	add     $ig0, -1, $i1
-	load    [ext_intersection_point + 2], $fg10
-	call    setup_startp_constants.2831
-	add     $ig3, -1, $i15
-	jal     trace_reflections.2915, $ra4
-	ble     $f18, $fc7, bg.22675
-.count dual_jmp
-	b       bg.22715
-be.22711:
-	li      1, $i10
-.count move_args
-	mov     $ig1, $i11
+	store   $f1, [$i17 + 2]
 	jal     shadow_check_one_or_matrix.2868, $ra3
-	load    [$i21 + 12], $f1
-	fmul    $f18, $f1, $f16
-	bne     $i1, 0, bne.22712
-be.22712:
+	load    [$i23 + 12], $f1
+	fmul    $f22, $f1, $f18
+	bne     $i1, 0, bne.28569
+be.28569:
 	load    [ext_nvector + 0], $f1
-	fmul    $f1, $fg15, $f1
 	load    [ext_nvector + 1], $f2
-	fmul    $f2, $fg13, $f2
+	fmul    $f1, $fg16, $f1
 	load    [ext_nvector + 2], $f3
-	fmul    $f3, $fg12, $f3
-	load    [$i16 + 0], $f4
+	fmul    $f2, $fg14, $f2
+	fmul    $f3, $fg15, $f3
+	load    [$i17 + 0], $f4
+	load    [$i17 + 1], $f5
 	fadd    $f1, $f2, $f1
-	load    [$i16 + 1], $f5
-	fmul    $f4, $fg15, $f2
-	load    [$i16 + 2], $f6
-	fmul    $f5, $fg13, $f4
-	fmul    $f6, $fg12, $f5
+	fmul    $f4, $fg16, $f2
+	fmul    $f5, $fg14, $f4
+	load    [$i17 + 2], $f5
 	fadd_n  $f1, $f3, $f1
 	fadd    $f2, $f4, $f2
-	fmul    $f1, $f15, $f1
-	fadd_n  $f2, $f5, $f2
-	ble     $f1, $f0, ble.22713
+	fmul    $f5, $fg15, $f3
+	fmul    $f1, $f17, $f1
+	fadd_n  $f2, $f3, $f2
+	ble     $f1, $f0, ble.28570
+bg.28570:
+	fmul    $f1, $fg13, $f3
+	fmul    $f1, $fg10, $f4
+	fmul    $f1, $fg12, $f1
+	fadd    $fg7, $f3, $fg7
+	fadd    $fg8, $f4, $fg8
+	fadd    $fg9, $f1, $fg9
+	ble     $f2, $f0, bne.28569
 .count dual_jmp
-	b       bg.22713
-be.22697:
-	load    [$i21 + 12], $f1
-	load    [ext_nvector + 1], $f2
-	fmul    $f18, $f1, $f16
-	load    [ext_nvector + 2], $f3
-	fmul    $f2, $fg13, $f2
-	load    [ext_nvector + 0], $f1
-	fmul    $f3, $fg12, $f3
-	fmul    $f1, $fg15, $f1
-	load    [$i16 + 0], $f4
-	load    [$i16 + 1], $f5
-	fadd    $f1, $f2, $f1
-	load    [$i16 + 2], $f6
-	fmul    $f4, $fg15, $f2
-	fmul    $f5, $fg13, $f4
-	fmul    $f6, $fg12, $f5
-	fadd_n  $f1, $f3, $f1
-	fadd    $f2, $f4, $f2
-	fmul    $f1, $f15, $f1
-	fadd_n  $f2, $f5, $f2
-	ble     $f1, $f0, ble.22713
-bg.22713:
-	fmul    $f1, $fg16, $f3
-	fmul    $f1, $fg11, $f4
-	fmul    $f1, $fg14, $f1
-	fadd    $fg4, $f3, $fg4
-	fadd    $fg5, $f4, $fg5
-	fadd    $fg6, $f1, $fg6
-	ble     $f2, $f0, bne.22712
-.count dual_jmp
-	b       bg.22714
-ble.22713:
-	ble     $f2, $f0, bne.22712
-bg.22714:
+	b       bg.28571
+ble.28570:
+	ble     $f2, $f0, bne.28569
+bg.28571:
 	fmul    $f2, $f2, $f1
-	li      ext_intersection_point, $i2
-	load    [ext_intersection_point + 0], $fg8
+	add     $ig0, -1, $i1
+	mov     $fg1, $fg17
+	mov     $fg3, $fg18
 	fmul    $f1, $f1, $f1
-	load    [ext_intersection_point + 1], $fg9
-	add     $ig0, -1, $i1
-	load    [ext_intersection_point + 2], $fg10
-	fmul    $f1, $f16, $f1
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f1, $fg5
-	fadd    $fg6, $f1, $fg6
-	call    setup_startp_constants.2831
-	add     $ig3, -1, $i15
-	jal     trace_reflections.2915, $ra4
-	ble     $f18, $fc7, bg.22675
+	mov     $fg2, $fg19
+	fmul    $f1, $f18, $f1
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f1, $fg8
+	fadd    $fg9, $f1, $fg9
+	bge     $i1, 0, bge.28572
 .count dual_jmp
-	b       bg.22715
-bne.22712:
-	li      ext_intersection_point, $i2
-	load    [ext_intersection_point + 0], $fg8
-	load    [ext_intersection_point + 1], $fg9
+	b       bl.28572
+bne.28569:
+	mov     $fg1, $fg17
 	add     $ig0, -1, $i1
-	load    [ext_intersection_point + 2], $fg10
-	call    setup_startp_constants.2831
-	add     $ig3, -1, $i15
+	mov     $fg3, $fg18
+	mov     $fg2, $fg19
+	bge     $i1, 0, bge.28572
+bl.28572:
+	add     $ig4, -1, $i14
+	load    [$i17 + 0], $f19
+	load    [$i17 + 1], $f20
+	load    [$i17 + 2], $f21
 	jal     trace_reflections.2915, $ra4
-	ble     $f18, $fc7, bg.22675
-bg.22715:
-	bge     $i18, 4, bge.22716
-bl.22716:
-	add     $i18, 1, $i1
+	ble     $f22, $fc3, bg.28543
+.count dual_jmp
+	b       bg.28577
+bge.28572:
+	load    [ext_objects + $i1], $i2
+	load    [$i2 + 7], $f1
+	load    [$i2 + 1], $i3
+	fsub    $fg1, $f1, $f1
+	store   $f1, [$i2 + 19]
+	load    [$i2 + 8], $f1
+	fsub    $fg3, $f1, $f1
+	store   $f1, [$i2 + 20]
+	load    [$i2 + 9], $f1
+	fsub    $fg2, $f1, $f1
+	store   $f1, [$i2 + 21]
+	bne     $i3, 2, bne.28573
+be.28573:
+	load    [$i2 + 19], $f1
+	add     $i1, -1, $i1
+	load    [$i2 + 20], $f2
+	load    [$i2 + 21], $f3
+	load    [$i2 + 4], $f4
+	fmul    $f4, $f1, $f1
+	load    [$i2 + 5], $f5
+	fmul    $f5, $f2, $f2
+	load    [$i2 + 6], $f6
+	fmul    $f6, $f3, $f3
+	fadd    $f1, $f2, $f1
+.count move_args
+	mov     $fg1, $f2
+.count move_args
+	mov     $fg2, $f4
+	fadd    $f1, $f3, $f1
+.count move_args
+	mov     $fg3, $f3
+	store   $f1, [$i2 + 22]
+	call    setup_startp_constants.2831
+	load    [$i17 + 0], $f19
+	add     $ig4, -1, $i14
+	load    [$i17 + 1], $f20
+	load    [$i17 + 2], $f21
+	jal     trace_reflections.2915, $ra4
+	ble     $f22, $fc3, bg.28543
+.count dual_jmp
+	b       bg.28577
+bne.28573:
+	bg      $i3, 2, bg.28574
+ble.28574:
+	add     $i1, -1, $i1
+.count move_args
+	mov     $fg1, $f2
+.count move_args
+	mov     $fg3, $f3
+.count move_args
+	mov     $fg2, $f4
+	call    setup_startp_constants.2831
+	add     $ig4, -1, $i14
+	load    [$i17 + 0], $f19
+	load    [$i17 + 1], $f20
+	load    [$i17 + 2], $f21
+	jal     trace_reflections.2915, $ra4
+	ble     $f22, $fc3, bg.28543
+.count dual_jmp
+	b       bg.28577
+bg.28574:
+	load    [$i2 + 19], $f1
+	load    [$i2 + 20], $f2
+	fmul    $f1, $f1, $f4
+	load    [$i2 + 21], $f3
+	fmul    $f2, $f2, $f6
+	load    [$i2 + 4], $f5
+	fmul    $f4, $f5, $f4
+	load    [$i2 + 5], $f7
+	fmul    $f3, $f3, $f5
+	fmul    $f6, $f7, $f6
+	load    [$i2 + 6], $f7
+	load    [$i2 + 3], $i4
+	fadd    $f4, $f6, $f4
+	fmul    $f5, $f7, $f5
+	fadd    $f4, $f5, $f4
+	be      $i4, 0, be.28575
+bne.28575:
+	fmul    $f2, $f3, $f5
+	load    [$i2 + 16], $f6
+	fmul    $f3, $f1, $f3
+	load    [$i2 + 17], $f7
+	fmul    $f5, $f6, $f5
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f7, $f2
+	fadd    $f4, $f5, $f3
+	load    [$i2 + 18], $f4
+	fadd    $f3, $f2, $f2
+	fmul    $f1, $f4, $f1
+	fadd    $f2, $f1, $f1
+	be      $i3, 3, be.28576
+.count dual_jmp
+	b       bne.28576
+be.28575:
+	mov     $f4, $f1
+	be      $i3, 3, be.28576
+bne.28576:
+	store   $f1, [$i2 + 22]
+	add     $i1, -1, $i1
+.count move_args
+	mov     $fg1, $f2
+.count move_args
+	mov     $fg3, $f3
+.count move_args
+	mov     $fg2, $f4
+	call    setup_startp_constants.2831
+	load    [$i17 + 0], $f19
+	add     $ig4, -1, $i14
+	load    [$i17 + 1], $f20
+	load    [$i17 + 2], $f21
+	jal     trace_reflections.2915, $ra4
+	ble     $f22, $fc3, bg.28543
+.count dual_jmp
+	b       bg.28577
+be.28576:
+	fsub    $f1, $fc0, $f1
+	add     $i1, -1, $i1
+.count move_args
+	mov     $fg1, $f2
+	store   $f1, [$i2 + 22]
+.count move_args
+	mov     $fg3, $f3
+.count move_args
+	mov     $fg2, $f4
+	call    setup_startp_constants.2831
+	load    [$i17 + 0], $f19
+	add     $ig4, -1, $i14
+	load    [$i17 + 1], $f20
+	load    [$i17 + 2], $f21
+	jal     trace_reflections.2915, $ra4
+	ble     $f22, $fc3, bg.28543
+bg.28577:
+	bge     $i16, 4, bge.28578
+bl.28578:
+	add     $i16, 1, $i1
 	add     $i0, -1, $i2
 .count storer
-	add     $i20, $i1, $tmp
+	add     $i19, $i1, $tmp
 	store   $i2, [$tmp + 0]
-	load    [$i21 + 2], $i1
-	be      $i1, 2, be.22717
+	load    [$i23 + 2], $i1
+	be      $i1, 2, be.28579
 .count dual_jmp
-	b       bg.22675
-bge.22716:
-	load    [$i21 + 2], $i1
-	be      $i1, 2, be.22717
-bg.22675:
+	b       bg.28543
+bge.28578:
+	load    [$i23 + 2], $i1
+	be      $i1, 2, be.28579
+bg.28543:
 	jr      $ra5
-be.22717:
-	load    [$i21 + 11], $f1
-	add     $i18, 1, $i18
-	fadd    $f19, $fg7, $f19
+be.28579:
+	load    [$i23 + 11], $f1
+	fadd    $f23, $fg11, $f23
+	add     $i16, 1, $i16
 	fsub    $fc0, $f1, $f1
-	fmul    $f18, $f1, $f18
+	fmul    $f22, $f1, $f22
 	b       trace_ray.2920
 .end trace_ray
 
 ######################################################################
-# trace_diffuse_ray($i8, $f15)
+# iter_trace_diffuse_rays($i14, $f17, $f18, $f19, $i15)
 # $ra = $ra4
-# [$i1 - $i14]
-# [$f1 - $f14]
-# [$ig2, $ig4]
+# [$i1 - $i13, $i15 - $i16]
+# [$f1 - $f16, $f20]
+# [$ig2 - $ig3]
+# [$fg0 - $fg6, $fg10 - $fg13]
 # []
-# [$fg0 - $fg3, $fg7, $fg11, $fg14, $fg16]
 # [$ra - $ra3]
 ######################################################################
 .align 2
-.begin trace_diffuse_ray
-trace_diffuse_ray.2926:
-	load    [$ig1 + 0], $i12
-	mov     $fc10, $fg7
-	load    [$i12 + 0], $i1
-	bne     $i1, -1, bne.22718
-be.22718:
-	ble     $fg7, $fc4, bne.22747
-.count dual_jmp
-	b       bg.22726
-bne.22718:
-	be      $i1, 99, be.22719
-bne.22719:
+.begin iter_trace_diffuse_rays
+iter_trace_diffuse_rays.2929:
+	bl      $i15, 0, bl.28580
+bge.28580:
+	load    [$i14 + $i15], $i1
 .count move_args
-	mov     $i8, $i2
-	call    solver_fast2.2814
-	be      $i1, 0, ble.22725
-bne.22724:
-	ble     $fg7, $fg0, ble.22725
-bg.22725:
-	li      1, $i11
-	jal     solve_one_or_network_fast.2889, $ra2
-	li      1, $i13
-.count move_args
-	mov     $ig1, $i14
+	mov     $ig1, $i13
+	load    [$i1 + 0], $f1
+	li      0, $i12
+	load    [$i1 + 1], $f2
+	load    [$i1 + 2], $f3
+	fmul    $f1, $f17, $f1
+	fmul    $f2, $f18, $f2
+	fmul    $f3, $f19, $f3
+	mov     $fc9, $fg11
+	fadd    $f1, $f2, $f1
+	fadd    $f1, $f3, $f1
+	ble     $f0, $f1, ble.28581
+bg.28581:
+	add     $i15, 1, $i1
+.count load_float
+	load    [f.28003], $f2
+	load    [$i14 + $i1], $i16
+	fmul    $f1, $f2, $f20
+	load    [$i16 + 3], $i7
+	load    [$i16 + 0], $f11
+	load    [$i16 + 1], $f12
+	load    [$i16 + 2], $f13
 	jal     trace_or_matrix_fast.2893, $ra3
-	ble     $fg7, $fc4, bne.22747
+	ble     $fg11, $fc7, bne.28628
 .count dual_jmp
-	b       bg.22726
-be.22719:
+	b       bg.28606
+ble.28581:
+	load    [$i14 + $i15], $i16
+.count load_float
+	load    [f.28005], $f2
+	fmul    $f1, $f2, $f20
+	load    [$i16 + 3], $i7
+	load    [$i16 + 0], $f11
+	load    [$i16 + 1], $f12
+	load    [$i16 + 2], $f13
+	jal     trace_or_matrix_fast.2893, $ra3
+	ble     $fg11, $fc7, bne.28628
+bg.28606:
+	ble     $fc8, $fg11, bne.28628
+bg.28607:
+	load    [ext_objects + $ig3], $i12
 	load    [$i12 + 1], $i1
-	be      $i1, -1, ble.22725
-bne.22720:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 2], $i1
-	be      $i1, -1, ble.22725
-bne.22721:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 3], $i1
-	be      $i1, -1, ble.22725
-bne.22722:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	load    [$i12 + 4], $i1
-	be      $i1, -1, ble.22725
-bne.22723:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     solve_each_element_fast.2885, $ra1
-	li      5, $i11
-	jal     solve_one_or_network_fast.2889, $ra2
-	li      1, $i13
-.count move_args
-	mov     $ig1, $i14
-	jal     trace_or_matrix_fast.2893, $ra3
-	ble     $fg7, $fc4, bne.22747
-.count dual_jmp
-	b       bg.22726
-ble.22725:
-	li      1, $i13
-.count move_args
-	mov     $ig1, $i14
-	jal     trace_or_matrix_fast.2893, $ra3
-	ble     $fg7, $fc4, bne.22747
-bg.22726:
-	ble     $fc9, $fg7, bne.22747
-bg.22727:
-	load    [ext_objects + $ig4], $i12
-	load    [$i12 + 1], $i1
-	be      $i1, 1, be.22729
-bne.22729:
-	bne     $i1, 2, bne.22732
-be.22732:
+	be      $i1, 1, be.28609
+bne.28609:
+	bne     $i1, 2, bne.28612
+be.28612:
 	load    [$i12 + 4], $f1
-.count move_args
-	mov     $i12, $i2
 	fneg    $f1, $f1
 	store   $f1, [ext_nvector + 0]
 	load    [$i12 + 5], $f1
@@ -5946,1046 +5327,1347 @@ be.22732:
 	load    [$i12 + 6], $f1
 	fneg    $f1, $f1
 	store   $f1, [ext_nvector + 2]
-	jal     utexture.2908, $ra1
-	load    [$ig1 + 0], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22751
+	load    [$i12 + 0], $i1
+	load    [$i12 + 13], $fg13
+	load    [$i12 + 14], $fg10
+	load    [$i12 + 15], $fg12
+	be      $i1, 1, be.28616
 .count dual_jmp
-	b       bne.22736
-bne.22732:
-	load    [$i12 + 9], $f1
-	load    [ext_intersection_point + 2], $f2
-	fsub    $f2, $f1, $f1
-	load    [$i12 + 8], $f3
-	load    [ext_intersection_point + 1], $f4
-	load    [$i12 + 7], $f2
-	fsub    $f4, $f3, $f3
-	load    [ext_intersection_point + 0], $f5
-	fsub    $f5, $f2, $f2
-	load    [$i12 + 6], $f4
+	b       bne.28616
+bne.28612:
+	load    [$i12 + 7], $f1
+	fsub    $fg1, $f1, $f1
+	load    [$i12 + 8], $f2
+	fsub    $fg3, $f2, $f2
+	load    [$i12 + 9], $f3
+	fsub    $fg2, $f3, $f3
+	load    [$i12 + 4], $f4
 	fmul    $f1, $f4, $f4
 	load    [$i12 + 5], $f5
-	fmul    $f3, $f5, $f5
-	load    [$i12 + 4], $f6
-	fmul    $f2, $f6, $f6
+	fmul    $f2, $f5, $f5
+	load    [$i12 + 6], $f6
+	fmul    $f3, $f6, $f6
 	load    [$i12 + 3], $i1
-	be      $i1, 0, be.22733
-bne.22733:
+	be      $i1, 0, be.28613
+bne.28613:
 	load    [$i12 + 18], $f7
-	fmul    $f3, $f7, $f7
+	fmul    $f2, $f7, $f7
 	load    [$i12 + 17], $f8
-	fmul    $f1, $f8, $f8
+	fmul    $f3, $f8, $f8
 	fadd    $f7, $f8, $f7
-	fmul    $f7, $fc3, $f7
-	fadd    $f6, $f7, $f6
-	store   $f6, [ext_nvector + 0]
-	load    [$i12 + 18], $f6
-	fmul    $f2, $f6, $f6
+	fmul    $f7, $fc2, $f7
+	fadd    $f4, $f7, $f4
+	store   $f4, [ext_nvector + 0]
+	load    [$i12 + 18], $f4
+	fmul    $f1, $f4, $f4
 	load    [$i12 + 16], $f7
-	fmul    $f1, $f7, $f1
-	fadd    $f6, $f1, $f1
-	fmul    $f1, $fc3, $f1
-	fadd    $f5, $f1, $f1
-	store   $f1, [ext_nvector + 1]
-	load    [$i12 + 17], $f1
-	fmul    $f2, $f1, $f1
-	load    [$i12 + 16], $f5
-	fmul    $f3, $f5, $f2
+	fmul    $f3, $f7, $f3
+	fadd    $f4, $f3, $f3
+	fmul    $f3, $fc2, $f3
+	fadd    $f5, $f3, $f3
+	store   $f3, [ext_nvector + 1]
+	load    [$i12 + 17], $f3
+	fmul    $f1, $f3, $f1
+	load    [$i12 + 16], $f4
+	fmul    $f2, $f4, $f2
 	fadd    $f1, $f2, $f1
-	fmul    $f1, $fc3, $f1
-	fadd    $f4, $f1, $f1
+	fmul    $f1, $fc2, $f1
+	fadd    $f6, $f1, $f1
 	store   $f1, [ext_nvector + 2]
-	load    [ext_nvector + 2], $f1
-	fmul    $f1, $f1, $f1
-	load    [ext_nvector + 1], $f2
-	fmul    $f2, $f2, $f2
-	load    [ext_nvector + 0], $f3
-	fmul    $f3, $f3, $f4
 	load    [$i12 + 10], $i1
+	load    [ext_nvector + 0], $f1
+	load    [ext_nvector + 1], $f2
+	fmul    $f1, $f1, $f4
+	load    [ext_nvector + 2], $f3
+	fmul    $f2, $f2, $f2
+	fmul    $f3, $f3, $f3
 	fadd    $f4, $f2, $f2
-	fadd    $f2, $f1, $f1
-	fsqrt   $f1, $f1
-	be      $f1, $f0, be.22734
+	fadd    $f2, $f3, $f2
+	fsqrt   $f2, $f2
+	be      $f2, $f0, be.28614
 .count dual_jmp
-	b       bne.22734
-be.22733:
-	store   $f6, [ext_nvector + 0]
+	b       bne.28614
+be.28613:
+	store   $f4, [ext_nvector + 0]
 	store   $f5, [ext_nvector + 1]
-	store   $f4, [ext_nvector + 2]
-	load    [ext_nvector + 2], $f1
-	load    [ext_nvector + 1], $f2
-	fmul    $f1, $f1, $f1
-	load    [ext_nvector + 0], $f3
-	fmul    $f2, $f2, $f2
-	fmul    $f3, $f3, $f4
+	store   $f6, [ext_nvector + 2]
 	load    [$i12 + 10], $i1
+	load    [ext_nvector + 0], $f1
+	fmul    $f1, $f1, $f4
+	load    [ext_nvector + 1], $f2
+	fmul    $f2, $f2, $f2
+	load    [ext_nvector + 2], $f3
+	fmul    $f3, $f3, $f3
 	fadd    $f4, $f2, $f2
-	fadd    $f2, $f1, $f1
-	fsqrt   $f1, $f1
-	bne     $f1, $f0, bne.22734
-be.22734:
-	mov     $fc0, $f1
-.count move_args
-	mov     $i12, $i2
-	fmul    $f3, $f1, $f2
-	store   $f2, [ext_nvector + 0]
-	load    [ext_nvector + 1], $f2
-	fmul    $f2, $f1, $f2
-	store   $f2, [ext_nvector + 1]
-	load    [ext_nvector + 2], $f2
-	fmul    $f2, $f1, $f1
+	fadd    $f2, $f3, $f2
+	fsqrt   $f2, $f2
+	bne     $f2, $f0, bne.28614
+be.28614:
+	mov     $fc0, $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 0]
+	load    [ext_nvector + 1], $f1
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 1]
+	load    [ext_nvector + 2], $f1
+	fmul    $f1, $f2, $f1
 	store   $f1, [ext_nvector + 2]
-	jal     utexture.2908, $ra1
-	load    [$ig1 + 0], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22751
+	load    [$i12 + 0], $i1
+	load    [$i12 + 13], $fg13
+	load    [$i12 + 14], $fg10
+	load    [$i12 + 15], $fg12
+	be      $i1, 1, be.28616
 .count dual_jmp
-	b       bne.22736
-bne.22734:
-.count move_args
-	mov     $i12, $i2
-	be      $i1, 0, be.22735
-bne.22735:
-	finv_n  $f1, $f1
-	fmul    $f3, $f1, $f2
-	store   $f2, [ext_nvector + 0]
-	load    [ext_nvector + 1], $f2
-	fmul    $f2, $f1, $f2
-	store   $f2, [ext_nvector + 1]
-	load    [ext_nvector + 2], $f2
-	fmul    $f2, $f1, $f1
+	b       bne.28616
+bne.28614:
+	be      $i1, 0, be.28615
+bne.28615:
+	finv_n  $f2, $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 0]
+	load    [ext_nvector + 1], $f1
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 1]
+	load    [ext_nvector + 2], $f1
+	fmul    $f1, $f2, $f1
 	store   $f1, [ext_nvector + 2]
-	jal     utexture.2908, $ra1
-	load    [$ig1 + 0], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22751
+	load    [$i12 + 0], $i1
+	load    [$i12 + 13], $fg13
+	load    [$i12 + 14], $fg10
+	load    [$i12 + 15], $fg12
+	be      $i1, 1, be.28616
 .count dual_jmp
-	b       bne.22736
-be.22735:
-	finv    $f1, $f1
-	fmul    $f3, $f1, $f2
-	store   $f2, [ext_nvector + 0]
-	load    [ext_nvector + 1], $f2
-	fmul    $f2, $f1, $f2
-	store   $f2, [ext_nvector + 1]
-	load    [ext_nvector + 2], $f2
-	fmul    $f2, $f1, $f1
+	b       bne.28616
+be.28615:
+	finv    $f2, $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 0]
+	load    [ext_nvector + 1], $f1
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_nvector + 1]
+	load    [ext_nvector + 2], $f1
+	fmul    $f1, $f2, $f1
 	store   $f1, [ext_nvector + 2]
-	jal     utexture.2908, $ra1
-	load    [$ig1 + 0], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22751
+	load    [$i12 + 0], $i1
+	load    [$i12 + 13], $fg13
+	load    [$i12 + 14], $fg10
+	load    [$i12 + 15], $fg12
+	be      $i1, 1, be.28616
 .count dual_jmp
-	b       bne.22736
-be.22729:
+	b       bne.28616
+be.28609:
 	add     $ig2, -1, $i1
 	store   $f0, [ext_nvector + 0]
-.count move_args
-	mov     $i12, $i2
 	store   $f0, [ext_nvector + 1]
 	store   $f0, [ext_nvector + 2]
-	load    [$i8 + $i1], $f1
-	bne     $f1, $f0, bne.22730
-be.22730:
-	store   $f0, [ext_nvector + $i1]
-	jal     utexture.2908, $ra1
-	load    [$ig1 + 0], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22751
+	load    [$i16 + $i1], $f1
+	bne     $f1, $f0, bne.28610
+be.28610:
+	mov     $f0, $f1
+	fneg    $f1, $f1
+	store   $f1, [ext_nvector + $i1]
+	load    [$i12 + 0], $i1
+	load    [$i12 + 13], $fg13
+	load    [$i12 + 14], $fg10
+	load    [$i12 + 15], $fg12
+	be      $i1, 1, be.28616
 .count dual_jmp
-	b       bne.22736
-bne.22730:
-	ble     $f1, $f0, ble.22731
-bg.22731:
-	store   $fc12, [ext_nvector + $i1]
-	jal     utexture.2908, $ra1
-	load    [$ig1 + 0], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22751
+	b       bne.28616
+bne.28610:
+	ble     $f1, $f0, ble.28611
+bg.28611:
+	mov     $fc0, $f1
+	fneg    $f1, $f1
+	store   $f1, [ext_nvector + $i1]
+	load    [$i12 + 0], $i1
+	load    [$i12 + 13], $fg13
+	load    [$i12 + 14], $fg10
+	load    [$i12 + 15], $fg12
+	be      $i1, 1, be.28616
 .count dual_jmp
-	b       bne.22736
-ble.22731:
-	store   $fc0, [ext_nvector + $i1]
-	jal     utexture.2908, $ra1
-	load    [$ig1 + 0], $i9
-	load    [$i9 + 0], $i1
-	be      $i1, -1, be.22751
-bne.22736:
-	be      $i1, 99, bne.22741
-bne.22737:
-	call    solver_fast.2796
-	be      $i1, 0, be.22750
-bne.22738:
-	ble     $fc4, $fg0, be.22750
-bg.22739:
-	load    [$i9 + 1], $i1
-	be      $i1, -1, be.22750
-bne.22740:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22741
-be.22741:
-	load    [$i9 + 2], $i1
-	be      $i1, -1, be.22750
-bne.22742:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22741
-be.22743:
-	li      3, $i8
-	jal     shadow_check_one_or_group.2865, $ra2
-	be      $i1, 0, be.22750
-bne.22741:
-	load    [$i9 + 1], $i1
-	be      $i1, -1, be.22750
-bne.22746:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22747
-be.22747:
-	load    [$i9 + 2], $i1
-	be      $i1, -1, be.22750
-bne.22748:
-	load    [ext_and_net + $i1], $i3
-	li      0, $i7
-	jal     shadow_check_and_group.2862, $ra1
-	bne     $i1, 0, bne.22747
-be.22749:
-	li      3, $i8
-	jal     shadow_check_one_or_group.2865, $ra2
-	bne     $i1, 0, bne.22747
-be.22750:
-	li      1, $i10
+	b       bne.28616
+ble.28611:
+	mov     $fc6, $f1
+	fneg    $f1, $f1
+	store   $f1, [ext_nvector + $i1]
+	load    [$i12 + 0], $i1
+	load    [$i12 + 13], $fg13
+	load    [$i12 + 14], $fg10
+	load    [$i12 + 15], $fg12
+	be      $i1, 1, be.28616
+bne.28616:
+	bne     $i1, 2, bne.28622
+be.28622:
+	fmul    $fg3, $fc12, $f2
+	call    ext_sin
+	fmul    $f1, $f1, $f1
+	li      0, $i10
+.count move_args
+	mov     $ig1, $i11
+	fsub    $fc0, $f1, $f2
+	fmul    $fc1, $f1, $fg13
+	fmul    $fc1, $f2, $fg10
+	jal     shadow_check_one_or_matrix.2868, $ra3
+	be      $i1, 0, be.28628
+.count dual_jmp
+	b       bne.28628
+bne.28622:
+	bne     $i1, 3, bne.28623
+be.28623:
+	load    [$i12 + 7], $f1
+	fsub    $fg1, $f1, $f1
+	load    [$i12 + 9], $f2
+	fsub    $fg2, $f2, $f2
+	fmul    $f1, $f1, $f1
+	fmul    $f2, $f2, $f2
+	fadd    $f1, $f2, $f1
+	fsqrt   $f1, $f1
+	fmul    $f1, $fc3, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	fsub    $f4, $f1, $f1
+	fmul    $f1, $fc16, $f2
+	call    ext_cos
+	fmul    $f1, $f1, $f1
+	li      0, $i10
+.count move_args
+	mov     $ig1, $i11
+	fsub    $fc0, $f1, $f2
+	fmul    $f1, $fc1, $fg10
+	fmul    $f2, $fc1, $fg12
+	jal     shadow_check_one_or_matrix.2868, $ra3
+	be      $i1, 0, be.28628
+.count dual_jmp
+	b       bne.28628
+bne.28623:
+	be      $i1, 4, be.28624
+bne.28624:
+	li      0, $i10
 .count move_args
 	mov     $ig1, $i11
 	jal     shadow_check_one_or_matrix.2868, $ra3
-	bne     $i1, 0, bne.22747
-be.22751:
-	load    [$i12 + 11], $f1
-	load    [ext_nvector + 2], $f2
-	load    [ext_nvector + 1], $f3
-	fmul    $f2, $fg12, $f2
-	load    [ext_nvector + 0], $f4
-	fmul    $f3, $fg13, $f3
-	fmul    $f4, $fg15, $f4
-	fadd    $f4, $f3, $f3
-	fadd_n  $f3, $f2, $f2
-	ble     $f2, $f0, ble.22752
-bg.22752:
-	fmul    $f15, $f2, $f2
-	fmul    $f2, $f1, $f1
-	fmul    $f1, $fg16, $f2
-	fmul    $f1, $fg11, $f3
-	fmul    $f1, $fg14, $f1
-	fadd    $fg1, $f2, $fg1
-	fadd    $fg2, $f3, $fg2
-	fadd    $fg3, $f1, $fg3
-	jr      $ra4
-ble.22752:
-	mov     $f0, $f2
-	fmul    $f15, $f2, $f2
-	fmul    $f2, $f1, $f1
-	fmul    $f1, $fg16, $f2
-	fmul    $f1, $fg11, $f3
-	fmul    $f1, $fg14, $f1
-	fadd    $fg1, $f2, $fg1
-	fadd    $fg2, $f3, $fg2
-	fadd    $fg3, $f1, $fg3
-	jr      $ra4
-bne.22747:
-	jr      $ra4
-.end trace_diffuse_ray
-
-######################################################################
-# iter_trace_diffuse_rays($i15, $i16, $i17)
-# $ra = $ra5
-# [$i1 - $i14, $i17]
-# [$f1 - $f15]
-# [$ig2, $ig4]
-# []
-# [$fg0 - $fg3, $fg7, $fg11, $fg14, $fg16]
-# [$ra - $ra4]
-######################################################################
-.align 2
-.begin iter_trace_diffuse_rays
-iter_trace_diffuse_rays.2929:
-	bl      $i17, 0, bl.22753
-bge.22753:
-	load    [$i15 + $i17], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	fmul    $f3, $f1, $f1
-	load    [$i1 + 1], $f4
-	fmul    $f4, $f2, $f2
-	load    [$i16 + 0], $f5
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22754
-bg.22754:
-	add     $i17, 1, $i1
-	fmul    $f1, $fc2, $f15
-	load    [$i15 + $i1], $i8
-	jal     trace_diffuse_ray.2926, $ra4
-	add     $i17, -2, $i17
-	bge     $i17, 0, bge.22757
+	be      $i1, 0, be.28628
 .count dual_jmp
-	b       bl.22753
-ble.22754:
-	load    [$i15 + $i17], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	add     $i17, -2, $i17
-	bl      $i17, 0, bl.22753
-bge.22757:
-	load    [$i15 + $i17], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	load    [$i1 + 1], $f4
-	fmul    $f3, $f1, $f1
-	load    [$i16 + 0], $f5
-	fmul    $f4, $f2, $f2
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22758
-bg.22758:
-	add     $i17, 1, $i1
-	fmul    $f1, $fc2, $f15
-	load    [$i15 + $i1], $i8
-	jal     trace_diffuse_ray.2926, $ra4
-	add     $i17, -2, $i17
+	b       bne.28628
+be.28624:
+	load    [$i12 + 7], $f1
+	load    [$i12 + 4], $f2
+	fsub    $fg1, $f1, $f1
+	load    [$i12 + 6], $f3
+	fsqrt   $f2, $f2
+	load    [$i12 + 9], $f4
+	fsqrt   $f3, $f3
+	fsub    $fg2, $f4, $f4
+.count load_float
+	load    [f.27983], $f9
+	fmul    $f1, $f2, $f1
+	fmul    $f4, $f3, $f2
+	fmul    $f1, $f1, $f3
+	fmul    $f2, $f2, $f4
+	fabs    $f1, $f5
+	fadd    $f3, $f4, $f10
+	ble     $f9, $f5, ble.28625
+bg.28625:
+	mov     $fc5, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	load    [$i12 + 5], $f2
+	fsub    $f4, $f1, $f11
+	load    [$i12 + 8], $f3
+	fsqrt   $f2, $f1
+	fsub    $fg3, $f3, $f2
+	fabs    $f10, $f3
+	fmul    $f2, $f1, $f1
+	ble     $f9, $f3, ble.28626
+.count dual_jmp
+	b       bg.28626
+ble.28625:
+	finv    $f1, $f1
+	fmul_a  $f2, $f1, $f2
+	call    ext_atan
+	fmul    $fc4, $f1, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	load    [$i12 + 5], $f2
+	load    [$i12 + 8], $f3
+	fsub    $f4, $f1, $f11
+	fsqrt   $f2, $f1
+	fsub    $fg3, $f3, $f2
+	fabs    $f10, $f3
+	fmul    $f2, $f1, $f1
+	ble     $f9, $f3, ble.28626
+bg.28626:
+	mov     $fc5, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	fsub    $f4, $f1, $f1
+	fsub    $fc2, $f11, $f2
+	fsub    $fc2, $f1, $f1
+	fmul    $f2, $f2, $f2
+	fmul    $f1, $f1, $f1
+	fsub    $fc15, $f2, $f2
+	fsub    $f2, $f1, $f1
+	ble     $f0, $f1, ble.28627
+.count dual_jmp
+	b       bg.28627
+ble.28626:
+	finv    $f10, $f2
+	fmul_a  $f1, $f2, $f2
+	call    ext_atan
+	fmul    $fc4, $f1, $f4
+.count move_args
+	mov     $f4, $f2
+	call    ext_floor
+	fsub    $f4, $f1, $f1
+	fsub    $fc2, $f11, $f2
+	fsub    $fc2, $f1, $f1
+	fmul    $f2, $f2, $f2
+	fmul    $f1, $f1, $f1
+	fsub    $fc15, $f2, $f2
+	fsub    $f2, $f1, $f1
+	ble     $f0, $f1, ble.28627
+bg.28627:
+	mov     $f0, $f1
+	fmul    $fc14, $f1, $fg12
+	li      0, $i10
+.count move_args
+	mov     $ig1, $i11
+	jal     shadow_check_one_or_matrix.2868, $ra3
+	be      $i1, 0, be.28628
+.count dual_jmp
+	b       bne.28628
+ble.28627:
+	fmul    $fc14, $f1, $fg12
+	li      0, $i10
+.count move_args
+	mov     $ig1, $i11
+	jal     shadow_check_one_or_matrix.2868, $ra3
+	be      $i1, 0, be.28628
+.count dual_jmp
+	b       bne.28628
+be.28616:
+	load    [$i12 + 7], $f1
+	fsub    $fg1, $f1, $f4
+	fmul    $f4, $fc11, $f2
+	call    ext_floor
+	fmul    $f1, $fc10, $f1
+	fsub    $f4, $f1, $f1
+	ble     $fc13, $f1, ble.28617
+bg.28617:
+	load    [$i12 + 9], $f1
+	li      1, $i1
+	fsub    $fg2, $f1, $f4
+	fmul    $f4, $fc11, $f2
+	call    ext_floor
+	fmul    $f1, $fc10, $f1
+	fsub    $f4, $f1, $f1
+	ble     $fc13, $f1, ble.28618
+.count dual_jmp
+	b       bg.28618
+ble.28617:
+	load    [$i12 + 9], $f1
+	li      0, $i1
+	fsub    $fg2, $f1, $f4
+	fmul    $f4, $fc11, $f2
+	call    ext_floor
+	fmul    $f1, $fc10, $f1
+	fsub    $f4, $f1, $f1
+	ble     $fc13, $f1, ble.28618
+bg.28618:
+	be      $i1, 0, be.28785
+.count dual_jmp
+	b       bne.28784
+ble.28618:
+	be      $i1, 0, bne.28784
+be.28785:
+	mov     $f0, $fg10
+	li      0, $i10
+.count move_args
+	mov     $ig1, $i11
+	jal     shadow_check_one_or_matrix.2868, $ra3
+	be      $i1, 0, be.28628
+.count dual_jmp
+	b       bne.28628
+bne.28784:
+	mov     $fc1, $fg10
+	li      0, $i10
+.count move_args
+	mov     $ig1, $i11
+	jal     shadow_check_one_or_matrix.2868, $ra3
+	bne     $i1, 0, bne.28628
+be.28628:
+	load    [ext_nvector + 0], $f1
+	fmul    $f1, $fg16, $f1
+	load    [ext_nvector + 1], $f2
+	fmul    $f2, $fg14, $f2
+	load    [ext_nvector + 2], $f3
+	fmul    $f3, $fg15, $f3
+	add     $i15, -2, $i15
+	fadd    $f1, $f2, $f1
+	load    [$i12 + 11], $f2
+	fadd_n  $f1, $f3, $f1
+	ble     $f1, $f0, ble.28629
+bg.28629:
+	fmul    $f20, $f1, $f1
+	fmul    $f1, $f2, $f1
+	fmul    $f1, $fg13, $f2
+	fmul    $f1, $fg10, $f3
+	fmul    $f1, $fg12, $f1
+	fadd    $fg4, $f2, $fg4
+	fadd    $fg5, $f3, $fg5
+	fadd    $fg6, $f1, $fg6
 	b       iter_trace_diffuse_rays.2929
-ble.22758:
-	load    [$i15 + $i17], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	add     $i17, -2, $i17
+ble.28629:
+	mov     $f0, $f1
+	fmul    $f20, $f1, $f1
+	fmul    $f1, $f2, $f1
+	fmul    $f1, $fg13, $f2
+	fmul    $f1, $fg10, $f3
+	fmul    $f1, $fg12, $f1
+	fadd    $fg4, $f2, $fg4
+	fadd    $fg5, $f3, $fg5
+	fadd    $fg6, $f1, $fg6
 	b       iter_trace_diffuse_rays.2929
-bl.22753:
-	jr      $ra5
+bne.28628:
+	add     $i15, -2, $i15
+	b       iter_trace_diffuse_rays.2929
+bl.28580:
+	jr      $ra4
 .end iter_trace_diffuse_rays
 
 ######################################################################
-# calc_diffuse_using_1point($i18, $i19)
-# $ra = $ra6
-# [$i1 - $i17, $i20 - $i21]
-# [$f1 - $f15]
-# [$ig2, $ig4]
+# do_without_neighbors($i17, $i18, $i19, $i20, $i21, $i22, $i23, $i24)
+# $ra = $ra5
+# [$i1 - $i16, $i24 - $i26]
+# [$f1 - $f20]
+# [$ig2 - $ig3]
+# [$fg0 - $fg13, $fg17 - $fg19]
 # []
-# [$fg0 - $fg11, $fg14, $fg16]
-# [$ra - $ra5]
-######################################################################
-.align 2
-.begin calc_diffuse_using_1point
-calc_diffuse_using_1point.2942:
-	add     $i18, 23, $i1
-	load    [$i1 + $i19], $i1
-	add     $i18, 3, $i2
-	load    [$i18 + 28], $i20
-	add     $i18, 29, $i3
-	load    [$i1 + 0], $fg1
-	load    [$i1 + 1], $fg2
-	load    [$i1 + 2], $fg3
-	load    [$i2 + $i19], $i21
-	load    [$i3 + $i19], $i16
-	bne     $i20, 0, bne.22759
-be.22759:
-	be      $i20, 1, be.22761
-.count dual_jmp
-	b       bne.22761
-bne.22759:
-	load    [ext_dirvecs + 0], $i15
-	load    [$i21 + 0], $fg8
-	add     $ig0, -1, $i1
-	load    [$i21 + 1], $fg9
-.count move_args
-	mov     $i21, $i2
-	load    [$i21 + 2], $fg10
-	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	load    [$i1 + 1], $f4
-	fmul    $f3, $f1, $f1
-	load    [$i16 + 0], $f5
-	fmul    $f4, $f2, $f2
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22760
-bg.22760:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	be      $i20, 1, be.22761
-.count dual_jmp
-	b       bne.22761
-ble.22760:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	bne     $i20, 1, bne.22761
-be.22761:
-	be      $i20, 2, be.22763
-.count dual_jmp
-	b       bne.22763
-bne.22761:
-	load    [ext_dirvecs + 1], $i15
-	add     $ig0, -1, $i1
-	load    [$i21 + 0], $fg8
-.count move_args
-	mov     $i21, $i2
-	load    [$i21 + 1], $fg9
-	load    [$i21 + 2], $fg10
-	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	fmul    $f3, $f1, $f1
-	load    [$i1 + 1], $f4
-	fmul    $f4, $f2, $f2
-	load    [$i16 + 0], $f5
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22762
-bg.22762:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	be      $i20, 2, be.22763
-.count dual_jmp
-	b       bne.22763
-ble.22762:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	bne     $i20, 2, bne.22763
-be.22763:
-	be      $i20, 3, be.22765
-.count dual_jmp
-	b       bne.22765
-bne.22763:
-	load    [ext_dirvecs + 2], $i15
-	load    [$i21 + 0], $fg8
-	add     $ig0, -1, $i1
-	load    [$i21 + 1], $fg9
-.count move_args
-	mov     $i21, $i2
-	load    [$i21 + 2], $fg10
-	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	load    [$i1 + 1], $f4
-	fmul    $f3, $f1, $f1
-	load    [$i16 + 0], $f5
-	fmul    $f4, $f2, $f2
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22764
-bg.22764:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	be      $i20, 3, be.22765
-.count dual_jmp
-	b       bne.22765
-ble.22764:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	bne     $i20, 3, bne.22765
-be.22765:
-	be      $i20, 4, be.22767
-.count dual_jmp
-	b       bne.22767
-bne.22765:
-	load    [ext_dirvecs + 3], $i15
-	add     $ig0, -1, $i1
-	load    [$i21 + 0], $fg8
-.count move_args
-	mov     $i21, $i2
-	load    [$i21 + 1], $fg9
-	load    [$i21 + 2], $fg10
-	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	fmul    $f3, $f1, $f1
-	load    [$i1 + 1], $f4
-	fmul    $f4, $f2, $f2
-	load    [$i16 + 0], $f5
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22766
-bg.22766:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	be      $i20, 4, be.22767
-.count dual_jmp
-	b       bne.22767
-ble.22766:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	be      $i20, 4, be.22767
-bne.22767:
-	load    [ext_dirvecs + 4], $i15
-	load    [$i21 + 0], $fg8
-	add     $ig0, -1, $i1
-	load    [$i21 + 1], $fg9
-.count move_args
-	mov     $i21, $i2
-	load    [$i21 + 2], $fg10
-	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	load    [$i1 + 1], $f4
-	fmul    $f3, $f1, $f1
-	load    [$i16 + 0], $f5
-	fmul    $f4, $f2, $f2
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22768
-bg.22768:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	add     $i18, 18, $i1
-	load    [$i1 + $i19], $i1
-	load    [$i1 + 0], $f1
-	fmul    $f1, $fg1, $f1
-	load    [$i1 + 1], $f2
-	fmul    $f2, $fg2, $f2
-	load    [$i1 + 2], $f3
-	fmul    $f3, $fg3, $f3
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f2, $fg5
-	fadd    $fg6, $f3, $fg6
-	jr      $ra6
-ble.22768:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	add     $i18, 18, $i1
-	load    [$i1 + $i19], $i1
-	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
-	fmul    $f1, $fg1, $f1
-	load    [$i1 + 2], $f3
-	fmul    $f2, $fg2, $f2
-	fmul    $f3, $fg3, $f3
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f2, $fg5
-	fadd    $fg6, $f3, $fg6
-	jr      $ra6
-be.22767:
-	add     $i18, 18, $i1
-	load    [$i1 + $i19], $i1
-	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
-	fmul    $f1, $fg1, $f1
-	load    [$i1 + 2], $f3
-	fmul    $f2, $fg2, $f2
-	fmul    $f3, $fg3, $f3
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f2, $fg5
-	fadd    $fg6, $f3, $fg6
-	jr      $ra6
-.end calc_diffuse_using_1point
-
-######################################################################
-# do_without_neighbors($i18, $i22)
-# $ra = $ra7
-# [$i1 - $i17, $i19 - $i23]
-# [$f1 - $f15]
-# [$ig2, $ig4]
-# []
-# [$fg0 - $fg11, $fg14, $fg16]
-# [$ra - $ra6]
+# [$ra - $ra4]
 ######################################################################
 .align 2
 .begin do_without_neighbors
 do_without_neighbors.2951:
-	bg      $i22, 4, bg.22769
-ble.22769:
-	add     $i18, 8, $i19
-	load    [$i19 + $i22], $i1
-	bl      $i1, 0, bg.22769
-bge.22770:
-	add     $i18, 13, $i20
-	load    [$i20 + $i22], $i1
-	bne     $i1, 0, bne.22771
-be.22771:
-	add     $i22, 1, $i1
-	bg      $i1, 4, bg.22769
-ble.22772:
-	load    [$i19 + $i1], $i2
-	bl      $i2, 0, bg.22769
-bge.22773:
-	load    [$i20 + $i1], $i2
-	be      $i2, 0, be.22787
-bne.22774:
-.count move_args
-	mov     $i1, $i19
-	jal     calc_diffuse_using_1point.2942, $ra6
-	add     $i22, 2, $i22
-	b       do_without_neighbors.2951
-bne.22771:
-	add     $i18, 23, $i1
-	add     $i18, 3, $i2
-	load    [$i1 + $i22], $i1
-	add     $i18, 29, $i3
-	load    [$i18 + 28], $i21
-	load    [$i1 + 0], $fg1
-	load    [$i1 + 1], $fg2
-	load    [$i1 + 2], $fg3
-	load    [$i3 + $i22], $i16
-	load    [$i2 + $i22], $i23
-	bne     $i21, 0, bne.22775
-be.22775:
-	be      $i21, 1, be.22777
+	bg      $i24, 4, bg.28630
+ble.28630:
+	load    [$i18 + $i24], $i1
+	bl      $i1, 0, bg.28630
+bge.28631:
+	load    [$i19 + $i24], $i1
+	be      $i1, 0, be.28632
+bne.28632:
+	load    [$i21 + $i24], $i1
+	load    [$i23 + $i24], $i25
+	load    [$i17 + $i24], $i26
+	load    [$i1 + 0], $fg4
+	load    [$i1 + 1], $fg5
+	load    [$i1 + 2], $fg6
+	bne     $i22, 0, bne.28633
+be.28633:
+	be      $i22, 1, be.28639
 .count dual_jmp
-	b       bne.22777
-bne.22775:
-	load    [ext_dirvecs + 0], $i15
+	b       bne.28639
+bne.28633:
+	load    [ext_dirvecs + 0], $i14
 	add     $ig0, -1, $i1
-	load    [$i23 + 0], $fg8
-.count move_args
-	mov     $i23, $i2
-	load    [$i23 + 1], $fg9
-	load    [$i23 + 2], $fg10
+	load    [$i26 + 0], $fg17
+	load    [$i26 + 1], $fg18
+	load    [$i26 + 2], $fg19
+	bge     $i1, 0, bge.28634
+bl.28634:
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 1, be.28639
+.count dual_jmp
+	b       bne.28639
+bge.28634:
+	load    [ext_objects + $i1], $i2
+	load    [$i26 + 0], $f1
+	load    [$i2 + 7], $f2
+	load    [$i2 + 1], $i3
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 19]
+	load    [$i26 + 1], $f1
+	load    [$i2 + 8], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 20]
+	load    [$i26 + 2], $f1
+	load    [$i2 + 9], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 21]
+	bne     $i3, 2, bne.28635
+be.28635:
+	load    [$i2 + 19], $f1
+	add     $i1, -1, $i1
+	load    [$i2 + 20], $f2
+	load    [$i2 + 21], $f3
+	load    [$i2 + 4], $f4
+	fmul    $f4, $f1, $f1
+	load    [$i2 + 5], $f5
+	fmul    $f5, $f2, $f2
+	load    [$i2 + 6], $f6
+	fmul    $f6, $f3, $f3
+	fadd    $f1, $f2, $f1
+	fadd    $f1, $f3, $f1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
 	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	fmul    $f3, $f1, $f1
-	load    [$i1 + 1], $f4
-	fmul    $f4, $f2, $f2
-	load    [$i16 + 0], $f5
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
+	load    [$i25 + 0], $f17
+	li      118, $i15
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 1, be.28639
+.count dual_jmp
+	b       bne.28639
+bne.28635:
+	bg      $i3, 2, bg.28636
+ble.28636:
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 1, be.28639
+.count dual_jmp
+	b       bne.28639
+bg.28636:
+	load    [$i2 + 19], $f1
+	load    [$i2 + 20], $f2
+	fmul    $f1, $f1, $f4
+	load    [$i2 + 21], $f3
+	fmul    $f2, $f2, $f6
+	load    [$i2 + 4], $f5
+	fmul    $f4, $f5, $f4
+	load    [$i2 + 5], $f7
+	fmul    $f3, $f3, $f5
+	fmul    $f6, $f7, $f6
+	load    [$i2 + 6], $f7
+	load    [$i2 + 3], $i4
+	fadd    $f4, $f6, $f4
+	fmul    $f5, $f7, $f5
+	fadd    $f4, $f5, $f4
+	be      $i4, 0, be.28637
+bne.28637:
+	fmul    $f2, $f3, $f5
+	load    [$i2 + 16], $f6
+	fmul    $f3, $f1, $f3
+	load    [$i2 + 17], $f7
+	fmul    $f5, $f6, $f5
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f7, $f2
+	fadd    $f4, $f5, $f3
+	load    [$i2 + 18], $f4
 	fadd    $f3, $f2, $f2
+	fmul    $f1, $f4, $f1
 	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22776
-bg.22776:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	be      $i21, 1, be.22777
+	be      $i3, 3, be.28638
 .count dual_jmp
-	b       bne.22777
-ble.22776:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	bne     $i21, 1, bne.22777
-be.22777:
-	be      $i21, 2, be.22779
+	b       bne.28638
+be.28637:
+	mov     $f4, $f1
+	be      $i3, 3, be.28638
+bne.28638:
+	store   $f1, [$i2 + 22]
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	load    [$i25 + 0], $f17
+	li      118, $i15
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 1, be.28639
 .count dual_jmp
-	b       bne.22779
-bne.22777:
-	load    [ext_dirvecs + 1], $i15
-	load    [$i23 + 0], $fg8
+	b       bne.28639
+be.28638:
+	fsub    $f1, $fc0, $f1
+	add     $i1, -1, $i1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	load    [$i25 + 0], $f17
+	li      118, $i15
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	bne     $i22, 1, bne.28639
+be.28639:
+	be      $i22, 2, be.28645
+.count dual_jmp
+	b       bne.28645
+bne.28639:
+	load    [ext_dirvecs + 1], $i14
+	load    [$i26 + 0], $fg17
 	add     $ig0, -1, $i1
-	load    [$i23 + 1], $fg9
-.count move_args
-	mov     $i23, $i2
-	load    [$i23 + 2], $fg10
+	load    [$i26 + 1], $fg18
+	load    [$i26 + 2], $fg19
+	bge     $i1, 0, bge.28640
+bl.28640:
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 2, be.28645
+.count dual_jmp
+	b       bne.28645
+bge.28640:
+	load    [ext_objects + $i1], $i2
+	load    [$i26 + 0], $f1
+	load    [$i2 + 7], $f2
+	fsub    $f1, $f2, $f1
+	load    [$i2 + 1], $i3
+	store   $f1, [$i2 + 19]
+	load    [$i26 + 1], $f1
+	load    [$i2 + 8], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 20]
+	load    [$i26 + 2], $f1
+	load    [$i2 + 9], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 21]
+	bne     $i3, 2, bne.28641
+be.28641:
+	load    [$i2 + 19], $f1
+	load    [$i2 + 20], $f2
+	add     $i1, -1, $i1
+	load    [$i2 + 21], $f3
+	load    [$i2 + 4], $f4
+	load    [$i2 + 5], $f5
+	fmul    $f4, $f1, $f1
+	load    [$i2 + 6], $f6
+	fmul    $f5, $f2, $f2
+	fmul    $f6, $f3, $f3
+	fadd    $f1, $f2, $f1
+	fadd    $f1, $f3, $f1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
 	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	load    [$i1 + 1], $f4
-	fmul    $f3, $f1, $f1
-	load    [$i16 + 0], $f5
-	fmul    $f4, $f2, $f2
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 2, be.28645
+.count dual_jmp
+	b       bne.28645
+bne.28641:
+	bg      $i3, 2, bg.28642
+ble.28642:
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	load    [$i25 + 0], $f17
+	li      118, $i15
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 2, be.28645
+.count dual_jmp
+	b       bne.28645
+bg.28642:
+	load    [$i2 + 19], $f1
+	fmul    $f1, $f1, $f4
+	load    [$i2 + 20], $f2
+	fmul    $f2, $f2, $f6
+	load    [$i2 + 21], $f3
+	load    [$i2 + 4], $f5
+	load    [$i2 + 5], $f7
+	fmul    $f4, $f5, $f4
+	fmul    $f3, $f3, $f5
+	load    [$i2 + 3], $i4
+	fmul    $f6, $f7, $f6
+	load    [$i2 + 6], $f7
+	fadd    $f4, $f6, $f4
+	fmul    $f5, $f7, $f5
+	fadd    $f4, $f5, $f4
+	be      $i4, 0, be.28643
+bne.28643:
+	fmul    $f2, $f3, $f5
+	load    [$i2 + 16], $f6
+	fmul    $f3, $f1, $f3
+	load    [$i2 + 17], $f7
+	fmul    $f5, $f6, $f5
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f7, $f2
+	fadd    $f4, $f5, $f3
+	load    [$i2 + 18], $f4
 	fadd    $f3, $f2, $f2
+	fmul    $f1, $f4, $f1
 	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22778
-bg.22778:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	be      $i21, 2, be.22779
+	be      $i3, 3, be.28644
 .count dual_jmp
-	b       bne.22779
-ble.22778:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	bne     $i21, 2, bne.22779
-be.22779:
-	be      $i21, 3, be.22781
+	b       bne.28644
+be.28643:
+	mov     $f4, $f1
+	be      $i3, 3, be.28644
+bne.28644:
+	store   $f1, [$i2 + 22]
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 2, be.28645
 .count dual_jmp
-	b       bne.22781
-bne.22779:
-	load    [ext_dirvecs + 2], $i15
+	b       bne.28645
+be.28644:
+	fsub    $f1, $fc0, $f1
+	add     $i1, -1, $i1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	bne     $i22, 2, bne.28645
+be.28645:
+	be      $i22, 3, be.28651
+.count dual_jmp
+	b       bne.28651
+bne.28645:
+	load    [ext_dirvecs + 2], $i14
 	add     $ig0, -1, $i1
-	load    [$i23 + 0], $fg8
-.count move_args
-	mov     $i23, $i2
-	load    [$i23 + 1], $fg9
-	load    [$i23 + 2], $fg10
+	load    [$i26 + 0], $fg17
+	load    [$i26 + 1], $fg18
+	load    [$i26 + 2], $fg19
+	bge     $i1, 0, bge.28646
+bl.28646:
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 3, be.28651
+.count dual_jmp
+	b       bne.28651
+bge.28646:
+	load    [ext_objects + $i1], $i2
+	load    [$i26 + 0], $f1
+	load    [$i2 + 7], $f2
+	load    [$i2 + 1], $i3
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 19]
+	load    [$i26 + 1], $f1
+	load    [$i2 + 8], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 20]
+	load    [$i26 + 2], $f1
+	load    [$i2 + 9], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 21]
+	bne     $i3, 2, bne.28647
+be.28647:
+	load    [$i2 + 19], $f1
+	add     $i1, -1, $i1
+	load    [$i2 + 20], $f2
+	load    [$i2 + 21], $f3
+	load    [$i2 + 4], $f4
+	fmul    $f4, $f1, $f1
+	load    [$i2 + 5], $f5
+	fmul    $f5, $f2, $f2
+	load    [$i2 + 6], $f6
+	fmul    $f6, $f3, $f3
+	fadd    $f1, $f2, $f1
+	fadd    $f1, $f3, $f1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
 	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	fmul    $f3, $f1, $f1
-	load    [$i1 + 1], $f4
-	fmul    $f4, $f2, $f2
-	load    [$i16 + 0], $f5
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
+	load    [$i25 + 0], $f17
+	li      118, $i15
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 3, be.28651
+.count dual_jmp
+	b       bne.28651
+bne.28647:
+	bg      $i3, 2, bg.28648
+ble.28648:
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 3, be.28651
+.count dual_jmp
+	b       bne.28651
+bg.28648:
+	load    [$i2 + 19], $f1
+	load    [$i2 + 20], $f2
+	fmul    $f1, $f1, $f4
+	load    [$i2 + 21], $f3
+	fmul    $f2, $f2, $f6
+	load    [$i2 + 4], $f5
+	fmul    $f4, $f5, $f4
+	load    [$i2 + 5], $f7
+	fmul    $f3, $f3, $f5
+	fmul    $f6, $f7, $f6
+	load    [$i2 + 6], $f7
+	load    [$i2 + 3], $i4
+	fadd    $f4, $f6, $f4
+	fmul    $f5, $f7, $f5
+	fadd    $f4, $f5, $f4
+	be      $i4, 0, be.28649
+bne.28649:
+	fmul    $f2, $f3, $f5
+	load    [$i2 + 16], $f6
+	fmul    $f3, $f1, $f3
+	load    [$i2 + 17], $f7
+	fmul    $f5, $f6, $f5
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f7, $f2
+	fadd    $f4, $f5, $f3
+	load    [$i2 + 18], $f4
 	fadd    $f3, $f2, $f2
+	fmul    $f1, $f4, $f1
 	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22780
-bg.22780:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	be      $i21, 3, be.22781
+	be      $i3, 3, be.28650
 .count dual_jmp
-	b       bne.22781
-ble.22780:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	bne     $i21, 3, bne.22781
-be.22781:
-	be      $i21, 4, be.22783
+	b       bne.28650
+be.28649:
+	mov     $f4, $f1
+	be      $i3, 3, be.28650
+bne.28650:
+	store   $f1, [$i2 + 22]
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	load    [$i25 + 0], $f17
+	li      118, $i15
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 3, be.28651
 .count dual_jmp
-	b       bne.22783
-bne.22781:
-	load    [ext_dirvecs + 3], $i15
-	load    [$i23 + 0], $fg8
+	b       bne.28651
+be.28650:
+	fsub    $f1, $fc0, $f1
+	add     $i1, -1, $i1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	load    [$i25 + 0], $f17
+	li      118, $i15
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	bne     $i22, 3, bne.28651
+be.28651:
+	be      $i22, 4, be.28657
+.count dual_jmp
+	b       bne.28657
+bne.28651:
+	load    [ext_dirvecs + 3], $i14
+	load    [$i26 + 0], $fg17
 	add     $ig0, -1, $i1
-	load    [$i23 + 1], $fg9
-.count move_args
-	mov     $i23, $i2
-	load    [$i23 + 2], $fg10
-	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	load    [$i1 + 1], $f4
-	fmul    $f3, $f1, $f1
-	load    [$i16 + 0], $f5
-	fmul    $f4, $f2, $f2
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22782
-bg.22782:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	be      $i21, 4, be.22783
+	load    [$i26 + 1], $fg18
+	load    [$i26 + 2], $fg19
+	bge     $i1, 0, bge.28652
+bl.28652:
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 4, be.28657
 .count dual_jmp
-	b       bne.22783
-ble.22782:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	bne     $i21, 4, bne.22783
-be.22783:
-	add     $i18, 18, $i1
-	load    [$i1 + $i22], $i1
-	add     $i22, 1, $i2
+	b       bne.28657
+bge.28652:
+	load    [ext_objects + $i1], $i2
+	load    [$i26 + 0], $f1
+	load    [$i2 + 7], $f2
+	fsub    $f1, $f2, $f1
+	load    [$i2 + 1], $i3
+	store   $f1, [$i2 + 19]
+	load    [$i26 + 1], $f1
+	load    [$i2 + 8], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 20]
+	load    [$i26 + 2], $f1
+	load    [$i2 + 9], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 21]
+	bne     $i3, 2, bne.28653
+be.28653:
+	load    [$i2 + 19], $f1
+	load    [$i2 + 20], $f2
+	add     $i1, -1, $i1
+	load    [$i2 + 21], $f3
+	load    [$i2 + 4], $f4
+	load    [$i2 + 5], $f5
+	fmul    $f4, $f1, $f1
+	load    [$i2 + 6], $f6
+	fmul    $f5, $f2, $f2
+	fmul    $f6, $f3, $f3
+	fadd    $f1, $f2, $f1
+	fadd    $f1, $f3, $f1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 4, be.28657
+.count dual_jmp
+	b       bne.28657
+bne.28653:
+	bg      $i3, 2, bg.28654
+ble.28654:
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	load    [$i25 + 0], $f17
+	li      118, $i15
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 4, be.28657
+.count dual_jmp
+	b       bne.28657
+bg.28654:
+	load    [$i2 + 19], $f1
+	fmul    $f1, $f1, $f4
+	load    [$i2 + 20], $f2
+	fmul    $f2, $f2, $f6
+	load    [$i2 + 21], $f3
+	load    [$i2 + 4], $f5
+	load    [$i2 + 5], $f7
+	fmul    $f4, $f5, $f4
+	fmul    $f3, $f3, $f5
+	load    [$i2 + 3], $i4
+	fmul    $f6, $f7, $f6
+	load    [$i2 + 6], $f7
+	fadd    $f4, $f6, $f4
+	fmul    $f5, $f7, $f5
+	fadd    $f4, $f5, $f4
+	be      $i4, 0, be.28655
+bne.28655:
+	fmul    $f2, $f3, $f5
+	load    [$i2 + 16], $f6
+	fmul    $f3, $f1, $f3
+	load    [$i2 + 17], $f7
+	fmul    $f5, $f6, $f5
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f7, $f2
+	fadd    $f4, $f5, $f3
+	load    [$i2 + 18], $f4
+	fadd    $f3, $f2, $f2
+	fmul    $f1, $f4, $f1
+	fadd    $f2, $f1, $f1
+	be      $i3, 3, be.28656
+.count dual_jmp
+	b       bne.28656
+be.28655:
+	mov     $f4, $f1
+	be      $i3, 3, be.28656
+bne.28656:
+	store   $f1, [$i2 + 22]
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 4, be.28657
+.count dual_jmp
+	b       bne.28657
+be.28656:
+	fsub    $f1, $fc0, $f1
+	add     $i1, -1, $i1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	be      $i22, 4, be.28657
+bne.28657:
+	load    [ext_dirvecs + 4], $i14
+	add     $ig0, -1, $i1
+	load    [$i26 + 0], $fg17
+	load    [$i26 + 1], $fg18
+	load    [$i26 + 2], $fg19
+	bl      $i1, 0, bl.28658
+bge.28658:
+	load    [ext_objects + $i1], $i2
+	load    [$i26 + 0], $f1
+	load    [$i2 + 7], $f2
+	fsub    $f1, $f2, $f1
+	load    [$i2 + 1], $i3
+	store   $f1, [$i2 + 19]
+	load    [$i26 + 1], $f1
+	load    [$i2 + 8], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 20]
+	load    [$i26 + 2], $f1
+	load    [$i2 + 9], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i2 + 21]
+	be      $i3, 2, be.28659
+bne.28659:
+	ble     $i3, 2, ble.28660
+bg.28660:
+	load    [$i2 + 19], $f1
+	fmul    $f1, $f1, $f4
+	load    [$i2 + 20], $f2
+	fmul    $f2, $f2, $f6
+	load    [$i2 + 21], $f3
+	load    [$i2 + 4], $f5
+	load    [$i2 + 5], $f7
+	fmul    $f4, $f5, $f4
+	fmul    $f3, $f3, $f5
+	load    [$i2 + 3], $i4
+	fmul    $f6, $f7, $f6
+	load    [$i2 + 6], $f7
+	fadd    $f4, $f6, $f4
+	fmul    $f5, $f7, $f5
+	fadd    $f4, $f5, $f4
+	be      $i4, 0, be.28661
+bne.28661:
+	fmul    $f2, $f3, $f5
+	load    [$i2 + 16], $f6
+	fmul    $f3, $f1, $f3
+	load    [$i2 + 17], $f7
+	fmul    $f5, $f6, $f5
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f7, $f2
+	fadd    $f4, $f5, $f3
+	load    [$i2 + 18], $f4
+	fadd    $f3, $f2, $f2
+	fmul    $f1, $f4, $f1
+	fadd    $f2, $f1, $f1
+	be      $i3, 3, be.28662
+.count dual_jmp
+	b       bne.28662
+be.28661:
+	mov     $f4, $f1
+	be      $i3, 3, be.28662
+bne.28662:
+	store   $f1, [$i2 + 22]
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i24], $i1
+	add     $i24, 1, $i24
 	load    [$i1 + 0], $f1
 	load    [$i1 + 1], $f2
-	fmul    $f1, $fg1, $f1
+	fmul    $f1, $fg4, $f1
 	load    [$i1 + 2], $f3
-	fmul    $f2, $fg2, $f2
-	fmul    $f3, $fg3, $f3
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f2, $fg5
-	fadd    $fg6, $f3, $fg6
-	ble     $i2, 4, ble.22785
-.count dual_jmp
-	b       bg.22769
-bne.22783:
-	load    [ext_dirvecs + 4], $i15
-	add     $ig0, -1, $i1
-	load    [$i23 + 0], $fg8
-.count move_args
-	mov     $i23, $i2
-	load    [$i23 + 1], $fg9
-	load    [$i23 + 2], $fg10
+	fmul    $f2, $fg5, $f2
+	fmul    $f3, $fg6, $f3
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f2, $fg8
+	fadd    $fg9, $f3, $fg9
+	b       do_without_neighbors.2951
+be.28662:
+	fsub    $f1, $fc0, $f1
+	add     $i1, -1, $i1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
 	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	fmul    $f3, $f1, $f1
-	load    [$i1 + 1], $f4
-	fmul    $f4, $f2, $f2
-	load    [$i16 + 0], $f5
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22784
-bg.22784:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	add     $i18, 18, $i1
-	add     $i22, 1, $i2
-	load    [$i1 + $i22], $i1
-	load    [$i1 + 0], $f1
-	fmul    $f1, $fg1, $f1
-	load    [$i1 + 1], $f2
-	fmul    $f2, $fg2, $f2
-	load    [$i1 + 2], $f3
-	fmul    $f3, $fg3, $f3
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f2, $fg5
-	fadd    $fg6, $f3, $fg6
-	ble     $i2, 4, ble.22785
-.count dual_jmp
-	b       bg.22769
-ble.22784:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	add     $i18, 18, $i1
-	load    [$i1 + $i22], $i1
-	add     $i22, 1, $i2
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i24], $i1
+	add     $i24, 1, $i24
 	load    [$i1 + 0], $f1
 	load    [$i1 + 1], $f2
-	fmul    $f1, $fg1, $f1
+	fmul    $f1, $fg4, $f1
 	load    [$i1 + 2], $f3
-	fmul    $f2, $fg2, $f2
-	fmul    $f3, $fg3, $f3
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f2, $fg5
-	fadd    $fg6, $f3, $fg6
-	bg      $i2, 4, bg.22769
-ble.22785:
-	load    [$i19 + $i2], $i1
-	bl      $i1, 0, bg.22769
-bge.22786:
-	load    [$i20 + $i2], $i1
-	be      $i1, 0, be.22787
-bne.22787:
-.count move_args
-	mov     $i2, $i19
-	jal     calc_diffuse_using_1point.2942, $ra6
-	add     $i22, 2, $i22
+	fmul    $f2, $fg5, $f2
+	fmul    $f3, $fg6, $f3
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f2, $fg8
+	fadd    $fg9, $f3, $fg9
 	b       do_without_neighbors.2951
-be.22787:
-	add     $i22, 2, $i22
+ble.28660:
+	add     $i1, -1, $i1
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i24], $i1
+	add     $i24, 1, $i24
+	load    [$i1 + 0], $f1
+	load    [$i1 + 1], $f2
+	fmul    $f1, $fg4, $f1
+	load    [$i1 + 2], $f3
+	fmul    $f2, $fg5, $f2
+	fmul    $f3, $fg6, $f3
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f2, $fg8
+	fadd    $fg9, $f3, $fg9
 	b       do_without_neighbors.2951
-bg.22769:
-	jr      $ra7
+be.28659:
+	load    [$i2 + 19], $f1
+	load    [$i2 + 20], $f2
+	add     $i1, -1, $i1
+	load    [$i2 + 21], $f3
+	load    [$i2 + 4], $f4
+	load    [$i2 + 5], $f5
+	fmul    $f4, $f1, $f1
+	load    [$i2 + 6], $f6
+	fmul    $f5, $f2, $f2
+	fmul    $f6, $f3, $f3
+	fadd    $f1, $f2, $f1
+	fadd    $f1, $f3, $f1
+	store   $f1, [$i2 + 22]
+	load    [$i26 + 0], $f2
+	load    [$i26 + 1], $f3
+	load    [$i26 + 2], $f4
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i24], $i1
+	add     $i24, 1, $i24
+	load    [$i1 + 0], $f1
+	load    [$i1 + 1], $f2
+	fmul    $f1, $fg4, $f1
+	load    [$i1 + 2], $f3
+	fmul    $f2, $fg5, $f2
+	fmul    $f3, $fg6, $f3
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f2, $fg8
+	fadd    $fg9, $f3, $fg9
+	b       do_without_neighbors.2951
+bl.28658:
+	li      118, $i15
+	load    [$i25 + 0], $f17
+	load    [$i25 + 1], $f18
+	load    [$i25 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i24], $i1
+	add     $i24, 1, $i24
+	load    [$i1 + 0], $f1
+	fmul    $f1, $fg4, $f1
+	load    [$i1 + 1], $f2
+	fmul    $f2, $fg5, $f2
+	load    [$i1 + 2], $f3
+	fmul    $f3, $fg6, $f3
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f2, $fg8
+	fadd    $fg9, $f3, $fg9
+	b       do_without_neighbors.2951
+be.28657:
+	load    [$i20 + $i24], $i1
+	add     $i24, 1, $i24
+	load    [$i1 + 0], $f1
+	fmul    $f1, $fg4, $f1
+	load    [$i1 + 1], $f2
+	fmul    $f2, $fg5, $f2
+	load    [$i1 + 2], $f3
+	fmul    $f3, $fg6, $f3
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f2, $fg8
+	fadd    $fg9, $f3, $fg9
+	b       do_without_neighbors.2951
+be.28632:
+	add     $i24, 1, $i24
+	b       do_without_neighbors.2951
+bg.28630:
+	jr      $ra5
 .end do_without_neighbors
 
 ######################################################################
-# try_exploit_neighbors($i2, $i3, $i4, $i5, $i19)
-# $ra = $ra7
-# [$i1 - $i23]
-# [$f1 - $f15]
-# [$ig2, $ig4]
+# try_exploit_neighbors($i2, $i3, $i4, $i5, $i24)
+# $ra = $ra5
+# [$i1 - $i26]
+# [$f1 - $f20]
+# [$ig2 - $ig3]
+# [$fg0 - $fg13, $fg17 - $fg19]
 # []
-# [$fg0 - $fg11, $fg14, $fg16]
-# [$ra - $ra6]
+# [$ra - $ra4]
 ######################################################################
 .align 2
 .begin try_exploit_neighbors
 try_exploit_neighbors.2967:
-	bg      $i19, 4, bg.22788
-ble.22788:
+	bg      $i24, 4, bg.28663
+ble.28663:
 	load    [$i4 + $i2], $i1
 	add     $i1, 8, $i6
-	load    [$i6 + $i19], $i6
-	bl      $i6, 0, bg.22788
-bge.22789:
+	load    [$i6 + $i24], $i6
+	bl      $i6, 0, bg.28663
+bge.28664:
 	load    [$i3 + $i2], $i7
 	add     $i7, 8, $i8
-	load    [$i8 + $i19], $i8
-	bne     $i8, $i6, bne.22790
-be.22790:
+	load    [$i8 + $i24], $i8
+	bne     $i8, $i6, bne.28665
+be.28665:
 	load    [$i5 + $i2], $i8
 	add     $i8, 8, $i8
-	load    [$i8 + $i19], $i8
-	bne     $i8, $i6, bne.22790
-be.22791:
+	load    [$i8 + $i24], $i8
+	bne     $i8, $i6, bne.28665
+be.28666:
 	add     $i2, -1, $i8
 	load    [$i4 + $i8], $i8
 	add     $i8, 8, $i8
-	load    [$i8 + $i19], $i8
-	bne     $i8, $i6, bne.22790
-be.22792:
+	load    [$i8 + $i24], $i8
+	bne     $i8, $i6, bne.28665
+be.28667:
 	add     $i2, 1, $i8
 	load    [$i4 + $i8], $i8
 	add     $i8, 8, $i8
-	load    [$i8 + $i19], $i8
-	be      $i8, $i6, be.22793
-bne.22790:
-	bg      $i19, 4, bg.22788
-ble.22795:
-	load    [$i4 + $i2], $i18
-	add     $i18, 8, $i1
-	load    [$i1 + $i19], $i1
-	bl      $i1, 0, bg.22788
-bge.22796:
-	add     $i18, 13, $i1
-	load    [$i1 + $i19], $i1
-	be      $i1, 0, be.22797
-bne.22797:
-	jal     calc_diffuse_using_1point.2942, $ra6
-	add     $i19, 1, $i22
-	b       do_without_neighbors.2951
-be.22797:
-	add     $i19, 1, $i22
-	b       do_without_neighbors.2951
-bg.22788:
-	jr      $ra7
-be.22793:
-	add     $i1, 13, $i1
-	load    [$i1 + $i19], $i1
-	be      $i1, 0, be.22798
-bne.22798:
-	add     $i2, -1, $i1
-	load    [$i4 + $i1], $i1
-	add     $i7, 23, $i6
-	load    [$i6 + $i19], $i6
-	load    [$i4 + $i2], $i7
-	add     $i1, 23, $i1
-	load    [$i6 + 0], $fg1
-	load    [$i1 + $i19], $i1
-	load    [$i6 + 1], $fg2
-	load    [$i6 + 2], $fg3
-	load    [$i1 + 0], $f1
-	fadd    $fg1, $f1, $fg1
-	load    [$i1 + 1], $f2
-	fadd    $fg2, $f2, $fg2
-	load    [$i1 + 2], $f3
-	fadd    $fg3, $f3, $fg3
-	add     $i7, 23, $i1
-	load    [$i1 + $i19], $i1
-	add     $i2, 1, $i6
+	load    [$i8 + $i24], $i8
+	bne     $i8, $i6, bne.28665
+be.28668:
+	add     $i1, 13, $i6
+	load    [$i6 + $i24], $i6
+	be      $i6, 0, be.28670
+bne.28670:
+	add     $i2, -1, $i6
 	load    [$i4 + $i6], $i6
-	load    [$i5 + $i2], $i7
-	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
-	fadd    $fg1, $f1, $fg1
-	load    [$i1 + 2], $f3
-	add     $i6, 23, $i1
-	load    [$i1 + $i19], $i1
-	fadd    $fg2, $f2, $fg2
-	fadd    $fg3, $f3, $fg3
-	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
-	fadd    $fg1, $f1, $fg1
-	load    [$i1 + 2], $f3
-	add     $i7, 23, $i1
-	fadd    $fg2, $f2, $fg2
-	load    [$i1 + $i19], $i1
-	fadd    $fg3, $f3, $fg3
-	load    [$i4 + $i2], $i6
-	add     $i19, 1, $i7
-	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
-	fadd    $fg1, $f1, $fg1
-	load    [$i1 + 2], $f3
-	add     $i6, 18, $i1
-	load    [$i1 + $i19], $i1
-	fadd    $fg2, $f2, $fg2
-	fadd    $fg3, $f3, $fg3
-	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
-	fmul    $f1, $fg1, $f1
-	load    [$i1 + 2], $f3
-	fmul    $f2, $fg2, $f2
-	fmul    $f3, $fg3, $f3
-.count move_args
-	mov     $i7, $i19
+	add     $i7, 23, $i7
+	load    [$i5 + $i2], $i9
+	add     $i1, 23, $i1
+	load    [$i7 + $i24], $i7
+	add     $i2, 1, $i8
+	load    [$i4 + $i8], $i8
+	add     $i6, 23, $i6
+	load    [$i6 + $i24], $i6
+	add     $i8, 23, $i8
+	load    [$i7 + 0], $fg4
+	add     $i9, 23, $i9
+	load    [$i7 + 1], $fg5
+	load    [$i7 + 2], $fg6
+	load    [$i6 + 0], $f1
+	load    [$i6 + 1], $f2
 	fadd    $fg4, $f1, $fg4
+	load    [$i6 + 2], $f3
 	fadd    $fg5, $f2, $fg5
+	load    [$i1 + $i24], $i1
 	fadd    $fg6, $f3, $fg6
+	load    [$i1 + 0], $f1
+	fadd    $fg4, $f1, $fg4
+	load    [$i1 + 1], $f2
+	fadd    $fg5, $f2, $fg5
+	load    [$i1 + 2], $f3
+	fadd    $fg6, $f3, $fg6
+	load    [$i8 + $i24], $i1
+	load    [$i4 + $i2], $i6
+	load    [$i1 + 0], $f1
+	add     $i6, 18, $i6
+	load    [$i1 + 1], $f2
+	fadd    $fg4, $f1, $fg4
+	load    [$i1 + 2], $f3
+	fadd    $fg5, $f2, $fg5
+	load    [$i9 + $i24], $i1
+	fadd    $fg6, $f3, $fg6
+	load    [$i1 + 0], $f1
+	fadd    $fg4, $f1, $fg4
+	load    [$i1 + 1], $f2
+	fadd    $fg5, $f2, $fg5
+	load    [$i1 + 2], $f3
+	fadd    $fg6, $f3, $fg6
+	load    [$i6 + $i24], $i1
+	add     $i24, 1, $i24
+	load    [$i1 + 0], $f1
+	fmul    $f1, $fg4, $f1
+	load    [$i1 + 1], $f2
+	fmul    $f2, $fg5, $f2
+	load    [$i1 + 2], $f3
+	fmul    $f3, $fg6, $f3
+	fadd    $fg7, $f1, $fg7
+	fadd    $fg8, $f2, $fg8
+	fadd    $fg9, $f3, $fg9
 	b       try_exploit_neighbors.2967
-be.22798:
-	add     $i19, 1, $i19
+be.28670:
+	add     $i24, 1, $i24
 	b       try_exploit_neighbors.2967
+bne.28665:
+	load    [$i4 + $i2], $i1
+	add     $i1, 3, $i17
+	load    [$i1 + 28], $i22
+	add     $i1, 8, $i18
+	add     $i1, 13, $i19
+	add     $i1, 18, $i20
+	add     $i1, 23, $i21
+	add     $i1, 29, $i23
+	b       do_without_neighbors.2951
+bg.28663:
+	jr      $ra5
 .end try_exploit_neighbors
 
 ######################################################################
 # write_rgb_element($f2)
 # $ra = $ra
-# [$i1 - $i3]
+# [$i1 - $i4]
 # [$f2 - $f3]
 # []
 # []
@@ -6999,719 +6681,536 @@ write_rgb_element.2976:
 	store   $ra, [$sp - 1]
 .count stack_move
 	add     $sp, -1, $sp
+	li      255, $i4
 	call    ext_int_of_float
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
 	add     $sp, 1, $sp
-	li      255, $i2
-	bg      $i1, $i2, bg.22801
-ble.22801:
-	bge     $i1, 0, bge.22802
-bl.22802:
+	bg      $i1, $i4, bg.28673
+ble.28673:
+	bge     $i1, 0, bge.28674
+bl.28674:
 	li      0, $i2
 	b       ext_write
-bge.22802:
-.count move_args
+bge.28674:
 	mov     $i1, $i2
 	b       ext_write
-bg.22801:
+bg.28673:
 	li      255, $i2
 	b       ext_write
 .end write_rgb_element
 
 ######################################################################
-# write_rgb()
-# $ra = $ra
-# [$i1 - $i3]
-# [$f2 - $f3]
+# pretrace_diffuse_rays($i17, $i18, $i19, $i20, $i21, $i22, $i23)
+# $ra = $ra5
+# [$i1 - $i16, $i23]
+# [$f1 - $f20]
+# [$ig2 - $ig3]
+# [$fg0 - $fg6, $fg10 - $fg13, $fg17 - $fg19]
 # []
-# []
-# []
-# [$ra]
-######################################################################
-.align 2
-.begin write_rgb
-write_rgb.2978:
-.count stack_store_ra
-	store   $ra, [$sp - 1]
-.count stack_move
-	add     $sp, -1, $sp
-.count move_args
-	mov     $fg4, $f2
-	call    write_rgb_element.2976
-.count move_args
-	mov     $fg5, $f2
-	call    write_rgb_element.2976
-.count stack_load_ra
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
-.count move_args
-	mov     $fg6, $f2
-	b       write_rgb_element.2976
-.end write_rgb
-
-######################################################################
-# pretrace_diffuse_rays($i18, $i19)
-# $ra = $ra6
-# [$i1 - $i17, $i19 - $i25]
-# [$f1 - $f15]
-# [$ig2, $ig4]
-# []
-# [$fg0 - $fg3, $fg7 - $fg11, $fg14, $fg16]
-# [$ra - $ra5]
+# [$ra - $ra4]
 ######################################################################
 .align 2
 .begin pretrace_diffuse_rays
 pretrace_diffuse_rays.2980:
-	bg      $i19, 4, bg.22805
-ble.22805:
-	add     $i18, 8, $i20
-	load    [$i20 + $i19], $i1
-	bl      $i1, 0, bg.22805
-bge.22806:
-	add     $i18, 13, $i21
-	load    [$i21 + $i19], $i1
-	bne     $i1, 0, bne.22807
-be.22807:
-	add     $i19, 1, $i22
-	bg      $i22, 4, bg.22805
-ble.22808:
-	load    [$i20 + $i22], $i1
-	bl      $i1, 0, bg.22805
-bge.22809:
-	load    [$i21 + $i22], $i1
-	be      $i1, 0, be.22815
-bne.22810:
-	add     $i18, 3, $i1
-	mov     $f0, $fg1
-	load    [$i1 + $i22], $i2
-	mov     $f0, $fg2
-	add     $i18, 29, $i6
-	mov     $f0, $fg3
-	load    [$i2 + 0], $fg8
-	load    [$i2 + 1], $fg9
-	add     $ig0, -1, $i1
-	load    [$i2 + 2], $fg10
-	call    setup_startp_constants.2831
-	load    [$i18 + 28], $i1
-	load    [$i6 + $i22], $i16
-	load    [ext_dirvecs + $i1], $i15
-	load    [$i16 + 0], $f1
-	load    [$i16 + 1], $f2
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f3
-	load    [$i1 + 0], $f4
-	load    [$i1 + 1], $f5
-	fmul    $f4, $f1, $f1
-	load    [$i1 + 2], $f6
-	fmul    $f5, $f2, $f2
-	fmul    $f6, $f3, $f3
-	fadd    $f1, $f2, $f1
-	fadd    $f1, $f3, $f1
-	ble     $f0, $f1, ble.22811
-bg.22811:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	add     $i18, 23, $i1
-	add     $i19, 2, $i19
-	load    [$i1 + $i22], $i1
-	store   $fg1, [$i1 + 0]
-	store   $fg2, [$i1 + 1]
-	store   $fg3, [$i1 + 2]
-	b       pretrace_diffuse_rays.2980
-ble.22811:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	add     $i18, 23, $i1
-	add     $i19, 2, $i19
-	load    [$i1 + $i22], $i1
-	store   $fg1, [$i1 + 0]
-	store   $fg2, [$i1 + 1]
-	store   $fg3, [$i1 + 2]
-	b       pretrace_diffuse_rays.2980
-bne.22807:
-	add     $i18, 3, $i22
-	mov     $f0, $fg1
-	load    [$i22 + $i19], $i2
-	mov     $f0, $fg2
-	mov     $f0, $fg3
-	add     $i18, 29, $i23
-	load    [$i2 + 0], $fg8
-	add     $ig0, -1, $i1
-	load    [$i2 + 1], $fg9
-	load    [$i2 + 2], $fg10
-	call    setup_startp_constants.2831
-	load    [$i18 + 28], $i1
-	load    [$i23 + $i19], $i16
-	load    [ext_dirvecs + $i1], $i15
-	load    [$i16 + 0], $f1
-	load    [$i16 + 1], $f2
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f3
-	load    [$i1 + 0], $f4
-	fmul    $f4, $f1, $f1
-	load    [$i1 + 1], $f5
-	fmul    $f5, $f2, $f2
-	load    [$i1 + 2], $f6
-	fmul    $f6, $f3, $f3
-	fadd    $f1, $f2, $f1
-	fadd    $f1, $f3, $f1
-	ble     $f0, $f1, ble.22812
-bg.22812:
-	fmul    $f1, $fc2, $f15
-	load    [$i15 + 119], $i8
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	add     $i18, 23, $i24
-	load    [$i24 + $i19], $i1
-	add     $i19, 1, $i25
-	store   $fg1, [$i1 + 0]
-	store   $fg2, [$i1 + 1]
-	store   $fg3, [$i1 + 2]
-	ble     $i25, 4, ble.22813
+	bg      $i23, 4, bg.28675
+ble.28675:
+	load    [$i18 + $i23], $i1
+	bl      $i1, 0, bg.28675
+bge.28676:
+	load    [$i19 + $i23], $i1
+	be      $i1, 0, be.28677
+bne.28677:
+	load    [$i17 + $i23], $i1
+	mov     $f0, $fg6
+	load    [ext_dirvecs + $i21], $i14
+	mov     $fg6, $fg4
+	load    [$i22 + $i23], $i5
+	mov     $fg6, $fg5
+	load    [$i1 + 0], $fg17
+	load    [$i1 + 1], $fg18
+	add     $ig0, -1, $i2
+	load    [$i1 + 2], $fg19
+	bl      $i2, 0, bl.28678
+bge.28678:
+	load    [ext_objects + $i2], $i3
+	load    [$i1 + 0], $f1
+	load    [$i3 + 7], $f2
+	fsub    $f1, $f2, $f1
+	load    [$i3 + 1], $i4
+	store   $f1, [$i3 + 19]
+	load    [$i1 + 1], $f1
+	load    [$i3 + 8], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i3 + 20]
+	load    [$i1 + 2], $f1
+	load    [$i3 + 9], $f2
+	fsub    $f1, $f2, $f1
+	store   $f1, [$i3 + 21]
+	be      $i4, 2, be.28679
+bne.28679:
+	ble     $i4, 2, ble.28680
+bg.28680:
+	load    [$i3 + 19], $f1
+	fmul    $f1, $f1, $f4
+	load    [$i3 + 20], $f2
+	fmul    $f2, $f2, $f6
+	load    [$i3 + 21], $f3
+	load    [$i3 + 4], $f5
+	load    [$i3 + 5], $f7
+	fmul    $f4, $f5, $f4
+	fmul    $f3, $f3, $f5
+	load    [$i3 + 3], $i6
+	fmul    $f6, $f7, $f6
+	load    [$i3 + 6], $f7
+	fadd    $f4, $f6, $f4
+	fmul    $f5, $f7, $f5
+	fadd    $f4, $f5, $f4
+	be      $i6, 0, be.28681
+bne.28681:
+	fmul    $f2, $f3, $f5
+	load    [$i3 + 16], $f6
+	fmul    $f3, $f1, $f3
+	load    [$i3 + 17], $f7
+	fmul    $f5, $f6, $f5
+	fmul    $f1, $f2, $f1
+	fmul    $f3, $f7, $f2
+	fadd    $f4, $f5, $f3
+	load    [$i3 + 18], $f4
+	fadd    $f3, $f2, $f2
+	fmul    $f1, $f4, $f1
+	fadd    $f2, $f1, $f1
+	be      $i4, 3, be.28682
 .count dual_jmp
-	b       bg.22805
-ble.22812:
-	fmul    $f1, $fc1, $f15
-	load    [$i15 + 118], $i8
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	add     $i18, 23, $i24
-	add     $i19, 1, $i25
-	load    [$i24 + $i19], $i1
-	store   $fg1, [$i1 + 0]
-	store   $fg2, [$i1 + 1]
-	store   $fg3, [$i1 + 2]
-	bg      $i25, 4, bg.22805
-ble.22813:
-	load    [$i20 + $i25], $i1
-	bl      $i1, 0, bg.22805
-bge.22814:
-	load    [$i21 + $i25], $i1
-	be      $i1, 0, be.22815
-bne.22815:
-	load    [$i22 + $i25], $i2
-	mov     $f0, $fg1
-	mov     $f0, $fg2
-	load    [$i2 + 0], $fg8
-	mov     $f0, $fg3
-	load    [$i2 + 1], $fg9
-	load    [$i2 + 2], $fg10
-	add     $ig0, -1, $i1
+	b       bne.28682
+be.28681:
+	mov     $f4, $f1
+	be      $i4, 3, be.28682
+bne.28682:
+	add     $i2, -1, $i2
+	store   $f1, [$i3 + 22]
+	load    [$i1 + 0], $f2
+	load    [$i1 + 1], $f3
+	load    [$i1 + 2], $f4
+.count move_args
+	mov     $i2, $i1
 	call    setup_startp_constants.2831
-	load    [$i18 + 28], $i1
-	load    [$i23 + $i25], $i16
-	load    [ext_dirvecs + $i1], $i15
-	load    [$i16 + 0], $f1
-	load    [$i16 + 1], $f2
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f3
-	load    [$i1 + 0], $f4
+	load    [$i5 + 0], $f17
+	li      118, $i15
+	load    [$i5 + 1], $f18
+	load    [$i5 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i23], $i1
+	add     $i23, 1, $i23
+	store   $fg4, [$i1 + 0]
+	store   $fg5, [$i1 + 1]
+	store   $fg6, [$i1 + 2]
+	b       pretrace_diffuse_rays.2980
+be.28682:
+	fsub    $f1, $fc0, $f1
+	add     $i2, -1, $i2
+	store   $f1, [$i3 + 22]
+	load    [$i1 + 0], $f2
+	load    [$i1 + 1], $f3
+	load    [$i1 + 2], $f4
+.count move_args
+	mov     $i2, $i1
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i5 + 0], $f17
+	load    [$i5 + 1], $f18
+	load    [$i5 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i23], $i1
+	add     $i23, 1, $i23
+	store   $fg4, [$i1 + 0]
+	store   $fg5, [$i1 + 1]
+	store   $fg6, [$i1 + 2]
+	b       pretrace_diffuse_rays.2980
+ble.28680:
+	add     $i2, -1, $i2
+	load    [$i1 + 0], $f2
+	load    [$i1 + 1], $f3
+	load    [$i1 + 2], $f4
+.count move_args
+	mov     $i2, $i1
+	call    setup_startp_constants.2831
+	load    [$i5 + 0], $f17
+	li      118, $i15
+	load    [$i5 + 1], $f18
+	load    [$i5 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i23], $i1
+	add     $i23, 1, $i23
+	store   $fg4, [$i1 + 0]
+	store   $fg5, [$i1 + 1]
+	store   $fg6, [$i1 + 2]
+	b       pretrace_diffuse_rays.2980
+be.28679:
+	load    [$i3 + 19], $f1
+	add     $i2, -1, $i2
+	load    [$i3 + 20], $f2
+	load    [$i3 + 21], $f3
+	load    [$i3 + 4], $f4
 	fmul    $f4, $f1, $f1
-	load    [$i1 + 1], $f5
+	load    [$i3 + 5], $f5
 	fmul    $f5, $f2, $f2
-	load    [$i1 + 2], $f6
+	load    [$i3 + 6], $f6
 	fmul    $f6, $f3, $f3
 	fadd    $f1, $f2, $f1
 	fadd    $f1, $f3, $f1
-	ble     $f0, $f1, ble.22816
-bg.22816:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	load    [$i24 + $i25], $i1
-	add     $i19, 2, $i19
-	store   $fg1, [$i1 + 0]
-	store   $fg2, [$i1 + 1]
-	store   $fg3, [$i1 + 2]
+	store   $f1, [$i3 + 22]
+	load    [$i1 + 0], $f2
+	load    [$i1 + 1], $f3
+	load    [$i1 + 2], $f4
+.count move_args
+	mov     $i2, $i1
+	call    setup_startp_constants.2831
+	li      118, $i15
+	load    [$i5 + 0], $f17
+	load    [$i5 + 1], $f18
+	load    [$i5 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i23], $i1
+	add     $i23, 1, $i23
+	store   $fg4, [$i1 + 0]
+	store   $fg5, [$i1 + 1]
+	store   $fg6, [$i1 + 2]
 	b       pretrace_diffuse_rays.2980
-ble.22816:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	load    [$i24 + $i25], $i1
-	add     $i19, 2, $i19
-	store   $fg1, [$i1 + 0]
-	store   $fg2, [$i1 + 1]
-	store   $fg3, [$i1 + 2]
+bl.28678:
+	li      118, $i15
+	load    [$i5 + 0], $f17
+	load    [$i5 + 1], $f18
+	load    [$i5 + 2], $f19
+	jal     iter_trace_diffuse_rays.2929, $ra4
+	load    [$i20 + $i23], $i1
+	add     $i23, 1, $i23
+	store   $fg4, [$i1 + 0]
+	store   $fg5, [$i1 + 1]
+	store   $fg6, [$i1 + 2]
 	b       pretrace_diffuse_rays.2980
-be.22815:
-	add     $i19, 2, $i19
+be.28677:
+	add     $i23, 1, $i23
 	b       pretrace_diffuse_rays.2980
-bg.22805:
-	jr      $ra6
+bg.28675:
+	jr      $ra5
 .end pretrace_diffuse_rays
 
 ######################################################################
-# pretrace_pixels($i26, $i27, $i28, $f20, $f21, $f1)
-# $ra = $ra7
-# [$i1 - $i25, $i27 - $i28]
-# [$f1 - $f19]
-# [$ig2, $ig4]
-# []
-# [$fg0 - $fg11, $fg14, $fg16 - $fg19]
-# [$ra - $ra6]
+# pretrace_pixels($i24, $i25, $i26, $f24, $f25, $f26)
+# $ra = $ra6
+# [$i1 - $i23, $i25 - $i26]
+# [$f1 - $f23]
+# [$ig2 - $ig3]
+# [$fg0 - $fg13, $fg17 - $fg19]
+# [$fig0 - $fig2]
+# [$ra - $ra5]
 ######################################################################
 .align 2
 .begin pretrace_pixels
 pretrace_pixels.2983:
-	bl      $i27, 0, bl.22817
-bge.22817:
-.count stack_move
-	add     $sp, -1, $sp
-	add     $i27, -64, $i2
-.count stack_store
-	store   $f1, [$sp + 0]
+	bl      $i25, 0, bl.28683
+bge.28683:
+	mov     $fig13, $f4
+	add     $i25, -64, $i2
 	call    ext_float_of_int
-	mov     $fig7, $f2
-	mov     $fig8, $f3
-	fmul    $f1, $f2, $f2
-	fmul    $f1, $f3, $f1
-.count stack_load
-	load    [$sp + 0], $f3
+	mov     $fig14, $f2
+	fmul    $f1, $f4, $f3
+	fmul    $f1, $f2, $f1
+	li      0, $i16
 .count move_args
-	mov     $f0, $f19
-	li      ext_ptrace_dirvec, $i16
-.count move_args
-	mov     $fc0, $f18
-	li      0, $i18
-	fadd    $f2, $f20, $f2
-	mov     $fig6, $fg19
-	fadd    $f1, $f3, $f1
+	mov     $f0, $f23
+	li      ext_ptrace_dirvec, $i17
+	fadd    $f3, $f24, $f2
 	store   $f2, [ext_ptrace_dirvec + 0]
-	store   $f21, [ext_ptrace_dirvec + 1]
-	mov     $f0, $fg6
+	fadd    $f1, $f26, $f1
+	store   $f25, [ext_ptrace_dirvec + 1]
+.count move_args
+	mov     $fc0, $f22
 	store   $f1, [ext_ptrace_dirvec + 2]
-	mov     $f0, $fg5
-	load    [ext_ptrace_dirvec + 2], $f1
-	fmul    $f1, $f1, $f1
+	load    [ext_ptrace_dirvec + 0], $f1
+	fmul    $f1, $f1, $f4
 	load    [ext_ptrace_dirvec + 1], $f2
 	fmul    $f2, $f2, $f2
-	load    [ext_ptrace_dirvec + 0], $f3
-	fmul    $f3, $f3, $f4
-	mov     $fig5, $fg18
+	load    [ext_ptrace_dirvec + 2], $f3
+	fmul    $f3, $f3, $f3
 	fadd    $f4, $f2, $f2
-	mov     $fig4, $fg17
-	mov     $f0, $fg4
-	fadd    $f2, $f1, $f1
-	fsqrt   $f1, $f1
-	be      $f1, $f0, be.22819
-bne.22819:
-	finv    $f1, $f1
-	fmul    $f3, $f1, $f2
-	store   $f2, [ext_ptrace_dirvec + 0]
-	load    [ext_ptrace_dirvec + 1], $f2
-	fmul    $f2, $f1, $f2
-	store   $f2, [ext_ptrace_dirvec + 1]
-	load    [ext_ptrace_dirvec + 2], $f2
-	fmul    $f2, $f1, $f1
+	mov     $f0, $fg9
+	fadd    $f2, $f3, $f2
+	mov     $f0, $fg8
+	mov     $f0, $fg7
+	fsqrt   $f2, $f2
+	be      $f2, $f0, be.28684
+bne.28684:
+	finv    $f2, $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_ptrace_dirvec + 0]
+	load    [ext_ptrace_dirvec + 1], $f1
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_ptrace_dirvec + 1]
+	load    [ext_ptrace_dirvec + 2], $f1
+	fmul    $f1, $f2, $f1
 	store   $f1, [ext_ptrace_dirvec + 2]
-	load    [$i26 + $i27], $i19
+	load    [ext_viewpoint + 0], $f1
+	load    [ext_viewpoint + 1], $f2
+	load    [ext_viewpoint + 2], $f3
+	load    [$i24 + $i25], $i1
+	mov     $f1, $fig0
+	add     $i1, 3, $i18
+	mov     $f2, $fig1
+	add     $i1, 8, $i19
+	mov     $f3, $fig2
+	add     $i1, 13, $i20
+	add     $i1, 18, $i21
+	add     $i1, 29, $i22
 	jal     trace_ray.2920, $ra5
-	load    [$i26 + $i27], $i1
-	store   $fg4, [$i1 + 0]
-	store   $fg5, [$i1 + 1]
-	store   $fg6, [$i1 + 2]
-	load    [$i26 + $i27], $i1
-	store   $i28, [$i1 + 28]
-	load    [$i26 + $i27], $i18
-	load    [$i18 + 8], $i1
-	bge     $i1, 0, bge.22820
+	load    [$i24 + $i25], $i1
+	li      0, $i23
+	store   $fg7, [$i1 + 0]
+	store   $fg8, [$i1 + 1]
+	store   $fg9, [$i1 + 2]
+	load    [$i24 + $i25], $i1
+	store   $i26, [$i1 + 28]
+	load    [$i24 + $i25], $i1
+	add     $i1, 3, $i17
+	add     $i1, 8, $i18
+	load    [$i1 + 28], $i21
+	add     $i1, 13, $i19
+	add     $i1, 23, $i20
+	add     $i1, 29, $i22
+	jal     pretrace_diffuse_rays.2980, $ra5
+	add     $i25, -1, $i25
+	add     $i26, 1, $i1
+	bge     $i1, 5, bge.28685
 .count dual_jmp
-	b       bl.22820
-be.22819:
-	mov     $fc0, $f1
-	fmul    $f3, $f1, $f2
-	store   $f2, [ext_ptrace_dirvec + 0]
-	load    [ext_ptrace_dirvec + 1], $f2
-	fmul    $f2, $f1, $f2
-	store   $f2, [ext_ptrace_dirvec + 1]
-	load    [ext_ptrace_dirvec + 2], $f2
-	fmul    $f2, $f1, $f1
+	b       bl.28685
+be.28684:
+	mov     $fc0, $f2
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_ptrace_dirvec + 0]
+	load    [ext_ptrace_dirvec + 1], $f1
+	fmul    $f1, $f2, $f1
+	store   $f1, [ext_ptrace_dirvec + 1]
+	load    [ext_ptrace_dirvec + 2], $f1
+	fmul    $f1, $f2, $f1
 	store   $f1, [ext_ptrace_dirvec + 2]
-	load    [$i26 + $i27], $i19
+	load    [ext_viewpoint + 0], $f1
+	load    [ext_viewpoint + 1], $f2
+	load    [ext_viewpoint + 2], $f3
+	load    [$i24 + $i25], $i1
+	add     $i1, 3, $i18
+	mov     $f1, $fig0
+	add     $i1, 8, $i19
+	mov     $f2, $fig1
+	add     $i1, 13, $i20
+	mov     $f3, $fig2
+	add     $i1, 18, $i21
+	add     $i1, 29, $i22
 	jal     trace_ray.2920, $ra5
-	load    [$i26 + $i27], $i1
-	store   $fg4, [$i1 + 0]
-	store   $fg5, [$i1 + 1]
-	store   $fg6, [$i1 + 2]
-	load    [$i26 + $i27], $i1
-	store   $i28, [$i1 + 28]
-	load    [$i26 + $i27], $i18
-	load    [$i18 + 8], $i1
-	bge     $i1, 0, bge.22820
-bl.22820:
-.count stack_move
-	add     $sp, 1, $sp
-	add     $i28, 1, $i1
-	bge     $i1, 5, bge.22824
-.count dual_jmp
-	b       bl.22824
-bge.22820:
-	load    [$i18 + 13], $i1
-	bne     $i1, 0, bne.22821
-be.22821:
-	li      1, $i19
-	jal     pretrace_diffuse_rays.2980, $ra6
-.count stack_move
-	add     $sp, 1, $sp
-	add     $i28, 1, $i1
-	bge     $i1, 5, bge.22824
-.count dual_jmp
-	b       bl.22824
-bne.22821:
-	load    [$i18 + 28], $i1
-	mov     $f0, $fg1
-	load    [$i18 + 3], $i2
-	mov     $f0, $fg2
-	mov     $f0, $fg3
-	load    [ext_dirvecs + $i1], $i15
-	load    [$i18 + 29], $i16
-	add     $ig0, -1, $i1
-	load    [$i2 + 0], $fg8
-	load    [$i2 + 1], $fg9
-	load    [$i2 + 2], $fg10
-	call    setup_startp_constants.2831
-	load    [$i15 + 118], $i1
-	load    [$i16 + 2], $f1
-	load    [$i16 + 1], $f2
-	load    [$i1 + 2], $f3
-	load    [$i1 + 1], $f4
-	fmul    $f3, $f1, $f1
-	load    [$i16 + 0], $f5
-	fmul    $f4, $f2, $f2
-	load    [$i1 + 0], $f6
-	fmul    $f6, $f5, $f3
-	fadd    $f3, $f2, $f2
-	fadd    $f2, $f1, $f1
-	ble     $f0, $f1, ble.22822
-bg.22822:
-	load    [$i15 + 119], $i8
-	fmul    $f1, $fc2, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	load    [$i18 + 23], $i1
-	li      1, $i19
-	store   $fg1, [$i1 + 0]
-	store   $fg2, [$i1 + 1]
-	store   $fg3, [$i1 + 2]
-	jal     pretrace_diffuse_rays.2980, $ra6
-.count stack_move
-	add     $sp, 1, $sp
-	add     $i28, 1, $i1
-	bge     $i1, 5, bge.22824
-.count dual_jmp
-	b       bl.22824
-ble.22822:
-	load    [$i15 + 118], $i8
-	fmul    $f1, $fc1, $f15
-	jal     trace_diffuse_ray.2926, $ra4
-	li      116, $i17
-	jal     iter_trace_diffuse_rays.2929, $ra5
-	load    [$i18 + 23], $i1
-	li      1, $i19
-	store   $fg1, [$i1 + 0]
-	store   $fg2, [$i1 + 1]
-	store   $fg3, [$i1 + 2]
-	jal     pretrace_diffuse_rays.2980, $ra6
-.count stack_move
-	add     $sp, 1, $sp
-	add     $i28, 1, $i1
-	bge     $i1, 5, bge.22824
-bl.22824:
-	add     $i27, -1, $i27
-.count stack_load
-	load    [$sp - 1], $f1
-.count move_args
-	mov     $i1, $i28
+	load    [$i24 + $i25], $i1
+	li      0, $i23
+	store   $fg7, [$i1 + 0]
+	store   $fg8, [$i1 + 1]
+	store   $fg9, [$i1 + 2]
+	load    [$i24 + $i25], $i1
+	store   $i26, [$i1 + 28]
+	load    [$i24 + $i25], $i1
+	add     $i1, 3, $i17
+	load    [$i1 + 28], $i21
+	add     $i1, 8, $i18
+	add     $i1, 13, $i19
+	add     $i1, 23, $i20
+	add     $i1, 29, $i22
+	jal     pretrace_diffuse_rays.2980, $ra5
+	add     $i25, -1, $i25
+	add     $i26, 1, $i1
+	bge     $i1, 5, bge.28685
+bl.28685:
+	mov     $i1, $i26
 	b       pretrace_pixels.2983
-bge.22824:
-	add     $i28, -4, $i28
-.count stack_load
-	load    [$sp - 1], $f1
-	add     $i27, -1, $i27
+bge.28685:
+	add     $i26, -4, $i26
 	b       pretrace_pixels.2983
-bl.22817:
-	jr      $ra7
+bl.28683:
+	jr      $ra6
 .end pretrace_pixels
 
 ######################################################################
-# scan_pixel($i24, $i25, $i26, $i27, $i28)
-# $ra = $ra8
-# [$i1 - $i24]
-# [$f1 - $f15]
-# [$ig2, $ig4]
+# scan_pixel($i27, $i28, $i29, $i30, $i31)
+# $ra = $ra6
+# [$i1 - $i27]
+# [$f1 - $f20]
+# [$ig2 - $ig3]
+# [$fg0 - $fg13, $fg17 - $fg19]
 # []
-# [$fg0 - $fg11, $fg14, $fg16]
-# [$ra - $ra7]
+# [$ra - $ra5]
 ######################################################################
 .align 2
 .begin scan_pixel
 scan_pixel.2994:
 	li      128, $i1
-	ble     $i1, $i24, ble.22825
-bg.22825:
-	load    [$i27 + $i24], $i1
-	add     $i25, 1, $i2
-	li      128, $i3
-	load    [$i1 + 0], $fg4
-	load    [$i1 + 1], $fg5
-	load    [$i1 + 2], $fg6
-	ble     $i3, $i2, ble.22828
-bg.22826:
-	ble     $i25, 0, ble.22828
-bg.22827:
+	ble     $i1, $i27, ble.28686
+bg.28686:
+	load    [$i30 + $i27], $i1
+	li      128, $i2
+	add     $i28, 1, $i3
+	load    [$i1 + 0], $fg7
+	load    [$i1 + 1], $fg8
+	load    [$i1 + 2], $fg9
+	ble     $i2, $i3, ble.28689
+bg.28687:
+	ble     $i28, 0, ble.28689
+bg.28688:
 	li      128, $i1
-	add     $i24, 1, $i2
-	ble     $i1, $i2, ble.22828
-bg.22828:
-	li      0, $i19
-	ble     $i24, 0, bne.22834
-bg.22829:
-	load    [$i27 + $i24], $i1
-	load    [$i1 + 8], $i2
-	bl      $i2, 0, bl.22833
-bge.22833:
-	load    [$i26 + $i24], $i3
-	load    [$i3 + 8], $i4
-	bne     $i4, $i2, bne.22834
-be.22834:
-	load    [$i28 + $i24], $i4
-	load    [$i4 + 8], $i4
-	bne     $i4, $i2, bne.22834
-be.22835:
-	add     $i24, -1, $i4
-	load    [$i27 + $i4], $i4
-	load    [$i4 + 8], $i4
-	bne     $i4, $i2, bne.22834
-be.22836:
-	add     $i24, 1, $i4
-	load    [$i27 + $i4], $i4
-	load    [$i4 + 8], $i4
-	be      $i4, $i2, be.22837
-bne.22834:
-	load    [$i27 + $i24], $i18
-	load    [$i18 + 8], $i1
-	bge     $i1, 0, bge.22839
-.count dual_jmp
-	b       bl.22833
-be.22837:
-	load    [$i1 + 13], $i1
+	add     $i27, 1, $i2
+	ble     $i1, $i2, ble.28689
+bg.28689:
+	li      0, $i24
+	ble     $i27, 0, ble.28690
+bg.28690:
 .count move_args
-	mov     $i28, $i5
+	mov     $i27, $i2
 .count move_args
-	mov     $i27, $i4
-	li      1, $i19
-	be      $i1, 0, be.22841
-bne.22841:
-	add     $i24, -1, $i1
-	load    [$i3 + 23], $i2
-	load    [$i27 + $i1], $i1
-	load    [$i27 + $i24], $i3
-	load    [$i2 + 0], $fg1
-	load    [$i1 + 23], $i1
-	load    [$i2 + 1], $fg2
-	load    [$i2 + 2], $fg3
-	add     $i24, 1, $i2
-	load    [$i1 + 0], $f1
-	fadd    $fg1, $f1, $fg1
-	load    [$i1 + 1], $f2
-	fadd    $fg2, $f2, $fg2
-	load    [$i1 + 2], $f3
-	fadd    $fg3, $f3, $fg3
-	load    [$i3 + 23], $i1
-	load    [$i28 + $i24], $i3
-	load    [$i27 + $i2], $i2
-	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
-	fadd    $fg1, $f1, $fg1
-	load    [$i1 + 2], $f3
-	fadd    $fg2, $f2, $fg2
-	load    [$i2 + 23], $i1
-	fadd    $fg3, $f3, $fg3
-	load    [$i1 + 0], $f1
-	fadd    $fg1, $f1, $fg1
-	load    [$i1 + 1], $f2
-	fadd    $fg2, $f2, $fg2
-	load    [$i1 + 2], $f3
-	fadd    $fg3, $f3, $fg3
-	load    [$i3 + 23], $i1
+	mov     $i29, $i3
 .count move_args
-	mov     $i26, $i3
-	load    [$i27 + $i24], $i2
-	load    [$i1 + 0], $f1
-	load    [$i1 + 1], $f2
-	fadd    $fg1, $f1, $fg1
-	load    [$i1 + 2], $f3
-	fadd    $fg2, $f2, $fg2
-	load    [$i2 + 18], $i1
-	fadd    $fg3, $f3, $fg3
-	load    [$i1 + 0], $f1
-	fmul    $f1, $fg1, $f1
-	load    [$i1 + 1], $f2
-	fmul    $f2, $fg2, $f2
-	load    [$i1 + 2], $f3
-	fmul    $f3, $fg3, $f3
+	mov     $i30, $i4
 .count move_args
-	mov     $i24, $i2
-	fadd    $fg4, $f1, $fg4
-	fadd    $fg5, $f2, $fg5
-	fadd    $fg6, $f3, $fg6
-	jal     try_exploit_neighbors.2967, $ra7
-	call    write_rgb.2978
-	add     $i24, 1, $i24
+	mov     $i31, $i5
+	jal     try_exploit_neighbors.2967, $ra5
+.count move_args
+	mov     $fg7, $f2
+	call    write_rgb_element.2976
+.count move_args
+	mov     $fg8, $f2
+	call    write_rgb_element.2976
+.count move_args
+	mov     $fg9, $f2
+	call    write_rgb_element.2976
+	add     $i27, 1, $i27
 	b       scan_pixel.2994
-be.22841:
+ble.28690:
+	load    [$i30 + $i27], $i1
+	add     $i1, 3, $i17
+	load    [$i1 + 28], $i22
+	add     $i1, 8, $i18
+	add     $i1, 13, $i19
+	add     $i1, 18, $i20
+	add     $i1, 23, $i21
+	add     $i1, 29, $i23
+	jal     do_without_neighbors.2951, $ra5
 .count move_args
-	mov     $i24, $i2
+	mov     $fg7, $f2
+	call    write_rgb_element.2976
 .count move_args
-	mov     $i26, $i3
-	jal     try_exploit_neighbors.2967, $ra7
-	call    write_rgb.2978
-	add     $i24, 1, $i24
+	mov     $fg8, $f2
+	call    write_rgb_element.2976
+.count move_args
+	mov     $fg9, $f2
+	call    write_rgb_element.2976
+	add     $i27, 1, $i27
 	b       scan_pixel.2994
-ble.22828:
-	load    [$i27 + $i24], $i18
-	li      0, $i19
-	load    [$i18 + 8], $i1
-	bl      $i1, 0, bl.22833
-bge.22839:
-	load    [$i18 + 13], $i1
-	be      $i1, 0, be.22840
-bne.22840:
-	jal     calc_diffuse_using_1point.2942, $ra6
-	li      1, $i22
-	jal     do_without_neighbors.2951, $ra7
-	call    write_rgb.2978
-	add     $i24, 1, $i24
+ble.28689:
+	load    [$i30 + $i27], $i1
+	li      0, $i24
+	load    [$i1 + 28], $i22
+	add     $i1, 3, $i17
+	add     $i1, 8, $i18
+	add     $i1, 13, $i19
+	add     $i1, 18, $i20
+	add     $i1, 23, $i21
+	add     $i1, 29, $i23
+	jal     do_without_neighbors.2951, $ra5
+.count move_args
+	mov     $fg7, $f2
+	call    write_rgb_element.2976
+.count move_args
+	mov     $fg8, $f2
+	call    write_rgb_element.2976
+.count move_args
+	mov     $fg9, $f2
+	call    write_rgb_element.2976
+	add     $i27, 1, $i27
 	b       scan_pixel.2994
-be.22840:
-	li      1, $i22
-	jal     do_without_neighbors.2951, $ra7
-	call    write_rgb.2978
-	add     $i24, 1, $i24
-	b       scan_pixel.2994
-bl.22833:
-	call    write_rgb.2978
-	add     $i24, 1, $i24
-	b       scan_pixel.2994
-ble.22825:
-	jr      $ra8
+ble.28686:
+	jr      $ra6
 .end scan_pixel
 
 ######################################################################
-# scan_line($i29, $i30, $i31, $i1, $i2)
-# $ra = $ra9
-# [$i1 - $i31]
-# [$f1 - $f21]
-# [$ig2, $ig4]
-# []
-# [$fg0 - $fg11, $fg14, $fg16 - $fg19]
-# [$ra - $ra8]
+# scan_line($i28, $i29, $i30, $i31, $i32)
+# $ra = $ra7
+# [$i1 - $i32]
+# [$f1 - $f26]
+# [$ig2 - $ig3]
+# [$fg0 - $fg13, $fg17 - $fg19]
+# [$fig0 - $fig2]
+# [$ra - $ra6]
 ######################################################################
 .align 2
 .begin scan_line
 scan_line.3000:
-	li      128, $i3
-	ble     $i3, $i29, ble.22842
-bg.22842:
-.count stack_move
-	add     $sp, -2, $sp
-.count stack_store
-	store   $i2, [$sp + 0]
-.count stack_store
-	store   $i1, [$sp + 1]
-	bge     $i29, 127, bge.22844
-bl.22844:
-	add     $i29, -63, $i2
+	li      128, $i1
+	ble     $i1, $i28, ble.28692
+bg.28692:
+	bge     $i28, 127, bge.28693
+bl.28693:
+	add     $i28, -63, $i2
 	call    ext_float_of_int
-	mov     $fig3, $f2
+	mov     $fig6, $f2
 	fmul    $f1, $f2, $f2
-	mov     $fig0, $f3
-	fadd    $f2, $f3, $f20
-	mov     $fig2, $f4
-	fmul    $f1, $f4, $f4
-	mov     $fig1, $f5
+	mov     $fig3, $f3
+	mov     $fig7, $f4
+	fadd    $f2, $f3, $f24
+	mov     $fig8, $f5
+	fmul    $f1, $f4, $f2
 	fmul    $f1, $f5, $f1
-	li      127, $i27
-.count stack_load
-	load    [$sp + 0], $i28
-	fadd    $f4, $fg21, $f21
+	mov     $fig4, $f3
+	mov     $fig5, $f4
+	fadd    $f2, $f3, $f25
+	fadd    $f1, $f4, $f26
+	li      127, $i25
 .count move_args
-	mov     $i1, $i26
-	fadd    $f1, $fg20, $f1
-	jal     pretrace_pixels.2983, $ra7
-	li      0, $i24
-.count stack_load
-	load    [$sp + 1], $i28
+	mov     $i31, $i24
 .count move_args
-	mov     $i29, $i25
-.count move_args
-	mov     $i30, $i26
-.count move_args
-	mov     $i31, $i27
-	jal     scan_pixel.2994, $ra8
-.count stack_move
-	add     $sp, 2, $sp
-.count stack_load
-	load    [$sp - 2], $i1
-	add     $i1, 2, $i2
-	bge     $i2, 5, bge.22846
+	mov     $i32, $i26
+	jal     pretrace_pixels.2983, $ra6
+	li      0, $i27
+	jal     scan_pixel.2994, $ra6
+	add     $i28, 1, $i28
+	add     $i32, 2, $i1
+	bge     $i1, 5, bge.28694
 .count dual_jmp
-	b       bl.22846
-bge.22844:
-	li      0, $i24
-.count stack_load
-	load    [$sp + 1], $i28
+	b       bl.28694
+bge.28693:
+	li      0, $i27
+	jal     scan_pixel.2994, $ra6
+	add     $i28, 1, $i28
+	add     $i32, 2, $i1
+	bge     $i1, 5, bge.28694
+bl.28694:
 .count move_args
-	mov     $i29, $i25
+	mov     $i29, $tmp
+	mov     $i1, $i32
 .count move_args
-	mov     $i30, $i26
-.count move_args
-	mov     $i31, $i27
-	jal     scan_pixel.2994, $ra8
-.count stack_move
-	add     $sp, 2, $sp
-.count stack_load
-	load    [$sp - 2], $i1
-	add     $i1, 2, $i2
-	bge     $i2, 5, bge.22846
-bl.22846:
-	add     $i29, 1, $i29
-.count move_args
-	mov     $i30, $i1
+	mov     $i30, $i29
 .count move_args
 	mov     $i31, $i30
 .count move_args
-	mov     $i28, $i31
+	mov     $tmp, $i31
 	b       scan_line.3000
-bge.22846:
-	add     $i1, -3, $i2
-	add     $i29, 1, $i29
+bge.28694:
 .count move_args
-	mov     $i30, $i1
+	mov     $i29, $tmp
+	add     $i32, -3, $i32
+.count move_args
+	mov     $i30, $i29
 .count move_args
 	mov     $i31, $i30
 .count move_args
-	mov     $i28, $i31
+	mov     $tmp, $i31
 	b       scan_line.3000
-ble.22842:
-	jr      $ra9
+ble.28692:
+	jr      $ra7
 .end scan_line
 
 ######################################################################
@@ -7783,13 +7282,13 @@ create_pixel.3008:
 	jal     create_float5x3array.3006, $ra1
 .count move_ret
 	mov     $i1, $i6
-	li      0, $i3
 	li      5, $i2
+	li      0, $i3
 	call    ext_create_array_int
 .count move_ret
 	mov     $i1, $i7
-	li      0, $i3
 	li      5, $i2
+	li      0, $i3
 	call    ext_create_array_int
 .count move_ret
 	mov     $i1, $i8
@@ -7799,8 +7298,8 @@ create_pixel.3008:
 	jal     create_float5x3array.3006, $ra1
 .count move_ret
 	mov     $i1, $i10
-	li      0, $i3
 	li      1, $i2
+	li      0, $i3
 	call    ext_create_array_int
 .count move_ret
 	mov     $i1, $i11
@@ -7892,11 +7391,11 @@ create_pixel.3008:
 .align 2
 .begin init_line_elements
 init_line_elements.3010:
-	bge     $i13, 0, bge.22847
-bl.22847:
+	bge     $i13, 0, bge.28695
+bl.28695:
 	mov     $i12, $i1
 	jr      $ra3
-bge.22847:
+bge.28695:
 	jal     create_pixel.3008, $ra2
 	add     $i13, -1, $i2
 .count storer
@@ -7944,10 +7443,10 @@ create_pixelline.3013:
 .align 2
 .begin calc_dirvec
 calc_dirvec.3020:
-	bge     $i2, 5, bge.22848
-bl.22848:
+	bge     $i2, 5, bge.28696
+bl.28696:
 	fmul    $f2, $f2, $f1
-	fadd    $f1, $fc7, $f1
+	fadd    $f1, $fc3, $f1
 	fsqrt   $f1, $f11
 	finv    $f11, $f2
 	call    ext_atan
@@ -7964,7 +7463,7 @@ bl.22848:
 	fmul    $f13, $f1, $f1
 	fmul    $f1, $f11, $f11
 	fmul    $f11, $f11, $f1
-	fadd    $f1, $fc7, $f1
+	fadd    $f1, $fc3, $f1
 	fsqrt   $f1, $f12
 	finv    $f12, $f2
 	call    ext_atan
@@ -7984,13 +7483,13 @@ bl.22848:
 .count move_args
 	mov     $f11, $f1
 	b       calc_dirvec.3020
-bge.22848:
+bge.28696:
 	load    [ext_dirvecs + $i3], $i1
-	fmul    $f2, $f2, $f3
-	fmul    $f1, $f1, $f4
+	fmul    $f1, $f1, $f3
+	fmul    $f2, $f2, $f4
 	load    [$i1 + $i4], $i2
 	add     $i4, 40, $i3
-	fadd    $f4, $f3, $f3
+	fadd    $f3, $f4, $f3
 	add     $i4, 80, $i5
 	fadd    $f3, $fc0, $f3
 	add     $i4, 1, $i6
@@ -8033,7 +7532,7 @@ bge.22848:
 # calc_dirvecs($i8, $f10, $i9, $i10)
 # $ra = $ra2
 # [$i1 - $i9, $i11]
-# [$f1 - $f9, $f11 - $f15]
+# [$f1 - $f9, $f11 - $f17]
 # []
 # []
 # []
@@ -8042,28 +7541,34 @@ bge.22848:
 .align 2
 .begin calc_dirvecs
 calc_dirvecs.3028:
-	bl      $i8, 0, bl.22849
-bge.22849:
+	bl      $i8, 0, bl.28697
+bge.28697:
+	li      0, $i1
 .count move_args
 	mov     $i8, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc13, $f15
-	li      0, $i2
+.count load_float
+	load    [f.28075], $f15
+.count move_args
+	mov     $i1, $i2
+.count load_float
+	load    [f.28076], $f16
+	fmul    $f1, $f15, $f17
 .count move_args
 	mov     $f0, $f1
 .count move_args
+	mov     $i9, $i3
+.count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i9, $i3
-	fsub    $f15, $fc8, $f9
-.count move_args
 	mov     $i10, $i4
+	fsub    $f17, $f16, $f9
 	jal     calc_dirvec.3020, $ra1
-	fadd    $f15, $fc7, $f9
 	add     $i10, 2, $i11
+	fadd    $f17, $fc3, $f9
+	li      0, $i2
 .count move_args
 	mov     $f0, $f1
-	li      0, $i2
 .count move_args
 	mov     $f0, $f2
 .count move_args
@@ -8072,135 +7577,99 @@ bge.22849:
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
 	add     $i8, -1, $i8
-	bl      $i8, 0, bl.22849
-bge.22850:
+	bl      $i8, 0, bl.28697
+bge.28698:
+	li      0, $i1
+	add     $i9, 1, $i2
+	bge     $i2, 5, bge.28699
+bl.28699:
+	mov     $i2, $i9
 .count move_args
 	mov     $i8, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc13, $f15
-	li      0, $i2
+	fmul    $f1, $f15, $f17
 .count move_args
-	mov     $f0, $f2
-	add     $i9, 1, $i1
-	fsub    $f15, $fc8, $f9
-.count move_args
-	mov     $i10, $i4
-.count move_args
-	mov     $f0, $f1
-	bge     $i1, 5, bge.22851
-bl.22851:
-	mov     $i1, $i9
-.count move_args
-	mov     $i9, $i3
-	jal     calc_dirvec.3020, $ra1
-	fadd    $f15, $fc7, $f9
-	li      0, $i2
+	mov     $i1, $i2
 .count move_args
 	mov     $f0, $f1
 .count move_args
 	mov     $i9, $i3
-.count move_args
-	mov     $f0, $f2
-.count move_args
-	mov     $i11, $i4
-	jal     calc_dirvec.3020, $ra1
-	add     $i8, -1, $i8
-	bge     $i8, 0, bge.22852
-.count dual_jmp
-	b       bl.22849
-bge.22851:
-	add     $i9, -4, $i9
-.count move_args
-	mov     $i9, $i3
-	jal     calc_dirvec.3020, $ra1
-	fadd    $f15, $fc7, $f9
-	li      0, $i2
-.count move_args
-	mov     $f0, $f1
-.count move_args
-	mov     $f0, $f2
-.count move_args
-	mov     $i9, $i3
-.count move_args
-	mov     $i11, $i4
-	jal     calc_dirvec.3020, $ra1
-	add     $i8, -1, $i8
-	bl      $i8, 0, bl.22849
-bge.22852:
-.count move_args
-	mov     $i8, $i2
-	call    ext_float_of_int
-	fmul    $f1, $fc13, $f15
-	add     $i9, 1, $i1
+	fsub    $f17, $f16, $f9
 .count move_args
 	mov     $i10, $i4
 .count move_args
 	mov     $f0, $f2
+	jal     calc_dirvec.3020, $ra1
+	li      0, $i2
+	fadd    $f17, $fc3, $f9
 .count move_args
 	mov     $f0, $f1
-	li      0, $i2
-	fsub    $f15, $fc8, $f9
-	bge     $i1, 5, bge.22853
-bl.22853:
-	mov     $i1, $i9
 .count move_args
 	mov     $i9, $i3
-	jal     calc_dirvec.3020, $ra1
-	fadd    $f15, $fc7, $f9
-	li      0, $i2
-.count move_args
-	mov     $f0, $f1
 .count move_args
 	mov     $f0, $f2
-.count move_args
-	mov     $i9, $i3
 .count move_args
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
 	add     $i8, -1, $i8
-	bge     $i8, 0, bge.22854
+	bge     $i8, 0, bge.28700
 .count dual_jmp
-	b       bl.22849
-bge.22853:
+	b       bl.28697
+bge.28699:
 	add     $i9, -4, $i9
-.count move_args
-	mov     $i9, $i3
-	jal     calc_dirvec.3020, $ra1
-	fadd    $f15, $fc7, $f9
-	li      0, $i2
-.count move_args
-	mov     $f0, $f1
-.count move_args
-	mov     $i9, $i3
-.count move_args
-	mov     $f0, $f2
-.count move_args
-	mov     $i11, $i4
-	jal     calc_dirvec.3020, $ra1
-	add     $i8, -1, $i8
-	bl      $i8, 0, bl.22849
-bge.22854:
 .count move_args
 	mov     $i8, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc13, $f15
-	add     $i9, 1, $i1
+	fmul    $f1, $f15, $f17
+.count move_args
+	mov     $i1, $i2
+.count move_args
+	mov     $f0, $f1
+	fsub    $f17, $f16, $f9
+.count move_args
+	mov     $i9, $i3
 .count move_args
 	mov     $f0, $f2
 .count move_args
 	mov     $i10, $i4
+	jal     calc_dirvec.3020, $ra1
+	fadd    $f17, $fc3, $f9
+	li      0, $i2
 .count move_args
 	mov     $f0, $f1
-	fsub    $f15, $fc8, $f9
-	li      0, $i2
-	bge     $i1, 5, bge.22855
-bl.22855:
-	mov     $i1, $i9
+.count move_args
+	mov     $f0, $f2
 .count move_args
 	mov     $i9, $i3
+.count move_args
+	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
-	fadd    $f15, $fc7, $f9
+	add     $i8, -1, $i8
+	bl      $i8, 0, bl.28697
+bge.28700:
+	add     $i9, 1, $i1
+.count move_args
+	mov     $i8, $i2
+	bge     $i1, 5, bge.28701
+bl.28701:
+	mov     $i1, $i9
+	li      0, $i1
+	call    ext_float_of_int
+	fmul    $f1, $f15, $f17
+.count move_args
+	mov     $i1, $i2
+.count move_args
+	mov     $f0, $f1
+.count move_args
+	mov     $i9, $i3
+	fsub    $f17, $f16, $f9
+.count move_args
+	mov     $i10, $i4
+.count move_args
+	mov     $f0, $f2
+	jal     calc_dirvec.3020, $ra1
 	li      0, $i2
+	fadd    $f17, $fc3, $f9
 .count move_args
 	mov     $f0, $f1
 .count move_args
@@ -8210,18 +7679,98 @@ bl.22855:
 .count move_args
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
-	add     $i9, 1, $i1
 	add     $i8, -1, $i8
-	bge     $i1, 5, bge.22856
+	bge     $i8, 0, bge.28702
 .count dual_jmp
-	b       bl.22856
-bge.22855:
+	b       bl.28697
+bge.28701:
+	add     $i9, -4, $i9
+	li      0, $i1
+	call    ext_float_of_int
+	fmul    $f1, $f15, $f17
+.count move_args
+	mov     $i1, $i2
+.count move_args
+	mov     $f0, $f1
+	fsub    $f17, $f16, $f9
+.count move_args
+	mov     $i9, $i3
+.count move_args
+	mov     $f0, $f2
+.count move_args
+	mov     $i10, $i4
+	jal     calc_dirvec.3020, $ra1
+	fadd    $f17, $fc3, $f9
+	li      0, $i2
+.count move_args
+	mov     $f0, $f1
+.count move_args
+	mov     $f0, $f2
+.count move_args
+	mov     $i9, $i3
+.count move_args
+	mov     $i11, $i4
+	jal     calc_dirvec.3020, $ra1
+	add     $i8, -1, $i8
+	bl      $i8, 0, bl.28697
+bge.28702:
+	li      0, $i1
+	add     $i9, 1, $i2
+	bge     $i2, 5, bge.28703
+bl.28703:
+	mov     $i2, $i9
+.count move_args
+	mov     $i8, $i2
+	call    ext_float_of_int
+	fmul    $f1, $f15, $f15
+.count move_args
+	mov     $i1, $i2
+.count move_args
+	mov     $f0, $f1
+.count move_args
+	mov     $i9, $i3
+	fsub    $f15, $f16, $f9
+.count move_args
+	mov     $i10, $i4
+.count move_args
+	mov     $f0, $f2
+	jal     calc_dirvec.3020, $ra1
+	li      0, $i2
+	fadd    $f15, $fc3, $f9
+.count move_args
+	mov     $f0, $f1
+.count move_args
+	mov     $i9, $i3
+.count move_args
+	mov     $f0, $f2
+.count move_args
+	mov     $i11, $i4
+	jal     calc_dirvec.3020, $ra1
+	add     $i8, -1, $i8
+	add     $i9, 1, $i1
+	bge     $i1, 5, bge.28704
+.count dual_jmp
+	b       bl.28704
+bge.28703:
 	add     $i9, -4, $i9
 .count move_args
+	mov     $i8, $i2
+	call    ext_float_of_int
+	fmul    $f1, $f15, $f15
+.count move_args
+	mov     $i1, $i2
+.count move_args
+	mov     $f0, $f1
+.count move_args
 	mov     $i9, $i3
+	fsub    $f15, $f16, $f9
+.count move_args
+	mov     $i10, $i4
+.count move_args
+	mov     $f0, $f2
 	jal     calc_dirvec.3020, $ra1
-	fadd    $f15, $fc7, $f9
 	li      0, $i2
+	fadd    $f15, $fc3, $f9
 .count move_args
 	mov     $f0, $f1
 .count move_args
@@ -8231,25 +7780,24 @@ bge.22855:
 .count move_args
 	mov     $i11, $i4
 	jal     calc_dirvec.3020, $ra1
-	add     $i9, 1, $i1
 	add     $i8, -1, $i8
-	bge     $i1, 5, bge.22856
-bl.22856:
-.count move_args
+	add     $i9, 1, $i1
+	bge     $i1, 5, bge.28704
+bl.28704:
 	mov     $i1, $i9
 	b       calc_dirvecs.3028
-bge.22856:
+bge.28704:
 	add     $i9, -4, $i9
 	b       calc_dirvecs.3028
-bl.22849:
+bl.28697:
 	jr      $ra2
 .end calc_dirvecs
 
 ######################################################################
-# calc_dirvec_rows($i12, $i13, $i14)
+# calc_dirvec_rows($i12, $i13, $i10)
 # $ra = $ra3
-# [$i1 - $i14]
-# [$f1 - $f18]
+# [$i1 - $i13]
+# [$f1 - $f17]
 # []
 # []
 # []
@@ -8258,85 +7806,84 @@ bl.22849:
 .align 2
 .begin calc_dirvec_rows
 calc_dirvec_rows.3033:
-	bl      $i12, 0, bl.22857
-bge.22857:
+	bl      $i12, 0, bl.28705
+bge.28705:
+	li      0, $i1
+.count load_float
+	load    [f.28077], $f9
 .count move_args
 	mov     $i12, $i2
 	call    ext_float_of_int
-	fmul    $f1, $fc13, $f1
 .count load_float
-	load    [f.22134], $f16
-	li      0, $i2
+	load    [f.28075], $f2
+.count load_float
+	load    [f.28076], $f15
 .count move_args
-	mov     $f0, $f2
+	mov     $i1, $i2
+	fmul    $f1, $f2, $f1
 .count move_args
 	mov     $i13, $i3
 .count move_args
-	mov     $f16, $f9
+	mov     $f0, $f2
 .count move_args
-	mov     $i14, $i4
-	fsub    $f1, $fc8, $f10
+	mov     $i10, $i4
+	fsub    $f1, $f15, $f10
 .count move_args
 	mov     $f0, $f1
 	jal     calc_dirvec.3020, $ra1
 .count move_args
 	mov     $f0, $f1
-	add     $i14, 2, $i8
+	add     $i10, 2, $i8
 .count move_args
 	mov     $f0, $f2
 	li      0, $i2
 .count move_args
-	mov     $fc8, $f9
+	mov     $f15, $f9
 .count move_args
 	mov     $i13, $i3
 .count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
-.count load_float
-	load    [f.22135], $f17
-	add     $i13, 1, $i1
-.count move_args
-	mov     $f17, $f9
-.count move_args
-	mov     $i14, $i4
 .count move_args
 	mov     $f0, $f2
+	add     $i13, 1, $i1
 .count move_args
 	mov     $f0, $f1
+.count move_args
+	mov     $i10, $i4
+.count load_float
+	load    [f.28078], $f9
 	li      0, $i2
-	bge     $i1, 5, bge.22858
-bl.22858:
+	bge     $i1, 5, bge.28706
+bl.28706:
 	mov     $i1, $i9
 .count move_args
 	mov     $i9, $i3
 	jal     calc_dirvec.3020, $ra1
 .count load_float
-	load    [f.22136], $f18
+	load    [f.28079], $f9
 	li      0, $i2
 .count move_args
 	mov     $f0, $f1
 .count move_args
-	mov     $i9, $i3
-.count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $i8, $i4
+	mov     $i9, $i3
 .count move_args
-	mov     $f18, $f9
+	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
-.count load_float
-	load    [f.22137], $f9
+	li      0, $i2
 	add     $i9, 1, $i1
-	bge     $i1, 5, bge.22859
+	bge     $i1, 5, bge.28707
 .count dual_jmp
-	b       bl.22859
-bge.22858:
+	b       bl.28707
+bge.28706:
 	add     $i13, -4, $i9
 .count move_args
 	mov     $i9, $i3
 	jal     calc_dirvec.3020, $ra1
 .count load_float
-	load    [f.22136], $f18
+	load    [f.28079], $f9
 	li      0, $i2
 .count move_args
 	mov     $f0, $f1
@@ -8345,230 +7892,92 @@ bge.22858:
 .count move_args
 	mov     $i9, $i3
 .count move_args
-	mov     $f18, $f9
-.count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
+	li      0, $i2
+	add     $i9, 1, $i1
+	bge     $i1, 5, bge.28707
+bl.28707:
+	mov     $i1, $i9
 .count load_float
-	load    [f.22137], $f9
-	add     $i9, 1, $i1
-	bge     $i1, 5, bge.22859
-bl.22859:
-	mov     $i1, $i9
+	load    [f.28080], $f9
 .count move_args
 	mov     $f0, $f1
-	li      0, $i2
 .count move_args
 	mov     $f0, $f2
 .count move_args
 	mov     $i9, $i3
 .count move_args
-	mov     $i14, $i4
+	mov     $i10, $i4
 	jal     calc_dirvec.3020, $ra1
+	li      0, $i2
 .count move_args
 	mov     $f0, $f1
-	li      0, $i2
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $fc3, $f9
-.count move_args
 	mov     $i9, $i3
+.count move_args
+	mov     $fc2, $f9
 .count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
 	li      1, $i8
 	add     $i9, 1, $i1
-	bge     $i1, 5, bge.22860
+	bge     $i1, 5, bge.28708
 .count dual_jmp
-	b       bl.22860
-bge.22859:
+	b       bl.28708
+bge.28707:
 	add     $i9, -4, $i9
+.count load_float
+	load    [f.28080], $f9
 .count move_args
 	mov     $f0, $f1
-	li      0, $i2
 .count move_args
 	mov     $f0, $f2
 .count move_args
 	mov     $i9, $i3
 .count move_args
-	mov     $i14, $i4
+	mov     $i10, $i4
 	jal     calc_dirvec.3020, $ra1
+	li      0, $i2
 .count move_args
 	mov     $f0, $f1
-	li      0, $i2
 .count move_args
 	mov     $f0, $f2
 .count move_args
-	mov     $fc3, $f9
-.count move_args
 	mov     $i9, $i3
+.count move_args
+	mov     $fc2, $f9
 .count move_args
 	mov     $i8, $i4
 	jal     calc_dirvec.3020, $ra1
 	li      1, $i8
 	add     $i9, 1, $i1
-	bge     $i1, 5, bge.22860
-bl.22860:
+	bge     $i1, 5, bge.28708
+bl.28708:
 	mov     $i1, $i9
-.count move_args
-	mov     $i14, $i10
 	jal     calc_dirvecs.3028, $ra2
 	add     $i12, -1, $i12
-	bge     $i12, 0, bge.22861
-.count dual_jmp
-	b       bl.22857
-bge.22860:
-	add     $i9, -4, $i9
-.count move_args
-	mov     $i14, $i10
-	jal     calc_dirvecs.3028, $ra2
-	add     $i12, -1, $i12
-	bl      $i12, 0, bl.22857
-bge.22861:
-.count move_args
-	mov     $i12, $i2
-	call    ext_float_of_int
-	fmul    $f1, $fc13, $f1
-	add     $i14, 4, $i10
 	add     $i13, 2, $i1
-.count move_args
-	mov     $f16, $f9
-.count move_args
-	mov     $i10, $i4
-	fsub    $f1, $fc8, $f10
-.count move_args
-	mov     $f0, $f2
-	li      0, $i2
-.count move_args
-	mov     $f0, $f1
-	bge     $i1, 5, bge.22862
-bl.22862:
-	mov     $i1, $i13
-.count move_args
-	mov     $i13, $i3
-	jal     calc_dirvec.3020, $ra1
-.count move_args
-	mov     $f0, $f1
-	add     $i14, 6, $i8
-.count move_args
-	mov     $f0, $f2
-	li      0, $i2
-.count move_args
-	mov     $fc8, $f9
-.count move_args
-	mov     $i13, $i3
-.count move_args
-	mov     $i8, $i4
-	jal     calc_dirvec.3020, $ra1
-	add     $i13, 1, $i1
-	bge     $i1, 5, bge.22863
+	bge     $i1, 5, bge.28709
 .count dual_jmp
-	b       bl.22863
-bge.22862:
-	add     $i13, -3, $i13
-.count move_args
-	mov     $i13, $i3
-	jal     calc_dirvec.3020, $ra1
-.count move_args
-	mov     $f0, $f1
-	add     $i14, 6, $i8
-.count move_args
-	mov     $f0, $f2
-	li      0, $i2
-.count move_args
-	mov     $fc8, $f9
-.count move_args
-	mov     $i13, $i3
-.count move_args
-	mov     $i8, $i4
-	jal     calc_dirvec.3020, $ra1
-	add     $i13, 1, $i1
-	bge     $i1, 5, bge.22863
-bl.22863:
-	mov     $i1, $i9
-	li      0, $i2
-.count move_args
-	mov     $f0, $f1
-.count move_args
-	mov     $f0, $f2
-.count move_args
-	mov     $i9, $i3
-.count move_args
-	mov     $f17, $f9
-.count move_args
-	mov     $i10, $i4
-	jal     calc_dirvec.3020, $ra1
-.count move_args
-	mov     $f0, $f1
-	li      0, $i2
-.count move_args
-	mov     $f0, $f2
-.count move_args
-	mov     $f18, $f9
-.count move_args
-	mov     $i9, $i3
-.count move_args
-	mov     $i8, $i4
-	jal     calc_dirvec.3020, $ra1
-	li      2, $i8
-	add     $i9, 1, $i1
-	bge     $i1, 5, bge.22864
-.count dual_jmp
-	b       bl.22864
-bge.22863:
-	add     $i13, -4, $i9
-.count move_args
-	mov     $f0, $f1
-	li      0, $i2
-.count move_args
-	mov     $f0, $f2
-.count move_args
-	mov     $f17, $f9
-.count move_args
-	mov     $i9, $i3
-.count move_args
-	mov     $i10, $i4
-	jal     calc_dirvec.3020, $ra1
-	li      0, $i2
-.count move_args
-	mov     $f0, $f1
-.count move_args
-	mov     $f0, $f2
-.count move_args
-	mov     $i9, $i3
-.count move_args
-	mov     $f18, $f9
-.count move_args
-	mov     $i8, $i4
-	jal     calc_dirvec.3020, $ra1
-	li      2, $i8
-	add     $i9, 1, $i1
-	bge     $i1, 5, bge.22864
-bl.22864:
-	mov     $i1, $i9
-	jal     calc_dirvecs.3028, $ra2
-	add     $i13, 2, $i1
-	add     $i14, 8, $i14
-	bge     $i1, 5, bge.22865
-.count dual_jmp
-	b       bl.22865
-bge.22864:
+	b       bl.28709
+bge.28708:
 	add     $i9, -4, $i9
 	jal     calc_dirvecs.3028, $ra2
+	add     $i12, -1, $i12
 	add     $i13, 2, $i1
-	add     $i14, 8, $i14
-	bge     $i1, 5, bge.22865
-bl.22865:
-	add     $i12, -1, $i12
-.count move_args
+	bge     $i1, 5, bge.28709
+bl.28709:
 	mov     $i1, $i13
+	add     $i10, 4, $i10
 	b       calc_dirvec_rows.3033
-bge.22865:
+bge.28709:
 	add     $i13, -3, $i13
-	add     $i12, -1, $i12
+	add     $i10, 4, $i10
 	b       calc_dirvec_rows.3033
-bl.22857:
+bl.28705:
 	jr      $ra3
 .end calc_dirvec_rows
 
@@ -8620,10 +8029,10 @@ create_dirvec.3037:
 .align 2
 .begin create_dirvec_elements
 create_dirvec_elements.3039:
-	bge     $i6, 0, bge.22866
-bl.22866:
+	bge     $i6, 0, bge.28710
+bl.28710:
 	jr      $ra2
-bge.22866:
+bge.28710:
 	jal     create_dirvec.3037, $ra1
 	add     $i6, -1, $i2
 .count storer
@@ -8647,10 +8056,10 @@ bge.22866:
 .align 2
 .begin create_dirvecs
 create_dirvecs.3042:
-	bge     $i7, 0, bge.22867
-bl.22867:
+	bge     $i7, 0, bge.28711
+bl.28711:
 	jr      $ra3
-bge.22867:
+bge.28711:
 	jal     create_dirvec.3037, $ra1
 	li      120, $i2
 .count move_args
@@ -8665,256 +8074,271 @@ bge.22867:
 .end create_dirvecs
 
 ######################################################################
-# init_dirvec_constants($i8, $i9)
-# $ra = $ra3
-# [$i1 - $i7, $i9]
-# [$f1 - $f9]
+# init_dirvec_constants($i7, $i8)
+# $ra = $ra2
+# [$i1 - $i6, $i8]
+# [$f1 - $f11]
 # []
 # []
 # []
-# [$ra - $ra2]
+# [$ra - $ra1]
 ######################################################################
 .align 2
 .begin init_dirvec_constants
 init_dirvec_constants.3044:
-	bge     $i9, 0, bge.22868
-bl.22868:
-	jr      $ra3
-bge.22868:
-	load    [$i8 + $i9], $i4
-	jal     setup_dirvec_constants.2829, $ra2
-	add     $i9, -1, $i9
+	bge     $i8, 0, bge.28712
+bl.28712:
+	jr      $ra2
+bge.28712:
+	load    [$i7 + $i8], $i1
+	load    [$i1 + 3], $i4
+	load    [$i1 + 0], $f1
+	load    [$i1 + 1], $f3
+	load    [$i1 + 2], $f4
+	jal     setup_dirvec_constants.2829, $ra1
+	add     $i8, -1, $i8
 	b       init_dirvec_constants.3044
 .end init_dirvec_constants
 
 ######################################################################
-# init_vecset_constants($i10)
-# $ra = $ra4
-# [$i1 - $i10]
-# [$f1 - $f9]
-# []
-# []
-# []
-# [$ra - $ra3]
-######################################################################
-.align 2
-.begin init_vecset_constants
-init_vecset_constants.3047:
-	bge     $i10, 0, bge.22869
-bl.22869:
-	jr      $ra4
-bge.22869:
-	li      119, $i9
-	load    [ext_dirvecs + $i10], $i8
-	jal     init_dirvec_constants.3044, $ra3
-	add     $i10, -1, $i10
-	b       init_vecset_constants.3047
-.end init_vecset_constants
-
-######################################################################
-# add_reflection($i8, $i9, $f10, $f1, $f3, $f4)
+# init_vecset_constants($i9)
 # $ra = $ra3
-# [$i1 - $i7]
-# [$f1 - $f9]
+# [$i1 - $i9]
+# [$f1 - $f11]
 # []
 # []
 # []
 # [$ra - $ra2]
+######################################################################
+.align 2
+.begin init_vecset_constants
+init_vecset_constants.3047:
+	bge     $i9, 0, bge.28713
+bl.28713:
+	jr      $ra3
+bge.28713:
+	load    [ext_dirvecs + $i9], $i7
+	li      119, $i8
+	jal     init_dirvec_constants.3044, $ra2
+	add     $i9, -1, $i9
+	b       init_vecset_constants.3047
+.end init_vecset_constants
+
+######################################################################
+# add_reflection($i7, $i8, $f12, $f1, $f3, $f4)
+# $ra = $ra2
+# [$i1 - $i6, $i9]
+# [$f1 - $f11]
+# []
+# []
+# []
+# [$ra - $ra1]
 ######################################################################
 .align 2
 .begin add_reflection
 add_reflection.3051:
 	jal     create_dirvec.3037, $ra1
 .count move_ret
-	mov     $i1, $i4
-	store   $f1, [$i4 + 0]
-	store   $f3, [$i4 + 1]
-	store   $f4, [$i4 + 2]
-	jal     setup_dirvec_constants.2829, $ra2
+	mov     $i1, $i9
+	store   $f1, [$i9 + 0]
+	store   $f3, [$i9 + 1]
+	store   $f4, [$i9 + 2]
+	load    [$i9 + 3], $i4
+	load    [$i9 + 0], $f1
+	load    [$i9 + 1], $f3
+	load    [$i9 + 2], $f4
+	jal     setup_dirvec_constants.2829, $ra1
 	mov     $hp, $i1
-	store   $i9, [$i1 + 0]
-	load    [$i4 + 0], $i2
+	store   $i8, [$i1 + 0]
+	load    [$i9 + 0], $i2
 	add     $hp, 6, $hp
 	store   $i2, [$i1 + 1]
-	load    [$i4 + 1], $i2
+	load    [$i9 + 1], $i2
 	store   $i2, [$i1 + 2]
-	load    [$i4 + 2], $i2
+	load    [$i9 + 2], $i2
 	store   $i2, [$i1 + 3]
-	load    [$i4 + 3], $i2
+	load    [$i9 + 3], $i2
 	store   $i2, [$i1 + 4]
-	store   $f10, [$i1 + 5]
-	store   $i1, [ext_reflections + $i8]
-	jr      $ra3
+	store   $f12, [$i1 + 5]
+	store   $i1, [ext_reflections + $i7]
+	jr      $ra2
 .end add_reflection
 
 ######################################################################
 # $i1 = main()
 # $ra = $ra
-# [$i1 - $i31]
-# [$f1 - $f21]
+# [$i1 - $i32]
+# [$f1 - $f26]
 # [$ig0 - $ig4]
-# [$fig0 - $fig12]
-# [$fg0 - $fg21]
-# [$ra - $ra9]
+# [$fg0 - $fg19]
+# [$fig0 - $fig14]
+# [$ra - $ra7]
 ######################################################################
 .align 2
 .begin main
 ext_main:
 .count stack_store_ra
-	store   $ra, [$sp - 2]
+	store   $ra, [$sp - 1]
 .count stack_move
-	add     $sp, -2, $sp
+	add     $sp, -1, $sp
 	load    [ext_solver_dist + 0], $fg0
-	load    [ext_diffuse_ray + 0], $fg1
-	load    [ext_diffuse_ray + 1], $fg2
-	load    [ext_diffuse_ray + 2], $fg3
-	load    [ext_rgb + 0], $fg4
-	load    [ext_rgb + 1], $fg5
-	load    [ext_rgb + 2], $fg6
+	load    [ext_intersection_point + 0], $fg1
+	load    [ext_intersection_point + 2], $fg2
+	load    [ext_intersection_point + 1], $fg3
+	load    [ext_diffuse_ray + 0], $fg4
+	load    [ext_diffuse_ray + 1], $fg5
+	load    [ext_diffuse_ray + 2], $fg6
+	load    [ext_rgb + 0], $fg7
+	load    [ext_rgb + 1], $fg8
+	load    [ext_rgb + 2], $fg9
+	load    [ext_texture_color + 1], $fg10
+	load    [ext_tmin + 0], $fg11
+	load    [ext_texture_color + 2], $fg12
 	load    [ext_n_objects + 0], $ig0
-	load    [ext_tmin + 0], $fg7
-	load    [ext_startp_fast + 0], $fg8
-	load    [ext_startp_fast + 1], $fg9
-	load    [ext_startp_fast + 2], $fg10
-	load    [ext_texture_color + 1], $fg11
-	load    [ext_light + 2], $fg12
-	load    [ext_light + 1], $fg13
-	load    [ext_texture_color + 2], $fg14
-	load    [ext_light + 0], $fg15
+	load    [ext_texture_color + 0], $fg13
+	load    [ext_light + 1], $fg14
+	load    [ext_light + 2], $fg15
+	load    [ext_light + 0], $fg16
 	load    [ext_or_net + 0], $ig1
-	load    [ext_texture_color + 0], $fg16
+	load    [ext_startp_fast + 0], $fg17
+	load    [ext_startp_fast + 1], $fg18
+	load    [ext_startp_fast + 2], $fg19
 	load    [ext_intsec_rectside + 0], $ig2
-	load    [ext_startp + 0], $fg17
-	load    [ext_startp + 1], $fg18
-	load    [ext_startp + 2], $fg19
-	load    [ext_n_reflections + 0], $ig3
-	load    [ext_intersected_object_id + 0], $ig4
-	load    [ext_screenz_dir + 2], $fg20
-	load    [ext_screenz_dir + 1], $fg21
-	load    [ext_screenz_dir + 0], $fig0
-	load    [ext_screeny_dir + 2], $fig1
-	load    [ext_screeny_dir + 1], $fig2
-	load    [ext_screeny_dir + 0], $fig3
-	load    [ext_viewpoint + 0], $fig4
-	load    [ext_viewpoint + 1], $fig5
-	load    [ext_viewpoint + 2], $fig6
-	load    [ext_screenx_dir + 0], $fig7
-	load    [ext_screenx_dir + 2], $fig8
-	load    [ext_screen + 0], $fig9
-	load    [ext_screen + 1], $fig10
-	load    [ext_screen + 2], $fig11
-	load    [ext_beam + 0], $fig12
-	load    [f.22035 + 0], $fc0
-	load    [f.22060 + 0], $fc1
-	load    [f.22059 + 0], $fc2
-	load    [f.22036 + 0], $fc3
-	load    [f.22039 + 0], $fc4
-	load    [f.22033 + 0], $fc5
-	load    [f.22049 + 0], $fc6
-	load    [f.22048 + 0], $fc7
-	load    [f.22132 + 0], $fc8
-	load    [f.22055 + 0], $fc9
-	load    [f.22054 + 0], $fc10
-	load    [f.22038 + 0], $fc11
-	load    [f.22034 + 0], $fc12
-	load    [f.22133 + 0], $fc13
-	load    [f.22045 + 0], $fc14
-	load    [f.22041 + 0], $fc15
-	load    [f.21990 + 0], $fc16
-	load    [f.22159 + 0], $fc17
-	load    [f.22158 + 0], $fc18
-	load    [f.22157 + 0], $fc19
+	load    [ext_intersected_object_id + 0], $ig3
+	load    [ext_n_reflections + 0], $ig4
+	load    [ext_startp + 0], $fig0
+	load    [ext_startp + 1], $fig1
+	load    [ext_startp + 2], $fig2
+	load    [ext_screenz_dir + 0], $fig3
+	load    [ext_screenz_dir + 1], $fig4
+	load    [ext_screenz_dir + 2], $fig5
+	load    [ext_screeny_dir + 0], $fig6
+	load    [ext_screeny_dir + 1], $fig7
+	load    [ext_screeny_dir + 2], $fig8
+	load    [ext_beam + 0], $fig9
+	load    [ext_screen + 0], $fig10
+	load    [ext_screen + 1], $fig11
+	load    [ext_screen + 2], $fig12
+	load    [ext_screenx_dir + 0], $fig13
+	load    [ext_screenx_dir + 2], $fig14
+	load    [f.27975 + 0], $fc0
+	load    [f.27990 + 0], $fc1
+	load    [f.27977 + 0], $fc2
+	load    [f.27995 + 0], $fc3
+	load    [f.27988 + 0], $fc4
+	load    [f.27984 + 0], $fc5
+	load    [f.27974 + 0], $fc6
+	load    [f.27980 + 0], $fc7
+	load    [f.27982 + 0], $fc8
+	load    [f.27981 + 0], $fc9
+	load    [f.27998 + 0], $fc10
+	load    [f.27997 + 0], $fc11
+	load    [f.27996 + 0], $fc12
+	load    [f.27994 + 0], $fc13
+	load    [f.27993 + 0], $fc14
+	load    [f.27989 + 0], $fc15
+	load    [f.27986 + 0], $fc16
 	jal     create_pixelline.3013, $ra3
 .count move_ret
-	mov     $i1, $i30
+	mov     $i1, $i29
 	jal     create_pixelline.3013, $ra3
 .count move_ret
-	mov     $i1, $i26
+	mov     $i1, $i24
 	jal     create_pixelline.3013, $ra3
-.count stack_store
-	store   $i1, [$sp + 1]
-	call    ext_read_float
-	mov     $f1, $fig9
+.count move_ret
+	mov     $i1, $i31
 	call    ext_read_float
 	mov     $f1, $fig10
 	call    ext_read_float
 	mov     $f1, $fig11
 	call    ext_read_float
-	fmul    $f1, $fc16, $f9
+	mov     $f1, $fig12
+	call    ext_read_float
+.count load_float
+	load    [f.27931], $f9
+	fmul    $f1, $f9, $f10
 .count move_args
-	mov     $f9, $f2
+	mov     $f10, $f2
 	call    ext_cos
+.count move_ret
+	mov     $f1, $f11
+.count move_args
+	mov     $f10, $f2
+	call    ext_sin
 .count move_ret
 	mov     $f1, $f10
-.count move_args
-	mov     $f9, $f2
-	call    ext_sin
-.count move_ret
-	mov     $f1, $f9
 	call    ext_read_float
-	fmul    $f1, $fc16, $f11
+	fmul    $f1, $f9, $f12
 .count move_args
-	mov     $f11, $f2
+	mov     $f12, $f2
 	call    ext_cos
 .count move_ret
-	mov     $f1, $f12
+	mov     $f1, $f13
 .count move_args
-	mov     $f11, $f2
+	mov     $f12, $f2
 	call    ext_sin
-	fmul    $f10, $f1, $f2
-	fmul    $f9, $fc18, $fg21
-	mov     $f12, $fig7
-	fmul    $f10, $f12, $f3
-	fneg    $f1, $f4
-	fmul    $f2, $fc19, $f2
-	mov     $f4, $fig8
-	fmul    $f3, $fc19, $fg20
-	mov     $f2, $fig0
-	fneg    $f9, $f3
-	fneg    $f10, $f4
-	fmul    $f3, $f12, $f2
-	mov     $f4, $fig2
-	fmul    $f3, $f1, $f1
-	mov     $fig9, $f3
-	mov     $fig0, $f4
-	mov     $f2, $fig1
-	mov     $f1, $fig3
-	fsub    $f3, $f4, $f1
+	fmul    $f11, $f1, $f2
+.count load_float
+	load    [f.28100], $f3
+	fmul    $f11, $f13, $f5
+.count load_float
+	load    [f.28101], $f4
+	fmul    $f2, $f3, $f2
+	fmul    $f10, $f4, $f4
+	mov     $f2, $fig3
+	fmul    $f5, $f3, $f3
+	mov     $f4, $fig4
+	mov     $f3, $fig5
+	fneg    $f10, $f2
+	mov     $f13, $fig13
+	fneg    $f1, $f3
+	fmul    $f2, $f1, $f1
+	mov     $f3, $fig14
+	fneg    $f11, $f3
+	mov     $f1, $fig6
+	mov     $f3, $fig7
+	fmul    $f2, $f13, $f1
 	mov     $fig10, $f2
-	fsub    $f2, $fg21, $f2
-	mov     $fig11, $f3
-	fsub    $f3, $fg20, $f3
-	mov     $f1, $fig4
-	mov     $f2, $fig5
-	mov     $f3, $fig6
+	mov     $fig3, $f3
+	mov     $f1, $fig8
+	fsub    $f2, $f3, $f1
+	mov     $fig11, $f2
+	mov     $fig4, $f3
+	store   $f1, [ext_viewpoint + 0]
+	fsub    $f2, $f3, $f1
+	mov     $fig12, $f2
+	mov     $fig5, $f3
+	fsub    $f2, $f3, $f2
+	store   $f1, [ext_viewpoint + 1]
+	store   $f2, [ext_viewpoint + 2]
 	call    ext_read_int
 	call    ext_read_float
-	fmul    $f1, $fc16, $f9
+	fmul    $f1, $f9, $f10
 .count move_args
-	mov     $f9, $f2
+	mov     $f10, $f2
 	call    ext_sin
-	fneg    $f1, $fg13
+	fneg    $f1, $fg14
 	call    ext_read_float
+.count move_ret
+	mov     $f1, $f11
+.count move_args
+	mov     $f10, $f2
+	call    ext_cos
+	fmul    $f11, $f9, $f9
 .count move_ret
 	mov     $f1, $f10
 .count move_args
 	mov     $f9, $f2
-	call    ext_cos
-	fmul    $f10, $fc16, $f10
-.count move_ret
-	mov     $f1, $f9
-.count move_args
-	mov     $f10, $f2
 	call    ext_sin
-	fmul    $f9, $f1, $fg15
+	fmul    $f10, $f1, $fg16
 .count move_args
-	mov     $f10, $f2
+	mov     $f9, $f2
 	call    ext_cos
-	fmul    $f9, $f1, $fg12
+	fmul    $f10, $f1, $fg15
 	call    ext_read_float
-	mov     $f1, $fig12
+	mov     $f1, $fig9
 	li      0, $i6
-	jal     read_object.2721, $ra2
+	jal     read_object.2721, $ra1
 	li      0, $i6
 	jal     read_and_network.2729, $ra1
 	li      0, $i1
@@ -8953,179 +8377,184 @@ ext_main:
 	call    ext_write
 	li      4, $i7
 	jal     create_dirvecs.3042, $ra3
-	li      4, $i8
-.count move_args
-	mov     $fc8, $f10
-	li      0, $i9
+	li      9, $i12
+	li      0, $i13
 	li      0, $i10
-	jal     calc_dirvecs.3028, $ra2
-	li      4, $i14
-	li      2, $i13
-	li      8, $i12
 	jal     calc_dirvec_rows.3033, $ra3
-	li      4, $i10
-	jal     init_vecset_constants.3047, $ra4
-	store   $fg15, [%{ext_light_dirvec + 0} + 0]
-	li      ext_light_dirvec, $i4
-	store   $fg13, [%{ext_light_dirvec + 0} + 1]
-	store   $fg12, [%{ext_light_dirvec + 0} + 2]
-	jal     setup_dirvec_constants.2829, $ra2
+	li      4, $i9
+	jal     init_vecset_constants.3047, $ra3
+	store   $fg16, [%{ext_light_dirvec + 0} + 0]
+	store   $fg14, [%{ext_light_dirvec + 0} + 1]
+	store   $fg15, [%{ext_light_dirvec + 0} + 2]
+	load    [ext_light_dirvec + 3], $i4
+	load    [%{ext_light_dirvec + 0} + 0], $f1
+	load    [%{ext_light_dirvec + 0} + 1], $f3
+	load    [%{ext_light_dirvec + 0} + 2], $f4
+	jal     setup_dirvec_constants.2829, $ra1
 	add     $ig0, -1, $i1
-	bl      $i1, 0, bl.22871
-bge.22871:
+	bl      $i1, 0, bl.28715
+bge.28715:
 	load    [ext_objects + $i1], $i2
 	load    [$i2 + 2], $i3
-	bne     $i3, 2, bl.22871
-be.22872:
+	bne     $i3, 2, bl.28715
+be.28716:
 	load    [$i2 + 11], $f1
-	ble     $fc0, $f1, bl.22871
-bg.22873:
+	ble     $fc0, $f1, bl.28715
+bg.28717:
 	load    [$i2 + 1], $i3
-	be      $i3, 1, be.22874
-bne.22874:
-	be      $i3, 2, be.22875
-bl.22871:
-	mov     $fig1, $f1
-	fmul    $fc17, $f1, $f1
-	mov     $fig2, $f2
-	fmul    $fc17, $f2, $f2
+	be      $i3, 1, be.28718
+bne.28718:
+	be      $i3, 2, be.28719
+bl.28715:
+.count load_float
+	load    [f.28102], $f1
+	li      0, $i26
+	li      127, $i25
+	mov     $fig6, $f2
+	fmul    $f1, $f2, $f2
 	mov     $fig3, $f3
-	fmul    $fc17, $f3, $f3
-	fadd    $f1, $fg20, $f1
-	mov     $fig0, $f4
+	mov     $fig7, $f4
+	fadd    $f2, $f3, $f24
+	mov     $fig8, $f5
+	fmul    $f1, $f4, $f2
+	fmul    $f1, $f5, $f1
+	mov     $fig4, $f3
+	mov     $fig5, $f4
+	fadd    $f2, $f3, $f25
+	fadd    $f1, $f4, $f26
+	jal     pretrace_pixels.2983, $ra6
 	li      0, $i28
-	fadd    $f2, $fg21, $f21
-	fadd    $f3, $f4, $f20
-	li      127, $i27
-	jal     pretrace_pixels.2983, $ra7
-.count stack_load
-	load    [$sp + 1], $i1
-	li      2, $i2
-	li      0, $i29
+	li      2, $i32
 .count move_args
-	mov     $i26, $i31
-	jal     scan_line.3000, $ra9
+	mov     $i24, $i30
+	jal     scan_line.3000, $ra7
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
-	add     $sp, 2, $sp
+	add     $sp, 1, $sp
 	li      0, $i1
 	ret     
-be.22875:
+be.28719:
 	add     $i1, $i1, $i1
-	fsub    $fc0, $f1, $f10
+	fsub    $fc0, $f1, $f12
 	add     $i1, $i1, $i1
-	load    [$i2 + 6], $f1
-	add     $i1, 1, $i9
+	load    [$i2 + 4], $f1
 	load    [$i2 + 5], $f2
-	load    [$i2 + 4], $f3
-	fmul    $fg12, $f1, $f4
-	fmul    $fg13, $f2, $f5
+	add     $i1, 1, $i8
+	fmul    $fg16, $f1, $f3
+	load    [$i2 + 6], $f5
+	fmul    $fg14, $f2, $f4
+.count load_float
+	load    [f.27976], $f6
+	fadd    $f3, $f4, $f3
 .count move_args
-	mov     $ig3, $i8
-	fmul    $fg15, $f3, $f6
-	fmul    $fc5, $f1, $f1
-	fmul    $fc5, $f2, $f2
-	fmul    $fc5, $f3, $f3
-	fadd    $f6, $f5, $f5
-	fadd    $f5, $f4, $f4
-	fmul    $f2, $f4, $f2
-	fmul    $f1, $f4, $f1
-	fmul    $f3, $f4, $f3
-	fsub    $f2, $fg13, $f2
-	fsub    $f1, $fg12, $f4
-	fsub    $f3, $fg15, $f1
+	mov     $ig4, $i7
+	fmul    $fg15, $f5, $f4
+	fmul    $f6, $f1, $f1
+	fmul    $f6, $f2, $f2
+	fadd    $f3, $f4, $f3
+	fmul    $f6, $f5, $f4
+	fmul    $f2, $f3, $f2
+	fmul    $f1, $f3, $f1
+	fmul    $f4, $f3, $f3
+	fsub    $f2, $fg14, $f2
+	fsub    $f1, $fg16, $f1
+	fsub    $f3, $fg15, $f4
 .count move_args
 	mov     $f2, $f3
-	jal     add_reflection.3051, $ra3
-	add     $ig3, 1, $ig3
-	mov     $fig1, $f1
-	fmul    $fc17, $f1, $f1
-	mov     $fig2, $f2
+	jal     add_reflection.3051, $ra2
+.count load_float
+	load    [f.28102], $f1
+	add     $ig4, 1, $ig4
+	mov     $fig6, $f2
+	li      0, $i26
+	fmul    $f1, $f2, $f2
+	li      127, $i25
 	mov     $fig3, $f3
-	fmul    $fc17, $f2, $f2
-	fmul    $fc17, $f3, $f3
-	mov     $fig0, $f4
-	fadd    $f1, $fg20, $f1
+	mov     $fig7, $f4
+	fadd    $f2, $f3, $f24
+	mov     $fig8, $f5
+	fmul    $f1, $f4, $f2
+	fmul    $f1, $f5, $f1
+	mov     $fig4, $f3
+	mov     $fig5, $f4
+	fadd    $f2, $f3, $f25
+	fadd    $f1, $f4, $f26
+	jal     pretrace_pixels.2983, $ra6
 	li      0, $i28
-	fadd    $f2, $fg21, $f21
-	li      127, $i27
-	fadd    $f3, $f4, $f20
-	jal     pretrace_pixels.2983, $ra7
-	li      2, $i2
-.count stack_load
-	load    [$sp + 1], $i1
-	li      0, $i29
+	li      2, $i32
 .count move_args
-	mov     $i26, $i31
-	jal     scan_line.3000, $ra9
+	mov     $i24, $i30
+	jal     scan_line.3000, $ra7
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
-	add     $sp, 2, $sp
+	add     $sp, 1, $sp
 	li      0, $i1
 	ret     
-be.22874:
+be.28718:
 	add     $i1, $i1, $i1
 	load    [$i2 + 11], $f1
 	add     $i1, $i1, $i10
-	fneg    $fg12, $f11
-	add     $i10, 1, $i9
-	fneg    $fg13, $f12
+	fneg    $fg16, $f13
+	fsub    $fc0, $f1, $f12
+	add     $i10, 1, $i8
+	fneg    $fg14, $f14
 .count move_args
-	mov     $ig3, $i8
-	fsub    $fc0, $f1, $f10
+	mov     $ig4, $i7
+	fneg    $fg15, $f15
 .count move_args
-	mov     $fg15, $f1
+	mov     $fg16, $f1
 .count move_args
-	mov     $f12, $f3
+	mov     $f14, $f3
 .count move_args
-	mov     $f11, $f4
-	jal     add_reflection.3051, $ra3
-	fneg    $fg15, $f13
-	add     $i10, 2, $i9
-.count move_args
-	mov     $f13, $f1
-	add     $ig3, 1, $i8
-.count move_args
-	mov     $fg13, $f3
-.count move_args
-	mov     $f11, $f4
-	jal     add_reflection.3051, $ra3
-	add     $i10, 3, $i9
+	mov     $f15, $f4
+	jal     add_reflection.3051, $ra2
 .count move_args
 	mov     $f13, $f1
-	add     $ig3, 2, $i8
+	add     $ig4, 1, $i7
 .count move_args
-	mov     $f12, $f3
+	mov     $fg14, $f3
+	add     $i10, 2, $i8
 .count move_args
-	mov     $fg12, $f4
-	jal     add_reflection.3051, $ra3
-	add     $ig3, 3, $ig3
-	mov     $fig1, $f1
-	fmul    $fc17, $f1, $f1
-	mov     $fig2, $f2
+	mov     $f15, $f4
+	jal     add_reflection.3051, $ra2
+.count move_args
+	mov     $f13, $f1
+	add     $ig4, 2, $i7
+.count move_args
+	mov     $f14, $f3
+	add     $i10, 3, $i8
+.count move_args
+	mov     $fg15, $f4
+	jal     add_reflection.3051, $ra2
+.count load_float
+	load    [f.28102], $f1
+	add     $ig4, 3, $ig4
+	mov     $fig6, $f2
+	li      0, $i26
+	fmul    $f1, $f2, $f2
+	li      127, $i25
 	mov     $fig3, $f3
-	fmul    $fc17, $f2, $f2
-	fmul    $fc17, $f3, $f3
-	mov     $fig0, $f4
-	fadd    $f1, $fg20, $f1
+	mov     $fig7, $f4
+	fadd    $f2, $f3, $f24
+	mov     $fig8, $f5
+	fmul    $f1, $f4, $f2
+	fmul    $f1, $f5, $f1
+	mov     $fig4, $f3
+	mov     $fig5, $f4
+	fadd    $f2, $f3, $f25
+	fadd    $f1, $f4, $f26
+	jal     pretrace_pixels.2983, $ra6
 	li      0, $i28
-	fadd    $f2, $fg21, $f21
-	li      127, $i27
-	fadd    $f3, $f4, $f20
-	jal     pretrace_pixels.2983, $ra7
-	li      2, $i2
-.count stack_load
-	load    [$sp + 1], $i1
-	li      0, $i29
+	li      2, $i32
 .count move_args
-	mov     $i26, $i31
-	jal     scan_line.3000, $ra9
+	mov     $i24, $i30
+	jal     scan_line.3000, $ra7
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
-	add     $sp, 2, $sp
+	add     $sp, 1, $sp
 	li      0, $i1
 	ret     
 .end main

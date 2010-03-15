@@ -16,3 +16,6 @@ let shuffle xs =
 
 let startWith s t =
   (String.length s) >= (String.length t) && (String.sub s 0 (String.length t)) = t
+
+let unique list =
+  List.fold_left (fun list a -> if List.mem a list then list else list @ [a]) [] list

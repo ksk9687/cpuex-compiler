@@ -149,7 +149,8 @@ let miss = ref 0
 let getDelay = function
   | Li _ | Addi _ | Add _ | Sub _ -> 1
   | Load _ | Loadr _ -> 2
-  | FAdd _ | FSub _ | FMul _ | FInv _ | FSqrt _ -> 4
+  | FAdd _ | FSub _ | FMul _ -> 2
+  | FInv _ | FSqrt _ -> 3
   | _ -> 0
 
 let addMax x y xs =

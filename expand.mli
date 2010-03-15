@@ -1,3 +1,3 @@
 val off : bool ref
-val expandEnv: (Type.t * (int * (int * int * bool) list)) list ref
+val get : Type.t -> int * (int * int * bool) list
 val f : KNormal.t -> KNormal.t

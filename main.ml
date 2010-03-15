@@ -7,7 +7,10 @@ let rec iter n e =
   if n = 0 then e
   else
     let e' = List.fold_right (fun f e -> f e) opts e in
-    if e = e' then e
+    if e = e' then
+      let e' = LoadArgs.f e in
+      if e = e' then e
+      else iter (n - 1) e'
     else iter (n - 1) e'
 
 let lexbuf outchan l =
@@ -31,7 +34,7 @@ let lexbuf outchan l =
                                 (KNormal.f
 	                                (BuiltIn.f
 	                                  (Typing.f
-	                                    (Parser.exp Lexer.token l))))))))))))))))))
+                                      (Parser.exp Lexer.token l))))))))))))))))))
 
 let string s = lexbuf stdout (Lexing.from_string s)
 
@@ -48,7 +51,6 @@ let () =
   let files = ref [] in
   Arg.parse
     [("-inline", Arg.Int(fun i -> Inline.threshold := i), "maximum size of functions inlined");
-     ("-inline_cont", Arg.Int(fun i -> Inline.threshold2 := i), "maximum size of continuations inlined");
      ("-iter", Arg.Int(fun i -> limit := i), "maximum number of optimizations iterated");
      ("-noExpand", Arg.Unit(fun () -> Expand.off := true), "");
      ("-noMovelet", Arg.Unit(fun () -> Movelet.off := true), "");
@@ -60,6 +62,7 @@ let () =
      ("-noAssoc", Arg.Unit(fun () -> Assoc.off := true), "");
      ("-noBetaTuple", Arg.Unit(fun () -> BetaTuple.off := true), "");
      ("-noBeta", Arg.Unit(fun () -> Beta.off := true), "");
+     ("-noLoadArgs", Arg.Unit(fun () -> LoadArgs.off := true), "");
      ("-noChangeArgs", Arg.Unit(fun () -> Asm.off := true), "");
      ("-noSfl", Arg.Unit(fun () -> Sfl.off := true), "");
      ("-noSglobal", Arg.Unit(fun () -> Sglobal.off := true), "");
@@ -72,28 +75,7 @@ let () =
     ]
     (fun s -> files := !files @ [s])
     ("Mitou Min-Caml Compiler (C) Eijiro Sumii\n" ^
-     Printf.sprintf "usage: %s [-inline m] [-inline_cont m] [-iter n] [-noHoge] [-lib] ...filenames without \".ml\"..." Sys.argv.(0));
-  Asm.check ();
+     Printf.sprintf "usage: %s [-inline m] [-iter n] [-noHoge] [-lib] ...filenames without \".ml\"..." Sys.argv.(0));
   List.iter
     (fun f -> ignore (file f))
     !files
-
-(* report1 *)
-(*
-let test_k_lexbuf l =
-  Id.counter := 0;
-  Typing.extenv := M.empty;
-                (iter !limit
-                   (Alpha.f
-                      (KNormal.f
-                         (Typing.f
-                            (Parser.exp Lexer.token l)))))
-
-let test_k s = KNormal.string (test_k_lexbuf (Lexing.from_string s))
-
-let test_s_lexbuf l =
-  Typing.extenv := M.empty;
-                         (Typing.f
-                            (Parser.exp Lexer.token l))
-let test_s s = Syntax.string (test_s_lexbuf (Lexing.from_string s))
-*)

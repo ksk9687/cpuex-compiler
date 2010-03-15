@@ -55,7 +55,7 @@ let rec g puts env = function
   | Let((x, t), exp, e) ->
       let exp = g' puts env exp in
       let ys = getPut x e in
-      let ys = S.filter (fun y -> not (List.mem y reg_figs)&&(check puts x y e) < 2) ys in
+      let ys = S.filter (fun y -> (not (List.mem y reg_figs)) && (check puts x y e) < 2) ys in
       if (not (is_reg x)) && (not (S.is_empty ys)) then
         let y = S.choose ys in
         Let((y, t), exp, g puts (M.add x y env) e)
@@ -74,9 +74,9 @@ let rec g puts env = function
                 Let((x, t), exp, g puts env e)
               else
                 g puts (M.add x y env) e
-	    else if List.mem y reg_figs then
-                Let((x, t), exp, g puts env e)
-	    else 
+				    else if List.mem y reg_figs then
+			                Let((x, t), exp, g puts env e)
+				    else
               (Format.eprintf "let %s = %s@." x y; assert false)
           else if (List.mem x reg_igs || List.mem x reg_fgs || List.mem x reg_figs) then
             Let((x, t), exp, g puts env e)
