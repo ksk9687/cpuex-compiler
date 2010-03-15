@@ -113,8 +113,8 @@ ext_int_of_float:
 	neg $i1, $i1
 	jr $tmp
 FTOI_MAIN:
-#	load [FLOAT_HALF], $f3
-#	fadd $f2, $f3, $f2
+	load [FLOAT_HALF], $f3
+	fadd $f2, $f3, $f2
 	load [FLOAT_MAGICF], $f3
 	load [FLOAT_MAGICFHX], $i2
 	bge $f2, $f3, FTOI_BIG
