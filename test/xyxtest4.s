@@ -4,10 +4,6 @@
 #
 ######################################################################
 
-.define { nop } { mov $i0 $i0 }
-
-
-
 #レジスタ名置き換え
 .define $hp $i63
 .define $sp $i62
@@ -839,145 +835,68 @@ ext_break:
 .define $i58 orz
 .define $ra9 $i59
 .define $i59 orz
+f.59:	.float  1.0000000000E+00
 
 ######################################################################
-# $i1 = fib($i1)
+# $i1 = wait_rec($i2, $i3, $i1, $f2)
 # $ra = $ra
-# [$i1 - $i2]
-# []
-# []
-# []
+# [$i1 - $i45]
+# [$f1 - $f18]
+# [$ig0 - $ig4]
+# [$fg0 - $fg24]
 ######################################################################
-.begin fib
-fib.17:
-	bg      $i1, 1, ble_else.33
-ble_then.33:
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	ret
-	nop
-	nop
-ble_else.33:
+.begin wait_rec
+wait_rec.33:
+	bne     $i2, $i4, be_else.62
+be_then.62:
+	li      0, $i2
+	call       ext_ledout
+be_else.62:
+	bne     $i3, $i4, be_else.63
+be_then.63:
+	add     $i2, 1, $i2
+	li      0, $i3
+	li      0, $i1
+	call       wait_rec.33
+be_else.63:
+	bne     $i1, $i4, be_else.64
+be_then.64:
+	add     $i3, 1, $i3
+	li      0, $i1
+	call       wait_rec.33
+be_else.64:
+	fadd    $f2, $fc0, $f2
+	add     $i1, 1, $i1
+	call       wait_rec.33
+.end wait_rec
+
+######################################################################
+# wait()
+# $ra = $ra
+# [$i1 - $i45]
+# [$f1 - $f18]
+# [$ig0 - $ig4]
+# [$fg0 - $fg24]
+######################################################################
+.begin wait
+wait.30:
 .count stack_store_ra
-	store   $ra, [$sp - 3]
+	store   $ra, [$sp - 1]
 .count stack_move
-	sub     $sp, 3, $sp
-.count stack_store
-	store   $i1, [$sp + 1]
-	sub     $i1, 1, $i1
-	call    fib.17
-.count stack_store
-	store   $i1, [$sp + 2]
-.count stack_load
-	load    [$sp + 1], $i1
-	sub     $i1, 2, $i1
-	call    fib.17
+	sub     $sp, 1, $sp
+	li      0, $i2
+	li      0, $i3
+	li      0, $i1
+.count move_args
+	mov     $f0, $f2
+	li      1000, $i4
+	call    wait_rec.33
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
-	add     $sp, 3, $sp
-.count stack_load
-	load    [$sp - 1], $i2
-	add     $i2, $i1, $i1
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
+	add     $sp, 1, $sp
 	ret
-.end fib
+.end wait
 
 ######################################################################
 # $i1 = main()
@@ -989,17 +908,6 @@ ble_else.33:
 ######################################################################
 .begin main
 ext_main:
-.count stack_store_ra
-	store   $ra, [$sp - 1]
-.count stack_move
-	sub     $sp, 1, $sp
-	li      40, $i1
-	call    fib.17
-.count stack_load_ra
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
-.count move_args
-	mov     $i1, $i2
-	b       ext_ledout
+	load    [f.59 + 0], $fc0
+	b       wait.30
 .end main

@@ -2,7 +2,7 @@ LIB = ../lib
 MIN_CAML = ../min-caml.opt
 SIM = ../../sim/sim.jar
 FAST_SIM = ../../sim/fastsim/fastsim.exe
-MIN_CAML_OPTION = -inline 1000
+MIN_CAML_OPTION = -inline 10 #-inline 1000
 CPU = MasterScalar.FPU
 RUN_SIM = java -jar -Xmx256M -Xss32M $(SIM) -cpu $(CPU)
 

@@ -14,6 +14,8 @@ FLOAT_MAGICF:
 	.float 8388608.0
 FLOAT_MAGICFHX:
 	.int 1258291200			# 0x4b000000
+FLOAT_HALF:
+	.float 0.5
 
 ######################################################################
 # $f1 = floor($f2)
@@ -25,12 +27,23 @@ FLOAT_MAGICFHX:
 ext_floor:
 	mov $f2, $f1
 	bge $f1, $f0, FLOOR_POSITIVE
+FLOOR_NEGATIVE:
 	fneg $f1, $f1
-	mov $ra, $tmp
-	call FLOOR_POSITIVE
-	load [FLOOR_MONE], $f2
-	fsub $f2, $f1, $f1
-	jr $tmp
+	load [FLOAT_MAGICF], $f3
+	ble $f1, $f3, FLOOR_NEGATIVE_MAIN
+	fneg $f1, $f1
+	ret
+FLOOR_NEGATIVE_MAIN:
+	fadd $f1, $f3, $f1
+	fsub $f1, $f3, $f1
+	fneg $f2, $f2
+	ble $f2, $f1, FLOOR_RET2
+	fadd $f1, $f3, $f1
+	load [FLOOR_ONE], $f2
+	fadd $f1, $f2, $f1
+	fsub $f1, $f3, $f1
+	fneg $f1, $f1
+	ret
 FLOOR_POSITIVE:
 	load [FLOAT_MAGICF], $f3
 	ble $f1, $f3, FLOOR_POSITIVE_MAIN
@@ -43,6 +56,9 @@ FLOOR_POSITIVE_MAIN:
 	load [FLOOR_ONE], $f2
 	fsub $f1, $f2, $f1
 FLOOR_RET:
+	ret
+FLOOR_RET2:
+	fneg $f1, $f1
 	ret
 .end floor
 
@@ -97,6 +113,8 @@ ext_int_of_float:
 	neg $i1, $i1
 	jr $tmp
 FTOI_MAIN:
+#	load [FLOAT_HALF], $f3
+#	fadd $f2, $f3, $f2
 	load [FLOAT_MAGICF], $f3
 	load [FLOAT_MAGICFHX], $i2
 	bge $f2, $f3, FTOI_BIG
@@ -195,6 +213,36 @@ ext_create_array_float:
 	mov $f2, $i3
 	jal ext_create_array_int $tmp
 .end create_array
+
+######################################################################
+# 三角関数用テーブル
+######################################################################
+ext_atan_table:
+	.float 0.785398163397448279
+	.float 0.463647609000806094
+	.float 0.244978663126864143
+	.float 0.124354994546761438
+	.float 0.06241880999595735
+	.float 0.0312398334302682774
+	.float 0.0156237286204768313
+	.float 0.00781234106010111114
+	.float 0.00390623013196697176
+	.float 0.00195312251647881876
+	.float 0.000976562189559319459
+	.float 0.00048828121119489829
+	.float 0.000244140620149361771
+	.float 0.000122070311893670208
+	.float 6.10351561742087726e-05
+	.float 3.05175781155260957e-05
+	.float 1.52587890613157615e-05
+	.float 7.62939453110197e-06
+	.float 3.81469726560649614e-06
+	.float 1.90734863281018696e-06
+	.float 9.53674316405960844e-07
+	.float 4.76837158203088842e-07
+	.float 2.38418579101557974e-07
+	.float 1.19209289550780681e-07
+	.float 5.96046447753905522e-08
 
 ######################################################################
 #
