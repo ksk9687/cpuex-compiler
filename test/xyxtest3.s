@@ -4,10 +4,6 @@
 #
 ######################################################################
 
-.define { nop } { mov $i0 $i0 }
-
-
-
 #レジスタ名置き換え
 .define $hp $i63
 .define $sp $i62
@@ -841,165 +837,192 @@ ext_break:
 .define $i59 orz
 
 ######################################################################
-# $i1 = fib($i1)
+# $i1 = loop()
 # $ra = $ra
-# [$i1 - $i2]
+# [$i1]
 # []
 # []
 # []
 ######################################################################
-.begin fib
-fib.17:
-	bg      $i1, 1, ble_else.33
-ble_then.33:
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	ret
-	nop
-	nop
-ble_else.33:
-.count stack_store_ra
-	store   $ra, [$sp - 3]
-.count stack_move
-	sub     $sp, 3, $sp
-.count stack_store
-	store   $i1, [$sp + 1]
-	sub     $i1, 1, $i1
-	call    fib.17
-.count stack_store
-	store   $i1, [$sp + 2]
-.count stack_load
-	load    [$sp + 1], $i1
-	sub     $i1, 2, $i1
-	call    fib.17
-.count stack_load_ra
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 3, $sp
-.count stack_load
-	load    [$sp - 1], $i2
-	add     $i2, $i1, $i1
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	ret
-.end fib
+.begin loop
+loop.start:
+	li 0 , $i4
+	li 2 , $i5
+	li 0 , $i6
+	li 0 , $i7
+	li 2048 , $i8
+	sll $i8,$i8
+	sll $i8,$i8
+	sll $i8,$i8
+	sll $i8,$i8
+	sll $i8,$i8
+	sll $i8,$i8
+	sll $i8,$i8
+	sll $i8,$i8
+	sll $i8,$i8
+	sll $i8,$i8
+	sll $i8,$i8
+loop.11:
+	add $i6 , 1 , $i6
+	add $i7 , 1 , $i7
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	bne $i7 , 5 , ifjmp.1
+	li  0 , $i7
+ifjmp.1:
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	bne $i6 , $i8 , ifjmp.2
+	halt
+ifjmp.2:
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	li 0 $i0
+	bg $i5 , $i7, loop.13
+loop.12:
+	add $i4 , 1 , $i4
+	b       loop.11
+loop.13:
+	b       loop.11
+.end loop
 
 ######################################################################
 # $i1 = main()
 # $ra = $ra
-# [$i1 - $i45]
-# [$f1 - $f18]
-# [$ig0 - $ig4]
-# [$fg0 - $fg24]
+# [$i1]
+# []
+# []
+# []
 ######################################################################
 .begin main
 ext_main:
-.count stack_store_ra
-	store   $ra, [$sp - 1]
-.count stack_move
-	sub     $sp, 1, $sp
-	li      40, $i1
-	call    fib.17
-.count stack_load_ra
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 1, $sp
-.count move_args
-	mov     $i1, $i2
-	b       ext_ledout
+	b       loop.start
 .end main

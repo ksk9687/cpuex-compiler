@@ -4,10 +4,6 @@
 #
 ######################################################################
 
-.define { nop } { mov $i0 $i0 }
-
-
-
 #レジスタ名置き換え
 .define $hp $i63
 .define $sp $i62
@@ -50,15 +46,13 @@
 .define { load [%iReg + %Imm], %iReg } { load %1 %2 %3 }
 .define { load [%iReg + %iReg], %iReg } { loadr %1 %2 %3 }
 .define { store %iReg, [%iReg + %Imm] } { store %2 %3 %1 }
-.define { store_inst %iReg, %iReg } { store_inst %2 %1 }
+.define { store_inst %iReg, [%iReg + %Imm] } { store_inst %2 %3 %1 }
 .define { load [%iReg + %Imm], %fReg } { fload %1 %2 %3 }
 .define { load [%iReg + %iReg], %fReg } { floadr %1 %2 %3 }
 .define { store %fReg, [%iReg + %Imm] } { fstore %2 %3 %1 }
 .define { mov %iReg, %fReg } { imovf %1 %2 }
 .define { mov %fReg, %iReg } { fmovi %1 %2 }
 .define { write %iReg, %iReg } { write %1 %2 }
-.define { ledout %iReg, %iReg } { ledout %1 %2 }
-.define { ledout %Imm, %iReg } { ledouti %1 %2 }
 
 #疑似命令
 .define { add %iReg, -%Imm, %iReg } { sub %1, %2, %3 }
@@ -94,12 +88,12 @@
 .define { call %Imm } { jal %1, $ra }
 .define { ret } { jr $ra }
 
-#スタックとヒープの初期化($hp=0x2000,$sp=0x20000)
+#スタックとヒープの初期化($hp=0x4000,$sp=0x20000)
 	li      0, $i0
 	mov     $i0, $f0
 	li      0x2000, $hp
+	sll     $hp, $hp
 	sll     $hp, $sp
-	sll     $sp, $sp
 	sll     $sp, $sp
 	sll     $sp, $sp
 	call    ext_main
@@ -126,8 +120,6 @@ FLOAT_MAGICF:
 	.float 8388608.0
 FLOAT_MAGICFHX:
 	.int 1258291200			# 0x4b000000
-FLOAT_HALF:
-	.float 0.5
 
 ######################################################################
 # $f1 = floor($f2)
@@ -139,23 +131,12 @@ FLOAT_HALF:
 ext_floor:
 	mov $f2, $f1
 	bge $f1, $f0, FLOOR_POSITIVE
-FLOOR_NEGATIVE:
 	fneg $f1, $f1
-	load [FLOAT_MAGICF], $f3
-	ble $f1, $f3, FLOOR_NEGATIVE_MAIN
-	fneg $f1, $f1
-	ret
-FLOOR_NEGATIVE_MAIN:
-	fadd $f1, $f3, $f1
-	fsub $f1, $f3, $f1
-	fneg $f2, $f2
-	ble $f2, $f1, FLOOR_RET2
-	fadd $f1, $f3, $f1
-	load [FLOOR_ONE], $f2
-	fadd $f1, $f2, $f1
-	fsub $f1, $f3, $f1
-	fneg $f1, $f1
-	ret
+	mov $ra, $tmp
+	call FLOOR_POSITIVE
+	load [FLOOR_MONE], $f2
+	fsub $f2, $f1, $f1
+	jr $tmp
 FLOOR_POSITIVE:
 	load [FLOAT_MAGICF], $f3
 	ble $f1, $f3, FLOOR_POSITIVE_MAIN
@@ -168,9 +149,6 @@ FLOOR_POSITIVE_MAIN:
 	load [FLOOR_ONE], $f2
 	fsub $f1, $f2, $f1
 FLOOR_RET:
-	ret
-FLOOR_RET2:
-	fneg $f1, $f1
 	ret
 .end floor
 
@@ -225,8 +203,6 @@ ext_int_of_float:
 	neg $i1, $i1
 	jr $tmp
 FTOI_MAIN:
-#	load [FLOAT_HALF], $f3
-#	fadd $f2, $f3, $f2
 	load [FLOAT_MAGICF], $f3
 	load [FLOAT_MAGICFHX], $i2
 	bge $f2, $f3, FTOI_BIG
@@ -288,7 +264,7 @@ ext_read_float:
 ######################################################################
 # write($i2)
 # $ra = $ra
-# []
+# [$i2]
 # []
 ######################################################################
 .begin write
@@ -301,7 +277,7 @@ ext_write:
 ######################################################################
 # $i1 = create_array_int($i2, $i3)
 # $ra = $ra
-# [$i1 - $i2]
+# [$i1 - $i3]
 # []
 ######################################################################
 .begin create_array
@@ -319,7 +295,7 @@ create_array_loop:
 # $i1 = create_array_float($i2, $f2)
 # $ra = $ra
 # [$i1 - $i3]
-# []
+# [$f2]
 ######################################################################
 ext_create_array_float:
 	mov $f2, $i3
@@ -327,7 +303,7 @@ ext_create_array_float:
 .end create_array
 
 ######################################################################
-# 三角関数用テーブル
+# 三角関数
 ######################################################################
 ext_atan_table:
 	.float 0.785398163397448279
@@ -356,340 +332,188 @@ ext_atan_table:
 	.float 1.19209289550780681e-07
 	.float 5.96046447753905522e-08
 
-######################################################################
-#
-# 		↑　ここまで lib_asm.s
-#
-######################################################################
-f._177:	.float  1.5707963268E+00
-f._176:	.float  6.2831853072E+00
-f._175:	.float  1.5915494309E-01
-f._174:	.float  3.1415926536E+00
-f._173:	.float  9.0000000000E+00
-f._172:	.float  2.5000000000E+00
-f._171:	.float  -1.5707963268E+00
-f._170:	.float  1.5707963268E+00
-f._169:	.float  -1.0000000000E+00
-f._167:	.float  1.1000000000E+01
-f._166:	.float  2.0000000000E+00
-f._165:	.float  1.0000000000E+00
-f._164:	.float  5.0000000000E-01
-
-######################################################################
-# $f1 = atan_sub($f2, $f3, $f4)
-# $ra = $ra
-# []
-# [$f1 - $f2, $f4 - $f6]
-# []
-# []
-# []
-######################################################################
-.align 2
-.begin atan_sub
-ext_atan_sub:
-.count load_float
-	load    [f._164], $f5
-	ble     $f5, $f2, ble._182
-bg._182:
-	mov     $f4, $f1
-	ret     
-ble._182:
-.count load_float
-	load    [f._166], $f1
-	fmul    $f2, $f2, $f6
-.count load_float
-	load    [f._165], $f5
-	fmul    $f1, $f2, $f1
-	fsub    $f2, $f5, $f2
-	fmul    $f6, $f3, $f6
-	fadd    $f1, $f5, $f1
-	fadd    $f1, $f4, $f1
-	finv    $f1, $f1
-	fmul    $f6, $f1, $f4
-	b       ext_atan_sub
-.end atan_sub
+f._186:	.float  6.2831853072E+00
+f._185:	.float  3.1415926536E+00
+f._184:	.float  1.5707963268E+00
+f._183:	.float  6.0725293501E-01
+f._182:	.float  1.0000000000E+00
+f._181:	.float  5.0000000000E-01
 
 ######################################################################
 # $f1 = atan($f2)
 # $ra = $ra
-# [$i1]
-# [$f1 - $f8]
-# []
-# []
-# [$ra]
+# [$i2]
+# [$f1 - $f5]
 ######################################################################
-.align 2
 .begin atan
 ext_atan:
-.count stack_store_ra
-	store   $ra, [$sp - 2]
-.count stack_move
-	add     $sp, -2, $sp
-	fabs    $f2, $f3
-.count stack_store
-	store   $f2, [$sp + 1]
 .count load_float
-	load    [f._165], $f7
+	load    [f._182], $f5
+	li      0, $i2
+.count move_args
+	mov     $f2, $f3
 .count move_args
 	mov     $f0, $f4
-.count load_float
-	load    [f._167], $f1
-	ble     $f3, $f7, ble._184
-bg._184:
-	finv    $f2, $f2
-	mov     $f2, $f8
-	fmul    $f8, $f8, $f3
 .count move_args
-	mov     $f1, $f2
-	call    ext_atan_sub
-	fadd    $f7, $f1, $f1
-.count stack_load_ra
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 2, $sp
-.count stack_load
-	load    [$sp - 1], $f2
-	finv    $f1, $f1
-	fmul    $f8, $f1, $f1
-	ble     $f2, $f7, ble._186
-.count dual_jmp
-	b       bg._186
-ble._184:
-	mov     $f2, $f8
-	fmul    $f8, $f8, $f3
-.count move_args
-	mov     $f1, $f2
-	call    ext_atan_sub
-	fadd    $f7, $f1, $f1
-.count stack_load_ra
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 2, $sp
-.count stack_load
-	load    [$sp - 1], $f2
-	finv    $f1, $f1
-	fmul    $f8, $f1, $f1
-	bg      $f2, $f7, bg._186
-ble._186:
-.count load_float
-	load    [f._169], $f3
-	ble     $f3, $f2, bge._189
-bg._187:
-	add     $i0, -1, $i1
-	bg      $i1, 0, bg._186
-ble._188:
-	bge     $i1, 0, bge._189
-bl._189:
-.count load_float
-	load    [f._171], $f2
-	fsub    $f2, $f1, $f1
-	ret     
-bge._189:
-	ret     
-bg._186:
-.count load_float
-	load    [f._170], $f2
-	fsub    $f2, $f1, $f1
-	ret     
-.end atan
+	mov     $f5, $f2
+	b       cordic_rec._146
 
-######################################################################
-# $f1 = tan_sub($f2, $f3, $f4)
-# $ra = $ra
-# []
-# [$f1 - $f2, $f4 - $f5]
-# []
-# []
-# []
-######################################################################
-.align 2
-.begin tan_sub
-ext_tan_sub:
-.count load_float
-	load    [f._172], $f5
-	ble     $f5, $f2, ble._190
-bg._190:
+cordic_rec._146:
+	bne     $i2, 25, be_else._188
+be_then._188:
 	mov     $f4, $f1
-	ret     
-ble._190:
-	fsub    $f2, $f4, $f1
+	ret
+be_else._188:
+	fmul    $f5, $f3, $f1
+	bg      $f3, $f0, ble_else._189
+ble_then._189:
+	fsub    $f2, $f1, $f1
+	fmul    $f5, $f2, $f2
+	fadd    $f3, $f2, $f3
+	load    [ext_atan_table + $i2], $f2
+	fsub    $f4, $f2, $f4
 .count load_float
-	load    [f._166], $f4
-	fsub    $f2, $f4, $f2
-	finv    $f1, $f1
-	fmul    $f3, $f1, $f4
-	b       ext_tan_sub
-.end tan_sub
-
-######################################################################
-# $f1 = tan($f2)
-# $ra = $ra
-# []
-# [$f1 - $f6]
-# []
-# []
-# [$ra]
-######################################################################
-.align 2
-.begin tan
-ext_tan:
-.count stack_store_ra
-	store   $ra, [$sp - 2]
-.count stack_move
-	add     $sp, -2, $sp
-	fmul    $f2, $f2, $f3
-.count stack_store
-	store   $f2, [$sp + 1]
-.count load_float
-	load    [f._173], $f1
-.count move_args
-	mov     $f0, $f4
-.count load_float
-	load    [f._165], $f6
+	load    [f._181], $f2
+	fmul    $f5, $f2, $f5
+	add     $i2, 1, $i2
 .count move_args
 	mov     $f1, $f2
-	call    ext_tan_sub
-	fsub    $f6, $f1, $f1
-.count stack_load_ra
-	load    [$sp + 0], $ra
-.count stack_move
-	add     $sp, 2, $sp
-.count stack_load
-	load    [$sp - 1], $f2
-	finv    $f1, $f1
-	fmul    $f2, $f1, $f1
-	ret     
-.end tan
+	b       cordic_rec._146
+ble_else._189:
+	fadd    $f2, $f1, $f1
+	fmul    $f5, $f2, $f2
+	fsub    $f3, $f2, $f3
+	load    [ext_atan_table + $i2], $f2
+	fadd    $f4, $f2, $f4
+.count load_float
+	load    [f._181], $f2
+	fmul    $f5, $f2, $f5
+	add     $i2, 1, $i2
+.count move_args
+	mov     $f1, $f2
+	b       cordic_rec._146
+.end atan
 
 ######################################################################
 # $f1 = sin($f2)
 # $ra = $ra
-# [$i1]
-# [$f1 - $f8]
-# []
-# []
-# [$ra]
+# [$i2]
+# [$f1 - $f7]
 ######################################################################
-.align 2
 .begin sin
 ext_sin:
-.count stack_store_ra
-	store   $ra, [$sp - 1]
+	bg      $f0, $f2, ble_else._192
+ble_then._192:
+.count load_float
+	load    [f._184], $f7
+	bg      $f7, $f2, cordic_sin._82
+.count load_float
+	load    [f._185], $f7
+	bg      $f7, $f2, ble_else._194
+ble_then._194:
+.count load_float
+	load    [f._186], $f1
+	bg      $f1, $f2, ble_else._195
+ble_then._195:
+	fsub    $f2, $f1, $f2
+	b       ext_sin
+ble_else._195:
 .count stack_move
-	add     $sp, -1, $sp
-.count load_float
-	load    [f._174], $f4
-	fabs    $f2, $f5
-.count load_float
-	load    [f._175], $f1
-	ble     $f2, $f0, ble._194
-bg._194:
-	li      1, $i1
-	fmul    $f5, $f1, $f2
-	call    ext_floor
-.count load_float
-	load    [f._176], $f2
-	fmul    $f2, $f1, $f1
-	fsub    $f5, $f1, $f1
-	ble     $f1, $f4, ble._195
-.count dual_jmp
-	b       bg._195
-ble._194:
-	li      0, $i1
-	fmul    $f5, $f1, $f2
-	call    ext_floor
-.count load_float
-	load    [f._176], $f2
-	fmul    $f2, $f1, $f1
-	fsub    $f5, $f1, $f1
-	ble     $f1, $f4, ble._195
-bg._195:
-.count load_float
-	load    [f._170], $f5
-	be      $i1, 0, be._196
-.count dual_jmp
-	b       bne._196
-ble._195:
-.count load_float
-	load    [f._170], $f5
-	be      $i1, 0, bne._196
-be._196:
-.count load_float
-	load    [f._165], $f7
-.count load_float
-	load    [f._166], $f8
-.count load_float
-	load    [f._164], $f3
-	ble     $f1, $f4, ble._198
-.count dual_jmp
-	b       bg._198
-bne._196:
-.count load_float
-	load    [f._169], $f7
-.count load_float
-	load    [f._166], $f8
-.count load_float
-	load    [f._164], $f3
-	ble     $f1, $f4, ble._198
-bg._198:
-	fsub    $f2, $f1, $f1
-	ble     $f1, $f5, ble._199
-.count dual_jmp
-	b       bg._199
-ble._198:
-	ble     $f1, $f5, ble._199
-bg._199:
-	fsub    $f4, $f1, $f1
-	fmul    $f1, $f3, $f2
-	call    ext_tan
-	fmul    $f1, $f1, $f2
-.count stack_load_ra
+	sub     $sp, 1, $sp
+.count stack_store
+	store   $ra, [$sp + 0]
+	fsub    $f1, $f2, $f2
+	call    ext_sin
+.count stack_load
 	load    [$sp + 0], $ra
-.count load_float
-	load    [f._165], $f3
 .count stack_move
 	add     $sp, 1, $sp
-	fmul    $f8, $f1, $f1
-	fadd    $f3, $f2, $f2
-	finv    $f2, $f2
-	fmul    $f1, $f2, $f1
-	fmul    $f7, $f1, $f1
-	ret     
-ble._199:
-	fmul    $f1, $f3, $f2
-	call    ext_tan
-	fmul    $f1, $f1, $f2
-.count stack_load_ra
+	fneg    $f1, $f1
+	ret
+ble_else._194:
+	fsub    $f7, $f2, $f2
+	b       cordic_sin._82
+ble_else._192:
+.count stack_move
+	sub     $sp, 1, $sp
+.count stack_store
+	store   $ra, [$sp + 0]
+	fneg    $f2, $f2
+	call    ext_sin
+.count stack_load
 	load    [$sp + 0], $ra
-.count load_float
-	load    [f._165], $f3
 .count stack_move
 	add     $sp, 1, $sp
-	fmul    $f8, $f1, $f1
-	fadd    $f3, $f2, $f2
-	finv    $f2, $f2
-	fmul    $f1, $f2, $f1
-	fmul    $f7, $f1, $f1
-	ret     
+	fneg    $f1, $f1
+	ret
+
+cordic_rec._111:
+	bne     $i2, 25, be_else._190
+be_then._190:
+	mov     $f4, $f1
+	ret
+be_else._190:
+	fmul    $f6, $f4, $f1
+	bg      $f2, $f5, ble_else._191
+ble_then._191:
+	fadd    $f3, $f1, $f1
+	fmul    $f6, $f3, $f3
+	fsub    $f4, $f3, $f4
+	load    [ext_atan_table + $i2], $f3
+	fsub    $f5, $f3, $f5
+.count load_float
+	load    [f._181], $f3
+	fmul    $f6, $f3, $f6
+	add     $i2, 1, $i2
+.count move_args
+	mov     $f1, $f3
+	b       cordic_rec._111
+ble_else._191:
+	fsub    $f3, $f1, $f1
+	fmul    $f6, $f3, $f3
+	fadd    $f4, $f3, $f4
+	load    [ext_atan_table + $i2], $f3
+	fadd    $f5, $f3, $f5
+.count load_float
+	load    [f._181], $f3
+	fmul    $f6, $f3, $f6
+	add     $i2, 1, $i2
+.count move_args
+	mov     $f1, $f3
+	b       cordic_rec._111
+
+cordic_sin._82:
+.count load_float
+	load    [f._183], $f3
+.count load_float
+	load    [f._182], $f6
+	li      0, $i2
+.count move_args
+	mov     $f0, $f4
+.count move_args
+	mov     $f0, $f5
+	b       cordic_rec._111
 .end sin
 
 ######################################################################
 # $f1 = cos($f2)
 # $ra = $ra
-# [$i1]
+# [$i2]
 # [$f1 - $f8]
-# []
-# []
-# [$ra]
 ######################################################################
-.align 2
 .begin cos
 ext_cos:
 .count load_float
-	load    [f._177], $f1
-	fsub    $f1, $f2, $f2
+	load    [f._184], $f8
+	fsub    $f8, $f2, $f2
 	b       ext_sin
 .end cos
+
+######################################################################
+#
+# 		↑　ここまで lib_asm.s
+#
+######################################################################
 ######################################################################
 #
 # 		↓　ここから debug.s
@@ -704,12 +528,12 @@ read_loop:
 	ret
 
 ext_ledout:
-	ledout $i2, $tmp
+	ledout $i2
 	ret
 
 ext_ledout_float:
 	mov $f2, $i2
-	ledout $i2, $tmp
+	ledout $i2
 	ret
 
 ext_break:
@@ -849,157 +673,69 @@ ext_break:
 # []
 ######################################################################
 .begin fib
-fib.17:
-	bg      $i1, 1, ble_else.33
-ble_then.33:
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
+fib.19:
+	bg      $i1, 1, ble_else.39
+ble_then.39:
 	ret
-	nop
-	nop
-ble_else.33:
+ble_else.39:
 .count stack_store_ra
 	store   $ra, [$sp - 3]
 .count stack_move
 	sub     $sp, 3, $sp
 .count stack_store
 	store   $i1, [$sp + 1]
-	sub     $i1, 1, $i1
-	call    fib.17
+	sub     $i1, 2, $i1
+	call    fib.19
 .count stack_store
 	store   $i1, [$sp + 2]
 .count stack_load
 	load    [$sp + 1], $i1
-	sub     $i1, 2, $i1
-	call    fib.17
+	sub     $i1, 1, $i1
+	call    fib.19
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
 	add     $sp, 3, $sp
 .count stack_load
 	load    [$sp - 1], $i2
-	add     $i2, $i1, $i1
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
+	add     $i1, $i2, $i1
 	ret
 .end fib
 
 ######################################################################
-# $i1 = main()
+# $i1 = loop()
 # $ra = $ra
-# [$i1 - $i45]
-# [$f1 - $f18]
-# [$ig0 - $ig4]
-# [$fg0 - $fg24]
+# [$i1 - $i5]
+# []
+# []
+# []
 ######################################################################
-.begin main
-ext_main:
+.begin loop
+loop.21:
 .count stack_store_ra
 	store   $ra, [$sp - 1]
 .count stack_move
 	sub     $sp, 1, $sp
-	li      40, $i1
-	call    fib.17
+	call    ext_read_int
+	call    fib.19
 .count stack_load_ra
 	load    [$sp + 0], $ra
 .count stack_move
 	add     $sp, 1, $sp
 .count move_args
 	mov     $i1, $i2
-	b       ext_ledout
+	b       ext_write
+.end loop
+
+######################################################################
+# $i1 = main()
+# $ra = $ra
+# [$i1 - $i5]
+# []
+# []
+# []
+######################################################################
+.begin main
+ext_main:
+	b       loop.21
 .end main
