@@ -47,6 +47,7 @@ val get_use_regs : Id.t -> S.t
 
 val seq : exp * t -> t
 
+val check : unit -> unit
 val alliregs : Id.t list
 val allfregs : Id.t list
 val reg_tmp : Id.t
@@ -57,6 +58,7 @@ val reg_i0 : Id.t
 val reg_f0 : Id.t
 val is_reg : Id.t -> bool
 val reg_igs : Id.t list
+val reg_figs : Id.t list
 val reg_fgs : Id.t list
 val reg_fcs : Id.t list
 val reg_ras : Id.t list

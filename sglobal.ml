@@ -46,8 +46,11 @@ let rec g = function
   | e -> apply2 g g' e
 and g' = function
   | Ld(L(l), C(i)) when List.mem_assoc (l, i) !gtable ->
-      if (getInnerType (M.find l !Typing.extenv) i) = Type.Float then FMov(List.assoc (l, i) !gtable)
-      else Mov(List.assoc (l, i) !gtable)
+      let reg = List.assoc (l, i) !gtable in
+	if (getInnerType (M.find l !Typing.extenv) i) = Type.Float then
+	  if is_freg reg then FMov(reg)
+	  else Mov(reg)
+	else Mov(reg)
   | exp -> apply g exp
 
 let h { name = l; args = xs; body = e; ret = t } =
@@ -61,29 +64,36 @@ let f (Prog(data, fundefs, e)) =
 	  let gls = M.fold (fun l env' ls -> List.fold_left (fun ls (i, n) -> (l, i, n) :: ls) ls env') counts [] in
 	  let gls = List.sort (fun (_, _, n1) (_, _, n2) -> n2 - n1) gls in
 	  let _  = List.fold_left
-	    (fun (ni, nf) (l, i, _) ->
+	    (fun (ni, nf, nfi) (l, i, _) ->
 	      if not (M.mem l !Typing.extenv) then
 	        (* let _ = Format.eprintf "orz: %s@." l in (* float *) *)
-	        (ni, nf)
+	        (ni, nf, nfi)
 	      else
 		      let t = getInnerType (M.find l !Typing.extenv) i in
 		      match t with
 		        | Type.Float ->
-		            if nf >= List.length reg_fgs then (ni, nf)
+		            if nf >= List.length reg_fgs then
+			      if nfi >= List.length reg_figs then
+				(ni, nf, nfi)
+			      else 
+		              let reg = List.nth reg_figs nfi in
+		                Format.eprintf "Allocate %s.(%d) -> %s@." (String.sub l 4 ((String.length l) - 4)) i reg;
+		                gtable := ((l, i), reg) :: !gtable;
+		                (ni, nf, nfi + 1)
 		            else
 		              let reg = List.nth reg_fgs nf in
 		                Format.eprintf "Allocate %s.(%d) -> %s@." (String.sub l 4 ((String.length l) - 4)) i reg;
 		                gtable := ((l, i), reg) :: !gtable;
-		                (ni, nf + 1)
+		                (ni, nf + 1, nfi)
 		        | _ ->
-		            if ni >= List.length reg_igs then (ni, nf)
+		            if ni >= List.length reg_igs then (ni, nf, nfi)
 		            else
 		              let reg = List.nth reg_igs ni in
 		                Format.eprintf "Allocate %s.(%d) -> %s@." (String.sub l 4 ((String.length l) - 4)) i reg;
 		                gtable := ((l, i), reg) :: !gtable;
-		                (ni + 1, nf)
+		                (ni + 1, nf, nfi)
 	    )
-	    (0, 0) gls
+	    (0, 0, 0) gls
 	  in
 	  let fundefs = List.map h fundefs in
 	  let e = h e in

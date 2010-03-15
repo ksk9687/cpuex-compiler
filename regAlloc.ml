@@ -274,6 +274,8 @@ let h { name = x; args = xs; body = e; ret = t } =
   Format.eprintf "@.";
   List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) reg_fgs;
   Format.eprintf "@.";
+  List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) reg_figs;
+  Format.eprintf "@.";
   List.iter (fun x -> Format.eprintf "%s" (if S.mem x env then "x" else "o")) reg_ras;
   Format.eprintf "@.";
   { name = x; args = data.arg_regs; body = e; ret = t }

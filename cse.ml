@@ -133,6 +133,7 @@ let rec g env = function
   | Unit | Float _ | Int _ | Neg _ | Add _ | Sub _ | SLL _ | Var _ | Tuple _
   | FNeg _ | FAdd _ | FSub _ | FMul _ | FInv _ |  Get _ | ExtArray _ as e ->
       find e env
+  | App (x, _) | ExtFunApp (x, _) as e when S.mem x !no_effect_fun -> find e env
   | App _ | ExtFunApp _ as e -> remove_get(); find e env
   | Put _ as e -> remove_get() ; e
   | IfEq(x, y, e1, e2) -> IfEq(x, y, g env e1, g env e2)
@@ -140,7 +141,7 @@ let rec g env = function
   | Let((x, t), e1, e2) ->
       let e1' = g env e1 in
       let num = number e1' in
-      let env' = remove_extarray env in (* remove_extarrayは高速化されるが、コンパイル時間がかかりすぎる *)
+      let env' = remove_extarray env in
       addtag (Var(x)) num;
       let e2' =
 	if hasapp e1' then
@@ -150,7 +151,7 @@ let rec g env = function
       in
       Let((x, t), e1', e2')
   | LetRec({ name = xt; args = yts; body = e1 }, e2) ->
-      if not (Movelet.effect_fun (fst xt) !no_effect_fun e1) then
+      if not (S.mem (fst xt) !no_effect_fun) & not (Movelet.effect_fun (fst xt) !no_effect_fun e1) then
 	      no_effect_fun := S.add (fst xt) !no_effect_fun;
       LetRec({ name = xt; args = yts; body = g M.empty e1 }, g env e2)
   | LetTuple (xts, y, e) ->

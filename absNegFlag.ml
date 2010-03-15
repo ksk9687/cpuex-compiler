@@ -41,7 +41,7 @@ let rec g flg set env = function
   | Forget(x, e) -> Forget(x, g flg set env e)
 and g' flg set env = function
   | FMov(x) when flg = Abs -> FAbs(x)
-  | FNeg(x) when flg = Neg -> FNeg(x)
+  | FMov(x) when flg = Neg -> FNeg(x)
   | FAbs(x) | FNeg(x) when S.mem x set -> FMov(x)
   | FInv(x, _) -> FInv(replace env x, flg)
   | FSqrt(x, _) -> FSqrt(replace env x, flg)

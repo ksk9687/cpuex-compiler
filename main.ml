@@ -73,6 +73,7 @@ let () =
     (fun s -> files := !files @ [s])
     ("Mitou Min-Caml Compiler (C) Eijiro Sumii\n" ^
      Printf.sprintf "usage: %s [-inline m] [-inline_cont m] [-iter n] [-noHoge] [-lib] ...filenames without \".ml\"..." Sys.argv.(0));
+  Asm.check ();
   List.iter
     (fun f -> ignore (file f))
     !files
